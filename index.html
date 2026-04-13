@@ -6,17 +6,17 @@
     <title>סוליבי ספורט - פורטל פרימיום</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- הדרות גלובליות --- */
+        /* --- הגדרות גלובליות --- */
         :root {
-            --bg-color: #001328; /* כחול-נייבי עמוק */
-            --box-bg-color: rgba(15, 38, 61, 0.8); /* כחול-כהה יוקרתי, שקוף מעט */
+            --bg-color: #f5f5f5; /* אפור בהיר ונקי */
+            --header-bg: #001e3c; /* כחול הדר וטיקר - מלוכד */
+            --box-bg-blue: #001328; /* כחול-כהה עמוק לקוביות הנושאים */
+            --widget-bg: #ffffff; /* לבן לווידג'טים הימניים */
             --solibi-green: #00ff00; /* ירוק זרחני Neon */
-            --header-bg: #001e3c; /* כחול הדר */
-            --gold: #d4af37;
-            --silver: #c0c0c0;
-            --bronze: #cd7f32;
-            --text-color: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-color: #333333; /* טקסט כהה על הרקע הבהיר */
+            --text-on-dark: #ffffff; /* טקסט לבן על הרקעים הכהים */
+            --neon-green-glow: 0 0 10px rgba(0, 255, 0, 0.6);
+            --soft-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         * {
@@ -31,32 +31,30 @@
             color: var(--text-color);
             overflow-x: hidden; /* מונע גלילה רוחבית */
             direction: rtl; /* כיוון עברית */
-        }
-
-        /* --- קונטיינר מרכזי לגלילה אופקית --- */
-        .page-container {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            width: 100vw;
             height: 100vh;
-        }
-
-        /* --- הגדרת חלקים (Sections) --- */
-        .section {
-            flex: 0 0 100vw;
-            width: 100vw;
-            height: 100vh;
-            scroll-snap-align: start;
-            position: relative;
-            padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
+            justify-content: space-between;
         }
 
-        /* --- הדר (שידור אלגנטי של זכוכית) --- */
+        /* רקע מגרש כדורגל וצבעי מים עדין (SVG Watermark) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 65' fill='none' stroke='rgba(0,30,60,0.03)' stroke-width='0.4'%3E%3Crect x='2' y='2' width='96' height='61'/%3E%3Cline x1='50' y1='2' x2='50' y2='63'/%3E%3Ccircle cx='50' cy='32.5' r='8'/%3E%3Crect x='2' y='14.5' width='14' height='36'/%3E%3Crect x='2' y='22.5' width='6' height='20'/%3E%3Crect x='84' y='14.5' width='14' height='36'/%3E%3Crect x='92' y='22.5' width='6' height='20'/%3E%3C/svg%3E"),
+                            linear-gradient(rgba(245, 245, 245, 0.95), rgba(245, 245, 245, 0.95)); /* שכבת הכהיה עדינה */
+            background-size: 800px, cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            z-index: -1;
+        }
+
+        /* --- הדר (שידור אלגנטי של זכוכית, כחול מלוכד) --- */
         .main-header {
             width: 100%;
             background-color: var(--header-bg);
@@ -74,24 +72,6 @@
             height: 50px;
         }
 
-        .header-nav ul {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-        }
-
-        .header-nav a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            font-size: 15px;
-            transition: color 0.3s ease;
-        }
-
-        .header-nav a:hover {
-            color: var(--solibi-green);
-        }
-
         .header-search {
             position: relative;
             max-width: 300px;
@@ -102,32 +82,109 @@
             padding: 10px 15px 10px 35px;
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text-color);
+            color: var(--text-on-dark);
             font-size: 14px;
             outline: none;
+            transition: border-color 0.3s ease;
         }
 
-        .header-search i {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 14px;
+        .header-search input:focus {
+            border-color: var(--solibi-green);
         }
 
-        /* --- בנטו גריד (Bento Grid) - קוביות הנושאים --- */
-        .bento-grid {
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+        .header-nav ul {
+            list-style: none;
+            display: flex;
             gap: 25px;
         }
 
-        .dashboard-card {
-            background-color: var(--box-bg-color);
+        .header-nav a {
+            text-decoration: none;
+            color: var(--text-on-dark);
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .header-nav a:hover {
+            color: var(--solibi-green);
+        }
+
+        /* --- קונטיינר מרכזי לגריד --- */
+        .main-content {
+            flex: 1;
+            width: 100%;
+            max-width: 1600px;
+            margin: 30px auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 חלקים: ווידג'טים, גריד, מלבנים */
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        /* --- חלק 1: ווידג'טים מימין (RTL) - לבנים, קומפקטיים --- */
+        .right-panel {
+            grid-column: 1 / 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto; /* מאפשר גלילה פנימית אם יש צורך */
+            height: 100%;
+        }
+
+        .widget {
+            background-color: var(--widget-bg);
+            padding: 20px;
+            box-shadow: var(--soft-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .widget .title {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-color);
+        }
+
+        .match-score, .community-poll, .daily-quiz {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* כפתורים ווידג'טים קטנים (גרין גלואו) */
+        .live-stats-btn, .quiz-answer-btn {
+            background-color: transparent;
+            border: 1px solid var(--solibi-green);
+            color: var(--solibi-green);
+            padding: 8px 15px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .live-stats-btn:hover, .quiz-answer-btn:hover {
+            background-color: var(--solibi-green);
+            color: var(--text-color);
+            box-shadow: var(--neon-green-glow);
+        }
+
+        /* --- חלק 2: בנטו גריד (Bento Grid) - קוביות הנושאים הריבועיות --- */
+        .bento-grid-center {
+            grid-column: 2 / 3;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 טורים ריבועיים */
+            gap: 25px;
+        }
+
+        .dashboard-square-card {
+            background-color: var(--box-bg-blue);
+            aspect-ratio: 1 / 1; /* מבטיח ריבוע מושלם */
             padding: 30px;
             display: flex;
             flex-direction: column;
@@ -139,247 +196,132 @@
             border: 1px solid transparent;
         }
 
-        /* אפקט זכוכית יוקרתי (Glassmorphism) */
-        .dashboard-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-            z-index: 1;
-        }
-
-        /* אפקט הריחוף (Hover) */
-        .dashboard-card:hover {
+        .dashboard-square-card:hover {
             transform: translateY(-5px);
-            background-color: rgba(15, 38, 61, 0.9);
             border: 1px solid var(--solibi-green);
             box-shadow: 0 10px 30px rgba(0, 255, 0, 0.2);
         }
 
-        .dashboard-card .icon-container {
-            width: 70px;
-            height: 70px;
+        .dashboard-square-card .icon-container {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.05);
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            color: var(--solibi-green);
-            font-size: 30px;
-            z-index: 2;
-        }
-
-        .dashboard-card .title {
-            font-weight: 700;
-            font-size: 19px;
-            margin-bottom: 10px;
-            z-color: var(--text-color);
-            z-index: 2;
-        }
-
-        .dashboard-card .description {
-            font-weight: 400;
-            font-size: 14px;
-            color: var(--text-secondary);
-            z-index: 2;
-        }
-
-        /* --- פודיום מובילי הפנטאזי --- */
-        .fantasy-section {
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .fantasy-title {
-            font-weight: 900;
-            font-size: 36px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .podium-container {
-            width: 100%;
-            max-width: 800px;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            position: relative;
-            /* הערה: כדי לקבל את המראה התלת-ממדי והגאומטרי המדויק, תצטרך להשתמש בתמונת רקע לפודיום */
-            /* background-image: url('images/podium_3d.png'); */
-            /* background-size: cover; */
-        }
-
-        .podium-step {
-            width: 30%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            position: relative;
-            background-color: rgba(255, 255, 255, 0.05); /* מקומי מצע לפודיום גאומטרי */
-            margin: 0 5px;
-        }
-
-        /* פרופילים מתכתיים-זרחניים (Neon Metal Profiles) */
-        .player-profile {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid var(--solibi-green);
-            background-color: #0c1c30;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             margin-bottom: 15px;
-            font-size: 50px;
-            /* הערה: תצטרך להחליף בתמונות הפרופילים המדויקות */
+            color: var(--solibi-green);
+            font-size: 24px;
         }
 
-        /* זהב */
-        .podium-step-1 {
-            height: 250px;
-            border-top: 5px solid var(--gold);
-        }
-        .podium-step-1 .rank {
-            color: var(--gold);
-            font-size: 40px;
-            font-weight: 900;
-        }
-        .podium-step-1 .rank::after {
-            content: "1";
-        }
-        .podium-step-1 .player-profile {
-            border-color: var(--gold);
-            color: var(--gold);
+        .dashboard-square-card .title {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-on-dark);
         }
 
-        /* כסף */
-        .podium-step-2 {
-            height: 200px;
-            border-top: 5px solid var(--silver);
-        }
-        .podium-step-2 .rank {
-            color: var(--silver);
-            font-size: 30px;
-            font-weight: 900;
-        }
-        .podium-step-2 .rank::after {
-            content: "2";
-        }
-        .podium-step-2 .player-profile {
-            border-color: var(--silver);
-            color: var(--silver);
-        }
-
-        /* ברונזה */
-        .podium-step-3 {
-            height: 170px;
-            border-top: 5px solid var(--bronze);
-        }
-        .podium-step-3 .rank {
-            color: var(--bronze);
-            font-size: 25px;
-            font-weight: 900;
-        }
-        .podium-step-3 .rank::after {
-            content: "3";
-        }
-        .podium-step-3 .player-profile {
-            border-color: var(--bronze);
-            color: var(--bronze);
-        }
-
-        .player-name {
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        /* --- פס צד ימני (מלבנים צרים) --- */
-        .side-panel {
-            flex: 0 0 20vw;
-            width: 20vw;
-            height: 100vh;
-            padding: 20px;
-            background-color: rgba(15, 38, 61, 0.3);
+        /* --- חלק 3: מלבנים צרים שוכבים (משמאל) - כחולים, גרין בורדר --- */
+        .left-panel-trending {
+            grid-column: 3 / 4;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            height: 100%;
         }
 
-        .side-card {
-            background-color: var(--box-bg-color);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            position: relative;
-            border: 1px solid transparent;
-        }
-
-        .side-card:hover {
-            background-color: rgba(15, 38, 61, 0.9);
-        }
-
-        .side-card .card-category {
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-        }
-
-        .side-card .card-title {
-            font-weight: 700;
-            font-size: 17px;
+        .trending-header {
+            font-weight: 900;
+            font-size: 24px;
+            color: var(--text-color);
             margin-bottom: 10px;
         }
 
-        .side-card .points {
+        .stacked-trending-card {
+            background-color: var(--box-bg-blue);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            border: 1px solid transparent;
+            border-right: 4px solid var(--solibi-green); /* גרין בורדר שמאלי */
+        }
+
+        .stacked-trending-card:hover {
+            border-color: var(--solibi-green);
+        }
+
+        .trending-content {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .trending-rank-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
             font-size: 14px;
-            color: var(--text-color);
+            color: var(--text-on-dark);
         }
 
-        .side-card .points b {
+        .trending-rank {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
             font-weight: 900;
-            margin-left: 5px;
+            color: var(--text-on-dark);
         }
 
-        /* הדגשת זהב */
-        .gold-point {
-            color: var(--gold);
+        .rank-gold { background-color: var(--gold); }
+        .rank-silver { background-color: var(--silver); }
+        .rank-bronze { background-color: var(--bronze); }
+
+        .trending-points {
+            font-weight: 400;
+            font-size: 11px;
+            color: var(--solibi-green);
         }
 
-        /* --- טיקר תחתון (Bottom Ticker) --- */
+        /* מלבנים צרים אחרים (כחול-כהה, טקסט לבן) */
+        .simple-trending-card {
+            background-color: var(--box-bg-blue);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .simple-trending-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-on-dark);
+        }
+
+        .simple-trending-desc {
+            font-weight: 400;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* --- טיקר תחתון (כחול מלוכד, טקסט לבן) --- */
         .footer-ticker {
             width: 100%;
             height: 40px;
-            background-color: #000;
-            position: fixed;
+            background-color: var(--header-bg);
+            position: sticky;
             bottom: 0;
-            left: 0;
             display: flex;
             align-items: center;
             overflow: hidden;
             z-index: 1000;
-        }
-
-        .ticker-bar {
-            width: 100%;
-            height: 6px;
-            background-color: var(--solibiGreen);
-            position: absolute;
-            top: 0;
-            left: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .ticker-text {
@@ -393,7 +335,7 @@
         }
 
         .ticker-text b {
-            color: var(--text-color);
+            color: var(--text-on-dark);
             font-weight: 700;
         }
 
@@ -405,127 +347,124 @@
 </head>
 <body>
 
-    <div class="page-container">
+    <header class="main-header">
+        <div class="header-logo">
+            <span style="font-weight: 900; font-size: 28px; color: var(--text-on-dark); text-transform: uppercase;">סוליבי<span style="color: var(--solibiGreen);">ספורט</span></span>
+        </div>
+        <div class="header-search">
+            <input type="text" placeholder="חפש שחקנים, קלפים, חדשות...">
+        </div>
+        <nav class="header-nav">
+            <ul>
+                <li><a href="#">דף הבית</a></li>
+                <li><a href="#">ארכיון</a></li>
+                <li><a href="#">אודות</a></li>
+                <li><a href="#">צור קשר</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        <div class="section left">
+    <main class="main-content">
+
+        <div class="right-panel">
+            <div class="widget">
+                <span class="title">המשחק המרכזי</span>
+                <div class="match-score">
+                    <span style="font-size: 13px;">מכבי ת"א - FC Koln</span>
+                    <button class="live-stats-btn">סטטיסטיקות לייב</button>
+                </div>
+            </div>
+            <div class="widget">
+                <span class="title">סקר הקהילה</span>
+                <div class="community-poll">
+                    <span style="font-size: 13px; color: var(--text-color);">מי שחקן המאה?</span>
+                    </div>
+            </div>
+            <div class="widget">
+                <span class="title">חידה יומית</span>
+                <div class="daily-quiz">
+                    <span style="font-size: 13px; color: var(--text-color);">מהו השיא של אוסקר?</span>
+                    <button class="quiz-answer-btn">גלה את התשובה</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bento-grid-center">
+            <div class="dashboard-square-card">
+                <div class="icon-container">[גרף]</div>
+                <h2 class="title">טבלאות ותוצאות בלייב</h2>
+            </div>
+            <div class="dashboard-square-card">
+                <div class="icon-container">[קלף]</div>
+                <h2 class="title">בורסת הקלפים</h2>
+            </div>
+            <div class="dashboard-square-card">
+                <div class="icon-container">[ספר]</div>
+                <h2 class="title">ארכיון כדורגל ישראלי</h2>
+            </div>
+            <div class="dashboard-square-card">
+                <div class="icon-container">[לוח]</div>
+                <h2 class="title">עולם המנג'ר</h2>
+            </div>
+            <div class="dashboard-square-card">
+                <div class="icon-container">[גביע]</div>
+                <h2 class="title">ליגת הפנטאזי</h2>
+            </div>
+            <div class="dashboard-square-card">
+                <div class="icon-container">[רמקול]</div>
+                <h2 class="title">קהילה ופורום</h2>
+            </div>
+        </div>
+
+        <div class="left-panel-trending">
+            <span class="trending-header">Trending</span>
             
-            <header class="main-header">
-                <div class="header-logo">
-                    <span style="font-weight: 900; font-size: 28px; color: var(--text-color); text-transform: uppercase;">סוליבי<span style="color: var(--solibiGreen);">ספורט</span></span>
+            <div class="stacked-trending-card">
+                <div class="trending-content">
+                    <div class="trending-rank-name">
+                        <div class="trending-rank rank-gold">1</div>
+                        Solibi_Pro
+                    </div>
+                    <span class="trending-points">912 pt</span>
                 </div>
-                <nav class="header-nav">
-                    <ul>
-                        <li><a href="#">דף הבית</a></li>
-                        <li><a href="#">ארכיון</a></li>
-                        <li><a href="#">אודות</a></li>
-                        <li><a href="#">צור קשר</a></li>
-                    </ul>
-                </nav>
-                <div class="header-search">
-                    <input type="text" placeholder="חיפוש חופשי (שחקן, קבוצה, קלף)...">
-                    <i class="icon">[🔍]</i>
                 </div>
-            </header>
+            <div class="stacked-trending-card">
+                <div class="trending-content">
+                    <div class="trending-rank-name">
+                        <div class="trending-rank rank-silver">2</div>
+                        Yossi_10
+                    </div>
+                    <span class="trending-points">840 pt</span>
+                </div>
+                </div>
+            <div class="stacked-trending-card">
+                <div class="trending-content">
+                    <div class="trending-rank-name">
+                        <div class="trending-rank rank-bronze">3</div>
+                        Goal_Master
+                    </div>
+                    <span class="trending-points">795 pt</span>
+                </div>
+                </div>
 
-            <div class="bento-grid">
-                <div class="dashboard-card">
-                    <div class="icon-container">
-                        <i class="icon">[גרף]</i> </div>
-                    <h2 class="title">ליגת העל</h2>
-                    <p class="description">סטטיסטיקות שחקנים, נתונים היסטוריים ודירוגים.</p>
-                </div>
-                <div class="dashboard-card">
-                    <div class="icon-container">
-                        <i class="icon">[כדור]</i>
-                    </div>
-                    <h2 class="title">ליגות אירופיות</h2>
-                    <p class="description">נתונים השוואתיים מהליגות הגדולות ביבשת.</p>
-                </div>
-                <div class="dashboard-card">
-                    <div class="icon-container">
-                        <i class="icon">[טקטיקה]</i>
-                    </div>
-                    <h2 class="title">ניתוח קבוצות</h2>
-                    <p class="description">מדדי ביצועים, מגמות טקטיות ודוחות עומק.</p>
-                </div>
-                <div class="dashboard-card">
-                    <div class="icon-container">
-                        <i class="icon">[שעון]</i>
-                    </div>
-                    <h2 class="title">אירועים חיים</h2>
-                    <p class="description">דאטה בזמן אמת ממשחקים פעילים.</p>
-                </div>
-                <div class="dashboard-card">
-                    <div class="icon-container">
-                        <i class="icon">[חיזוי]</i>
-                    </div>
-                    <h2 class="title">מודלים לחיזוי</h2>
-                    <p class="description">מגמות עתידיות המבוססות על נתוני עבר.</p>
-                </div>
-                <div class="dashboard-card">
-                    <div class="icon-container">
-                        <i class="icon">[מסמך]</i>
-                    </div>
-                    <h2 class="title">דוחות עומק</h2>
-                    <p class="description">חדשות, מחקרים וסטטיסטיקות מתקדמות.</p>
-                </div>
+            <div class="simple-trending-card">
+                <span class="simple-trending-title">הקלף החם</span>
+                <p class="simple-trending-desc">ערן זהבי (Maccabi TA)</p>
             </div>
+            <div class="simple-trending-card">
+                <span class="simple-trending-title">עדכון לייב</span>
+                <p class="simple-trending-desc">מכבי ת"א - בית"ר</p>
+            </div>
+            <div class="simple-trending-card">
+                <span class="simple-trending-title">הדיון החם</span>
+                <p class="simple-trending-desc">מנג'ר 2026: טקטיקות?</p>
+            </div>
+        </div>
+    </main>
 
-            <div class="fantasy-section">
-                <h1 class="fantasy-title uppercase tracking-tighter">מובילי הפנטאזי</h1>
-                
-                <div class="podium-container">
-                    <div class="podium-step podium-step-2">
-                        <div class="rank"></div>
-                        <div class="player-profile">
-                            <i class="icon">[דמות]</i>
-                        </div>
-                        <p class="player-name">Yossi_10</p>
-                    </div>
-                    <div class="podium-step podium-step-1">
-                        <div class="rank"></div>
-                        <div class="player-profile">
-                            <i class="icon">[דמות]</i>
-                        </div>
-                        <p class="player-name">Solibi_Pro</p>
-                    </div>
-                    <div class="podium-step podium-step-3">
-                        <div class="rank"></div>
-                        <div class="player-profile">
-                            <i class="icon">[דמות]</i>
-                        </div>
-                        <p class="player-name">Goal_Master</p>
-                    </div>
-                </div>
-            </div>
-
-        </div> <div class="side-panel">
-            <div class="side-card">
-                <span class="card-category uppercase tracking-wider">סוף 3: פנטזיה</span>
-                <h2 class="card-title">מובילים עונתיים</h2>
-                <p class="points gold-point"><b class="font-black">1.</b> Solibi_Pro <span style="float:left">912 pt</span></p>
-                <p class="points"><b class="font-black">2.</b> Yossi_10 <span style="float:left">840 pt</span></p>
-                <p class="points"><b class="font-black">3.</b> Goal_Master <span style="float:left">795 pt</span></p>
-            </div>
-            <div class="side-card">
-                <span class="card-category uppercase tracking-wider">הקלף החם</span>
-                <h2 class="card-title">ערן זהבי - אייקון</h2>
-                <p class="points"><b class="font-black">נתונים ב-24 שעות:</b> <span style="color:var(--solibiGreen);float:left">+24%</span></p>
-            </div>
-            <div class="side-card">
-                <span class="card-category uppercase tracking-wider">עדכון לייב</span>
-                <h2 class="card-title leading-tight">מכבי ת"א - בית"ר</h2>
-                <p class="points"><b class="font-black">סטטוס:</b> <span style="color:var(--solibiGreen);float:left">מחצית (2-0)</span></p>
-            </div>
-            <div class="side-card">
-                <span class="card-category uppercase tracking-wider">הדיון החם</span>
-                <h2 class="card-title leading-tight">מג"ר 2026: טקטיקות שבירות?</h2>
-                <p class="points"><b class="font-black">תגובות:</b> <span style="float:left">142</span></p>
-            </div>
-        </div> </div> <footer class="footer-ticker">
-        <div class="ticker-bar"></div>
+    <footer class="footer-ticker">
         <p class="ticker-text">
-            משחק חי: <b>מכבי ת"א 2-1 FC Koln (Final)</b> | קלף השבוע: <b>זהב זהבי</b> | חידה יומי: <b>מי הוא שחקן המאה?</b> | סקר: <b>ה-Maccabi? המכביה?</b> | פורום: <b>היסטוריה?</b> | עדכון מנג'ר: <b>טקטיקות חדשות!</b> | חדשות סקאוטינג: <b>שחקן מבטיח נחשף!</b>
+            עדכון חי: <b>[Maccabi TA 2-1 FC Koln (Final)]</b> | קלף השבוע: <b>זהב זהבי</b> | חידה יומי: <b>מי הוא שחקן המאה?</b> | סקר: <b>ה-Maccabi? המכביה?</b> | פורום: <b>היסטוריה?</b>
         </p>
     </footer>
 
