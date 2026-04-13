@@ -32,31 +32,55 @@
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
+
+        /* עיצוב לקוביות עם תמונת רקע */
+        .box-with-image {
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        /* שכבת הצללה מעל התמונה כדי שהטקסט יהיה קריא */
+        .box-overlay {
+            background: linear-gradient(rgba(0, 30, 60, 0.8), rgba(0, 30, 60, 0.8));
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        /* ב-Hover השכבה הופכת לבהירה יותר (לבנה) כמו שביקשת */
+        .box-with-image:hover .box-overlay {
+            background: rgba(255, 255, 255, 0.95);
+        }
     </style>
 </head>
 <body class="bg-solibiBg text-gray-900 h-screen flex flex-col overflow-hidden tracking-tight">
 
-    <header class="bg-white shadow-md shrink-0 border-b border-gray-300">
+    <header class="bg-solibiBlue shadow-md shrink-0 border-b border-solibiGreen/30">
         <div class="max-w-[1500px] mx-auto px-8 py-4 flex justify-between items-center gap-8">
             <div class="flex items-center gap-3 shrink-0">
-                <svg class="w-10 h-10 text-solibiBlue" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-3.5-6.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-3.5 3a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/></svg>
+                <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-3.5-6.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-3.5 3a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/></svg>
                 <div class="leading-none flex flex-col justify-center">
-                    <span class="text-[28px] font-black text-solibiBlue uppercase tracking-tighter">סוליבי<span class="text-solibiGreen">ספורט</span></span>
+                    <span class="text-[28px] font-black text-white uppercase tracking-tighter">סוליבי<span class="text-solibiGreen">ספורט</span></span>
                 </div>
             </div>
 
             <div class="flex-grow max-w-lg">
                 <div class="relative w-full group">
-                    <input type="text" placeholder="חיפוש חופשי..." class="w-full bg-gray-100 border border-gray-300 text-gray-800 focus:border-solibiGreen focus:bg-white py-2.5 px-12 text-sm transition-all outline-none rounded-none">
-                    <svg class="w-4 h-4 text-gray-500 absolute right-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" placeholder="חיפוש חופשי..." class="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 focus:border-solibiGreen focus:bg-white focus:text-solibiBlue py-2.5 px-12 text-sm transition-all outline-none rounded-none">
+                    <svg class="w-4 h-4 text-white/50 absolute right-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
             </div>
 
             <nav class="flex gap-6 items-center text-[15px] font-bold shrink-0">
-                <a href="#" class="text-solibiBlue hover:text-solibiGreen transition-colors duration-200">דף הבית</a>
-                <a href="#" class="text-solibiBlue hover:text-solibiGreen transition-colors duration-200">ארכיון</a>
-                <a href="#" class="text-solibiBlue hover:text-solibiGreen transition-colors duration-200">אודות</a>
-                <a href="#" class="text-solibiBlue hover:text-solibiGreen transition-colors duration-200">צור קשר</a>
+                <a href="#" class="text-white hover:text-solibiGreen transition-colors duration-200">דף הבית</a>
+                <a href="#" class="text-white/70 hover:text-solibiGreen transition-colors duration-200">ארכיון</a>
+                <a href="#" class="text-white/70 hover:text-solibiGreen transition-colors duration-200">אודות</a>
+                <a href="#" class="text-white/70 hover:text-solibiGreen transition-colors duration-200">צור קשר</a>
             </nav>
         </div>
     </header>
@@ -65,53 +89,64 @@
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-[60%]">
             
-            <a href="#" class="bg-solibiBlue hover:bg-solibiBlue/90 transition-all duration-300 rounded-none flex flex-col justify-center items-center text-center shadow-md cursor-pointer h-full group border-b-4 border-transparent hover:border-solibiGreen">
-                <div class="text-white mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            <a href="#" class="box-with-image rounded-none shadow-md h-full group border-b-4 border-transparent hover:border-solibiGreen" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=500');">
+                <div class="box-overlay">
+                    <div class="text-white group-hover:text-solibiBlue mb-3 group-hover:scale-110 transition-all duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-black text-white group-hover:text-solibiBlue transition-colors">תוצאות וטבלאות</h2>
                 </div>
-                <h2 class="text-2xl font-black text-white">תוצאות וטבלאות</h2>
             </a>
 
-            <a href="#" class="bg-solibiBlue hover:bg-solibiBlue/90 transition-all duration-300 rounded-none flex flex-col justify-center items-center text-center shadow-md cursor-pointer h-full group border-b-4 border-transparent hover:border-solibiGreen">
-                <div class="text-white mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            <a href="#" class="box-with-image rounded-none shadow-md h-full group border-b-4 border-transparent hover:border-solibiGreen" style="background-image: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=500');">
+                <div class="box-overlay">
+                    <div class="text-white group-hover:text-solibiBlue mb-3 group-hover:scale-110 transition-all duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-black text-white group-hover:text-solibiBlue transition-colors">בורסת הקלפים</h2>
                 </div>
-                <h2 class="text-2xl font-black text-white">בורסת הקלפים</h2>
             </a>
 
-            <a href="#" class="bg-solibiBlue hover:bg-solibiBlue/90 transition-all duration-300 rounded-none flex flex-col justify-center items-center text-center shadow-md cursor-pointer h-full group border-b-4 border-transparent hover:border-solibiGreen">
-                <div class="text-white mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            <a href="#" class="box-with-image rounded-none shadow-md h-full group border-b-4 border-transparent hover:border-solibiGreen" style="background-image: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=500');">
+                <div class="box-overlay">
+                    <div class="text-white group-hover:text-solibiBlue mb-3 group-hover:scale-110 transition-all duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-black text-white group-hover:text-solibiBlue transition-colors">ארכיון הכדורגל</h2>
                 </div>
-                <h2 class="text-2xl font-black text-white">ארכיון הכדורגל</h2>
             </a>
 
-            <a href="#" class="bg-solibiBlue hover:bg-solibiBlue/90 transition-all duration-300 rounded-none flex flex-col justify-center items-center text-center shadow-md cursor-pointer h-full group border-b-4 border-transparent hover:border-solibiGreen">
-                <div class="text-white mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <a href="#" class="box-with-image rounded-none shadow-md h-full group border-b-4 border-transparent hover:border-solibiGreen" style="background-image: url('https://images.unsplash.com/photo-1518091044124-0121ebbd5aff?q=80&w=500');">
+                <div class="box-overlay">
+                    <div class="text-white group-hover:text-solibiBlue mb-3 group-hover:scale-110 transition-all duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-black text-white group-hover:text-solibiBlue transition-colors">עולם המנג'ר</h2>
                 </div>
-                <h2 class="text-2xl font-black text-white">עולם המנג'ר</h2>
             </a>
 
-            <a href="#" class="bg-solibiBlue hover:bg-solibiBlue/90 transition-all duration-300 rounded-none flex flex-col justify-center items-center text-center shadow-md cursor-pointer h-full group border-b-4 border-transparent hover:border-solibiGreen">
-                <div class="text-white mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+            <a href="#" class="box-with-image rounded-none shadow-md h-full group border-b-4 border-transparent hover:border-solibiGreen" style="background-image: url('https://images.unsplash.com/photo-1551952237-954a0e3f38c6?q=80&w=500');">
+                <div class="box-overlay">
+                    <div class="text-white group-hover:text-solibiBlue mb-3 group-hover:scale-110 transition-all duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-black text-white group-hover:text-solibiBlue transition-colors">ליגת הפנטאזי</h2>
                 </div>
-                <h2 class="text-2xl font-black text-white">ליגת הפנטאזי</h2>
             </a>
 
-            <a href="#" class="bg-solibiBlue hover:bg-solibiBlue/90 transition-all duration-300 rounded-none flex flex-col justify-center items-center text-center shadow-md cursor-pointer h-full group border-b-4 border-transparent hover:border-solibiGreen">
-                <div class="text-white mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+            <a href="#" class="box-with-image rounded-none shadow-md h-full group border-b-4 border-transparent hover:border-solibiGreen" style="background-image: url('https://images.unsplash.com/photo-1543351611-58f69d7c1781?q=80&w=500');">
+                <div class="box-overlay">
+                    <div class="text-white group-hover:text-solibiBlue mb-3 group-hover:scale-110 transition-all duration-300">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-black text-white group-hover:text-solibiBlue transition-colors">פורום קהילה</h2>
                 </div>
-                <h2 class="text-2xl font-black text-white">פורום קהילה</h2>
             </a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-auto mb-4">
             
             <div class="flex flex-col gap-4">
-                
                 <div class="bg-solibiBlue h-[70px] flex items-center justify-between px-6 shadow-sm rounded-none border-b-2 border-transparent hover:border-solibiGreen transition-all cursor-pointer">
                     <span class="text-solibiGreen font-bold text-[15px] uppercase">טופ 3: פנטאזי</span>
                     <div class="flex gap-4 text-white text-[13px] font-medium">
@@ -128,11 +163,9 @@
                         <span class="bg-solibiGreen/20 text-solibiGreen font-bold text-[12px] px-2 py-1">+24% היום</span>
                     </div>
                 </div>
-
             </div>
 
             <div class="flex flex-col gap-4">
-                
                 <div class="bg-solibiBlue h-[70px] flex items-center justify-between px-6 shadow-sm rounded-none border-b-2 border-transparent hover:border-solibiGreen transition-all cursor-pointer">
                     <span class="text-solibiGreen font-bold text-[15px] uppercase">עדכון לייב</span>
                     <div class="flex items-center gap-4 text-white text-[14px] font-bold">
@@ -149,20 +182,19 @@
                         <span class="text-gray-400 text-[12px]">142 תגובות</span>
                     </div>
                 </div>
-
             </div>
             
         </div>
     </main>
 
-    <div class="bg-white shrink-0 border-t border-gray-300 text-solibiBlue py-2.5 z-50 shadow-md text-[14px] font-medium">
+    <div class="bg-solibiBlue shrink-0 border-t border-white/10 text-white py-2.5 z-50 shadow-md text-[14px] font-medium">
         <div class="overflow-hidden max-w-[1500px] mx-auto">
             <div id="ticker-content">
-                <span class="mx-6 text-gray-700">עדכון חי: <span class="text-solibiBlue font-bold">מכבי ת"א 2 - 0 הפועל ירושלים (מחצית)</span></span>
+                <span class="mx-6 text-white/70">עדכון חי: <span class="text-white font-bold">מכבי ת"א 2 - 0 הפועל ירושלים (מחצית)</span></span>
                 <span class="text-solibiGreen opacity-50">|</span>
-                <span class="mx-6 text-gray-700">בורסת הקלפים: <span class="text-solibiGreen font-bold">מגמת עלייה במחירי קלפי 'אגדות'</span></span>
+                <span class="mx-6 text-white/70">בורסת הקלפים: <span class="text-solibiGreen font-bold">מגמת עלייה במחירי קלפי 'אגדות'</span></span>
                 <span class="text-solibiGreen opacity-50">|</span>
-                <span class="mx-6 text-gray-700">מערכת: <span class="text-solibiBlue font-bold">הרישום לליגת הפנטאזי נפתח!</span></span>
+                <span class="mx-6 text-white/70">מערכת: <span class="text-white font-bold">הרישום לליגת הפנטאזי נפתח!</span></span>
             </div>
         </div>
     </div>
