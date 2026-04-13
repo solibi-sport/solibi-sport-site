@@ -5,33 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - עולם שלם של כדורגל</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        heebo: ['Heebo', 'sans-serif'],
-                    },
+                    fontFamily: { heebo: ['Heebo', 'sans-serif'] },
                     colors: {
-                        solibiBackground: '#f1f5f9', /* אפור בהיר - רקע כללי - פחות כהה */
-                        solibiLightBlue: '#e0f2fe', /* כחול בהיר מאוד - לרקעים פנימיים */
-                        solibiDarkBlue: '#1d4ed8', /* כחול כהה יותר, אבל פחות מנייבי */
-                        solibiDeepBlue: '#0f172a', /* הכחול הכהה ביותר שלנו - לטקסט ופרטים קטנים */
-                        solibiGreen: '#84cc16' /* ירוק בוהק - צבע הלוגו - לשמור! */
+                        solibiBlue: '#004A8F', /* הכחול העמוק מהסקיצה שלך */
+                        solibiBox: '#E2E8F0', /* האפור-כסוף של המשבצות */
+                        solibiGreen: '#84cc16' /* הירוק של הלוגו */
                     }
                 }
             }
         }
     </script>
     <style>
-        body {
-            font-family: 'Heebo', sans-serif;
-        }
-
-        /* סגנון לשורה הרצה (Ticker) */
+        body { font-family: 'Heebo', sans-serif; }
+        
+        /* אנימציה לשורה הרצה למטה */
         #ticker-content {
-            animation: ticker 25s linear infinite;
+            animation: ticker 35s linear infinite;
             display: inline-block;
             white-space: nowrap;
         }
@@ -41,143 +35,75 @@
         }
     </style>
 </head>
-<body class="bg-solibiBackground text-solibiDeepBlue min-h-screen">
+<body class="bg-solibiBlue text-gray-900 min-h-screen flex flex-col pb-10">
 
-    <header class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto p-4 flex justify-between items-center">
+    <header class="bg-white shadow-md z-10 relative">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <span class="text-5xl">⚽</span> <span class="text-3xl font-bold text-solibiGreen font-heebo">סוליבי ספורט</span>
+                <span class="text-4xl text-solibiBlue">⚽</span> <div class="flex flex-col">
+                    <span class="text-3xl font-extrabold text-solibiBlue tracking-tight">סוליבי<span class="text-solibiGreen">ספורט</span></span>
+                    <span class="text-sm text-gray-500 font-medium">עולם שלם של כדורגל</span>
+                </div>
             </div>
-            <nav class="flex gap-1 items-center bg-white border border-gray-200 px-6 py-2 rounded-full text-solibiDeepBlue font-semibold shadow-inner">
-                <a href="#" class="text-solibiGreen bg-solibiLightBlue px-4 py-1.5 rounded-full transition duration-300">דף הבית</a>
-                <a href="#" class="hover:text-solibiGreen px-4 py-1.5 transition">ארכיון</a>
-                <a href="#" class="hover:text-solibiGreen px-4 py-1.5 transition">קהילה</a>
-                <a href="#" class="hover:text-solibiGreen px-4 py-1.5 transition">אודות</a>
-                <a href="#" class="hover:text-solibiGreen px-4 py-1.5 transition">צור קשר</a>
+            <nav class="flex gap-2 items-center bg-gray-50 border border-gray-200 px-4 py-1.5 rounded-full text-solibiBlue font-semibold shadow-inner text-sm md:text-base">
+                <a href="#" class="text-solibiGreen bg-white px-4 py-1 rounded-full shadow-sm border border-gray-100">דף הבית</a>
+                <a href="#" class="hover:text-solibiGreen px-3 py-1 transition">ארכיון</a>
+                <a href="#" class="hover:text-solibiGreen px-3 py-1 transition">קהילה</a>
+                <a href="#" class="hover:text-solibiGreen px-3 py-1 transition">אודות</a>
+                <a href="#" class="hover:text-solibiGreen px-3 py-1 transition">צור קשר</a>
             </nav>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto p-6 md:p-10 space-y-10">
-
-        <div class="text-center p-6 bg-white rounded-3xl shadow-lg border border-gray-100">
-            <h1 class="text-5xl font-extrabold text-solibiDarkBlue mb-3">ברוך הבא לסוליבי-ספורט</h1>
-            <p class="text-xl text-gray-600">עולם שלם של כדורגל - מהעבר, מההווה ומהקהילה</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-
-            <div class="bg-white p-8 rounded-3xl md:col-span-2 shadow-lg border border-gray-100 hover:shadow-2xl hover:border-solibiGreen transition duration-300">
-                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                    <span class="text-4xl text-solibiGreen">🔴</span>
-                    <h2 class="text-3xl font-bold text-solibiDeepBlue">תוצאות ומשחקים בלייב</h2>
-                </div>
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center bg-solibiLightBlue p-5 rounded-2xl shadow-inner border border-solibiGreen/10">
-                        <span class="font-medium">מכבי תל אביב</span>
-                        <span class="font-extrabold text-solibiGreen bg-white px-5 py-2 rounded-xl text-2xl border border-solibiGreen/20 shadow">2 - 1</span>
-                        <span class="font-medium">מכבי חיפה</span>
-                    </div>
-                    <div class="flex justify-between items-center bg-gray-50 p-5 rounded-2xl">
-                        <span class="text-gray-600">הפועל באר שבע</span>
-                        <span class="font-bold text-gray-500 bg-gray-200 px-5 py-2 rounded-xl text-lg">20:30</span>
-                        <span class="text-gray-600">בית"ר ירושלים</span>
-                    </div>
-                </div>
-                <a href="#" class="block text-center mt-6 text-solibiGreen font-bold hover:underline transition duration-300">לכל הטבלאות והתוצאות -></a>
-            </div>
-
-            <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-solibiGreen transition duration-300 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl text-solibiGreen">🃏</span>
-                        <h2 class="text-2xl font-bold text-solibiDeepBlue">בורסת הקלפים</h2>
-                    </div>
-                    <p class="text-gray-600 text-sm leading-relaxed">מעקב מחירים, המלצות השקעה חמות וצ'קליסט לאספנים רשומים.</p>
-                </div>
-                <div class="text-center bg-solibiLightBlue p-5 rounded-2xl mt-5 border border-solibiGreen/20 shadow-inner">
-                    <span class="block text-gray-500 text-xs">קלף חם היום</span>
-                    <span class="block font-bold text-lg mt-1">שחקן העונה - זהב</span>
-                    <span class="text-solibiGreen font-bold text-sm transition duration-300">▲ 12% עליה</span>
-                </div>
-                <a href="#" class="block text-center mt-6 text-solibiGreen font-bold hover:underline transition duration-300">כניסה לבורסה -></a>
-            </div>
-
-            <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-solibiGreen transition duration-300 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="text-3xl text-solibiGreen">📚</span>
-                        <h2 class="text-2xl font-bold text-solibiDeepBlue">ארכיון כדורגל</h2>
-                    </div>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-6">שיאים, דירוגים, וסטטיסטיקות היסטוריות של שחקני עבר והווה.</p>
-                </div>
-                 <a href="#" class="block text-center mt-6 text-solibiGreen font-bold hover:underline transition duration-300">כניסה לארכיון -></a>
-            </div>
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6 md:p-12 flex flex-col justify-center">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             
-             <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-solibiGreen transition duration-300 md:col-span-2">
-                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                    <span class="text-4xl text-solibiGreen">👔</span>
-                    <h2 class="text-3xl font-bold text-solibiDeepBlue">פוטבול מנג'ר</h2>
-                </div>
-                <p class="text-gray-600 text-sm leading-relaxed mb-6">טקטיקות מנצחות, המלצות לשחקני נוער (Wonderkids), דירוגי מנג'רים וקהילת המנג'ר הפעילה שלנו.</p>
-                <div class="bg-solibiLightBlue p-5 rounded-2xl shadow-inner text-solibiDeepBlue border border-solibiGreen/10">
-                    <span class="font-semibold">טקטיקה חמה היום:</span> 4-3-3 Geofpress (גרסה חדשה) - <span class="text-solibiGreen transition duration-300">מומלץ!</span>
-                </div>
-                <a href="#" class="block text-center mt-6 text-solibiGreen font-bold hover:underline transition duration-300">לכל הטקטיקות -></a>
-            </div>
+            <a href="#" class="bg-solibiBox hover:bg-white transition duration-300 transform hover:-translate-y-1 shadow-2xl p-8 flex flex-col items-center justify-center text-center aspect-video md:aspect-auto md:h-56 border-b-4 border-transparent hover:border-solibiGreen">
+                <h2 class="text-xl md:text-2xl font-bold text-solibiBlue mb-3">טבלאות, תוצאות וסטטיסטיקות</h2>
+                <p class="text-gray-600 font-medium text-lg">מכל הליגות המעניינות בעולם</p>
+            </a>
 
-             <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-solibiGreen transition duration-300 md:col-span-2">
-                <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                    <span class="text-4xl text-solibiGreen">💬</span>
-                    <h2 class="text-3xl font-bold text-solibiDeepBlue">הקהילה שלנו</h2>
-                </div>
-                <p class="text-gray-600 text-sm leading-relaxed mb-6">פורומים פעילים, הגרלות, תחרויות, ומשחק הפנטזי הרשמי שלנו (הגרסה החדשה).</p>
-                <div class="bg-solibiLightBlue p-5 rounded-2xl shadow-inner text-solibiDeepBlue border border-solibiGreen/10">
-                    <span class="font-semibold">הגרלה חדשה:</span> הירשם עכשיו ואולי תזכה בקלף "אגדות זהב"!
-                </div>
-                <a href="#" class="block text-center mt-6 text-solibiGreen font-bold hover:underline transition duration-300">כניסה לקהילה -></a>
-            </div>
+            <a href="#" class="bg-solibiBox hover:bg-white transition duration-300 transform hover:-translate-y-1 shadow-2xl p-8 flex flex-col items-center justify-center text-center aspect-video md:aspect-auto md:h-56 border-b-4 border-transparent hover:border-solibiGreen">
+                <h2 class="text-xl md:text-2xl font-bold text-solibiBlue mb-3">אספנות קלפים:</h2>
+                <p class="text-gray-600 font-medium text-lg">גרף מחירים, המלצות, צ'קליסטים ועוד..</p>
+            </a>
+
+            <a href="#" class="bg-solibiBox hover:bg-white transition duration-300 transform hover:-translate-y-1 shadow-2xl p-8 flex flex-col items-center justify-center text-center aspect-video md:aspect-auto md:h-56 border-b-4 border-transparent hover:border-solibiGreen">
+                <h2 class="text-xl md:text-2xl font-bold text-solibiBlue mb-3">ארכיון הכדורגל הישראלי:</h2>
+                <p class="text-gray-600 font-medium text-lg">דירוגים, שיאים והישגים ועוד הרבה תוכן מרתק</p>
+            </a>
+
+            <a href="#" class="bg-solibiBox hover:bg-white transition duration-300 transform hover:-translate-y-1 shadow-2xl p-8 flex flex-col items-center justify-center text-center aspect-video md:aspect-auto md:h-56 border-b-4 border-transparent hover:border-solibiGreen">
+                <h2 class="text-xl md:text-2xl font-bold text-solibiBlue mb-3">משחקי מנג'ר:</h2>
+                <p class="text-gray-600 font-medium text-lg">עולם שלם של תוכן שעוסק במנג'רים מכל השנים</p>
+            </a>
+
+            <a href="#" class="bg-solibiBox hover:bg-white transition duration-300 transform hover:-translate-y-1 shadow-2xl p-8 flex flex-col items-center justify-center text-center aspect-video md:aspect-auto md:h-56 border-b-4 border-transparent hover:border-solibiGreen">
+                <h2 class="text-xl md:text-2xl font-bold text-solibiBlue mb-3">ליגת הפנטאזי:</h2>
+                <p class="text-gray-600 font-medium text-lg leading-snug">לא מה שאתם מכירים. יותר ממכרת ומרתקת מכל ליגת פנטאזי אחרת</p>
+            </a>
+
+            <a href="#" class="bg-solibiBox hover:bg-white transition duration-300 transform hover:-translate-y-1 shadow-2xl p-8 flex flex-col items-center justify-center text-center aspect-video md:aspect-auto md:h-56 border-b-4 border-transparent hover:border-solibiGreen">
+                <h2 class="text-xl md:text-2xl font-bold text-solibiBlue mb-3">קהילה:</h2>
+                <p class="text-gray-600 font-medium text-lg">פורומים ופעילויות נושאות פרסים</p>
+            </a>
 
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 p-8 bg-white rounded-3xl shadow-lg border border-gray-100">
-            <div>
-                <h3 class="text-2xl font-bold text-solibiDeepBlue mb-4 flex items-center gap-3 border-b border-gray-100 pb-3">🔥 השחקן החם</h3>
-                <div class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl">
-                    <span class="text-4xl">🧑‍⚽️</span> <div>
-                        <span class="block font-semibold">ערן זהבי</span>
-                        <span class="block text-sm text-gray-600">שלושער מול מכבי חיפה, 9.1 דירוג משחק.</span>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h3 class="text-2xl font-bold text-solibiDeepBlue mb-4 flex items-center gap-3 border-b border-gray-100 pb-3">💎 הקלף החם</h3>
-                <div class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl">
-                    <span class="text-4xl text-solibiGreen">💎</span>
-                    <div>
-                        <span class="block font-semibold">"שחקן השנה" - אייקון</span>
-                        <span class="block text-sm text-gray-600 transition duration-300">זינק ב-25% במחיר היום. המלצה: החזק.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <footer class="mt-12 py-8 border-t border-gray-200 text-center text-gray-400 text-sm">
-        <p>© 2026 סוליבי-ספורט. כל הזכויות שמורות.</p>
-    </footer>
-
-    <div id="ticker" class="fixed bottom-0 left-0 w-full bg-solibiDeepBlue text-white p-3 z-50 border-t border-solibiGreen shadow-2xl">
-        <div class="max-w-7xl mx-auto overflow-hidden">
+    <div class="fixed bottom-0 left-0 w-full bg-gray-100 text-solibiBlue py-2.5 z-50 border-t border-gray-300 shadow-[0_-5px_15px_rgba(0,0,0,0.2)] font-medium">
+        <div class="max-w-full overflow-hidden">
             <div id="ticker-content" class="flex gap-10">
-                <span class="font-semibold">חדשות ספורט חמות 🔥</span>
-                <span class="transition duration-300 text-solibiGreen"> | תוצאה לייב: הפועל ת"א 1 - 1 מ.ס. אשדוד (דקה 65') </span>
-                <span> | הפנטזי נפתח מחדש עם בונוסים!</span>
-                <span class="transition duration-300 text-solibiGreen"> | שיא ארכיון חדש: מלך הבישולים בכל הזמנים עודכן</span>
-                <span> | בורסת הקלפים: המלצת יום חמה על שחקן העונה</span>
-                <span class="transition duration-300 text-solibiGreen"> | תוצאה לייב: הפועל ת"א 1 - 1 מ.ס. אשדוד (דקה 65') </span>
-                <span> | חדשות ספורט חמות 🔥</span>
+                <span>תוצאות: מכבי תל אביב 2 - הפועל תל אביב 0</span>
+                <span class="text-solibiGreen font-bold">|</span>
+                <span>חדשות: ארסנל מאבדת את המקום הראשון בטבלה לאחר הפסד חוץ מפתיע לבורנמות'</span>
+                <span class="text-solibiGreen font-bold">|</span>
+                <span>קלף חם: Topps Chrome Champions League 2023/24 בזינוק מחירים</span>
+                <span class="text-solibiGreen font-bold">|</span>
+                <span>מנג'ר: המערך ההתקפי המומלץ ביותר בפוטבול מנג'ר 2026</span>
+                <span class="text-solibiGreen font-bold">|</span>
+                <span>תוצאות: מכבי תל אביב 2 - הפועל תל אביב 0</span>
             </div>
         </div>
     </div>
