@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - פורטל כדורגל</title>
+    <title>סוליבי ספורט - פורטל כדורגל פרימיום</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <script>
@@ -14,7 +14,7 @@
                     colors: {
                         solibiBlue: '#0A192F', 
                         solibiGreen: '#84cc16', 
-                        solibiGray: '#E2E8F0', /* אפור בהיר לקוביות */
+                        solibiCard: '#112240', /* כחול יוקרתי עמוק יותר לקוביות במקום האפור */
                     }
                 }
             }
@@ -23,11 +23,13 @@
     <style>
         body { font-family: 'Rubik', sans-serif; }
         
-        /* רקע כדורי רגל (סימן מים) עדין */
-        .bg-soccer-balls {
+        /* רקע סימן מים - מגרש כדורגל אמיתי עם רחבות וקו חצי! */
+        .bg-pitch-watermark {
             background-color: #0A192F;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='rgba(255,255,255,0.025)'%3E%3Cpath d='M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256 256-114.6 256-256S397.4 0 256 0zM152.6 109.9l46.2 46.2-22.9 69.1-70.5 13.9-38.3-46C89 152.9 117.8 126.9 152.6 109.9zM73 248.8l63.5-12.5 19.3 58.3-44.5 54.4-44.1-15.6C62.8 305.5 61 277.5 73 248.8zM154.5 401.7l33.6-41.1 68.3 4.2 30.6 62.7c-33 11-68.5 11.2-101.4 1.1L154.5 401.7zM324.9 427.6l30.6-62.7 68.3-4.2 33.6 41.1c-32.9 10.1-68.4 9.9-101.4-1.1zM444.9 333.4l-44.1 15.6-44.5-54.4 19.3-58.3 63.5 12.5C451 277.5 449.2 305.5 444.9 333.4zM444.9 193.1l-38.3 46-70.5-13.9-22.9-69.1 46.2-46.2C394.2 126.9 423 152.9 444.9 193.1zM256 313.3l-59.5-18.4 22.7-68.4h73.6l22.7 68.4L256 313.3z'/%3E%3C/svg%3E");
-            background-size: 70px 70px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 65' fill='none' stroke='rgba(255,255,255,0.03)' stroke-width='0.5'%3E%3Crect x='2' y='2' width='96' height='61'/%3E%3Cline x1='50' y1='2' x2='50' y2='63'/%3E%3Ccircle cx='50' cy='32.5' r='8'/%3E%3Crect x='2' y='14.5' width='14' height='36'/%3E%3Crect x='2' y='22.5' width='6' height='20'/%3E%3Crect x='84' y='14.5' width='14' height='36'/%3E%3Crect x='92' y='22.5' width='6' height='20'/%3E%3C/svg%3E");
+            background-size: 600px;
+            background-position: center top;
+            background-attachment: fixed;
         }
 
         #ticker-content {
@@ -41,9 +43,9 @@
         }
     </style>
 </head>
-<body class="bg-soccer-balls text-gray-100 h-screen flex flex-col overflow-hidden tracking-tight">
+<body class="bg-pitch-watermark text-gray-100 min-h-screen flex flex-col pb-12 tracking-tight">
 
-    <header class="bg-white shadow-md shrink-0 border-b border-gray-200">
+    <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="max-w-[1500px] mx-auto px-8 py-3.5 flex justify-between items-center gap-8">
             <div class="flex items-center gap-3 shrink-0">
                 <svg class="w-10 h-10 text-[#0A192F]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-3.5-6.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-3.5 3a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/></svg>
@@ -68,96 +70,82 @@
         </div>
     </header>
 
-    <main class="flex-1 max-w-[1500px] mx-auto w-full px-8 py-5 flex flex-col justify-between min-h-0">
+    <main class="flex-grow max-w-[1500px] mx-auto w-full px-8 pt-10 pb-6 flex flex-col gap-10">
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 h-[60%]">
-            
-            <a href="#" class="bg-solibiGray hover:bg-white hover:translate-y-2 border-b-4 border-transparent hover:border-solibiGreen transition-all duration-300 rounded-2xl flex flex-col justify-center items-center text-center shadow-lg cursor-pointer h-full group">
-                <div class="text-[#0A192F] mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <a href="#" class="bg-solibiCard rounded-[20px] p-8 h-56 flex flex-col justify-center items-center text-center border border-white/5 hover:border-solibiGreen hover:-translate-y-1 transition-all duration-300 cursor-pointer group shadow-lg">
+                <div class="text-solibiGreen w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                 </div>
-                <h2 class="text-2xl font-black text-[#0A192F]">תוצאות וטבלאות</h2>
+                <h2 class="text-xl font-bold text-white">תוצאות וטבלאות</h2>
             </a>
 
-            <a href="#" class="bg-solibiGray hover:bg-white hover:translate-y-2 border-b-4 border-transparent hover:border-solibiGreen transition-all duration-300 rounded-2xl flex flex-col justify-center items-center text-center shadow-lg cursor-pointer h-full group">
-                <div class="text-[#0A192F] mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            <a href="#" class="bg-solibiCard rounded-[20px] p-8 h-56 flex flex-col justify-center items-center text-center border border-white/5 hover:border-solibiGreen hover:-translate-y-1 transition-all duration-300 cursor-pointer group shadow-lg relative overflow-hidden">
+                <div class="text-solibiGreen w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                 </div>
-                <h2 class="text-2xl font-black text-[#0A192F]">בורסת הקלפים</h2>
+                <h2 class="text-xl font-bold text-white">בורסת הקלפים</h2>
             </a>
 
-            <a href="#" class="bg-solibiGray hover:bg-white hover:translate-y-2 border-b-4 border-transparent hover:border-solibiGreen transition-all duration-300 rounded-2xl flex flex-col justify-center items-center text-center shadow-lg cursor-pointer h-full group">
-                <div class="text-[#0A192F] mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            <a href="#" class="bg-solibiCard rounded-[20px] p-8 h-56 flex flex-col justify-center items-center text-center border border-white/5 hover:border-solibiGreen hover:-translate-y-1 transition-all duration-300 cursor-pointer group shadow-lg">
+                <div class="text-solibiGreen w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                 </div>
-                <h2 class="text-2xl font-black text-[#0A192F]">ארכיון הכדורגל</h2>
+                <h2 class="text-xl font-bold text-white">ארכיון הכדורגל</h2>
             </a>
 
-            <a href="#" class="bg-solibiGray hover:bg-white hover:translate-y-2 border-b-4 border-transparent hover:border-solibiGreen transition-all duration-300 rounded-2xl flex flex-col justify-center items-center text-center shadow-lg cursor-pointer h-full group">
-                <div class="text-[#0A192F] mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <a href="#" class="bg-solibiCard rounded-[20px] p-8 h-56 flex flex-col justify-center items-center text-center border border-white/5 hover:border-solibiGreen hover:-translate-y-1 transition-all duration-300 cursor-pointer group shadow-lg">
+                <div class="text-solibiGreen w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 </div>
-                <h2 class="text-2xl font-black text-[#0A192F]">עולם המנג'ר</h2>
+                <h2 class="text-xl font-bold text-white">עולם המנג'ר</h2>
             </a>
 
-            <a href="#" class="bg-solibiGray hover:bg-white hover:translate-y-2 border-b-4 border-transparent hover:border-solibiGreen transition-all duration-300 rounded-2xl flex flex-col justify-center items-center text-center shadow-lg cursor-pointer h-full group">
-                <div class="text-[#0A192F] mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+            <a href="#" class="bg-solibiCard rounded-[20px] p-8 h-56 flex flex-col justify-center items-center text-center border border-white/5 hover:border-solibiGreen hover:-translate-y-1 transition-all duration-300 cursor-pointer group shadow-lg">
+                <div class="text-solibiGreen w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
                 </div>
-                <h2 class="text-2xl font-black text-[#0A192F]">ליגת הפנטאזי</h2>
+                <h2 class="text-xl font-bold text-white">ליגת הפנטאזי</h2>
             </a>
 
-            <a href="#" class="bg-solibiGray hover:bg-white hover:translate-y-2 border-b-4 border-transparent hover:border-solibiGreen transition-all duration-300 rounded-2xl flex flex-col justify-center items-center text-center shadow-lg cursor-pointer h-full group">
-                <div class="text-[#0A192F] mb-3 group-hover:scale-110 transition-transform">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+            <a href="#" class="bg-solibiCard rounded-[20px] p-8 h-56 flex flex-col justify-center items-center text-center border border-white/5 hover:border-solibiGreen hover:-translate-y-1 transition-all duration-300 cursor-pointer group shadow-lg">
+                <div class="text-solibiGreen w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
                 </div>
-                <h2 class="text-2xl font-black text-[#0A192F]">פורום קהילה</h2>
+                <h2 class="text-xl font-bold text-white">פורום קהילה</h2>
             </a>
         </div>
 
-        <div class="grid grid-cols-2 gap-5 h-[30%] mt-auto mb-2">
+        <div class="w-full bg-solibiCard/80 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-center gap-6 shadow-xl">
+            <div class="flex items-center gap-3">
+                <div class="bg-solibiGreen text-[#0A192F] p-2 rounded-lg">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-lg font-black text-white uppercase">טופ 3: ליגת הפנטאזי</h2>
+                    <p class="text-xs text-gray-400">מתעדכן בזמן אמת</p>
+                </div>
+            </div>
             
-            <div class="flex flex-col gap-4 h-full">
-                <div class="flex-1 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-6 flex items-center justify-between shadow-lg">
-                    <span class="text-solibiGreen font-bold text-sm uppercase">טופ 3: פנטאזי</span>
-                    <div class="flex gap-4 text-[13px]">
-                        <span class="text-gray-300">2. Yossi_10 <b class="text-solibiGreen">840</b></span>
-                        <span class="text-yellow-400 font-bold">1. Solibi_Pro <b class="text-solibiGreen">912</b></span>
-                        <span class="text-gray-300">3. G_Master <b class="text-solibiGreen">795</b></span>
-                    </div>
-                </div>
-                <div class="flex-1 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-6 flex items-center justify-between shadow-lg">
-                    <span class="text-solibiGreen font-bold text-sm uppercase">הקלף החם 📈</span>
-                    <span class="text-white font-medium text-[13px]">ערן זהבי - אייקון <b class="text-solibiGreen ml-2">+24%</b></span>
-                </div>
+            <div class="flex gap-8 text-white font-medium">
+                <div class="flex items-center gap-2"><span class="text-gray-400 font-bold text-lg">2.</span> Yossi_10 <span class="text-solibiGreen font-bold bg-white/5 px-2 py-1 rounded">840 pt</span></div>
+                <div class="flex items-center gap-2 scale-110"><span class="text-yellow-400 font-black text-xl">1.</span> Solibi_Pro <span class="text-solibiGreen font-black bg-white/5 px-2 py-1 rounded">912 pt</span></div>
+                <div class="flex items-center gap-2"><span class="text-orange-400 font-bold text-lg">3.</span> G_Master <span class="text-solibiGreen font-bold bg-white/5 px-2 py-1 rounded">795 pt</span></div>
             </div>
-
-            <div class="flex flex-col gap-4 h-full">
-                <div class="flex-1 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-6 flex items-center justify-between shadow-lg">
-                    <span class="text-solibiGreen font-bold text-sm uppercase">עדכון לייב 🔴</span>
-                    <div class="flex items-center gap-4 text-white text-[13px] font-bold">
-                        <span>מכבי ת"א</span>
-                        <span class="bg-gray-800 px-2 py-0.5 rounded text-[11px] text-solibiGreen">מחצית</span>
-                        <span>בית"ר י-ם</span>
-                    </div>
-                </div>
-                <div class="flex-1 bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-6 flex items-center justify-between shadow-lg">
-                    <span class="text-solibiGreen font-bold text-sm uppercase">הדיון החם בפורום 💬</span>
-                    <span class="text-gray-200 text-[13px]">מנג'ר 2026: טקטיקות שבורות? <a href="#" class="text-solibiGreen underline mr-2 font-bold">142 תגובות</a></span>
-                </div>
-            </div>
-
+            
+            <button class="bg-transparent border border-solibiGreen text-solibiGreen hover:bg-solibiGreen hover:text-[#0A192F] text-sm font-bold py-2 px-6 rounded-lg transition">לכל הטבלה</button>
         </div>
+
     </main>
 
-    <div class="bg-white shrink-0 border-t border-gray-200 text-[#0A192F] py-2 z-50 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] text-[14px] font-medium">
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 text-[#0A192F] py-3 z-50 shadow-[0_-5px_20px_rgba(0,0,0,0.05)] text-[13px] font-medium">
         <div class="overflow-hidden max-w-[1500px] mx-auto">
             <div id="ticker-content">
-                <span class="mx-6 text-gray-600">עדכון חי: <span class="text-[#0A192F] font-bold">מכבי ת"א 2 - 0 הפועל ירושלים (מחצית)</span></span>
+                <span class="mx-6 text-gray-500">עדכון חי: <span class="text-[#0A192F] font-bold">מכבי ת"א 2 - 0 הפועל ירושלים (מחצית)</span></span>
                 <span class="text-[#84cc16] opacity-50">|</span>
-                <span class="mx-6 text-gray-600">בורסת הקלפים: <span class="text-[#84cc16] font-bold">מגמת עלייה במחירי קלפי 'אגדות'</span></span>
+                <span class="mx-6 text-gray-500">בורסת הקלפים: <span class="text-[#84cc16] font-bold">מגמת עלייה במחירי קלפי 'אגדות'</span></span>
                 <span class="text-[#84cc16] opacity-50">|</span>
-                <span class="mx-6 text-gray-600">מערכת: <span class="text-[#0A192F] font-bold">הרישום לליגת הפנטאזי נפתח!</span></span>
+                <span class="mx-6 text-gray-500">מערכת: <span class="text-[#0A192F] font-bold">הרישום לליגת הפנטאזי נפתח!</span></span>
             </div>
         </div>
     </div>
