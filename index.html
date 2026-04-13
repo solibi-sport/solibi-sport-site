@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - פורטל הכדורגל הרשמי</title>
+    <title>סוליבי ספורט - עולם שלם של כדורגל</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script>
@@ -12,11 +12,9 @@
                 extend: {
                     fontFamily: { rubik: ['Rubik', 'sans-serif'] },
                     colors: {
-                        solibiBlue: '#002855', 
-                        solibiField: '#001d3d',
-                        solibiBox: '#1e293b', /* כחול-אפור כהה - לרקע המשבצות */
-                        solibiBoxData: '#f8fafc', /* אפור כסוף בהיר מאוד - לרקעים פנימיים */
-                        solibiGreen: '#84cc16'
+                        solibiBlue: '#001E3C', /* כחול כהה עמוק ויוקרתי (נייבי טק) */
+                        solibiGreen: '#84cc16', /* הירוק של הלוגו */
+                        solibiGray: '#F3F4F6', /* האפור הבהיר של הקוביות במצב רגיל */
                     }
                 }
             }
@@ -25,15 +23,10 @@
     <style>
         body { font-family: 'Rubik', sans-serif; }
         
-        /* רקע סימון מגרש כדורגל (Watermark) עדין */
-        .bg-pitch {
-            background-color: #001d3d;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.03) 25%, transparent 25%);
-            background-size: 100px 100px, 100px 100px, 400px 400px;
-            background-position: center;
+        /* רקע משושים (כדורגל) עדין ומקצועי */
+        .bg-football-net {
+            background-color: #001E3C;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='103.92' viewBox='0 0 60 103.92' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 103.92L0 86.6V51.96l30-17.32 30 17.32v34.64l-30 17.32zM15 77.94l15 8.66 15-8.66V60.62L30 51.96 15 60.62v17.32zM30 34.64L0 17.32V-17.32l30-17.32 30 17.32V17.32L30 34.64zM15 8.66l15 8.66 15-8.66V-8.66L30-17.32 15-8.66V8.66z' fill='%23ffffff' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
 
         #ticker-content {
@@ -45,160 +38,168 @@
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
+        
+        /* אפקט מעבר חלק לקוביות */
+        .premium-box {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
     </style>
 </head>
-<body class="bg-pitch text-gray-900 min-h-screen flex flex-col pb-16 tracking-tight">
+<body class="bg-football-net text-gray-900 min-h-screen flex flex-col pb-12 tracking-tight">
 
-    <header class="bg-white shadow-2xl sticky top-0 z-50 border-b-4 border-solibiGreen">
-        <div class="max-w-[1600px] mx-auto px-6 py-4 flex justify-between items-center gap-4">
+    <header class="bg-white shadow-md sticky top-0 z-50 border-b-[3px] border-solibiGreen">
+        <div class="max-w-[1600px] mx-auto px-6 py-3 flex justify-between items-center gap-6">
+            
             <div class="flex items-center gap-3">
-                <span class="text-5xl">⚽</span>
+                <svg class="w-10 h-10 text-solibiBlue" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm-3.5-6.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm7 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3zm-3.5 3a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/></svg>
                 <div class="leading-none">
                     <span class="text-3xl font-black text-solibiBlue uppercase tracking-tighter">סוליבי<span class="text-solibiGreen">ספורט</span></span>
-                    <p class="text-xs text-gray-400 font-bold tracking-widest">THE FOOTBALL HUB</p>
+                    <p class="text-[10px] text-gray-500 font-bold tracking-widest mt-0.5">THE FOOTBALL HUB</p>
                 </div>
             </div>
 
-            <div class="flex-grow max-w-xl mx-10">
+            <div class="flex-grow max-w-xl">
                 <div class="relative w-full">
-                    <input type="text" placeholder="חפש שחקן, קלף או טקטיקה..." class="w-full bg-gray-100 border-2 border-transparent focus:border-solibiGreen rounded-full py-3 px-12 text-sm transition outline-none">
-                    <span class="absolute right-4 top-3 text-xl">🔍</span>
+                    <input type="text" placeholder="חפש טקטיקה, שחקן או קלף..." class="w-full bg-gray-50 border border-gray-200 focus:border-solibiGreen focus:bg-white rounded-full py-2.5 px-10 text-sm transition outline-none shadow-inner">
+                    <svg class="w-4 h-4 text-gray-400 absolute right-4 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
             </div>
 
-            <nav class="flex gap-1.5 items-center">
-                <a href="#" class="bg-solibiBlue text-white px-5 py-2 rounded-full font-bold hover:bg-solibiGreen transition text-sm">דף הבית</a>
-                <a href="#" class="text-solibiBlue font-bold px-4 py-2 hover:bg-gray-100 rounded-full transition text-sm">ארכיון</a>
-                <a href="#" class="text-solibiBlue font-bold px-4 py-2 hover:bg-gray-100 rounded-full transition text-sm">קהילה</a>
+            <nav class="flex gap-2 items-center text-sm">
+                <a href="#" class="bg-solibiBlue text-white px-6 py-2 rounded-full font-bold shadow-sm hover:bg-solibiGreen transition">דף הבית</a>
+                <a href="#" class="text-solibiBlue font-bold px-4 py-2 hover:text-solibiGreen transition">ארכיון</a>
+                <a href="#" class="text-solibiBlue font-bold px-4 py-2 hover:text-solibiGreen transition">אודות</a>
+                <a href="#" class="text-solibiBlue font-bold px-4 py-2 hover:text-solibiGreen transition">צור קשר</a>
             </nav>
         </div>
     </header>
 
-    <main class="flex-grow max-w-[1600px] mx-auto w-full p-6 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+    <main class="flex-grow max-w-[1600px] mx-auto w-full p-6 mt-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        <div class="lg:col-span-9 space-y-10">
+        <aside class="lg:col-span-3 space-y-5">
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <a href="#" class="group bg-solibiBox/90 hover:bg-solibiBox transition-all shadow-2xl rounded-[40px] p-8 h-64 flex flex-col justify-center items-center text-center border-b-8 border-transparent hover:border-solibiBlue cursor-pointer">
-                    <span class="text-5xl mb-4 group-hover:scale-110 transition">📈</span>
-                    <h2 class="text-2xl font-black text-white">תוצאות וטבלאות לייב</h2>
-                    <p class="text-gray-400 text-xs mt-2 font-medium">כל הנתונים בזמן אמת</p>
-                </a>
-                <a href="#" class="group bg-solibiBox/90 hover:bg-solibiBox transition-all shadow-2xl rounded-[40px] p-8 h-64 flex flex-col justify-center items-center text-center border-b-8 border-transparent hover:border-solibiGreen cursor-pointer">
-                    <span class="text-5xl mb-4 group-hover:scale-110 transition">🃏</span>
-                    <h2 class="text-2xl font-black text-white">בורסת הקלפים</h2>
-                    <p class="text-gray-400 text-xs mt-2 font-medium">מעקב מחירים והשקעות</p>
-                </a>
-                <a href="#" class="group bg-solibiBox/90 hover:bg-solibiBox transition-all shadow-2xl rounded-[40px] p-8 h-64 flex flex-col justify-center items-center text-center border-b-8 border-transparent hover:border-solibiBlue cursor-pointer">
-                    <span class="text-5xl mb-4 group-hover:scale-110 transition">📜</span>
-                    <h2 class="text-2xl font-black text-white">ארכיון הכדורגל</h2>
-                    <p class="text-gray-400 text-xs mt-2 font-medium">היסטוריה, שיאים ודירוגים</p>
-                </a>
-                <a href="#" class="group bg-solibiBox/90 hover:bg-solibiBox transition-all shadow-2xl rounded-[40px] p-8 h-64 flex flex-col justify-center items-center text-center border-b-8 border-transparent hover:border-solibiGreen cursor-pointer">
-                    <span class="text-5xl mb-4 group-hover:scale-110 transition">⚽</span>
-                    <h2 class="text-2xl font-black text-white">עולם המנג'ר</h2>
-                    <p class="text-gray-400 text-xs mt-2 font-medium">טקטיקות וקהילת FM</p>
-                </a>
-                <a href="#" class="group bg-solibiBox/90 hover:bg-solibiBox transition-all shadow-2xl rounded-[40px] p-8 h-64 flex flex-col justify-center items-center text-center border-b-8 border-transparent hover:border-solibiBlue cursor-pointer">
-                    <span class="text-5xl mb-4 group-hover:scale-110 transition">🏆</span>
-                    <h2 class="text-2xl font-black text-white">ליגת הפנטאזי</h2>
-                    <p class="text-gray-400 text-xs mt-2 font-medium">המשחק הממכר עם הטוויסט שלנו</p>
-                </a>
-                <a href="#" class="group bg-solibiBox/90 hover:bg-solibiBox transition-all shadow-2xl rounded-[40px] p-8 h-64 flex flex-col justify-center items-center text-center border-b-8 border-transparent hover:border-solibiGreen cursor-pointer">
-                    <span class="text-5xl mb-4 group-hover:scale-110 transition">📢</span>
-                    <h2 class="text-2xl font-black text-white">פורום קהילה</h2>
-                    <p class="text-gray-400 text-xs mt-2 font-medium">דיונים, הגרלות ופרסים</p>
-                </a>
-            </div>
-
-            <div class="bg-solibiBox border border-white/10 rounded-[40px] p-6 shadow-2xl grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="text-center p-4">
-                    <p class="text-solibiGreen font-bold text-xs uppercase mb-1">🔥 שחקן השבוע</p>
-                    <p class="text-lg font-black text-white">ערן זהבי</p>
-                    <p class="text-xs text-gray-400">9.2 דירוג, שלושער</p>
+            <div class="bg-white rounded-2xl p-5 shadow-lg border-t-4 border-solibiBlue">
+                <div class="flex items-center justify-between border-b border-gray-100 pb-2 mb-4">
+                    <h3 class="text-xs font-bold text-solibiBlue uppercase tracking-wider">המשחק המרכזי</h3>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 </div>
-                <div class="text-center p-4 md:border-x md:border-white/10">
-                    <p class="text-solibiGreen font-bold text-xs uppercase mb-1">📈 הקלף המזנק</p>
-                    <p class="text-lg font-black text-white">גלוך 'אייקון'</p>
-                    <p class="text-xs text-solibiGreen font-bold">+24% ב-24 שעות</p>
-                </div>
-                <div class="text-center p-4">
-                    <p class="text-solibiGreen font-bold text-xs uppercase mb-1">💬 הדיון החם</p>
-                    <p class="text-lg font-black text-white">מנג'ר 2026</p>
-                    <p class="text-xs text-gray-400">142 תגובות חדשות</p>
-                </div>
-            </div>
-        </div>
-
-        <aside class="lg:col-span-3 lg:order-last space-y-6">
-            <div class="bg-white rounded-3xl p-5 shadow-2xl border-t-8 border-solibiBlue text-center">
-                <h3 class="text-xs font-black text-solibiBlue mb-3 uppercase tracking-wider border-b pb-1"> המשחק המרכזי</h3>
-                <div class="flex justify-center items-center gap-3">
-                    <div class="text-center">
-                        <span class="text-3xl">🦁</span>
-                        <p class="font-bold text-[10px] mt-1">צ'לסי</p>
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-center w-1/3">
+                        <div class="w-10 h-10 mx-auto bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-600 shadow-sm border border-gray-200">מכ</div>
+                        <p class="font-bold text-[11px] mt-2 text-solibiBlue">מכבי ת"א</p>
                     </div>
-                    <div class="bg-gray-100 text-solibiBlue font-black text-sm px-3 py-1 rounded-full shadow-inner">VS</div>
-                    <div class="text-center">
-                        <span class="text-3xl">🦅</span>
-                        <p class="font-bold text-[10px] mt-1">ליברפול</p>
+                    <div class="text-center w-1/3">
+                        <span class="bg-gray-100 text-solibiBlue font-black text-xs px-2 py-1 rounded">20:30</span>
+                        <p class="text-[9px] text-gray-400 mt-1">בלומפילד</p>
+                    </div>
+                    <div class="text-center w-1/3">
+                        <div class="w-10 h-10 mx-auto bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-600 shadow-sm border border-gray-200">בי</div>
+                        <p class="font-bold text-[11px] mt-2 text-solibiBlue">בית"ר י-ם</p>
                     </div>
                 </div>
-                 <p class="text-[10px] text-solibiGreen font-bold mt-2">היום, 22:00</p>
-                <button class="w-full bg-solibiBlue text-white text-xs font-bold py-2 rounded-lg mt-3 hover:bg-solibiGreen transition">לסיקור</button>
+                <button class="w-full bg-gray-50 text-solibiBlue border border-gray-200 text-xs font-bold py-2 rounded hover:bg-solibiBlue hover:text-white transition">מרכז הסטטיסטיקות</button>
             </div>
 
-            <div class="bg-white rounded-3xl p-5 shadow-2xl border-t-8 border-solibiGreen">
-                <h3 class="text-xs font-black text-solibiBlue mb-3 uppercase tracking-wider border-b pb-1">🗳️ סקר</h3>
-                <p class="text-xs font-medium mb-3">מי שחקן השנה?</p>
-                <div class="space-y-1.5 text-right">
-                    <button class="w-full bg-gray-50 hover:bg-solibiGreen/10 hover:text-solibiGreen p-2 rounded text-[10px] transition">ענאן חלאילי</button>
-                    <button class="w-full bg-gray-50 hover:bg-solibiGreen/10 hover:text-solibiGreen p-2 rounded text-[10px] transition">אוסקר גלוך</button>
-                    <button class="w-full bg-gray-50 hover:bg-solibiGreen/10 hover:text-solibiGreen p-2 rounded text-[10px] transition">מנור סולומון</button>
+            <div class="bg-white rounded-2xl p-5 shadow-lg border-t-4 border-solibiGreen">
+                <div class="flex items-center justify-between border-b border-gray-100 pb-2 mb-3">
+                    <h3 class="text-xs font-bold text-solibiBlue uppercase tracking-wider">סקר הקהילה</h3>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <p class="text-xs font-bold text-gray-700 mb-3">מי לדעתך יזכה בשחקן העונה?</p>
+                <div class="space-y-2">
+                    <button class="w-full text-right bg-gray-50 border border-gray-100 hover:border-solibiGreen hover:bg-green-50 px-3 py-2 rounded text-[11px] font-medium text-gray-700 transition">ערן זהבי</button>
+                    <button class="w-full text-right bg-gray-50 border border-gray-100 hover:border-solibiGreen hover:bg-green-50 px-3 py-2 rounded text-[11px] font-medium text-gray-700 transition">אוסקר גלוך</button>
+                    <button class="w-full text-right bg-gray-50 border border-gray-100 hover:border-solibiGreen hover:bg-green-50 px-3 py-2 rounded text-[11px] font-medium text-gray-700 transition">ליאור רפאלוב</button>
                 </div>
             </div>
 
-             <div class="bg-white rounded-3xl p-5 shadow-2xl border-t-8 border-solibiBlue text-center">
-                <h3 class="text-xs font-black text-solibiBlue mb-3 uppercase tracking-wider border-b pb-1"> החידה היומית</h3>
-                <p class="text-xs text-gray-600 font-medium">מי הכובש המצטיין בהיסטוריה של ליגת העל?</p>
-                <button class="w-full bg-solibiBlue text-white text-xs font-bold py-2 rounded-lg mt-3 hover:bg-solibiGreen transition">גלה את התשובה</button>
+            <div class="bg-white rounded-2xl p-5 shadow-lg border-t-4 border-gray-300">
+                 <div class="flex items-center justify-between border-b border-gray-100 pb-2 mb-3">
+                    <h3 class="text-xs font-bold text-solibiBlue uppercase tracking-wider">החידה היומית</h3>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-xs text-gray-600 mb-3 leading-relaxed">מי השחקן היחיד שכבש שלושער בגמר גביע המדינה בעשור האחרון?</p>
+                <button class="w-full bg-solibiBlue text-white text-[11px] font-bold py-2 rounded hover:bg-solibiGreen transition shadow">גלה את התשובה</button>
             </div>
         </aside>
 
+        <div class="lg:col-span-9">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <a href="#" class="premium-box bg-solibiGray hover:bg-white rounded-[32px] p-8 h-64 flex flex-col justify-center items-center text-center border border-transparent hover:border-gray-200 hover:shadow-2xl cursor-pointer group">
+                    <div class="bg-blue-100 text-solibiBlue w-16 h-16 rounded-full flex items-center justify-center mb-5 group-hover:scale-110 transition shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <h2 class="text-xl font-black text-solibiBlue">תוצאות וטבלאות</h2>
+                    <p class="text-gray-500 text-xs mt-2 font-medium">נתונים וסטטיסטיקות בזמן אמת</p>
+                </a>
+
+                <a href="#" class="premium-box bg-solibiGray hover:bg-white rounded-[32px] p-8 h-64 flex flex-col justify-center items-center text-center border border-transparent hover:border-gray-200 hover:shadow-2xl cursor-pointer group relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-solibiGreen"></div>
+                    <div class="bg-green-100 text-solibiGreen w-16 h-16 rounded-full flex items-center justify-center mb-5 group-hover:scale-110 transition shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <h2 class="text-xl font-black text-solibiBlue">בורסת הקלפים</h2>
+                    <p class="text-gray-500 text-xs mt-2 font-medium">מעקב מחירים, המלצות והשקעות</p>
+                </a>
+
+                <a href="#" class="premium-box bg-solibiGray hover:bg-white rounded-[32px] p-8 h-64 flex flex-col justify-center items-center text-center border border-transparent hover:border-gray-200 hover:shadow-2xl cursor-pointer group">
+                    <div class="bg-orange-100 text-orange-600 w-16 h-16 rounded-full flex items-center justify-center mb-5 group-hover:scale-110 transition shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    </div>
+                    <h2 class="text-xl font-black text-solibiBlue">ארכיון הכדורגל</h2>
+                    <p class="text-gray-500 text-xs mt-2 font-medium">היסטוריה, שיאים ודירוגים</p>
+                </a>
+
+                <a href="#" class="premium-box bg-solibiGray hover:bg-white rounded-[32px] p-8 h-64 flex flex-col justify-center items-center text-center border border-transparent hover:border-gray-200 hover:shadow-2xl cursor-pointer group">
+                    <div class="bg-purple-100 text-purple-600 w-16 h-16 rounded-full flex items-center justify-center mb-5 group-hover:scale-110 transition shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <h2 class="text-xl font-black text-solibiBlue">עולם המנג'ר</h2>
+                    <p class="text-gray-500 text-xs mt-2 font-medium">טקטיקות וקהילת FM ישראל</p>
+                </a>
+
+                <a href="#" class="premium-box bg-solibiGray hover:bg-white rounded-[32px] p-8 h-64 flex flex-col justify-center items-center text-center border border-transparent hover:border-gray-200 hover:shadow-2xl cursor-pointer group">
+                    <div class="bg-yellow-100 text-yellow-600 w-16 h-16 rounded-full flex items-center justify-center mb-5 group-hover:scale-110 transition shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    </div>
+                    <h2 class="text-xl font-black text-solibiBlue">ליגת הפנטאזי</h2>
+                    <p class="text-gray-500 text-xs mt-2 font-medium">המשחק הממכר עם הטוויסט שלנו</p>
+                </a>
+
+                <a href="#" class="premium-box bg-solibiGray hover:bg-white rounded-[32px] p-8 h-64 flex flex-col justify-center items-center text-center border border-transparent hover:border-gray-200 hover:shadow-2xl cursor-pointer group">
+                    <div class="bg-red-100 text-red-600 w-16 h-16 rounded-full flex items-center justify-center mb-5 group-hover:scale-110 transition shadow-sm">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+                    </div>
+                    <h2 class="text-xl font-black text-solibiBlue">פורום קהילה</h2>
+                    <p class="text-gray-500 text-xs mt-2 font-medium">דיונים, פעילויות נושאות פרסים</p>
+                </a>
+            </div>
+        </div>
     </main>
 
-    <div class="max-w-[1600px] mx-auto w-full px-6 mb-8 mt-10">
-        <div class="bg-solibiBoxData rounded-2xl p-5 shadow-2xl flex flex-col md:flex-row justify-between items-center gap-4">
-            <h2 class="text-xl font-black text-solibiBlue flex items-center gap-2"> מובילי ליגת הפנטאזי</h2>
-            <div class="flex flex-grow justify-around items-end text-center gap-4 max-w-lg">
-                <div class="space-y-1">
-                    <span class="font-black text-solibiBlue text-xl">#2</span>
-                    <p class="text-sm font-medium">Yossi_10</p>
-                    <p class="text-[10px] text-gray-500">840 נק'</p>
-                </div>
-                 <div class="space-y-1 transform scale-110">
-                    <span class="font-black text-solibiGreen text-2xl">#1</span>
-                    <p class="text-sm font-bold text-solibiDeepBlue">Solibi_Pro</p>
-                    <p class="text-[10px] text-solibiGreen font-bold">912 נק'</p>
-                </div>
-                <div class="space-y-1">
-                    <span class="font-black text-solibiBlue text-xl">#3</span>
-                    <p class="text-sm font-medium">Goal_Master</p>
-                    <p class="text-[10px] text-gray-500">795 נק'</p>
-                </div>
+    <div class="max-w-[1600px] mx-auto w-full px-6 mt-4 mb-6">
+        <div class="bg-white/5 border border-white/10 backdrop-blur-sm rounded-xl px-6 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-solibiGreen" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clip-rule="evenodd"></path></svg>
+                <h2 class="text-sm font-bold text-white">מובילי ליגת הפנטאזי</h2>
             </div>
-            <a href="#" class="bg-solibiBlue text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-solibiGreen transition">לכל הטבלה</a>
+            <div class="flex gap-8 text-white text-xs font-medium">
+                <div class="flex items-center gap-2"><span class="text-gray-400 font-bold">2.</span> Yossi_10 <span class="text-solibiGreen">840 pt</span></div>
+                <div class="flex items-center gap-2 scale-110"><span class="text-yellow-400 font-black">1.</span> Solibi_Pro <span class="text-solibiGreen font-bold">912 pt</span></div>
+                <div class="flex items-center gap-2"><span class="text-orange-400 font-bold">3.</span> Goal_Master <span class="text-solibiGreen">795 pt</span></div>
+            </div>
         </div>
     </div>
 
-    <div class="fixed bottom-0 left-0 w-full bg-white text-solibiBlue py-3 z-50 border-t-4 border-solibiGreen shadow-2xl font-bold">
-        <div class="overflow-hidden">
-            <div id="ticker-content" class="text-sm">
-                <span class="mx-6">⚽ ברוכים הבאים לסוליבי ספורט - הפורטל החדש שלכם!</span>
-                <span class="text-solibiGreen">|</span>
-                <span class="mx-6">תוצאה לייב: מכבי ת"א 2 - 0 הפועל ירושלים (מחצית)</span>
-                <span class="text-solibiGreen">|</span>
-                <span class="mx-6">בורסת הקלפים: המלצת קנייה חמה על אוסקר גלוך</span>
+    <div class="fixed bottom-0 left-0 w-full bg-solibiBlue border-t border-white/10 text-white py-2.5 z-50 shadow-2xl text-[13px] font-medium tracking-wide">
+        <div class="overflow-hidden max-w-[1600px] mx-auto">
+            <div id="ticker-content">
+                <span class="mx-6 text-gray-300">עדכון חי: <span class="text-white font-bold">מכבי ת"א 2 - 0 הפועל ירושלים (מחצית)</span></span>
+                <span class="text-solibiGreen opacity-50">|</span>
+                <span class="mx-6 text-gray-300">בורסת הקלפים: <span class="text-solibiGreen font-bold">מגמת עלייה חדה במחירי קלפי 'אגדות'</span></span>
+                <span class="text-solibiGreen opacity-50">|</span>
+                <span class="mx-6 text-gray-300">הודעת מערכת: <span class="text-white font-bold">הרישום לליגת הפנטאזי נפתח. הבטיחו את מקומכם!</span></span>
             </div>
         </div>
     </div>
