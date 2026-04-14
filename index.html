@@ -100,18 +100,24 @@
             padding: 0;
         }
 
-        /* נעילת צבע התפריט ללבן */
+        /* --- עיצוב המילים בתפריט --- */
         .header-nav a {
             text-decoration: none !important;
             color: var(--text-light) !important; 
             font-weight: 700;
             font-size: 16px;
+            padding: 8px 18px; /* מרווח פנימי שמכין את המילה להיות כפתור */
+            border-radius: 8px; /* פינות מעוגלות לכפתור העתידי */
             transition: all 0.3s ease;
-            position: relative;
+            display: inline-block; /* חובה כדי שאפקט הריחוף יעבוד חלק */
         }
 
+        /* --- אפקט הריחוף (Hover) - הופך לכפתור צף! --- */
         .header-nav a:hover {
-            color: var(--brand-green) !important;
+            color: var(--brand-green) !important; /* הטקסט הופך לירוק! */
+            background-color: #ffffff; /* התיבה מקבלת רקע לבן */
+            transform: translateY(-3px); /* התיבה קופצת קצת למעלה (ריחוף) */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* צל יוקרתי מתחת לתיבה */
         }
 
         .header-nav a::after {
