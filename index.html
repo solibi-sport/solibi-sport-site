@@ -51,7 +51,6 @@
         .header-right { 
             display: flex; 
             align-items: center; 
-            gap: 30px; /* מרווח בין הלוגו לכפתור */
             flex-shrink: 0; 
             height: 100%; 
         }
@@ -72,8 +71,13 @@
         .logo-wrapper:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.35); }
         .actual-logo-img { height: 60px; width: auto; max-width: 100%; display: block; }
 
-        /* כפתור אזור אישי יוקרתי */
+        /* כפתור אזור אישי יוקרתי - מיושר מתמטית לכפתור הקהילה שמתחתיו */
         .personal-area-btn {
+            position: absolute;
+            /* אותה נוסחה שממקמת את כפתור הקהילה באמצע השטח הפנוי מימין */
+            right: calc(25vw - 200px); 
+            transform: translateX(50%); /* מרכז אותו בול על הציר הווירטואלי */
+            
             display: flex;
             align-items: center;
             gap: 8px;
@@ -92,7 +96,7 @@
         .personal-area-btn:hover {
             background: var(--brand-green);
             color: #ffffff;
-            transform: translateY(-2px);
+            transform: translateX(50%) translateY(-2px); /* שומר על המרכוז ומוסיף קפיצה */
             box-shadow: 0 6px 20px rgba(124, 168, 86, 0.4);
         }
 
@@ -163,7 +167,7 @@
         
         /* === פריטי העדכונים (ממורכזים מוחלטת) === */
         .updates-item {
-            position: relative; /* האייקון יוצב באופן אבסולוטי כדי לא להשפיע על מרכוז הטקסט */
+            position: relative; 
             display: flex; align-items: center; justify-content: center;
             background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.9); 
             padding: 12px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; 
@@ -173,7 +177,6 @@
             transform: scale(1.02); background: #ffffff; border-color: var(--brand-green); box-shadow: 0 6px 15px rgba(124, 168, 86, 0.15);
         }
         
-        /* האייקון דבוק לימין כדי לא להפריע לטקסט */
         .updates-icon {
             position: absolute; right: 12px;
             color: var(--text-dark); background: #f0f4f8; width: 36px; height: 36px;
@@ -181,10 +184,9 @@
         }
         .updates-item:hover .updates-icon { background: var(--brand-green); color: #ffffff; }
         
-        /* הטקסט ממורכז באמצע באופן מדויק */
         .updates-text { 
             display: flex; flex-direction: column; align-items: center; text-align: center;
-            width: 100%; padding: 0 40px; /* מרווח כדי שהטקסט לא יעלה על האייקון */
+            width: 100%; padding: 0 40px; 
         }
         .updates-label { font-size: 11px; font-weight: 700; color: var(--brand-green); text-transform: uppercase; }
         .updates-title { font-size: 13px; font-weight: 700; line-height: 1.2; color: var(--text-dark); }
@@ -246,7 +248,7 @@
         }
         .fab-container:hover .fab-button svg { transform: translateY(-2px); }
 
-        /* === עיצוב הקוביות הראשיות === */
+        /* === עיצוב הקוביות הראשיות (ללא שינוי) === */
         .square-box {
             aspect-ratio: 1 / 1; border-radius: 16px; background: var(--element-navy-gradient);
             box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.15); border: 1px solid rgba(0, 0, 0, 0.3);
