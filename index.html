@@ -7,25 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* הצבע הירוק של הלוגו */
-            --brand-green: #7ca856;      
+            --brand-green: #7ca856;
             --brand-green-glow: rgba(124, 168, 86, 0.6);
-            
-            /* רקע האתר - כסוף/אפור טיפה בהיר */
             --bg-silver-matte: linear-gradient(145deg, #eef4f9 0%, #c9d4e0 100%);
-            
-            /* צבע האלמנטים (משבצות, הדר, פוטר) - בלו נייבי */
             --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
-            
-            /* צבעי טקסט */
             --text-light: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Rubik', sans-serif;
@@ -34,13 +23,12 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            overflow: hidden; /* ביטול גלילה מוחלט */
+            overflow: hidden;
         }
 
-        /* --- שורה עליונה (Header) - סופר צרה! --- */
         .header {
             background: var(--element-navy-gradient);
-            height: 60px; /* הצרנו אותה משמעותית לגובה המקסימלי */
+            height: 100px; 
             padding: 0 5%;
             display: flex;
             justify-content: space-between;
@@ -49,98 +37,51 @@
             border-bottom: 2px solid var(--brand-green);
             z-index: 100;
             flex-shrink: 0;
-            position: relative; /* קריטי למרכוז התפריט */
+            gap: 20px;
         }
 
-        .header-logo {
-            display: flex;
-            align-items: center;
-        }
+        .header-logo { display: flex; align-items: center; }
 
-        /* --- הלוגו השקוף בתוך "תג" מרחף ומעוגל! --- */
         .actual-logo-img {
-            height: 100px; /* גובה פיזי גדול מהשורה (60px) למראה צף */
+            height: 80px; 
             width: auto;
-            border-radius: 12px; /* פינות מעוגלות מאוד לתג הלבן */
-            padding: 1px; /* מרווח פנימי כדי שהלוגו לא ייחנק */
-            background-color: #ffffff; /* הרקע הלבן המעוצב שלו! */
-            
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4); /* צל חזק שנותן תחושת ריחוף ויוקרה */
-            
-            /* פקודות שיפור איכות ללוגו */
-            image-rendering: crisp-edges;
-            image-rendering: -webkit-optimize-contrast;
-
-            /* הפקודות שמוציאות אותו מהשורה וגורמות לו לרחף */
-            position: absolute; 
-            top: 15px; /* קצת רווח מלמעלה */
-            right: 5%; /* יושב בקו המקורי של צד ימין */
-            z-index: 1000; /* מוודא שהוא תמיד מעל הכל */
-            
+            max-width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
+            z-index: 1000;
         }
 
         .actual-logo-img:hover {
-            transform: translateY(-5px) scale(1.03); /* אפקט ריחוף כשעוברים עם העכבר */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* צל מודגש ב-hover */
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
         }
 
-        /* --- התפריט: מקובע תמיד לאמצע המסך בסופר סימטריה --- */
-        .header-nav {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
+        .header-nav { flex: 1; display: flex; justify-content: center; }
+        .header-nav ul { list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; flex-wrap: wrap; justify-content: center; }
 
-        .header-nav ul {
-            list-style: none;
-            display: flex;
-            gap: 35px;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* --- עיצוב המילים בתפריט --- */
         .header-nav a {
             text-decoration: none !important;
-            color: var(--text-light) !important; 
+            color: var(--text-light) !important;
             font-weight: 700;
             font-size: 16px;
-            padding: 8px 18px; /* מרווח פנימי שמכין את המילה להיות כפתור */
-            border-radius: 8px; /* פינות מעוגלות לכפתור העתידי */
+            padding: 8px 18px;
+            border-radius: 8px;
             transition: all 0.3s ease;
-            display: inline-block; /* חובה כדי שאפקט הריחוף יעבוד חלק */
+            display: inline-block;
         }
 
-        /* --- אפקט הריחוף (Hover) - הופך לכפתור צף! --- */
         .header-nav a:hover {
-            color: var(--brand-green) !important; /* הטקסט הופך לירוק! */
-            background-color: #ffffff; /* התיבה מקבלת רקע לבן */
-            transform: translateY(-3px); /* התיבה קופצת קצת למעלה (ריחוף) */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* צל יוקרתי מתחת לתיבה */
+            color: var(--brand-green) !important;
+            background-color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .header-nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            background-color: var(--brand-green);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .header-nav a:hover::after {
-            width: 100%;
-        }
-
-        /* --- שורת חיפוש: נמוכה, אלגנטית ומאוד רחבה --- */
+        .header-search { flex-shrink: 0; }
         .header-search input {
             padding: 0 20px;
-            height: 36px; /* צרה בגובה */
-            width: 380px; /* רחבה מאוד למתיחה */
+            height: 36px;
+            width: 280px;
             border: none;
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 30px;
@@ -156,134 +97,27 @@
         .header-search input:focus {
             box-shadow: 0 0 12px var(--brand-green-glow);
             background-color: #ffffff;
-            width: 410px;
+            width: 320px;
         }
 
-        /* --- תוכן מרכזי (Grid) --- */
         .main-content {
             flex: 1;
             display: flex;
+            flex-direction: row-reverse;
             justify-content: center;
             align-items: center;
             padding: 0 5%;
-            min-height: 0;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
             width: 100%;
-            max-width: 750px;
-            align-content: center;
-        }
-
-        /* --- משבצות בלו נייבי --- */
-        .square-box {
-            aspect-ratio: 1 / 1;
-            border-radius: 16px;
-            background: var(--element-navy-gradient);
-            box-shadow: 
-                0 8px 20px rgba(0,0,0,0.25), 
-                inset 0 1px 1px rgba(255,255,255,0.15);
-            border: 1px solid rgba(0, 0, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .square-box::after {
-            content: '';
-            position: absolute;
-            top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .square-box:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 
-                0 15px 30px rgba(0,0,0,0.35), 
-                0 0 25px var(--brand-green-glow);
-            border-color: var(--brand-green);
-        }
-        
-        .square-box:hover::after {
-            border-color: var(--brand-green);
-            opacity: 0.5;
-        }
-
-        /* --- שורה תחתונה (Footer Ticker) --- */
-        .footer {
-            background: var(--element-navy-gradient);
-            padding: 12px 0;
-            overflow: hidden;
-            white-space: nowrap;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.20);
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--brand-green);
-            box-shadow: 0 0 10px var(--brand-green-glow);
-        }
-
-        .ticker-wrap {
-            display: inline-block;
-            padding-right: 100%;
-            animation: ticker 35s linear infinite;
-        }
-
-        .ticker-item {
-            display: inline-block;
-            padding: 0 35px;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-light);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-        }
-
-        .ticker-divider {
-            color: var(--brand-green);
-            font-weight: 900;
-            margin: 0 15px;
-        }
-
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(100%); }
-        }
-
-        @media (max-width: 900px) {
-            .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 500px; }
-            body { overflow: auto; height: auto; }
-        }
-        @media (max-width: 600px) {
-            .grid-container { grid-template-columns: 1fr; max-width: 280px; }
-            .header { height: auto; flex-direction: column; gap: 15px; padding: 20px 10px; }
-            .header-nav { position: relative; left: auto; transform: none; }
-            .header-logo { justify-content: center; width: 100%; position: relative; }
-            .actual-logo-img { position: relative; right: auto; top: 0; height: 60px; transform: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-            /* --- אזור טרנדינג בצד (Glassmorphism) --- */
-        .main-content {
-            position: relative; /* חובה כדי שהטרנדינג יישב טוב בצד */
         }
 
         .trending-sidebar {
-            position: absolute;
-            left: 5%; /* ממקם אותו בדיוק איפה שסימנת באדום */
-            top: 50%;
-            transform: translateY(-50%); /* ממורכז אנכית */
-            width: 260px;
-            background: rgba(255, 255, 255, 0.25); /* אפקט זכוכית חצי שקוף */
-            backdrop-filter: blur(10px); /* מטשטש את הרקע מאחוריו - סופר מודרני! */
+            width: 280px;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
@@ -295,7 +129,7 @@
         .trending-header {
             font-size: 18px;
             font-weight: 900;
-            color: var(--element-navy-gradient);
+            color: #112845;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -318,12 +152,10 @@
             color: #112845;
         }
 
-        .trending-item:last-child {
-            margin-bottom: 0;
-        }
+        .trending-item:last-child { margin-bottom: 0; }
 
         .trending-item:hover {
-            transform: translateX(-5px); /* קופץ שמאלה/קדימה בעדינות */
+            transform: translateX(-5px);
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-right: 3px solid var(--brand-green);
@@ -339,32 +171,105 @@
             align-items: center;
             border-radius: 50%;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
-        .trending-text {
+        .trending-text { display: flex; flex-direction: column; }
+        .trending-label { font-size: 11px; font-weight: 700; color: var(--brand-green); text-transform: uppercase; }
+        .trending-title { font-size: 13px; font-weight: 700; line-height: 1.2; }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            flex: 1;
+            max-width: 750px;
+            align-content: center;
+        }
+
+        .square-box {
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
+            background: var(--element-navy-gradient);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.15);
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
             display: flex;
             flex-direction: column;
+            justify-content: flex-end; 
+            padding: 25px;
+            overflow: hidden;
         }
 
-        .trending-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--brand-green);
-            text-transform: uppercase;
+        .square-box::after {
+            content: ''; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+            pointer-events: none; transition: all 0.3s ease;
         }
 
-        .trending-title {
-            font-size: 13px;
-            font-weight: 700;
-            line-height: 1.2;
+        .square-box:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.35), 0 0 25px var(--brand-green-glow);
+            border-color: var(--brand-green);
         }
 
-        /* הסתרת הטרנדינג במסכים קטנים כדי לא להסתיר את המשבצות */
-        @media (max-width: 1100px) {
-            .trending-sidebar {
-                display: none;
-            }
+        .square-box:hover::after { border-color: var(--brand-green); opacity: 0.5; }
+
+        /* עיצוב התוכן של הקוביות */
+        .box-content { position: relative; z-index: 2; }
+        .box-tag { font-size: 12px; color: var(--brand-green); text-transform: uppercase; letter-spacing: 1px; font-weight: 900; margin-bottom: 8px; }
+        .box-title { color: #ffffff; font-size: 22px; font-weight: 900; line-height: 1.2; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .box-desc { color: #a0aec0; font-size: 14px; line-height: 1.4; font-weight: 400; }
+        
+        /* === אייקונים דקורטיביים === */
+        
+        /* קוביה 1: אייקון גרף עמודות */
+        .tech-bars { position: absolute; top: 25px; left: 25px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: all 0.4s ease; height: 26px; }
+        .tech-bars span { width: 4px; background: var(--text-light); border-radius: 2px; transition: all 0.4s ease; }
+        .square-box:hover .tech-bars { opacity: 0.8; gap: 6px; }
+        .square-box:hover .tech-bars span { background: var(--brand-green); }
+
+        /* קוביה 2: אייקון נקודות (פנתיאון) */
+        .tech-dots { position: absolute; top: 25px; left: 25px; opacity: 0.15; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; transition: all 0.4s ease; }
+        .tech-dots span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
+        .square-box:hover .tech-dots { opacity: 0.8; gap: 6px; }
+        .square-box:hover .tech-dots span { background: var(--brand-green); }
+
+        /* קוביה 3: אייקון דולר בלבד */
+        .tech-dollar-only { position: absolute; top: 25px; left: 25px; font-size: 26px; font-weight: 900; color: var(--text-light); opacity: 0.25; transition: all 0.4s ease; font-family: sans-serif; line-height: 1; }
+        .square-box:hover .tech-dollar-only { opacity: 0.9; color: var(--brand-green); transform: scale(1.1); }
+
+        .footer {
+            background: var(--element-navy-gradient);
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.20);
+            flex-shrink: 0;
+            position: relative;
         }
+
+        .footer::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--brand-green); box-shadow: 0 0 10px var(--brand-green-glow);
+        }
+
+        .ticker-wrap { display: inline-block; padding-right: 100%; animation: ticker 35s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 35px; font-size: 15px; font-weight: 700; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+        .ticker-divider { color: var(--brand-green); font-weight: 900; margin: 0 15px; }
+
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
+
+        @media (max-width: 950px) {
+            .header { height: auto; padding: 15px; flex-direction: column; gap: 15px; }
+            .actual-logo-img { height: 60px; }
+            .main-content { flex-direction: column; padding: 20px; overflow-y: auto; gap: 30px; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .trending-sidebar { width: 100%; max-width: 500px; }
+            body { overflow: auto; height: auto; }
         }
     </style>
 </head>
@@ -376,7 +281,7 @@
                 <img src="a.png" alt="לוגו סוליבי ספורט" class="actual-logo-img">
             </a>
         </div>
-        
+
         <nav class="header-nav">
             <ul>
                 <li><a href="#">דף הבית</a></li>
@@ -392,9 +297,9 @@
     </header>
 
     <main class="main-content">
+
         <aside class="trending-sidebar">
             <div class="trending-header">🔥 חם באתר</div>
-            
             <a href="#" class="trending-item">
                 <div class="trending-icon">🏆</div>
                 <div class="trending-text">
@@ -402,7 +307,6 @@
                     <span class="trending-title">מקום 1: קבוצת "האריות"</span>
                 </div>
             </a>
-
             <a href="#" class="trending-item">
                 <div class="trending-icon">🃏</div>
                 <div class="trending-text">
@@ -410,7 +314,6 @@
                     <span class="trending-title">הקלף החם: אמבפה 94</span>
                 </div>
             </a>
-
             <a href="#" class="trending-item">
                 <div class="trending-icon">📋</div>
                 <div class="trending-text">
@@ -418,7 +321,6 @@
                     <span class="trending-title">טקטיקת 4-3-3 המנצחת</span>
                 </div>
             </a>
-            
             <a href="#" class="trending-item">
                 <div class="trending-icon">🎙️</div>
                 <div class="trending-text">
@@ -427,13 +329,50 @@
                 </div>
             </a>
         </aside>
+
         <div class="grid-container">
+            
+            <a href="#" class="square-box">
+                <div class="tech-bars">
+                    <span style="height: 10px;"></span>
+                    <span style="height: 22px;"></span>
+                    <span style="height: 14px;"></span>
+                    <span style="height: 26px;"></span>
+                </div>
+                <div class="box-content">
+                    <div class="box-tag">עדכונים לייב</div>
+                    <div class="box-title">מרכז הליגות</div>
+                    <div class="box-desc">מעקב שוטף אחר טבלאות, תוצאות וסטטיסטיקות בזמן אמת.</div>
+                </div>
+            </a>
+
+            <a href="#" class="square-box">
+                <div class="tech-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="box-content">
+                    <div class="box-tag">פרויקט דגל</div>
+                    <div class="box-title">פנתיאון הכדורגל הישראלי</div>
+                    <div class="box-desc">מדד סוליבי ל-100 הגדולים, שיאים אישיים/קבוצתיים והרכבי כל הזמנים.</div>
+                </div>
+            </a>
+
+            <a href="#" class="square-box">
+                <div class="tech-dollar-only">$</div>
+                <div class="box-content">
+                    <div class="box-tag">שוק האספנות</div>
+                    <div class="box-title">בורסת הקלפים והנתונים</div>
+                    <div class="box-desc">מעקב מחירי שוק, המלצות השקעה וניהול צ'קליסט אישי להשלמת סדרות.</div>
+                </div>
+            </a>
+
             <a href="#" class="square-box"></a>
             <a href="#" class="square-box"></a>
             <a href="#" class="square-box"></a>
-            <a href="#" class="square-box"></a>
-            <a href="#" class="square-box"></a>
-            <a href="#" class="square-box"></a>
+            
         </div>
     </main>
 
