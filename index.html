@@ -26,7 +26,6 @@
             overflow: hidden;
         }
 
-        /* שורת כותרת צרה יותר */
         .header {
             background: var(--element-navy-gradient);
             height: 65px; 
@@ -39,7 +38,7 @@
             z-index: 100;
             flex-shrink: 0;
             gap: 20px;
-            overflow: visible; /* מאפשר ללוגו לפרוץ החוצה */
+            overflow: visible; 
         }
 
         .header-logo { 
@@ -48,14 +47,13 @@
             height: 100%;
         }
 
-        /* העטיפה של הלוגו - מרחפת החוצה */
         .logo-wrapper {
             position: relative;
-            top: 20px; /* דוחף את הלוגו למטה כדי שיפרוץ את קו ההדר */
+            top: 32px; /* חצי בול */
             background-color: #ffffff;
-            padding: 8px 16px;
+            padding: 10px 20px; 
             border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
             transition: all 0.3s ease;
             text-decoration: none;
             z-index: 1000;
@@ -65,12 +63,12 @@
         }
 
         .logo-wrapper:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+            transform: scale(1.05); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
         }
 
         .actual-logo-img {
-            height: 45px; 
+            height: 55px; 
             width: auto;
             max-width: 100%;
             display: block;
@@ -120,22 +118,23 @@
             width: 320px;
         }
 
+        /* הגדרה מחדש: הקוביות באמצע הכל, הטבלה מודבקת שמאלה */
         .main-content {
             flex: 1;
             display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
+            justify-content: center; /* ממרכז את הקוביות באופן מושלם */
             align-items: center;
             padding: 0 5%;
-            gap: 120px; 
+            position: relative; /* מאפשר לטבלה לזוז שמאלה באופן מוחלט */
             max-width: 1500px; 
             margin: 0 auto;
             width: 100%;
         }
 
         .trending-sidebar {
+            position: absolute; /* מוציא את הטבלה מהזרימה כדי שלא תפריע למרכז */
+            left: 5%; /* מדביק אותה הכי שמאלה שאפשר */
             width: 280px;
-            flex-shrink: 0;
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -202,7 +201,6 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
-            flex: 1;
             max-width: 750px;
             align-content: center;
         }
@@ -291,13 +289,13 @@
 
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
 
-        @media (max-width: 950px) {
+        @media (max-width: 1050px) {
             .header { height: auto; padding: 15px; flex-direction: column; gap: 25px; }
-            .logo-wrapper { top: 0; }
+            .logo-wrapper { top: 0; transform: none; }
             .actual-logo-img { height: 40px; }
             .main-content { flex-direction: column; padding: 20px; overflow-y: auto; gap: 30px; }
+            .trending-sidebar { position: relative; left: auto; width: 100%; max-width: 500px; }
             .grid-container { grid-template-columns: repeat(2, 1fr); }
-            .trending-sidebar { width: 100%; max-width: 500px; }
             body { overflow: auto; height: auto; }
         }
     </style>
@@ -405,9 +403,9 @@
                     <span class="dot3"></span>
                 </div>
                 <div class="box-content">
-                    <div class="box-tag">זירת המנג'ר</div>
-                    <div class="box-title">טקטיקה וסקאוטינג</div>
-                    <div class="box-desc">המלצות למערכים מנצחים, איתור יהלומים, ודירוגים ממשחקי צ'מפיונשיפ ופוטבול מנג'ר.</div>
+                    <div class="box-tag">זירת הגיימינג</div>
+                    <div class="box-title">משחקי מנג'ר</div>
+                    <div class="box-desc">המלצות למערכים מנצחים, איתור יהלומים, ודירוגים שונים ממשחקי צ'מפיונשיפ ופוטבול מנג'ר.</div>
                 </div>
             </a>
 
