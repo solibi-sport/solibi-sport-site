@@ -99,18 +99,25 @@
         }
 
         .header-search input {
-            padding: 10px 20px;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 30px;
-            width: 240px;
-            outline: none;
-            font-family: 'Rubik', sans-serif;
-            color: #000;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
-        }
+    padding: 14px 25px; /* מגדיל את הגובה והמרווח הפנימי */
+    border: none;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 40px; /* שומר על הקצוות עגולים ויפים בהתאם לגובה החדש */
+    width: 450px; /* הרוחב הוגדל משמעותית (היה 240px) */
+    font-size: 16px; /* מגדיל את הטקסט שבתוך שורת החיפוש */
+    outline: none;
+    font-family: 'Rubik', sans-serif;
+    color: #000;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.header-search input:focus {
+    box-shadow: 0 0 12px var(--brand-green-glow);
+    background-color: #ffffff;
+    width: 480px; /* אנימציה מגניבה: מתרחב בעוד קצת כשלוחצים עליו! */
+}
 
         .header-search input:focus {
             box-shadow: 0 0 10px var(--brand-green-glow);
