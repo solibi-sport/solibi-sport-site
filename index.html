@@ -38,73 +38,55 @@
             overflow: hidden; /* ביטול גלילה מוחלט */
         }
 
-        /* --- שורה עליונה (Header) --- */
-        .header {
-            background: var(--element-navy-gradient);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
-            border-bottom: 2px solid var(--brand-green);
-            z-index: 100;
-            flex-shrink: 0;
-        }
+        /* --- לעדכן את השורה העליונה (Header) כדי שתהיה צרה --- */
+.header {
+    background: var(--element-navy-gradient);
+    padding: 10px 5%; /* הקטנו את הריווח כדי להצר את גובה השורה */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
+    border-bottom: 2px solid var(--brand-green);
+    z-index: 100;
+    flex-shrink: 0;
+    position: relative; /* קריטי כדי שנוכל למרכז את התפריט */
+}
 
-        .header-logo {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--text-light);
-            letter-spacing: -0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-        }
-        
-        .header-logo span {
-            color: var(--brand-green);
-        }
+/* --- הלוגו: תופס פחות גובה פיזי אבל מוגדל ויזואלית --- */
+.actual-logo-img {
+    max-height: 40px; /* גובה נמוך כדי לא לדחוף את השורה */
+    width: auto;
+    display: block;
+    transform: scale(2.0); /* הגדלה ויזואלית משמעותית (זום) */
+    transform-origin: right center;
+    transition: transform 0.3s ease;
+}
 
-        .header-nav ul {
-            list-style: none;
-            display: flex;
-            gap: 35px;
-        }
-        
-        .header-nav a {
-            text-decoration: none;
-            color: var(--text-light);
-            font-weight: 700;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
+.actual-logo-img:hover {
+    transform: scale(2.05);
+}
 
-        .header-nav a:hover {
-            color: var(--brand-green);
-        }
+/* --- התפריט: מרוכז בדיוק באמצע המסך מעל הקוביות --- */
+.header-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-        .header-nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            background-color: var(--brand-green);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .header-nav a:hover::after {
-            width: 100%;
-        }
+.header-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 35px;
+}
 
-        .header-search input {
-    padding: 14px 25px; /* מגדיל את הגובה והמרווח הפנימי */
+/* --- שורת חיפוש: מורחבת מאוד לרוחב, אבל שומרת על גובה תקין --- */
+.header-search input {
+    padding: 10px 25px; /* ריווח נורמלי שלא מרחיב את השורה */
     border: none;
     background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 40px; /* שומר על הקצוות עגולים ויפים בהתאם לגובה החדש */
-    width: 450px; /* הרוחב הוגדל משמעותית (היה 240px) */
-    font-size: 16px; /* מגדיל את הטקסט שבתוך שורת החיפוש */
+    border-radius: 40px;
+    width: 550px; /* רוחב ענק בדיוק כמו שביקשת */
+    font-size: 16px;
     outline: none;
     font-family: 'Rubik', sans-serif;
     color: #000;
@@ -116,13 +98,8 @@
 .header-search input:focus {
     box-shadow: 0 0 12px var(--brand-green-glow);
     background-color: #ffffff;
-    width: 480px; /* אנימציה מגניבה: מתרחב בעוד קצת כשלוחצים עליו! */
+    width: 580px; /* מתרחבת בעוד קצת כשמקלידים בתוכה */
 }
-
-        .header-search input:focus {
-            box-shadow: 0 0 10px var(--brand-green-glow);
-            background-color: #ffffff;
-        }
 
         /* --- תוכן מרכזי (Grid) --- */
         .main-content {
