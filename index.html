@@ -11,12 +11,11 @@
             --brand-green: #7ca856;      
             --brand-green-glow: rgba(124, 168, 86, 0.6);
             
-            /* רקע האתר - כסוף מט (הובהר לקבלת מראה נקי יותר) */
-            --bg-silver-matte: linear-gradient(145deg, #d1dae3 0%, #a8b4c4 100%);
+            /* רקע האתר - כסוף/אפור טיפה בהיר יותר */
+            --bg-silver-matte: linear-gradient(145deg, #e4ebf1 0%, #bac6d4 100%);
             
-            /* צבע האלמנטים (משבצות, הדר, פוטר) - בלו נייבי */
-            --element-navy: #0f2338;
-            --element-navy-gradient: radial-gradient(circle at top left, #16324f 0%, #0a1829 100%);
+            /* צבע האלמנטים (משבצות, הדר, פוטר) - בלו נייבי טיפה בהיר יותר */
+            --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
             
             /* צבעי טקסט */
             --text-light: #ffffff;
@@ -30,7 +29,7 @@
 
         body {
             font-family: 'Rubik', sans-serif;
-            /* רקע האתר - כסוף מט */
+            /* רקע האתר */
             background: var(--bg-silver-matte);
             background-attachment: fixed;
             display: flex;
@@ -46,7 +45,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
             border-bottom: 2px solid var(--brand-green);
             z-index: 100;
             flex-shrink: 0;
@@ -57,7 +56,7 @@
             font-weight: 900;
             color: var(--text-light);
             letter-spacing: -0.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
         }
         
         .header-logo span {
@@ -110,7 +109,7 @@
             color: #000;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
         }
 
         .header-search input:focus {
@@ -143,9 +142,9 @@
             border-radius: 16px;
             background: var(--element-navy-gradient);
             box-shadow: 
-                0 8px 20px rgba(0,0,0,0.3), 
+                0 8px 20px rgba(0,0,0,0.25), 
                 inset 0 1px 1px rgba(255,255,255,0.15);
-            border: 1px solid rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.3);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             cursor: pointer;
@@ -157,7 +156,7 @@
             content: '';
             position: absolute;
             top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 12px;
             pointer-events: none;
             transition: all 0.3s ease;
@@ -167,7 +166,7 @@
         .square-box:hover {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 
-                0 15px 30px rgba(0,0,0,0.4), 
+                0 15px 30px rgba(0,0,0,0.35), 
                 0 0 25px var(--brand-green-glow);
             border-color: var(--brand-green);
         }
@@ -183,7 +182,7 @@
             padding: 12px 0;
             overflow: hidden;
             white-space: nowrap;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.20);
             flex-shrink: 0;
             position: relative;
         }
@@ -209,7 +208,7 @@
             font-size: 15px;
             font-weight: 700;
             color: var(--text-light);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
         }
 
         .ticker-divider {
