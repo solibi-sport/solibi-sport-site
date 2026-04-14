@@ -15,22 +15,23 @@
             --text-dark: #112845;
         }
 
+        /* מונע כל חריגה מהמסך */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
+        html, body {
             font-family: 'Rubik', sans-serif;
             background: var(--bg-silver-matte);
-            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden !important; /* נעילה הרמטית של גלילה */
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
         }
 
         .header {
             background: var(--element-navy-gradient);
             height: 65px; 
-            padding: 0 5%;
+            padding: 0 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -39,20 +40,20 @@
             z-index: 100;
             flex-shrink: 0;
             position: relative;
-            overflow: visible; 
         }
 
         .header-logo { 
             display: flex; 
             align-items: center; 
+            flex-shrink: 0;
             height: 100%;
         }
 
         .logo-wrapper {
             position: relative;
-            top: 32px; 
+            top: 32.5px; /* חצי בדיוק מגובה ההדר - סימטריה מושלמת */
             background-color: #ffffff;
-            padding: 10px 20px; 
+            padding: 8px 18px; 
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.25);
             transition: all 0.3s ease;
@@ -69,16 +70,14 @@
         }
 
         .actual-logo-img {
-            height: 55px; 
+            height: 45px; 
             width: auto;
             max-width: 100%;
             display: block;
         }
 
         .header-nav { 
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            flex: 1;
             display: flex; 
             justify-content: center; 
         }
@@ -109,7 +108,7 @@
         .header-search input {
             padding: 0 20px;
             height: 36px;
-            width: 280px;
+            width: 250px;
             border: none;
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 30px;
@@ -125,51 +124,29 @@
         .header-search input:focus {
             box-shadow: 0 0 12px var(--brand-green-glow);
             background-color: #ffffff;
-            width: 320px;
+            width: 280px;
         }
 
         .main-content {
             flex: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
             width: 100%;
-            padding: 0 5%;
-            overflow-y: auto;
-            position: relative; /* מאפשר לטרמינל להימתח מהקצה העליון לתחתון */
+            overflow: hidden; 
         }
 
-        .layout-wrapper {
-            position: relative; 
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            width: 100%;
-            max-width: 750px;
-        }
-
-        /* === עיצוב חדש: טרמינל דאטה זורם בהיר (Light Glass Terminal) === */
-        
+        /* הטרמינל הבהיר */
         .updates-sidebar {
             position: absolute; 
-            left: -30px; /* מיושר בדיוק לפס של החיפוש */
-            top: 0;  /* נמתח בדיוק מההדר */
-            bottom: 0; /* נמתח בדיוק עד הפוטר */
+            left: 0; 
+            top: 0;  
+            bottom: 0; 
             width: 280px;
-            background: rgba(255, 255, 255, 0.35); /* בהיר ושקוף - משתלב עם רקע האתר */
+            background: rgba(255, 255, 255, 0.35);
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px);
-            border-right: 1px solid rgba(255, 255, 255, 0.6); /* מסגרת זכוכית עדינה מכל הכיוונים */
-            border-left: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05); /* צללית סופר עדינה */
+            border-right: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
             z-index: 10;
             display: flex;
             flex-direction: column;
@@ -179,13 +156,13 @@
         .updates-header {
             font-size: 16px;
             font-weight: 900;
-            color: var(--text-dark); /* טקסט כהה לרקע הבהיר */
+            color: var(--text-dark);
             display: flex;
             align-items: center;
             gap: 8px;
             padding: 20px 20px 15px 20px;
             border-bottom: 2px solid var(--brand-green);
-            background: rgba(255, 255, 255, 0.6); /* רקע לבן חלבי לכותרת */
+            background: rgba(255, 255, 255, 0.6);
             z-index: 2; 
         }
 
@@ -193,7 +170,6 @@
             flex: 1;
             position: relative;
             overflow: hidden;
-            /* המסכה החצי-שקופה שמטשטשת את הקצוות העליונים והתחתונים */
             -webkit-mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
             mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
             padding: 10px 0;
@@ -220,14 +196,14 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255, 255, 255, 0.6); /* קפסולה בהירה חצי-שקופה */
+            background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.9);
             padding: 12px;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            color: var(--text-dark); /* טקסט כהה */
+            color: var(--text-dark);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
         }
 
@@ -240,7 +216,7 @@
 
         .updates-icon {
             font-size: 20px;
-            background: #f0f4f8; /* רקע עדין לאייקון */
+            background: #f0f4f8;
             width: 36px;
             height: 36px;
             display: flex;
@@ -259,8 +235,23 @@
         .updates-label { font-size: 11px; font-weight: 700; color: var(--brand-green); text-transform: uppercase; }
         .updates-title { font-size: 13px; font-weight: 700; line-height: 1.2; color: var(--text-dark); }
 
-        /* === עיצוב הקוביות הראשיות (ללא שינוי) === */
-        
+        /* אזור הקוביות */
+        .layout-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding-left: 280px; 
+            box-sizing: border-box;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(200px, 240px)); 
+            gap: 20px;
+        }
+
         .square-box {
             aspect-ratio: 1 / 1;
             border-radius: 16px;
@@ -274,7 +265,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end; 
-            padding: 25px;
+            padding: 22px;
             overflow: hidden;
         }
 
@@ -294,24 +285,24 @@
 
         .box-content { position: relative; z-index: 2; }
         .box-tag { font-size: 12px; color: var(--brand-green); text-transform: uppercase; letter-spacing: 1px; font-weight: 900; margin-bottom: 8px; }
-        .box-title { color: #ffffff; font-size: 22px; font-weight: 900; line-height: 1.2; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .box-desc { color: #a0aec0; font-size: 14px; line-height: 1.4; font-weight: 400; }
+        .box-title { color: #ffffff; font-size: 20px; font-weight: 900; line-height: 1.2; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .box-desc { color: #a0aec0; font-size: 13px; line-height: 1.4; font-weight: 400; }
         
         /* === אייקונים === */
-        .tech-bars { position: absolute; top: 25px; left: 25px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: all 0.4s ease; height: 26px; }
+        .tech-bars { position: absolute; top: 20px; left: 20px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: all 0.4s ease; height: 26px; }
         .tech-bars span { width: 4px; background: var(--text-light); border-radius: 2px; transition: all 0.4s ease; }
         .square-box:hover .tech-bars { opacity: 0.8; gap: 6px; }
         .square-box:hover .tech-bars span { background: var(--brand-green); }
 
-        .tech-dots { position: absolute; top: 25px; left: 25px; opacity: 0.15; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; transition: all 0.4s ease; }
+        .tech-dots { position: absolute; top: 20px; left: 20px; opacity: 0.15; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; transition: all 0.4s ease; }
         .tech-dots span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
         .square-box:hover .tech-dots { opacity: 0.8; gap: 6px; }
         .square-box:hover .tech-dots span { background: var(--brand-green); }
 
-        .tech-dollar-only { position: absolute; top: 25px; left: 25px; font-size: 26px; font-weight: 900; color: var(--text-light); opacity: 0.25; transition: all 0.4s ease; font-family: sans-serif; line-height: 1; }
+        .tech-dollar-only { position: absolute; top: 20px; left: 20px; font-size: 26px; font-weight: 900; color: var(--text-light); opacity: 0.25; transition: all 0.4s ease; font-family: sans-serif; line-height: 1; }
         .square-box:hover .tech-dollar-only { opacity: 0.9; color: var(--brand-green); transform: scale(1.1); }
 
-        .tech-tactic { position: absolute; top: 25px; left: 25px; width: 30px; height: 24px; opacity: 0.15; transition: all 0.4s ease; border: 2px solid var(--text-light); border-radius: 4px; }
+        .tech-tactic { position: absolute; top: 20px; left: 20px; width: 30px; height: 24px; opacity: 0.15; transition: all 0.4s ease; border: 2px solid var(--text-light); border-radius: 4px; }
         .tech-tactic span { position: absolute; width: 5px; height: 5px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
         .tech-tactic .dot1 { top: 3px; left: 50%; transform: translateX(-50%); }
         .tech-tactic .dot2 { bottom: 3px; left: 3px; }
@@ -321,7 +312,7 @@
 
         .footer {
             background: var(--element-navy-gradient);
-            padding: 12px 0;
+            padding: 10px 0;
             overflow: hidden;
             white-space: nowrap;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.20);
@@ -334,25 +325,12 @@
             background: var(--brand-green); box-shadow: 0 0 10px var(--brand-green-glow);
         }
 
-        .ticker-wrap { display: inline-block; padding-right: 100%; animation: ticker 35s linear infinite; }
-        .ticker-item { display: inline-block; padding: 0 35px; font-size: 15px; font-weight: 700; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+        .ticker-wrap { display: inline-block; padding-right: 100vw; animation: ticker 35s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 35px; font-size: 14px; font-weight: 700; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
         .ticker-divider { color: var(--brand-green); font-weight: 900; margin: 0 15px; }
 
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
 
-        @media (max-width: 1050px) {
-            .header { height: auto; padding: 15px; flex-direction: column; gap: 25px; }
-            .header-nav { position: relative; left: auto; transform: none; }
-            .logo-wrapper { top: 0; transform: none; }
-            .actual-logo-img { height: 40px; }
-            
-            .main-content { align-items: flex-start; padding-top: 20px; }
-            .layout-wrapper { flex-direction: column; align-items: center; }
-            .updates-sidebar { position: relative; left: auto; top: auto; bottom: auto; width: 100%; max-width: 750px; margin-top: 30px; height: 350px; }
-            
-            .grid-container { grid-template-columns: repeat(2, 1fr); width: 100%; }
-            body { overflow: auto; height: auto; }
-        }
     </style>
 </head>
 <body>
