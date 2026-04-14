@@ -37,10 +37,10 @@
             overflow: hidden; /* ביטול גלילה מוחלט */
         }
 
-        /* --- שורה עליונה (Header) --- */
+        /* --- שורה עליונה (Header) - סופר צרה! --- */
         .header {
             background: var(--element-navy-gradient);
-            height: 65px; /* הצרנו את הגובה של השורה */
+            height: 60px; /* הצרנו אותה משמעותית לגובה המקסימלי */
             padding: 0 5%;
             display: flex;
             justify-content: space-between;
@@ -49,26 +49,40 @@
             border-bottom: 2px solid var(--brand-green);
             z-index: 100;
             flex-shrink: 0;
-            position: relative;
+            position: relative; /* קריטי למרכוז התפריט */
         }
 
         .header-logo {
             display: flex;
             align-items: center;
-            height: 100%;
         }
 
-        /* --- הלוגו: מותאם לגובה החדש של השורה --- */
+        /* --- הלוגו השקוף בתוך "תג" מרחף ומעוגל! --- */
         .actual-logo-img {
-            height: 55px; /* הקטנו מעט את הלוגו שיישב בול בשורה הצרה */
+            height: 70px; /* גובה פיזי גדול מהשורה (60px) למראה צף */
             width: auto;
-            border-radius: 6px;
-            transition: transform 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border-radius: 12px; /* פינות מעוגלות מאוד לתג הלבן */
+            padding: 10px; /* מרווח פנימי כדי שהלוגו לא ייחנק */
+            background-color: #ffffff; /* הרקע הלבן המעוצב שלו! */
+            
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4); /* צל חזק שנותן תחושת ריחוף ויוקרה */
+            
+            /* פקודות שיפור איכות ללוגו */
+            image-rendering: crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+
+            /* הפקודות שמוציאות אותו מהשורה וגורמות לו לרחף */
+            position: absolute; 
+            top: 15px; /* קצת רווח מלמעלה */
+            right: 5%; /* יושב בקו המקורי של צד ימין */
+            z-index: 1000; /* מוודא שהוא תמיד מעל הכל */
+            
+            transition: all 0.3s ease;
         }
 
         .actual-logo-img:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px) scale(1.03); /* אפקט ריחוף כשעוברים עם העכבר */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* צל מודגש ב-hover */
         }
 
         /* --- התפריט: מקובע תמיד לאמצע המסך בסופר סימטריה --- */
@@ -86,7 +100,7 @@
             padding: 0;
         }
 
-        /* נעילת צבע התפריט ללבן (מעלים את הסגול!) */
+        /* נעילת צבע התפריט ללבן */
         .header-nav a {
             text-decoration: none !important;
             color: var(--text-light) !important; 
@@ -119,8 +133,8 @@
         /* --- שורת חיפוש: נמוכה, אלגנטית ומאוד רחבה --- */
         .header-search input {
             padding: 0 20px;
-            height: 38px; /* צרה בגובה */
-            width: 400px; /* רחבה למתיחה */
+            height: 36px; /* צרה בגובה */
+            width: 380px; /* רחבה מאוד למתיחה */
             border: none;
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 30px;
@@ -136,7 +150,7 @@
         .header-search input:focus {
             box-shadow: 0 0 12px var(--brand-green-glow);
             background-color: #ffffff;
-            width: 430px;
+            width: 410px;
         }
 
         /* --- תוכן מרכזי (Grid) --- */
@@ -249,6 +263,8 @@
             .grid-container { grid-template-columns: 1fr; max-width: 280px; }
             .header { height: auto; flex-direction: column; gap: 15px; padding: 20px 10px; }
             .header-nav { position: relative; left: auto; transform: none; }
+            .header-logo { justify-content: center; width: 100%; position: relative; }
+            .actual-logo-img { position: relative; right: auto; top: 0; height: 60px; transform: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         }
     </style>
 </head>
@@ -257,7 +273,7 @@
     <header class="header">
         <div class="header-logo">
             <a href="#">
-                <img src="a.jpg" alt="לוגו סוליבי ספורט" class="actual-logo-img">
+                <img src="a.png" alt="לוגו סוליבי ספורט" class="actual-logo-img">
             </a>
         </div>
         
