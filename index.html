@@ -53,7 +53,7 @@
             position: relative;
             top: 32.5px; 
             background-color: #ffffff;
-            padding: 4px 12px; /* ריווח מותאם כדי שהלוגו יהיה בולט יותר */
+            padding: 4px 12px; 
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.25);
             transition: all 0.3s ease;
@@ -70,12 +70,13 @@
         }
 
         .actual-logo-img {
-            height: 60px; /* הוגדל קצת לבקשתך */
+            height: 60px; 
             width: auto;
             max-width: 100%;
             display: block;
         }
 
+        /* תפריט מיושר אבסולוטית לאמצע המסך */
         .header-nav { 
             position: absolute;
             left: 50%;
@@ -110,7 +111,7 @@
         .header-search input {
             padding: 0 20px;
             height: 36px;
-            width: 450px; /* הוגדל כמעט פי 2 לבקשתך */
+            width: 450px; 
             border: none;
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 30px;
@@ -137,7 +138,6 @@
             overflow: hidden; 
         }
 
-        /* הטרמינל הבהיר - מודבק לשמאל */
         .updates-sidebar {
             position: absolute; 
             left: 0; 
@@ -168,30 +168,36 @@
             z-index: 2; 
         }
 
-        .terminal-scroll-area {
+        .breathing-feed-container {
             flex: 1;
-            position: relative;
-            overflow: hidden;
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
-            mask-image: linear-gradient(to bottom, transparent, black 5%, black 95%, transparent);
-            padding: 10px 0;
+            position: relative; 
+            padding: 15px;
         }
 
-        .terminal-track {
+        .updates-set {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding: 0 15px;
-            animation: scrollTerminal 15s linear infinite;
+            animation: breatheFade 16s infinite;
         }
 
-        .terminal-track:hover {
+        .set-2 {
+            animation-delay: -8s; 
+            opacity: 0; 
+        }
+
+        @keyframes breatheFade {
+            0%, 45% { opacity: 1; pointer-events: auto; transform: scale(1); } 
+            50%, 95% { opacity: 0; pointer-events: none; transform: scale(0.98); } 
+            100% { opacity: 1; pointer-events: auto; transform: scale(1); } 
+        }
+
+        .breathing-feed-container:hover .updates-set {
             animation-play-state: paused;
-        }
-
-        @keyframes scrollTerminal {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); } 
         }
 
         .updates-item {
@@ -237,21 +243,25 @@
         .updates-label { font-size: 11px; font-weight: 700; color: var(--brand-green); text-transform: uppercase; }
         .updates-title { font-size: 13px; font-weight: 700; line-height: 1.2; color: var(--text-dark); }
 
-        /* אזור הקוביות - ממורכז בדיוק באמצע האתר בלי להתייחס לסרגל צד! */
+        /* אזור הקוביות - ממורכז בדיוק באמצע האתר האבסולוטי! */
         .layout-wrapper {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
-            height: 100%;
-            box-sizing: border-box;
+            max-width: 750px;
+            z-index: 1;
         }
 
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, minmax(200px, 240px)); 
             gap: 20px;
-            z-index: 1; /* מוודא שהקוביות מאחורי הטרמינל אם יש התנגשות במסכים קטנים */
+            width: 100%;
         }
 
         .square-box {
@@ -288,11 +298,10 @@
 
         .square-box:hover::after { border-color: var(--brand-green); opacity: 0.5; }
 
-        /* הגדרת התוכן הפנימי למרכוז טקסט מושלם */
         .box-content { 
             position: relative; 
             z-index: 2; 
-            text-align: center; /* ממורכז לאמצע ימין ושמאל */
+            text-align: center; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -361,7 +370,8 @@
             <ul>
                 <li><a href="#">דף הבית</a></li>
                 <li><a href="#">ארכיון</a></li>
-                <li><a href="#">קרדיטים</a></li> <li><a href="#">אודות</a></li>
+                <li><a href="#">קרדיטים</a></li> 
+                <li><a href="#">אודות</a></li>
                 <li><a href="#">צור קשר</a></li>
             </ul>
         </nav>
@@ -381,8 +391,8 @@
                 <span>עידכונים חמים</span>
             </div>
             
-            <div class="terminal-scroll-area">
-                <div class="terminal-track">
+            <div class="breathing-feed-container">
+                <div class="updates-set set-1">
                     <a href="#" class="updates-item">
                         <div class="updates-icon">🏆</div>
                         <div class="updates-text">
@@ -411,33 +421,35 @@
                             <span class="updates-title">פרק חדש: סיכום המחזור</span>
                         </div>
                     </a>
-                    
+                </div>
+
+                <div class="updates-set set-2">
                     <a href="#" class="updates-item">
-                        <div class="updates-icon">🏆</div>
+                        <div class="updates-icon">🔥</div>
                         <div class="updates-text">
-                            <span class="updates-label">פנטזי ליג</span>
-                            <span class="updates-title">מקום 1: קבוצת "האריות"</span>
+                            <span class="updates-label">חדשות חמות</span>
+                            <span class="updates-title">מאמן חדש חתם בליגה!</span>
                         </div>
                     </a>
                     <a href="#" class="updates-item">
-                        <div class="updates-icon">🃏</div>
+                        <div class="updates-icon">📊</div>
                         <div class="updates-text">
-                            <span class="updates-label">שוק הקלפים</span>
-                            <span class="updates-title">הקלף החם: אמבפה 94</span>
+                            <span class="updates-label">סטטיסטיקה</span>
+                            <span class="updates-title">מי מלך השערים העדכני?</span>
                         </div>
                     </a>
                     <a href="#" class="updates-item">
-                        <div class="updates-icon">📋</div>
+                        <div class="updates-icon">⭐</div>
                         <div class="updates-text">
-                            <span class="updates-label">פוטבול מנג'ר</span>
-                            <span class="updates-title">טקטיקת 4-3-3 המנצחת</span>
+                            <span class="updates-label">שחקן השבוע</span>
+                            <span class="updates-title">נבחר מצטיין המחזור</span>
                         </div>
                     </a>
                     <a href="#" class="updates-item">
-                        <div class="updates-icon">🎙️</div>
+                        <div class="updates-icon">📝</div>
                         <div class="updates-text">
-                            <span class="updates-label">פודקאסט</span>
-                            <span class="updates-title">פרק חדש: סיכום המחזור</span>
+                            <span class="updates-label">טור דעה</span>
+                            <span class="updates-title">לקראת משחק העונה</span>
                         </div>
                     </a>
                 </div>
