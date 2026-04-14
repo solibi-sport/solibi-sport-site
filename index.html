@@ -13,6 +13,7 @@
             --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
             --text-light: #ffffff;
             --text-dark: #112845;
+            --sidebar-and-search-width: 360px; /* סנכרון רוחב מושלם בין תפריט צד לחיפוש */
         }
 
         /* מניעת גלילה וחריגות מהמסך */
@@ -28,7 +29,7 @@
             flex-direction: column;
         }
 
-        /* === הדר ראשי === */
+        /* === הדר === */
         .header {
             background: var(--element-navy-gradient);
             height: 65px; 
@@ -43,12 +44,7 @@
             position: relative;
         }
 
-        .header-logo { 
-            display: flex; 
-            align-items: center; 
-            flex-shrink: 0;
-            height: 100%;
-        }
+        .header-logo { display: flex; align-items: center; flex-shrink: 0; height: 100%; }
 
         .logo-wrapper {
             position: relative;
@@ -60,233 +56,151 @@
             transition: all 0.3s ease;
             text-decoration: none;
             z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        .logo-wrapper:hover {
-            transform: scale(1.05); 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-        }
+        .logo-wrapper:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.35); }
+        .actual-logo-img { height: 60px; width: auto; max-width: 100%; display: block; }
 
-        .actual-logo-img {
-            height: 60px; 
-            width: auto;
-            max-width: 100%;
-            display: block;
-        }
-
-        /* תפריט מיושר אבסולוטית לאמצע המסך */
         .header-nav { 
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex; 
-            justify-content: center; 
+            position: absolute; left: 50%; transform: translateX(-50%);
+            display: flex; justify-content: center; 
         }
         
-        .header-nav ul { 
-            list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; 
-        }
-
+        .header-nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
         .header-nav a {
-            text-decoration: none !important;
-            color: var(--text-light) !important;
-            font-weight: 700;
-            font-size: 16px;
-            padding: 8px 16px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: inline-block;
+            text-decoration: none !important; color: var(--text-light) !important;
+            font-weight: 700; font-size: 16px; padding: 8px 16px;
+            border-radius: 8px; transition: all 0.3s ease; display: inline-block;
         }
-
         .header-nav a:hover {
-            color: var(--brand-green) !important;
-            background-color: #ffffff;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            color: var(--brand-green) !important; background-color: #ffffff;
+            transform: translateY(-3px); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .header-search { flex-shrink: 0; z-index: 10; }
         .header-search input {
-            padding: 0 20px;
-            height: 36px;
-            width: 450px; 
-            border: none;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
-            font-size: 15px;
-            outline: none;
-            font-family: 'Rubik', sans-serif;
-            color: #000;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            padding: 0 20px; height: 36px; 
+            width: var(--sidebar-and-search-width); /* מיושר במדויק לסרגל השמאלי */
+            border: none; background-color: rgba(255, 255, 255, 0.95); border-radius: 30px;
+            font-size: 15px; outline: none; font-family: 'Rubik', sans-serif;
+            color: #000; font-weight: 600; transition: all 0.3s ease;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
         }
-
-        .header-search input:focus {
-            box-shadow: 0 0 12px var(--brand-green-glow);
-            background-color: #ffffff;
-            width: 500px;
+        .header-search input:focus { 
+            box-shadow: 0 0 12px var(--brand-green-glow); background-color: #ffffff; 
+            width: 400px; 
         }
 
         /* === תוכן מרכזי === */
-        .main-content {
-            flex: 1;
-            display: flex;
-            position: relative;
-            width: 100%;
-            overflow: hidden; 
-        }
+        .main-content { flex: 1; display: flex; position: relative; width: 100%; overflow: hidden; }
 
-        /* === טרמינל עדכונים שמאלי (נשימה) === */
+        /* === טרמינל צד שמאל === */
         .updates-sidebar {
-            position: absolute; 
-            left: 0; 
-            top: 0;  
-            bottom: 0; 
-            width: 280px;
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            border-right: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; 
+            position: absolute; left: 0; top: 0; bottom: 0; 
+            width: var(--sidebar-and-search-width); /* רוחב מסונכרן עם שורת החיפוש */
+            background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
+            z-index: 10; display: flex; flex-direction: column; overflow: hidden; 
         }
-
+        
         .updates-header {
-            font-size: 16px;
-            font-weight: 900;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            justify-content: flex-start; 
-            flex-direction: row-reverse;
-            gap: 10px;
-            padding: 20px 20px 15px 20px;
-            border-bottom: 2px solid var(--brand-green);
-            background: rgba(255, 255, 255, 0.6);
-            z-index: 2; 
+            font-size: 18px; font-weight: 900; color: var(--text-dark);
+            display: flex; align-items: center; justify-content: center; /* כותרת ממורכזת בול באמצע */
+            gap: 10px; padding: 20px 20px 15px 20px; border-bottom: 2px solid var(--brand-green);
+            background: rgba(255, 255, 255, 0.6); z-index: 2; 
         }
 
-        .breathing-feed-container {
-            flex: 1;
-            position: relative; 
-            padding: 15px;
-        }
-
+        .breathing-feed-container { flex: 1; position: relative; padding: 15px; }
         .updates-set {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            position: absolute; top: 15px; left: 15px; right: 15px;
+            display: flex; flex-direction: column; gap: 12px;
             animation: breatheFade 16s infinite;
         }
-
-        .set-2 {
-            animation-delay: -8s; 
-            opacity: 0; 
-        }
-
+        .set-2 { animation-delay: -8s; opacity: 0; }
         @keyframes breatheFade {
             0%, 45% { opacity: 1; pointer-events: auto; transform: scale(1); } 
             50%, 95% { opacity: 0; pointer-events: none; transform: scale(0.98); } 
             100% { opacity: 1; pointer-events: auto; transform: scale(1); } 
         }
-
-        .breathing-feed-container:hover .updates-set {
-            animation-play-state: paused;
-        }
-
+        .breathing-feed-container:hover .updates-set { animation-play-state: paused; }
+        
         .updates-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: var(--text-dark);
+            display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.9); padding: 12px; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s ease; text-decoration: none; color: var(--text-dark);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
         }
-
         .updates-item:hover {
-            transform: scale(1.02);
-            background: #ffffff;
-            border-color: var(--brand-green);
-            box-shadow: 0 6px 15px rgba(124, 168, 86, 0.15);
+            transform: scale(1.02); background: #ffffff; border-color: var(--brand-green); box-shadow: 0 6px 15px rgba(124, 168, 86, 0.15);
         }
-
         .updates-icon {
-            color: var(--text-dark); 
-            background: #f0f4f8;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
+            color: var(--text-dark); background: #f0f4f8; width: 36px; height: 36px;
+            display: flex; justify-content: center; align-items: center; border-radius: 50%; flex-shrink: 0; transition: all 0.3s ease;
         }
-        
-        .updates-item:hover .updates-icon {
-            background: var(--brand-green);
-            color: #ffffff; 
-        }
-
+        .updates-item:hover .updates-icon { background: var(--brand-green); color: #ffffff; }
         .updates-text { display: flex; flex-direction: column; }
         .updates-label { font-size: 11px; font-weight: 700; color: var(--brand-green); text-transform: uppercase; }
         .updates-title { font-size: 13px; font-weight: 700; line-height: 1.2; color: var(--text-dark); }
 
-        /* === תפריט מרחף צד ימין (FAB - Speed Dial) === */
-        .fab-container {
+        /* === אזור הקוביות הראשי הממורכז (מעטפת ראשית) === */
+        .layout-wrapper {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            display: flex; justify-content: center; align-items: center; width: 100%; max-width: 800px; z-index: 1;
+        }
+
+        .grid-container {
+            display: grid; grid-template-columns: repeat(3, minmax(220px, 260px)); gap: 25px; width: 100%;
+        }
+
+        /* === תפריט קהילה מתמטי - מרווח סימטרי בדיוק באמצע השטח שנותר === */
+        .fab-aligner {
             position: absolute;
-            right: 40px;
-            bottom: 40px;
+            left: 100%; /* מתחיל מהקצה הפיזי הימני של הקוביות */
+            top: 0;
+            bottom: 0; /* לוקח את אותו הגובה בדיוק כמו הקוביות */
+            width: calc(50vw - 400px); /* רוחב השטח שנשאר עד קצה המסך הימני */
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            align-items: flex-end; /* מיישר את הכפתור לקו 0 התחתון של הקוביות */
+            justify-content: center; /* ממורכז אופקית בול באמצע החלל */
+            pointer-events: none; /* מונע חסימת לחיצות במסך הריק */
             z-index: 50;
         }
 
-        /* התפריט שנשלף */
+        .fab-container {
+            pointer-events: auto; /* מחזיר יכולת לחיצה רק לכפתור */
+            position: relative;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+        }
+
         .fab-menu {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-bottom: 15px;
+            /* מרווח בלתי נראה כדי שהעכבר לא יברח כשעולים למעלה */
+            padding-bottom: 20px; 
             opacity: 0;
             pointer-events: none;
-            transform: translateY(30px) scale(0.9); /* מתחיל נמוך וקטן */
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* אפקט קפיצי יוקרתי */
-            align-items: flex-end; /* מיישר את הגלולות לימין */
+            transform: translateY(20px); 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* במעבר עכבר על כל האזור - התפריט קופץ החוצה */
+        /* במעבר עכבר התפריט נפתח ומוכן ללחיצה */
         .fab-container:hover .fab-menu {
             opacity: 1;
             pointer-events: auto;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
-        /* פריט בתוך התפריט הנשלף */
+        /* 5 המלבנים */
         .fab-item {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(5px);
             color: var(--text-dark);
             padding: 10px 20px;
-            border-radius: 30px; /* צורה של גלולה */
+            border-radius: 30px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-decoration: none;
             font-weight: 700;
@@ -299,19 +213,26 @@
             gap: 10px;
         }
 
+        .fab-item svg {
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
         .fab-item:hover {
             background: var(--brand-green);
             color: white;
-            transform: translateX(-5px); /* קופץ טיפה שמאלה כשעוברים עליו */
+            transform: translateX(-5px); /* קופץ טיפה שמאלה */
             box-shadow: 0 6px 20px rgba(124, 168, 86, 0.3);
         }
 
+        .fab-item:hover svg { color: white; }
+
         /* הכפתור העגול הראשי */
         .fab-button {
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
-            background: var(--element-navy-gradient); /* צבע יוקרתי */
+            background: var(--element-navy-gradient);
             color: white;
             display: flex;
             flex-direction: column;
@@ -321,19 +242,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 2px solid var(--brand-green);
-            position: relative;
         }
 
-        .fab-button svg {
-            margin-bottom: 2px;
-            transition: transform 0.3s ease;
-        }
-
-        .fab-button span {
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-        }
+        .fab-button svg { margin-bottom: 2px; transition: transform 0.3s ease; }
+        .fab-button span { font-size: 11px; font-weight: 900; letter-spacing: 0.5px; }
 
         .fab-container:hover .fab-button {
             transform: scale(1.05);
@@ -342,79 +254,31 @@
             border-color: white;
         }
 
-        .fab-container:hover .fab-button svg {
-            transform: translateY(-2px); /* האייקון זז טיפה למעלה */
-        }
+        .fab-container:hover .fab-button svg { transform: translateY(-2px); }
 
-
-        /* === אזור הקוביות הראשי - חזרנו ל-6 גדולות! === */
-        .layout-wrapper {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 800px; /* מרווח גדול ויפה */
-            z-index: 1;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(220px, 260px)); /* קוביות גדולות (3 בשורה) */
-            gap: 25px; /* הרבה אוויר לנשימה */
-            width: 100%;
-        }
-
+        /* === עיצוב הקוביות הראשיות (ללא שינוי) === */
         .square-box {
-            aspect-ratio: 1 / 1;
-            border-radius: 16px;
-            background: var(--element-navy-gradient);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.15);
-            border: 1px solid rgba(0, 0, 0, 0.3);
-            transition: all 0.4s ease;
-            position: relative;
-            cursor: pointer;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;
-            padding: 24px;
-            overflow: hidden;
+            aspect-ratio: 1 / 1; border-radius: 16px; background: var(--element-navy-gradient);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.15); border: 1px solid rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease; position: relative; cursor: pointer; text-decoration: none; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 24px; overflow: hidden;
         }
 
         .square-box::after {
             content: ''; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
-            pointer-events: none; transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; pointer-events: none; transition: all 0.3s ease;
         }
 
         .square-box:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.35), 0 0 25px var(--brand-green-glow);
-            border-color: var(--brand-green);
+            transform: translateY(-8px) scale(1.02); box-shadow: 0 15px 30px rgba(0,0,0,0.35), 0 0 25px var(--brand-green-glow); border-color: var(--brand-green);
         }
-
         .square-box:hover::after { border-color: var(--brand-green); opacity: 0.5; }
 
-        .box-content { 
-            position: relative; 
-            z-index: 2; 
-            text-align: center; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-        
+        .box-content { position: relative; z-index: 2; text-align: center; display: flex; flex-direction: column; align-items: center; width: 100%; }
         .box-tag { font-size: 13px; color: var(--brand-green); text-transform: uppercase; letter-spacing: 1px; font-weight: 900; margin-bottom: 8px; }
         .box-title { color: #ffffff; font-size: 22px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .box-desc { color: #a0aec0; font-size: 14px; line-height: 1.4; font-weight: 400; }
         
-        /* === אייקונים דקורטיביים בפינה השמאלית העליונה === */
         .tech-bars { position: absolute; top: 20px; left: 20px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: all 0.4s ease; height: 26px; }
         .tech-bars span { width: 4px; background: var(--text-light); border-radius: 2px; transition: all 0.4s ease; }
         .square-box:hover .tech-bars { opacity: 0.8; gap: 6px; }
@@ -436,27 +300,15 @@
         .square-box:hover .tech-tactic { opacity: 0.8; border-color: var(--brand-green); }
         .square-box:hover .tech-tactic span { background: var(--brand-green); }
 
-        /* === פוטר / טיקר === */
+        /* === פוטר === */
         .footer {
-            background: var(--element-navy-gradient);
-            padding: 10px 0;
-            overflow: hidden;
-            white-space: nowrap;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.20);
-            flex-shrink: 0;
-            position: relative;
-            z-index: 60; /* מעל הכל */
+            background: var(--element-navy-gradient); padding: 10px 0; overflow: hidden; white-space: nowrap;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.20); flex-shrink: 0; position: relative; z-index: 60;
         }
-
-        .footer::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--brand-green); box-shadow: 0 0 10px var(--brand-green-glow);
-        }
-
+        .footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--brand-green); box-shadow: 0 0 10px var(--brand-green-glow); }
         .ticker-wrap { display: inline-block; padding-right: 100vw; animation: ticker 35s linear infinite; }
         .ticker-item { display: inline-block; padding: 0 35px; font-size: 14px; font-weight: 700; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
         .ticker-divider { color: var(--brand-green); font-weight: 900; margin: 0 15px; }
-
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
 
     </style>
@@ -469,7 +321,6 @@
                 <img src="a.png" alt="לוגו סוליבי ספורט" class="actual-logo-img">
             </a>
         </div>
-
         <nav class="header-nav">
             <ul>
                 <li><a href="#">דף הבית</a></li>
@@ -479,7 +330,6 @@
                 <li><a href="#">צור קשר</a></li>
             </ul>
         </nav>
-
         <div class="header-search">
             <input type="text" placeholder="חיפוש תוכן...">
         </div>
@@ -490,9 +340,7 @@
         <aside class="updates-sidebar">
             <div class="updates-header">
                 <span>עידכונים חמים</span>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                </svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
             
             <div class="breathing-feed-container">
@@ -536,35 +384,11 @@
             </div>
         </aside>
 
-        <div class="fab-container">
-            <div class="fab-menu">
-                <a href="#" class="fab-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    אזור V.I.P
-                </a>
-                <a href="#" class="fab-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    מרכז הפעילות
-                </a>
-                <a href="#" class="fab-item">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                    פורומים ודיונים
-                </a>
-            </div>
-            
-            <div class="fab-button">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                <span>קהילה</span>
-            </div>
-        </div>
-
         <div class="layout-wrapper">
+            
             <div class="grid-container">
-                
                 <a href="#" class="square-box">
-                    <div class="tech-bars">
-                        <span style="height: 10px;"></span><span style="height: 22px;"></span><span style="height: 14px;"></span><span style="height: 26px;"></span>
-                    </div>
+                    <div class="tech-bars"><span style="height: 10px;"></span><span style="height: 22px;"></span><span style="height: 14px;"></span><span style="height: 26px;"></span></div>
                     <div class="box-content">
                         <div class="box-tag">עדכונים לייב</div>
                         <div class="box-title">מרכז הליגות</div>
@@ -573,9 +397,7 @@
                 </a>
 
                 <a href="#" class="square-box">
-                    <div class="tech-dots">
-                        <span></span><span></span><span></span><span></span>
-                    </div>
+                    <div class="tech-dots"><span></span><span></span><span></span><span></span></div>
                     <div class="box-content">
                         <div class="box-tag">פרויקט דגל</div>
                         <div class="box-title">פנתיאון הכדורגל</div>
@@ -593,9 +415,7 @@
                 </a>
 
                 <a href="#" class="square-box">
-                    <div class="tech-tactic">
-                        <span class="dot1"></span><span class="dot2"></span><span class="dot3"></span>
-                    </div>
+                    <div class="tech-tactic"><span class="dot1"></span><span class="dot2"></span><span class="dot3"></span></div>
                     <div class="box-content">
                         <div class="box-tag">זירת המנג'ר</div>
                         <div class="box-title">טקטיקה וסקאוטינג</div>
@@ -604,9 +424,7 @@
                 </a>
 
                 <a href="#" class="square-box">
-                    <div class="tech-bars">
-                        <span style="height: 12px;"></span><span style="height: 8px;"></span><span style="height: 20px;"></span><span style="height: 14px;"></span>
-                    </div>
+                    <div class="tech-bars"><span style="height: 12px;"></span><span style="height: 8px;"></span><span style="height: 20px;"></span><span style="height: 14px;"></span></div>
                     <div class="box-content">
                         <div class="box-tag">אזור וידאו</div>
                         <div class="box-title">סיקור משחקים</div>
@@ -615,17 +433,48 @@
                 </a>
                 
                 <a href="#" class="square-box">
-                    <div class="tech-dots">
-                        <span></span><span></span><span></span><span></span>
-                    </div>
+                    <div class="tech-dots"><span></span><span></span><span></span><span></span></div>
                     <div class="box-content">
                         <div class="box-tag">הימורים וטיפים</div>
                         <div class="box-title">תחזיות המומחים</div>
                         <div class="box-desc">טיפים לווינר, סטטיסטיקות לקראת מחזור והימורים חכמים.</div>
                     </div>
                 </a>
-
             </div>
+
+            <div class="fab-aligner">
+                <div class="fab-container">
+                    
+                    <div class="fab-menu">
+                        <a href="#" class="fab-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            צ'אט אוהדים
+                        </a>
+                        <a href="#" class="fab-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            מרכז הפעילות
+                        </a>
+                        <a href="#" class="fab-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                            אזור V.I.P
+                        </a>
+                        <a href="#" class="fab-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            טורנירים לייב
+                        </a>
+                        <a href="#" class="fab-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                            פורומים ודיונים
+                        </a>
+                    </div>
+                    
+                    <div class="fab-button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span>קהילה</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
