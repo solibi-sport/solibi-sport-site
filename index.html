@@ -37,10 +37,10 @@
             overflow: hidden; /* ביטול גלילה מוחלט */
         }
 
-        /* --- שורה עליונה (Header) - נעלנו את הגובה כדי שתמיד תהיה צרה --- */
+        /* --- שורה עליונה (Header) --- */
         .header {
             background: var(--element-navy-gradient);
-            height: 75px; /* נעילת גובה השורה - לא תתרחב יותר! */
+            height: 90px; /* נתנו קצת יותר גובה לשורה כדי שהלוגו יישב בנוח */
             padding: 0 5%;
             display: flex;
             justify-content: space-between;
@@ -58,17 +58,17 @@
             height: 100%;
         }
 
-        /* --- הלוגו: חתוך ומוגדל בלי להרוס את השורה --- */
+        /* --- הלוגו: פרופורציה טבעית לחלוטין בלי זום --- */
         .actual-logo-img {
-            height: 50px; /* גובה פיזי נמוך */
-            width: auto;
-            transform: scale(2.2); /* מגדיל ויזואלית כמו זכוכית מגדלת */
-            transform-origin: right center;
+            height: 65px; /* קובע את הגובה המדויק */
+            width: auto; /* מבטיח שהתמונה לעולם לא תימרח או תתעוות */
+            border-radius: 6px; /* מעגל קצת את הפינות של המלבן הלבן */
             transition: transform 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3); /* צל קל שירים אותו מהרקע */
         }
 
         .actual-logo-img:hover {
-            transform: scale(2.3);
+            transform: scale(1.05); /* הגדלה עדינה רק כשעוברים עם העכבר */
         }
 
         /* --- התפריט: מקובע תמיד לאמצע המסך בסופר סימטריה --- */
