@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט</title>
+    <title>סוליבי ספורט - עולם שלם של כדורגל</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --dark-navy: #16263a; /* בלו נייבי כהה יותר */
-            --light-gray: #f0f2f5; /* אפור בהיר לשורות עליונה ותחתונה */
-            --text-dark: #1a202c; 
-            --text-light: #ffffff; /* טקסט לבן על רקע הדשא */
-            --solibi-green: #8bc34a; /* ירוק לוגו */
+            /* צבעים שנדגמו ישירות מהלוגו שלך */
+            --brand-blue: #163c63;       /* הכחול של הטקסט בסוליבי */
+            --brand-blue-dark: #0a1f35;  /* גרסה כהה מאוד לרקע */
+            --brand-green: #7ca856;      /* הירוק של הגרף/כדור */
+            --brand-green-glow: rgba(124, 168, 86, 0.4);
+            --brand-gray: #7a8b99;       /* האפור של המשפט למטה */
+            --panel-bg: #f5f7fa;         /* אפור בהיר-יוקרתי וקר להדר/פוטר */
+            --text-dark: #1a2530;
+            --text-light: #ffffff;
         }
 
         * {
@@ -22,57 +26,91 @@
 
         body {
             font-family: 'Rubik', sans-serif;
-            background-color: var(--dark-navy); /* רקע נייבי כהה */
+            /* רקע הייטקי המשלב כחול נייבי כהה עם מעבר צבע עדין מאוד */
+            background: radial-gradient(circle at center, #163c63 0%, #0a1f35 100%);
             display: flex;
             flex-direction: column;
-            height: 100vh; /* תופס בדיוק 100% מגובה המסך */
-            overflow: hidden; /* מבטל את הגלילה למטה לחלוטין */
+            height: 100vh;
+            overflow: hidden; /* ביטול גלילה מוחלט */
         }
 
-        /* --- שורה עליונה (Header) --- */
+        /* --- שורה עליונה (Header) - אפור בהיר יוקרתי --- */
         .header {
-            background-color: var(--light-gray);
+            background-color: var(--panel-bg);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-bottom: 2px solid rgba(22, 60, 99, 0.1);
             z-index: 100;
-            flex-shrink: 0; /* מונע מההדר להתכווץ */
+            flex-shrink: 0;
         }
 
         .header-logo {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 900;
-            color: #001e3c;
+            color: var(--brand-blue);
+            letter-spacing: -0.5px;
         }
+        
         .header-logo span {
-            color: var(--solibi-green);
+            color: var(--brand-green);
         }
 
         .header-nav ul {
             list-style: none;
             display: flex;
-            gap: 30px;
+            gap: 35px;
         }
+        
         .header-nav a {
             text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
+            color: var(--brand-blue);
+            font-weight: 600;
             font-size: 16px;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
         }
+
         .header-nav a:hover {
-            color: var(--solibi-green);
+            color: var(--brand-green);
+        }
+
+        /* פס ירוק קטן שמופיע מתחת ללינק במעבר עכבר (אפקט הייטק) */
+        .header-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: var(--brand-green);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .header-nav a:hover::after {
+            width: 100%;
         }
 
         .header-search input {
-            padding: 10px 15px 10px 35px;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            width: 220px;
+            padding: 10px 20px;
+            border: 1px solid rgba(22, 60, 99, 0.2);
+            background-color: #ffffff;
+            border-radius: 30px;
+            width: 240px;
             outline: none;
             font-family: 'Rubik', sans-serif;
+            color: var(--brand-blue);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .header-search input:focus {
+            border-color: var(--brand-green);
+            box-shadow: 0 0 8px var(--brand-green-glow);
         }
 
         /* --- תוכן מרכזי (Grid) --- */
@@ -81,8 +119,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2vh 5%; /* שימוש ב-vh כדי להתאים לגובה המסך */
-            min-height: 0; /* חשוב כדי לאפשר לתוכן להתכווץ ולא ליצור גלילה */
+            padding: 0 5%;
+            min-height: 0;
         }
 
         .grid-container {
@@ -90,35 +128,48 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             width: 100%;
-            max-width: 750px; /* הקטנת הריבועים (רוחב מקסימלי קטן יותר) */
+            max-width: 750px; /* שומר על הגודל המבוקש לריבועים */
             align-content: center;
         }
 
-        /* --- משבצות ריבועיות עם דשא אמיתי --- */
+        /* --- משבצות ריבועיות יוקרתיות --- */
         .square-box {
-            aspect-ratio: 1 / 1; /* ריבוע מושלם */
-            border-radius: 12px;
+            aspect-ratio: 1 / 1;
+            border-radius: 16px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* אנימציית קפיצה רכה ויוקרתית */
             position: relative;
             overflow: hidden;
             cursor: pointer;
             text-decoration: none;
-            /* רקע דשא אמיתי + שכבת הכהיה כדי שהטקסט יהיה קריא */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=800&auto=format&fit=crop');
+            
+            /* שילוב מנצח: תמונת דשא אמיתי + גרדיאנט שקוף בצבעי הלוגו! */
+            background-image: 
+                linear-gradient(135deg, rgba(22, 60, 99, 0.85) 0%, rgba(124, 168, 86, 0.65) 100%), 
+                url('https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=800&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            border: 2px solid transparent;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* מסגרת פנימית עדינה למראה יוקרתי */
+        .square-box::after {
+            content: '';
+            position: absolute;
+            top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            pointer-events: none;
         }
 
         .square-box:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
-            border-color: var(--solibi-green); /* מסגרת ירוקה במעבר עכבר */
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px var(--brand-green-glow);
+            border-color: var(--brand-green);
         }
 
         .box-content {
@@ -130,38 +181,62 @@
         }
 
         .box-icon {
-            font-size: 40px; /* הוקטן מעט כדי להתאים לריבועים הקטנים */
+            font-size: 42px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); /* צל לאייקונים */
+            transition: transform 0.3s ease;
+        }
+
+        .square-box:hover .box-icon {
+            transform: scale(1.1);
         }
 
         .box-title {
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 700;
-            color: var(--text-light); /* טקסט לבן על רקע הדשא */
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* צל לטקסט להבלטה */
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
         }
 
         /* --- שורה תחתונה (Footer Ticker) --- */
         .footer {
-            background-color: var(--light-gray);
+            background-color: var(--panel-bg);
             padding: 12px 0;
             overflow: hidden;
             white-space: nowrap;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
-            flex-shrink: 0; /* מונע מהפוטר להתכווץ */
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+            border-top: 2px solid rgba(22, 60, 99, 0.1);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        /* פס ירוק דק מעל הטיקר */
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--brand-blue), var(--brand-green), var(--brand-blue));
         }
 
         .ticker-wrap {
             display: inline-block;
             padding-right: 100%;
-            animation: ticker 30s linear infinite;
+            animation: ticker 35s linear infinite;
         }
 
         .ticker-item {
             display: inline-block;
-            padding: 0 30px;
-            font-size: 14px;
+            padding: 0 35px;
+            font-size: 15px;
             font-weight: 600;
-            color: var(--text-dark);
+            color: var(--brand-blue);
+        }
+
+        /* מפריד מעוצב בטיקר */
+        .ticker-divider {
+            color: var(--brand-green);
+            font-weight: 900;
+            margin: 0 15px;
         }
 
         @keyframes ticker {
@@ -175,16 +250,17 @@
                 grid-template-columns: repeat(2, 1fr);
                 max-width: 500px;
             }
-            body { overflow: auto; height: auto; } /* מחזיר גלילה במסכים קטנים כדי לא למעוך */
+            body { overflow: auto; height: auto; }
         }
         @media (max-width: 600px) {
             .grid-container {
                 grid-template-columns: 1fr;
-                max-width: 250px;
+                max-width: 280px;
             }
             .header {
                 flex-direction: column;
                 gap: 15px;
+                padding: 20px 10px;
             }
         }
     </style>
@@ -206,7 +282,7 @@
         </nav>
 
         <div class="header-search">
-            <input type="text" placeholder="חיפוש...">
+            <input type="text" placeholder="חיפוש קבוצה, שחקן...">
         </div>
     </header>
 
@@ -261,12 +337,14 @@
     <footer class="footer">
         <div class="ticker-wrap">
             <span class="ticker-item">מכבי ת"א ניצחה 2-0 את הפועל באר שבע</span>
-            <span class="ticker-item">|</span>
-            <span class="ticker-item">סיכום המחזור ה-15 בליגת העל</span>
-            <span class="ticker-item">|</span>
+            <span class="ticker-divider">•</span>
+            <span class="ticker-item">סיכום המחזור ה-15 בליגת העל פורסם באתר</span>
+            <span class="ticker-divider">•</span>
             <span class="ticker-item">שוק ההעברות: שחקן חדש חתם בהפועל תל אביב</span>
-            <span class="ticker-item">|</span>
-            <span class="ticker-item">הערב: בית"ר ירושלים נגד מכבי חיפה</span>
+            <span class="ticker-divider">•</span>
+            <span class="ticker-item">הערב: משחק העונה - בית"ר ירושלים מארחת את מכבי חיפה</span>
+            <span class="ticker-divider">•</span>
+            <span class="ticker-item">עדכון פנטזי: חלון החילופים פתוח עד יום שבת ב-14:00</span>
         </div>
     </footer>
 
