@@ -11,7 +11,7 @@
             --brand-green: #7ca856;      
             --brand-green-glow: rgba(124, 168, 86, 0.6);
             
-            /* רקע האתר - כסוף/אפור הובהר ממש טיפה נוספת */
+            /* רקע האתר - כסוף/אפור טיפה בהיר */
             --bg-silver-matte: linear-gradient(145deg, #eef4f9 0%, #c9d4e0 100%);
             
             /* צבע האלמנטים (משבצות, הדר, פוטר) - בלו נייבי */
@@ -29,7 +29,6 @@
 
         body {
             font-family: 'Rubik', sans-serif;
-            /* רקע האתר */
             background: var(--bg-silver-matte);
             background-attachment: fixed;
             display: flex;
@@ -38,68 +37,107 @@
             overflow: hidden; /* ביטול גלילה מוחלט */
         }
 
-        /* --- לעדכן את השורה העליונה (Header) כדי שתהיה צרה --- */
-.header {
-    background: var(--element-navy-gradient);
-    padding: 10px 5%; /* הקטנו את הריווח כדי להצר את גובה השורה */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
-    border-bottom: 2px solid var(--brand-green);
-    z-index: 100;
-    flex-shrink: 0;
-    position: relative; /* קריטי כדי שנוכל למרכז את התפריט */
-}
+        /* --- שורה עליונה (Header) - נעלנו את הגובה כדי שתמיד תהיה צרה --- */
+        .header {
+            background: var(--element-navy-gradient);
+            height: 75px; /* נעילת גובה השורה - לא תתרחב יותר! */
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
+            border-bottom: 2px solid var(--brand-green);
+            z-index: 100;
+            flex-shrink: 0;
+            position: relative;
+        }
 
-/* --- הלוגו: תופס פחות גובה פיזי אבל מוגדל ויזואלית --- */
-.actual-logo-img {
-    max-height: 40px; /* גובה נמוך כדי לא לדחוף את השורה */
-    width: auto;
-    display: block;
-    transform: scale(2.0); /* הגדלה ויזואלית משמעותית (זום) */
-    transform-origin: right center;
-    transition: transform 0.3s ease;
-}
+        .header-logo {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
 
-.actual-logo-img:hover {
-    transform: scale(2.05);
-}
+        /* --- הלוגו: חתוך ומוגדל בלי להרוס את השורה --- */
+        .actual-logo-img {
+            height: 50px; /* גובה פיזי נמוך */
+            width: auto;
+            transform: scale(2.2); /* מגדיל ויזואלית כמו זכוכית מגדלת */
+            transform-origin: right center;
+            transition: transform 0.3s ease;
+        }
 
-/* --- התפריט: מרוכז בדיוק באמצע המסך מעל הקוביות --- */
-.header-nav {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
+        .actual-logo-img:hover {
+            transform: scale(2.3);
+        }
 
-.header-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 35px;
-}
+        /* --- התפריט: מקובע תמיד לאמצע המסך בסופר סימטריה --- */
+        .header-nav {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-/* --- שורת חיפוש: מורחבת מאוד לרוחב, אבל שומרת על גובה תקין --- */
-.header-search input {
-    padding: 10px 25px; /* ריווח נורמלי שלא מרחיב את השורה */
-    border: none;
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 40px;
-    width: 550px; /* רוחב ענק בדיוק כמו שביקשת */
-    font-size: 16px;
-    outline: none;
-    font-family: 'Rubik', sans-serif;
-    color: #000;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-}
+        .header-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+            margin: 0;
+            padding: 0;
+        }
 
-.header-search input:focus {
-    box-shadow: 0 0 12px var(--brand-green-glow);
-    background-color: #ffffff;
-    width: 580px; /* מתרחבת בעוד קצת כשמקלידים בתוכה */
-}
+        /* נעילת צבע התפריט ללבן (מעלים את הסגול!) */
+        .header-nav a {
+            text-decoration: none !important;
+            color: var(--text-light) !important; 
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-nav a:hover {
+            color: var(--brand-green) !important;
+        }
+
+        .header-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: var(--brand-green);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .header-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* --- שורת חיפוש: נמוכה, אלגנטית ומאוד רחבה --- */
+        .header-search input {
+            padding: 0 20px;
+            height: 38px; /* צרה בגובה */
+            width: 400px; /* רחבה למתיחה */
+            border: none;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            font-size: 15px;
+            outline: none;
+            font-family: 'Rubik', sans-serif;
+            color: #000;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .header-search input:focus {
+            box-shadow: 0 0 12px var(--brand-green-glow);
+            background-color: #ffffff;
+            width: 430px;
+        }
 
         /* --- תוכן מרכזי (Grid) --- */
         .main-content {
@@ -135,7 +173,6 @@
             text-decoration: none;
         }
 
-        /* מסגרת פנימית עדינה למראה יוקרתי */
         .square-box::after {
             content: '';
             position: absolute;
@@ -146,7 +183,6 @@
             transition: all 0.3s ease;
         }
 
-        /* אפקט רחיפה (Hover) - זוהר ירוק */
         .square-box:hover {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 
@@ -171,7 +207,6 @@
             position: relative;
         }
 
-        /* פס ירוק עליון מעל הטיקר */
         .footer::before {
             content: '';
             position: absolute;
@@ -206,51 +241,25 @@
             100% { transform: translateX(100%); }
         }
 
-        /* רספונסיביות */
         @media (max-width: 900px) {
-            .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: 500px;
-            }
+            .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 500px; }
             body { overflow: auto; height: auto; }
         }
         @media (max-width: 600px) {
-            .grid-container {
-                grid-template-columns: 1fr;
-                max-width: 280px;
-            }
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 20px 10px;
-            }
+            .grid-container { grid-template-columns: 1fr; max-width: 280px; }
+            .header { height: auto; flex-direction: column; gap: 15px; padding: 20px 10px; }
+            .header-nav { position: relative; left: auto; transform: none; }
         }
-        .actual-logo-img {
-    max-height: 75px; /* שומר על השורה העליונה בגובה נורמלי ואלגנטי */
-    width: auto;
-    display: block;
-    transform: scale(1.6); /* זה קסם הזום! מגדיל את התמונה ב-60% מבלי לדחוף את השורה */
-    transform-origin: right center; /* מוודא שההגדלה תקרה ימינה ולא תעלה על התפריט */
-    transition: transform 0.3s ease;
-}
-
-.actual-logo-img:hover {
-    transform: scale(1.65); /* אפקט ריחוף עדין שמותאם לזום */
-}
-
-.actual-logo-img:hover {
-    transform: scale(1.05); /* מגדיל ממש טיפה את הלוגו כששמים עליו עכבר */
-}
     </style>
 </head>
 <body>
 
     <header class="header">
         <div class="header-logo">
-    <a href="#">
-        <img src="a.jpg" alt="לוגו" class="actual-logo-img">
-    </a>
-</div>
+            <a href="#">
+                <img src="a.jpg" alt="לוגו סוליבי ספורט" class="actual-logo-img">
+            </a>
+        </div>
         
         <nav class="header-nav">
             <ul>
