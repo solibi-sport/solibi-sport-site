@@ -37,7 +37,7 @@
             border-bottom: 2px solid var(--brand-green);
             z-index: 100;
             flex-shrink: 0;
-            gap: 20px;
+            position: relative;
             overflow: visible; 
         }
 
@@ -49,7 +49,7 @@
 
         .logo-wrapper {
             position: relative;
-            top: 32px; /* חצי בול */
+            top: 32px; 
             background-color: #ffffff;
             padding: 10px 20px; 
             border-radius: 12px;
@@ -74,8 +74,18 @@
             display: block;
         }
 
-        .header-nav { flex: 1; display: flex; justify-content: center; }
-        .header-nav ul { list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; flex-wrap: wrap; justify-content: center; }
+        /* ממורכז לחלוטין מעל הקוביות */
+        .header-nav { 
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex; 
+            justify-content: center; 
+        }
+        
+        .header-nav ul { 
+            list-style: none; display: flex; gap: 30px; margin: 0; padding: 0; 
+        }
 
         .header-nav a {
             text-decoration: none !important;
@@ -95,7 +105,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .header-search { flex-shrink: 0; }
+        .header-search { flex-shrink: 0; z-index: 10; }
         .header-search input {
             padding: 0 20px;
             height: 36px;
@@ -118,69 +128,91 @@
             width: 320px;
         }
 
-        /* הגדרה מחדש: הקוביות באמצע הכל, הטבלה מודבקת שמאלה */
         .main-content {
             flex: 1;
             display: flex;
-            justify-content: center; /* ממרכז את הקוביות באופן מושלם */
             align-items: center;
-            padding: 0 5%;
-            position: relative; /* מאפשר לטבלה לזוז שמאלה באופן מוחלט */
-            max-width: 1500px; 
-            margin: 0 auto;
+            justify-content: center;
             width: 100%;
+            padding: 0 5%;
+            overflow-y: auto;
         }
 
-        .trending-sidebar {
-            position: absolute; /* מוציא את הטבלה מהזרימה כדי שלא תפריע למרכז */
-            left: 5%; /* מדביק אותה הכי שמאלה שאפשר */
+        /* העטיפה של מרכז האתר */
+        .layout-wrapper {
+            position: relative; 
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* הקוביות באמצע */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            width: 100%;
+            max-width: 750px;
+        }
+
+        /* טבלת העדכונים - מודבקת לשמאל, באותו גובה בדיוק */
+        .updates-sidebar {
+            position: absolute; 
+            left: 0; 
+            top: 0; 
+            bottom: 0; 
             width: 280px;
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 16px;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
         }
 
-        .trending-header {
+        .updates-header {
             font-size: 18px;
             font-weight: 900;
             color: #112845;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             border-bottom: 2px solid var(--brand-green);
             padding-bottom: 8px;
         }
 
-        .trending-item {
+        .updates-item {
             display: flex;
             align-items: center;
             gap: 12px;
             background: rgba(255, 255, 255, 0.6);
-            padding: 10px;
+            padding: 12px;
             border-radius: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             color: #112845;
         }
 
-        .trending-item:last-child { margin-bottom: 0; }
+        .updates-item:last-child { margin-bottom: 0; }
 
-        .trending-item:hover {
+        .updates-item:hover {
             transform: translateX(-5px);
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             border-right: 3px solid var(--brand-green);
         }
 
-        .trending-icon {
+        .updates-icon {
             font-size: 22px;
             background: #ffffff;
             width: 36px;
@@ -193,17 +225,9 @@
             flex-shrink: 0;
         }
 
-        .trending-text { display: flex; flex-direction: column; }
-        .trending-label { font-size: 11px; font-weight: 700; color: var(--brand-green); text-transform: uppercase; }
-        .trending-title { font-size: 13px; font-weight: 700; line-height: 1.2; }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            max-width: 750px;
-            align-content: center;
-        }
+        .updates-text { display: flex; flex-direction: column; }
+        .updates-label { font-size: 11px; font-weight: 700; color: var(--brand-green); text-transform: uppercase; }
+        .updates-title { font-size: 13px; font-weight: 700; line-height: 1.2; }
 
         .square-box {
             aspect-ratio: 1 / 1;
@@ -242,24 +266,19 @@
         .box-desc { color: #a0aec0; font-size: 14px; line-height: 1.4; font-weight: 400; }
         
         /* === אייקונים === */
-        
-        /* קוביה 1 */
         .tech-bars { position: absolute; top: 25px; left: 25px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: all 0.4s ease; height: 26px; }
         .tech-bars span { width: 4px; background: var(--text-light); border-radius: 2px; transition: all 0.4s ease; }
         .square-box:hover .tech-bars { opacity: 0.8; gap: 6px; }
         .square-box:hover .tech-bars span { background: var(--brand-green); }
 
-        /* קוביה 2 */
         .tech-dots { position: absolute; top: 25px; left: 25px; opacity: 0.15; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; transition: all 0.4s ease; }
         .tech-dots span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
         .square-box:hover .tech-dots { opacity: 0.8; gap: 6px; }
         .square-box:hover .tech-dots span { background: var(--brand-green); }
 
-        /* קוביה 3 */
         .tech-dollar-only { position: absolute; top: 25px; left: 25px; font-size: 26px; font-weight: 900; color: var(--text-light); opacity: 0.25; transition: all 0.4s ease; font-family: sans-serif; line-height: 1; }
         .square-box:hover .tech-dollar-only { opacity: 0.9; color: var(--brand-green); transform: scale(1.1); }
 
-        /* קוביה 4: לוח טקטי */
         .tech-tactic { position: absolute; top: 25px; left: 25px; width: 30px; height: 24px; opacity: 0.15; transition: all 0.4s ease; border: 2px solid var(--text-light); border-radius: 4px; }
         .tech-tactic span { position: absolute; width: 5px; height: 5px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
         .tech-tactic .dot1 { top: 3px; left: 50%; transform: translateX(-50%); }
@@ -291,11 +310,12 @@
 
         @media (max-width: 1050px) {
             .header { height: auto; padding: 15px; flex-direction: column; gap: 25px; }
+            .header-nav { position: relative; left: auto; transform: none; }
             .logo-wrapper { top: 0; transform: none; }
             .actual-logo-img { height: 40px; }
-            .main-content { flex-direction: column; padding: 20px; overflow-y: auto; gap: 30px; }
-            .trending-sidebar { position: relative; left: auto; width: 100%; max-width: 500px; }
-            .grid-container { grid-template-columns: repeat(2, 1fr); }
+            .layout-wrapper { flex-direction: column; align-items: center; }
+            .updates-sidebar { position: relative; left: auto; top: auto; bottom: auto; width: 100%; max-width: 750px; margin-top: 30px; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); width: 100%; }
             body { overflow: auto; height: auto; }
         }
     </style>
@@ -324,95 +344,104 @@
     </header>
 
     <main class="main-content">
-
-        <aside class="trending-sidebar">
-            <div class="trending-header">🔥 חם באתר</div>
-            <a href="#" class="trending-item">
-                <div class="trending-icon">🏆</div>
-                <div class="trending-text">
-                    <span class="trending-label">פנטזי ליג</span>
-                    <span class="trending-title">מקום 1: קבוצת "האריות"</span>
-                </div>
-            </a>
-            <a href="#" class="trending-item">
-                <div class="trending-icon">🃏</div>
-                <div class="trending-text">
-                    <span class="trending-label">שוק הקלפים</span>
-                    <span class="trending-title">הקלף החם: אמבפה 94</span>
-                </div>
-            </a>
-            <a href="#" class="trending-item">
-                <div class="trending-icon">📋</div>
-                <div class="trending-text">
-                    <span class="trending-label">פוטבול מנג'ר</span>
-                    <span class="trending-title">טקטיקת 4-3-3 המנצחת</span>
-                </div>
-            </a>
-            <a href="#" class="trending-item">
-                <div class="trending-icon">🎙️</div>
-                <div class="trending-text">
-                    <span class="trending-label">פודקאסט</span>
-                    <span class="trending-title">פרק חדש: סיכום המחזור</span>
-                </div>
-            </a>
-        </aside>
-
-        <div class="grid-container">
+        <div class="layout-wrapper">
             
-            <a href="#" class="square-box">
-                <div class="tech-bars">
-                    <span style="height: 10px;"></span>
-                    <span style="height: 22px;"></span>
-                    <span style="height: 14px;"></span>
-                    <span style="height: 26px;"></span>
-                </div>
-                <div class="box-content">
-                    <div class="box-tag">עדכונים לייב</div>
-                    <div class="box-title">מרכז הליגות</div>
-                    <div class="box-desc">מעקב שוטף אחר טבלאות, תוצאות וסטטיסטיקות בזמן אמת.</div>
-                </div>
-            </a>
+            <div class="grid-container">
+                <a href="#" class="square-box">
+                    <div class="tech-bars">
+                        <span style="height: 10px;"></span>
+                        <span style="height: 22px;"></span>
+                        <span style="height: 14px;"></span>
+                        <span style="height: 26px;"></span>
+                    </div>
+                    <div class="box-content">
+                        <div class="box-tag">עדכונים לייב</div>
+                        <div class="box-title">מרכז הליגות</div>
+                        <div class="box-desc">מעקב שוטף אחר טבלאות, תוצאות וסטטיסטיקות בזמן אמת.</div>
+                    </div>
+                </a>
 
-            <a href="#" class="square-box">
-                <div class="tech-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <div class="box-content">
-                    <div class="box-tag">פרויקט דגל</div>
-                    <div class="box-title">פנתיאון הכדורגל הישראלי</div>
-                    <div class="box-desc">מדד סוליבי ל-100 הגדולים, שיאים אישיים/קבוצתיים והרכבי כל הזמנים.</div>
-                </div>
-            </a>
+                <a href="#" class="square-box">
+                    <div class="tech-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="box-content">
+                        <div class="box-tag">פרויקט דגל</div>
+                        <div class="box-title">פנתיאון הכדורגל הישראלי</div>
+                        <div class="box-desc">מדד סוליבי ל-100 הגדולים, שיאים אישיים/קבוצתיים והרכבי כל הזמנים.</div>
+                    </div>
+                </a>
 
-            <a href="#" class="square-box">
-                <div class="tech-dollar-only">$</div>
-                <div class="box-content">
-                    <div class="box-tag">שוק האספנות</div>
-                    <div class="box-title">בורסת הקלפים והנתונים</div>
-                    <div class="box-desc">מעקב מחירי שוק, המלצות השקעה וניהול צ'קליסט אישי להשלמת סדרות.</div>
-                </div>
-            </a>
+                <a href="#" class="square-box">
+                    <div class="tech-dollar-only">$</div>
+                    <div class="box-content">
+                        <div class="box-tag">שוק האספנות</div>
+                        <div class="box-title">בורסת הקלפים והנתונים</div>
+                        <div class="box-desc">מעקב מחירי שוק, המלצות השקעה וניהול צ'קליסט אישי להשלמת סדרות.</div>
+                    </div>
+                </a>
 
-            <a href="#" class="square-box">
-                <div class="tech-tactic">
-                    <span class="dot1"></span>
-                    <span class="dot2"></span>
-                    <span class="dot3"></span>
-                </div>
-                <div class="box-content">
-                    <div class="box-tag">זירת הגיימינג</div>
-                    <div class="box-title">משחקי מנג'ר</div>
-                    <div class="box-desc">המלצות למערכים מנצחים, איתור יהלומים, ודירוגים שונים ממשחקי צ'מפיונשיפ ופוטבול מנג'ר.</div>
-                </div>
-            </a>
+                <a href="#" class="square-box">
+                    <div class="tech-tactic">
+                        <span class="dot1"></span>
+                        <span class="dot2"></span>
+                        <span class="dot3"></span>
+                    </div>
+                    <div class="box-content">
+                        <div class="box-tag">זירת המנג'ר</div>
+                        <div class="box-title">טקטיקה וסקאוטינג</div>
+                        <div class="box-desc">המלצות למערכים מנצחים, איתור יהלומים, ודירוגים ממשחקי צ'מפיונשיפ ופוטבול מנג'ר.</div>
+                    </div>
+                </a>
 
-            <a href="#" class="square-box"></a>
-            
-            <a href="#" class="square-box"></a>
-            
+                <a href="#" class="square-box"></a>
+                
+                <a href="#" class="square-box"></a>
+            </div>
+
+            <aside class="updates-sidebar">
+                <div class="updates-header">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    עידכונים חמים
+                </div>
+                
+                <div>
+                    <a href="#" class="updates-item">
+                        <div class="updates-icon">🏆</div>
+                        <div class="updates-text">
+                            <span class="updates-label">פנטזי ליג</span>
+                            <span class="updates-title">מקום 1: קבוצת "האריות"</span>
+                        </div>
+                    </a>
+                    <a href="#" class="updates-item">
+                        <div class="updates-icon">🃏</div>
+                        <div class="updates-text">
+                            <span class="updates-label">שוק הקלפים</span>
+                            <span class="updates-title">הקלף החם: אמבפה 94</span>
+                        </div>
+                    </a>
+                    <a href="#" class="updates-item">
+                        <div class="updates-icon">📋</div>
+                        <div class="updates-text">
+                            <span class="updates-label">פוטבול מנג'ר</span>
+                            <span class="updates-title">טקטיקת 4-3-3 המנצחת</span>
+                        </div>
+                    </a>
+                    <a href="#" class="updates-item" style="margin-bottom: 0;">
+                        <div class="updates-icon">🎙️</div>
+                        <div class="updates-text">
+                            <span class="updates-label">פודקאסט</span>
+                            <span class="updates-title">פרק חדש: סיכום המחזור</span>
+                        </div>
+                    </a>
+                </div>
+            </aside>
+
         </div>
     </main>
 
