@@ -26,9 +26,10 @@
             overflow: hidden;
         }
 
+        /* שורת כותרת צרה יותר */
         .header {
             background: var(--element-navy-gradient);
-            height: 100px; 
+            height: 65px; 
             padding: 0 5%;
             display: flex;
             justify-content: space-between;
@@ -38,22 +39,41 @@
             z-index: 100;
             flex-shrink: 0;
             gap: 20px;
+            overflow: visible; /* מאפשר ללוגו לפרוץ החוצה */
         }
 
-        .header-logo { display: flex; align-items: center; }
+        .header-logo { 
+            display: flex; 
+            align-items: center; 
+            height: 100%;
+        }
+
+        /* העטיפה של הלוגו - מרחפת החוצה */
+        .logo-wrapper {
+            position: relative;
+            top: 20px; /* דוחף את הלוגו למטה כדי שיפרוץ את קו ההדר */
+            background-color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-wrapper:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+        }
 
         .actual-logo-img {
-            height: 80px; 
+            height: 45px; 
             width: auto;
             max-width: 100%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .actual-logo-img:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            display: block;
         }
 
         .header-nav { flex: 1; display: flex; justify-content: center; }
@@ -107,8 +127,8 @@
             justify-content: center;
             align-items: center;
             padding: 0 5%;
-            gap: 50px;
-            max-width: 1400px;
+            gap: 120px; 
+            max-width: 1500px; 
             margin: 0 auto;
             width: 100%;
         }
@@ -218,29 +238,37 @@
 
         .square-box:hover::after { border-color: var(--brand-green); opacity: 0.5; }
 
-        /* עיצוב התוכן של הקוביות */
         .box-content { position: relative; z-index: 2; }
         .box-tag { font-size: 12px; color: var(--brand-green); text-transform: uppercase; letter-spacing: 1px; font-weight: 900; margin-bottom: 8px; }
         .box-title { color: #ffffff; font-size: 22px; font-weight: 900; line-height: 1.2; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .box-desc { color: #a0aec0; font-size: 14px; line-height: 1.4; font-weight: 400; }
         
-        /* === אייקונים דקורטיביים === */
+        /* === אייקונים === */
         
-        /* קוביה 1: אייקון גרף עמודות */
+        /* קוביה 1 */
         .tech-bars { position: absolute; top: 25px; left: 25px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: all 0.4s ease; height: 26px; }
         .tech-bars span { width: 4px; background: var(--text-light); border-radius: 2px; transition: all 0.4s ease; }
         .square-box:hover .tech-bars { opacity: 0.8; gap: 6px; }
         .square-box:hover .tech-bars span { background: var(--brand-green); }
 
-        /* קוביה 2: אייקון נקודות (פנתיאון) */
+        /* קוביה 2 */
         .tech-dots { position: absolute; top: 25px; left: 25px; opacity: 0.15; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; transition: all 0.4s ease; }
         .tech-dots span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
         .square-box:hover .tech-dots { opacity: 0.8; gap: 6px; }
         .square-box:hover .tech-dots span { background: var(--brand-green); }
 
-        /* קוביה 3: אייקון דולר בלבד */
+        /* קוביה 3 */
         .tech-dollar-only { position: absolute; top: 25px; left: 25px; font-size: 26px; font-weight: 900; color: var(--text-light); opacity: 0.25; transition: all 0.4s ease; font-family: sans-serif; line-height: 1; }
         .square-box:hover .tech-dollar-only { opacity: 0.9; color: var(--brand-green); transform: scale(1.1); }
+
+        /* קוביה 4: לוח טקטי */
+        .tech-tactic { position: absolute; top: 25px; left: 25px; width: 30px; height: 24px; opacity: 0.15; transition: all 0.4s ease; border: 2px solid var(--text-light); border-radius: 4px; }
+        .tech-tactic span { position: absolute; width: 5px; height: 5px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
+        .tech-tactic .dot1 { top: 3px; left: 50%; transform: translateX(-50%); }
+        .tech-tactic .dot2 { bottom: 3px; left: 3px; }
+        .tech-tactic .dot3 { bottom: 3px; right: 3px; }
+        .square-box:hover .tech-tactic { opacity: 0.8; border-color: var(--brand-green); }
+        .square-box:hover .tech-tactic span { background: var(--brand-green); }
 
         .footer {
             background: var(--element-navy-gradient);
@@ -264,8 +292,9 @@
         @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
 
         @media (max-width: 950px) {
-            .header { height: auto; padding: 15px; flex-direction: column; gap: 15px; }
-            .actual-logo-img { height: 60px; }
+            .header { height: auto; padding: 15px; flex-direction: column; gap: 25px; }
+            .logo-wrapper { top: 0; }
+            .actual-logo-img { height: 40px; }
             .main-content { flex-direction: column; padding: 20px; overflow-y: auto; gap: 30px; }
             .grid-container { grid-template-columns: repeat(2, 1fr); }
             .trending-sidebar { width: 100%; max-width: 500px; }
@@ -277,7 +306,7 @@
 
     <header class="header">
         <div class="header-logo">
-            <a href="#">
+            <a href="#" class="logo-wrapper">
                 <img src="a.png" alt="לוגו סוליבי ספורט" class="actual-logo-img">
             </a>
         </div>
@@ -369,8 +398,21 @@
                 </div>
             </a>
 
+            <a href="#" class="square-box">
+                <div class="tech-tactic">
+                    <span class="dot1"></span>
+                    <span class="dot2"></span>
+                    <span class="dot3"></span>
+                </div>
+                <div class="box-content">
+                    <div class="box-tag">זירת המנג'ר</div>
+                    <div class="box-title">טקטיקה וסקאוטינג</div>
+                    <div class="box-desc">המלצות למערכים מנצחים, איתור יהלומים, ודירוגים ממשחקי צ'מפיונשיפ ופוטבול מנג'ר.</div>
+                </div>
+            </a>
+
             <a href="#" class="square-box"></a>
-            <a href="#" class="square-box"></a>
+            
             <a href="#" class="square-box"></a>
             
         </div>
