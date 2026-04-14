@@ -7,19 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* צבעים מעודכנים לפי הבקשה */
-            --brand-blue: #163c63;       /* הכחול של הלוגו */
-            --brand-green: #7ca856;      /* הירוק של הלוגו */
+            /* הצבע הירוק של הלוגו */
+            --brand-green: #7ca856;      
             --brand-green-glow: rgba(124, 168, 86, 0.6);
             
-            /* רקע בלו נייבי עמוק וכהה יותר */
-            --dark-navy-bg: #05101a; 
+            /* הרקע הכללי של האתר - כסוף מט (לשעבר הצבע של האלמנטים) */
+            --bg-silver-matte: linear-gradient(145deg, #8a96a3 0%, #5c6670 100%);
             
-            /* כסוף מט כהה ובולט (גרדיאנט למראה מטאלי יוקרתי) */
-            --dark-silver-matte: linear-gradient(145deg, #8a96a3 0%, #5c6670 100%);
-            --dark-silver-border: #9faab8;
+            /* צבע האלמנטים (משבצות, הדר, פוטר) - בלו נייבי כהה (לשעבר הרקע) */
+            --element-navy: #05101a;
+            --element-navy-gradient: radial-gradient(circle at top left, #0a1c2e 0%, #030a12 100%);
             
-            --text-on-silver: #05101a;   /* טקסט כהה על הרקע הכסוף */
+            /* צבעי טקסט - עכשיו הטקסט על האלמנטים הכהים צריך להיות בהיר */
+            --text-light: #ffffff;
         }
 
         * {
@@ -30,24 +30,24 @@
 
         body {
             font-family: 'Rubik', sans-serif;
-            /* רקע האתר - בלו נייבי כהה מאוד */
-            background-color: var(--dark-navy-bg);
-            background-image: radial-gradient(circle at center, #0a1c2e 0%, #030a12 100%);
+            /* רקע האתר - כסוף מט */
+            background: var(--bg-silver-matte);
+            background-attachment: fixed;
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden; /* ביטול גלילה מוחלט */
         }
 
-        /* --- שורה עליונה (Header) - כסוף מט כהה --- */
+        /* --- שורה עליונה (Header) - בלו נייבי כהה --- */
         .header {
-            background: var(--dark-silver-matte);
+            background: var(--element-navy-gradient);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid var(--brand-green); /* פס ירוק דק להפרדה מהכסוף */
             z-index: 100;
             flex-shrink: 0;
         }
@@ -55,14 +55,13 @@
         .header-logo {
             font-size: 28px;
             font-weight: 900;
-            color: var(--text-on-silver);
+            color: var(--text-light); /* טקסט לבן על הנייבי */
             letter-spacing: -0.5px;
-            text-shadow: 0 1px 1px rgba(255,255,255,0.2);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         
         .header-logo span {
             color: var(--brand-green);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .header-nav ul {
@@ -73,12 +72,11 @@
         
         .header-nav a {
             text-decoration: none;
-            color: var(--text-on-silver);
+            color: var(--text-light);
             font-weight: 700;
             font-size: 16px;
             transition: all 0.3s ease;
             position: relative;
-            text-shadow: 0 1px 1px rgba(255,255,255,0.1);
         }
 
         .header-nav a:hover {
@@ -103,20 +101,19 @@
 
         .header-search input {
             padding: 10px 20px;
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            background-color: rgba(255, 255, 255, 0.85);
+            border: none;
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 30px;
             width: 240px;
             outline: none;
             font-family: 'Rubik', sans-serif;
-            color: var(--text-on-silver);
+            color: #000;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .header-search input:focus {
-            border-color: var(--brand-green);
             box-shadow: 0 0 10px var(--brand-green-glow);
             background-color: #ffffff;
         }
@@ -140,37 +137,37 @@
             align-content: center;
         }
 
-        /* --- משבצות כסופות ריקות --- */
+        /* --- משבצות בלו נייבי כהה --- */
         .square-box {
             aspect-ratio: 1 / 1;
             border-radius: 16px;
-            background: var(--dark-silver-matte);
+            background: var(--element-navy-gradient);
             box-shadow: 
-                0 8px 25px rgba(0,0,0,0.6), 
-                inset 0 1px 1px rgba(255,255,255,0.3);
-            border: 1px solid rgba(0, 0, 0, 0.4);
+                0 8px 25px rgba(0,0,0,0.4), 
+                inset 0 1px 1px rgba(255,255,255,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.6);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             cursor: pointer;
             text-decoration: none;
         }
 
-        /* מסגרת פנימית עדינה למראה של כפתור הייטק יוקרתי */
+        /* מסגרת פנימית עדינה למראה יוקרתי */
         .square-box::after {
             content: '';
             position: absolute;
             top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.05);
             border-radius: 12px;
             pointer-events: none;
             transition: all 0.3s ease;
         }
 
-        /* אפקט רחיפה (Hover) ירוק זוהר */
+        /* אפקט רחיפה (Hover) - זוהר ירוק */
         .square-box:hover {
             transform: translateY(-8px) scale(1.02);
             box-shadow: 
-                0 15px 35px rgba(0,0,0,0.8), 
+                0 15px 35px rgba(0,0,0,0.6), 
                 0 0 25px var(--brand-green-glow);
             border-color: var(--brand-green);
         }
@@ -180,22 +177,22 @@
             opacity: 0.5;
         }
 
-        /* --- שורה תחתונה (Footer Ticker) - כסוף מט כהה --- */
+        /* --- שורה תחתונה (Footer Ticker) - בלו נייבי כהה --- */
         .footer {
-            background: var(--dark-silver-matte);
+            background: var(--element-navy-gradient);
             padding: 12px 0;
             overflow: hidden;
             white-space: nowrap;
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
             flex-shrink: 0;
             position: relative;
         }
 
+        /* פס ירוק עליון מעל הטיקר */
         .footer::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 3px;
+            top: 0; left: 0; width: 100%; height: 2px;
             background: var(--brand-green);
             box-shadow: 0 0 10px var(--brand-green-glow);
         }
@@ -211,12 +208,12 @@
             padding: 0 35px;
             font-size: 15px;
             font-weight: 700;
-            color: var(--text-on-silver);
-            text-shadow: 0 1px 1px rgba(255,255,255,0.1);
+            color: var(--text-light); /* טקסט לבן על הנייבי */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         .ticker-divider {
-            color: var(--brand-blue);
+            color: var(--brand-green);
             font-weight: 900;
             margin: 0 15px;
         }
