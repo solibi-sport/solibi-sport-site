@@ -6,13 +6,12 @@
     <title>סוליבי ספורט</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        /* --- משתני צבעים לפי בקשתך --- */
         :root {
-            --light-navy: #4a6b8c; /* בלו נייבי בהיר ככל הניתן */
+            --dark-navy: #16263a; /* בלו נייבי כהה יותר */
             --light-gray: #f0f2f5; /* אפור בהיר לשורות עליונה ותחתונה */
-            --text-dark: #1a202c; /* טקסט כהה לקריאות */
+            --text-dark: #1a202c; 
+            --text-light: #ffffff; /* טקסט לבן על רקע הדשא */
             --solibi-green: #8bc34a; /* ירוק לוגו */
-            --box-bg: #ffffff; /* רקע לבן למשבצות */
         }
 
         * {
@@ -23,23 +22,23 @@
 
         body {
             font-family: 'Rubik', sans-serif;
-            background-color: var(--light-navy); /* רקע נייבי בהיר */
+            background-color: var(--dark-navy); /* רקע נייבי כהה */
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            height: 100vh; /* תופס בדיוק 100% מגובה המסך */
+            overflow: hidden; /* מבטל את הגלילה למטה לחלוטין */
         }
 
         /* --- שורה עליונה (Header) --- */
         .header {
-            background-color: var(--light-gray); /* אפור בהיר */
+            background-color: var(--light-gray);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 100;
+            flex-shrink: 0; /* מונע מההדר להתכווץ */
         }
 
         .header-logo {
@@ -82,76 +81,73 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 50px 5%;
+            padding: 2vh 5%; /* שימוש ב-vh כדי להתאים לגובה המסך */
+            min-height: 0; /* חשוב כדי לאפשר לתוכן להתכווץ ולא ליצור גלילה */
         }
 
         .grid-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            gap: 25px;
             width: 100%;
-            max-width: 1100px;
+            max-width: 750px; /* הקטנת הריבועים (רוחב מקסימלי קטן יותר) */
+            align-content: center;
         }
 
-        /* --- משבצות ריבועיות עם צללית דשא --- */
+        /* --- משבצות ריבועיות עם דשא אמיתי --- */
         .square-box {
-            background-color: var(--box-bg);
-            aspect-ratio: 1 / 1; /* יוצר ריבוע מושלם (4x4) */
+            aspect-ratio: 1 / 1; /* ריבוע מושלם */
             border-radius: 12px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
             cursor: pointer;
             text-decoration: none;
-        }
-
-        /* צללית מגרש כדורגל ברקע של כל משבצת */
-        .square-box::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            /* SVG של מגרש כדורגל עדין מאוד (opacity נמוך) */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='rgba(0,0,0,0.04)' stroke-width='1.5'%3E%3Crect x='5' y='5' width='90' height='90' rx='5'/%3E%3Cline x1='5' y1='50' x2='95' y2='50'/%3E%3Ccircle cx='50' cy='50' r='15'/%3E%3Crect x='30' y='5' width='40' height='15'/%3E%3Crect x='30' y='80' width='40' height='15'/%3E%3C/svg%3E");
+            /* רקע דשא אמיתי + שכבת הכהיה כדי שהטקסט יהיה קריא */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=800&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            z-index: 1;
+            border: 2px solid transparent;
         }
 
         .square-box:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            border-color: var(--solibi-green); /* מסגרת ירוקה במעבר עכבר */
         }
 
         .box-content {
-            z-index: 2; /* מעל צללית המגרש */
+            z-index: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .box-icon {
-            font-size: 45px;
+            font-size: 40px; /* הוקטן מעט כדי להתאים לריבועים הקטנים */
         }
 
         .box-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
-            color: var(--text-dark);
+            color: var(--text-light); /* טקסט לבן על רקע הדשא */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* צל לטקסט להבלטה */
         }
 
         /* --- שורה תחתונה (Footer Ticker) --- */
         .footer {
-            background-color: var(--light-gray); /* אפור בהיר */
+            background-color: var(--light-gray);
             padding: 12px 0;
             overflow: hidden;
             white-space: nowrap;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            flex-shrink: 0; /* מונע מהפוטר להתכווץ */
         }
 
         .ticker-wrap {
@@ -164,7 +160,7 @@
             display: inline-block;
             padding: 0 30px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-dark);
         }
 
@@ -173,15 +169,18 @@
             100% { transform: translateX(100%); }
         }
 
-        /* רספונסיביות למסכים קטנים */
+        /* רספונסיביות */
         @media (max-width: 900px) {
             .grid-container {
                 grid-template-columns: repeat(2, 1fr);
+                max-width: 500px;
             }
+            body { overflow: auto; height: auto; } /* מחזיר גלילה במסכים קטנים כדי לא למעוך */
         }
         @media (max-width: 600px) {
             .grid-container {
                 grid-template-columns: 1fr;
+                max-width: 250px;
             }
             .header {
                 flex-direction: column;
