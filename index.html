@@ -271,6 +271,100 @@
             .header-nav { position: relative; left: auto; transform: none; }
             .header-logo { justify-content: center; width: 100%; position: relative; }
             .actual-logo-img { position: relative; right: auto; top: 0; height: 60px; transform: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+            /* --- אזור טרנדינג בצד (Glassmorphism) --- */
+        .main-content {
+            position: relative; /* חובה כדי שהטרנדינג יישב טוב בצד */
+        }
+
+        .trending-sidebar {
+            position: absolute;
+            left: 5%; /* ממקם אותו בדיוק איפה שסימנת באדום */
+            top: 50%;
+            transform: translateY(-50%); /* ממורכז אנכית */
+            width: 260px;
+            background: rgba(255, 255, 255, 0.25); /* אפקט זכוכית חצי שקוף */
+            backdrop-filter: blur(10px); /* מטשטש את הרקע מאחוריו - סופר מודרני! */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .trending-header {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--element-navy-gradient);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid var(--brand-green);
+            padding-bottom: 8px;
+        }
+
+        .trending-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #112845;
+        }
+
+        .trending-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .trending-item:hover {
+            transform: translateX(-5px); /* קופץ שמאלה/קדימה בעדינות */
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-right: 3px solid var(--brand-green);
+        }
+
+        .trending-icon {
+            font-size: 22px;
+            background: #ffffff;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .trending-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .trending-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--brand-green);
+            text-transform: uppercase;
+        }
+
+        .trending-title {
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* הסתרת הטרנדינג במסכים קטנים כדי לא להסתיר את המשבצות */
+        @media (max-width: 1100px) {
+            .trending-sidebar {
+                display: none;
+            }
+        }
         }
     </style>
 </head>
@@ -298,6 +392,41 @@
     </header>
 
     <main class="main-content">
+        <aside class="trending-sidebar">
+            <div class="trending-header">🔥 חם באתר</div>
+            
+            <a href="#" class="trending-item">
+                <div class="trending-icon">🏆</div>
+                <div class="trending-text">
+                    <span class="trending-label">פנטזי ליג</span>
+                    <span class="trending-title">מקום 1: קבוצת "האריות"</span>
+                </div>
+            </a>
+
+            <a href="#" class="trending-item">
+                <div class="trending-icon">🃏</div>
+                <div class="trending-text">
+                    <span class="trending-label">שוק הקלפים</span>
+                    <span class="trending-title">הקלף החם: אמבפה 94</span>
+                </div>
+            </a>
+
+            <a href="#" class="trending-item">
+                <div class="trending-icon">📋</div>
+                <div class="trending-text">
+                    <span class="trending-label">פוטבול מנג'ר</span>
+                    <span class="trending-title">טקטיקת 4-3-3 המנצחת</span>
+                </div>
+            </a>
+            
+            <a href="#" class="trending-item">
+                <div class="trending-icon">🎙️</div>
+                <div class="trending-text">
+                    <span class="trending-label">פודקאסט</span>
+                    <span class="trending-title">פרק חדש: סיכום המחזור</span>
+                </div>
+            </a>
+        </aside>
         <div class="grid-container">
             <a href="#" class="square-box"></a>
             <a href="#" class="square-box"></a>
