@@ -242,10 +242,16 @@
             }
         }
         .actual-logo-img {
-    max-height: 70px; /* קובע את הגובה המקסימלי של הלוגו */
-    width: auto; /* שומר על הפרופורציות של התמונה */
+    max-height: 55px; /* שומר על השורה העליונה בגובה נורמלי ואלגנטי */
+    width: auto;
     display: block;
+    transform: scale(1.6); /* זה קסם הזום! מגדיל את התמונה ב-60% מבלי לדחוף את השורה */
+    transform-origin: right center; /* מוודא שההגדלה תקרה ימינה ולא תעלה על התפריט */
     transition: transform 0.3s ease;
+}
+
+.actual-logo-img:hover {
+    transform: scale(1.65); /* אפקט ריחוף עדין שמותאם לזום */
 }
 
 .actual-logo-img:hover {
