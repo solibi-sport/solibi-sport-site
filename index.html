@@ -7,15 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* צבעים שנדגמו ישירות מהלוגו שלך */
-            --brand-blue: #163c63;       /* הכחול של הטקסט בסוליבי */
-            --brand-blue-dark: #0a1f35;  /* גרסה כהה מאוד לרקע */
-            --brand-green: #7ca856;      /* הירוק של הגרף/כדור */
-            --brand-green-glow: rgba(124, 168, 86, 0.4);
-            --brand-gray: #7a8b99;       /* האפור של המשפט למטה */
-            --panel-bg: #f5f7fa;         /* אפור בהיר-יוקרתי וקר להדר/פוטר */
-            --text-dark: #1a2530;
-            --text-light: #ffffff;
+            /* צבעים מעודכנים לפי הבקשה */
+            --brand-blue: #163c63;       /* הכחול של הלוגו */
+            --brand-green: #7ca856;      /* הירוק של הלוגו */
+            --brand-green-glow: rgba(124, 168, 86, 0.6);
+            
+            /* רקע בלו נייבי עמוק וכהה יותר */
+            --dark-navy-bg: #05101a; 
+            
+            /* כסוף מט כהה ובולט (גרדיאנט למראה מטאלי יוקרתי) */
+            --dark-silver-matte: linear-gradient(145deg, #8a96a3 0%, #5c6670 100%);
+            --dark-silver-border: #9faab8;
+            
+            --text-on-silver: #05101a;   /* טקסט כהה על הרקע הכסוף */
         }
 
         * {
@@ -26,23 +30,24 @@
 
         body {
             font-family: 'Rubik', sans-serif;
-            /* רקע הייטקי המשלב כחול נייבי כהה עם מעבר צבע עדין מאוד */
-            background: radial-gradient(circle at center, #163c63 0%, #0a1f35 100%);
+            /* רקע האתר - בלו נייבי כהה מאוד */
+            background-color: var(--dark-navy-bg);
+            background-image: radial-gradient(circle at center, #0a1c2e 0%, #030a12 100%);
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden; /* ביטול גלילה מוחלט */
         }
 
-        /* --- שורה עליונה (Header) - אפור בהיר יוקרתי --- */
+        /* --- שורה עליונה (Header) - כסוף מט כהה --- */
         .header {
-            background-color: var(--panel-bg);
+            background: var(--dark-silver-matte);
             padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border-bottom: 2px solid rgba(22, 60, 99, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 100;
             flex-shrink: 0;
         }
@@ -50,12 +55,14 @@
         .header-logo {
             font-size: 28px;
             font-weight: 900;
-            color: var(--brand-blue);
+            color: var(--text-on-silver);
             letter-spacing: -0.5px;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.2);
         }
         
         .header-logo span {
             color: var(--brand-green);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
         .header-nav ul {
@@ -66,18 +73,18 @@
         
         .header-nav a {
             text-decoration: none;
-            color: var(--brand-blue);
-            font-weight: 600;
+            color: var(--text-on-silver);
+            font-weight: 700;
             font-size: 16px;
             transition: all 0.3s ease;
             position: relative;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.1);
         }
 
         .header-nav a:hover {
             color: var(--brand-green);
         }
 
-        /* פס ירוק קטן שמופיע מתחת ללינק במעבר עכבר (אפקט הייטק) */
         .header-nav a::after {
             content: '';
             position: absolute;
@@ -96,21 +103,22 @@
 
         .header-search input {
             padding: 10px 20px;
-            border: 1px solid rgba(22, 60, 99, 0.2);
-            background-color: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.85);
             border-radius: 30px;
             width: 240px;
             outline: none;
             font-family: 'Rubik', sans-serif;
-            color: var(--brand-blue);
-            font-weight: 500;
+            color: var(--text-on-silver);
+            font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .header-search input:focus {
             border-color: var(--brand-green);
-            box-shadow: 0 0 8px var(--brand-green-glow);
+            box-shadow: 0 0 10px var(--brand-green-glow);
+            background-color: #ffffff;
         }
 
         /* --- תוכן מרכזי (Grid) --- */
@@ -128,94 +136,68 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             width: 100%;
-            max-width: 750px; /* שומר על הגודל המבוקש לריבועים */
+            max-width: 750px;
             align-content: center;
         }
 
-        /* --- משבצות ריבועיות יוקרתיות --- */
+        /* --- משבצות כסופות ריקות --- */
         .square-box {
             aspect-ratio: 1 / 1;
             border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* אנימציית קפיצה רכה ויוקרתית */
+            background: var(--dark-silver-matte);
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.6), 
+                inset 0 1px 1px rgba(255,255,255,0.3);
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            overflow: hidden;
             cursor: pointer;
             text-decoration: none;
-            
-            /* שילוב מנצח: תמונת דשא אמיתי + גרדיאנט שקוף בצבעי הלוגו! */
-            background-image: 
-                linear-gradient(135deg, rgba(22, 60, 99, 0.85) 0%, rgba(124, 168, 86, 0.65) 100%), 
-                url('https://images.unsplash.com/photo-1508344928928-7165b67de128?q=80&w=800&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            border: 2px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* מסגרת פנימית עדינה למראה יוקרתי */
+        /* מסגרת פנימית עדינה למראה של כפתור הייטק יוקרתי */
         .square-box::after {
             content: '';
             position: absolute;
-            top: 6px; left: 6px; right: 6px; bottom: 6px;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 10px;
+            border-radius: 12px;
             pointer-events: none;
+            transition: all 0.3s ease;
         }
 
+        /* אפקט רחיפה (Hover) ירוק זוהר */
         .square-box:hover {
             transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px var(--brand-green-glow);
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.8), 
+                0 0 25px var(--brand-green-glow);
             border-color: var(--brand-green);
         }
-
-        .box-content {
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
+        
+        .square-box:hover::after {
+            border-color: var(--brand-green);
+            opacity: 0.5;
         }
 
-        .box-icon {
-            font-size: 42px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); /* צל לאייקונים */
-            transition: transform 0.3s ease;
-        }
-
-        .square-box:hover .box-icon {
-            transform: scale(1.1);
-        }
-
-        .box-title {
-            font-size: 21px;
-            font-weight: 700;
-            color: var(--text-light);
-            letter-spacing: 0.5px;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-        }
-
-        /* --- שורה תחתונה (Footer Ticker) --- */
+        /* --- שורה תחתונה (Footer Ticker) - כסוף מט כהה --- */
         .footer {
-            background-color: var(--panel-bg);
+            background: var(--dark-silver-matte);
             padding: 12px 0;
             overflow: hidden;
             white-space: nowrap;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
-            border-top: 2px solid rgba(22, 60, 99, 0.1);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             flex-shrink: 0;
             position: relative;
         }
 
-        /* פס ירוק דק מעל הטיקר */
         .footer::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, var(--brand-blue), var(--brand-green), var(--brand-blue));
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--brand-green);
+            box-shadow: 0 0 10px var(--brand-green-glow);
         }
 
         .ticker-wrap {
@@ -228,13 +210,13 @@
             display: inline-block;
             padding: 0 35px;
             font-size: 15px;
-            font-weight: 600;
-            color: var(--brand-blue);
+            font-weight: 700;
+            color: var(--text-on-silver);
+            text-shadow: 0 1px 1px rgba(255,255,255,0.1);
         }
 
-        /* מפריד מעוצב בטיקר */
         .ticker-divider {
-            color: var(--brand-green);
+            color: var(--brand-blue);
             font-weight: 900;
             margin: 0 15px;
         }
@@ -288,49 +270,12 @@
 
     <main class="main-content">
         <div class="grid-container">
-            
-            <a href="#" class="square-box">
-                <div class="box-content">
-                    <span class="box-icon">⚽</span>
-                    <span class="box-title">ליגת העל</span>
-                </div>
-            </a>
-
-            <a href="#" class="square-box">
-                <div class="box-content">
-                    <span class="box-icon">📊</span>
-                    <span class="box-title">סטטיסטיקות</span>
-                </div>
-            </a>
-
-            <a href="#" class="square-box">
-                <div class="box-content">
-                    <span class="box-icon">🗓️</span>
-                    <span class="box-title">לוח משחקים</span>
-                </div>
-            </a>
-
-            <a href="#" class="square-box">
-                <div class="box-content">
-                    <span class="box-icon">📰</span>
-                    <span class="box-title">חדשות</span>
-                </div>
-            </a>
-
-            <a href="#" class="square-box">
-                <div class="box-content">
-                    <span class="box-icon">🏆</span>
-                    <span class="box-title">גביעים</span>
-                </div>
-            </a>
-
-            <a href="#" class="square-box">
-                <div class="box-content">
-                    <span class="box-icon">👥</span>
-                    <span class="box-title">קהילה</span>
-                </div>
-            </a>
-
+            <a href="#" class="square-box"></a>
+            <a href="#" class="square-box"></a>
+            <a href="#" class="square-box"></a>
+            <a href="#" class="square-box"></a>
+            <a href="#" class="square-box"></a>
+            <a href="#" class="square-box"></a>
         </div>
     </main>
 
