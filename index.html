@@ -3,202 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - דף הבית</title>
+    <title>סוליבי ספורט</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- הגדרות בסיסיות (CSS Reset) --- */
+        /* --- משתני צבעים לפי בקשתך --- */
+        :root {
+            --light-navy: #4a6b8c; /* בלו נייבי בהיר ככל הניתן */
+            --light-gray: #f0f2f5; /* אפור בהיר לשורות עליונה ותחתונה */
+            --text-dark: #1a202c; /* טקסט כהה לקריאות */
+            --solibi-green: #8bc34a; /* ירוק לוגו */
+            --box-bg: #ffffff; /* רקע לבן למשבצות */
+        }
+
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box; /* מבטיח ש-padding לא יגדיל את האלמנט */
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Rubik', sans-serif; /* הגדרת הפונט לכל האתר */
-            background-color: #f4f7f6; /* צבע רקע בהיר ונעים לאתר */
-            color: #333; /* צבע טקסט בסיסי כהה */
-            line-height: 1.6; /* ריווח שורות לקריאות טובה */
+            font-family: 'Rubik', sans-serif;
+            background-color: var(--light-navy); /* רקע נייבי בהיר */
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* מבטיח שה-body יתפוס לפחות את כל גובה המסך */
+            min-height: 100vh;
         }
 
-        a {
-            text-decoration: none; /* ביטול קו תחתון מברירת מחדל לקישורים */
-            color: inherit; /* קישורים יירשו את צבע הטקסט של ההורה שלהם */
-            transition: 0.3s; /* אנימציה חלקה במעבר עכבר */
-        }
-
-        /* --- 1. שורה עליונה (Header) --- */
-        .main-header {
-            background-color: #fff; /* רקע לבן נקי */
-            padding: 15px 5%; /* ריווח פנימי: 15px למעלה/למטה, 5% מהצדדים */
+        /* --- שורה עליונה (Header) --- */
+        .header {
+            background-color: var(--light-gray); /* אפור בהיר */
+            padding: 15px 5%;
             display: flex;
-            justify-content: space-between; /* מחלק את השטח בין 3 החלקים בצורה שווה */
-            align-items: center; /* ממרכז את האלמנטים אנכית */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* צל עדין מתחת להדר */
-            position: sticky; /* הופך את ההדר לדביק בראש הדף בזמן גלילה */
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
             top: 0;
-            z-index: 1000; /* מבטיח שההדר יהיה מעל שאר התוכן */
+            z-index: 100;
         }
 
-        /* צד ימין: לוגו */
         .header-logo {
-            font-size: 24px;
-            font-weight: 900; /* פונט עבה מאוד */
-            color: #001e3c; /* כחול כהה (כמו בלוגו) */
-            text-transform: uppercase;
+            font-size: 26px;
+            font-weight: 900;
+            color: #001e3c;
         }
         .header-logo span {
-            color: #8bc34a; /* ירוק ליים (כמו בלוגו) */
+            color: var(--solibi-green);
         }
-        /* אם יש לך קובץ לוגו אמיתי, השתמש בזה במקום הטקסט:
-        .header-logo img { max-height: 50px; }
-        */
 
-        /* אמצע: תפריט ניווט */
         .header-nav ul {
-            list-style: none; /* ביטול נקודות של רשימה */
+            list-style: none;
             display: flex;
-            gap: 20px; /* ריווח בין פריטי התפריט */
+            gap: 30px;
         }
         .header-nav a {
+            text-decoration: none;
+            color: var(--text-dark);
             font-weight: 500;
             font-size: 16px;
+            transition: color 0.3s;
         }
         .header-nav a:hover {
-            color: #8bc34a; /* שינוי צבע לירוק במעבר עכבר */
+            color: var(--solibi-green);
         }
 
-        /* צד שמאל: שורת חיפוש */
         .header-search input {
-            padding: 8px 15px;
-            border: 1px solid #ddd;
-            border-radius: 20px; /* פינות מעוגלות */
-            outline: none; /* ביטול מסגרת ברירת מחדל ב-focus */
-            width: 200px; /* רוחב בסיסי */
-            transition: 0.3s;
-        }
-        .header-search input:focus {
-            border-color: #001e3c; /* שינוי צבע מסגרת ב-focus */
-            width: 250px; /* הרחבה קלה ב-focus */
+            padding: 10px 15px 10px 35px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            width: 220px;
+            outline: none;
+            font-family: 'Rubik', sans-serif;
         }
 
-        /* --- 2. 6 משבצות הנושאים (Main Body) --- */
+        /* --- תוכן מרכזי (Grid) --- */
         .main-content {
-            flex: 1; /* גורם לתוכן המרכזי למלא את השטח שנותר בין ה-header ל-footer */
-            padding: 40px 5%; /* ריווח מהצדדים */
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 5%;
         }
 
-        .topics-grid {
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 עמודות שוות */
-            gap: 20px; /* ריווח בין המשבצות */
-        }
-
-        /* עיצוב כל משבצת */
-        .topic-card {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px; /* פינות מעוגלות עדינות */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* צל רך */
-            text-align: center;
-            cursor: pointer;
-            border: 1px solid transparent; /* הכנה למסגרת ב-hover */
-        }
-
-        /* אפקט מעבר עכבר על משבצת */
-        .topic-card:hover {
-            transform: translateY(-5px); /* הרמה קלה למעלה */
-            border-color: #8bc34a; /* מסגרת ירוקה */
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1); /* צל חזק יותר */
-        }
-
-        /* אייקון בתוך משבצת (placeholder - ניתן להחליף בתמונה או SVG) */
-        .topic-icon {
-            font-size: 40px;
-            color: #001e3c; /* כחול כהה */
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .topic-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        /* התאמה לניידים (Responsive) */
-        @media (max-width: 768px) {
-            .topics-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 עמודות במסכים בינוניים */
-            }
-            .main-header {
-                flex-direction: column; /* הדר אנכי בנייד */
-                gap: 10px;
-                padding: 10px;
-            }
-            .header-nav ul {
-                gap: 10px;
-            }
-        }
-        @media (max-width: 480px) {
-            .topics-grid {
-                grid-template-columns: 1fr; /* עמודה אחת במסכים קטנים */
-            }
-        }
-
-        /* --- 3. שורה תחתונה (Footer) כותרות רצות --- */
-        .main-footer {
-            background-color: #001e3c; /* כחול כהה */
-            color: #fff; /* טקסט לבן */
-            padding: 10px 0;
-            overflow: hidden; /* מסתיר את הטקסט שיוצא מגבולות הפוטר */
-            position: relative;
-        }
-
-        /* הקונטיינר של הטקסט הרץ */
-        .ticker-wrap {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
             width: 100%;
-            white-space: nowrap; /* מונע מהטקסט לרדת שורה */
+            max-width: 1100px;
         }
 
-        /* האלמנט שמכיל את הטקסט ומפעיל את האנימציה */
-        .ticker-move {
+        /* --- משבצות ריבועיות עם צללית דשא --- */
+        .square-box {
+            background-color: var(--box-bg);
+            aspect-ratio: 1 / 1; /* יוצר ריבוע מושלם (4x4) */
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* צללית מגרש כדורגל ברקע של כל משבצת */
+        .square-box::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* SVG של מגרש כדורגל עדין מאוד (opacity נמוך) */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='rgba(0,0,0,0.04)' stroke-width='1.5'%3E%3Crect x='5' y='5' width='90' height='90' rx='5'/%3E%3Cline x1='5' y1='50' x2='95' y2='50'/%3E%3Ccircle cx='50' cy='50' r='15'/%3E%3Crect x='30' y='5' width='40' height='15'/%3E%3Crect x='30' y='80' width='40' height='15'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        .square-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+        }
+
+        .box-content {
+            z-index: 2; /* מעל צללית המגרש */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .box-icon {
+            font-size: 45px;
+        }
+
+        .box-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* --- שורה תחתונה (Footer Ticker) --- */
+        .footer {
+            background-color: var(--light-gray); /* אפור בהיר */
+            padding: 12px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .ticker-wrap {
             display: inline-block;
-            padding-right: 100%; /* התחלה מחוץ למסך מימין */
-            animation: ticker-animation 20s linear infinite; /* הגדרת האנימציה: 20 שניות, ליניארי, אינסופי */
+            padding-right: 100%;
+            animation: ticker 30s linear infinite;
         }
 
-        /* פריט טקסט בודד בתוך הטיקר */
         .ticker-item {
             display: inline-block;
-            padding: 0 20px; /* ריווח בין כותרת לכותרת */
+            padding: 0 30px;
             font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
         }
 
-        /* הגדרת האנימציה (keyframes) */
-        @keyframes ticker-animation {
-            0% { transform: translateX(0); } /* מצב התחלתי */
-            100% { transform: translateX(100%); } /* סיום: הטקסט זז שמאלה עד שהוא נעלם (ב-RTL זה 100%, ב-LTR זה -100%) */
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
         }
 
+        /* רספונסיביות למסכים קטנים */
+        @media (max-width: 900px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <header class="main-header">
+    <header class="header">
         <div class="header-logo">
             סוליבי<span>ספורט</span>
         </div>
-
+        
         <nav class="header-nav">
             <ul>
-                <li><a href="#home">דף הבית</a></li>
-                <li><a href="#archive">ארכיון</a></li>
-                <li><a href="#about">אודות</a></li>
-                <li><a href="#contact">צור קשר</a></li>
+                <li><a href="#">דף הבית</a></li>
+                <li><a href="#">ארכיון</a></li>
+                <li><a href="#">אודות</a></li>
+                <li><a href="#">צור קשר</a></li>
             </ul>
         </nav>
 
@@ -208,53 +212,62 @@
     </header>
 
     <main class="main-content">
-        <div class="topics-grid">
+        <div class="grid-container">
             
-            <div class="topic-card">
-                <span class="topic-icon">⚽</span> <h3 class="topic-title">ליגת העל</h3>
-            </div>
+            <a href="#" class="square-box">
+                <div class="box-content">
+                    <span class="box-icon">⚽</span>
+                    <span class="box-title">ליגת העל</span>
+                </div>
+            </a>
 
-            <div class="topic-card">
-                <span class="topic-icon">📊</span>
-                <h3 class="topic-title">סטטיסטיקות</h3>
-            </div>
+            <a href="#" class="square-box">
+                <div class="box-content">
+                    <span class="box-icon">📊</span>
+                    <span class="box-title">סטטיסטיקות</span>
+                </div>
+            </a>
 
-            <div class="topic-card">
-                <span class="topic-icon">📅</span>
-                <h3 class="topic-title">לוח משחקים</h3>
-            </div>
+            <a href="#" class="square-box">
+                <div class="box-content">
+                    <span class="box-icon">🗓️</span>
+                    <span class="box-title">לוח משחקים</span>
+                </div>
+            </a>
 
-            <div class="topic-card">
-                <span class="topic-icon">📰</span>
-                <h3 class="topic-title">חדשות</h3>
-            </div>
+            <a href="#" class="square-box">
+                <div class="box-content">
+                    <span class="box-icon">📰</span>
+                    <span class="box-title">חדשות</span>
+                </div>
+            </a>
 
-            <div class="topic-card">
-                <span class="topic-icon">🏆</span>
-                <h3 class="topic-title">גביעים</h3>
-            </div>
+            <a href="#" class="square-box">
+                <div class="box-content">
+                    <span class="box-icon">🏆</span>
+                    <span class="box-title">גביעים</span>
+                </div>
+            </a>
 
-            <div class="topic-card">
-                <span class="topic-icon">👥</span>
-                <h3 class="topic-title">קהילה</h3>
-            </div>
+            <a href="#" class="square-box">
+                <div class="box-content">
+                    <span class="box-icon">👥</span>
+                    <span class="box-title">קהילה</span>
+                </div>
+            </a>
 
         </div>
     </main>
 
-    <footer class="main-footer">
+    <footer class="footer">
         <div class="ticker-wrap">
-            <div class="ticker-move">
-                <span class="ticker-item">מכבי ת"א ניצחה 2-0 את הפועל באר שבע</span>
-                <span class="ticker-item">|</span>
-                <span class="ticker-item">הערב: בית"ר ירושלים נגד מכבי חיפה</span>
-                <span class="ticker-item">|</span>
-                <span class="ticker-item">שוק ההעברות: שחקן חדש חתם בהפועל תל אביב</span>
-                <span class="ticker-item">|</span>
-                <span class="ticker-item">סיכום המחזור ה-15 בליגת העל</span>
-                <span class="ticker-item">|</span>
-                <span class="ticker-item">מכבי ת"א ניצחה 2-0 את הפועל באר שבע (חוזר לצורך הלופ)</span>
-            </div>
+            <span class="ticker-item">מכבי ת"א ניצחה 2-0 את הפועל באר שבע</span>
+            <span class="ticker-item">|</span>
+            <span class="ticker-item">סיכום המחזור ה-15 בליגת העל</span>
+            <span class="ticker-item">|</span>
+            <span class="ticker-item">שוק ההעברות: שחקן חדש חתם בהפועל תל אביב</span>
+            <span class="ticker-item">|</span>
+            <span class="ticker-item">הערב: בית"ר ירושלים נגד מכבי חיפה</span>
         </div>
     </footer>
 
