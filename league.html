@@ -1,1 +1,241 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי ספורט - ליגה אנגלית</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #7ca856;
+            --bg-silver-matte: linear-gradient(145deg, #eef4f9 0%, #c9d4e0 100%);
+            --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
+            --text-dark: #112845;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background: var(--bg-silver-matte);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* כותרת הדף */
+        .league-header {
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .league-header img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .league-header h1 {
+            font-weight: 900;
+            color: var(--text-dark);
+        }
+
+        /* גריד מרכזי: טבלה מימין, שאר הדברים משמאל */
+        .league-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* חלוקה של 2/3 ימין, 1/3 שמאל */
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* עיצוב הקופסאות (הטבלה והמשחקים) */
+        .content-box {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .box-title {
+            font-size: 20px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: var(--element-navy-gradient);
+            border-bottom: 3px solid var(--brand-green);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* עיצוב הטבלה עצמה */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        th {
+            background: var(--element-navy-gradient);
+            color: white;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        /* עיגול פינות להדר של הטבלה */
+        th:first-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+        th:last-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        tr:hover { background: rgba(124, 168, 86, 0.1); }
+
+        .team-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: right;
+            font-weight: 700;
+        }
+
+        .team-logo {
+            width: 25px;
+            height: 25px;
+        }
+
+        /* מקומות לאירופה וכו' */
+        .rank-1, .rank-2, .rank-3, .rank-4 { border-right: 4px solid #004682; } /* אלופות */
+        .rank-5 { border-right: 4px solid #e67e22; } /* אירופית */
+        .rank-18, .rank-19, .rank-20 { border-right: 4px solid #e74c3c; } /* ירידה */
+
+        /* אנימציית טעינה */
+        .loader {
+            text-align: center;
+            font-weight: 700;
+            color: var(--brand-green);
+            padding: 50px;
+        }
+
+        @media (max-width: 900px) {
+            .league-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="league-header">
+        <img src="https://media.api-sports.io/football/leagues/39.png" alt="Premier League">
+        <h1>ליגה אנגלית <span>ראשונה</span></h1>
+    </div>
+
+    <div class="league-layout">
+        
+        <div class="content-box">
+            <h2 class="box-title">טבלת הליגה</h2>
+            <div id="table-container">
+                <div class="loader">שואב נתונים חיים מהמגרשים... ⚽</div>
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h2 class="box-title">מחזור קרוב</h2>
+            <p style="text-align: center; color: #666; margin-top: 20px;">
+                כאן יופיעו משחקי המחזור הקרוב...
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        // === הגדרות חיבור ל-API ===
+        const API_KEY = 'שים_כאן_את_המפתח_שלך'; // <--- שים פה את המפתח שלך!
+        const LEAGUE_ID = 39; // 39 = פרמייר ליג אנגליה
+        const SEASON = 2023; // עונת 2023/2024 (או 2024 אם כבר עודכן במערכת שלך)
+
+        // פונקציה לשליפת הנתונים
+        async function fetchStandings() {
+            try {
+                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
+                    method: 'GET',
+                    headers: {
+                        'x-apisports-key': API_KEY
+                    }
+                });
+
+                const data = await response.json();
+                
+                // בדיקה אם יש שגיאות מה-API (כמו מפתח לא נכון)
+                if(data.errors && data.errors.length > 0) {
+                    console.error("API Error:", data.errors);
+                    document.getElementById('table-container').innerHTML = '<p style="color:red; text-align:center;">שגיאה בחיבור ל-API. בדוק את המפתח שלך בקונסול.</p>';
+                    return;
+                }
+
+                // ניווט לתוך המידע המדויק של הטבלה מתוך ה-JSON של API-Football
+                const standings = data.response[0].league.standings[0];
+                renderTable(standings);
+
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                document.getElementById('table-container').innerHTML = '<p style="color:red; text-align:center;">שגיאת רשת. נסה שוב מאוחר יותר.</p>';
+            }
+        }
+
+        // פונקציה שמציירת את ה-HTML של הטבלה לפי הנתונים
+        function renderTable(standingsData) {
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>מקום</th>
+                            <th style="text-align: right;">קבוצה</th>
+                            <th>מש'</th>
+                            <th>נצ'</th>
+                            <th>תיקו</th>
+                            <th>הפ'</th>
+                            <th>יחס</th>
+                            <th>נק'</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            // לולאה שעוברת על כל קבוצה ומייצרת לה שורה
+            standingsData.forEach(teamData => {
+                tableHTML += `
+                    <tr>
+                        <td class="rank-${teamData.rank}">${teamData.rank}</td>
+                        <td class="team-cell">
+                            <img src="${teamData.team.logo}" alt="${teamData.team.name}" class="team-logo">
+                            <span>${teamData.team.name}</span>
+                        </td>
+                        <td>${teamData.all.played}</td>
+                        <td>${teamData.all.win}</td>
+                        <td>${teamData.all.draw}</td>
+                        <td>${teamData.all.lose}</td>
+                        <td dir="ltr">${teamData.all.goals.for}:${teamData.all.goals.against}</td>
+                        <td style="font-weight: 900; color: var(--brand-green);">${teamData.points}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `</tbody></table>`;
+            
+            // מכניס את הטבלה המוכנה לתוך ה-HTML
+            document.getElementById('table-container').innerHTML = tableHTML;
+        }
+
+        // הפעלת הפונקציה ברגע שהדף עולה
+        fetchStandings();
+    </script>
+</body>
+</html>
