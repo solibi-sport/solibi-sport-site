@@ -14,8 +14,8 @@
             --text-light: #ffffff;
             --text-dark: #112845;
             
-            /* סרגלי הצד משתנים בפרופורציה, אבל לא גדלים מדי */
-            --sidebar-width: clamp(220px, 18vw, 320px); 
+            /* הגדלנו טיפה את רוחב הסרגל כדי שהלוגו לא יעלה על האזור האישי הממורכז */
+            --sidebar-width: clamp(280px, 22vw, 380px); 
             --search-width: clamp(200px, 15vw, 300px);
         }
 
@@ -46,14 +46,16 @@
             z-index: 1000;
         }
 
+        /* האזור האישי ממוקם בדיוק במרכז האזור הימני (חופף ללחצן סוליבי+) */
         .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; }
+        
         .logo-wrapper {
-            position: absolute; right: 30px; top: 65px; transform: translateY(-50%);
+            position: absolute; right: 15px; top: 65px; transform: translateY(-50%);
             background-color: #ffffff; padding: 4px 10px; border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
-        .actual-logo-img { height: clamp(45px, 5vh, 65px); display: block; }
+        .actual-logo-img { height: clamp(45px, 5vh, 60px); display: block; }
 
         .personal-area-btn {
             background: rgba(255, 255, 255, 0.1); border: 2px solid var(--brand-green);
@@ -71,33 +73,32 @@
         }
         .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
 
-        /* אזור החיפוש תוקן ליישור לקו הימני (flex-start ב-RTL) */
-        .header-left-col { 
-            display: flex; align-items: center; justify-content: flex-start; 
-        }
+        /* אזור החיפוש מיושר לקו הימני בדיוק מעל הקו של העדכונים (flex-start ב-RTL) */
+        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; }
         
         .header-search { position: relative; width: var(--search-width); height: 34px; }
         
-        /* תיקון כיוון ההתרחבות - עיגון לשמאל ירחיב את התיבה לימין */
+        /* שורת החיפוש מעוגנת שמאלה (left: 0), מה שאומר שכשהיא תגדל - היא תגדל ימינה! */
         .header-search input {
             position: absolute; left: 0; top: 0;
             width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s;
+            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s ease-out;
         }
-        /* הוספת 80 פיקסלים במיקוד וציפה מעל שאר התפריט */
         .header-search input:focus { 
-            width: calc(100% + 80px); box-shadow: 0 0 12px var(--brand-green-glow); 
-            background: #fff; z-index: 10; 
+            width: calc(100% + 80px); /* מוסיף 80 פיקסלים לכיוון ימין */
+            box-shadow: 0 0 15px var(--brand-green-glow); 
+            background: #fff; 
+            z-index: 10; 
         }
 
         /* === אזור מרכזי - משתלט על הגובה הנותר === */
         .main-content {
-            flex: 1; /* לוקח את כל הגובה שנותר בין ההדר לפוטר */
-            overflow-y: auto; /* מאפשר גלילה רק כשבאמת חייבים (במסכים קטנים) */
+            flex: 1; overflow-y: auto; 
         }
 
         /* === סוליבי+ (תפריט FAB) === */
-        .community-sidebar { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 3vh; }
+        /* הלחצן ממורכז לחלוטין (חופף בדיוק לאזור האישי) ויש לו מרחק תחתון קבוע וזקוף */
+        .community-sidebar { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 50px; }
         .fab-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
         .fab-menu {
             position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -122,7 +123,7 @@
         /* === גריד הקוביות המרכזי === */
         .center-content { display: flex; justify-content: center; align-items: center; padding: 2vh 2vw; }
         
-        /* הקסם הרספונסיבי מהתיקון הקודם */
+        /* הגבלת גובה ורוחב כדי לשמור על פרופורציה מושלמת במסך 27 ו-16 אינץ' */
         .grid-container { 
             display: grid; grid-template-columns: repeat(3, 1fr); 
             gap: clamp(10px, 1.5vw, 20px); width: 100%; 
@@ -241,7 +242,7 @@
            ======================================================= */
 
         @media (max-width: 1100px) {
-            body { height: auto; } /* משחרר את נעילת הגובה במובייל/טאבלט */
+            body { height: auto; } 
             .layout-grid { grid-template-columns: 1fr; } 
             .header { height: auto; padding: 15px 0; }
             .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
@@ -251,7 +252,7 @@
             .community-sidebar { padding: 40px 0; }
             .header-search { display: none; }
             .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 800px; }
-            .square-box { padding: 15% 5% 5% 5%; } /* מרווח יחסי למסכים קטנים */
+            .square-box { padding: 15% 5% 5% 5%; } 
         }
 
         @media (max-width: 768px) {
