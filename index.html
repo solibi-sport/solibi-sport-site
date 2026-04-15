@@ -25,7 +25,7 @@
             background: var(--bg-silver-matte);
             width: 100%;
             height: 100vh; 
-            overflow-x: hidden;
+            overflow: hidden; /* מבטל גלילה מיותרת במסך הראשי */
             display: flex;
             flex-direction: column;
         }
@@ -48,7 +48,7 @@
         .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; }
         
         .logo-wrapper {
-            position: absolute; right: 20px; top: 65px; transform: translateY(-50%); /* נתנו 20px במקום 15px כדי להרחיק קצת מהקצה */
+            position: absolute; right: 20px; top: 65px; transform: translateY(-50%);
             background-color: #ffffff; padding: 4px 10px; border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
         }
@@ -60,7 +60,8 @@
             color: #ffffff; padding: 6px 18px; border-radius: 30px; text-decoration: none;
             font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); transition: 0.3s;
             display: flex; align-items: center; gap: 8px; white-space: nowrap;
-            margin-right: 50px; /* דוחף שמאלה כדי לפנות מקום ללוגו */
+            /* הזזה שמאלה כדי לשחרר את הלוגו */
+            margin-right: 85px; 
         }
         .personal-area-btn:hover { background: var(--brand-green); transform: translateY(-2px); }
 
@@ -76,25 +77,31 @@
         
         .header-search { position: relative; width: var(--search-width); height: 34px; }
         .header-search input {
-            position: absolute; left: 0; top: 0;
+            position: absolute; left: 0; top: 0; /* מעוגן לשמאל כדי להתרחב ימינה! */
             width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
             border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s ease-out;
         }
         .header-search input:focus { 
-            width: calc(100% + 80px); box-shadow: 0 0 15px var(--brand-green-glow); 
+            width: calc(100% + 80px); /* מתרחב ימינה לתוך מרכז ההדר */
+            box-shadow: 0 0 15px var(--brand-green-glow); 
             background: #fff; z-index: 10; 
         }
 
-        /* === אזור מרכזי === */
+        /* === אזור מרכזי - קסם היישור האוטומטי === */
         .main-content {
-            flex: 1; overflow-y: auto; 
+            flex: 1; 
+            overflow-y: auto; 
+            align-content: center; /* נועל את כל התוכן למרכז המסך מתמטית */
         }
 
         /* === סוליבי+ (תפריט FAB) === */
-        .community-sidebar { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 50px; }
+        .community-sidebar { 
+            display: flex; flex-direction: column; justify-content: flex-end; align-items: center; 
+            padding-bottom: 0; /* ללא ריווח - כדי שיידבק לקו התחתון של הקוביות! */
+        }
         .fab-wrapper { 
             position: relative; display: flex; flex-direction: column; align-items: center; 
-            margin-right: 50px; /* דוחף שמאלה בדיוק כמו הכפתור למעלה - שומר על קו סימטרי מושלם! */
+            margin-right: 85px; /* מקביל בדיוק לכפתור העליון! */
         }
         .fab-menu {
             position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -117,7 +124,10 @@
         .fab-button:hover { transform: scale(1.05); background: var(--brand-green); }
 
         /* === גריד הקוביות המרכזי === */
-        .center-content { display: flex; justify-content: center; align-items: center; padding: 2vh 2vw; }
+        .center-content { 
+            display: flex; justify-content: center; align-items: center; 
+            padding: 0 2vw; /* הורדנו פאדינג גובה כדי שהכפתור ידבק במדויק לקוביות */
+        }
         
         .grid-container { 
             display: grid; grid-template-columns: repeat(3, 1fr); 
@@ -147,7 +157,7 @@
         .box-tag { color: var(--brand-green); font-size: clamp(10px, 0.8vw, 12px); font-weight: 900; }
         .box-desc { color: #a0aec0; font-size: clamp(9px, 0.75vw, 12px); line-height: 1.3; }
 
-        /* === סמלי הייטק ייחודיים בתוך הקוביות === */
+        /* === סמלי הייטק === */
         .tech-bars { position: absolute; top: 15px; left: 15px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: 0.4s; height: 20px; }
         .tech-bars span { width: 3px; background: #fff; border-radius: 2px; }
         .square-box:hover .tech-bars { opacity: 0.8; gap: 5px; }
@@ -181,10 +191,13 @@
         .square-box:hover .tech-target { opacity: 0.8; border-color: var(--brand-green); transform: scale(1.2); }
         .square-box:hover .tech-target::after { background: var(--brand-green); }
 
-        /* === עמודה 3: עדכונים חמים (שמאל) === */
+        /* === עמודה 3: עדכונים חמים (שמאל - הפך לפאנל מרחף ויוקרתי) === */
         .updates-sidebar {
-            background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(15px);
-            border-right: 1px solid rgba(255, 255, 255, 0.6); display: flex; flex-direction: column;
+            background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+            border-radius: 16px; /* פינות מעוגלות לפאנל החדש */
+            display: flex; flex-direction: column;
+            margin-left: 10px; /* מרווח קל מהקצה השמאלי */
         }
         .updates-header {
             font-size: clamp(14px, 1vw, 17px); font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: center; 
@@ -237,17 +250,18 @@
            ======================================================= */
 
         @media (max-width: 1100px) {
-            body { height: auto; } 
+            body { height: auto; overflow-y: auto; } /* משחרר למובייל/טאבלט את הגלילה למטה */
+            .main-content { align-content: start; }
             .layout-grid { grid-template-columns: 1fr; } 
             .header { height: auto; padding: 15px 0; }
             .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
             
-            /* איפוס הריווח כדי שבמובייל הכל יהיה באמצע */
+            /* איפוס הדחיפה השמאלית במובייל כדי שהכל יתרכז מושלם */
             .personal-area-btn { margin-right: 0; }
             .fab-wrapper { margin-right: 0; margin-top: 15px; }
             
             .logo-wrapper { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
-            .updates-sidebar { border-right: none; border-bottom: 1px solid #ccc; padding-bottom: 20px; min-height: 250px; }
+            .updates-sidebar { margin-left: 0; margin-bottom: 20px; min-height: 250px; }
             .breathing-feed-container { min-height: 200px; }
             .community-sidebar { padding: 40px 0; }
             .header-search { display: none; }
