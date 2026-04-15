@@ -109,32 +109,65 @@
     <footer class="footer">נתונים חיים באדיבות API-FOOTBALL</footer>
 
     <script>
-        const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
-        
-        async function getStandings() {
-            try {
-                const response = await fetch('https://v3.football.api-sports.io/standings?league=39&season=2023', {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
-                const data = await response.json();
-                const standings = data.response[0].league.standings[0];
+    const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
+    const SEASON = 2025; // שנת ההתחלה של העונה (למשל 2024 לעונת 24/25, או 2025 לעונת 25/26)
+
+    // מילון תרגום קבוצות אנגליות לעברית
+    const teamTranslations = {
+        "Arsenal": "ארסנל",
+        "Aston Villa": "אסטון וילה",
+        "Bournemouth": "בורנמות'",
+        "Brentford": "ברנטפורד",
+        "Brighton": "ברייטון",
+        "Chelsea": "צ'לסי",
+        "Crystal Palace": "קריסטל פאלאס",
+        "Everton": "אברטון",
+        "Fulham": "פולהאם",
+        "Liverpool": "ליברפול",
+        "Manchester City": "מנצ'סטר סיטי",
+        "Manchester United": "מנצ'סטר יונייטד",
+        "Newcastle": "ניוקאסל",
+        "Nottingham Forest": "נוטינגהאם פורסט",
+        "Tottenham": "טוטנהאם",
+        "West Ham": "ווסטהאם",
+        "Wolves": "וולבס",
+        "Leicester": "לסטר סיטי",
+        "Ipswich": "איפסוויץ'",
+        "Southampton": "סאות'המפטון"
+        // אפשר להוסיף עוד קבוצות בעתיד אם יש עולות חדשות
+    };
+    
+    async function getStandings() {
+        try {
+            // שים לב שעדכנו את ה-URL שישתמש במשתנה SEASON
+            const response = await fetch(`https://v3.football.api-sports.io/standings?league=39&season=${SEASON}`, {
+                headers: { 'x-apisports-key': API_KEY }
+            });
+            const data = await response.json();
+            const standings = data.response[0].league.standings[0];
+            
+            let html = `<table><tr><th>#</th><th style="text-align:right">קבוצה</th><th>מש'</th><th>נק'</th></tr>`;
+            
+            standings.forEach(item => {
+                // המערכת בודקת במילון - אם יש תרגום היא משתמשת בו, אם לא היא משאירה באנגלית
+                const hebrewName = teamTranslations[item.team.name] || item.team.name;
                 
-                let html = `<table><tr><th>#</th><th style="text-align:right">קבוצה</th><th>מש'</th><th>נק'</th></tr>`;
-                standings.forEach(item => {
-                    html += `<tr>
-                        <td>${item.rank}</td>
-                        <td class="team-name"><img src="${item.team.logo}" class="team-logo"> ${item.team.name}</td>
-                        <td>${item.all.played}</td>
-                        <td style="color:var(--brand-green); font-weight:900;">${item.points}</td>
-                    </tr>`;
-                });
-                html += `</table>`;
-                document.getElementById('api-table').innerHTML = html;
-            } catch (e) {
-                document.getElementById('api-table').innerHTML = "שגיאה בטעינת הנתונים";
-            }
+                html += `<tr>
+                    <td>${item.rank}</td>
+                    <td class="team-name"><img src="${item.team.logo}" class="team-logo"> ${hebrewName}</td>
+                    <td>${item.all.played}</td>
+                    <td style="color:var(--brand-green); font-weight:900;">${item.points}</td>
+                </tr>`;
+            });
+            
+            html += `</table>`;
+            document.getElementById('api-table').innerHTML = html;
+        } catch (e) {
+            document.getElementById('api-table').innerHTML = "שגיאה בטעינת הנתונים. ודא שהמפתח נכון ושיש נתונים לעונה זו.";
         }
-        getStandings();
-    </script>
+    }
+    
+    getStandings();
+</script>
 </body>
 </html>
