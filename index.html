@@ -13,13 +13,10 @@
             --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
             --text-light: #ffffff;
             --text-dark: #112845;
-            
-            /* מידות גמישות ששומרות על פרופורציה במסכים שונים */
             --sidebar-width: clamp(280px, 22vw, 390px);
             --search-width: clamp(250px, 20vw, 360px);
         }
 
-        /* מניעת בלאגן כללי */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
@@ -28,19 +25,17 @@
             width: 100%;
             min-height: 100vh;
             overflow-x: hidden;
-            overflow-y: auto; /* מאפשר גלילה חלקה כשהמסך קטן */
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
 
-        /* === הגריד הראשי שנועל הכל למקום === */
         .layout-grid {
             display: grid;
             grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
             width: 100%;
         }
 
-        /* === הדר עליון === */
         .header {
             height: 65px;
             background: var(--element-navy-gradient);
@@ -57,7 +52,6 @@
             align-items: center;
         }
 
-        /* לוגו צף - חצי בשורה, חצי ברקע */
         .logo-wrapper {
             position: absolute;
             right: 30px; 
@@ -73,7 +67,6 @@
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
         .actual-logo-img { height: clamp(50px, 6vh, 75px); display: block; }
 
-        /* אזור אישי */
         .personal-area-btn {
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid var(--brand-green);
@@ -118,10 +111,7 @@
         }
         .header-search input:focus { width: calc(100% + 80px); box-shadow: 0 0 12px var(--brand-green-glow); background: #fff; }
 
-        /* === גוף האתר === */
-        .main-content { flex: 1; }
-
-        /* עמודה 1: קהילה (ימין) */
+        /* === עמודה 1: סוליבי+ (ימין) === */
         .community-sidebar {
             display: flex; 
             flex-direction: column; 
@@ -153,6 +143,8 @@
             font-weight: 700; color: var(--text-dark); text-decoration: none;
             white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             font-size: clamp(12px, 0.9vw, 14px);
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            flex-direction: row-reverse; /* סמלים בצד שמאל */
         }
         .fab-item:hover { background: var(--brand-green); color: #fff; transform: translateX(-5px); }
         
@@ -165,7 +157,7 @@
         }
         .fab-button:hover { transform: scale(1.05); background: var(--brand-green); }
 
-        /* עמודה 2: גריד קוביות (אמצע) */
+        /* === עמודה 2: גריד קוביות (אמצע) === */
         .center-content {
             display: flex; justify-content: center; align-items: center; padding: 40px 20px;
         }
@@ -174,21 +166,56 @@
             gap: clamp(15px, 2vw, 25px); width: 100%; max-width: 900px;
         }
         .square-box {
-            aspect-ratio: 1/1; background: var(--element-navy-gradient); border-radius: 16px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: clamp(10px, 2vw, 20px); text-align: center; text-decoration: none; transition: 0.4s;
-            border: 1px solid rgba(255,255,255,0.1); position: relative;
-        }
+    aspect-ratio: 1/1; 
+    background: var(--element-navy-gradient); 
+    border-radius: 16px;
+    display: flex; 
+    flex-direction: column; 
+    
+    /* התיקון כאן: מיישר את הכל להתחלה במקום למרכז */
+    justify-content: flex-start; 
+    align-items: center;
+    
+    /* הוספת ריווח קבוע מלמעלה כדי שהתגיות "יישבו" על אותו קו */
+    padding: 65px 20px 20px 20px; 
+    
+    text-align: center; 
+    text-decoration: none; 
+    transition: 0.4s;
+    border: 1px solid rgba(255,255,255,0.1); 
+    position: relative;
+    overflow: hidden; 
+}
         .square-box:hover { 
             transform: translateY(-10px); 
             border-color: var(--brand-green); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 10px rgba(124, 168, 86, 0.2); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
         }
+
+        /* הגדרת תמונת הרקע בריחוף - הגרסה המודגשת */
+        .square-box::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--box-bg);
+            background-size: cover;
+            background-position: center;
+            opacity: 0; /* במצב רגיל התמונה שקופה */
+            transition: opacity 0.4s ease; /* אנימציה חלקה של חצי שנייה */
+            z-index: 1; /* יושב מעל הרקע הכהה של הקובייה */
+            mix-blend-mode: overlay; /* משלב את התמונה בצורה יפה עם הצבע הכחול */
+        }
+
+        .square-box:hover::before {
+            opacity: 0.5; /* הדגשנו את התמונה בריחוף (מ-0.3 ל-0.5) */
+        }
+        .square-box > * { position: relative; z-index: 2; } /* מעלה טקסט מעל התמונה */
+
         .box-title { color: #fff; font-size: clamp(16px, 1.5vw, 22px); font-weight: 900; margin: 8px 0; }
         .box-tag { color: var(--brand-green); font-size: 12px; font-weight: 900; }
         .box-desc { color: #a0aec0; font-size: clamp(11px, 1vw, 13px); line-height: 1.4; }
 
-        /* === הסמלים ההייטקיסטים בקוביות === */
+        /* === סמלים הייטקיסטים === */
         .tech-bars { position: absolute; top: 20px; left: 20px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: all 0.4s ease; height: 26px; }
         .tech-bars span { width: 4px; background: var(--text-light); border-radius: 2px; transition: all 0.4s ease; }
         .square-box:hover .tech-bars { opacity: 0.8; gap: 6px; }
@@ -210,7 +237,34 @@
         .square-box:hover .tech-tactic { opacity: 0.8; border-color: var(--brand-green); }
         .square-box:hover .tech-tactic span { background: var(--brand-green); }
 
-        /* עמודה 3: טרמינל עדכונים (שמאל) */
+        /* סמל חדש לליגת החלומות - כוכב מופשט */
+        .tech-star { 
+            position: absolute; top: 20px; left: 20px; width: 26px; height: 26px; 
+            opacity: 0.15; transition: all 0.4s ease; 
+        }
+        .tech-star span { 
+            position: absolute; background: var(--text-light); transition: all 0.4s ease; 
+        }
+        .tech-star .v-line { width: 2px; height: 100%; left: 50%; transform: translateX(-50%); }
+        .tech-star .h-line { height: 2px; width: 100%; top: 50%; transform: translateY(-50%); }
+        .square-box:hover .tech-star { opacity: 0.8; transform: rotate(90deg); }
+        .square-box:hover .tech-star span { background: var(--brand-green); }
+
+        /* סמל חדש לנתוני שחקנים - "כוונת" סקאוטינג */
+        .tech-target { 
+            position: absolute; top: 20px; left: 20px; width: 24px; height: 24px; 
+            opacity: 0.15; transition: all 0.4s ease; 
+            border: 2px solid var(--text-light); border-radius: 50%;
+        }
+        .tech-target::after {
+            content: ""; position: absolute; top: 50%; left: 50%; 
+            width: 4px; height: 4px; background: var(--text-light); 
+            border-radius: 50%; transform: translate(-50%, -50%);
+        }
+        .square-box:hover .tech-target { opacity: 0.8; border-color: var(--brand-green); transform: scale(1.2); }
+        .square-box:hover .tech-target::after { background: var(--brand-green); }
+
+        /* עמודה 3: עדכונים חמים (שמאל) */
         .updates-sidebar {
             background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(15px);
             border-right: 1px solid rgba(255, 255, 255, 0.6); display: flex; flex-direction: column;
@@ -221,7 +275,6 @@
             gap: 10px; padding: 20px 0; border-bottom: 2px solid var(--brand-green);
         }
 
-        /* === אנימציית החלפת עדכונים (6 מתחלפים ב-6) === */
         .breathing-feed-container { position: relative; flex: 1; padding-top: 5px; min-height: 450px; }
         .updates-set {
             position: absolute; top: 0; left: 0; right: 0;
@@ -236,8 +289,6 @@
             100% { opacity: 1; pointer-events: auto; transform: scale(1); z-index: 2; }
         }
         
-        .breathing-feed-container:hover .updates-set { animation-play-state: paused; }
-        
         .updates-item {
             margin: 6px 15px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.9);
             padding: 10px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
@@ -249,16 +300,49 @@
         .updates-label { font-size: 10px; font-weight: 700; color: var(--brand-green); display: block; }
         .updates-title { font-size: clamp(11px, 0.9vw, 13px); font-weight: 700; }
 
-        /* === פוטר === */
+        /* --- תיקון סופי ומוחלט לשורת הכותרות הרצות --- */
+/* === שורת עדכונים רצה (Footer Ticker) === */
         .footer {
-            background: var(--element-navy-gradient); padding: 10px 0; border-top: 2px solid var(--brand-green);
-            overflow: hidden; white-space: nowrap; flex-shrink: 0;
+            background: var(--element-navy-gradient); 
+            padding: 10px 0; 
+            border-top: 2px solid var(--brand-green);
+            overflow: hidden; 
+            white-space: nowrap; 
+            width: 100%; 
+            direction: ltr; /* מבטיח שהאנימציה תרוץ משמאל לימין במדויק */
         }
-        .ticker-wrap { display: inline-block; animation: ticker 40s linear infinite; }
-        .ticker-item { color: #fff; font-weight: 700; padding: 0 30px; font-size: 14px; }
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
 
-        /* === התאמה למסכים קטנים (JSBin, טאבלט) === */
+        .ticker-wrap { 
+            display: inline-block; 
+            white-space: nowrap; 
+            animation: ticker 40s linear infinite; /* קצב ריצה נוח לקריאה */
+        }
+
+        .ticker-item { 
+            color: #ffffff !important; 
+            font-weight: 700; 
+            font-size: 15px; 
+            display: inline-block; 
+            direction: rtl; /* הטקסט עצמו קריא בעברית */
+            vertical-align: middle;
+        }
+
+        /* עיצוב הפס הירוק המפריד */
+        .ticker-separator {
+            color: var(--brand-green); /* ירוק של הלוגו */
+            font-weight: 900;
+            margin: 0 25px; /* מרווח שווה מכל צד */
+            font-size: 16px;
+            display: inline-block;
+            vertical-align: middle;
+            transform: translateY(-1px); /* תיקון גובה קטן שיהיה בדיוק באמצע האות */
+        }
+
+        @keyframes ticker { 
+            0% { transform: translateX(-100%); } 
+            100% { transform: translateX(100vw); } 
+        }
+}
         @media (max-width: 1100px) {
             .layout-grid { grid-template-columns: 1fr; } 
             .header { height: auto; padding: 15px 0; }
@@ -273,7 +357,6 @@
 <body>
 
     <header class="header layout-grid">
-        
         <div class="header-right-col">
             <a href="#" class="logo-wrapper">
                 <img src="a.png" alt="לוגו" class="actual-logo-img">
@@ -283,7 +366,6 @@
                 <span>לאזור האישי</span>
             </a>
         </div>
-
         <div class="header-center-col">
             <nav class="header-nav">
                 <ul>
@@ -295,13 +377,11 @@
                 </ul>
             </nav>
         </div>
-
         <div class="header-left-col">
             <div class="header-search">
                 <input type="text" placeholder="חיפוש תוכן...">
             </div>
         </div>
-
     </header>
 
     <main class="main-content layout-grid">
@@ -309,44 +389,19 @@
         <aside class="community-sidebar">
             <div class="fab-wrapper">
                 <div class="fab-menu">
-                    <a href="#" class="fab-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        זירת ה-V.I.P
-                    </a>
-                    <a href="#" class="fab-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                        היכל התהילה
-                    </a>
-                    <a href="#" class="fab-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        מכירות פומביות
-                    </a>
-                    <a href="#" class="fab-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                        חנות סוליבי
-                    </a>
-                    <a href="#" class="fab-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                        זירת החלפות
-                    </a>
-                    <a href="#" class="fab-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                        מרכז הפעילות
-                    </a>
-                    <a href="#" class="fab-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        טורנירים וליגות
-                    </a>
-                    <a href="#" class="fab-item">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        פורומים ודיונים
-                    </a>
+                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>זירת ה-V.I.P</a>
+                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>היכל התהילה</a>
+                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>מכירות פומביות</a>
+                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>חנות סוליבי+</a>
+                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>זירת החלפות</a>
+                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>מרכז הפעילות</a>
+                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>טורנירים וליגות</a>
+                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>פורומים ודיונים</a>
                 </div>
                 <div class="fab-button">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                        <line x1="12" y1="9" x2="12" y2="15"/>
-                        <line x1="9" y1="12" x2="15" y2="12"/>
+                        <line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/>
                     </svg>
                     <span style="font-size: 13px; font-weight: 900; letter-spacing: 1px; margin-top: 3px;">סוליבי+</span>
                 </div>
@@ -355,29 +410,29 @@
 
         <div class="center-content">
             <div class="grid-container">
-                <a href="#" class="square-box">
+                <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1762013315117-1c8005ad2b41?q=80&w=686&auto=format&fit=crop');">
                     <div class="tech-bars"><span style="height: 10px;"></span><span style="height: 22px;"></span><span style="height: 14px;"></span><span style="height: 26px;"></span></div>
-                    <div class="box-tag">עדכונים לייב</div><div class="box-title">מעקב ליגות, תוצאות וסטטיסטיקות</div><div class="box-desc">כל הטבלאות, התוצאות והסטטיסטיקות של השחקנים במקום אחד, מתעדכנים בזמן אמת</div>
+                    <div class="box-tag">עדכונים לייב</div><div class="box-title">טבלאות, תוצאות וסטטיסטיקות</div><div class="box-desc">כל הטבלאות, התוצאות והסטטיסטיקות של השחקנים במקום אחד, מתעדכנים בזמן אמת.</div>
                 </a>
-                <a href="#" class="square-box">
+                <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1170&auto=format&fit=crop');">
                     <div class="tech-dots"><span></span><span></span><span></span><span></span></div>
-                    <div class="box-tag">פרויקט הדגל</div><div class="box-title">פנתיאון הכדורגל הישראלי</div><div class="box-desc">דירוג סוליבי ל-100 הישראלים הגדולים, מאגר שיאים אישיים וקבוצתיים, בחירת הרכבי ה-11 הגדולים של כל קבוצה ועוד</div>
+                    <div class="box-tag">פרויקט הדגל</div><div class="box-title">פנתיאון הכדורגל הישראלי</div><div class="box-desc"> דירוג סוליבי ל-100 הישראלים הגדולים, מאגר שיאים אישיים וקבוצתיים, בחירת הרכבי ה-11 הגדולים של כל קבוצה ועוד...</div>
                 </a>
-                <a href="#" class="square-box">
+                <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1599873265732-4511510f0908?q=80&w=1170&auto=format&fit=crop');">
                     <div class="tech-dollar-only">$</div>
-                    <div class="box-tag">אספנות</div><div class="box-title">בורסת הקלפים</div><div class="box-desc">הופכים דאטה להשקעה חכמה. חיפוש קלפים, מחירי שוק בזמן אמת ונתוני Pop עולמיים. כולל דירוגי 'שחקנים חמים' והמלצות השקעה מבוססות ביצועים ופוטנציאל שוק</div>
+                    <div class="box-tag">אספנות</div><div class="box-title">בורסת הקלפים</div><div class="box-desc">הופכים דאטה להשקעה חכמה. חיפוש קלפים, מחירי שוק בזמן אמת ונתוני Pop עולמיים. כולל דירוגי 'שחקנים חמים' והמלצות השקעה מבוססות ביצועים ופוטנציאל שוק. </div>
                 </a>
-                <a href="#" class="square-box">
+                <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1585757318177-0570a997dc3a?q=80&w=1170&auto=format&fit=crop');">
                     <div class="tech-tactic"><span class="dot1"></span><span class="dot2"></span><span class="dot3"></span></div>
-                    <div class="box-tag">זירת הגיימינג</div><div class="box-title">משחקי מנג'ר</div><div class="box-desc">מ-Championship Manager האגדי ועד Football Manager המודרני. נתונים היסטוריים מכל השנים, מדריכי טקטיקות מנצחות, איתור Wonderkids וניתוחי דאטה שיעזרו לכם לבנות את האימפריה הבאה שלכם</div>
+                    <div class="box-tag">גיימינג</div><div class="box-title">משחקי מנג'ר</div><div class="box-desc">מ-Championship Manager האגדי ועד Football Manager המודרני. המלצות לטקטיקות מנצחות, איתור Wonderkids, ניתוחי דאטה ועוד.</div>
                 </a>
-                <a href="#" class="square-box">
-                    <div class="tech-bars"><span style="height: 12px;"></span><span style="height: 8px;"></span><span style="height: 20px;"></span><span style="height: 14px;"></span></div>
+                <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1587648811400-1e4843181271?q=80&w=1331&auto=format&fit=crop');">
+                    <div class="tech-star"><span class="v-line"></span><span class="h-line"></span></div>
                     <div class="box-tag">פנטזי</div><div class="box-title">ליגת החלומות</div><div class="box-desc">תשכחו מכל מה שהכרתם. משחק פנטזי מבוסס מציאות עם טוויסט חוקים ייחודי שהופך את ניהול הקבוצה למרתק, אסטרטגי וממכר מתמיד.</div>
                 </a>
-                <a href="#" class="square-box">
-                    <div class="tech-dots"><span></span><span></span><span></span><span></span></div>
-                    <div class="box-tag">סקאוטינג</div><div class="box-title">ניתוח שחקנים</div><div class="box-desc">צוללים עמוק למספרים. ניתוח אנליסטי מקיף ומעמיק של שחקנים נבחרים, בעזרת מודל סקאוטינג ייחודי שפיתחנו עבורכם.</div>
+                <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1741795990628-7ec99d7d2044?q=80&w=1332&auto=format&fit=crop');">
+                    <div class="tech-target"></div>
+                    <div class="box-tag">סקאוטינג</div><div class="box-title">נתוני שחקנים</div><div class="box-desc">צוללים עמוק למספרים. ניתוח אנליסטי מקיף ומעמיק של שחקנים נבחרים, בעזרת מודל סקאוטינג ייחודי שפיתחנו עבורכם.</div>
                 </a>
             </div>
         </div>
@@ -399,47 +454,14 @@
                         <div class="updates-text"><span class="updates-label">שוק הקלפים</span><span class="updates-title">הקלף החם: אמבפה 94</span></div>
                     </a>
                     <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">טור דעה</span><span class="updates-title">לקראת משחק העונה</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">פודקאסט</span><span class="updates-title">פרק חדש: סיכום המחזור</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">חדשות חמות</span><span class="updates-title">מאמן חדש חתם בליגה!</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">שחקן השבוע</span><span class="updates-title">נבחר מצטיין המחזור</span></div>
+                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg></div>
+                        <div class="updates-text"><span class="updates-label">חדשות</span><span class="updates-title">מאמן חדש חתם בליגה!</span></div>
                     </a>
                 </div>
-
                 <div class="updates-set set-2">
                     <a href="#" class="updates-item">
                         <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
                         <div class="updates-text"><span class="updates-label">לייב</span><span class="updates-title">תוצאות ליגת האלופות</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">סטטיסטיקה</span><span class="updates-title">מי מלך השערים העדכני?</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">פציעות</span><span class="updates-title">כוכב הקבוצה ייעדר חודשיים</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">העברות</span><span class="updates-title">עסקת הענק נסגרה סופית</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">וידאו</span><span class="updates-title">תקציר המשחק של אתמול</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">ראיון</span><span class="updates-title">"אנחנו מכוונים לאליפות"</span></div>
                     </a>
                 </div>
             </div>
@@ -449,9 +471,20 @@
 
     <footer class="footer">
         <div class="ticker-wrap">
-            <span class="ticker-item">מכבי ת"א ניצחה 2-0 • משחק העונה הערב באצטדיון • חלון ההעברות נסגר בקרוב • עדכוני פנטזי חדשים פורסמו באתר</span>
+            <span class="ticker-item">מכבי ת"א ניצחה 2-0 בדרבי הלוהט והעפילה למקום הראשון</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">חלון ההעברות נסגר: כל העדכונים האחרונים וההחתמות הגדולות כאן</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">ליגת החלומות: פורסמו מחירי השחקנים החדשים לעונת 2026</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">משחק העונה הערב: מכבי חיפה נגד הפועל ב"ש בקרב על התואר</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">בלעדי: ראיון חגיגי עם מלך השערים של הליגה על העתיד באירופה</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">סקאוטינג: 5 הכישרונות הצעירים שאתם חייבים להכיר לקראת המחזור הבא</span>
         </div>
     </footer>
 
 </body>
 </html>
+
