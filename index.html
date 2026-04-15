@@ -13,8 +13,10 @@
             --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
             --text-light: #ffffff;
             --text-dark: #112845;
-            --sidebar-width: clamp(280px, 22vw, 390px);
-            --search-width: clamp(250px, 20vw, 360px);
+            
+            /* סרגלי הצד משתנים בפרופורציה, אבל לא גדלים מדי */
+            --sidebar-width: clamp(220px, 18vw, 320px); 
+            --search-width: clamp(200px, 15vw, 300px);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,9 +25,8 @@
             font-family: 'Rubik', sans-serif;
             background: var(--bg-silver-matte);
             width: 100%;
-            min-height: 100vh;
+            height: 100vh; /* נועל את הגובה לגודל המסך */
             overflow-x: hidden;
-            overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
@@ -36,251 +37,166 @@
             width: 100%;
         }
 
+        /* === הדר עליון === */
         .header {
             height: 65px;
             background: var(--element-navy-gradient);
             border-bottom: 2px solid var(--brand-green);
-            position: sticky;
-            top: 0;
+            position: relative;
             z-index: 1000;
         }
 
-        .header-right-col {
-            position: relative;
-            display: flex;
-            justify-content: center; 
-            align-items: center;
-        }
-
+        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; }
         .logo-wrapper {
-            position: absolute;
-            right: 30px; 
-            top: 65px; 
-            transform: translateY(-50%); 
-            background-color: #ffffff;
-            padding: 4px 10px; 
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-            z-index: 1100;
-            transition: 0.3s;
+            position: absolute; right: 30px; top: 65px; transform: translateY(-50%);
+            background-color: #ffffff; padding: 4px 10px; border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
-        .actual-logo-img { height: clamp(50px, 6vh, 75px); display: block; }
+        .actual-logo-img { height: clamp(45px, 5vh, 65px); display: block; }
 
         .personal-area-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--brand-green);
-            color: #ffffff;
-            padding: 6px 18px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: clamp(12px, 1vw, 14px);
-            transition: 0.3s;
-            display: flex; align-items: center; gap: 8px;
-            white-space: nowrap;
+            background: rgba(255, 255, 255, 0.1); border: 2px solid var(--brand-green);
+            color: #ffffff; padding: 6px 18px; border-radius: 30px; text-decoration: none;
+            font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); transition: 0.3s;
+            display: flex; align-items: center; gap: 8px; white-space: nowrap;
         }
         .personal-area-btn:hover { background: var(--brand-green); transform: translateY(-2px); }
 
-        .header-center-col {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .header-nav ul { list-style: none; display: flex; gap: clamp(10px, 1.5vw, 20px); }
+        .header-center-col { display: flex; justify-content: center; align-items: center; }
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); }
         .header-nav a {
-            text-decoration: none; color: var(--text-light);
-            font-weight: 700; font-size: clamp(13px, 1.1vw, 16px); padding: 8px 12px; transition: 0.3s;
+            text-decoration: none; color: var(--text-light); font-weight: 700;
+            font-size: clamp(12px, 1vw, 15px); padding: 8px 12px; transition: 0.3s;
         }
         .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
 
-        .header-left-col {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end; 
-            padding-left: 20px;
+        /* אזור החיפוש תוקן ליישור לקו הימני (flex-start ב-RTL) */
+        .header-left-col { 
+            display: flex; align-items: center; justify-content: flex-start; 
         }
         
-        .header-search { position: relative; width: var(--search-width); height: 36px; }
+        .header-search { position: relative; width: var(--search-width); height: 34px; }
+        
+        /* תיקון כיוון ההתרחבות - עיגון לשמאל ירחיב את התיבה לימין */
         .header-search input {
             position: absolute; left: 0; top: 0;
-            width: 100%; height: 100%;
-            border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px;
-            font-size: 14px; font-weight: 600; padding: 0 20px; outline: none;
-            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s;
         }
-        .header-search input:focus { width: calc(100% + 80px); box-shadow: 0 0 12px var(--brand-green-glow); background: #fff; }
-
-        /* === עמודה 1: סוליבי+ (ימין) === */
-        .community-sidebar {
-            display: flex; 
-            flex-direction: column; 
-            justify-content: flex-end; 
-            align-items: center; 
-            padding-bottom: 40px; 
-        }
-        
-        .fab-wrapper {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* הוספת 80 פיקסלים במיקוד וציפה מעל שאר התפריט */
+        .header-search input:focus { 
+            width: calc(100% + 80px); box-shadow: 0 0 12px var(--brand-green-glow); 
+            background: #fff; z-index: 10; 
         }
 
+        /* === אזור מרכזי - משתלט על הגובה הנותר === */
+        .main-content {
+            flex: 1; /* לוקח את כל הגובה שנותר בין ההדר לפוטר */
+            overflow-y: auto; /* מאפשר גלילה רק כשבאמת חייבים (במסכים קטנים) */
+        }
+
+        /* === סוליבי+ (תפריט FAB) === */
+        .community-sidebar { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 3vh; }
+        .fab-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; }
         .fab-menu {
-            position: absolute;
-            bottom: 100%; 
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            display: flex; flex-direction: column; gap: 10px; padding-bottom: 15px;
-            opacity: 0; pointer-events: none; transition: 0.3s;
+            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(20px);
+            display: flex; flex-direction: column; gap: 8px; padding-bottom: 15px; opacity: 0; pointer-events: none; transition: 0.3s;
         }
-        
         .fab-wrapper:hover .fab-menu { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
-        
         .fab-item {
-            background: #fff; padding: 10px 20px; border-radius: 30px;
-            font-weight: 700; color: var(--text-dark); text-decoration: none;
-            white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            font-size: clamp(12px, 0.9vw, 14px);
-            display: flex; align-items: center; justify-content: space-between; gap: 12px;
-            flex-direction: row-reverse; /* סמלים בצד שמאל */
+            background: #fff; padding: 8px 18px; border-radius: 30px; font-weight: 700; color: var(--text-dark);
+            text-decoration: none; white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: clamp(11px, 0.8vw, 13px); display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            flex-direction: row-reverse;
         }
         .fab-item:hover { background: var(--brand-green); color: #fff; transform: translateX(-5px); }
-        
         .fab-button {
-            position: relative; z-index: 2;
-            width: clamp(60px, 5vw, 75px); height: clamp(60px, 5vw, 75px);
+            position: relative; z-index: 2; width: clamp(55px, 4.5vw, 70px); height: clamp(55px, 4.5vw, 70px);
             border-radius: 50%; background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
             color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
         .fab-button:hover { transform: scale(1.05); background: var(--brand-green); }
 
-        /* === עמודה 2: גריד קוביות (אמצע) === */
-        .center-content {
-            display: flex; justify-content: center; align-items: center; padding: 40px 20px;
+        /* === גריד הקוביות המרכזי === */
+        .center-content { display: flex; justify-content: center; align-items: center; padding: 2vh 2vw; }
+        
+        /* הקסם הרספונסיבי מהתיקון הקודם */
+        .grid-container { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: clamp(10px, 1.5vw, 20px); width: 100%; 
+            max-width: min(850px, 110vh); 
         }
-        .grid-container {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: clamp(15px, 2vw, 25px); width: 100%; max-width: 900px;
-        }
+        
         .square-box {
-    aspect-ratio: 1/1; 
-    background: var(--element-navy-gradient); 
-    border-radius: 16px;
-    display: flex; 
-    flex-direction: column; 
-    
-    /* התיקון כאן: מיישר את הכל להתחלה במקום למרכז */
-    justify-content: flex-start; 
-    align-items: center;
-    
-    /* הוספת ריווח קבוע מלמעלה כדי שהתגיות "יישבו" על אותו קו */
-    padding: 65px 20px 20px 20px; 
-    
-    text-align: center; 
-    text-decoration: none; 
-    transition: 0.4s;
-    border: 1px solid rgba(255,255,255,0.1); 
-    position: relative;
-    overflow: hidden; 
-}
-        .square-box:hover { 
-            transform: translateY(-10px); 
-            border-color: var(--brand-green); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
+            aspect-ratio: 1/1; background: var(--element-navy-gradient); border-radius: 16px;
+            display: flex; flex-direction: column; 
+            justify-content: flex-start; align-items: center; 
+            padding: 20% 6% 6% 6%;
+            text-align: center; text-decoration: none; transition: 0.4s;
+            border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
         }
+        .square-box:hover { transform: translateY(-8px); border-color: var(--brand-green); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
 
-        /* הגדרת תמונת הרקע בריחוף - הגרסה המודגשת */
         .square-box::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: var(--box-bg);
-            background-size: cover;
-            background-position: center;
-            opacity: 0; /* במצב רגיל התמונה שקופה */
-            transition: opacity 0.4s ease; /* אנימציה חלקה של חצי שנייה */
-            z-index: 1; /* יושב מעל הרקע הכהה של הקובייה */
-            mix-blend-mode: overlay; /* משלב את התמונה בצורה יפה עם הצבע הכחול */
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--box-bg); background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 0.4s ease; z-index: 1; mix-blend-mode: overlay;
         }
+        .square-box:hover::before { opacity: 0.5; }
+        .square-box > * { position: relative; z-index: 2; }
 
-        .square-box:hover::before {
-            opacity: 0.5; /* הדגשנו את התמונה בריחוף (מ-0.3 ל-0.5) */
-        }
-        .square-box > * { position: relative; z-index: 2; } /* מעלה טקסט מעל התמונה */
+        .box-title { color: #fff; font-size: clamp(13px, 1.2vw, 18px); font-weight: 900; margin: 6px 0; }
+        .box-tag { color: var(--brand-green); font-size: clamp(10px, 0.8vw, 12px); font-weight: 900; }
+        .box-desc { color: #a0aec0; font-size: clamp(9px, 0.75vw, 12px); line-height: 1.3; }
 
-        .box-title { color: #fff; font-size: clamp(16px, 1.5vw, 22px); font-weight: 900; margin: 8px 0; }
-        .box-tag { color: var(--brand-green); font-size: 12px; font-weight: 900; }
-        .box-desc { color: #a0aec0; font-size: clamp(11px, 1vw, 13px); line-height: 1.4; }
-
-        /* === סמלים הייטקיסטים === */
-        .tech-bars { position: absolute; top: 20px; left: 20px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: all 0.4s ease; height: 26px; }
-        .tech-bars span { width: 4px; background: var(--text-light); border-radius: 2px; transition: all 0.4s ease; }
-        .square-box:hover .tech-bars { opacity: 0.8; gap: 6px; }
+        /* === סמלי הייטק ייחודיים בתוך הקוביות === */
+        .tech-bars { position: absolute; top: 15px; left: 15px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: 0.4s; height: 20px; }
+        .tech-bars span { width: 3px; background: #fff; border-radius: 2px; }
+        .square-box:hover .tech-bars { opacity: 0.8; gap: 5px; }
         .square-box:hover .tech-bars span { background: var(--brand-green); }
 
-        .tech-dots { position: absolute; top: 20px; left: 20px; opacity: 0.15; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; transition: all 0.4s ease; }
-        .tech-dots span { width: 6px; height: 6px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
-        .square-box:hover .tech-dots { opacity: 0.8; gap: 6px; }
+        .tech-dots { position: absolute; top: 15px; left: 15px; opacity: 0.15; display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; transition: 0.4s; }
+        .tech-dots span { width: 5px; height: 5px; background: #fff; border-radius: 50%; }
+        .square-box:hover .tech-dots { opacity: 0.8; gap: 5px; }
         .square-box:hover .tech-dots span { background: var(--brand-green); }
 
-        .tech-dollar-only { position: absolute; top: 20px; left: 20px; font-size: 26px; font-weight: 900; color: var(--text-light); opacity: 0.25; transition: all 0.4s ease; font-family: sans-serif; line-height: 1; }
+        .tech-dollar-only { position: absolute; top: 10px; left: 15px; font-size: 22px; font-weight: 900; color: #fff; opacity: 0.25; transition: 0.4s; font-family: sans-serif; line-height: 1; }
         .square-box:hover .tech-dollar-only { opacity: 0.9; color: var(--brand-green); transform: scale(1.1); }
 
-        .tech-tactic { position: absolute; top: 20px; left: 20px; width: 30px; height: 24px; opacity: 0.15; transition: all 0.4s ease; border: 2px solid var(--text-light); border-radius: 4px; }
-        .tech-tactic span { position: absolute; width: 5px; height: 5px; background: var(--text-light); border-radius: 50%; transition: all 0.4s ease; }
-        .tech-tactic .dot1 { top: 3px; left: 50%; transform: translateX(-50%); }
-        .tech-tactic .dot2 { bottom: 3px; left: 3px; }
-        .tech-tactic .dot3 { bottom: 3px; right: 3px; }
+        .tech-tactic { position: absolute; top: 15px; left: 15px; width: 24px; height: 18px; opacity: 0.15; transition: 0.4s; border: 2px solid #fff; border-radius: 4px; }
+        .tech-tactic span { position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; }
+        .tech-tactic .dot1 { top: 2px; left: 50%; transform: translateX(-50%); }
+        .tech-tactic .dot2 { bottom: 2px; left: 2px; }
+        .tech-tactic .dot3 { bottom: 2px; right: 2px; }
         .square-box:hover .tech-tactic { opacity: 0.8; border-color: var(--brand-green); }
         .square-box:hover .tech-tactic span { background: var(--brand-green); }
 
-        /* סמל חדש לליגת החלומות - כוכב מופשט */
-        .tech-star { 
-            position: absolute; top: 20px; left: 20px; width: 26px; height: 26px; 
-            opacity: 0.15; transition: all 0.4s ease; 
-        }
-        .tech-star span { 
-            position: absolute; background: var(--text-light); transition: all 0.4s ease; 
-        }
+        .tech-star { position: absolute; top: 15px; left: 15px; width: 22px; height: 22px; opacity: 0.15; transition: 0.4s; }
+        .tech-star span { position: absolute; background: #fff; transition: 0.4s; }
         .tech-star .v-line { width: 2px; height: 100%; left: 50%; transform: translateX(-50%); }
         .tech-star .h-line { height: 2px; width: 100%; top: 50%; transform: translateY(-50%); }
         .square-box:hover .tech-star { opacity: 0.8; transform: rotate(90deg); }
         .square-box:hover .tech-star span { background: var(--brand-green); }
 
-        /* סמל חדש לנתוני שחקנים - "כוונת" סקאוטינג */
-        .tech-target { 
-            position: absolute; top: 20px; left: 20px; width: 24px; height: 24px; 
-            opacity: 0.15; transition: all 0.4s ease; 
-            border: 2px solid var(--text-light); border-radius: 50%;
-        }
-        .tech-target::after {
-            content: ""; position: absolute; top: 50%; left: 50%; 
-            width: 4px; height: 4px; background: var(--text-light); 
-            border-radius: 50%; transform: translate(-50%, -50%);
-        }
+        .tech-target { position: absolute; top: 15px; left: 15px; width: 20px; height: 20px; opacity: 0.15; transition: 0.4s; border: 2px solid #fff; border-radius: 50%; }
+        .tech-target::after { content: ""; position: absolute; top: 50%; left: 50%; width: 3px; height: 3px; background: #fff; border-radius: 50%; transform: translate(-50%, -50%); }
         .square-box:hover .tech-target { opacity: 0.8; border-color: var(--brand-green); transform: scale(1.2); }
         .square-box:hover .tech-target::after { background: var(--brand-green); }
 
-        /* עמודה 3: עדכונים חמים (שמאל) */
+        /* === עמודה 3: עדכונים חמים (שמאל) === */
         .updates-sidebar {
             background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(15px);
             border-right: 1px solid rgba(255, 255, 255, 0.6); display: flex; flex-direction: column;
         }
         .updates-header {
-            font-size: 18px; font-weight: 900; color: var(--text-dark);
-            display: flex; align-items: center; justify-content: center; 
-            gap: 10px; padding: 20px 0; border-bottom: 2px solid var(--brand-green);
+            font-size: clamp(14px, 1vw, 17px); font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: center; 
+            gap: 8px; padding: 2vh 0; border-bottom: 2px solid var(--brand-green);
         }
 
-        .breathing-feed-container { position: relative; flex: 1; padding-top: 5px; min-height: 450px; }
-        .updates-set {
-            position: absolute; top: 0; left: 0; right: 0;
-            display: flex; flex-direction: column;
-            animation: breatheFade 20s infinite; 
-        }
+        .breathing-feed-container { position: relative; flex: 1; padding-top: 5px; }
+        .updates-set { position: absolute; top: 0; left: 0; right: 0; display: flex; flex-direction: column; animation: breatheFade 20s infinite; }
         .set-2 { animation-delay: -10s; opacity: 0; }
         
         @keyframes breatheFade {
@@ -291,66 +207,60 @@
         
         .updates-item {
             margin: 6px 15px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.9);
-            padding: 10px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            padding: 8px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
             text-decoration: none; color: var(--text-dark); position: relative; transition: 0.3s;
         }
         .updates-item:hover { transform: scale(1.02); background: #fff; border-color: var(--brand-green); }
-        .updates-icon { position: absolute; right: 12px; background: #f0f4f8; width: 34px; height: 34px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-        .updates-text { text-align: center; width: 100%; padding: 0 40px; } 
-        .updates-label { font-size: 10px; font-weight: 700; color: var(--brand-green); display: block; }
-        .updates-title { font-size: clamp(11px, 0.9vw, 13px); font-weight: 700; }
+        .updates-icon { position: absolute; right: 8px; background: #f0f4f8; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .updates-text { text-align: center; width: 100%; padding: 0 35px; } 
+        .updates-label { font-size: 9px; font-weight: 700; color: var(--brand-green); display: block; }
+        .updates-title { font-size: clamp(10px, 0.8vw, 12px); font-weight: 700; }
 
-        /* --- תיקון סופי ומוחלט לשורת הכותרות הרצות --- */
-/* === שורת עדכונים רצה (Footer Ticker) === */
+        /* === שורת עדכונים רצה (Footer Ticker) === */
         .footer {
             background: var(--element-navy-gradient); 
-            padding: 10px 0; 
+            padding: 8px 0; 
             border-top: 2px solid var(--brand-green);
             overflow: hidden; 
             white-space: nowrap; 
             width: 100%; 
-            direction: ltr; /* מבטיח שהאנימציה תרוץ משמאל לימין במדויק */
+            direction: ltr; 
         }
 
-        .ticker-wrap { 
-            display: inline-block; 
-            white-space: nowrap; 
-            animation: ticker 40s linear infinite; /* קצב ריצה נוח לקריאה */
-        }
-
-        .ticker-item { 
-            color: #ffffff !important; 
-            font-weight: 700; 
-            font-size: 15px; 
-            display: inline-block; 
-            direction: rtl; /* הטקסט עצמו קריא בעברית */
-            vertical-align: middle;
-        }
-
-        /* עיצוב הפס הירוק המפריד */
-        .ticker-separator {
-            color: var(--brand-green); /* ירוק של הלוגו */
-            font-weight: 900;
-            margin: 0 25px; /* מרווח שווה מכל צד */
-            font-size: 16px;
-            display: inline-block;
-            vertical-align: middle;
-            transform: translateY(-1px); /* תיקון גובה קטן שיהיה בדיוק באמצע האות */
-        }
-
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        
         @keyframes ticker { 
             0% { transform: translateX(-100%); } 
             100% { transform: translateX(100vw); } 
         }
-}
+
+        /* =======================================================
+           התאמה רספונסיבית מקיפה לטאבלטים ולטלפונים ניידים
+           ======================================================= */
+
         @media (max-width: 1100px) {
+            body { height: auto; } /* משחרר את נעילת הגובה במובייל/טאבלט */
             .layout-grid { grid-template-columns: 1fr; } 
             .header { height: auto; padding: 15px 0; }
-            .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; }
+            .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
             .logo-wrapper { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
-            .updates-sidebar { border-right: none; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+            .updates-sidebar { border-right: none; border-bottom: 1px solid #ccc; padding-bottom: 20px; min-height: 250px; }
+            .breathing-feed-container { min-height: 200px; }
             .community-sidebar { padding: 40px 0; }
             .header-search { display: none; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 800px; }
+            .square-box { padding: 15% 5% 5% 5%; } /* מרווח יחסי למסכים קטנים */
+        }
+
+        @media (max-width: 768px) {
+            .grid-container { grid-template-columns: 1fr; max-width: 400px; }
+            .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .header-nav a { font-size: 14px; padding: 5px 8px; }
+            .fab-wrapper { margin-top: 15px; }
+            .ticker-item { font-size: 13px; }
+            .ticker-separator { font-size: 14px; margin: 0 15px; }
         }
     </style>
 </head>
@@ -416,11 +326,11 @@
                 </a>
                 <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1170&auto=format&fit=crop');">
                     <div class="tech-dots"><span></span><span></span><span></span><span></span></div>
-                    <div class="box-tag">פרויקט הדגל</div><div class="box-title">פנתיאון הכדורגל הישראלי</div><div class="box-desc"> דירוג סוליבי ל-100 הישראלים הגדולים, מאגר שיאים אישיים וקבוצתיים, בחירת הרכבי ה-11 הגדולים של כל קבוצה ועוד...</div>
+                    <div class="box-tag">פרויקט הדגל</div><div class="box-title">פנתיאון הכדורגל הישראלי</div><div class="box-desc">דירוג סוליבי ל-100 הישראלים הגדולים, מאגר שיאים אישיים וקבוצתיים, בחירת הרכבי ה-11 הגדולים של כל קבוצה ועוד...</div>
                 </a>
                 <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1599873265732-4511510f0908?q=80&w=1170&auto=format&fit=crop');">
                     <div class="tech-dollar-only">$</div>
-                    <div class="box-tag">אספנות</div><div class="box-title">בורסת הקלפים</div><div class="box-desc">הופכים דאטה להשקעה חכמה. חיפוש קלפים, מחירי שוק בזמן אמת ונתוני Pop עולמיים. כולל דירוגי 'שחקנים חמים' והמלצות השקעה מבוססות ביצועים ופוטנציאל שוק. </div>
+                    <div class="box-tag">אספנות</div><div class="box-title">בורסת הקלפים</div><div class="box-desc">הופכים דאטה להשקעה חכמה. חיפוש קלפים, מחירי שוק בזמן אמת ונתוני Pop עולמיים. כולל דירוגי 'שחקנים חמים' והמלצות השקעה מבוססות ביצועים ופוטנציאל שוק.</div>
                 </a>
                 <a href="#" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1585757318177-0570a997dc3a?q=80&w=1170&auto=format&fit=crop');">
                     <div class="tech-tactic"><span class="dot1"></span><span class="dot2"></span><span class="dot3"></span></div>
@@ -487,4 +397,3 @@
 
 </body>
 </html>
-
