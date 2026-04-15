@@ -1,1 +1,469 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי ספורט - מרכז ליגות</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #7ca856;
+            --brand-green-glow: rgba(124, 168, 86, 0.6);
+            --bg-silver-matte: linear-gradient(145deg, #eef4f9 0%, #c9d4e0 100%);
+            --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
+            --text-light: #ffffff;
+            --text-dark: #112845;
+            
+            --sidebar-width: clamp(280px, 22vw, 380px); 
+            --search-width: clamp(200px, 15vw, 300px);
 
+            /* סמלי רקע מיוחדים לטורנירים בינלאומיים שלא יישברו לעולם */
+            --bg-am: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg>');
+            --bg-world: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>');
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            font-family: 'Rubik', sans-serif;
+            background: var(--bg-silver-matte);
+            width: 100%;
+            height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .header-layout-grid {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+            width: 100%;
+        }
+
+        /* === הדר עליון === */
+        .header {
+            height: 65px;
+            background: var(--element-navy-gradient);
+            border-bottom: 2px solid var(--brand-green);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; }
+        .logo-wrapper {
+            position: absolute; right: 20px; top: 65px; transform: translateY(-50%);
+            background-color: #ffffff; padding: 4px 10px; border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
+        }
+        .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
+        .actual-logo-img { height: clamp(45px, 5vh, 60px); display: block; }
+
+        .personal-area-btn {
+            background: rgba(255, 255, 255, 0.1); border: 2px solid var(--brand-green);
+            color: #ffffff; padding: 6px 18px; border-radius: 30px; text-decoration: none;
+            font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); transition: 0.3s;
+            display: flex; align-items: center; gap: 8px; white-space: nowrap;
+            margin-right: 85px; 
+        }
+        .personal-area-btn:hover { background: var(--brand-green); transform: translateY(-2px); }
+
+        .header-center-col { display: flex; justify-content: center; align-items: center; }
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); }
+        .header-nav a {
+            text-decoration: none; color: var(--text-light); font-weight: 700;
+            font-size: clamp(12px, 1vw, 15px); padding: 8px 12px; transition: 0.3s;
+        }
+        .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
+
+        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; }
+        .header-search { position: relative; width: var(--search-width); height: 34px; }
+        .header-search input {
+            position: absolute; left: 0; top: 0; 
+            width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s ease-out;
+        }
+        .header-search input:focus { width: calc(100% + 80px); box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
+
+        /* === אזור מרכזי: לובי הליגות === */
+        .inner-page-main {
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .content-container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-bottom: 40px; 
+        }
+
+        .premium-title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+        
+        .title-line {
+            height: 2px;
+            flex: 1;
+            max-width: 150px;
+            background: linear-gradient(90deg, transparent, var(--brand-green));
+            border-radius: 2px;
+        }
+        
+        .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
+
+        .page-title {
+            color: var(--text-dark);
+            font-size: clamp(22px, 1.8vw, 28px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 10px 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(124, 168, 86, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .page-title span { color: var(--brand-green); }
+
+        /* גריד קוביות הליגות */
+        .leagues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .league-cube {
+            width: 100%;
+            aspect-ratio: 1/1; 
+            background: var(--element-navy-gradient);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .league-cube:hover {
+            transform: translateY(-8px);
+            border-color: var(--brand-green);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        /* --- קוביית הדגל הקטנה (האייקון המרכזי) --- */
+        .league-icon-modern {
+            width: 45px;
+            height: 45px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.05);
+            transition: 0.4s;
+            position: relative;
+            z-index: 2; 
+            overflow: hidden; /* חותך את תמונת הדגל בדיוק לפי הפינות המעוגלות */
+        }
+
+        .league-icon-modern img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* מוודא שהדגל ממלא את כל הריבוע המעוגל */
+        }
+
+        /* עיצוב מיוחד לסמלי יבשות (SVG) כדי שלא ימתחו כמו תמונה */
+        .league-icon-modern.svg-icon {
+            padding: 8px;
+        }
+        .league-icon-modern.svg-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #ffffff;
+        }
+
+        .league-cube:hover .league-icon-modern {
+            border-color: var(--brand-green);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .league-name {
+            color: #fff;
+            font-size: clamp(12px, 1vw, 14px);
+            font-weight: 700;
+            text-align: center;
+            position: relative;
+            z-index: 2; 
+        }
+
+        /* --- תמונת הדגל הגדולה שמופיעה ברקע במעבר עכבר --- */
+        .league-cube::before {
+            content: ""; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--bg-image); 
+            background-size: cover; 
+            background-position: center;
+            opacity: 0; 
+            transition: opacity 0.5s ease; 
+            z-index: 1; 
+            mix-blend-mode: overlay; /* משלב את צבע הדגל עם צבע הנייבי היוקרתי של הקובייה */
+            pointer-events: none;
+        }
+
+        .league-cube:hover::before {
+            opacity: 0.5; /* שקיפות הדגל ברקע */
+        }
+
+        /* התנהגות שונה לרקע של היבשות (SVG) כדי שייראה כמו חותמת שקופה */
+        .league-cube.svg-bg::before {
+            background-size: 60%; 
+            background-repeat: no-repeat;
+            mix-blend-mode: normal; 
+        }
+        .league-cube.svg-bg:hover::before {
+            opacity: 0.15; /* שקוף יותר כדי שלא יבלע את הטקסט */
+        }
+
+        /* === שורת עדכונים רצה === */
+        .footer {
+            background: var(--element-navy-gradient); 
+            padding: 8px 0; 
+            border-top: 2px solid var(--brand-green);
+            overflow: hidden; 
+            white-space: nowrap; 
+            width: 100%; 
+            direction: ltr; 
+            flex-shrink: 0; 
+        }
+
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        
+        @keyframes ticker { 
+            0% { transform: translateX(-100%); } 
+            100% { transform: translateX(100vw); } 
+        }
+
+        /* === התאמה רספונסיבית === */
+        @media (max-width: 1100px) {
+            body { height: auto; }
+            .header-layout-grid { grid-template-columns: 1fr; } 
+            .header { height: auto; padding: 15px 0; }
+            .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
+            .personal-area-btn { margin-right: 0; }
+            .logo-wrapper { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
+            .header-search { display: none; }
+            .leagues-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } 
+        }
+
+        @media (max-width: 768px) {
+            .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .header-nav a { font-size: 14px; padding: 5px 8px; }
+            .ticker-item { font-size: 13px; }
+            .ticker-separator { font-size: 14px; margin: 0 15px; }
+            .content-container { padding: 20px 15px; }
+            .leagues-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
+            .title-line { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header header-layout-grid">
+        <div class="header-right-col">
+            <a href="#" class="logo-wrapper">
+                <img src="a.png" alt="לוגו" class="actual-logo-img">
+            </a>
+            <a href="#" class="personal-area-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>לאזור האישי</span>
+            </a>
+        </div>
+        <div class="header-center-col">
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="index.html">דף הבית</a></li>
+                    <li><a href="#">ארכיון</a></li>
+                    <li><a href="#">קרדיטים</a></li>
+                    <li><a href="#">אודות</a></li>
+                    <li><a href="#">צור קשר</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="header-left-col">
+            <div class="header-search">
+                <input type="text" placeholder="חיפוש תוכן...">
+            </div>
+        </div>
+    </header>
+
+    <main class="inner-page-main">
+        <div class="content-container">
+            
+            <div class="premium-title-wrapper">
+                <div class="title-line"></div>
+                <h1 class="page-title">מרכז <span>הליגות</span></h1>
+                <div class="title-line left"></div>
+            </div>
+            
+            <div class="leagues-grid">
+                
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/il.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/il.png" alt="Israel"></div>
+                    <span class="league-name">ליגת העל</span>
+                </a>
+                
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/il.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/il.png" alt="Israel"></div>
+                    <span class="league-name">ליגה לאומית</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/gb-eng.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/gb-eng.png" alt="England"></div>
+                    <span class="league-name">ליגה אנגלית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/es.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/es.png" alt="Spain"></div>
+                    <span class="league-name">ליגה ספרדית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/it.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/it.png" alt="Italy"></div>
+                    <span class="league-name">ליגה איטלקית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/de.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/de.png" alt="Germany"></div>
+                    <span class="league-name">ליגה גרמנית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/fr.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/fr.png" alt="France"></div>
+                    <span class="league-name">ליגה צרפתית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/nl.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/nl.png" alt="Netherlands"></div>
+                    <span class="league-name">ליגה הולנדית<br>ראשונה</span>
+                </a>
+
+              <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/be.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/be.png" alt="Belgium"></div>
+                    <span class="league-name">ליגה בלגית<br>ראשונה</span>
+                </a>
+              
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/pt.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/pt.png" alt="Portugal"></div>
+                    <span class="league-name">ליגה פורטוגלית<br>ראשונה</span>
+                </a>
+                
+               
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/tr.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/tr.png" alt="Turkey"></div>
+                    <span class="league-name">ליגה טורקית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png" alt="Europe"></div>
+                    <span class="league-name">ליגת האלופות</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png" alt="Europe"></div>
+                    <span class="league-name">הליגה האירופית</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png" alt="Europe"></div>
+                    <span class="league-name">ליגת הקונפרנס</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/us.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/us.png" alt="USA"></div>
+                    <span class="league-name">ליגת ה-MLS</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/sa.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/sa.png" alt="Saudi Arabia"></div>
+                    <span class="league-name">ליגה סעודית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/br.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/br.png" alt="Brazil"></div>
+                    <span class="league-name">ליגה ברזילאית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/ar.png');">
+                    <div class="league-icon-modern"><img src="https://flagcdn.com/w80/ar.png" alt="Argentina"></div>
+                    <span class="league-name">ליגה ארגנטינאית<br>ראשונה</span>
+                </a>
+
+                <a href="#" class="league-cube svg-bg" style="--bg-image: var(--bg-am);">
+                    <div class="league-icon-modern svg-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg>
+                    </div>
+                    <span class="league-name">קופה ליברטאדורס</span>
+                </a>
+
+                <a href="#" class="league-cube svg-bg" style="--bg-image: var(--bg-am);">
+                    <div class="league-icon-modern svg-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg>
+                    </div>
+                    <span class="league-name">סודאמריקנה</span>
+                </a>
+
+                <a href="#" class="league-cube svg-bg" style="--bg-image: var(--bg-world);">
+                    <div class="league-icon-modern svg-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    </div>
+                    <span class="league-name">מונדיאל</span>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="ticker-wrap">
+            <span class="ticker-item">מכבי ת"א ניצחה 2-0 בדרבי הלוהט והעפילה למקום הראשון</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">חלון ההעברות נסגר: כל העדכונים האחרונים וההחתמות הגדולות כאן</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">ליגת החלומות: פורסמו מחירי השחקנים החדשים לעונת 2026</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">משחק העונה הערב: מכבי חיפה נגד הפועל ב"ש בקרב על התואר</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">בלעדי: ראיון חגיגי עם מלך השערים של הליגה על העתיד באירופה</span>
+        </div>
+    </footer>
+
+</body>
+</html>
