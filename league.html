@@ -451,6 +451,10 @@
                     const primaryTeamLogo = item.statistics[0].team.logo;
                     const primaryTeamName = item.statistics[0].team.name;
                     
+                    // מתרגם את שם השחקן ושם הקבוצה לעברית!
+                    const hebrewPlayerName = myDictionary[player.name] || player.name;
+                    const hebrewTeamName = myDictionary[primaryTeamName] || primaryTeamName;
+                    
                     // סכימה (חיבור) של כל המספרים מכל הקבוצות שהשחקן שיחק בהן העונה באותה ליגה!
                     let statValue = 0;
                     item.statistics.forEach(stat => {
