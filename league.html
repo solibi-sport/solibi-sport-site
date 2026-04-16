@@ -108,67 +108,94 @@
 
     <footer class="footer">נתונים חיים באדיבות API-FOOTBALL</footer>
 
-    <script>
-    const API_KEY = '#';
-    const SEASON = 2025; // לעונת 24/25
+    <!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>טסט API מהיר</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; }
+        table { width: 100%; max-width: 600px; margin: 0 auto; border-collapse: collapse; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        th, td { border-bottom: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #1e4266; color: white; }
+        .team-cell { text-align: right; display: flex; align-items: center; gap: 10px; font-weight: bold; }
+        img { width: 25px; height: 25px; }
+    </style>
+</head>
+<body>
 
-    // מילון תרגום קבוצות אנגליות לעברית
-    const teamTranslations = {
-        "Arsenal": "ארסנל",
-        "Aston Villa": "אסטון וילה",
-        "Bournemouth": "בורנמות'",
-        "Brentford": "ברנטפורד",
-        "Brighton": "ברייטון",
-        "Chelsea": "צ'לסי",
-        "Crystal Palace": "קריסטל פאלאס",
-        "Everton": "אברטון",
-        "Fulham": "פולהאם",
-        "Liverpool": "ליברפול",
-        "Manchester City": "מנצ'סטר סיטי",
-        "Manchester United": "מנצ'סטר יונייטד",
-        "Newcastle": "ניוקאסל",
-        "Nottingham Forest": "נוטינגהאם פורסט",
-        "Tottenham": "טוטנהאם",
-        "West Ham": "ווסטהאם",
-        "Wolves": "וולבס",
-        "Wolverhampton Wanderers": "וולבס", // לפעמים ה-API קורא להם ככה
-        "Leicester": "לסטר סיטי",
-        "Ipswich": "איפסוויץ'",
-        "Southampton": "סאות'המפטון",
-        "Leeds": "לידס יונייטד",
-        "Sunderland": "סנדרלנד",
-        "Burnley": "ברנלי"
-    };
+    <h2 style="text-align: center; color: #1e4266;">טסט API - ליגה אנגלית</h2>
+    <div id="api-table"><h3 style="text-align:center;">טוען נתונים מהמגרשים... ⚽</h3></div>
+
+    <script src="translations.js"></script>
     
-    async function getStandings() {
-        try {
-            const response = await fetch(`https://v3.football.api-sports.io/standings?league=39&season=${SEASON}`, {
-                headers: { 'x-apisports-key': API_KEY }
-            });
-            const data = await response.json();
-            const standings = data.response[0].league.standings[0];
-            
-            let html = `<table><tr><th>#</th><th style="text-align:right">קבוצה</th><th>מש'</th><th>נק'</th></tr>`;
-            
-            standings.forEach(item => {
-                const hebrewName = teamTranslations[item.team.name] || item.team.name;
+    <script>
+        // שים כאן את המפתח האמיתי שלך (להשאיר את הגרשיים!)
+        const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3'; 
+        const LEAGUE_ID = 39; // אנגליה
+        const SEASON = 2024; // העונה (אפשר לשנות ל-2025 כשיש נתונים)
+
+        async function getStandings() {
+            try {
+                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
+                    headers: { 'x-apisports-key': API_KEY }
+                });
                 
-                html += `<tr>
-                    <td>${item.rank}</td>
-                    <td class="team-name"><img src="${item.team.logo}" class="team-logo"> ${hebrewName}</td>
-                    <td>${item.all.played}</td>
-                    <td style="color:var(--brand-green); font-weight:900;">${item.points}</td>
-                </tr>`;
-            });
-            
-            html += `</table>`;
-            document.getElementById('api-table').innerHTML = html;
-        } catch (e) {
-            document.getElementById('api-table').innerHTML = "שגיאה בטעינת הנתונים. ודא שהמפתח נכון ושיש נתונים לעונה זו.";
+                const data = await response.json();
+                
+                if (!data.response || data.response.length === 0) {
+                    throw new Error("No data found");
+                }
+
+                const standings = data.response[0].league.standings[0];
+                
+                let html = `<table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th style="text-align:right">קבוצה</th>
+                            <th>מש'</th>
+                            <th>נק'</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                
+                standings.forEach(item => {
+                    // המערכת מחפשת במילון שלך (myDictionary) ומתרגמת לעברית
+                    const hebrewName = (typeof myDictionary !== 'undefined' && myDictionary[item.team.name]) 
+                                       ? myDictionary[item.team.name] 
+                                       : item.team.name;
+                    
+                    html += `
+                        <tr>
+                            <td>${item.rank}</td>
+                            <td class="team-name">
+                                <img src="${item.team.logo}" class="team-logo">
+                                ${hebrewName}
+                            </td>
+                            <td>${item.all.played}</td>
+                            <td style="color:var(--brand-green); font-weight:900;">${item.points}</td>
+                        </tr>`;
+                });
+                
+                html += `</tbody></table>`;
+                
+                // מסיר את מראה ה"טעינה" ודוחף את הטבלה
+                document.getElementById('api-table').className = "";
+                document.getElementById('api-table').innerHTML = html;
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                document.getElementById('api-table').innerHTML = `
+                    <div style="padding:20px; color:red; text-align:center;">
+                        שגיאה בטעינת הנתונים. וודא שהמפתח נכון או נסה לרענן את העמוד.
+                    </div>`;
+            }
         }
-    }
-    
-    getStandings();
-</script>
+        
+        getStandings();
+    </script>
+</body>
+</html>
 </body>
 </html>
