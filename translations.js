@@ -12268,7 +12268,6 @@ const myDictionary = {
     "Semifinal 2 Winner": "מנצחת חצי גמר 2",
     "Torneo Apertura — First stage": "טורניר אפרטורה - שלב ראשון",
     "Torneo Apertura — Regular season": "טורניר אפרטורה - עונה סדירה",
-    const myDictionary = {
             // === ישראל: ליגת העל (ID: 383) ===
             "Maccabi Tel Aviv": "מכבי תל אביב",
             "Maccabi Haifa": "מכבי חיפה",
@@ -12284,7 +12283,6 @@ const myDictionary = {
             "Ironi Tiberias": "עירוני טבריה",
             "Maccabi Petah Tikva": "מכבי פתח תקווה",
             "Ironi Kiryat Shmona": "עירוני קריית שמונה",
-
             // === ישראל: ליגה לאומית (ID: 384) ===
             "Hapoel Tel Aviv": "הפועל תל אביב",
             "Hapoel Petah Tikva": "הפועל פתח תקווה",
@@ -12299,7 +12297,6 @@ const myDictionary = {
             "Hapoel Afula": "הפועל עפולה",
             "Hapoel Umm al-Fahm": "הפועל אום אל-פחם",
             "Kafr Qasim": "מ.ס. כפר קאסם",
-
             // === אנגליה: פרמייר ליג ===
             "Arsenal": "ארסנל",
             "Liverpool": "ליברפול",
@@ -12324,7 +12321,6 @@ const myDictionary = {
             "Leicester": "לסטר",
             "Southampton": "סאות'המפטון",
             "Ipswich": "איפסוויץ'",
-
             // === ספרד: לה ליגה ===
             "Real Madrid": "ריאל מדריד",
             "Barcelona": "ברצלונה",
@@ -12346,7 +12342,6 @@ const myDictionary = {
             "Leganes": "לגאנס",
             "Valladolid": "ויאדוליד",
             "Espanyol": "אספניול",
-
             // === איטליה: סרייה א' ===
             "Inter": "אינטר",
             "Juventus": "יובנטוס",
@@ -12369,7 +12364,6 @@ const myDictionary = {
             "Parma": "פארמה",
             "Como": "קומו",
             "Venezia": "ונציה",
-
             // === גרמניה: בונדסליגה ===
             "Bayern Munich": "באיירן מינכן",
             "Bayer Leverkusen": "באייר לברקוזן",
@@ -12389,7 +12383,6 @@ const myDictionary = {
             "FC St. Pauli": "סנט פאולי",
             "Holstein Kiel": "הולשטיין קיל",
             "VfL Bochum": "בוכום",
-
             // === צרפת: ליג 1 ===
             "Paris Saint Germain": "פ.ס.ז'",
             "Monaco": "מונקו",
@@ -12409,7 +12402,6 @@ const myDictionary = {
             "Saint Etienne": "סנט אטיין",
             "Angers": "אנז'ה",
             "Le Havre": "לה האבר",
-
             // === הולנד, בלגיה, פורטוגל וטורקיה (טופ) ===
             "PSV Eindhoven": "פ.ס.וו איינדהובן",
             "Ajax": "אייאקס",
@@ -12428,7 +12420,6 @@ const myDictionary = {
             "Fenerbahce": "פנרבחצ'ה",
             "Besiktas": "בשיקטאש",
             "Trabzonspor": "טרבזונספור",
-
             // === ארה"ב, סעודיה ודרום אמריקה (טופ) ===
             "Inter Miami": "אינטר מיאמי",
             "LAFC": "לוס אנג'לס FC",
