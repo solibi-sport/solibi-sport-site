@@ -54,17 +54,25 @@
 
         .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
         
-        /* הלוגו - מסודר בדיוק כמו בדף הבית */
+        /* === הלוגו: מראה "בינוני" ומושלם לכל הדפים === */
         .logo-wrapper {
             position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            background-color: #ffffff; padding: 0 10px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
-            height: 46px; display: flex; align-items: center; justify-content: center;
-            overflow: hidden; 
-            width: 130px;
+            background-color: #ffffff; 
+            padding: 0 18px; /* הרווח הטבעי מימין ומשמאל שיוצר את המראה הבינוני המדויק */
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); 
+            z-index: 1100; transition: 0.3s;
+            height: 48px; /* גובה שנותן ללוגו קצת אוויר לנשום */
+            display: flex; align-items: center; justify-content: center;
+            /* שים לב: מחקנו מכאן את ה-width ואת ה-overflow כדי למנוע עיוותים! */
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
-        .actual-logo-img { height: 35px; transform: scale(1.8); display: block; object-fit: contain; }
+        .actual-logo-img { 
+            height: 32px; 
+            transform: scale(1.6); /* זום מדויק שלא בורח מהקופסה */
+            display: block; 
+            object-fit: contain; 
+        }
 
         /* האזור האישי - מיקום מדויק בול כמו בדף הבית! */
         .personal-area-btn {
