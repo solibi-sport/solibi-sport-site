@@ -13,9 +13,12 @@
             --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
             --text-light: #ffffff;
             --text-dark: #112845;
+            --card-bg: #192a45;
+            --card-hover: #1f3455;
             
             --sidebar-width: clamp(280px, 22vw, 380px); 
             --search-width: clamp(200px, 15vw, 300px);
+            --grid-gap: clamp(10px, 1.5vw, 20px);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,15 +28,9 @@
             background: var(--bg-silver-matte);
             width: 100%;
             height: 100vh; 
-            overflow: hidden; /* מבטל גלילה מיותרת במסך הראשי */
+            overflow: hidden; 
             display: flex;
             flex-direction: column;
-        }
-
-        .layout-grid {
-            display: grid;
-            grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
-            width: 100%;
         }
 
         /* === הדר עליון === */
@@ -43,78 +40,120 @@
             border-bottom: 2px solid var(--brand-green);
             position: relative;
             z-index: 1000;
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+            width: 100%;
+            flex-shrink: 0;
         }
 
-        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; }
+        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
         
+        /* לוגו נעול בשורה עם תמונה מוגדלת בפנים */
         .logo-wrapper {
-            position: absolute; right: 20px; top: 65px; transform: translateY(-50%);
-            background-color: #ffffff; padding: 4px 10px; border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            background-color: #ffffff; padding: 0 10px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
+            height: 46px; display: flex; align-items: center; justify-content: center;
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
-        .actual-logo-img { height: clamp(45px, 5vh, 60px); display: block; }
+        .actual-logo-img { height: 35px; transform: scale(1.3); display: block; object-fit: contain; }
 
+        /* האזור האישי - מקובע מתמטית כדי שהסוליבי+ יהיה בול מתחתיו */
         .personal-area-btn {
+            position: absolute; right: 160px; top: 50%; transform: translateY(-50%) translateX(50%);
             background: rgba(255, 255, 255, 0.1); border: 2px solid var(--brand-green);
             color: #ffffff; padding: 6px 18px; border-radius: 30px; text-decoration: none;
             font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); transition: 0.3s;
-            display: flex; align-items: center; gap: 8px; white-space: nowrap;
-            /* הזזה שמאלה כדי לשחרר את הלוגו */
-            margin-right: 85px; 
+            display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
         }
-        .personal-area-btn:hover { background: var(--brand-green); transform: translateY(-2px); }
+        .personal-area-btn:hover { background: var(--brand-green); transform: translateY(-50%) translateX(50%) scale(1.05); }
 
-        .header-center-col { display: flex; justify-content: center; align-items: center; }
-        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); }
+        .header-center-col { display: flex; justify-content: center; align-items: center; height: 100%; }
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); margin: 0; padding: 0; }
         .header-nav a {
             text-decoration: none; color: var(--text-light); font-weight: 700;
             font-size: clamp(12px, 1vw, 15px); padding: 8px 12px; transition: 0.3s;
         }
         .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
 
-        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; }
+        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; height: 100%; }
         
         .header-search { position: relative; width: var(--search-width); height: 34px; }
         .header-search input {
-            position: absolute; left: 0; top: 0; /* מעוגן לשמאל כדי להתרחב ימינה! */
+            position: absolute; left: 0; top: 0; 
             width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
             border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s ease-out;
+            font-family: inherit;
         }
         .header-search input:focus { 
-            width: calc(100% + 80px); /* מתרחב ימינה לתוך מרכז ההדר */
-            box-shadow: 0 0 15px var(--brand-green-glow); 
-            background: #fff; z-index: 10; 
+            width: calc(100% + 80px); box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; 
         }
 
-        /* === אזור מרכזי - קסם היישור האוטומטי === */
+        /* === גוף האתר המרכזי === */
         .main-content {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+            align-content: center; /* ממורכז אנכית */
+            align-items: stretch;  /* מסנכרן את גובה העמודות בצדדים לגובה האמצע! */
             flex: 1; 
-            overflow-y: auto; 
-            align-content: center; /* נועל את כל התוכן למרכז המסך מתמטית */
+            overflow: hidden;
         }
 
-        /* === סוליבי+ (תפריט FAB) === */
+        /* === עמודה ימנית: תפריט וסוליבי+ === */
         .community-sidebar { 
-            display: flex; flex-direction: column; justify-content: flex-end; align-items: center; 
-            padding-bottom: 0; /* ללא ריווח - כדי שיידבק לקו התחתון של הקוביות! */
+            display: grid;
+            grid-template-rows: 1fr 1fr; /* מחלק את העמודה ל-2 שורות כמו הקוביות באמצע */
+            gap: var(--grid-gap);
+            padding-left: 20px; /* מרווח שמאלי מהקוביות */
+            position: relative; /* חובה כדי לנעול את סוליבי+ בדיוק לתחתית הקוביה! */
         }
+
+        /* 5 המלבנים הצרים - מתמטית בדיוק בגובה של השורה העליונה! */
+        .right-menu-list {
+            grid-row: 1;
+            display: flex; flex-direction: column; justify-content: space-between;
+            width: clamp(200px, 18vw, 250px); margin-right: 25px;
+            gap: 6px;
+        }
+        
+        .right-menu-item {
+            flex: 1; /* נמתח שווה בשווה */
+            background: var(--element-navy-gradient); border: 1px solid rgba(124, 168, 86, 0.4);
+            color: var(--text-light); text-decoration: none; padding: 0 15px; border-radius: 8px;
+            display: flex; align-items: center; gap: 10px; font-size: clamp(11px, 0.9vw, 13px); font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: 0.3s;
+        }
+        .right-menu-item:hover { border-color: var(--brand-green); color: #fff; transform: translateX(-5px); }
+
+        /* כפתור סוליבי+ נעול באותו ציר בדיוק כמו האזור האישי ובקו 0 תחתון */
         .fab-wrapper { 
-            position: relative; display: flex; flex-direction: column; align-items: center; 
-            margin-right: 85px; /* מקביל בדיוק לכפתור העליון! */
+            position: absolute; bottom: 0; right: 160px; transform: translateX(50%);
+            display: flex; flex-direction: column; align-items: center; z-index: 100;
         }
-        .fab-menu {
-            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(20px);
-            display: flex; flex-direction: column; gap: 8px; padding-bottom: 15px; opacity: 0; pointer-events: none; transition: 0.3s;
+        
+        .fab-menu { position: absolute; top: 0; right: 50%; width: 0; height: 0; pointer-events: none; }
+        
+        /* גלולות נפתחות לצד ימין, מלל לבן נקי */
+        .fab-item-pill {
+            position: absolute; background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
+            border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            color: #ffffff !important; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+            padding: 10px 15px; 
+            width: 140px; 
+            bottom: 0; right: -120px; /* פותח אותן מצד ימין של הכפתור */
+            transform: scale(0); text-decoration: none; font-size: 13px; font-weight: 900;
+            white-space: nowrap; pointer-events: none;
         }
-        .fab-wrapper:hover .fab-menu { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
-        .fab-item {
-            background: #fff; padding: 8px 18px; border-radius: 30px; font-weight: 700; color: var(--text-dark);
-            text-decoration: none; white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            font-size: clamp(11px, 0.8vw, 13px); display: flex; align-items: center; justify-content: space-between; gap: 10px;
-            flex-direction: row-reverse;
-        }
-        .fab-item:hover { background: var(--brand-green); color: #fff; transform: translateX(-5px); }
+        .fab-item-pill:hover { background: var(--brand-green); transform: scale(1.05) !important; color: #fff; }
+
+        .fab-wrapper:hover .fab-item-pill { opacity: 1; pointer-events: auto; }
+        
+        /* נפתחות בקו אנכי ישר - מלבן עליון מקביל לקוביה של משחקי מנג'ר */
+        .fab-wrapper:hover .item-1 { transform: translateY(-135px) scale(1); } /* עליון */
+        .fab-wrapper:hover .item-2 { transform: translateY(-75px) scale(1); }  /* אמצעי */
+        .fab-wrapper:hover .item-3 { transform: translateY(-15px) scale(1); }  /* תחתון */
+
         .fab-button {
             position: relative; z-index: 2; width: clamp(55px, 4.5vw, 70px); height: clamp(55px, 4.5vw, 70px);
             border-radius: 50%; background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
@@ -123,24 +162,19 @@
         }
         .fab-button:hover { transform: scale(1.05); background: var(--brand-green); }
 
-        /* === גריד הקוביות המרכזי === */
+        /* === עמודה אמצעית: הקוביות המקוריות === */
         .center-content { 
-            display: flex; justify-content: center; align-items: center; 
-            padding: 0 2vw; /* הורדנו פאדינג גובה כדי שהכפתור ידבק במדויק לקוביות */
+            display: flex; justify-content: center; align-items: center; padding: 0 2vw; 
         }
-        
         .grid-container { 
             display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: clamp(10px, 1.5vw, 20px); width: 100%; 
-            max-width: min(850px, 110vh); 
+            gap: var(--grid-gap); width: 100%; max-width: min(850px, 110vh); 
+            height: max-content; /* מגדיר את הגובה של כל השורה! */
         }
-        
         .square-box {
             aspect-ratio: 1/1; background: var(--element-navy-gradient); border-radius: 16px;
-            display: flex; flex-direction: column; 
-            justify-content: flex-start; align-items: center; 
-            padding: 20% 6% 6% 6%;
-            text-align: center; text-decoration: none; transition: 0.4s;
+            display: flex; flex-direction: column; justify-content: flex-start; align-items: center; 
+            padding: 20% 6% 6% 6%; text-align: center; text-decoration: none; transition: 0.4s;
             border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
         }
         .square-box:hover { transform: translateY(-8px); border-color: var(--brand-green); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
@@ -157,7 +191,6 @@
         .box-tag { color: var(--brand-green); font-size: clamp(10px, 0.8vw, 12px); font-weight: 900; }
         .box-desc { color: #a0aec0; font-size: clamp(9px, 0.75vw, 12px); line-height: 1.3; }
 
-        /* === סמלי הייטק === */
         .tech-bars { position: absolute; top: 15px; left: 15px; display: flex; gap: 4px; align-items: flex-end; opacity: 0.15; transition: 0.4s; height: 20px; }
         .tech-bars span { width: 3px; background: #fff; border-radius: 2px; }
         .square-box:hover .tech-bars { opacity: 0.8; gap: 5px; }
@@ -191,29 +224,25 @@
         .square-box:hover .tech-target { opacity: 0.8; border-color: var(--brand-green); transform: scale(1.2); }
         .square-box:hover .tech-target::after { background: var(--brand-green); }
 
-        /* === עמודה 3: עדכונים חמים (שמאל - הפך לפאנל מרחף ויוקרתי) === */
+        /* === עמודה שמאלית: הפאנל החכם (לייב ועדכונים) === */
+        .updates-sidebar-wrapper { display: flex; align-items: stretch; padding-right: 20px; height: 100%; padding-left: 20px;}
         .updates-sidebar {
             background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4); 
-            border-radius: 16px; /* פינות מעוגלות לפאנל החדש */
-            display: flex; flex-direction: column;
-            margin-left: 10px; /* מרווח קל מהקצה השמאלי */
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 16px; 
+            display: flex; flex-direction: column; width: 100%; height: 100%; /* מתאים בול לגובה האמצעי! */
+            overflow: hidden;
         }
         .updates-header {
             font-size: clamp(14px, 1vw, 17px); font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: center; 
-            gap: 8px; padding: 2vh 0; border-bottom: 2px solid var(--brand-green);
+            gap: 8px; padding: 2vh 0; border-bottom: 2px solid var(--brand-green); transition: 0.3s; flex-shrink: 0;
         }
 
-        .breathing-feed-container { position: relative; flex: 1; padding-top: 5px; }
-        .updates-set { position: absolute; top: 0; left: 0; right: 0; display: flex; flex-direction: column; animation: breatheFade 20s infinite; }
-        .set-2 { animation-delay: -10s; opacity: 0; }
-        
-        @keyframes breatheFade {
-            0%, 45% { opacity: 1; pointer-events: auto; transform: scale(1); z-index: 2; }
-            50%, 95% { opacity: 0; pointer-events: none; transform: scale(0.98); z-index: 1; }
-            100% { opacity: 1; pointer-events: auto; transform: scale(1); z-index: 2; }
+        .dynamic-panel-content {
+            position: relative; flex: 1; padding: 10px 0; overflow-y: auto;
+            transition: opacity 0.4s ease;
         }
-        
+
+        /* עיצוב לעדכונים סטטיים */
         .updates-item {
             margin: 6px 15px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.9);
             padding: 8px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
@@ -225,56 +254,64 @@
         .updates-label { font-size: 9px; font-weight: 700; color: var(--brand-green); display: block; }
         .updates-title { font-size: clamp(10px, 0.8vw, 12px); font-weight: 700; }
 
-        /* === שורת עדכונים רצה (Footer Ticker) === */
-        .footer {
-            background: var(--element-navy-gradient); 
-            padding: 8px 0; 
-            border-top: 2px solid var(--brand-green);
-            overflow: hidden; 
-            white-space: nowrap; 
-            width: 100%; 
-            direction: ltr; 
+        /* עיצוב לתוצאות "לייב" המותאם לרקע הלבן */
+        .live-feed-wrapper { display: flex; flex-direction: column; gap: 8px; padding: 0 10px; }
+        .live-league-header {
+            display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); 
+            padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900;
+            margin-top: 5px; border-right: 3px solid var(--brand-green);
         }
+        .live-league-header:first-child { margin-top: 0; }
+        .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
 
+        .live-match-card-light {
+            background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent;
+            border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
+            text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;
+        }
+        .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
+        .match-teams-col { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; width: 60%;}
+        .team-line { display: flex; align-items: center; gap: 8px; }
+        .team-line img { width: 16px; height: 16px; object-fit: contain;}
+        .match-score-col { display: flex; flex-direction: column; align-items: center; min-width: 45px; background: #f0f4f8; padding: 4px 8px; border-radius: 6px;}
+        .match-score-col .score { font-size: 14px; font-weight: 900; color: var(--text-dark); letter-spacing: 1px;}
+        .match-score-col .minute { font-size: 10px; color: var(--brand-green); animation: blink 1.5s infinite; font-weight: bold;}
+        
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+        
+        .dynamic-panel-content::-webkit-scrollbar { width: 4px; }
+        .dynamic-panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        /* === שורת פוטר === */
+        .footer {
+            background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green);
+            overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0;
+        }
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
         .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
         .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
         
-        @keyframes ticker { 
-            0% { transform: translateX(-100%); } 
-            100% { transform: translateX(100vw); } 
-        }
+        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
-        /* =======================================================
-           התאמה רספונסיבית מקיפה לטאבלטים ולטלפונים ניידים
-           ======================================================= */
-
+        /* === רספונסיביות === */
         @media (max-width: 1100px) {
-            body { height: auto; overflow-y: auto; } /* משחרר למובייל/טאבלט את הגלילה למטה */
-            .main-content { align-content: start; }
-            .layout-grid { grid-template-columns: 1fr; } 
-            .header { height: auto; padding: 15px 0; }
+            body { height: auto; overflow-y: auto; display: block;} 
+            .main-content { display: block; }
+            .header { height: auto; padding: 15px 0; display: block; }
             .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
-            
-            /* איפוס הדחיפה השמאלית במובייל כדי שהכל יתרכז מושלם */
-            .personal-area-btn { margin-right: 0; }
-            .fab-wrapper { margin-right: 0; margin-top: 15px; }
-            
+            .personal-area-btn { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px;}
             .logo-wrapper { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
-            .updates-sidebar { margin-left: 0; margin-bottom: 20px; min-height: 250px; }
-            .breathing-feed-container { min-height: 200px; }
-            .community-sidebar { padding: 40px 0; }
+            .community-sidebar { padding: 20px 0; align-items: center; height: auto;}
+            .right-menu-list { display: none; } 
+            .fab-wrapper { position: relative; right: auto; bottom: auto; margin: 0; transform: none;}
+            .updates-sidebar-wrapper { padding: 0 20px 20px 20px; height: auto;}
+            .updates-sidebar { height: auto; min-height: 250px; }
+            .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 800px; margin-bottom: 20px;}
             .header-search { display: none; }
-            .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 800px; }
-            .square-box { padding: 15% 5% 5% 5%; } 
         }
-
         @media (max-width: 768px) {
             .grid-container { grid-template-columns: 1fr; max-width: 400px; }
             .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
-            .header-nav a { font-size: 14px; padding: 5px 8px; }
-            .ticker-item { font-size: 13px; }
-            .ticker-separator { font-size: 14px; margin: 0 15px; }
         }
     </style>
 </head>
@@ -283,7 +320,7 @@
     <header class="header layout-grid">
         <div class="header-right-col">
             <a href="#" class="logo-wrapper">
-                <img src="a.png" alt="לוגו" class="actual-logo-img">
+                <img src="a.png" alt="לוגו" class="actual-logo-img" onerror="this.src='https://via.placeholder.com/150x60?text=LOGO'">
             </a>
             <a href="#" class="personal-area-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -308,23 +345,49 @@
         </div>
     </header>
 
-    <main class="main-content layout-grid">
+    <main class="main-content">
         
         <aside class="community-sidebar">
+            <div class="right-menu-list">
+                <a href="#" class="right-menu-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                    זירת החלפות
+                </a>
+                <a href="#" class="right-menu-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    מרכז הפעילות
+                </a>
+                <a href="#" class="right-menu-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    מכירות פומביות
+                </a>
+                <a href="#" class="right-menu-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    טורנירים וליגות
+                </a>
+                <a href="#" class="right-menu-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    פורומים ודיונים
+                </a>
+            </div>
+
             <div class="fab-wrapper">
                 <div class="fab-menu">
-                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>זירת ה-V.I.P</a>
-                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>היכל התהילה</a>
-                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>מכירות פומביות</a>
-                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>חנות סוליבי+</a>
-                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>זירת החלפות</a>
-                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>מרכז הפעילות</a>
-                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>טורנירים וליגות</a>
-                    <a href="#" class="fab-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>פורומים ודיונים</a>
+                    <a href="#" class="fab-item-pill item-1">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <span>זירת ה-V.I.P</span>
+                    </a>
+                    <a href="#" class="fab-item-pill item-2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        <span>היכל התהילה</span>
+                    </a>
+                    <a href="#" class="fab-item-pill item-3">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                        <span>חנות סוליבי+</span>
+                    </a>
                 </div>
                 <div class="fab-button">
                     <span style="font-size: 14px; font-weight: 900; letter-spacing: 0.5px; line-height: 1.1;">סוליבי</span>
-                    
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 4px;">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -362,33 +425,14 @@
             </div>
         </div>
 
-        <aside class="updates-sidebar">
-            <div class="updates-header">
-                <span>עידכונים חמים</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            </div>
-            
-            <div class="breathing-feed-container">
-                <div class="updates-set set-1">
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">פנטזי ליג</span><span class="updates-title">מקום 1: קבוצת "האריות"</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">שוק הקלפים</span><span class="updates-title">הקלף החם: אמבפה 94</span></div>
-                    </a>
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">חדשות</span><span class="updates-title">מאמן חדש חתם בליגה!</span></div>
-                    </a>
+        <aside class="updates-sidebar-wrapper">
+            <div class="updates-sidebar">
+                <div class="updates-header" id="panel-header">
+                    <span id="panel-title">עידכונים חמים</span>
+                    <span id="panel-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
                 </div>
-                <div class="updates-set set-2">
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-                        <div class="updates-text"><span class="updates-label">לייב</span><span class="updates-title">תוצאות ליגת האלופות</span></div>
-                    </a>
-                </div>
+                <div class="dynamic-panel-content" id="panel-content">
+                    </div>
             </div>
         </aside>
 
@@ -410,5 +454,144 @@
         </div>
     </footer>
 
+    <script>
+        const API_KEY = 'שים_כאן_את_המפתח_שלך'; 
+        
+        const staticUpdatesHTML = `
+            <div style="display: flex; flex-direction: column; width: 100%;">
+                <a href="#" class="updates-item">
+                    <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <div class="updates-text"><span class="updates-label">פנטזי ליג</span><span class="updates-title">מקום 1: קבוצת "האריות"</span></div>
+                </a>
+                <a href="#" class="updates-item">
+                    <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+                    <div class="updates-text"><span class="updates-label">שוק הקלפים</span><span class="updates-title">הקלף החם: אמבפה 94</span></div>
+                </a>
+                <a href="#" class="updates-item">
+                    <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg></div>
+                    <div class="updates-text"><span class="updates-label">חדשות</span><span class="updates-title">מאמן חדש חתם בליגה!</span></div>
+                </a>
+            </div>
+        `;
+
+        let livePages = []; 
+        let currentLivePageIndex = 0;
+        let isShowingUpdates = true;
+        let panelTimer;
+
+        async function fetchLiveMatches() {
+            try {
+                const response = await fetch(`https://v3.football.api-sports.io/fixtures?live=all`, {
+                    headers: { 'x-apisports-key': API_KEY }
+                });
+                const data = await response.json();
+                const matches = data.response || [];
+
+                const grouped = {};
+                matches.forEach(m => {
+                    if(!grouped[m.league.name]) grouped[m.league.name] = { logo: m.league.logo, matches: [] };
+                    grouped[m.league.name].matches.push(m);
+                });
+
+                livePages = [];
+                const maxMatchesPerPage = 4;
+                let currentPageHtml = '<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 15px; width: 100%;">';
+                let currentMatchesCount = 0;
+
+                Object.keys(grouped).forEach(leagueName => {
+                    const leagueData = grouped[leagueName];
+                    let leagueHtml = `
+                        <div style="display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: #112845; font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid #7ca856;">
+                            <img src="${leagueData.logo}" style="width: 14px; height: 14px; object-fit: contain;">
+                            <span>${leagueName}</span>
+                        </div>
+                    `;
+                    let matchesHtml = '';
+                    leagueData.matches.forEach(m => {
+                        matchesHtml += `
+                            <a href="#" style="background: #fff; border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: #112845; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;">
+                                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; width: 60%;">
+                                    <div style="display: flex; align-items: center; gap: 8px;"><img src="${m.teams.home.logo}" style="width: 16px; height: 16px;"> <span>${m.teams.home.name}</span></div>
+                                    <div style="display: flex; align-items: center; gap: 8px;"><img src="${m.teams.away.logo}" style="width: 16px; height: 16px;"> <span>${m.teams.away.name}</span></div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: center; min-width: 45px; background: #f0f4f8; padding: 4px 8px; border-radius: 6px;">
+                                    <span style="font-size: 10px; color: #7ca856; font-weight: bold;">${m.fixture.status.elapsed}'</span>
+                                    <span style="font-size: 14px; font-weight: 900; letter-spacing: 1px;">${m.goals.home}-${m.goals.away}</span>
+                                </div>
+                            </a>
+                        `;
+                    });
+
+                    if (currentMatchesCount + leagueData.matches.length > maxMatchesPerPage && currentMatchesCount > 0) {
+                        currentPageHtml += '</div>';
+                        livePages.push(currentPageHtml);
+                        currentPageHtml = '<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 15px; width: 100%;">' + leagueHtml + matchesHtml;
+                        currentMatchesCount = leagueData.matches.length;
+                    } else {
+                        currentPageHtml += leagueHtml + matchesHtml;
+                        currentMatchesCount += leagueData.matches.length;
+                    }
+                });
+
+                if (currentMatchesCount > 0) {
+                    currentPageHtml += '</div>';
+                    livePages.push(currentPageHtml);
+                }
+            } catch (error) {
+                console.error("שגיאה במשיכת נתונים");
+            }
+        }
+
+        function rotatePanelContent() {
+            const contentDiv = document.getElementById('panel-content');
+            const titleSpan = document.getElementById('panel-title');
+            const iconSpan = document.getElementById('panel-icon');
+            const headerDiv = document.getElementById('panel-header');
+
+            contentDiv.style.opacity = 0;
+
+            setTimeout(() => {
+                if (isShowingUpdates) {
+                    titleSpan.innerText = 'עידכונים חמים';
+                    iconSpan.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+                    headerDiv.style.borderBottomColor = 'var(--brand-green)';
+                    contentDiv.innerHTML = staticUpdatesHTML;
+                    contentDiv.style.opacity = 1;
+
+                    isShowingUpdates = false; 
+                    panelTimer = setTimeout(rotatePanelContent, 16000); 
+                    
+                } else {
+                    titleSpan.innerText = 'תוצאות לייב';
+                    iconSpan.innerHTML = '<span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>';
+                    headerDiv.style.borderBottomColor = 'red'; 
+                    
+                    if (livePages.length > 0) {
+                        contentDiv.innerHTML = livePages[currentLivePageIndex];
+                        currentLivePageIndex++;
+                        if (currentLivePageIndex >= livePages.length) {
+                            isShowingUpdates = true;
+                        }
+                        panelTimer = setTimeout(rotatePanelContent, 6000); 
+                    } else {
+                        contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: var(--text-dark);">אין כרגע משחקים חיים בעולם ⚽</div>';
+                        isShowingUpdates = true;
+                        panelTimer = setTimeout(rotatePanelContent, 6000); 
+                    }
+                    
+                    contentDiv.style.opacity = 1;
+                }
+            }, 400); 
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            document.getElementById('panel-content').innerHTML = staticUpdatesHTML;
+            await fetchLiveMatches();
+            panelTimer = setTimeout(rotatePanelContent, 16000);
+            
+            setInterval(fetchLiveMatches, 60000);
+        });
+
+    </script>
 </body>
 </html>
