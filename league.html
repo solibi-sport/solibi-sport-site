@@ -495,6 +495,18 @@ if (titleContainer) {
                         if(endpoint === 'topredcards') statValue += stat.cards.red || 0;
                     });
 
+                    // === תחילת בלוק התיקון הידני ===
+                    const manualGoalsOverride = {
+                        "דן ביטון": 15,
+                        // אפשר להוסיף פה עוד שחקנים עם פסיק בסוף כל שורה (חוץ מהאחרונה)
+                    };
+
+                    // אם אנחנו בטבלת מלך השערים והשחקן מופיע ברשימה הידנית שלנו, נדרוס את הנתון של ה-API
+                    if (endpoint === 'topscorers' && manualGoalsOverride[hebrewPlayerName] !== undefined) {
+                        statValue = manualGoalsOverride[hebrewPlayerName];
+                    }
+                    // === סוף בלוק התיקון הידני ===
+
                     html += `
                     <div class="player-row">
                         <div class="player-rank">${index + 1}</div>
