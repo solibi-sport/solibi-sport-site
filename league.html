@@ -348,16 +348,16 @@
         </div>
     </footer>
 
+    <script src="translations.js"></script>
+
     <script>
         const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3'; 
         const SEASON = 2025; 
 
-        // === 1. שאיבת הנתונים מהכתובת (URL) להפיכת הדף לדינמי ===
         const urlParams = new URLSearchParams(window.location.search);
         const LEAGUE_ID = urlParams.get('id') || 39; 
         const LEAGUE_NAME = urlParams.get('name') || "הליגה האנגלית";
 
-        // === 2. עדכון הכותרת המרכזית ===
         const titleContainer = document.getElementById('dynamic-title-container');
         if (titleContainer) {
             const nameParts = LEAGUE_NAME.split(" ");
@@ -370,64 +370,15 @@
             }
         }
 
-        const myDictionary = {
-            "Arsenal": "ארסנל",
-            "Liverpool": "ליברפול",
-            "Manchester City": "מנצ'סטר סיטי",
-            "Manchester United": "מנצ'סטר יונייטד",
-            "Chelsea": "צ'לסי",
-            "Tottenham": "טוטנהאם",
-            "Aston Villa": "אסטון וילה",
-            "Newcastle": "ניוקאסל",
-            "Newcastle United": "ניוקאסל",
-            "West Ham": "ווסטהאם",
-            "West Ham United": "ווסטהאם",
-            "Brighton": "ברייטון",
-            "Brighton & Hove Albion": "ברייטון",
-            "Brentford": "ברנטפורד",
-            "Fulham": "פולהאם",
-            "Bournemouth": "בורנמות'",
-            "Crystal Palace": "קריסטל פאלאס",
-            "Everton": "אברטון",
-            "Nottingham Forest": "נוטינגהאם פורסט",
-            "Wolverhampton": "וולבס",
-            "Wolverhampton Wanderers": "וולבס",
-            "Leicester": "לסטר",
-            "Southampton": "סאות'המפטון",
-            "Ipswich": "איפסוויץ'",
-            "Sunderland": "סנדרלנד",
-            "Burnley": "ברנלי",
-            "Leeds": "לידס",
-            "Leeds United": "לידס",
-
-            "E. Haaland": "ארלינג הולאנד",
-            "Erling Haaland": "ארלינג הולאנד",
-            "Thiago": "טיאגו",
-            "João Pedro": "ז'ואאו פדרו",
-            "D. Welbeck": "דני ולבק",
-            "Danny Welbeck": "דני ולבק",
-            "V. Gyökeres": "ויקטור גיוקרס",
-            "Viktor Gyökeres": "ויקטור גיוקרס",
-            "H. Ekitike": "הוגו אקיטיקה",
-            "Hugo Ekitike": "הוגו אקיטיקה",
-            "H. Wilson": "הארי וילסון",
-            "Harry Wilson": "הארי וילסון",
-            "A. Semenyo": "אנטואן סמניו",
-            "Antoine Semenyo": "אנטואן סמניו",
-            "E. Kroupi": "אלי קרופי",
-            "D. Calvert-Lewin": "דומיניק קלברט-לווין",
-            "Dominic Calvert-Lewin": "דומיניק קלברט-לווין",
-            "K. De Bruyne": "קווין דה בריינה",
-            "Kevin De Bruyne": "קווין דה בריינה",
-            "M. Salah": "מוחמד סלאח",
-            "Mohamed Salah": "מוחמד סלאח",
-            "B. Saka": "בוקאיו סאקה",
-            "Bukayo Saka": "בוקאיו סאקה",
-            "P. Foden": "פיל פודן",
-            "Phil Foden": "פיל פודן",
-            "C. Palmer": "קול פאלמר",
-            "Cole Palmer": "קול פאלמר"
-        };
+        // פונקציית העזר לתרגום - משתמשת אוטומטית במילון translations.js שלך!
+        function translateName(englishName) {
+            if (!englishName) return "";
+            const cleanName = englishName.trim();
+            if (typeof myDictionary !== 'undefined' && myDictionary[cleanName]) {
+                return myDictionary[cleanName];
+            }
+            return cleanName;
+        }
 
         async function getStandings() {
             try {
@@ -444,7 +395,7 @@
                 let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
                 
                 standings.forEach(item => {
-                    const hebrewName = myDictionary[item.team.name] || item.team.name;
+                    const hebrewName = translateName(item.team.name);
                     let trendHtml = '<span class="trend-same">▬</span>';
                     if (item.status === 'up') trendHtml = '<span class="trend-up">▲</span>';
                     if (item.status === 'down') trendHtml = '<span class="trend-down">▼</span>';
@@ -495,8 +446,8 @@
                     const primaryTeamLogo = item.statistics[0].team.logo;
                     const primaryTeamName = item.statistics[0].team.name;
                     
-                    const hebrewPlayerName = myDictionary[player.name] || player.name;
-                    const hebrewTeamName = myDictionary[primaryTeamName] || primaryTeamName;
+                    const hebrewPlayerName = translateName(player.name);
+                    const hebrewTeamName = translateName(primaryTeamName);
                     
                     let statValue = 0;
                     item.statistics.forEach(stat => {
@@ -574,7 +525,6 @@
             const roundNumber = roundMatch ? roundMatch[0] : roundString; 
             const matches = allFixtures.filter(f => f.league.round === roundString);
 
-            // --- הפורמט של התאריכים (קו נטוי) ---
             const formatD = (d) => `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
 
             let dateText = "";
@@ -596,7 +546,6 @@
             document.getElementById('btn-prev').disabled = currentRoundIndex === 0;
             document.getElementById('btn-next').disabled = currentRoundIndex === allRounds.length - 1;
 
-            // === חלוקת המשחקים לפי תאריכים ===
             const matchesByDate = {};
             matches.forEach(m => {
                 const d = new Date(m.fixture.date);
@@ -608,13 +557,11 @@
             let html = '';
 
             for (const [dateStr, dayMatches] of Object.entries(matchesByDate)) {
-                // מדפיסים את כותרת התאריך
                 html += `<div class="date-separator">${dateStr}</div>`;
                 
-                // מדפיסים את המשחקים של אותו יום
                 dayMatches.forEach(m => {
-                    const homeTeam = myDictionary[m.teams.home.name] || m.teams.home.name;
-                    const awayTeam = myDictionary[m.teams.away.name] || m.teams.away.name;
+                    const homeTeam = translateName(m.teams.home.name);
+                    const awayTeam = translateName(m.teams.away.name);
                     const status = m.fixture.status.short;
 
                     let centerHtml = '';
