@@ -12587,7 +12587,7 @@ const myDictionary = {
     "R. Martínez": "ר. מרטינס",
     "N. Fernández": "נ. פרננדס",
     "J. Herrera": "ח. הררה",
-    "M. Giménez": "מ. חימנס"
+    "M. Giménez": "מ. חימנס",
     "V. Muriqi": "ו. מוריצ'י",
     "A. Budimir": "א. בודימיר",
     "Ferran Torres": "פראן טורס",
