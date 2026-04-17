@@ -370,12 +370,12 @@
             }
         }
 
-        // פונקציית העזר לתרגום - משתמשת אוטומטית במילון translations.js שלך!
+        // === הפתרון: שינינו כאן את השם ל-translations בדיוק כמו בקובץ שלך! ===
         function translateName(englishName) {
             if (!englishName) return "";
             const cleanName = englishName.trim();
-            if (typeof myDictionary !== 'undefined' && myDictionary[cleanName]) {
-                return myDictionary[cleanName];
+            if (typeof translations !== 'undefined' && translations[cleanName]) {
+                return translations[cleanName];
             }
             return cleanName;
         }
