@@ -370,14 +370,46 @@
             }
         }
 
+        // === פונקציית התרגום המשודרגת (הציידת) ===
         function translateName(englishName) {
             if (!englishName) return "";
             const cleanName = englishName.trim();
-            // כאן התיקון: חזרנו לחפש את myDictionary!
+            
             if (typeof myDictionary !== 'undefined' && myDictionary[cleanName]) {
-                return myDictionary[cleanName];
+                return myDictionary[cleanName]; // מצא תרגום!
+            } else {
+                // לא מצא תרגום? רושם בפנקס!
+                let missing = JSON.parse(localStorage.getItem('missingTranslations') || '[]');
+                // בודק אם המילה כבר נרשמה כדי לא לשכפל
+                if (!missing.includes(cleanName) && isNaN(cleanName)) { 
+                    missing.push(cleanName);
+                    localStorage.setItem('missingTranslations', JSON.stringify(missing));
+                }
+                return cleanName; // מחזיר באנגלית בינתיים
             }
-            return cleanName;
+        }
+
+        // === פונקציה להדפסת כל המילים החסרות (לשימוש ב-Console) ===
+        function printMissing() {
+            let missing = JSON.parse(localStorage.getItem('missingTranslations') || '[]');
+            if (missing.length === 0) {
+                console.log("איזה יופי! אין מילים חסרות במילון.");
+                return;
+            }
+            
+            let output = "=== רשימת המילים שחסרות במילון ===\n\n";
+            missing.forEach(name => {
+                output += `    "${name}": "",\n`;
+            });
+            
+            console.log(output);
+            console.log("העתק את השורות האלו, שים אותן בסוף קובץ המילון (לפני הסוגר האחרון), ותמלא את התרגומים!");
+        }
+
+        // === פונקציה לאיפוס הפנקס (אחרי שסיימת להעתיק) ===
+        function clearMissing() {
+            localStorage.removeItem('missingTranslations');
+            console.log("הפנקס נוקה! אפשר להתחיל לסרוק מחדש.");
         }
 
         async function getStandings() {
