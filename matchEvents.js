@@ -5,21 +5,18 @@ modalStyle.innerHTML = `
 
 .modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 580px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 85vh; will-change: transform; }
 
-/* הוספנו סמן של "יד גוררת" (grab) וביטול סימון טקסט בטעות */
 .modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; border-bottom: 2px solid #7a9966; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; }
-.modal-header:active { cursor: grabbing; } /* משנה את הסמן כשתופסים את החלון */
+.modal-header:active { cursor: grabbing; }
 .modal-header h2 { margin: 0; font-size: 16px; font-weight: bold; color: #ffffff; pointer-events: none; }
 .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
 .close-modal:hover { color: #ffffff; }
 
-/* אזור הסטטיסטיקות המורחב */
 .stats-container { padding: 10px 15px; flex-shrink: 0; background: #0f1620; border-bottom: 1px solid #1f2d40; }
 .possession-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: #fff; }
 .possession-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: #1f2d40; margin-bottom: 10px;}
 .possession-home { background: #7a9966; height: 100%; transition: width 1s ease-out; }
 .possession-away { background: #4a90e2; height: 100%; transition: width 1s ease-out; }
 
-/* עיצוב שורות הסטטיסטיקה הנוספות */
 .extra-stats { display: flex; flex-direction: column; gap: 3px; }
 .stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; background: rgba(255,255,255,0.015); padding: 4px 8px; border-radius: 4px; }
 .stat-val { font-weight: bold; width: 35px; text-align: center; font-size: 12px; }
@@ -27,12 +24,10 @@ modalStyle.innerHTML = `
 .away-val { color: #4a90e2; }
 .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
 
-/* פיצול האירועים ל-2 עמודות - הכל הוקטן וצומצם */
 #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; }
 .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; }
 .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
 
-/* אירוע בודד מוקטן */
 .event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
 .event-home { justify-content: flex-start; text-align: right; } 
 .event-away { justify-content: flex-end; text-align: left; flex-direction: row-reverse; }
@@ -75,8 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
         let startX, startY;
 
         function onDragStart(e) {
-            if (e.target.closest('.close-modal')) return; // לא גורר אם לחצו על האיקס
+            if (e.target.closest('.close-modal')) return;
             isDragging = true;
+            
+            // התיקון! מבטלים את אנימציית ה-CSS כדי שהגרירה תוכל לעבוד
+            box.style.animation = 'none'; 
+            
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
             startX = clientX - window.dragOffsetX;
@@ -85,24 +84,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function onDragMove(e) {
             if (!isDragging) return;
-            e.preventDefault(); // מונע גלילת מסך בטעות בנייד
+            e.preventDefault();
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
             window.dragOffsetX = clientX - startX;
             window.dragOffsetY = clientY - startY;
-            box.style.transform = `translate(${window.dragOffsetX}px, ${window.dragOffsetY}px) scale(1)`;
+            box.style.transform = `translate(${window.dragOffsetX}px, ${window.dragOffsetY}px)`;
         }
 
         function onDragEnd() {
             isDragging = false;
         }
 
-        // מאזינים לעכבר (מחשב)
         header.addEventListener('mousedown', onDragStart);
         document.addEventListener('mousemove', onDragMove, { passive: false });
         document.addEventListener('mouseup', onDragEnd);
 
-        // מאזינים למגע (מובייל)
         header.addEventListener('touchstart', onDragStart, { passive: true });
         document.addEventListener('touchmove', onDragMove, { passive: false });
         document.addEventListener('touchend', onDragEnd);
@@ -121,9 +118,12 @@ async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
     const content = document.getElementById('modalEventsContent');
     const title = document.getElementById('modalMatchTitle');
     
-    // איפוס מיקום החלון לאמצע (למקרה שהגולש גרר אותו קודם)
+    // מאפסים את המיקום והאנימציה כל פעם שפותחים חלון מחדש
     window.dragOffsetX = 0;
     window.dragOffsetY = 0;
+    box.style.animation = 'none';
+    box.offsetHeight; // פקודה קטנה שמכריחה את הדפדפן להתאפס
+    box.style.animation = 'scaleUp 0.2s ease-out forwards';
     box.style.transform = '';
 
     const existingStats = document.getElementById('modalStatsContainer');
