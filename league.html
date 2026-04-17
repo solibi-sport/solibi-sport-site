@@ -303,12 +303,12 @@
 
             <div class="widget">
                 <div class="widget-header-wrapper">
-                    <div class="widget-header-pill">לוח משחקים חי</div>
+                    <div class="widget-header-pill">לוח משחקים ותוצאות</div>
                 </div>
                 <div class="fixtures-nav">
-                    <button class="nav-btn" onclick="changeRound(-1)" id="btn-prev">▶</button>
+                    <button class="nav-btn" onclick="changeDate(-1)" id="btn-prev">▶</button>
                     <div class="matchday-title" id="matchday-title">טוען משחקים...</div>
-                    <button class="nav-btn" onclick="changeRound(1)" id="btn-next">◀</button>
+                    <button class="nav-btn" onclick="changeDate(1)" id="btn-next">◀</button>
                 </div>
                 <div style="flex: 1; overflow-y: auto;" id="api-fixtures-list">
                     <div style="text-align:center; padding: 30px;">טוען נתונים... ⏳</div>
@@ -549,99 +549,111 @@
             }
         }
 
-        function renderFixtures() {
-            if (allRounds.length === 0) return;
-            
-            const roundString = allRounds[currentRoundIndex];
-            const roundMatch = roundString.match(/\d+/);
-            const roundNumber = roundMatch ? roundMatch[0] : roundString; 
-            const matches = allFixtures.filter(f => f.league.round === roundString);
+        // --- משתנים חדשים לניהול תאריכים ---
+let allDates = []; // ישמור את כל התאריכים שיש בהם משחקים
+let currentDateIndex = 0;
 
-            const formatD = (d) => `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+// פונקציה שעוזרת לנו להמיר תאריך אנגלי לפורמט "13/04/26 יום ב'"
+function formatHebrewDate(dateString) {
+    const days = ['יום א\'', 'יום ב\'', 'יום ג\'', 'יום ד\'', 'יום ה\'', 'יום ו\'', 'שבת'];
+    const dateObj = new Date(dateString);
+    const dayName = days[dateObj.getDay()];
+    
+    // מוציא מהתאריך את החלק של YYYY-MM-DD
+    const parts = dateString.split('T')[0].split('-'); 
+    const formatted = `${parts[2]}/${parts[1]}/${parts[0].substring(2)}`; // DD/MM/YY
+    
+    return `${formatted} ${dayName}`;
+}
 
-            let dateText = "";
-            if (matches.length > 0) {
-                const timestamps = matches.map(m => new Date(m.fixture.date).getTime());
-                const minDate = new Date(Math.min(...timestamps));
-                const maxDate = new Date(Math.max(...timestamps));
-                
-                if (formatD(minDate) === formatD(maxDate)) {
-                    dateText = ` (${formatD(minDate)})`;
-                } else {
-                    dateText = ` (${formatD(minDate)} - ${formatD(maxDate)})`;
-                }
+// פונקציית הלחיצה על החצים (מחליפה את changeRound)
+function changeDate(step) {
+    currentDateIndex += step;
+    if (currentDateIndex < 0) currentDateIndex = 0;
+    if (currentDateIndex >= allDates.length) currentDateIndex = allDates.length - 1;
+    renderFixturesByDate();
+}
+
+// פונקציית הרינדור החדשה!
+function renderFixturesByDate() {
+    const fixturesContainer = document.getElementById('api-fixtures-list'); // או איך שקראת לדיב של המשחקים
+
+    // אם עדיין אין משחקים
+    if (!allMatches || allMatches.length === 0) {
+        fixturesContainer.innerHTML = '<div style="text-align:center; padding:20px;">אין משחקים זמינים</div>';
+        return;
+    }
+
+    // 1. שולף את כל התאריכים הייחודיים שיש בהם משחקים וממיין אותם
+    if (allDates.length === 0) {
+        const datesSet = new Set();
+        allMatches.forEach(m => datesSet.add(m.fixture.date.split('T')[0]));
+        allDates = Array.from(datesSet).sort((a, b) => new Date(a) - new Date(b));
+        
+        // בונוס מקצועני: מנסה למצוא את התאריך של היום (או הכי קרוב לעתיד) כדי להציג אותו ראשון!
+        const todayStr = new Date().toISOString().split('T')[0];
+        let closestIdx = allDates.findIndex(d => d >= todayStr);
+        if (closestIdx !== -1) currentDateIndex = closestIdx;
+    }
+
+    // 2. מציג את התאריך הנבחר בכותרת למעלה
+    const selectedDateStr = allDates[currentDateIndex];
+    document.getElementById('round-name').innerText = formatHebrewDate(selectedDateStr); // ודא שה-ID תואם ל-HTML שלך!
+
+    // 3. מסנן רק את המשחקים שמשוחקים בתאריך הזה
+    const dailyMatches = allMatches.filter(m => m.fixture.date.split('T')[0] === selectedDateStr);
+
+    // 4. מסדר אותם לפי "מחזור" כדי לייצר כותרות פנימיות
+    const matchesByRound = {};
+    dailyMatches.forEach(m => {
+        let roundName = translateName(m.league.round) || m.league.round;
+        if (!matchesByRound[roundName]) matchesByRound[roundName] = [];
+        matchesByRound[roundName].push(m);
+    });
+
+    // 5. בונה את ה-HTML
+    let html = '';
+    for (const [roundName, matches] of Object.entries(matchesByRound)) {
+        
+        // הנה הכותרת הפנימית החדשה של המחזור (מעוצבת נקי ואלגנטי)
+        html += `<div class="date-separator" style="color: #8fa0b3; font-size: 13px; font-weight: bold; text-align: center; margin: 15px 0 10px; border-bottom: 1px solid #1f2d40; padding-bottom: 5px;">${roundName}</div>`;
+        
+        matches.forEach(m => {
+            const homeTeam = translateName(m.teams.home.name);
+            const awayTeam = translateName(m.teams.away.name);
+            const status = m.fixture.status.short;
+
+            let centerHtml = '';
+            if (['NS', 'TBD'].includes(status)) {
+                const time = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                centerHtml = `<div class="match-score-box">${time}</div>`;
+            } else if (['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(status)) {
+                centerHtml = `
+                    <div class="live-minute">${m.fixture.status.elapsed}'</div>
+                    <div class="match-score-box live-match">${m.goals.home} - ${m.goals.away}</div>
+                `;
+            } else {
+                centerHtml = `<div class="match-score-box">${m.goals.home} - ${m.goals.away}</div>`;
             }
 
-            const prefix = roundMatch ? "מחזור " : "";
-            document.getElementById('matchday-title').innerText = `${prefix}${roundNumber}${dateText}`;
+            // *** השורה הכי חשובה! השארנו את חיבור הגרירה והלחיצה שלך ***
+            html += `
+            <div class="match-row" onclick="openMatchEvents(${m.fixture.id}, '${m.teams.home.name}', '${m.teams.away.name}')" style="cursor: pointer;">
+                <div class="team team-home">
+                    <span class="team-name-text">${homeTeam}</span>
+                    <img src="${m.teams.home.logo}" class="fixture-logo">
+                </div>
+                <div class="score-wrapper">${centerHtml}</div>
+                <div class="team team-away">
+                    <img src="${m.teams.away.logo}" class="fixture-logo">
+                    <span class="team-name-text">${awayTeam}</span>
+                </div>
+            </div>`;
+        });
+    }
 
-            document.getElementById('btn-prev').disabled = currentRoundIndex === 0;
-            document.getElementById('btn-next').disabled = currentRoundIndex === allRounds.length - 1;
-
-            const matchesByDate = {};
-            matches.forEach(m => {
-                const d = new Date(m.fixture.date);
-                const dateKey = formatD(d);
-                if (!matchesByDate[dateKey]) matchesByDate[dateKey] = [];
-                matchesByDate[dateKey].push(m);
-            });
-
-            let html = '';
-
-            for (const [dateStr, dayMatches] of Object.entries(matchesByDate)) {
-                html += `<div class="date-separator">${dateStr}</div>`;
-                
-                dayMatches.forEach(m => {
-                    const homeTeam = translateName(m.teams.home.name);
-                    const awayTeam = translateName(m.teams.away.name);
-                    const status = m.fixture.status.short;
-
-                    let centerHtml = '';
-                    if (['NS', 'TBD'].includes(status)) {
-                        const date = new Date(m.fixture.date);
-                        const time = date.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
-                        centerHtml = `<div class="match-score-box">${time}</div>`;
-                    } 
-                    else if (['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(status)) {
-                        centerHtml = `
-                            <div class="live-minute">${m.fixture.status.elapsed}'</div>
-                            <div class="match-score-box live-match">${m.goals.home} - ${m.goals.away}</div>
-                        `;
-                    } 
-                    else {
-                        centerHtml = `<div class="match-score-box">${m.goals.home} - ${m.goals.away}</div>`;
-                    }
-
-                    html += `
-                    <div class="match-row" onclick="openMatchEvents(${m.fixture.id}, '${m.teams.home.name}', '${m.teams.away.name}')" style="cursor: pointer;">
-                        <div class="match-team team-home">
-                            <div class="team-identity">
-                                <img src="${m.teams.home.logo}" class="fixture-logo">
-                                <span class="team-name-text">${homeTeam}</span>
-                            </div>
-                        </div>
-                        <div class="match-center">
-                            ${centerHtml}
-                        </div>
-                        <div class="match-team team-away">
-                            <div class="team-identity">
-                                <img src="${m.teams.away.logo}" class="fixture-logo">
-                                <span class="team-name-text">${awayTeam}</span>
-                            </div>
-                        </div>
-                    </div>`;
-                });
-            }
-
-            document.getElementById('api-fixtures-list').innerHTML = html;
-        }
-
-        function changeRound(step) {
-            currentRoundIndex += step;
-            if (currentRoundIndex < 0) currentRoundIndex = 0;
-            if (currentRoundIndex >= allRounds.length) currentRoundIndex = allRounds.length - 1;
-            renderFixtures();
-        }
+    fixturesContainer.innerHTML = html;
+}
 
         getStandings();
         loadPlayerStats('topscorers');
