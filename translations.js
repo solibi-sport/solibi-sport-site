@@ -12641,5 +12641,5 @@ const myDictionary = {
     "E. Ansah": "א. אנסה",
     "M. Levi": "מ. לוי",
     "O. Bilu": "ע. בילו",
-    "G. Melamed": "ג. מלמד",
+    "G. Melamed": "ג. מלמד"
         };
