@@ -49,23 +49,29 @@
             z-index: 1000;
         }
 
-        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; }
+        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
+        
+        /* הלוגו - מסודר בדיוק כמו בדף הבית */
         .logo-wrapper {
-            position: absolute; right: 20px; top: 65px; transform: translateY(-50%);
-            background-color: #ffffff; padding: 4px 10px; border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            background-color: #ffffff; padding: 0 10px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
+            height: 46px; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; 
+            width: 130px;
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
-        .actual-logo-img { height: clamp(45px, 5vh, 60px); display: block; }
+        .actual-logo-img { height: 35px; transform: scale(1.8); display: block; object-fit: contain; }
 
+        /* האזור האישי - מסודר בדיוק ליד הלוגו כמו בדף הבית */
         .personal-area-btn {
+            position: absolute; right: 170px; top: 50%; transform: translateY(-50%);
             background: rgba(255, 255, 255, 0.1); border: 2px solid var(--brand-green);
             color: #ffffff; padding: 6px 18px; border-radius: 30px; text-decoration: none;
             font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); transition: 0.3s;
-            display: flex; align-items: center; gap: 8px; white-space: nowrap;
-            margin-right: 85px; 
+            display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
         }
-        .personal-area-btn:hover { background: var(--brand-green); transform: translateY(-2px); }
+        .personal-area-btn:hover { background: var(--brand-green); transform: translateY(-50%) scale(1.05); }
 
         .header-center-col { display: flex; justify-content: center; align-items: center; }
         .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); }
@@ -187,16 +193,15 @@
             transition: 0.4s;
             position: relative;
             z-index: 2; 
-            overflow: hidden; /* חותך את תמונת הדגל בדיוק לפי הפינות המעוגלות */
+            overflow: hidden;
         }
 
         .league-icon-modern img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* מוודא שהדגל ממלא את כל הריבוע המעוגל */
+            object-fit: cover;
         }
 
-        /* עיצוב מיוחד לסמלי יבשות (SVG) כדי שלא ימתחו כמו תמונה */
         .league-icon-modern.svg-icon {
             padding: 8px;
         }
@@ -232,22 +237,21 @@
             opacity: 0; 
             transition: opacity 0.5s ease; 
             z-index: 1; 
-            mix-blend-mode: overlay; /* משלב את צבע הדגל עם צבע הנייבי היוקרתי של הקובייה */
+            mix-blend-mode: overlay;
             pointer-events: none;
         }
 
         .league-cube:hover::before {
-            opacity: 0.5; /* שקיפות הדגל ברקע */
+            opacity: 0.5;
         }
 
-        /* התנהגות שונה לרקע של היבשות (SVG) כדי שייראה כמו חותמת שקופה */
         .league-cube.svg-bg::before {
             background-size: 60%; 
             background-repeat: no-repeat;
             mix-blend-mode: normal; 
         }
         .league-cube.svg-bg:hover::before {
-            opacity: 0.15; /* שקוף יותר כדי שלא יבלע את הטקסט */
+            opacity: 0.15;
         }
 
         /* === שורת עדכונים רצה === */
@@ -277,7 +281,7 @@
             .header-layout-grid { grid-template-columns: 1fr; } 
             .header { height: auto; padding: 15px 0; }
             .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
-            .personal-area-btn { margin-right: 0; }
+            .personal-area-btn { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
             .logo-wrapper { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
             .header-search { display: none; }
             .leagues-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } 
