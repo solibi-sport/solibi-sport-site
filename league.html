@@ -56,22 +56,20 @@
 
         .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
         
-        /* === הלוגו: מראה "בינוני" ומושלם לכל הדפים === */
         .logo-wrapper {
             position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
             background-color: #ffffff; 
-            padding: 0 18px; /* הרווח הטבעי מימין ומשמאל שיוצר את המראה הבינוני המדויק */
+            padding: 0 18px; 
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25); 
             z-index: 1100; transition: 0.3s;
-            height: 48px; /* גובה שנותן ללוגו קצת אוויר לנשום */
+            height: 48px; 
             display: flex; align-items: center; justify-content: center;
-            /* שים לב: מחקנו מכאן את ה-width ואת ה-overflow כדי למנוע עיוותים! */
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
         .actual-logo-img { 
             height: 32px; 
-            transform: scale(1.6); /* זום מדויק שלא בורח מהקופסה */
+            transform: scale(1.6); 
             display: block; 
             object-fit: contain; 
         }
@@ -97,19 +95,13 @@
         .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
 
         .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; height: 100%; }
-        
         .header-search { position: relative; width: var(--search-width); height: 34px; }
         .header-search input {
             position: absolute; left: 0; top: 0; 
             width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
             border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s ease-out;
-            font-family: inherit;
         }
-        .header-search input:focus { 
-            width: calc(100% + 80px); 
-            box-shadow: 0 0 15px var(--brand-green-glow); 
-            background: #fff; z-index: 10; 
-        }
+        .header-search input:focus { width: calc(100% + 80px); box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
 
         /* =========================================
            2. תוכן מרכזי - דאשבורד
@@ -200,6 +192,19 @@
         .live-minute { font-size: 11px; color: var(--brand-green); animation: blink 1.5s infinite; font-weight: bold; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
         .fixture-logo { width: 20px; height: 20px; max-width: 20px; max-height: 20px; object-fit: contain; flex-shrink: 0; }
+        
+        /* עיצוב לתאריך המפריד בין המשחקים */
+        .date-separator {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--brand-green);
+            font-size: 11.5px;
+            font-weight: 900;
+            padding: 4px 15px;
+            border-radius: 6px;
+            margin: 10px 15px 5px 15px;
+            text-align: center;
+            border: 1px solid rgba(124, 168, 86, 0.2);
+        }
 
         .player-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 5px; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .player-rank { color: #94a3b8; font-weight: bold; width: 20px; font-size: 12px; }
@@ -279,9 +284,9 @@
 
     <main class="main-content">
         <div class="page-header">
-            <div class="title-pill">
-                <span class="title-dark">הליגה</span>
-                <span class="title-green">האנגלית</span>
+            <div class="title-pill" id="dynamic-title-container">
+                <span class="title-dark">טוען</span>
+                <span class="title-green">ליגה...</span>
             </div>
         </div>
 
@@ -345,8 +350,25 @@
 
     <script>
         const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3'; 
-        const LEAGUE_ID = 39; 
         const SEASON = 2025; 
+
+        // === 1. שאיבת הנתונים מהכתובת (URL) להפיכת הדף לדינמי ===
+        const urlParams = new URLSearchParams(window.location.search);
+        const LEAGUE_ID = urlParams.get('id') || 39; 
+        const LEAGUE_NAME = urlParams.get('name') || "הליגה האנגלית";
+
+        // === 2. עדכון הכותרת המרכזית ===
+        const titleContainer = document.getElementById('dynamic-title-container');
+        if (titleContainer) {
+            const nameParts = LEAGUE_NAME.split(" ");
+            if (nameParts.length > 1) {
+                const firstPart = nameParts.shift();
+                const restPart = nameParts.join(" ");
+                titleContainer.innerHTML = `<span class="title-dark">${firstPart}</span> <span class="title-green">${restPart}</span>`;
+            } else {
+                titleContainer.innerHTML = `<span class="title-green">${LEAGUE_NAME}</span>`;
+            }
+        }
 
         const myDictionary = {
             "Arsenal": "ארסנל",
@@ -413,7 +435,10 @@
                     headers: { 'x-apisports-key': API_KEY }
                 });
                 const data = await response.json();
-                if(data.errors && Object.keys(data.errors).length > 0) return;
+                if(data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
+                    document.getElementById('api-table').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה זמינים</div>';
+                    return;
+                }
 
                 const standings = data.response[0].league.standings[0];
                 let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
@@ -457,7 +482,10 @@
                 });
                 const data = await response.json();
                 
-                if (!data.response || data.response.length === 0) return;
+                if (!data.response || data.response.length === 0) {
+                    container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתונים זמינים</div>';
+                    return;
+                }
 
                 let html = '';
                 const topPlayers = data.response.slice(0, 10);
@@ -507,7 +535,11 @@
                     headers: { 'x-apisports-key': API_KEY }
                 });
                 const data = await response.json();
-                if(!data.response || data.response.length === 0) return;
+                if(!data.response || data.response.length === 0) {
+                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
+                    document.getElementById('matchday-title').innerText = "אין נתונים";
+                    return;
+                }
 
                 allFixtures = data.response;
 
@@ -538,17 +570,18 @@
             if (allRounds.length === 0) return;
             
             const roundString = allRounds[currentRoundIndex];
-            const roundNumber = roundString.match(/\d+/)[0];
+            const roundMatch = roundString.match(/\d+/);
+            const roundNumber = roundMatch ? roundMatch[0] : roundString; 
             const matches = allFixtures.filter(f => f.league.round === roundString);
 
-            // --- תאריכים ---
+            // --- הפורמט של התאריכים (קו נטוי) ---
+            const formatD = (d) => `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+
             let dateText = "";
             if (matches.length > 0) {
                 const timestamps = matches.map(m => new Date(m.fixture.date).getTime());
                 const minDate = new Date(Math.min(...timestamps));
                 const maxDate = new Date(Math.max(...timestamps));
-                
-                const formatD = (d) => `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
                 
                 if (formatD(minDate) === formatD(maxDate)) {
                     dateText = ` (${formatD(minDate)})`;
@@ -557,53 +590,69 @@
                 }
             }
 
-            document.getElementById('matchday-title').innerText = `מחזור ${roundNumber}${dateText}`;
+            const prefix = roundMatch ? "מחזור " : "";
+            document.getElementById('matchday-title').innerText = `${prefix}${roundNumber}${dateText}`;
 
             document.getElementById('btn-prev').disabled = currentRoundIndex === 0;
             document.getElementById('btn-next').disabled = currentRoundIndex === allRounds.length - 1;
 
+            // === חלוקת המשחקים לפי תאריכים ===
+            const matchesByDate = {};
+            matches.forEach(m => {
+                const d = new Date(m.fixture.date);
+                const dateKey = formatD(d);
+                if (!matchesByDate[dateKey]) matchesByDate[dateKey] = [];
+                matchesByDate[dateKey].push(m);
+            });
+
             let html = '';
 
-            matches.forEach(m => {
-                const homeTeam = myDictionary[m.teams.home.name] || m.teams.home.name;
-                const awayTeam = myDictionary[m.teams.away.name] || m.teams.away.name;
-                const status = m.fixture.status.short;
+            for (const [dateStr, dayMatches] of Object.entries(matchesByDate)) {
+                // מדפיסים את כותרת התאריך
+                html += `<div class="date-separator">${dateStr}</div>`;
+                
+                // מדפיסים את המשחקים של אותו יום
+                dayMatches.forEach(m => {
+                    const homeTeam = myDictionary[m.teams.home.name] || m.teams.home.name;
+                    const awayTeam = myDictionary[m.teams.away.name] || m.teams.away.name;
+                    const status = m.fixture.status.short;
 
-                let centerHtml = '';
-                if (['NS', 'TBD'].includes(status)) {
-                    const date = new Date(m.fixture.date);
-                    const time = date.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
-                    centerHtml = `<div class="match-score-box">${time}</div>`;
-                } 
-                else if (['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(status)) {
-                    centerHtml = `
-                        <div class="live-minute">${m.fixture.status.elapsed}'</div>
-                        <div class="match-score-box live-match">${m.goals.home} - ${m.goals.away}</div>
-                    `;
-                } 
-                else {
-                    centerHtml = `<div class="match-score-box">${m.goals.home} - ${m.goals.away}</div>`;
-                }
+                    let centerHtml = '';
+                    if (['NS', 'TBD'].includes(status)) {
+                        const date = new Date(m.fixture.date);
+                        const time = date.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                        centerHtml = `<div class="match-score-box">${time}</div>`;
+                    } 
+                    else if (['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(status)) {
+                        centerHtml = `
+                            <div class="live-minute">${m.fixture.status.elapsed}'</div>
+                            <div class="match-score-box live-match">${m.goals.home} - ${m.goals.away}</div>
+                        `;
+                    } 
+                    else {
+                        centerHtml = `<div class="match-score-box">${m.goals.home} - ${m.goals.away}</div>`;
+                    }
 
-                html += `
-                <div class="match-row">
-                    <div class="match-team team-home">
-                        <div class="team-identity">
-                            <img src="${m.teams.home.logo}" class="fixture-logo">
-                            <span class="team-name-text">${homeTeam}</span>
+                    html += `
+                    <div class="match-row">
+                        <div class="match-team team-home">
+                            <div class="team-identity">
+                                <img src="${m.teams.home.logo}" class="fixture-logo">
+                                <span class="team-name-text">${homeTeam}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="match-center">
-                        ${centerHtml}
-                    </div>
-                    <div class="match-team team-away">
-                        <div class="team-identity">
-                            <img src="${m.teams.away.logo}" class="fixture-logo">
-                            <span class="team-name-text">${awayTeam}</span>
+                        <div class="match-center">
+                            ${centerHtml}
                         </div>
-                    </div>
-                </div>`;
-            });
+                        <div class="match-team team-away">
+                            <div class="team-identity">
+                                <img src="${m.teams.away.logo}" class="fixture-logo">
+                                <span class="team-name-text">${awayTeam}</span>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+            }
 
             document.getElementById('api-fixtures-list').innerHTML = html;
         }
