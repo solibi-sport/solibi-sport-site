@@ -1,14 +1,15 @@
-// 1. מזריק את העיצוב (CSS) - גרסה קומפקטית, נטולת טשטוש רקע, עם נתונים סטטיסטיים מתקדמים
+// 1. מזריק את העיצוב (CSS)
 const modalStyle = document.createElement('style');
 modalStyle.innerHTML = `
-/* הסרנו את ה-backdrop-filter והורדנו שקיפות כדי שיראו את האתר */
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(6, 12, 20, 0.55); z-index: 9999; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; }
 
-/* הקטנו משמעותית את רוחב החלון מ-750 ל-580 */
-.modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 580px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 85vh;}
-.modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; border-bottom: 2px solid #7a9966; flex-shrink: 0; }
-.modal-header h2 { margin: 0; font-size: 16px; font-weight: bold; color: #ffffff; }
-.close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; }
+.modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 580px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 85vh; will-change: transform; }
+
+/* הוספנו סמן של "יד גוררת" (grab) וביטול סימון טקסט בטעות */
+.modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; border-bottom: 2px solid #7a9966; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; }
+.modal-header:active { cursor: grabbing; } /* משנה את הסמן כשתופסים את החלון */
+.modal-header h2 { margin: 0; font-size: 16px; font-weight: bold; color: #ffffff; pointer-events: none; }
+.close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
 .close-modal:hover { color: #ffffff; }
 
 /* אזור הסטטיסטיקות המורחב */
@@ -49,7 +50,7 @@ modalStyle.innerHTML = `
 `;
 document.head.appendChild(modalStyle);
 
-// 2. מזריק את מסגרת ה-HTML ברגע שהדף נטען
+// 2. מזריק את מסגרת ה-HTML ומוסיף את מנגנון הגרירה (Drag)
 document.addEventListener("DOMContentLoaded", () => {
     if (!document.getElementById('eventsModal')) {
         const modalHTML = `
@@ -63,22 +64,68 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </div>`;
         document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+        // --- מנגנון הגרירה (Drag and Drop) ---
+        const header = document.querySelector('.modal-header');
+        const box = document.querySelector('.modal-box');
+        
+        window.dragOffsetX = 0;
+        window.dragOffsetY = 0;
+        let isDragging = false;
+        let startX, startY;
+
+        function onDragStart(e) {
+            if (e.target.closest('.close-modal')) return; // לא גורר אם לחצו על האיקס
+            isDragging = true;
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            startX = clientX - window.dragOffsetX;
+            startY = clientY - window.dragOffsetY;
+        }
+
+        function onDragMove(e) {
+            if (!isDragging) return;
+            e.preventDefault(); // מונע גלילת מסך בטעות בנייד
+            const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+            const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+            window.dragOffsetX = clientX - startX;
+            window.dragOffsetY = clientY - startY;
+            box.style.transform = `translate(${window.dragOffsetX}px, ${window.dragOffsetY}px) scale(1)`;
+        }
+
+        function onDragEnd() {
+            isDragging = false;
+        }
+
+        // מאזינים לעכבר (מחשב)
+        header.addEventListener('mousedown', onDragStart);
+        document.addEventListener('mousemove', onDragMove, { passive: false });
+        document.addEventListener('mouseup', onDragEnd);
+
+        // מאזינים למגע (מובייל)
+        header.addEventListener('touchstart', onDragStart, { passive: true });
+        document.addEventListener('touchmove', onDragMove, { passive: false });
+        document.addEventListener('touchend', onDragEnd);
     }
 });
 
-// פונקציית עזר קטנה לשליפת נתון סטטיסטי
 function getStatValue(statsArray, typeName) {
     const stat = statsArray.find(s => s.type === typeName);
     return (stat && stat.value !== null) ? stat.value : '0';
 }
 
-// 3. הפונקציה המרכזית
+// 3. הפונקציה המרכזית לשאיבת הנתונים
 async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
     const modal = document.getElementById('eventsModal');
+    const box = document.querySelector('.modal-box');
     const content = document.getElementById('modalEventsContent');
     const title = document.getElementById('modalMatchTitle');
     
-    // ניקוי פס הסטטיסטיקות הקודם אם קיים
+    // איפוס מיקום החלון לאמצע (למקרה שהגולש גרר אותו קודם)
+    window.dragOffsetX = 0;
+    window.dragOffsetY = 0;
+    box.style.transform = '';
+
     const existingStats = document.getElementById('modalStatsContainer');
     if (existingStats) existingStats.remove();
 
@@ -90,7 +137,7 @@ async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
     try {
         const headers = {
             'x-rapidapi-host': 'v3.football.api-sports.io',
-            'x-rapidapi-key': 'd580159a7d19ead2bc2054c8b57e6ee3' // <=== חובה להכניס את מפתח ה-API שלך פה
+            'x-rapidapi-key': 'הכנס-את-המפתח-שלך-כאן' // <=== חובה להכניס את המפתח שלך!
         };
 
         const [eventsRes, statsRes] = await Promise.all([
@@ -104,17 +151,14 @@ async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
         const events = eventsData.response || [];
         const stats = statsData.response || [];
 
-        // --- שאיבת נתונים סטטיסטיים לשתי הקבוצות ---
         let homeStatsArray = stats.length > 0 ? stats[0].statistics : [];
         let awayStatsArray = stats.length > 1 ? stats[1].statistics : [];
 
-        // שליטה בכדור
         let homePoss = getStatValue(homeStatsArray, "Ball Possession");
         let awayPoss = getStatValue(awayStatsArray, "Ball Possession");
         if (homePoss === '0') homePoss = '50%';
         if (awayPoss === '0') awayPoss = '50%';
 
-        // סטטיסטיקות נוספות
         let homeShotsOnGoal = getStatValue(homeStatsArray, "Shots on Goal");
         let awayShotsOnGoal = getStatValue(awayStatsArray, "Shots on Goal");
         let homeTotalShots = getStatValue(homeStatsArray, "Total Shots");
@@ -124,7 +168,6 @@ async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
         let homeFouls = getStatValue(homeStatsArray, "Fouls");
         let awayFouls = getStatValue(awayStatsArray, "Fouls");
 
-        // בניית אזור הסטטיסטיקה החדש
         const statsHTML = `
         <div id="modalStatsContainer" class="stats-container">
             <div style="text-align: center; font-size: 11px; color: #8fa0b3; margin-bottom: 5px;">שליטה בכדור</div>
@@ -161,12 +204,10 @@ async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
             </div>
         </div>`;
         
-        // הוספת הסטטיסטיקה לחלון
         if (stats.length > 0) {
             document.querySelector('.modal-header').insertAdjacentHTML('afterend', statsHTML);
         }
 
-        // --- עיבוד אירועי המשחק ---
         content.style.display = 'flex'; 
         if (events.length === 0) {
             content.innerHTML = '<p style="text-align:center; width:100%; font-size:12px;">אין אירועים להצגה.</p>';
