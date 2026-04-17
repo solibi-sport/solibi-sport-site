@@ -6760,7 +6760,7 @@ const myDictionary = {
     "Vasilije Adžić": "ואסיליה אדז'יץ'",
     "Vedat Muriqi": "ודאט מוריצ'י",
     "Veljko Birmančević": "וליקו בירמנצ'ביץ'",
-    "Veljko Milosavljević": "וליקו מילוסבלייביץ'",
+ "Veljko Milosavljević": "וליקו מילוסבלייביץ'",
     "Vicente Jaime": "ויסנטה חיימה",
     "Vicente Pizarro": "ויסנטה פיסארו",
     "Victor Boniface": "ויקטור בוניפייס",
