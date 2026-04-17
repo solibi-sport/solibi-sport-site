@@ -137,7 +137,7 @@ async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
     try {
         const headers = {
             'x-rapidapi-host': 'v3.football.api-sports.io',
-            'x-rapidapi-key': 'הכנס-את-המפתח-שלך-כאן' // <=== חובה להכניס את המפתח שלך!
+            'x-rapidapi-key': 'd580159a7d19ead2bc2054c8b57e6ee3' // <=== חובה להכניס את המפתח שלך!
         };
 
         const [eventsRes, statsRes] = await Promise.all([
