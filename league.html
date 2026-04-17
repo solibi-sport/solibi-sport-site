@@ -23,32 +23,26 @@
             --search-width: clamp(200px, 15vw, 300px);
             --grid-gap: clamp(10px, 1.5vw, 20px);
 
-            /* הנוסחה המתמטית לדף הבית שהועתקה לכאן כדי ליישר את הכפתור בול! */
+            /* הנוסחה המתמטית לסנכרון מושלם מול דף הבית */
             --visual-center-right: calc((100vw - min(850px, 110vh)) / 4);
         }
 
-        /* נעילת מסך ל-100% וביטול גלילה צדדית */
         body {
             font-family: 'Rubik', sans-serif; 
             background-color: var(--bg-gray);
-            margin: 0;
-            padding: 0;
-            height: 100vh; 
-            width: 100vw;
+            margin: 0; padding: 0;
+            height: 100vh; width: 100vw;
             overflow: hidden; 
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
         }
 
-        /* =========================================
-           1. תפריט ניווט עליון
-           ========================================= */
         .layout-grid {
             display: grid;
             grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
             width: 100%;
         }
 
+        /* === הדר עליון === */
         .header {
             flex-shrink: 0; 
             height: 65px;
@@ -60,19 +54,19 @@
 
         .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
         
-        /* === הלוגו - הועתק במדויק מדף הבית כמו שביקשת! === */
+        /* === הלוגו - אחד לאחד כמו בדף הבית === */
         .logo-wrapper {
             position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
             background-color: #ffffff; padding: 0 10px; border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
-            height: 46px; display: flex; align-items: center; justify-content: center;
+            height: 46px; width: 130px;
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden; 
-            width: 130px;
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
         .actual-logo-img { height: 35px; transform: scale(1.8); display: block; object-fit: contain; }
 
-        /* === האזור האישי - מקובע בדיוק לאותו פיקסל כמו בדף הבית === */
+        /* === האזור האישי - מיקום סימטרי מושלם === */
         .personal-area-btn {
             position: absolute; 
             right: var(--visual-center-right); 
@@ -94,7 +88,6 @@
         .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
 
         .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; height: 100%; }
-        
         .header-search { position: relative; width: var(--search-width); height: 34px; }
         .header-search input {
             position: absolute; left: 0; top: 0; 
@@ -102,35 +95,24 @@
             border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s ease-out;
             font-family: inherit;
         }
-        .header-search input:focus { 
-            width: calc(100% + 80px); 
-            box-shadow: 0 0 15px var(--brand-green-glow); 
-            background: #fff; z-index: 10; 
-        }
+        .header-search input:focus { width: calc(100% + 80px); box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
 
-        /* =========================================
-           2. תוכן מרכזי - דאשבורד
-           ========================================= */
+        /* === תוכן דאשבורד === */
         .main-content { 
-            flex: 1; 
-            min-height: 0; 
-            display: flex;
-            flex-direction: column;
+            flex: 1; min-height: 0; 
+            display: flex; flex-direction: column;
             padding: clamp(10px, 2vh, 25px) clamp(10px, 2vw, 20px); 
-            max-width: 1600px;
-            margin: 0 auto;
-            width: 100%;
+            max-width: 1600px; margin: 0 auto; width: 100%;
             box-sizing: border-box;
         }
 
         .page-header {
-            flex-shrink: 0;
-            display: flex; justify-content: center; align-items: center;
+            flex-shrink: 0; display: flex; justify-content: center; align-items: center;
             position: relative; margin-bottom: clamp(15px, 2.5vh, 30px);
         }
         .page-header::before {
             content: ''; position: absolute; width: 60%; max-width: 800px; height: 2px;
-            background: linear-gradient(to right, transparent, var(--brand-green), transparent); z-index: 1;
+            background: linear-gradient(to right, transparent, var(--brand-green), transparent);
         }
         .title-pill {
             background: var(--white); border: 2px solid var(--brand-green); border-radius: 50px;
@@ -142,50 +124,38 @@
         .title-green { color: var(--brand-green); }
 
         .dashboard {
-            flex: 1; 
-            min-height: 0; 
+            flex: 1; min-height: 0; 
             width: 100%; display: grid;
-            /* שיניתי קלות את הפרופורציות - עמודה ימנית (טבלה) קצת ירדה, שמאלית (סטטיסטיקה) גדלה קצת (24fr) */
-            grid-template-columns: 34fr 42fr 24fr; gap: clamp(10px, 1.5vw, 20px);
+            /* התיקון שהרחיב את הסטטיסטיקה (עמודה שמאלית) כדי למנוע היצמדות לפס הגלילה */
+            grid-template-columns: 34fr 41fr 25fr; gap: var(--grid-gap);
         }
 
         .widget {
-            height: 100%; 
-            box-sizing: border-box;
-            background-color: var(--card-bg); border-radius: 12px;
+            height: 100%; background-color: var(--card-bg); border-radius: 12px;
             box-shadow: 0 6px 20px rgba(25, 42, 69, 0.15); padding: clamp(10px, 1.5vw, 20px);
             display: flex; flex-direction: column; color: var(--white); overflow: hidden;
+            box-sizing: border-box;
         }
         
-        .widget-header-wrapper { 
-            flex-shrink: 0;
-            text-align: center; margin-bottom: 15px; padding-bottom: 15px; 
-            border-bottom: 1px solid var(--border-dark); 
-        }
-        
-        .widget-header-pill {
-            display: inline-block; background-color: var(--white); color: var(--card-bg);
-            padding: 6px clamp(15px, 2vw, 22px); border-radius: 50px; font-size: clamp(13px, 1.2vw, 15px);
-            font-weight: 800; border: 2px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+        .widget-header-wrapper { flex-shrink: 0; text-align: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border-dark); }
+        .widget-header-pill { display: inline-block; background-color: var(--white); color: var(--card-bg); padding: 6px clamp(15px, 2vw, 22px); border-radius: 50px; font-size: clamp(13px, 1.2vw, 15px); font-weight: 800; border: 2px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
         .stat-dropdown-pill {
             display: inline-block; background-color: var(--white); color: var(--card-bg);
             padding: 6px 15px 6px 35px; border-radius: 50px; font-size: clamp(13px, 1.2vw, 15px);
-            font-weight: 900; border: 2px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            appearance: none; cursor: pointer; outline: none; direction: rtl; font-family: inherit;
-            text-align: center; transition: 0.2s;
+            font-weight: 900; border: 2px solid var(--brand-green); appearance: none; cursor: pointer;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23192a45' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat; background-position: left 12px center; background-size: 14px;
+            outline: none; direction: rtl; font-family: inherit; text-align: center; transition: 0.2s;
         }
         .stat-dropdown-pill:hover { transform: scale(1.02); }
         .stat-dropdown-pill option { background-color: var(--card-bg); color: var(--white); font-weight: bold; }
 
-        /* טבלה */
-        .table-container { flex: 1; overflow-y: auto; overflow-x: auto; padding-left: 5px; }
-        .table-container::-webkit-scrollbar { width: 6px; height: 6px; }
-        .table-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        .table-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        .table-container, .stats-list-container { flex: 1; overflow-y: auto; overflow-x: auto; padding-left: 5px; }
+        .table-container::-webkit-scrollbar, .stats-list-container::-webkit-scrollbar { width: 6px; height: 6px; }
+        .table-container::-webkit-scrollbar-track, .stats-list-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .table-container::-webkit-scrollbar-thumb, .stats-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
         table { width: 100%; border-collapse: collapse; font-size: clamp(11px, 1vw, 12px); min-width: 450px; }
         th { color: var(--text-light); padding: 10px 2px; text-align: center; position: sticky; top: 0; background-color: var(--card-bg); z-index: 10; border-bottom: 1px solid var(--border-dark); font-weight: normal; }
         td { padding: clamp(6px, 1vh, 10px) 2px; border-bottom: 1px solid var(--border-dark); text-align: center; }
@@ -198,12 +168,11 @@
         .trend-down { color: #ef4444; font-size: 11px; }
         .trend-same { color: #64748b; font-size: 11px; }
 
-        /* משחקים */
         .fixtures-nav { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 15px; margin-bottom: 15px; flex-shrink: 0;}
         .nav-btn { background: none; border: none; color: var(--brand-green); font-size: 18px; cursor: pointer; transition: 0.2s;}
         .nav-btn:hover { transform: scale(1.3); }
         .nav-btn:disabled { color: #555; cursor: not-allowed; transform: none; }
-        .matchday-title { font-weight: bold; font-size: clamp(13px, 1.2vw, 14px); }
+        .matchday-title { font-weight: bold; font-size: clamp(13px, 1.2vw, 14px); text-align: center; }
 
         .match-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border-dark); min-width: 300px; }
         .match-row:hover { background-color: rgba(255,255,255,0.05); border-radius: 8px; }
@@ -213,15 +182,10 @@
         .match-center { display: flex; flex-direction: column; align-items: center; margin: 0 clamp(15px, 2vw, 35px); }
         .match-score-box { background: var(--card-bg); border: 1px solid var(--border-dark); padding: 5px 12px; border-radius: 6px; font-weight: bold; text-align: center; min-width: 50px; font-size: 13px;}
         .live-match { border-color: var(--brand-green); color: var(--brand-green); }
-        .live-minute { font-size: 11px; color: var(--brand-green); animation: blink 1.5s infinite; }
+        .live-minute { font-size: 11px; color: var(--brand-green); animation: blink 1.5s infinite; font-weight: bold; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
         .fixture-logo { width: 20px; height: 20px; max-width: 20px; max-height: 20px; object-fit: contain; flex-shrink: 0; }
 
-        /* סטטיסטיקות */
-        .stats-list-container { flex: 1; overflow-y: auto; padding-right: 5px; }
-        .stats-list-container::-webkit-scrollbar { width: 4px; }
-        .stats-list-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        .stats-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
         .player-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 5px; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .player-rank { color: #94a3b8; font-weight: bold; width: 20px; font-size: 12px; }
         .player-info { flex: 1; display: flex; align-items: center; gap: 10px; }
@@ -229,31 +193,15 @@
         .player-name { font-size: 12px; font-weight: 600; color: var(--white); }
         .player-stat { font-weight: 900; color: var(--brand-green); font-size: 15px; }
 
-        /* =========================================
-           3. שורת עדכונים רצה למטה
-           ========================================= */
         .footer {
-            flex-shrink: 0; 
-            background: var(--element-navy-gradient); 
-            padding: 8px 0; 
-            border-top: 2px solid var(--brand-green);
-            overflow: hidden; 
-            white-space: nowrap; 
-            width: 100%; 
-            direction: ltr; 
-            position: relative; 
-            z-index: 1000;
+            flex-shrink: 0; background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green);
+            overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; position: relative; z-index: 1000;
         }
-
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
         .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
         .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
-        /* =========================================
-           4. רספונסיביות
-           ========================================= */
         @media (max-width: 1250px) {
             .dashboard { grid-template-columns: 1fr 1fr; }
             .dashboard > .widget:nth-child(3) { grid-column: 1 / -1; }
@@ -502,11 +450,9 @@
                     const primaryTeamLogo = item.statistics[0].team.logo;
                     const primaryTeamName = item.statistics[0].team.name;
                     
-                    // מתרגם את שם השחקן ושם הקבוצה לעברית!
                     const hebrewPlayerName = myDictionary[player.name] || player.name;
                     const hebrewTeamName = myDictionary[primaryTeamName] || primaryTeamName;
                     
-                    // סכימה (חיבור) של כל המספרים מכל הקבוצות שהשחקן שיחק בהן העונה באותה ליגה!
                     let statValue = 0;
                     item.statistics.forEach(stat => {
                         if(endpoint === 'topscorers') statValue += stat.goals.total || 0;
@@ -534,14 +480,13 @@
             }
         }
 
-        // --- 3. לוח משחקים חי (חדש!) ---
+        // --- 3. לוח משחקים חי + הוספת תאריכים למחזור ---
         let allFixtures = [];
         let allRounds = [];
         let currentRoundIndex = 0;
 
         async function getFixtures() {
             try {
-                // מושך את כל 380 המשחקים של העונה במכה אחת
                 const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
                     headers: { 'x-apisports-key': API_KEY }
                 });
@@ -550,7 +495,6 @@
 
                 allFixtures = data.response;
 
-                // מחלץ את כל המחזורים וממיין אותם
                 const uniqueRounds = [...new Set(allFixtures.map(f => f.league.round))];
                 allRounds = uniqueRounds.sort((a, b) => {
                     const numA = parseInt(a.match(/\d+/)[0]);
@@ -558,11 +502,9 @@
                     return numA - numB;
                 });
 
-                // מוצא אוטומטית איזה מחזור אנחנו עכשיו (המחזור הראשון שיש בו משחק שעוד לא הסתיים)
                 let foundIndex = allRounds.length - 1;
                 for (let i = 0; i < allRounds.length; i++) {
                     const roundMatches = allFixtures.filter(f => f.league.round === allRounds[i]);
-                    // אם יש משחק שהוא לא FT (הסתיים), AET או PEN
                     if (roundMatches.some(f => !['FT', 'AET', 'PEN', 'PST'].includes(f.fixture.status.short))) {
                         foundIndex = i;
                         break;
@@ -581,13 +523,29 @@
             
             const roundString = allRounds[currentRoundIndex];
             const roundNumber = roundString.match(/\d+/)[0];
-            document.getElementById('matchday-title').innerText = `מחזור ${roundNumber}`;
+            const matches = allFixtures.filter(f => f.league.round === roundString);
 
-            // שליטה על כפתורי החצים
+            // --- חישוב תאריכי המחזור ---
+            let dateText = "";
+            if (matches.length > 0) {
+                const timestamps = matches.map(m => new Date(m.fixture.date).getTime());
+                const minDate = new Date(Math.min(...timestamps));
+                const maxDate = new Date(Math.max(...timestamps));
+                
+                const formatD = (d) => `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+                
+                if (formatD(minDate) === formatD(maxDate)) {
+                    dateText = ` (${formatD(minDate)})`;
+                } else {
+                    dateText = ` (${formatD(minDate)} - ${formatD(maxDate)})`;
+                }
+            }
+
+            document.getElementById('matchday-title').innerText = `מחזור ${roundNumber}${dateText}`;
+
             document.getElementById('btn-prev').disabled = currentRoundIndex === 0;
             document.getElementById('btn-next').disabled = currentRoundIndex === allRounds.length - 1;
 
-            const matches = allFixtures.filter(f => f.league.round === roundString);
             let html = '';
 
             matches.forEach(m => {
@@ -596,20 +554,17 @@
                 const status = m.fixture.status.short;
 
                 let centerHtml = '';
-                // אם המשחק עוד לא התחיל
                 if (['NS', 'TBD'].includes(status)) {
                     const date = new Date(m.fixture.date);
                     const time = date.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
                     centerHtml = `<div class="match-score-box">${time}</div>`;
                 } 
-                // אם המשחק משוחק כרגע (לייב)
                 else if (['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(status)) {
                     centerHtml = `
                         <div class="live-minute">${m.fixture.status.elapsed}'</div>
                         <div class="match-score-box live-match">${m.goals.home} - ${m.goals.away}</div>
                     `;
                 } 
-                // אם המשחק נגמר
                 else {
                     centerHtml = `<div class="match-score-box">${m.goals.home} - ${m.goals.away}</div>`;
                 }
@@ -637,7 +592,6 @@
             document.getElementById('api-fixtures-list').innerHTML = html;
         }
 
-        // פונקציה להעברת מחזורים
         function changeRound(step) {
             currentRoundIndex += step;
             if (currentRoundIndex < 0) currentRoundIndex = 0;
@@ -645,7 +599,6 @@
             renderFixtures();
         }
 
-        // הפעלת כל הפונקציות ברגע שהדף עולה
         getStandings();
         loadPlayerStats('topscorers');
         getFixtures();
