@@ -2739,7 +2739,7 @@ const myDictionary = {
     "P. Foden": "פיל פודן",
     "Phil Foden": "פיל פודן",
     "C. Palmer": "קול פאלמר",
-    "Cole Palmer": "קול פאלמר"
+    "Cole Palmer": "קול פאלמר",
     "Steven Copeland": "סטיבן קופלנד",
     "Stian Røvig Sletner": "סטיאן רוביג סלטנר",
     "Svein Tore Sinnes": "סוויין טורה סינס",
