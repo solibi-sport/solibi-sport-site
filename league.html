@@ -358,17 +358,24 @@
         const LEAGUE_NAME = urlParams.get('name') || "הליגה האנגלית";
 
         const titleContainer = document.getElementById('dynamic-title-container');
-        if (titleContainer) {
-            const nameParts = LEAGUE_NAME.split(" ");
-            if (nameParts.length > 1) {
-                const firstPart = nameParts.shift();
-                const restPart = nameParts.join(" ");
-                titleContainer.innerHTML = `<span class="title-dark">${firstPart}</span> <span class="title-green">${restPart}</span>`;
-            } else {
-                titleContainer.innerHTML = `<span class="title-green">${LEAGUE_NAME}</span>`;
-            }
-        }
+if (titleContainer) {
+    titleContainer.innerHTML = colorizeTitle(LEAGUE_NAME);
+}
 
+        function colorizeTitle(text) {
+    if (!text) return "";
+    const words = text.split(' '); // חותך את המשפט למילים
+    
+    // עובר מילה מילה וצובע לסירוגין
+    const coloredWords = words.map((word, index) => {
+        // מילים זוגיות (ראשונה, שלישית) בכחול-נייבי, אי-זוגיות (שנייה, רביעית) בירוק
+        const color = (index % 2 === 0) ? '#112845' : '#7ca856'; 
+        return `<span style="color: ${color};">${word}</span>`;
+    });
+    
+    return coloredWords.join(' '); // מחבר אותן חזרה למשפט
+}
+        
         // === פונקציית התרגום המשודרגת (הציידת) ===
         function translateName(englishName) {
             if (!englishName) return "";
