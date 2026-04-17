@@ -49,7 +49,7 @@ async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
         const response = await fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, {
             headers: {
                 'x-rapidapi-host': 'v3.football.api-sports.io',
-                'x-rapidapi-key': 'הכנס-את-המפתח-שלך-כאן' // <=== שים את מפתח ה-API שלך פה!!!
+                'x-rapidapi-key': 'd580159a7d19ead2bc2054c8b57e6ee3' // <=== שים את מפתח ה-API שלך פה!!!
             }
         });
         
