@@ -508,21 +508,35 @@
             }
         }
 
-        let allFixtures = [];
-        let allRounds = [];
-        let currentRoundIndex = 0;
+        // --- המשתנים החדשים שלנו (במקום שורות 511-513 הישנות) ---
+let allMatches = [];
+let allDates = [];
+let currentDateIndex = 0;
 
-        async function getFixtures() {
-            try {
-                const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
-                const data = await response.json();
-                if(!data.response || data.response.length === 0) {
-                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
-                    document.getElementById('matchday-title').innerText = "אין נתונים";
-                    return;
-                }
+async function getFixtures() {
+    try {
+        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
+            headers: { 'x-apisports-key': API_KEY }
+        });
+        const data = await response.json();
+        
+        if(!data.response || data.response.length === 0) {
+            document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
+            // אם שינית את ה-ID של הכותרת ל-'round-name' כמו בהסבר הקודם, תשנה גם פה בהתאם:
+            document.getElementById('round-name').innerText = "אין נתונים"; 
+            return;
+        }
+        
+        // --- כאן שומרים את כל המשחקים (החלפנו את allFixtures ב-allMatches) ---
+        allMatches = data.response;
+        
+        // --- מפעילים את מנוע התאריכים החדש! ---
+        renderFixturesByDate();
+        
+    } catch (error) {
+        console.error("שגיאה במשיכת המשחקים:", error);
+    }
+}
 
                 allFixtures = data.response;
 
