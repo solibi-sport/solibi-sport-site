@@ -53,17 +53,17 @@
 
         .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
         
-        /* === לוגו - המסגרת נשארת, התמונה מוגדלת מבפנים באמצעות scale! === */
         .logo-wrapper {
             position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
             background-color: #ffffff; padding: 0 10px; border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
             height: 46px; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; 
+            width: 130px;
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
-        .actual-logo-img { height: 26px; transform: scale(1.8); display: block; object-fit: contain; }
+        .actual-logo-img { height: 35px; transform: scale(1.8); display: block; object-fit: contain; }
 
-        /* האזור האישי - מקובע בדיוק לציר ה-Y שעובר באמצע השטח הריק */
         .personal-area-btn {
             position: absolute; 
             right: var(--visual-center-right); 
@@ -107,21 +107,20 @@
             overflow: hidden;
         }
 
-        /* === עמודה ימנית: תפריט וסוליבי+ === */
+        /* === עמודה ימנית === */
         .community-sidebar { 
             position: relative;
             display: block; 
             padding: 0; 
         }
 
-        /* 5 המלבנים הצרים - מיושרים מתמטית לאמצע ולגובה הקוביה העליונה! */
         .right-menu-list {
             position: absolute; 
             top: 50%; 
             right: var(--visual-center-right); 
             transform: translate(50%, calc(var(--actual-grid-height) / -2));
             display: flex; flex-direction: column; justify-content: space-between;
-            width: clamp(180px, 15vw, 240px); margin: 0;
+            width: clamp(200px, 18vw, 250px); margin: 0;
             height: var(--square-size); 
             gap: 6px;
         }
@@ -135,49 +134,66 @@
         }
         .right-menu-item:hover { border-color: var(--brand-green); color: #fff; transform: translateX(-5px); }
 
-        /* === כפתור סוליבי+ (תוקן!) === */
+        /* === כפתור סוליבי+ והאנימציה החדשה! === */
         .fab-wrapper { 
             position: absolute; 
             top: 50%; 
             right: var(--visual-center-right); 
             transform: translate(50%, calc(var(--actual-grid-height) / 2 - 100%));
-            display: flex; flex-direction: column; align-items: center; z-index: 100;
-            /* הוסר הרוחב הרחב - מעכשיו רק העיגול קולט את העכבר! */
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100;
+            width: clamp(55px, 4.5vw, 70px); 
+            height: clamp(55px, 4.5vw, 70px);
         }
         
-        /* אזור התפריט הנפתח - צמוד פיזית לעיגול כדי למנוע ניתוק של העכבר */
         .fab-menu { 
-            position: absolute; 
-            bottom: clamp(55px, 4.5vw, 70px); /* צמוד לעיגול התחתון */
-            right: 50%; transform: translateX(50%);
-            width: clamp(180px, 15vw, 240px); /* רוחב מושלם כמו המלבנים */
-            height: calc(var(--square-size) - clamp(55px, 4.5vw, 70px)); 
-            padding-bottom: 12px; /* זה הטריק! ממלא את החלל הריק כדי שהעכבר לא ייפול */
-            display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
-            pointer-events: none; 
+            position: absolute; top: 50%; right: 50%; 
+            width: 0; height: 0; pointer-events: none; 
         }
         
-        /* גלולות עבות ורחבות למילוי השטח */
+        .fab-menu::before {
+            content: ""; position: absolute; top: 50%; right: 50%;
+            width: 350px; height: 350px;
+            transform: translate(50%, -50%); 
+            border-radius: 50%; pointer-events: none; z-index: -1;
+        }
+        .fab-wrapper:hover .fab-menu::before { pointer-events: auto; }
+        
+        /* עיגולים מוגדלים למראה מרווח וקריא, בסימטריה של 100% */
         .fab-item-pill {
-            position: relative; flex: 1; /* מתחלק שווה בשווה */
+            position: absolute; top: 50%; right: 50%;
             background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
-            border-radius: 30px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            border-radius: 50%; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
             color: #ffffff !important; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3); padding: 0; 
-            width: 100%; transform: scale(0.8) translateY(20px); text-decoration: none; font-size: 13px; font-weight: 900;
-            white-space: nowrap; pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+            width: 82px; height: 82px; /* הוגדל למראה מרווח */
+            text-decoration: none; font-size: 10.5px; font-weight: 900;
+            text-align: center; line-height: 1.15; pointer-events: none;
+            --target-x: 0px; --target-y: 0px;
+            transform: translate(50%, -50%) scale(0); 
         }
-        .fab-item-pill:hover { background: var(--brand-green) !important; transform: scale(1.05) translateY(0) !important; color: #fff; }
-
-        /* קסם הופעת התפריט ברפרוף על העיגול בלבד */
-        .fab-wrapper:hover .fab-menu { pointer-events: auto; }
-        .fab-wrapper:hover .fab-item-pill { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
         
+        .fab-item-pill svg { margin-bottom: 3px; }
+        .fab-item-pill span { white-space: normal; padding: 0 4px; } 
+
+        .fab-wrapper:hover .fab-item-pill { opacity: 1; pointer-events: auto; transform: translate(var(--target-x), var(--target-y)) scale(1); }
+        
+        .fab-item-pill:hover { 
+            background: var(--brand-green) !important; color: #fff !important; z-index: 10;
+            transform: translate(var(--target-x), var(--target-y)) scale(1.1) !important; 
+        }
+        
+        /* קשת מתמטית מדויקת! מרחקים שווים על המילימטר בין העיגולים */
+        .fab-wrapper:hover .item-1 { --target-x: 26px;  --target-y: -148px; } /* מעלה ימינה */
+        .fab-wrapper:hover .item-2 { --target-x: 106px; --target-y: -106px; } /* אמצע ימינה */
+        .fab-wrapper:hover .item-3 { --target-x: 148px; --target-y: -26px;  } /* מטה ימינה */
+
         .fab-button {
-            position: relative; z-index: 2; width: clamp(55px, 4.5vw, 70px); height: clamp(55px, 4.5vw, 70px);
+            position: relative; z-index: 2; width: 100%; height: 100%;
             border-radius: 50%; background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
             color: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            pointer-events: auto;
         }
         .fab-button:hover { transform: scale(1.05); background: var(--brand-green); }
 
@@ -313,14 +329,14 @@
         /* === רספונסיביות === */
         @media (max-width: 1100px) {
             body { height: auto; overflow-y: auto; display: block;} 
-            .main-content { display: block; }
+            .main-content { display: block; padding: 20px;}
             .header { height: auto; padding: 15px 0; display: block; }
             .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
             .personal-area-btn { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px;}
             .logo-wrapper { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
             .community-sidebar { padding: 20px 0; align-items: center; height: auto;}
             .right-menu-list { display: none; } 
-            .fab-wrapper { position: relative; right: auto; top: auto; transform: none; margin: 0; }
+            .fab-wrapper { position: relative; left: auto; top: auto; transform: none; margin: 0; }
             .updates-sidebar-wrapper { padding: 0 20px 20px 20px; height: auto;}
             .updates-sidebar { height: auto; min-height: 250px; }
             .grid-container { grid-template-columns: repeat(2, 1fr); max-width: 800px; margin-bottom: 20px;}
@@ -392,15 +408,15 @@
                 <div class="fab-menu">
                     <a href="#" class="fab-item-pill item-1">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        <span>זירת ה-V.I.P</span>
+                        <span>זירת<br>ה-V.I.P</span>
                     </a>
                     <a href="#" class="fab-item-pill item-2">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                        <span>היכל התהילה</span>
+                        <span>היכל<br>התהילה</span>
                     </a>
                     <a href="#" class="fab-item-pill item-3">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                        <span>חנות סוליבי+</span>
+                        <span>חנות<br>סוליבי+</span>
                     </a>
                 </div>
                 <div class="fab-button">
