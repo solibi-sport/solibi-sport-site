@@ -23,6 +23,7 @@
             --search-width: clamp(200px, 15vw, 300px);
 
             /* הנוסחה המתמטית לדף הבית שהועתקה לכאן כדי ליישר את הכפתור בול! */
+            --grid-gap: clamp(10px, 1.5vw, 20px);
             --visual-center-right: calc((100vw - min(850px, 110vh)) / 4);
         }
 
@@ -57,21 +58,21 @@
             z-index: 1000;
         }
 
-        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; }
+        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
         
-        /* === הלוגו - מסגרת נשארת, התמונה מוגדלת מבפנים! תואם 100% לדף הבית === */
+        /* === הלוגו - הועתק מדף הבית === */
         .logo-wrapper {
             position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
             background-color: #ffffff; padding: 0 10px; border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
             height: 46px; display: flex; align-items: center; justify-content: center;
-            overflow: hidden; /* שומר שההגדלה לא תפרוץ את המסגרת! */
+            overflow: hidden; 
             width: 130px;
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
         .actual-logo-img { height: 35px; transform: scale(1.8); display: block; object-fit: contain; }
 
-        /* === האזור האישי - מקובע בדיוק לאותו פיקסל כמו בדף הבית! === */
+        /* === האזור האישי - הועתק מדף הבית === */
         .personal-area-btn {
             position: absolute; 
             right: var(--visual-center-right); 
@@ -84,7 +85,7 @@
         }
         .personal-area-btn:hover { background: var(--brand-green); transform: translate(50%, -50%) scale(1.05); }
 
-        .header-center-col { display: flex; justify-content: center; align-items: center; }
+        .header-center-col { display: flex; justify-content: center; align-items: center; height: 100%; }
         .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); margin: 0; padding: 0;}
         .header-nav a {
             text-decoration: none; color: var(--white); font-weight: 700;
@@ -92,7 +93,7 @@
         }
         .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
 
-        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; }
+        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; height: 100%; }
         
         .header-search { position: relative; width: var(--search-width); height: 34px; }
         .header-search input {
@@ -144,7 +145,8 @@
             flex: 1; 
             min-height: 0; 
             width: 100%; display: grid;
-            grid-template-columns: 36fr 45fr 19fr; gap: clamp(10px, 1.5vw, 20px);
+            /* שיניתי קלות את הפרופורציות - עמודה ימנית (טבלה) קצת ירדה, שמאלית (סטטיסטיקה) גדלה קצת */
+            grid-template-columns: 36fr 43fr 21fr; gap: clamp(10px, 1.5vw, 20px);
         }
 
         .widget {
