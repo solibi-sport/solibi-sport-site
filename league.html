@@ -21,9 +21,9 @@
             
             --sidebar-width: clamp(280px, 22vw, 380px); 
             --search-width: clamp(200px, 15vw, 300px);
+            --grid-gap: clamp(10px, 1.5vw, 20px);
 
             /* הנוסחה המתמטית לדף הבית שהועתקה לכאן כדי ליישר את הכפתור בול! */
-            --grid-gap: clamp(10px, 1.5vw, 20px);
             --visual-center-right: calc((100vw - min(850px, 110vh)) / 4);
         }
 
@@ -60,7 +60,7 @@
 
         .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
         
-        /* === הלוגו - הועתק מדף הבית === */
+        /* === הלוגו - הועתק במדויק מדף הבית כמו שביקשת! === */
         .logo-wrapper {
             position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
             background-color: #ffffff; padding: 0 10px; border-radius: 12px;
@@ -72,7 +72,7 @@
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
         .actual-logo-img { height: 35px; transform: scale(1.8); display: block; object-fit: contain; }
 
-        /* === האזור האישי - הועתק מדף הבית === */
+        /* === האזור האישי - מקובע בדיוק לאותו פיקסל כמו בדף הבית === */
         .personal-area-btn {
             position: absolute; 
             right: var(--visual-center-right); 
@@ -145,8 +145,8 @@
             flex: 1; 
             min-height: 0; 
             width: 100%; display: grid;
-            /* שיניתי קלות את הפרופורציות - עמודה ימנית (טבלה) קצת ירדה, שמאלית (סטטיסטיקה) גדלה קצת */
-            grid-template-columns: 36fr 43fr 21fr; gap: clamp(10px, 1.5vw, 20px);
+            /* שיניתי קלות את הפרופורציות - עמודה ימנית (טבלה) קצת ירדה, שמאלית (סטטיסטיקה) גדלה קצת (24fr) */
+            grid-template-columns: 34fr 42fr 24fr; gap: clamp(10px, 1.5vw, 20px);
         }
 
         .widget {
