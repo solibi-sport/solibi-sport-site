@@ -613,7 +613,7 @@
                     }
 
                     html += `
-                    <div class="match-row">
+                    <div class="match-row" onclick="openMatchEvents(${m.fixture.id}, '${m.teams.home.name}', '${m.teams.away.name}')" style="cursor: pointer;">
                         <div class="match-team team-home">
                             <div class="team-identity">
                                 <img src="${m.teams.home.logo}" class="fixture-logo">
@@ -647,5 +647,19 @@
         loadPlayerStats('topscorers');
         getFixtures();
     </script>
+    <script src="translations.js"></script>
+<script src="matchEvents.js"></script> ```
+
+---
+
+### צעד 3: חיבור הלחיצה לתוצאה!
+זה החלק שבו אנחנו אומרים: "כשלוחצים על הדיב של המשחק, תפתח את החלון". 
+בקובץ `league.html` שלך, באזור שמייצר את המשחקים מה-API, אתה צריך להוסיף את פקודת ה-`onclick` לדיב שעוטף את המשחק (או את התוצאה).
+
+**זה צריך להיראות ככה:**
+```html
+<div class="מחלקה-של-המשחק-שלך" onclick="openMatchEvents(${fixture.fixture.id}, '${fixture.teams.home.name}', '${fixture.teams.away.name}')" style="cursor: pointer;">
+   ... כאן שאר הפרטים של המשחק (קבוצה בית, תוצאה, קבוצת חוץ) ...
+</div>
 </body>
 </html>
