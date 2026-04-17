@@ -58,18 +58,17 @@
         .logo-wrapper {
             position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
             background-color: #ffffff; 
-            padding: 0 18px; /* הרווח הטבעי מימין ומשמאל שיוצר את המראה הבינוני המדויק */
+            padding: 0 18px; 
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25); 
             z-index: 1100; transition: 0.3s;
-            height: 48px; /* גובה שנותן ללוגו קצת אוויר לנשום */
+            height: 48px; 
             display: flex; align-items: center; justify-content: center;
-            /* שים לב: מחקנו מכאן את ה-width ואת ה-overflow כדי למנוע עיוותים! */
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
         .actual-logo-img { 
             height: 32px; 
-            transform: scale(1.6); /* זום מדויק שלא בורח מהקופסה */
+            transform: scale(1.6); 
             display: block; 
             object-fit: contain; 
         }
@@ -87,15 +86,15 @@
         }
         .personal-area-btn:hover { background: var(--brand-green); transform: translate(50%, -50%) scale(1.05); }
 
-        .header-center-col { display: flex; justify-content: center; align-items: center; }
-        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); }
+        .header-center-col { display: flex; justify-content: center; align-items: center; height: 100%; }
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); margin: 0; padding: 0;}
         .header-nav a {
             text-decoration: none; color: var(--text-light); font-weight: 700;
             font-size: clamp(12px, 1vw, 15px); padding: 8px 12px; transition: 0.3s;
         }
         .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
 
-        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; }
+        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; height: 100%; }
         .header-search { position: relative; width: var(--search-width); height: 34px; }
         .header-search input {
             position: absolute; left: 0; top: 0; 
@@ -353,93 +352,92 @@
             
             <div class="leagues-grid">
                 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/il.png');">
+                <a href="league.html?id=390&name=ליגת העל" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/il.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/il.png" alt="Israel"></div>
                     <span class="league-name">ליגת העל</span>
                 </a>
                 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/il.png');">
+                <a href="league.html?id=391&name=ליגה לאומית" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/il.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/il.png" alt="Israel"></div>
                     <span class="league-name">ליגה לאומית</span>
                 </a>
 
-                <a href="league.html" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/gb-eng.png');">
+                <a href="league.html?id=39&name=ליגה אנגלית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/gb-eng.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/gb-eng.png" alt="England"></div>
                     <span class="league-name">ליגה אנגלית<br>ראשונה</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/es.png');">
+                <a href="league.html?id=140&name=ליגה ספרדית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/es.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/es.png" alt="Spain"></div>
                     <span class="league-name">ליגה ספרדית<br>ראשונה</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/it.png');">
+                <a href="league.html?id=135&name=ליגה איטלקית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/it.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/it.png" alt="Italy"></div>
                     <span class="league-name">ליגה איטלקית<br>ראשונה</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/de.png');">
+                <a href="league.html?id=78&name=ליגה גרמנית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/de.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/de.png" alt="Germany"></div>
                     <span class="league-name">ליגה גרמנית<br>ראשונה</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/fr.png');">
+                <a href="league.html?id=61&name=ליגה צרפתית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/fr.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/fr.png" alt="France"></div>
                     <span class="league-name">ליגה צרפתית<br>ראשונה</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/nl.png');">
+                <a href="league.html?id=88&name=ליגה הולנדית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/nl.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/nl.png" alt="Netherlands"></div>
                     <span class="league-name">ליגה הולנדית<br>ראשונה</span>
                 </a>
 
-              <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/be.png');">
+              <a href="league.html?id=144&name=ליגה בלגית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/be.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/be.png" alt="Belgium"></div>
                     <span class="league-name">ליגה בלגית<br>ראשונה</span>
                 </a>
               
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/pt.png');">
+                <a href="league.html?id=94&name=ליגה פורטוגלית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/pt.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/pt.png" alt="Portugal"></div>
                     <span class="league-name">ליגה פורטוגלית<br>ראשונה</span>
                 </a>
                 
-               
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/tr.png');">
+                <a href="league.html?id=203&name=ליגה טורקית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/tr.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/tr.png" alt="Turkey"></div>
                     <span class="league-name">ליגה טורקית<br>ראשונה</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
+                <a href="league.html?id=2&name=ליגת האלופות" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png" alt="Europe"></div>
                     <span class="league-name">ליגת האלופות</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
+                <a href="league.html?id=3&name=הליגה האירופית" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png" alt="Europe"></div>
                     <span class="league-name">הליגה האירופית</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
+                <a href="league.html?id=848&name=ליגת הקונפרנס" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/eu.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png" alt="Europe"></div>
                     <span class="league-name">ליגת הקונפרנס</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/us.png');">
+                <a href="league.html?id=253&name=ליגת ה-MLS" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/us.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/us.png" alt="USA"></div>
                     <span class="league-name">ליגת ה-MLS</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/sa.png');">
+                <a href="league.html?id=307&name=ליגה סעודית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/sa.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/sa.png" alt="Saudi Arabia"></div>
                     <span class="league-name">ליגה סעודית<br>ראשונה</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/br.png');">
+                <a href="league.html?id=71&name=ליגה ברזילאית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/br.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/br.png" alt="Brazil"></div>
                     <span class="league-name">ליגה ברזילאית<br>ראשונה</span>
                 </a>
 
-                <a href="#" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/ar.png');">
+                <a href="league.html?id=128&name=ליגה ארגנטינאית ראשונה" class="league-cube" style="--bg-image: url('https://flagcdn.com/w640/ar.png');">
                     <div class="league-icon-modern"><img src="https://flagcdn.com/w80/ar.png" alt="Argentina"></div>
                     <span class="league-name">ליגה ארגנטינאית<br>ראשונה</span>
                 </a>
