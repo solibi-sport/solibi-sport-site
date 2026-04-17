@@ -45,7 +45,7 @@ modalStyle.innerHTML = `
 `;
 document.head.appendChild(modalStyle);
 
-// 2. מזריק את מסגרת ה-HTML ומוסיף את מנגנון הגרירה (Drag)
+// 2. מזריק את מסגרת ה-HTML ומוסיף את מנגנון הגרירה (Drag) עם גבולות מסך!
 document.addEventListener("DOMContentLoaded", () => {
     if (!document.getElementById('eventsModal')) {
         const modalHTML = `
@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>`;
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        // --- מנגנון הגרירה (Drag and Drop) ---
         const header = document.querySelector('.modal-header');
         const box = document.querySelector('.modal-box');
         
@@ -72,8 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
         function onDragStart(e) {
             if (e.target.closest('.close-modal')) return;
             isDragging = true;
-            
-            // התיקון! מבטלים את אנימציית ה-CSS כדי שהגרירה תוכל לעבוד
             box.style.animation = 'none'; 
             
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
@@ -87,8 +84,22 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-            window.dragOffsetX = clientX - startX;
-            window.dragOffsetY = clientY - startY;
+            
+            let targetX = clientX - startX;
+            let targetY = clientY - startY;
+
+            // --- חומת המגן: מונע מהחלון לברוח מחוץ למסך ---
+            // משאיר לפחות 80 פיקסלים בתוך המסך לכל כיוון
+            const limitX = window.innerWidth / 2 - 80;
+            const limitY = window.innerHeight / 2 - 50;
+
+            if (targetX > limitX) targetX = limitX;
+            if (targetX < -limitX) targetX = -limitX;
+            if (targetY > limitY) targetY = limitY;
+            if (targetY < -limitY) targetY = -limitY;
+
+            window.dragOffsetX = targetX;
+            window.dragOffsetY = targetY;
             box.style.transform = `translate(${window.dragOffsetX}px, ${window.dragOffsetY}px)`;
         }
 
@@ -122,7 +133,7 @@ async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
     window.dragOffsetX = 0;
     window.dragOffsetY = 0;
     box.style.animation = 'none';
-    box.offsetHeight; // פקודה קטנה שמכריחה את הדפדפן להתאפס
+    box.offsetHeight; // Reset animation
     box.style.animation = 'scaleUp 0.2s ease-out forwards';
     box.style.transform = '';
 
