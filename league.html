@@ -370,12 +370,12 @@
             }
         }
 
-        // === הפתרון: שינינו כאן את השם ל-translations בדיוק כמו בקובץ שלך! ===
         function translateName(englishName) {
             if (!englishName) return "";
             const cleanName = englishName.trim();
-            if (typeof translations !== 'undefined' && translations[cleanName]) {
-                return translations[cleanName];
+            // כאן התיקון: חזרנו לחפש את myDictionary!
+            if (typeof myDictionary !== 'undefined' && myDictionary[cleanName]) {
+                return myDictionary[cleanName];
             }
             return cleanName;
         }
