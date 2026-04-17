@@ -3,9 +3,9 @@ const modalStyle = document.createElement('style');
 modalStyle.innerHTML = `
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(6, 12, 20, 0.55); z-index: 9999; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; }
 
-.modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 580px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 85vh; will-change: transform; }
+.modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 580px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 85vh; will-change: transform; touch-action: none; position: relative; }
 
-.modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; border-bottom: 2px solid #7a9966; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; }
+.modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; border-bottom: 2px solid #7a9966; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; }
 .modal-header:active { cursor: grabbing; }
 .modal-header h2 { margin: 0; font-size: 16px; font-weight: bold; color: #ffffff; pointer-events: none; }
 .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
@@ -24,7 +24,7 @@ modalStyle.innerHTML = `
 .away-val { color: #4a90e2; }
 .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
 
-#modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; }
+#modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; }
 .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; }
 .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
 
@@ -45,7 +45,7 @@ modalStyle.innerHTML = `
 `;
 document.head.appendChild(modalStyle);
 
-// 2. מזריק את מסגרת ה-HTML ומוסיף את מנגנון הגרירה (Drag) עם גבולות מסך!
+// 2. מזריק את מסגרת ה-HTML ומוסיף את מנגנון הגרירה (Drag)
 document.addEventListener("DOMContentLoaded", () => {
     if (!document.getElementById('eventsModal')) {
         const modalHTML = `
@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>`;
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
+        // --- מנגנון הגרירה (Drag and Drop) המתוקן ---
         const header = document.querySelector('.modal-header');
         const box = document.querySelector('.modal-box');
         
@@ -89,14 +90,29 @@ document.addEventListener("DOMContentLoaded", () => {
             let targetY = clientY - startY;
 
             // --- חומת המגן: מונע מהחלון לברוח מחוץ למסך ---
-            // משאיר לפחות 80 פיקסלים בתוך המסך לכל כיוון
-            const limitX = window.innerWidth / 2 - 80;
-            const limitY = window.innerHeight / 2 - 50;
+            const boxRect = box.getBoundingClientRect();
+            const vW = window.innerWidth;
+            const vH = window.innerHeight;
+            const mH = boxRect.height;
+            const mW = boxRect.width;
 
+            // חישוב המיקום המקורי (במרכז)
+            const defaultTop = (vH - mH) / 2;
+            const defaultLeft = (vW - mW) / 2;
+
+            // גבולות גרירה (מבוסס על translate מהמרכז)
+            // למעלה: אסור לכותרת לצאת בכלל
+            const limitUpY = -defaultTop; 
+            // למטה: משאיר חצי מהגובה במסך
+            const limitDownY = vH - defaultTop - (mH / 2); 
+            // ימינה/שמאלה: משאיר חצי מהרוחב במסך
+            const limitX = (vW / 2); 
+
+            // החלת הגבולות
+            if (targetY < limitUpY) targetY = limitUpY;
+            if (targetY > limitDownY) targetY = limitDownY;
             if (targetX > limitX) targetX = limitX;
             if (targetX < -limitX) targetX = -limitX;
-            if (targetY > limitY) targetY = limitY;
-            if (targetY < -limitY) targetY = -limitY;
 
             window.dragOffsetX = targetX;
             window.dragOffsetY = targetY;
