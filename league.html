@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי - דאשבורד ליגה (Live Fixtures)</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
-    
+<script src="translations.js"></script>
+   
     <style>
         :root {
             --brand-green: #7ca856;
@@ -605,30 +606,37 @@ function renderFixturesByDate() {
             const status = m.fixture.status.short;
 
             let centerHtml = '';
+            // עיצוב חדש ומרכזי לשעות ותוצאות
             if (['NS', 'TBD'].includes(status)) {
                 const time = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
-                centerHtml = `<div class="match-score-box">${time}</div>`;
+                centerHtml = `<div style="font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.05); padding: 3px 10px; border-radius: 6px;">${time}</div>`;
             } else if (['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(status)) {
                 centerHtml = `
-                    <div class="live-minute">${m.fixture.status.elapsed}'</div>
-                    <div class="match-score-box live-match">${m.goals.home} - ${m.goals.away}</div>
+                    <div style="font-size: 11px; color: #ff4d4d; font-weight: bold; margin-bottom: 2px;">${m.fixture.status.elapsed}'</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #fff;">${m.goals.home} - ${m.goals.away}</div>
                 `;
             } else {
-                centerHtml = `<div class="match-score-box">${m.goals.home} - ${m.goals.away}</div>`;
+                centerHtml = `<div style="font-size: 16px; font-weight: bold; color: #a0aec0;">${m.goals.home} - ${m.goals.away}</div>`;
             }
 
-            // *** השורה הכי חשובה! השארנו את חיבור הגרירה והלחיצה שלך ***
+            // שורת המשחק החדשה - סימטרית ומושלמת!
             html += `
-            <div class="match-row" onclick="openMatchEvents(${m.fixture.id}, '${m.teams.home.name}', '${m.teams.away.name}')" style="cursor: pointer;">
-                <div class="team team-home">
-                    <span class="team-name-text">${homeTeam}</span>
-                    <img src="${m.teams.home.logo}" class="fixture-logo">
+            <div class="match-row" onclick="openMatchEvents(${m.fixture.id}, '${m.teams.home.name}', '${m.teams.away.name}')" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                
+                <div class="team team-home" style="flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; width: 40%;">
+                    <span class="team-name-text" style="text-align: right; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${homeTeam}</span>
+                    <img src="${m.teams.home.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
                 </div>
-                <div class="score-wrapper">${centerHtml}</div>
-                <div class="team team-away">
-                    <img src="${m.teams.away.logo}" class="fixture-logo">
-                    <span class="team-name-text">${awayTeam}</span>
+                
+                <div class="score-wrapper" style="width: 20%; min-width: 70px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0;">
+                    ${centerHtml}
                 </div>
+                
+                <div class="team team-away" style="flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 40%;">
+                    <img src="${m.teams.away.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
+                    <span class="team-name-text" style="text-align: left; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${awayTeam}</span>
+                </div>
+                
             </div>`;
         });
     }
@@ -640,7 +648,7 @@ function renderFixturesByDate() {
         loadPlayerStats('topscorers');
         getFixtures();
     </script>
-    <script src="translations.js"></script>
+    head>
 <script src="matchEvents.js"></script> 
 
 <div class="מחלקה-של-המשחק-שלך" onclick="openMatchEvents(${fixture.fixture.id}, '${fixture.teams.home.name}', '${fixture.teams.away.name}')" style="cursor: pointer;">
