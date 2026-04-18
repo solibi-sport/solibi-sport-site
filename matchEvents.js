@@ -1,4 +1,4 @@
-// 1. מזריק את העיצוב (CSS)
+// 1. מזריק את העיצוב (CSS) - נוסף עיצוב לשער פסול
 if (!document.getElementById('modal-style-events')) {
     const modalStyle = document.createElement('style');
     modalStyle.id = 'modal-style-events';
@@ -40,7 +40,6 @@ if (!document.getElementById('modal-style-events')) {
     .away-val { color: #4a90e2; }
     .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
     
-    /* פה נמצא ה-flex ששומר אותם אחד ליד השני */
     #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; align-items: stretch; }
     .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
     .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
@@ -53,6 +52,10 @@ if (!document.getElementById('modal-style-events')) {
     .event-icon { font-size: 14px; margin: 0 4px; }
     .event-text { color: #d1d5db; }
     .event-subtext { color: #888; font-size: 9px; display: block; margin-top: 1px; }
+
+    /* תוספת עבור שערים פסולים */
+    .event-text.var-cancelled { color: #ef4444; text-decoration: line-through; opacity: 0.8; }
+    .event-subtext.var-cancelled-sub { color: #ef4444; text-decoration: none; font-weight: bold; font-size: 10px; display: block; margin-top: 2px; }
     
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -186,7 +189,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             const existingScore = document.getElementById('modalScoreBanner');
             if (existingScore) existingScore.remove();
             content.innerHTML = '<p style="text-align:center; width:100%; margin-top:20px; font-size:13px; color:#888;">טוען נתונים...</p>';
-            // התיקון כאן: דואגים שזה תמיד יישאר flex כדי לשמור על הימין והשמאל
             content.style.display = 'flex'; 
         }
 
@@ -246,7 +248,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 <div class="score-team away">${tAway}</div>
             </div>`;
 
-            const events = eventsData.response || [];
+            let events = eventsData.response || [];
             const stats = statsData.response || [];
 
             let homeStatsArray = stats.length > 0 ? stats[0].statistics : [];
@@ -266,7 +268,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             let homeFouls = getStatValue(homeStatsArray, "Fouls");
             let awayFouls = getStatValue(awayStatsArray, "Fouls");
 
-            // הסטטיסטיקות מוזרקות תמיד (גם למשחק חי וגם להסתיים)
             const statsHTML = `
             <div id="modalStatsContainer" class="stats-container">
                 <div style="text-align: center; font-size: 11px; color: #8fa0b3; margin-bottom: 5px;">שליטה בכדור</div>
@@ -315,12 +316,27 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             if (events.length === 0) {
                 eventsHtml = '<p style="text-align:center; width:100%; font-size:12px;">אין אירועים להצגה.</p>';
             } else {
+                
+                // === המוח לטיפול ב-VAR ובאירועים ===
+                // קודם כל נמפה את כל אירועי ה-VAR שמבטלים גולים
+                const cancelledGoals = {};
+                events.forEach(e => {
+                    if (e.type === 'Var' && e.detail.toLowerCase().includes('goal cancelled')) {
+                        // שומרים את השחקן והדקה כדי לפסול את השער אחר כך
+                        const key = `${e.player.name}-${e.time.elapsed}`;
+                        cancelledGoals[key] = true;
+                    }
+                });
+
                 events.sort((a, b) => a.time.elapsed - b.time.elapsed);
 
                 let homeHtml = `<div class="team-col"><div class="team-title">${tHome}</div>`;
                 let awayHtml = `<div class="team-col"><div class="team-title">${tAway}</div>`;
 
                 events.forEach(event => {
+                    // מדלגים על האירוע של פסילת ה-VAR עצמו כי אנחנו נטמיע אותו בתוך השער המקורי
+                    if (event.type === 'Var' && event.detail.toLowerCase().includes('goal cancelled')) return;
+
                     let time = event.time.elapsed + (event.time.extra ? `+${event.time.extra}` : '');
                     let playerName = typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name;
                     let assistName = event.assist.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
@@ -328,35 +344,70 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     let icon = '';
                     let mainText = '';
                     let subText = '';
+                    let isCancelled = false;
 
+                    // טיפול בשערים (כולל פנדלים ושער עצמי)
                     if (event.type === 'Goal') {
-                        icon = '⚽';
-                        mainText = `שער! ${playerName}`;
-                        if (assistName) subText = `בישול: ${assistName}`;
-                    } else if (event.type === 'Card' && event.detail.includes('Yellow')) {
-                        icon = '🟨';
-                        mainText = playerName;
-                        subText = 'כרטיס צהוב';
-                    } else if (event.type === 'Card' && event.detail.includes('Red')) {
-                        icon = '🟥';
-                        mainText = playerName;
-                        subText = 'כרטיס אדום';
-                    } else if (event.type === 'subst') {
+                        // בודקים אם יש אירוע VAR שביטל את השער הזה
+                        const key = `${event.player.name}-${event.time.elapsed}`;
+                        if (cancelledGoals[key]) {
+                            isCancelled = true;
+                        }
+
+                        if (event.detail === 'Penalty') {
+                            icon = '⚽';
+                            mainText = `שער! ${playerName} (פ')`;
+                        } else if (event.detail === 'Own Goal') {
+                            icon = '⚽';
+                            mainText = `שער עצמי! ${playerName}`;
+                        } else if (event.detail === 'Missed Penalty') {
+                            icon = '❌';
+                            mainText = `החמצת פנדל! ${playerName}`;
+                        } else {
+                            icon = '⚽';
+                            mainText = `שער! ${playerName}`;
+                        }
+
+                        if (assistName && !isCancelled && event.detail !== 'Missed Penalty') {
+                            subText = `בישול: ${assistName}`;
+                        }
+                    } 
+                    // טיפול בכרטיסים (כולל אדום ישיר או צהוב שני)
+                    else if (event.type === 'Card') {
+                        if (event.detail.includes('Yellow')) {
+                            icon = '🟨';
+                            mainText = playerName;
+                            subText = 'כרטיס צהוב';
+                        } else if (event.detail.includes('Red')) {
+                            icon = '🟥';
+                            mainText = playerName;
+                            subText = 'כרטיס אדום';
+                        }
+                    } 
+                    // טיפול בחילופים
+                    else if (event.type === 'subst') {
                         icon = '🔄';
                         mainText = `${playerName} (נכנס)`;
                         subText = `${assistName} (יצא)`;
-                    } else {
+                    } 
+                    else {
                         return; 
                     }
 
                     const isHome = event.team.name === homeTeam;
+                    
+                    // עיצוב מיוחד אם השער נפסל ב-VAR
+                    const textClass = isCancelled ? 'event-text var-cancelled' : 'event-text';
+                    const cancelledMarkup = isCancelled ? `<span class="event-subtext var-cancelled-sub">❌ נפסל ע"י VAR</span>` : '';
+
                     const eventMarkup = `
                         <div class="event-item ${isHome ? 'event-home' : 'event-away'}">
                             <span class="event-time">${time}'</span>
                             <span class="event-icon">${icon}</span>
-                            <div class="event-text">
+                            <div class="${textClass}">
                                 <strong>${mainText}</strong>
                                 ${subText ? `<span class="event-subtext">${subText}</span>` : ''}
+                                ${cancelledMarkup}
                             </div>
                         </div>
                     `;
@@ -372,7 +423,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             content.innerHTML = eventsHtml;
 
-            // עוצר ריענון רק אם המשחק נגמר סופית
             if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
                 if (modalRefreshTimer) {
                     clearInterval(modalRefreshTimer);
