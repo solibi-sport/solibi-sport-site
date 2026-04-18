@@ -5,7 +5,6 @@ if (!document.getElementById('modal-style-events')) {
     modalStyle.innerHTML = `
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(6, 12, 20, 0.65); z-index: 9999; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; }
     
-    /* כיווצנו את החלון למראה קומפקטי ואפליקטיבי */
     .modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 500px; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 65vh; will-change: transform; touch-action: none; position: relative; }
     
     .modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; border-bottom: 1px solid #1f2d40; }
@@ -14,7 +13,6 @@ if (!document.getElementById('modal-style-events')) {
     .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
     .close-modal:hover { color: #ffffff; }
 
-    /* === עיצוב באנר התוצאה החדש === */
     .score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 20px 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; }
     .score-team { font-size: 15px; font-weight: 900; flex: 1; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; }
     .score-box { display: flex; align-items: center; gap: 12px; background: #060c14; padding: 8px 20px; border-radius: 12px; border: 1px solid rgba(122, 153, 102, 0.4); position: relative; box-shadow: inset 0 3px 10px rgba(0,0,0,0.6); margin: 0 10px; }
@@ -35,8 +33,10 @@ if (!document.getElementById('modal-style-events')) {
     .away-val { color: #4a90e2; }
     .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
     
-    #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; }
-    .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; }
+    #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; align-items: stretch; }
+    
+    /* התיקון לקופסה הנחתכת: הוספנו min-height: max-content */
+    .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content; }
     .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
     
     .event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
@@ -69,7 +69,7 @@ function closeEventsModal(event) {
     if (modal) modal.style.display = 'none';
 }
 
-// 3. הפונקציה המרכזית לשאיבת הנתונים
+// 3. הפונקציה המרכזית
 async function openMatchEvents(fixtureId, paramHome, paramAway) {
     let homeTeam = paramHome;
     let awayTeam = paramAway;
@@ -152,7 +152,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
     const box = document.querySelector('.modal-box');
     const content = document.getElementById('modalEventsContent');
     
-    // ניקוי נתונים קודמים
     window.dragOffsetX = 0;
     window.dragOffsetY = 0;
     box.style.animation = 'none';
@@ -178,7 +177,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             'x-apisports-key': 'd580159a7d19ead2bc2054c8b57e6ee3' 
         };
 
-        // משיכת 3 סוגי נתונים במקביל: אירועים, סטטיסטיקות, והתוצאה המעודכנת ביותר!
         const [eventsRes, statsRes, fixtureRes] = await Promise.all([
             fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, { headers }),
             fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers }),
@@ -189,18 +187,30 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         const statsData = await statsRes.json();
         const fixtureData = await fixtureRes.json();
 
-        // חילוץ התוצאה והדקה מתוך ה-API
+        // --- התיקון למשחקים שהסתיימו (השופט שלנו) ---
         let goalsHome = '-';
         let goalsAway = '-';
         let matchStatus = '';
+        
         if (fixtureData && fixtureData.response && fixtureData.response.length > 0) {
             const info = fixtureData.response[0];
             goalsHome = info.goals.home !== null ? info.goals.home : '-';
             goalsAway = info.goals.away !== null ? info.goals.away : '-';
-            matchStatus = info.fixture.status.elapsed ? `${info.fixture.status.elapsed}'` : 'מחצית';
+            
+            // בודקים את הסטטוס הקצר כדי לדעת אם נגמר, מחצית או משוחק
+            const shortStatus = info.fixture.status.short;
+            
+            if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
+                matchStatus = 'הסתיים';
+            } else if (shortStatus === 'HT') {
+                matchStatus = 'מחצית';
+            } else if (info.fixture.status.elapsed) {
+                matchStatus = `${info.fixture.status.elapsed}'`;
+            } else {
+                matchStatus = 'לא התחיל';
+            }
         }
 
-        // --- הזרקת באנר התוצאה המרשים ---
         const scoreHTML = `
         <div id="modalScoreBanner" class="score-banner">
             <div class="score-team home">${tHome}</div>
@@ -214,7 +224,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         </div>`;
         document.querySelector('.modal-header').insertAdjacentHTML('afterend', scoreHTML);
 
-        // חילוץ סטטיסטיקות
         const events = eventsData.response || [];
         const stats = statsData.response || [];
 
