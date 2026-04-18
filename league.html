@@ -405,6 +405,8 @@
         // --- מתרגם שמות בתים / פלייאוף ומתקן שמות באנגלית ---
         function translateGroupName(name) {
             if (!name) return "טבלה כללית";
+            if (name === "טבלה כללית") return name; // שומר על השם אם אנחנו יצרנו אותו
+            
             let lowerName = name.toLowerCase();
             
             if (lowerName.includes('western')) return "מערב";
@@ -414,7 +416,7 @@
             if (lowerName.includes('championship')) return "פלייאוף עליון";
             if (lowerName.includes('relegation')) return "פלייאוף תחתון";
             
-            // ליגת העל, בלגיה וכו' - מתרגם "פרמייר ליג" או "פרו ליג" לעונה סדירה
+            // ליגת העל, בלגיה וכו' - מתרגם לעונה סדירה
             if (lowerName.includes('regular') || lowerName.includes('premier league') || lowerName.includes('ligat ha\'al') || lowerName.includes('pro league')) return "עונה סדירה";
             if (lowerName.includes('group')) return name.replace(/Group/i, 'בית');
             
@@ -458,16 +460,53 @@
                     });
                 }
 
-                // סדר העדיפויות ברשימה הנפתחת
+                // === חוק מיוחד וספציפי רק לליגת העל (390) - בניית טבלה כללית שמתעדכנת בפלייאוף ===
+                if (parseInt(LEAGUE_ID) === 390 && standings.length > 1) {
+                    let teamMap = new Map();
+                    
+                    standings.forEach(group => {
+                        group.forEach(item => {
+                            if (!teamMap.has(item.team.id)) {
+                                teamMap.set(item.team.id, item);
+                            } else {
+                                // הקבוצה קיימת - לוקחים את הנתון עם הכי הרבה משחקים (הכי מעודכן)
+                                let existing = teamMap.get(item.team.id);
+                                if (item.all.played > existing.all.played) {
+                                    teamMap.set(item.team.id, item);
+                                }
+                            }
+                        });
+                    });
+                    
+                    let combined = Array.from(teamMap.values());
+                    combined.sort((a, b) => {
+                        if (b.points !== a.points) return b.points - a.points;
+                        if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
+                        return b.all.goals.for - a.all.goals.for;
+                    });
+                    
+                    let combinedWithRanks = combined.map((item, index) => {
+                        let newItem = JSON.parse(JSON.stringify(item));
+                        newItem.rank = index + 1;
+                        newItem.group = "טבלה כללית"; // כופה את השם
+                        return newItem;
+                    });
+                    
+                    // דוחף את הטבלה הכללית להיות הראשונה
+                    standings.unshift(combinedWithRanks);
+                }
+
+                // סדר העדיפויות ברשימה הנפתחת (טבלה כללית תמיד בראש)
                 const orderPriority = {
-                    "עונה סדירה": 1,
-                    "מזרח": 2,
-                    "מערב": 3,
-                    "בית א'": 4,
-                    "בית ב'": 5,
-                    "פלייאוף עליון": 6,
-                    "פלייאוף אמצעי": 7,
-                    "פלייאוף תחתון": 8
+                    "טבלה כללית": 1,
+                    "עונה סדירה": 2,
+                    "מזרח": 3,
+                    "מערב": 4,
+                    "בית א'": 5,
+                    "בית ב'": 6,
+                    "פלייאוף עליון": 7,
+                    "פלייאוף אמצעי": 8,
+                    "פלייאוף תחתון": 9
                 };
 
                 standings.sort((a, b) => {
@@ -909,7 +948,7 @@
             }
         }
 
-        // --- ויקיפדיה: ליגה לאומית (384) ---
+        // --- ויקיפדיה ללאומית (384) ---
         async function getStandingsFromWikipedia() {
             const container = document.getElementById('api-table');
             container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
