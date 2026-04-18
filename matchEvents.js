@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>`;
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        // --- מנגנון הגרירה (Drag and Drop) המתוקן ---
+        // --- מנגנון הגרירה (Drag and Drop) ---
         const header = document.querySelector('.modal-header');
         const box = document.querySelector('.modal-box');
         
@@ -89,26 +89,18 @@ document.addEventListener("DOMContentLoaded", () => {
             let targetX = clientX - startX;
             let targetY = clientY - startY;
 
-            // --- חומת המגן: מונע מהחלון לברוח מחוץ למסך ---
+            // --- חומת המגן ---
             const boxRect = box.getBoundingClientRect();
             const vW = window.innerWidth;
             const vH = window.innerHeight;
             const mH = boxRect.height;
             const mW = boxRect.width;
 
-            // חישוב המיקום המקורי (במרכז)
             const defaultTop = (vH - mH) / 2;
-            const defaultLeft = (vW - mW) / 2;
-
-            // גבולות גרירה (מבוסס על translate מהמרכז)
-            // למעלה: אסור לכותרת לצאת בכלל
             const limitUpY = -defaultTop; 
-            // למטה: משאיר חצי מהגובה במסך
             const limitDownY = vH - defaultTop - (mH / 2); 
-            // ימינה/שמאלה: משאיר חצי מהרוחב במסך
             const limitX = (vW / 2); 
 
-            // החלת הגבולות
             if (targetY < limitUpY) targetY = limitUpY;
             if (targetY > limitDownY) targetY = limitDownY;
             if (targetX > limitX) targetX = limitX;
@@ -138,13 +130,14 @@ function getStatValue(statsArray, typeName) {
     return (stat && stat.value !== null) ? stat.value : '0';
 }
 
-// 3. הפונקציה המרכזית לשאיבת הנתונים
+// 3. הפונקציה המרכזית לשאיבת הנתונים (עם הגנת פיענוח)
 async function openMatchEvents(fixtureId, paramHome, paramAway) {
-    // מפענחים בחזרה את השמות כדי למנוע שבירה של גרשיים בדף הבית
+    // השורות האלו מוודאות שגם אם השם מגיע מדף הליגות וגם מדף הבית - הוא יעבוד מושלם!
     let homeTeam = paramHome;
     let awayTeam = paramAway;
     try { homeTeam = decodeURIComponent(paramHome); } catch(e) {}
     try { awayTeam = decodeURIComponent(paramAway); } catch(e) {}
+
     const modal = document.getElementById('eventsModal');
     const box = document.querySelector('.modal-box');
     const content = document.getElementById('modalEventsContent');
@@ -162,14 +155,19 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
     if (existingStats) existingStats.remove();
 
     modal.style.display = 'flex';
-    title.innerText = `${translateName(homeTeam)} - ${translateName(awayTeam)}`;
+    
+    // בטיחות למקרה שהפונקציה translateName לא נטענה
+    const tHome = typeof window.translateName === 'function' ? window.translateName(homeTeam) : homeTeam;
+    const tAway = typeof window.translateName === 'function' ? window.translateName(awayTeam) : awayTeam;
+    
+    title.innerText = `${tHome} - ${tAway}`;
     content.innerHTML = '<p style="text-align:center; width:100%; margin-top:20px; font-size:13px; color:#888;">טוען נתונים...</p>';
     content.style.display = 'block';
 
     try {
         const headers = {
             'x-rapidapi-host': 'v3.football.api-sports.io',
-            'x-rapidapi-key': 'd580159a7d19ead2bc2054c8b57e6ee3' // <=== חובה להכניס את המפתח שלך!
+            'x-rapidapi-key': 'd580159a7d19ead2bc2054c8b57e6ee3' // המפתח שלך
         };
 
         const [eventsRes, statsRes] = await Promise.all([
@@ -204,8 +202,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         <div id="modalStatsContainer" class="stats-container">
             <div style="text-align: center; font-size: 11px; color: #8fa0b3; margin-bottom: 5px;">שליטה בכדור</div>
             <div class="possession-labels">
-                <span>${translateName(homeTeam)} (${homePoss})</span>
-                <span>${translateName(awayTeam)} (${awayPoss})</span>
+                <span>${tHome} (${homePoss})</span>
+                <span>${tAway} (${awayPoss})</span>
             </div>
             <div class="possession-bar">
                 <div class="possession-home" style="width: ${homePoss}"></div>
@@ -248,13 +246,13 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
         events.sort((a, b) => a.time.elapsed - b.time.elapsed);
 
-        let homeHtml = `<div class="team-col"><div class="team-title">${translateName(homeTeam)}</div>`;
-        let awayHtml = `<div class="team-col"><div class="team-title">${translateName(awayTeam)}</div>`;
+        let homeHtml = `<div class="team-col"><div class="team-title">${tHome}</div>`;
+        let awayHtml = `<div class="team-col"><div class="team-title">${tAway}</div>`;
 
         events.forEach(event => {
             let time = event.time.elapsed + (event.time.extra ? `+${event.time.extra}` : '');
-            let playerName = translateName(event.player.name);
-            let assistName = event.assist.name ? translateName(event.assist.name) : null;
+            let playerName = typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name;
+            let assistName = event.assist.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
             
             let icon = '';
             let mainText = '';
@@ -310,5 +308,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 // 4. סגירת החלון
 function closeEventsModal(event) {
     if(event) event.stopPropagation();
-    document.getElementById('eventsModal').style.display = 'none';
+    const modal = document.getElementById('eventsModal');
+    if (modal) modal.style.display = 'none';
 }
