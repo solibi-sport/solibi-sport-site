@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי - דאשבורד ליגה (Live Fixtures)</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="translations.js"></script>
-   
+    <script src="translations.js"></script>
+    
     <style>
         :root {
             --brand-green: #7ca856;
@@ -388,299 +388,97 @@
             }
         }
 
-        function printMissing() {
-            let missing = JSON.parse(localStorage.getItem('missingTranslations') || '[]');
-            if (missing.length === 0) {
-                console.log("איזה יופי! אין מילים חסרות במילון.");
+        let allStandingsData = []; 
+        let allMatches = [];
+        let allDates = [];
+        let currentDateIndex = 0;
+        window.leagueGoalTracker = window.leagueGoalTracker || {};
+
+        // --- משיכת נתוני טבלה ---
+        async function getStandings() {
+            const container = document.getElementById('api-table');
+
+            if (parseInt(LEAGUE_ID) === 384) {
+                getStandingsFromWikipedia();
                 return;
             }
-            let output = "=== רשימת המילים שחסרות במילון ===\n\n";
-            missing.forEach(name => { output += `    "${name}": "",\n`; });
-            console.log(output);
-            console.log("העתק את השורות האלו, שים אותן בסוף קובץ המילון (לפני הסוגר האחרון), ותמלא את התרגומים!");
-        }
 
-        function clearMissing() {
-            localStorage.removeItem('missingTranslations');
-            console.log("הפנקס נוקה! אפשר להתחיל לסרוק מחדש.");
-        }
-
-        let allStandingsData = []; 
-
-      // --- 1. הפונקציה הראשית (מתקנת את כל הליגות) ---
-async function getStandings() {
-    const container = document.getElementById('api-table');
-
-    // אם זו הליגה הלאומית, הולכים לויקיפדיה
-    if (parseInt(LEAGUE_ID) === 384) {
-        getStandingsFromWikipedia();
-        return;
-    }
-
-    // הקוד הרגיל לשאר הליגות מ-API
-    try {
-        const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
-            headers: { 'x-apisports-key': API_KEY }
-        });
-        const data = await response.json();
-
-        if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה זמינים</div>';
-            return;
-        }
-
-        allStandingsData = data.response[0].league.standings;
-        buildStandingsUI();
-
-    } catch (error) {
-        console.error("שגיאה במשיכת נתוני טבלה:", error);
-        container.innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
-    }
-}
-
-async function getStandingsFromWikipedia() {
-    const container = document.getElementById('api-table');
-    container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
-
-    // הפעם: הסמלים המדויקים מויקיפדיה שמומרים אוטומטית ל-PNG כדי שלא ייחסמו
-    const leumitLogos = {
-        "פתחתקו": "https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/Maccabi_Petah_Tikva_FC.svg/64px-Maccabi_Petah_Tikva_FC.svg.png",
-        "הרצליה": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e0/Maccabi_Herzliya.svg/64px-Maccabi_Herzliya.svg.png",
-        "רמתגן": "https://upload.wikimedia.org/wikipedia/he/thumb/3/30/Hapoel_Ramat_Gan_logo.svg/64px-Hapoel_Ramat_Gan_logo.svg.png",
-        "ראשוןלציון": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Rishon_LeZion_logo.svg/64px-Hapoel_Rishon_LeZion_logo.svg.png",
-        "ראשלצ": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Rishon_LeZion_logo.svg/64px-Hapoel_Rishon_LeZion_logo.svg.png",
-        "כפרשלם": "https://upload.wikimedia.org/wikipedia/he/thumb/d/dd/Hapoel_Kfar_Shalem_logo.svg/64px-Hapoel_Kfar_Shalem_logo.svg.png",
-        "בנייהודה": "https://upload.wikimedia.org/wikipedia/he/thumb/c/c5/Bnei_Yehuda_logo.svg/64px-Bnei_Yehuda_logo.svg.png",
-        "קריתים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
-        "קרייתים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
-        "כפרסבא": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e7/Hapoel_Kfar_Saba_logo.svg/64px-Hapoel_Kfar_Saba_logo.svg.png",
-        "רעננה": "https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_Ra%27anana_FC_logo.png",
-        "יפו": "https://upload.wikimedia.org/wikipedia/he/thumb/c/c8/Maccabi_Jaffa_FC_logo.svg/64px-Maccabi_Jaffa_FC_logo.svg.png",
-        "עפולה": "https://upload.wikimedia.org/wikipedia/he/thumb/9/9c/Hapoel_Afula_logo.svg/64px-Hapoel_Afula_logo.svg.png",
-        "כפרקאסם": "https://upload.wikimedia.org/wikipedia/he/thumb/6/64/FC_Kafr_Qasim_logo.svg/64px-FC_Kafr_Qasim_logo.svg.png",
-        "כפרקסם": "https://upload.wikimedia.org/wikipedia/he/thumb/6/64/FC_Kafr_Qasim_logo.svg/64px-FC_Kafr_Qasim_logo.svg.png",
-        "נופהגליל": "https://upload.wikimedia.org/wikipedia/he/thumb/a/af/Hapoel_Nof_HaGalil_logo.svg/64px-Hapoel_Nof_HaGalil_logo.svg.png",
-        "מודיעין": "https://upload.wikimedia.org/wikipedia/he/0/07/Ironi_Modiin_logo.png",
-        "עכו": "https://upload.wikimedia.org/wikipedia/he/thumb/1/11/Hapoel_Acre_logo.svg/64px-Hapoel_Acre_logo.svg.png",
-        "חדרה": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Hadera_logo.svg/64px-Hapoel_Hadera_logo.svg.png",
-        "טבריה": "https://upload.wikimedia.org/wikipedia/he/thumb/f/fd/Ironi_Tiberias_logo.svg/64px-Ironi_Tiberias_logo.svg.png"
-    };
-
-    try {
-        const nextYear = parseInt(SEASON) + 1;
-        let pageTitle = encodeURIComponent(`עונת_${SEASON}/${nextYear}_בליגה_הלאומית`);
-        let wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
-
-        let res = await fetch(wikiUrl);
-        let data = await res.json();
-
-        if (data.error) {
-            pageTitle = encodeURIComponent("ליגה_לאומית_(כדורגל)");
-            wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
-            res = await fetch(wikiUrl);
-            data = await res.json();
-        }
-
-        if (data.error) throw new Error("לא נמצא דף בויקיפדיה");
-
-        const htmlContent = data.parse.text["*"];
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlContent, 'text/html');
-
-        const tables = doc.querySelectorAll('table.wikitable');
-        window.wikiTablesData = []; 
-        
-        tables.forEach(t => {
-            if (t.innerText.includes("קבוצה") && t.innerText.includes("נקודות") && (t.innerText.includes("ניצחונות") || t.innerText.includes("שערי זכות"))) {
-                window.wikiTablesData.push(t);
-            }
-        });
-
-        if (window.wikiTablesData.length === 0) throw new Error("לא נמצאה טבלה");
-
-        let uiHtml = `
-            <div style="margin-bottom: 15px; text-align: center;">
-                <select id="wiki-group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
-        `;
-        
-        const tableNames = ["עונה סדירה", "פלייאוף עליון", "פלייאוף תחתון"];
-        window.wikiTablesData.forEach((t, index) => {
-            let name = tableNames[index] || `טבלה ${index + 1}`;
-            uiHtml += `<option value="${index}">${name}</option>`;
-        });
-        uiHtml += `</select></div><div id="wiki-render-area"></div>`;
-        container.innerHTML = uiHtml;
-
-        const cleanWikiText = (text) => text.replace(/\n/g, '').replace(/\[\d+\]/g, '').trim();
-
-        window.renderWikiTable = function(index) {
-            const standingsTable = window.wikiTablesData[index];
-            const renderArea = document.getElementById('wiki-render-area');
-            
-            const headerRow = standingsTable.querySelectorAll('tr')[0].querySelectorAll('th, td');
-            let colMap = {};
-            headerRow.forEach((h, idx) => {
-                const text = h.innerText.trim();
-                if (text.includes('מיקום')) colMap.rank = idx;
-                if (text.includes('קבוצה')) colMap.team = idx;
-                if (text.includes('משחקים') || text === 'מש') colMap.played = idx;
-                if (text.includes('ניצחונות') || text === 'נצ') colMap.win = idx;
-                if (text.includes('תיקו')) colMap.draw = idx;
-                if (text.includes('הפסדים') || text === 'הפ') colMap.lose = idx;
-                if (text.includes('זכות') || text === 'שז') colMap.goalsFor = idx;
-                if (text.includes('חובה') || text === 'שח') colMap.goalsAgainst = idx;
-                if (text.includes('הפרש')) colMap.diff = idx;
-                if (text.includes('נקודות') || text === 'נק') colMap.points = idx;
-            });
-
-            const rows = standingsTable.querySelectorAll('tr');
-            let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
-
-            rows.forEach((row, rowIdx) => {
-                if (rowIdx === 0) return;
-                const cols = row.querySelectorAll('td, th');
-                if (cols.length >= 8) {
-                    
-                    const rank = cols[colMap.rank || 0] ? cleanWikiText(cols[colMap.rank || 0].innerText) : '-';
-                    const points = cols[colMap.points || 9] ? cleanWikiText(cols[colMap.points || 9].innerText) : '-';
-                    
-                    const teamCell = cols[colMap.team || 1];
-                    let teamName = '-';
-                    let teamLogo = 'https://media.api-sports.io/football/leagues/384.png'; 
-                    
-                    if (teamCell) {
-                        teamName = cleanWikiText(teamCell.innerText);
-                        
-                        let pureHebrew = teamName.replace(/[^א-ת]/g, '');
-                        
-                        for (const [key, url] of Object.entries(leumitLogos)) {
-                            if (pureHebrew.includes(key)) {
-                                teamLogo = url;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if(points !== '-' && teamName !== '-' && teamName !== '') {
-                        html += `<tr>
-                            <td>-</td>
-                            <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
-                            <td>
-                                <div class="team-identity" style="display: flex; align-items: center; gap: 8px;">
-                                    <img src="${teamLogo}" alt="logo" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='https://media.api-sports.io/football/leagues/384.png'">
-                                    <span class="team-name-text">${teamName}</span>
-                                </div>
-                            </td>
-                            <td>${cols[colMap.played || 2] ? cleanWikiText(cols[colMap.played || 2].innerText) : '-'}</td>
-                            <td>${cols[colMap.win || 3] ? cleanWikiText(cols[colMap.win || 3].innerText) : '-'}</td>
-                            <td>${cols[colMap.draw || 4] ? cleanWikiText(cols[colMap.draw || 4].innerText) : '-'}</td>
-                            <td>${cols[colMap.lose || 5] ? cleanWikiText(cols[colMap.lose || 5].innerText) : '-'}</td>
-                            <td>${cols[colMap.goalsFor || 6] ? cleanWikiText(cols[colMap.goalsFor || 6].innerText) : '-'}</td>
-                            <td>${cols[colMap.goalsAgainst || 7] ? cleanWikiText(cols[colMap.goalsAgainst || 7].innerText) : '-'}</td>
-                            <td dir="ltr" style="text-align:center;">${cols[colMap.diff || 8] ? cleanWikiText(cols[colMap.diff || 8].innerText) : '-'}</td>
-                            <td><strong style="color: var(--brand-green);">${points}</strong></td>
-                        </tr>`;
-                    }
-                }
-            });
-
-            html += `</table><div style="font-size:10px; text-align:center; margin-top:10px; color:#8fa0b3;">מקור נתונים: ויקיפדיה עברית</div>`;
-            renderArea.innerHTML = html;
-        };
-
-        document.getElementById('wiki-group-selector').addEventListener('change', function(e) {
-            window.renderWikiTable(e.target.value);
-        });
-
-        window.renderWikiTable(0); 
-
-    } catch (error) {
-        console.error("Wikipedia Scrape Error:", error);
-        container.innerHTML = '<div style="text-align:center; padding: 30px;">נתוני הליגה הלאומית אינם זמינים כרגע</div>';
-    }
-}
-        function buildStandingsUI() {
-    const container = document.getElementById('api-table');
-    if (!window.allStandingsData || window.allStandingsData.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה</div>';
-        return;
-    }
-
-    const translateGroupName = (name) => {
-        if (!name) return "טבלה כללית";
-        let lowerName = name.toLowerCase();
-        if (lowerName.includes('conference') || lowerName.includes('qualifying') || lowerName.includes('europe')) return "פלייאוף אמצעי";
-        if (lowerName.includes('championship')) return "פלייאוף עליון";
-        if (lowerName.includes('relegation')) return "פלייאוף תחתון";
-        if (lowerName.includes('regular')) return "עונה סדירה";
-        if (lowerName.includes('group')) return name.replace(/Group/i, 'בית');
-        if (lowerName.includes('western')) return "מערב";
-        if (lowerName.includes('eastern')) return "מזרח";
-        return "טבלה כללית";
-    };
-
-    // שולף בצורה בטוחה את הליגה כדי לדעת אם להעלים את התפריט
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentLeagueId = parseInt(urlParams.get('id') || urlParams.get('league') || 0);
-    const regularLeagues = [39, 140, 135, 78, 61, 2, 3, 848]; 
-
-    // אם זה ליגה רגילה או שיש רק טבלה אחת - מצייר רק טבלה (בלי תפריט)
-    if (window.allStandingsData.length === 1 || regularLeagues.includes(currentLeagueId)) {
-        container.innerHTML = '<div id="standings-render-area"></div>';
-        if(typeof renderStandingsTable === 'function') renderStandingsTable(0); 
-        return;
-    }
-
-    // אם זה MLS/ארגנטינה/פלייאוף - מצייר תפריט בחירה
-    let uiHtml = `
-        <div style="margin-bottom: 15px; text-align: center;">
-            <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
-    `;
-
-    window.allStandingsData.forEach((group, index) => {
-        let groupName = group[0].group;
-        let translatedName = translateGroupName(groupName);
-        uiHtml += `<option value="${index}">${translatedName}</option>`;
-    });
-
-    uiHtml += `</select></div><div id="standings-render-area"></div>`;
-    container.innerHTML = uiHtml;
-
-    document.getElementById('group-selector').addEventListener('change', function(e) {
-        if(typeof renderStandingsTable === 'function') renderStandingsTable(parseInt(e.target.value));
-    });
-
-    if(typeof renderStandingsTable === 'function') renderStandingsTable(0);
-}
-        function renderCombinedTable() {
-            let combined = [];
-            let seenIds = new Set(); 
-            
-            allStandingsData.forEach(group => { 
-                group.forEach(item => {
-                    if (!seenIds.has(item.team.id)) {
-                        seenIds.add(item.team.id);
-                        combined.push(item);
-                    }
+            try {
+                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
+                    headers: { 'x-apisports-key': API_KEY }
                 });
-            });
-            
-            combined.sort((a, b) => {
-                if (b.points !== a.points) return b.points - a.points;
-                if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
-                return b.all.goals.for - a.all.goals.for;
-            });
-            
-            let combinedWithRanks = combined.map((item, index) => {
-                let newItem = JSON.parse(JSON.stringify(item)); 
-                newItem.rank = index + 1;
-                return newItem;
-            });
+                const data = await response.json();
 
-            document.getElementById('table-render-area').innerHTML = generateTableHtml(combinedWithRanks);
+                if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
+                    container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה זמינים</div>';
+                    return;
+                }
+
+                allStandingsData = data.response[0].league.standings;
+                buildStandingsUI();
+
+            } catch (error) {
+                console.error("שגיאה במשיכת נתוני טבלה:", error);
+                container.innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
+            }
         }
 
-        function generateTableHtml(standingsArray) {
+        // --- בניית ממשק הטבלה והתפריט הנפתח ---
+        function buildStandingsUI() {
+            const container = document.getElementById('api-table');
+            if (!allStandingsData || allStandingsData.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה</div>';
+                return;
+            }
+
+            const translateGroupName = (name) => {
+                if (!name) return "טבלה כללית";
+                let lowerName = name.toLowerCase();
+                if (lowerName.includes('conference') || lowerName.includes('qualifying') || lowerName.includes('europe')) return "פלייאוף אמצעי";
+                if (lowerName.includes('championship')) return "פלייאוף עליון";
+                if (lowerName.includes('relegation')) return "פלייאוף תחתון";
+                if (lowerName.includes('regular')) return "עונה סדירה";
+                if (lowerName.includes('group')) return name.replace(/Group/i, 'בית');
+                if (lowerName.includes('western')) return "מערב";
+                if (lowerName.includes('eastern')) return "מזרח";
+                return "טבלה כללית";
+            };
+
+            const currentLeagueId = parseInt(LEAGUE_ID);
+            const regularLeagues = [39, 140, 135, 78, 61, 2, 3, 848]; 
+
+            if (allStandingsData.length === 1 || regularLeagues.includes(currentLeagueId)) {
+                container.innerHTML = '<div id="standings-render-area"></div>';
+                renderStandingsTable(0); 
+                return;
+            }
+
+            let uiHtml = `
+                <div style="margin-bottom: 15px; text-align: center;">
+                    <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
+            `;
+
+            allStandingsData.forEach((group, index) => {
+                let groupName = group[0].group;
+                let translatedName = translateGroupName(groupName);
+                uiHtml += `<option value="${index}">${translatedName}</option>`;
+            });
+
+            uiHtml += `</select></div><div id="standings-render-area"></div>`;
+            container.innerHTML = uiHtml;
+
+            document.getElementById('group-selector').addEventListener('change', function(e) {
+                renderStandingsTable(parseInt(e.target.value));
+            });
+
+            renderStandingsTable(0);
+        }
+
+        // --- ציור טבלת הליגה עצמה ---
+        function renderStandingsTable(groupIndex) {
+            const standingsArray = allStandingsData[groupIndex];
+            if (!standingsArray) return;
+
             let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
 
             standingsArray.forEach(item => {
@@ -705,85 +503,194 @@ async function getStandingsFromWikipedia() {
                     <td>${item.all.lose}</td>
                     <td>${item.all.goals.for}</td>
                     <td>${item.all.goals.against}</td>
-                    <td>${item.goalsDiff}</td>
-                    <td>${item.points}</td>
+                    <td dir="ltr" style="text-align:center;">${item.goalsDiff}</td>
+                    <td><strong class="points">${item.points}</strong></td>
                 </tr>`;
             });
             html += `</table>`;
-            return html;
+            
+            document.getElementById('standings-render-area').innerHTML = html;
         }
 
-        async function fetchAndRenderKnockouts() {
-            const container = document.getElementById('table-render-area');
-            container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold; color:#112845;">טוען שלבי נוקאאוט... 🏆</div>';
-
+        // --- משיכת משחקים ---
+        async function getFixtures() {
             try {
+                if (parseInt(LEAGUE_ID) === 384) {
+                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#8fa0b3;">אין נתונים זמינים</div>';
+                    document.getElementById('matchday-title').innerText = "אין נתונים"; 
+                    return;
+                }
+
                 const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
                     headers: { 'x-apisports-key': API_KEY }
                 });
                 const data = await response.json();
-                const allFixtures = data.response || [];
-
-                const knockoutFixtures = allFixtures.filter(f => {
-                    const r = f.league.round.toLowerCase();
-                    return r.includes('knockout') || r.includes('16') || r.includes('quarter') || r.includes('semi') || r.includes('final');
-                });
-
-                if (knockoutFixtures.length === 0) {
-                    container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold;">טרם שוחקו משחקי נוקאאוט העונה.</div>';
+                
+                if(!data.response || data.response.length === 0) {
+                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
+                    document.getElementById('matchday-title').innerText = "אין נתונים"; 
                     return;
                 }
-
-                const rounds = {};
-                knockoutFixtures.forEach(m => {
-                    let roundName = typeof translateName === 'function' ? translateName(m.league.round) : m.league.round;
-                    if (!rounds[roundName]) rounds[roundName] = [];
-                    rounds[roundName].push(m);
-                });
-
-                let html = '<div style="display:flex; flex-direction:column; gap:20px; margin-top:15px; direction:rtl;">';
                 
-                Object.keys(rounds).forEach(round => {
-                    html += `
-                    <div style="background:rgba(255,255,255,0.6); border-radius:12px; padding:15px; border:1px solid #cbd5e1;">
-                        <h3 style="text-align:center; color:#112845; margin-top:0; border-bottom:2px solid #7ca856; padding-bottom:8px;">${round}</h3>
-                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">`;
-
-                    rounds[round].forEach(m => {
-                        const homeTeam = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
-                        const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
-                        
-                        const homeScore = m.goals.home !== null ? m.goals.home : '-';
-                        const awayScore = m.goals.away !== null ? m.goals.away : '-';
-                        
-                        const matchDate = new Date(m.fixture.date).toLocaleDateString('he-IL');
-
-                        html += `
-                            <div style="background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 4px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:bold;">
-                                <div style="text-align:center; font-size:10px; color:#94a3b8; margin-bottom:4px;">${matchDate}</div>
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <div style="display:flex; align-items:center; gap:8px;"><img src="${m.teams.home.logo}" width="18"> <span>${homeTeam}</span></div>
-                                    <span style="color:#112845; font-size:15px;">${homeScore}</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <div style="display:flex; align-items:center; gap:8px;"><img src="${m.teams.away.logo}" width="18"> <span>${awayTeam}</span></div>
-                                    <span style="color:#112845; font-size:15px;">${awayScore}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += `</div></div>`;
-                });
-                html += '</div>';
-
-                container.innerHTML = html;
-
+                allMatches = data.response;
+                renderFixturesByDate();
+                
             } catch (error) {
-                console.error("שגיאה במשיכת נתוני נוקאאוט:", error);
-                container.innerHTML = '<div style="text-align:center; padding:30px;">שגיאה בטעינת משחקי נוקאאוט</div>';
+                console.error("שגיאה במשיכת המשחקים:", error);
+                document.getElementById('api-fixtures-list').innerHTML = "שגיאה בטעינת משחקים";
             }
         }
-        
+
+        // --- עזרי תאריך ---
+        function getLocalYYYYMMDD(utcString) {
+            const d = new Date(utcString);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatHebrewDate(dateString) {
+            const days = ['יום א\'', 'יום ב\'', 'יום ג\'', 'יום ד\'', 'יום ה\'', 'יום ו\'', 'שבת'];
+            const dateObj = new Date(dateString);
+            const dayName = days[dateObj.getDay()];
+            const parts = dateString.split('-'); 
+            const formatted = `${parts[2]}/${parts[1]}/${parts[0].substring(2)}`; 
+            return `${formatted} ${dayName}`;
+        }
+
+        function changeDate(step) {
+            currentDateIndex += step;
+            if (currentDateIndex < 0) currentDateIndex = 0;
+            if (currentDateIndex >= allDates.length) currentDateIndex = allDates.length - 1;
+            renderFixturesByDate();
+        }
+
+        // --- תרגום מחזורי המשחקים ---
+        function translateFixtureRound(roundStr) {
+            if (!roundStr) return "";
+            let lower = roundStr.toLowerCase();
+            if (lower.includes('conference') || lower.includes('qualifying')) return "פלייאוף אמצעי";
+            let translated = roundStr;
+            translated = translated.replace(/Regular Season/i, 'עונה סדירה');
+            translated = translated.replace(/1st Phase/i, 'שלב ראשון');
+            translated = translated.replace(/2nd Phase/i, 'שלב שני');
+            translated = translated.replace(/Group Stage/i, 'שלב הבתים');
+            translated = translated.replace(/Championship Round/i, 'פלייאוף עליון');
+            translated = translated.replace(/Relegation Round/i, 'פלייאוף תחתון');
+            translated = translated.replace(' - ', ' - מחזור ');
+            return translated;
+        }
+
+        // --- ציור לוח המשחקים ---
+        function renderFixturesByDate() {
+            const fixturesContainer = document.getElementById('api-fixtures-list');
+
+            if (!allMatches || allMatches.length === 0) {
+                fixturesContainer.innerHTML = '<div style="text-align:center; padding:20px;">אין משחקים זמינים</div>';
+                return;
+            }
+
+            if (allDates.length === 0) {
+                const datesSet = new Set();
+                allMatches.forEach(m => datesSet.add(getLocalYYYYMMDD(m.fixture.date)));
+                allDates = Array.from(datesSet).sort((a, b) => new Date(a) - new Date(b));
+                
+                const todayStr = getLocalYYYYMMDD(new Date().toISOString());
+                let closestIdx = allDates.findIndex(d => d >= todayStr);
+                if (closestIdx !== -1) currentDateIndex = closestIdx;
+                else currentDateIndex = 0;
+            }
+
+            const selectedDateStr = allDates[currentDateIndex];
+            document.getElementById('matchday-title').innerText = formatHebrewDate(selectedDateStr);
+
+            const dailyMatches = allMatches.filter(m => getLocalYYYYMMDD(m.fixture.date) === selectedDateStr);
+
+            const matchesByRound = {};
+            dailyMatches.forEach(m => {
+                let roundName = translateFixtureRound(m.league.round) || "משחק";
+                if (!matchesByRound[roundName]) matchesByRound[roundName] = [];
+                matchesByRound[roundName].push(m);
+            });
+
+            let html = '';
+            for (const [roundName, matches] of Object.entries(matchesByRound)) {
+                
+                html += `<div class="date-separator" style="color: #8fa0b3; font-size: 13px; font-weight: bold; text-align: center; margin: 15px 0 10px; border-bottom: 1px solid #1f2d40; padding-bottom: 5px;">${roundName}</div>`;
+                
+                matches.forEach(m => {
+                    const homeTeam = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
+                    const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
+                    
+                    const fixId = m.fixture.id;
+                    const currentHome = m.goals.home !== null ? m.goals.home : 0;
+                    const currentAway = m.goals.away !== null ? m.goals.away : 0;
+                    
+                    if (window.leagueGoalTracker[fixId]) {
+                        const prev = window.leagueGoalTracker[fixId];
+                        if (currentHome > prev.home || currentAway > prev.away) {
+                            window.leagueGoalTracker[fixId].goalTime = Date.now();
+                        }
+                        window.leagueGoalTracker[fixId].home = currentHome;
+                        window.leagueGoalTracker[fixId].away = currentAway;
+                    } else {
+                        window.leagueGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
+                    }
+
+                    const isGoalRecent = (Date.now() - window.leagueGoalTracker[fixId].goalTime) < 15000;
+                    
+                    const shortStatus = m.fixture.status.short;
+                    let displayStatus = '';
+                    
+                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
+                        displayStatus = 'הסתיים';
+                    } else if (shortStatus === 'HT') {
+                        displayStatus = 'מחצית';
+                    } else if (m.fixture.status.elapsed) {
+                        displayStatus = `${m.fixture.status.elapsed}'`;
+                    }
+
+                    let centerHtml = '';
+                    if (['NS', 'TBD'].includes(shortStatus)) {
+                        const time = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                        centerHtml = `<div style="font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.05); padding: 3px 10px; border-radius: 6px;">${time}</div>`;
+                    } else {
+                        const goalClass = isGoalRecent ? 'animation: goalAlertPulse 0.6s infinite alternate; background: #7a9966; color: #fff; border-radius: 4px; padding: 2px 4px;' : 'color: #fff;';
+                        const statusClass = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(shortStatus) ? 'color: #ff4d4d;' : 'color: #8fa0b3;';
+                        
+                        centerHtml = `
+                            <div style="font-size: 11px; font-weight: bold; margin-bottom: 2px; ${statusClass}">${displayStatus}</div>
+                            <div style="font-size: 16px; font-weight: bold; ${goalClass}">
+                                ${isGoalRecent ? 'שער!' : `${m.goals.home} - ${m.goals.away}`}
+                            </div>
+                        `;
+                    }
+
+                    const safeHomeName = encodeURIComponent(m.teams.home.name);
+                    const safeAwayName = encodeURIComponent(m.teams.away.name);
+
+                    html += `
+                    <div class="match-row" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}')" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                        <div class="team team-home" style="flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; width: 40%;">
+                            <span class="team-name-text" style="text-align: right; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${homeTeam}</span>
+                            <img src="${m.teams.home.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
+                        </div>
+                        <div class="score-wrapper" style="width: 20%; min-width: 70px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0;">
+                            ${centerHtml}
+                        </div>
+                        <div class="team team-away" style="flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 40%;">
+                            <img src="${m.teams.away.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
+                            <span class="team-name-text" style="text-align: left; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${awayTeam}</span>
+                        </div>
+                    </div>`;
+                });
+            }
+
+            fixturesContainer.innerHTML = html;
+        }
+
+        // --- נתוני שחקנים ---
         async function loadPlayerStats(endpoint) {
             const container = document.getElementById('api-stats-list');
             container.innerHTML = '<div style="text-align:center; padding: 30px; color: var(--text-light);">מעדכן נתונים... ⏳</div>';
@@ -844,206 +751,176 @@ async function getStandingsFromWikipedia() {
             }
         }
 
-        // === תחילת בלוק המשחקים המעודכן ===
-        let allMatches = [];
-        let allDates = [];
-        let currentDateIndex = 0;
-        
-        // מנגנון הזיכרון לשערים
-        window.leagueGoalTracker = window.leagueGoalTracker || {};
+        // ויקיפדיה ללאומית
+        async function getStandingsFromWikipedia() {
+            const container = document.getElementById('api-table');
+            container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
 
-        async function getFixtures() {
-    try {
-        // החסימה המיוחדת לליגה הלאומית
-        if (parseInt(LEAGUE_ID) === 384) {
-            document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#8fa0b3;">אין נתונים זמינים</div>';
-            document.getElementById('matchday-title').innerText = "אין נתונים"; 
-            return;
-        }
+            const leumitLogos = {
+                "פתחתקו": "https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/Maccabi_Petah_Tikva_FC.svg/64px-Maccabi_Petah_Tikva_FC.svg.png",
+                "הרצליה": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e0/Maccabi_Herzliya.svg/64px-Maccabi_Herzliya.svg.png",
+                "רמתגן": "https://upload.wikimedia.org/wikipedia/he/thumb/3/30/Hapoel_Ramat_Gan_logo.svg/64px-Hapoel_Ramat_Gan_logo.svg.png",
+                "ראשוןלציון": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Rishon_LeZion_logo.svg/64px-Hapoel_Rishon_LeZion_logo.svg.png",
+                "ראשלצ": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Rishon_LeZion_logo.svg/64px-Hapoel_Rishon_LeZion_logo.svg.png",
+                "כפרשלם": "https://upload.wikimedia.org/wikipedia/he/thumb/d/dd/Hapoel_Kfar_Shalem_logo.svg/64px-Hapoel_Kfar_Shalem_logo.svg.png",
+                "בנייהודה": "https://upload.wikimedia.org/wikipedia/he/thumb/c/c5/Bnei_Yehuda_logo.svg/64px-Bnei_Yehuda_logo.svg.png",
+                "קריתים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
+                "קרייתים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
+                "כפרסבא": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e7/Hapoel_Kfar_Saba_logo.svg/64px-Hapoel_Kfar_Saba_logo.svg.png",
+                "רעננה": "https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_Ra%27anana_FC_logo.png",
+                "יפו": "https://upload.wikimedia.org/wikipedia/he/thumb/c/c8/Maccabi_Jaffa_FC_logo.svg/64px-Maccabi_Jaffa_FC_logo.svg.png",
+                "עפולה": "https://upload.wikimedia.org/wikipedia/he/thumb/9/9c/Hapoel_Afula_logo.svg/64px-Hapoel_Afula_logo.svg.png",
+                "כפרקאסם": "https://upload.wikimedia.org/wikipedia/he/thumb/6/64/FC_Kafr_Qasim_logo.svg/64px-FC_Kafr_Qasim_logo.svg.png",
+                "כפרקסם": "https://upload.wikimedia.org/wikipedia/he/thumb/6/64/FC_Kafr_Qasim_logo.svg/64px-FC_Kafr_Qasim_logo.svg.png",
+                "נופהגליל": "https://upload.wikimedia.org/wikipedia/he/thumb/a/af/Hapoel_Nof_HaGalil_logo.svg/64px-Hapoel_Nof_HaGalil_logo.svg.png",
+                "מודיעין": "https://upload.wikimedia.org/wikipedia/he/0/07/Ironi_Modiin_logo.png",
+                "עכו": "https://upload.wikimedia.org/wikipedia/he/thumb/1/11/Hapoel_Acre_logo.svg/64px-Hapoel_Acre_logo.svg.png",
+                "חדרה": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Hadera_logo.svg/64px-Hapoel_Hadera_logo.svg.png",
+                "טבריה": "https://upload.wikimedia.org/wikipedia/he/thumb/f/fd/Ironi_Tiberias_logo.svg/64px-Ironi_Tiberias_logo.svg.png"
+            };
 
-        // המשך הקוד לכל שאר הליגות הרגילות
-        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
-            headers: { 'x-apisports-key': API_KEY }
-        });
-        const data = await response.json();
-        
-        if(!data.response || data.response.length === 0) {
-            document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
-            document.getElementById('matchday-title').innerText = "אין נתונים"; 
-            return;
-        }
-        
-        allMatches = data.response;
-        renderFixturesByDate();
-        
-    } catch (error) {
-        console.error("שגיאה במשיכת המשחקים:", error);
-        document.getElementById('api-fixtures-list').innerHTML = "שגיאה בטעינת משחקים";
-    }
-}
-        function formatHebrewDate(dateString) {
-            const days = ['יום א\'', 'יום ב\'', 'יום ג\'', 'יום ד\'', 'יום ה\'', 'יום ו\'', 'שבת'];
-            const dateObj = new Date(dateString);
-            const dayName = days[dateObj.getDay()];
-            
-            const parts = dateString.split('T')[0].split('-'); 
-            const formatted = `${parts[2]}/${parts[1]}/${parts[0].substring(2)}`; 
-            
-            return `${formatted} ${dayName}`;
-        }
+            try {
+                const nextYear = parseInt(SEASON) + 1;
+                let pageTitle = encodeURIComponent(`עונת_${SEASON}/${nextYear}_בליגה_הלאומית`);
+                let wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
 
-        function changeDate(step) {
-            currentDateIndex += step;
-            if (currentDateIndex < 0) currentDateIndex = 0;
-            if (currentDateIndex >= allDates.length) currentDateIndex = allDates.length - 1;
-            renderFixturesByDate();
-        }
-// --- מתרגם את שלבי המשחקים (כולל קונפרנס ליג בבלגיה) ---
-function translateFixtureRound(roundStr) {
-    if (!roundStr) return "";
-    let lower = roundStr.toLowerCase();
-    if (lower.includes('conference') || lower.includes('qualifying')) return "פלייאוף אמצעי";
-    let translated = roundStr;
-    translated = translated.replace(/Regular Season/i, 'עונה סדירה');
-    translated = translated.replace(/1st Phase/i, 'שלב ראשון');
-    translated = translated.replace(/2nd Phase/i, 'שלב שני');
-    translated = translated.replace(/Group Stage/i, 'שלב הבתים');
-    translated = translated.replace(/Championship Round/i, 'פלייאוף עליון');
-    translated = translated.replace(/Relegation Round/i, 'פלייאוף תחתון');
-    translated = translated.replace(' - ', ' - מחזור ');
-    return translated;
-}
+                let res = await fetch(wikiUrl);
+                let data = await res.json();
 
-// --- הפתרון לקסם: ממיר את זמן השרת לזמן מקומי כדי שמשחקי הלילה לא יברחו למחר! ---
-function getLocalYYYYMMDD(utcString) {
-    const d = new Date(utcString);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
-
-// --- ציור המשחקים לפי בתים ותאריך מקומי ---
-function renderFixturesByDate() {
-    const fixturesContainer = document.getElementById('api-fixtures-list');
-
-    if (!window.allMatches || window.allMatches.length === 0) {
-        fixturesContainer.innerHTML = '<div style="text-align:center; padding:20px;">אין משחקים זמינים</div>';
-        return;
-    }
-
-    if (!window.allDates || window.allDates.length === 0) {
-        const datesSet = new Set();
-        // משתמשים בתאריך המקומי כדי לקבץ ימים!
-        window.allMatches.forEach(m => datesSet.add(getLocalYYYYMMDD(m.fixture.date)));
-        window.allDates = Array.from(datesSet).sort((a, b) => new Date(a) - new Date(b));
-        
-        const todayStr = getLocalYYYYMMDD(new Date().toISOString());
-        let closestIdx = window.allDates.findIndex(d => d >= todayStr);
-        if (closestIdx !== -1) window.currentDateIndex = closestIdx;
-        else window.currentDateIndex = 0;
-    }
-
-    const selectedDateStr = window.allDates[window.currentDateIndex];
-    if (document.getElementById('matchday-title')) {
-        document.getElementById('matchday-title').innerText = typeof formatHebrewDate === 'function' ? formatHebrewDate(selectedDateStr) : selectedDateStr;
-    }
-
-    // מסננים משחקים לפי התאריך המקומי המדויק
-    const dailyMatches = window.allMatches.filter(m => getLocalYYYYMMDD(m.fixture.date) === selectedDateStr);
-
-    const matchesByRound = {};
-    dailyMatches.forEach(m => {
-        let roundName = translateFixtureRound(m.league.round) || "משחק";
-        if (!matchesByRound[roundName]) matchesByRound[roundName] = [];
-        matchesByRound[roundName].push(m);
-    });
-
-    let html = '';
-    for (const [roundName, matches] of Object.entries(matchesByRound)) {
-        
-        html += `<div class="date-separator" style="color: #8fa0b3; font-size: 13px; font-weight: bold; text-align: center; margin: 15px 0 10px; border-bottom: 1px solid #1f2d40; padding-bottom: 5px;">${roundName}</div>`;
-        
-        matches.forEach(m => {
-            const homeTeam = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
-            const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
-            
-            const fixId = m.fixture.id;
-            const currentHome = m.goals.home !== null ? m.goals.home : 0;
-            const currentAway = m.goals.away !== null ? m.goals.away : 0;
-            
-            if (!window.leagueGoalTracker) window.leagueGoalTracker = {};
-            
-            if (window.leagueGoalTracker[fixId]) {
-                const prev = window.leagueGoalTracker[fixId];
-                if (currentHome > prev.home || currentAway > prev.away) {
-                    window.leagueGoalTracker[fixId].goalTime = Date.now();
+                if (data.error) {
+                    pageTitle = encodeURIComponent("ליגה_לאומית_(כדורגל)");
+                    wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
+                    res = await fetch(wikiUrl);
+                    data = await res.json();
                 }
-                window.leagueGoalTracker[fixId].home = currentHome;
-                window.leagueGoalTracker[fixId].away = currentAway;
-            } else {
-                window.leagueGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
-            }
 
-            const isGoalRecent = (Date.now() - window.leagueGoalTracker[fixId].goalTime) < 15000;
-            
-            const shortStatus = m.fixture.status.short;
-            let displayStatus = '';
-            
-            if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
-                displayStatus = 'הסתיים';
-            } else if (shortStatus === 'HT') {
-                displayStatus = 'מחצית';
-            } else if (m.fixture.status.elapsed) {
-                displayStatus = `${m.fixture.status.elapsed}'`;
-            }
+                if (data.error) throw new Error("לא נמצא דף בויקיפדיה");
 
-            let centerHtml = '';
-            if (['NS', 'TBD'].includes(shortStatus)) {
-                const time = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
-                centerHtml = `<div style="font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.05); padding: 3px 10px; border-radius: 6px;">${time}</div>`;
-            } else {
-                const goalClass = isGoalRecent ? 'animation: goalAlertPulse 0.6s infinite alternate; background: #7a9966; color: #fff; border-radius: 4px; padding: 2px 4px;' : 'color: #fff;';
-                const statusClass = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(shortStatus) ? 'color: #ff4d4d;' : 'color: #8fa0b3;';
+                const htmlContent = data.parse.text["*"];
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+
+                const tables = doc.querySelectorAll('table.wikitable');
+                window.wikiTablesData = []; 
                 
-                centerHtml = `
-                    <div style="font-size: 11px; font-weight: bold; margin-bottom: 2px; ${statusClass}">${displayStatus}</div>
-                    <div style="font-size: 16px; font-weight: bold; ${goalClass}">
-                        ${isGoalRecent ? 'שער!' : `${m.goals.home} - ${m.goals.away}`}
-                    </div>
+                tables.forEach(t => {
+                    if (t.innerText.includes("קבוצה") && t.innerText.includes("נקודות") && (t.innerText.includes("ניצחונות") || t.innerText.includes("שערי זכות"))) {
+                        window.wikiTablesData.push(t);
+                    }
+                });
+
+                if (window.wikiTablesData.length === 0) throw new Error("לא נמצאה טבלה");
+
+                let uiHtml = `
+                    <div style="margin-bottom: 15px; text-align: center;">
+                        <select id="wiki-group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
                 `;
+                
+                const tableNames = ["עונה סדירה", "פלייאוף עליון", "פלייאוף תחתון"];
+                window.wikiTablesData.forEach((t, index) => {
+                    let name = tableNames[index] || `טבלה ${index + 1}`;
+                    uiHtml += `<option value="${index}">${name}</option>`;
+                });
+                uiHtml += `</select></div><div id="wiki-render-area"></div>`;
+                container.innerHTML = uiHtml;
+
+                const cleanWikiText = (text) => text.replace(/\n/g, '').replace(/\[\d+\]/g, '').trim();
+
+                window.renderWikiTable = function(index) {
+                    const standingsTable = window.wikiTablesData[index];
+                    const renderArea = document.getElementById('wiki-render-area');
+                    
+                    const headerRow = standingsTable.querySelectorAll('tr')[0].querySelectorAll('th, td');
+                    let colMap = {};
+                    headerRow.forEach((h, idx) => {
+                        const text = h.innerText.trim();
+                        if (text.includes('מיקום')) colMap.rank = idx;
+                        if (text.includes('קבוצה')) colMap.team = idx;
+                        if (text.includes('משחקים') || text === 'מש') colMap.played = idx;
+                        if (text.includes('ניצחונות') || text === 'נצ') colMap.win = idx;
+                        if (text.includes('תיקו')) colMap.draw = idx;
+                        if (text.includes('הפסדים') || text === 'הפ') colMap.lose = idx;
+                        if (text.includes('זכות') || text === 'שז') colMap.goalsFor = idx;
+                        if (text.includes('חובה') || text === 'שח') colMap.goalsAgainst = idx;
+                        if (text.includes('הפרש')) colMap.diff = idx;
+                        if (text.includes('נקודות') || text === 'נק') colMap.points = idx;
+                    });
+
+                    const rows = standingsTable.querySelectorAll('tr');
+                    let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
+
+                    rows.forEach((row, rowIdx) => {
+                        if (rowIdx === 0) return;
+                        const cols = row.querySelectorAll('td, th');
+                        if (cols.length >= 8) {
+                            
+                            const rank = cols[colMap.rank || 0] ? cleanWikiText(cols[colMap.rank || 0].innerText) : '-';
+                            const points = cols[colMap.points || 9] ? cleanWikiText(cols[colMap.points || 9].innerText) : '-';
+                            
+                            const teamCell = cols[colMap.team || 1];
+                            let teamName = '-';
+                            let teamLogo = 'https://media.api-sports.io/football/leagues/384.png'; 
+                            
+                            if (teamCell) {
+                                teamName = cleanWikiText(teamCell.innerText);
+                                
+                                let pureHebrew = teamName.replace(/[^א-ת]/g, '');
+                                
+                                for (const [key, url] of Object.entries(leumitLogos)) {
+                                    if (pureHebrew.includes(key)) {
+                                        teamLogo = url;
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            if(points !== '-' && teamName !== '-' && teamName !== '') {
+                                html += `<tr>
+                                    <td>-</td>
+                                    <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
+                                    <td>
+                                        <div class="team-identity" style="display: flex; align-items: center; gap: 8px;">
+                                            <img src="${teamLogo}" alt="logo" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='https://media.api-sports.io/football/leagues/384.png'">
+                                            <span class="team-name-text">${teamName}</span>
+                                        </div>
+                                    </td>
+                                    <td>${cols[colMap.played || 2] ? cleanWikiText(cols[colMap.played || 2].innerText) : '-'}</td>
+                                    <td>${cols[colMap.win || 3] ? cleanWikiText(cols[colMap.win || 3].innerText) : '-'}</td>
+                                    <td>${cols[colMap.draw || 4] ? cleanWikiText(cols[colMap.draw || 4].innerText) : '-'}</td>
+                                    <td>${cols[colMap.lose || 5] ? cleanWikiText(cols[colMap.lose || 5].innerText) : '-'}</td>
+                                    <td>${cols[colMap.goalsFor || 6] ? cleanWikiText(cols[colMap.goalsFor || 6].innerText) : '-'}</td>
+                                    <td>${cols[colMap.goalsAgainst || 7] ? cleanWikiText(cols[colMap.goalsAgainst || 7].innerText) : '-'}</td>
+                                    <td dir="ltr" style="text-align:center;">${cols[colMap.diff || 8] ? cleanWikiText(cols[colMap.diff || 8].innerText) : '-'}</td>
+                                    <td><strong style="color: var(--brand-green);">${points}</strong></td>
+                                </tr>`;
+                            }
+                        }
+                    });
+
+                    html += `</table><div style="font-size:10px; text-align:center; margin-top:10px; color:#8fa0b3;">מקור נתונים: ויקיפדיה עברית</div>`;
+                    renderArea.innerHTML = html;
+                };
+
+                document.getElementById('wiki-group-selector').addEventListener('change', function(e) {
+                    window.renderWikiTable(e.target.value);
+                });
+
+                window.renderWikiTable(0); 
+
+            } catch (error) {
+                console.error("Wikipedia Scrape Error:", error);
+                container.innerHTML = '<div style="text-align:center; padding: 30px;">נתוני הליגה הלאומית אינם זמינים כרגע</div>';
             }
+        }
 
-            const safeHomeName = encodeURIComponent(m.teams.home.name);
-            const safeAwayName = encodeURIComponent(m.teams.away.name);
+        // --- הפעלת הפונקציות בטעינה ---
+        getStandings();
+        loadPlayerStats('topscorers');
+        getFixtures();
 
-            html += `
-            <div class="match-row" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}')" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03);">
-                <div class="team team-home" style="flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; width: 40%;">
-                    <span class="team-name-text" style="text-align: right; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${homeTeam}</span>
-                    <img src="${m.teams.home.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
-                </div>
-                <div class="score-wrapper" style="width: 20%; min-width: 70px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0;">
-                    ${centerHtml}
-                </div>
-                <div class="team team-away" style="flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 40%;">
-                    <img src="${m.teams.away.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
-                    <span class="team-name-text" style="text-align: left; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${awayTeam}</span>
-                </div>
-            </div>`;
-        });
-    }
-
-    fixturesContainer.innerHTML = html;
-}
-        
-getStandings();
-loadPlayerStats('topscorers');
-getFixtures();
-
-// ריענון המשחקים כל דקה כדי לתפוס שערים חדשים
-setInterval(getFixtures, 60000);
-</script>
-<script src="matchEvents.js"></script> 
+        // ריענון המשחקים כל דקה כדי לתפוס שערים חדשים
+        setInterval(getFixtures, 60000);
+    </script>
+    <script src="matchEvents.js"></script> 
 </body>
 </html>
