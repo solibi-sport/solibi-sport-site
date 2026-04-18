@@ -497,15 +497,18 @@
                 }
 
                 // סדר העדיפויות ברשימה הנפתחת (טבלה כללית תמיד בראש)
-                // === התיקון: מוסיף "טבלה כללית" שמתעדכנת ברצף *רק* לליגת העל (390) ===
-                if (parseInt(LEAGUE_ID) === 390 && standings.length > 1) {
+               // === התיקון: מוסיף "טבלה כללית" שמתעדכנת ברצף *רק* לליגת העל ===
+                // מזהה את ליגת העל לפי מדינה (Israel) או לפי ה-ID המדויק
+                const isLigatHaal = parseInt(LEAGUE_ID) === 383 || parseInt(LEAGUE_ID) === 390 || data.response[0].league.country === "Israel";
+                
+                if (isLigatHaal && standings.length > 1) {
                     let teamMap = new Map();
                     standings.forEach(group => {
                         group.forEach(item => {
                             if (!teamMap.has(item.team.id)) {
                                 teamMap.set(item.team.id, item);
                             } else {
-                                // אם הקבוצה קיימת, לוקחים את הנתון עם הכי הרבה משחקים (הפלייאוף)
+                                // אם הקבוצה קיימת, לוקחים את הנתון עם הכי הרבה משחקים (הפלייאוף המעודכן)
                                 let existing = teamMap.get(item.team.id);
                                 if (item.all.played > existing.all.played) {
                                     teamMap.set(item.team.id, item);
