@@ -569,13 +569,11 @@
             1: "מונדיאל"
         };
 
-        // === משתנים גלובליים ===
         let livePages = []; 
         let currentLivePageIndex = 0;
         let isShowingUpdates = false; 
         let panelTimer;
 
-        // === פונקציית משיכת משחקים ===
         async function fetchLiveMatches() {
             try {
                 const MY_LEAGUES = "39-140-135-78-61-383-384-2-3-848-88-144-94-203-253-307-71-128-13-11-1";
@@ -630,11 +628,9 @@
                         const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
                         let elapsedTime = m.fixture.status.elapsed ? `${m.fixture.status.elapsed}'` : 'מחצית';
 
-                        // מונעים שבירת קוד אם יש אפוסטרוף בשם הקבוצה (כמו D'Arcy)
-                        const safeHomeName = m.teams.home.name.replace(/'/g, "\\'");
-                        const safeAwayName = m.teams.away.name.replace(/'/g, "\\'");
+                        const safeHomeName = encodeURIComponent(m.teams.home.name);
+                        const safeAwayName = encodeURIComponent(m.teams.away.name);
 
-                        // === שינוי: הוספנו את האירוע onclick שמקפיץ את החלון הצף ===
                         matchesHtml += `
                             <a href="#" onclick="openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" style="background: #fff; border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: flex-start; text-decoration: none; color: #112845; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;">
                                 
@@ -667,7 +663,6 @@
             }
         }
 
-        // === פונקציית החלפת עמודים ===
         function rotatePanelContent() {
             const contentDiv = document.getElementById('panel-content');
             const titleSpan = document.getElementById('panel-title');
@@ -726,7 +721,6 @@
             }, 400); 
         }
 
-        // === הפעלה ראשונית ===
         window.addEventListener('DOMContentLoaded', () => {
             if (typeof staticUpdatesHTML !== 'undefined' && document.getElementById('panel-content')) {
                 document.getElementById('panel-content').innerHTML = staticUpdatesHTML;
