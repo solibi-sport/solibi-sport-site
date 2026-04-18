@@ -1,66 +1,95 @@
-// 1. מזריק את העיצוב (CSS)
-const modalStyle = document.createElement('style');
-modalStyle.innerHTML = `
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(6, 12, 20, 0.55); z-index: 9999; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; }
+// 1. מזריק את העיצוב (CSS) 
+if (!document.getElementById('modal-style-events')) {
+    const modalStyle = document.createElement('style');
+    modalStyle.id = 'modal-style-events';
+    modalStyle.innerHTML = `
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(6, 12, 20, 0.65); z-index: 9999; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; }
+    
+    /* כיווצנו את החלון למראה קומפקטי ואפליקטיבי */
+    .modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 500px; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 65vh; will-change: transform; touch-action: none; position: relative; }
+    
+    .modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; border-bottom: 1px solid #1f2d40; }
+    .modal-header:active { cursor: grabbing; }
+    .modal-header h2 { margin: 0; font-size: 14px; font-weight: bold; color: #8fa0b3; pointer-events: none; letter-spacing: 0.5px;}
+    .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
+    .close-modal:hover { color: #ffffff; }
 
-.modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 580px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 85vh; will-change: transform; touch-action: none; position: relative; }
+    /* === עיצוב באנר התוצאה החדש === */
+    .score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 20px 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; }
+    .score-team { font-size: 15px; font-weight: 900; flex: 1; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; }
+    .score-box { display: flex; align-items: center; gap: 12px; background: #060c14; padding: 8px 20px; border-radius: 12px; border: 1px solid rgba(122, 153, 102, 0.4); position: relative; box-shadow: inset 0 3px 10px rgba(0,0,0,0.6); margin: 0 10px; }
+    .score-val { font-size: 26px; font-weight: 900; color: #ffffff; line-height: 1; }
+    .score-divider { font-size: 18px; color: #7a9966; font-weight: bold; line-height: 1; transform: translateY(-2px); }
+    .score-minute { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #7a9966; color: #111926; font-size: 11px; font-weight: 900; padding: 2px 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); white-space: nowrap; border: 1px solid #fff; }
 
-.modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; border-bottom: 2px solid #7a9966; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; }
-.modal-header:active { cursor: grabbing; }
-.modal-header h2 { margin: 0; font-size: 16px; font-weight: bold; color: #ffffff; pointer-events: none; }
-.close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
-.close-modal:hover { color: #ffffff; }
+    .stats-container { padding: 10px 15px; flex-shrink: 0; background: #0f1620; border-bottom: 1px solid #1f2d40; }
+    .possession-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: #fff; }
+    .possession-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: #1f2d40; margin-bottom: 10px;}
+    .possession-home { background: #7a9966; height: 100%; transition: width 1s ease-out; }
+    .possession-away { background: #4a90e2; height: 100%; transition: width 1s ease-out; }
+    
+    .extra-stats { display: flex; flex-direction: column; gap: 3px; }
+    .stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; background: rgba(255,255,255,0.015); padding: 4px 8px; border-radius: 4px; }
+    .stat-val { font-weight: bold; width: 35px; text-align: center; font-size: 12px; }
+    .home-val { color: #7a9966; }
+    .away-val { color: #4a90e2; }
+    .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
+    
+    #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; }
+    .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; }
+    .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
+    
+    .event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
+    .event-home { justify-content: flex-start; text-align: right; } 
+    .event-away { justify-content: flex-end; text-align: left; flex-direction: row-reverse; }
+    
+    .event-time { font-weight: bold; color: #7a9966; min-width: 25px; text-align: center; font-size: 11px; background: rgba(122, 153, 102, 0.1); padding: 2px 4px; border-radius: 3px; margin: 0 6px; }
+    .event-icon { font-size: 14px; margin: 0 4px; }
+    .event-text { color: #d1d5db; }
+    .event-subtext { color: #888; font-size: 9px; display: block; margin-top: 1px; }
+    
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #2a3b4c; border-radius: 10px; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleUp { from { transform: scale(0.9); } to { transform: scale(1); } }
+    `;
+    document.head.appendChild(modalStyle);
+}
 
-.stats-container { padding: 10px 15px; flex-shrink: 0; background: #0f1620; border-bottom: 1px solid #1f2d40; }
-.possession-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: #fff; }
-.possession-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: #1f2d40; margin-bottom: 10px;}
-.possession-home { background: #7a9966; height: 100%; transition: width 1s ease-out; }
-.possession-away { background: #4a90e2; height: 100%; transition: width 1s ease-out; }
+// 2. פונקציות עזר
+function getStatValue(statsArray, typeName) {
+    const stat = statsArray.find(s => s.type === typeName);
+    return (stat && stat.value !== null) ? stat.value : '0';
+}
 
-.extra-stats { display: flex; flex-direction: column; gap: 3px; }
-.stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; background: rgba(255,255,255,0.015); padding: 4px 8px; border-radius: 4px; }
-.stat-val { font-weight: bold; width: 35px; text-align: center; font-size: 12px; }
-.home-val { color: #7a9966; }
-.away-val { color: #4a90e2; }
-.stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
+function closeEventsModal(event) {
+    if(event) event.stopPropagation();
+    const modal = document.getElementById('eventsModal');
+    if (modal) modal.style.display = 'none';
+}
 
-#modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; }
-.team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; }
-.team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
+// 3. הפונקציה המרכזית לשאיבת הנתונים
+async function openMatchEvents(fixtureId, paramHome, paramAway) {
+    let homeTeam = paramHome;
+    let awayTeam = paramAway;
+    try { homeTeam = decodeURIComponent(paramHome); } catch(e) {}
+    try { awayTeam = decodeURIComponent(paramAway); } catch(e) {}
 
-.event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
-.event-home { justify-content: flex-start; text-align: right; } 
-.event-away { justify-content: flex-end; text-align: left; flex-direction: row-reverse; }
-
-.event-time { font-weight: bold; color: #7a9966; min-width: 25px; text-align: center; font-size: 11px; background: rgba(122, 153, 102, 0.1); padding: 2px 4px; border-radius: 3px; margin: 0 6px; }
-.event-icon { font-size: 14px; margin: 0 4px; }
-.event-text { color: #d1d5db; }
-.event-subtext { color: #888; font-size: 9px; display: block; margin-top: 1px; }
-
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #2a3b4c; border-radius: 10px; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes scaleUp { from { transform: scale(0.9); } to { transform: scale(1); } }
-`;
-document.head.appendChild(modalStyle);
-
-// 2. מזריק את מסגרת ה-HTML ומוסיף את מנגנון הגרירה (Drag)
-document.addEventListener("DOMContentLoaded", () => {
     if (!document.getElementById('eventsModal')) {
         const modalHTML = `
         <div id="eventsModal" class="modal-overlay">
             <div class="modal-box">
                 <div class="modal-header">
                     <span class="close-modal" onclick="closeEventsModal(event)">✖</span>
-                    <h2 id="modalMatchTitle">טוען...</h2>
+                    <h2 id="modalMatchTitle">זירת משחק</h2>
                 </div>
                 <div id="modalEventsContent"></div>
             </div>
         </div>`;
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        // --- מנגנון הגרירה (Drag and Drop) ---
+        // מנגנון הגרירה 
         const header = document.querySelector('.modal-header');
         const box = document.querySelector('.modal-box');
         
@@ -73,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.target.closest('.close-modal')) return;
             isDragging = true;
             box.style.animation = 'none'; 
-            
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
             startX = clientX - window.dragOffsetX;
@@ -89,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
             let targetX = clientX - startX;
             let targetY = clientY - startY;
 
-            // --- חומת המגן ---
             const boxRect = box.getBoundingClientRect();
             const vW = window.innerWidth;
             const vH = window.innerHeight;
@@ -111,73 +138,83 @@ document.addEventListener("DOMContentLoaded", () => {
             box.style.transform = `translate(${window.dragOffsetX}px, ${window.dragOffsetY}px)`;
         }
 
-        function onDragEnd() {
-            isDragging = false;
-        }
+        function onDragEnd() { isDragging = false; }
 
         header.addEventListener('mousedown', onDragStart);
         document.addEventListener('mousemove', onDragMove, { passive: false });
         document.addEventListener('mouseup', onDragEnd);
-
         header.addEventListener('touchstart', onDragStart, { passive: true });
         document.addEventListener('touchmove', onDragMove, { passive: false });
         document.addEventListener('touchend', onDragEnd);
     }
-});
-
-function getStatValue(statsArray, typeName) {
-    const stat = statsArray.find(s => s.type === typeName);
-    return (stat && stat.value !== null) ? stat.value : '0';
-}
-
-// 3. הפונקציה המרכזית לשאיבת הנתונים (עם הגנת פיענוח)
-async function openMatchEvents(fixtureId, paramHome, paramAway) {
-    // השורות האלו מוודאות שגם אם השם מגיע מדף הליגות וגם מדף הבית - הוא יעבוד מושלם!
-    let homeTeam = paramHome;
-    let awayTeam = paramAway;
-    try { homeTeam = decodeURIComponent(paramHome); } catch(e) {}
-    try { awayTeam = decodeURIComponent(paramAway); } catch(e) {}
 
     const modal = document.getElementById('eventsModal');
     const box = document.querySelector('.modal-box');
     const content = document.getElementById('modalEventsContent');
-    const title = document.getElementById('modalMatchTitle');
     
-    // מאפסים את המיקום והאנימציה כל פעם שפותחים חלון מחדש
+    // ניקוי נתונים קודמים
     window.dragOffsetX = 0;
     window.dragOffsetY = 0;
     box.style.animation = 'none';
-    box.offsetHeight; // Reset animation
+    box.offsetHeight; 
     box.style.animation = 'scaleUp 0.2s ease-out forwards';
     box.style.transform = '';
 
     const existingStats = document.getElementById('modalStatsContainer');
     if (existingStats) existingStats.remove();
+    const existingScore = document.getElementById('modalScoreBanner');
+    if (existingScore) existingScore.remove();
 
     modal.style.display = 'flex';
     
-    // בטיחות למקרה שהפונקציה translateName לא נטענה
     const tHome = typeof window.translateName === 'function' ? window.translateName(homeTeam) : homeTeam;
     const tAway = typeof window.translateName === 'function' ? window.translateName(awayTeam) : awayTeam;
     
-    title.innerText = `${tHome} - ${tAway}`;
     content.innerHTML = '<p style="text-align:center; width:100%; margin-top:20px; font-size:13px; color:#888;">טוען נתונים...</p>';
     content.style.display = 'block';
 
     try {
         const headers = {
-            'x-rapidapi-host': 'v3.football.api-sports.io',
-            'x-rapidapi-key': 'd580159a7d19ead2bc2054c8b57e6ee3' // המפתח שלך
+            'x-apisports-key': 'd580159a7d19ead2bc2054c8b57e6ee3' 
         };
 
-        const [eventsRes, statsRes] = await Promise.all([
+        // משיכת 3 סוגי נתונים במקביל: אירועים, סטטיסטיקות, והתוצאה המעודכנת ביותר!
+        const [eventsRes, statsRes, fixtureRes] = await Promise.all([
             fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, { headers }),
-            fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers })
+            fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers }),
+            fetch(`https://v3.football.api-sports.io/fixtures?id=${fixtureId}`, { headers })
         ]);
         
         const eventsData = await eventsRes.json();
         const statsData = await statsRes.json();
+        const fixtureData = await fixtureRes.json();
 
+        // חילוץ התוצאה והדקה מתוך ה-API
+        let goalsHome = '-';
+        let goalsAway = '-';
+        let matchStatus = '';
+        if (fixtureData && fixtureData.response && fixtureData.response.length > 0) {
+            const info = fixtureData.response[0];
+            goalsHome = info.goals.home !== null ? info.goals.home : '-';
+            goalsAway = info.goals.away !== null ? info.goals.away : '-';
+            matchStatus = info.fixture.status.elapsed ? `${info.fixture.status.elapsed}'` : 'מחצית';
+        }
+
+        // --- הזרקת באנר התוצאה המרשים ---
+        const scoreHTML = `
+        <div id="modalScoreBanner" class="score-banner">
+            <div class="score-team home">${tHome}</div>
+            <div class="score-box">
+                <span class="score-val">${goalsHome}</span>
+                <span class="score-divider">-</span>
+                <span class="score-val">${goalsAway}</span>
+                <div class="score-minute">${matchStatus}</div>
+            </div>
+            <div class="score-team away">${tAway}</div>
+        </div>`;
+        document.querySelector('.modal-header').insertAdjacentHTML('afterend', scoreHTML);
+
+        // חילוץ סטטיסטיקות
         const events = eventsData.response || [];
         const stats = statsData.response || [];
 
@@ -186,8 +223,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
         let homePoss = getStatValue(homeStatsArray, "Ball Possession");
         let awayPoss = getStatValue(awayStatsArray, "Ball Possession");
-        if (homePoss === '0') homePoss = '50%';
-        if (awayPoss === '0') awayPoss = '50%';
+        if (homePoss === '0' || !homePoss) homePoss = '50%';
+        if (awayPoss === '0' || !awayPoss) awayPoss = '50%';
 
         let homeShotsOnGoal = getStatValue(homeStatsArray, "Shots on Goal");
         let awayShotsOnGoal = getStatValue(awayStatsArray, "Shots on Goal");
@@ -235,7 +272,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         </div>`;
         
         if (stats.length > 0) {
-            document.querySelector('.modal-header').insertAdjacentHTML('afterend', statsHTML);
+            document.getElementById('modalScoreBanner').insertAdjacentHTML('afterend', statsHTML);
         }
 
         content.style.display = 'flex'; 
@@ -303,11 +340,4 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         console.error(error);
         content.innerHTML = '<p style="text-align:center; width:100%; color:#ff4d4d; font-size:12px;">שגיאה בטעינת הנתונים.</p>';
     }
-}
-
-// 4. סגירת החלון
-function closeEventsModal(event) {
-    if(event) event.stopPropagation();
-    const modal = document.getElementById('eventsModal');
-    if (modal) modal.style.display = 'none';
 }
