@@ -828,27 +828,34 @@ async function getStandingsFromWikipedia() {
         window.leagueGoalTracker = window.leagueGoalTracker || {};
 
         async function getFixtures() {
-            try {
-                const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
-                const data = await response.json();
-                
-                if(!data.response || data.response.length === 0) {
-                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
-                    document.getElementById('matchday-title').innerText = "אין נתונים"; 
-                    return;
-                }
-                
-                allMatches = data.response;
-                renderFixturesByDate();
-                
-            } catch (error) {
-                console.error("שגיאה במשיכת המשחקים:", error);
-                document.getElementById('api-fixtures-list').innerHTML = "שגיאה בטעינת משחקים";
-            }
+    try {
+        // החסימה המיוחדת לליגה הלאומית
+        if (parseInt(LEAGUE_ID) === 384) {
+            document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#8fa0b3;">אין נתונים זמינים</div>';
+            document.getElementById('matchday-title').innerText = "אין נתונים"; 
+            return;
         }
 
+        // המשך הקוד לכל שאר הליגות הרגילות
+        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
+            headers: { 'x-apisports-key': API_KEY }
+        });
+        const data = await response.json();
+        
+        if(!data.response || data.response.length === 0) {
+            document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
+            document.getElementById('matchday-title').innerText = "אין נתונים"; 
+            return;
+        }
+        
+        allMatches = data.response;
+        renderFixturesByDate();
+        
+    } catch (error) {
+        console.error("שגיאה במשיכת המשחקים:", error);
+        document.getElementById('api-fixtures-list').innerHTML = "שגיאה בטעינת משחקים";
+    }
+}
         function formatHebrewDate(dateString) {
             const days = ['יום א\'', 'יום ב\'', 'יום ג\'', 'יום ד\'', 'יום ה\'', 'יום ו\'', 'שבת'];
             const dateObj = new Date(dateString);
