@@ -1,4 +1,4 @@
-// 1. מזריק את העיצוב (CSS) 
+// 1. מזריק את העיצוב (CSS)
 if (!document.getElementById('modal-style-events')) {
     const modalStyle = document.createElement('style');
     modalStyle.id = 'modal-style-events';
@@ -13,7 +13,6 @@ if (!document.getElementById('modal-style-events')) {
     .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
     .close-modal:hover { color: #ffffff; }
 
-    /* === הוספה: אנימציות ועיצוב באנר === */
     @keyframes bannerGoalPulse { 0% { box-shadow: inset 0 0 10px rgba(122,153,102,0.2); } 100% { box-shadow: inset 0 0 40px rgba(122,153,102,0.9); } }
     @keyframes textGoalPop { 0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
 
@@ -41,10 +40,7 @@ if (!document.getElementById('modal-style-events')) {
     .away-val { color: #4a90e2; }
     .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
     
-    /* === הוספה: align-items: stretch === */
     #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; align-items: stretch; }
-    
-    /* === הוספה: min-height: max-content === */
     .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
     .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
     
@@ -66,25 +62,33 @@ if (!document.getElementById('modal-style-events')) {
     document.head.appendChild(modalStyle);
 }
 
-// 2. פונקציות עזר
 function getStatValue(statsArray, typeName) {
     const stat = statsArray.find(s => s.type === typeName);
     return (stat && stat.value !== null) ? stat.value : '0';
 }
 
+// === משתנה גלובלי לריענון החלון הצף ===
+let modalRefreshTimer = null;
+
 function closeEventsModal(event) {
     if(event) event.stopPropagation();
     const modal = document.getElementById('eventsModal');
     if (modal) modal.style.display = 'none';
+    
+    // עצירת הריענון כשהחלון נסגר (חוסך קריאות API)
+    if (modalRefreshTimer) {
+        clearInterval(modalRefreshTimer);
+        modalRefreshTimer = null;
+    }
 }
 
-// 3. הפונקציה המרכזית
 async function openMatchEvents(fixtureId, paramHome, paramAway) {
     let homeTeam = paramHome;
     let awayTeam = paramAway;
     try { homeTeam = decodeURIComponent(paramHome); } catch(e) {}
     try { awayTeam = decodeURIComponent(paramAway); } catch(e) {}
 
+    // בניית מסגרת ה-HTML אם לא קיימת
     if (!document.getElementById('eventsModal')) {
         const modalHTML = `
         <div id="eventsModal" class="modal-overlay">
@@ -98,7 +102,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         </div>`;
         document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        // מנגנון הגרירה 
         const header = document.querySelector('.modal-header');
         const box = document.querySelector('.modal-box');
         
@@ -161,6 +164,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
     const box = document.querySelector('.modal-box');
     const content = document.getElementById('modalEventsContent');
     
+    // איפוס אנימציות ומיקומים בעת פתיחה
     window.dragOffsetX = 0;
     window.dragOffsetY = 0;
     box.style.animation = 'none';
@@ -168,203 +172,232 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
     box.style.animation = 'scaleUp 0.2s ease-out forwards';
     box.style.transform = '';
 
-    const existingStats = document.getElementById('modalStatsContainer');
-    if (existingStats) existingStats.remove();
-    const existingScore = document.getElementById('modalScoreBanner');
-    if (existingScore) existingScore.remove();
-
     modal.style.display = 'flex';
     
     const tHome = typeof window.translateName === 'function' ? window.translateName(homeTeam) : homeTeam;
     const tAway = typeof window.translateName === 'function' ? window.translateName(awayTeam) : awayTeam;
-    
-    content.innerHTML = '<p style="text-align:center; width:100%; margin-top:20px; font-size:13px; color:#888;">טוען נתונים...</p>';
-    content.style.display = 'block';
 
-    try {
-        const headers = {
-            'x-apisports-key': 'd580159a7d19ead2bc2054c8b57e6ee3' 
-        };
+    // איפוס הטיימר הקודם אם קיים
+    if (modalRefreshTimer) {
+        clearInterval(modalRefreshTimer);
+        modalRefreshTimer = null;
+    }
 
-        const [eventsRes, statsRes, fixtureRes] = await Promise.all([
-            fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, { headers }),
-            fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers }),
-            fetch(`https://v3.football.api-sports.io/fixtures?id=${fixtureId}`, { headers })
-        ]);
-        
-        const eventsData = await eventsRes.json();
-        const statsData = await statsRes.json();
-        const fixtureData = await fixtureRes.json();
-
-        // --- הוספה: זיהוי סטטוס המשחק (הסתיים / מחצית / דקה) ---
-        let goalsHome = '-';
-        let goalsAway = '-';
-        let matchStatus = '';
-        
-        if (fixtureData && fixtureData.response && fixtureData.response.length > 0) {
-            const info = fixtureData.response[0];
-            goalsHome = info.goals.home !== null ? info.goals.home : '-';
-            goalsAway = info.goals.away !== null ? info.goals.away : '-';
-            
-            const shortStatus = info.fixture.status.short;
-            if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
-                matchStatus = 'הסתיים';
-            } else if (shortStatus === 'HT') {
-                matchStatus = 'מחצית';
-            } else if (info.fixture.status.elapsed) {
-                matchStatus = `${info.fixture.status.elapsed}'`;
-            } else {
-                matchStatus = 'לא התחיל';
-            }
+    // === פונקציית משיכת הנתונים (מופעלת גם ידנית וגם ע"י הטיימר) ===
+    async function updateModalData(isInitialLoad) {
+        if (isInitialLoad) {
+            const existingStats = document.getElementById('modalStatsContainer');
+            if (existingStats) existingStats.remove();
+            const existingScore = document.getElementById('modalScoreBanner');
+            if (existingScore) existingScore.remove();
+            content.innerHTML = '<p style="text-align:center; width:100%; margin-top:20px; font-size:13px; color:#888;">טוען נתונים...</p>';
+            content.style.display = 'block';
         }
 
-        // --- הוספה: בדיקה האם הובקע שער בדקה האחרונה ---
-        let isGoalRecent = false;
-        if (window.matchGoalTracker && window.matchGoalTracker[fixtureId]) {
-            if (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 60000) {
+        try {
+            const headers = { 'x-apisports-key': 'd580159a7d19ead2bc2054c8b57e6ee3' };
+
+            const [eventsRes, statsRes, fixtureRes] = await Promise.all([
+                fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, { headers }),
+                fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers }),
+                fetch(`https://v3.football.api-sports.io/fixtures?id=${fixtureId}`, { headers })
+            ]);
+            
+            const eventsData = await eventsRes.json();
+            const statsData = await statsRes.json();
+            const fixtureData = await fixtureRes.json();
+
+            let goalsHome = '-';
+            let goalsAway = '-';
+            let matchStatus = '';
+            let shortStatus = '';
+            
+            if (fixtureData && fixtureData.response && fixtureData.response.length > 0) {
+                const info = fixtureData.response[0];
+                goalsHome = info.goals.home !== null ? info.goals.home : '-';
+                goalsAway = info.goals.away !== null ? info.goals.away : '-';
+                
+                shortStatus = info.fixture.status.short;
+                if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
+                    matchStatus = 'הסתיים';
+                } else if (shortStatus === 'HT') {
+                    matchStatus = 'מחצית';
+                } else if (info.fixture.status.elapsed) {
+                    matchStatus = `${info.fixture.status.elapsed}'`;
+                } else {
+                    matchStatus = 'לא התחיל';
+                }
+            }
+
+            // זיהוי שער מול הזיכרון של דף הבית או הליגה
+            let isGoalRecent = false;
+            if (window.matchGoalTracker && window.matchGoalTracker[fixtureId] && (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 60000)) {
                 isGoalRecent = true;
             }
-        }
-
-        // --- הוספה: הזרקת הבאנר המעודכן ---
-        const scoreHTML = `
-        <div id="modalScoreBanner" class="score-banner ${isGoalRecent ? 'goal-active' : ''}">
-            ${isGoalRecent ? '<div class="modal-goal-flash">שער!</div>' : ''}
-            <div class="score-team home">${tHome}</div>
-            <div class="score-box">
-                <span class="score-val">${goalsHome}</span>
-                <span class="score-divider">-</span>
-                <span class="score-val">${goalsAway}</span>
-                <div class="score-minute">${matchStatus}</div>
-            </div>
-            <div class="score-team away">${tAway}</div>
-        </div>`;
-        document.querySelector('.modal-header').insertAdjacentHTML('afterend', scoreHTML);
-
-
-        const events = eventsData.response || [];
-        const stats = statsData.response || [];
-
-        let homeStatsArray = stats.length > 0 ? stats[0].statistics : [];
-        let awayStatsArray = stats.length > 1 ? stats[1].statistics : [];
-
-        let homePoss = getStatValue(homeStatsArray, "Ball Possession");
-        let awayPoss = getStatValue(awayStatsArray, "Ball Possession");
-        if (homePoss === '0' || !homePoss) homePoss = '50%';
-        if (awayPoss === '0' || !awayPoss) awayPoss = '50%';
-
-        let homeShotsOnGoal = getStatValue(homeStatsArray, "Shots on Goal");
-        let awayShotsOnGoal = getStatValue(awayStatsArray, "Shots on Goal");
-        let homeTotalShots = getStatValue(homeStatsArray, "Total Shots");
-        let awayTotalShots = getStatValue(awayStatsArray, "Total Shots");
-        let homeCorners = getStatValue(homeStatsArray, "Corner Kicks");
-        let awayCorners = getStatValue(awayStatsArray, "Corner Kicks");
-        let homeFouls = getStatValue(homeStatsArray, "Fouls");
-        let awayFouls = getStatValue(awayStatsArray, "Fouls");
-
-        const statsHTML = `
-        <div id="modalStatsContainer" class="stats-container">
-            <div style="text-align: center; font-size: 11px; color: #8fa0b3; margin-bottom: 5px;">שליטה בכדור</div>
-            <div class="possession-labels">
-                <span>${tHome} (${homePoss})</span>
-                <span>${tAway} (${awayPoss})</span>
-            </div>
-            <div class="possession-bar">
-                <div class="possession-home" style="width: ${homePoss}"></div>
-                <div class="possession-away" style="width: ${awayPoss}"></div>
-            </div>
-            
-            <div class="extra-stats">
-                <div class="stat-row">
-                    <span class="stat-val home-val">${homeShotsOnGoal}</span>
-                    <span class="stat-name">בעיטות למסגרת</span>
-                    <span class="stat-val away-val">${awayShotsOnGoal}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-val home-val">${homeTotalShots}</span>
-                    <span class="stat-name">סה"כ בעיטות</span>
-                    <span class="stat-val away-val">${awayTotalShots}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-val home-val">${homeCorners}</span>
-                    <span class="stat-name">קרנות</span>
-                    <span class="stat-val away-val">${awayCorners}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-val home-val">${homeFouls}</span>
-                    <span class="stat-name">עבירות</span>
-                    <span class="stat-val away-val">${awayFouls}</span>
-                </div>
-            </div>
-        </div>`;
-        
-        if (stats.length > 0) {
-            document.getElementById('modalScoreBanner').insertAdjacentHTML('afterend', statsHTML);
-        }
-
-        content.style.display = 'flex'; 
-        if (events.length === 0) {
-            content.innerHTML = '<p style="text-align:center; width:100%; font-size:12px;">אין אירועים להצגה.</p>';
-            return;
-        }
-
-        events.sort((a, b) => a.time.elapsed - b.time.elapsed);
-
-        let homeHtml = `<div class="team-col"><div class="team-title">${tHome}</div>`;
-        let awayHtml = `<div class="team-col"><div class="team-title">${tAway}</div>`;
-
-        events.forEach(event => {
-            let time = event.time.elapsed + (event.time.extra ? `+${event.time.extra}` : '');
-            let playerName = typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name;
-            let assistName = event.assist.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
-            
-            let icon = '';
-            let mainText = '';
-            let subText = '';
-
-            if (event.type === 'Goal') {
-                icon = '⚽';
-                mainText = `שער! ${playerName}`;
-                if (assistName) subText = `בישול: ${assistName}`;
-            } else if (event.type === 'Card' && event.detail.includes('Yellow')) {
-                icon = '🟨';
-                mainText = playerName;
-                subText = 'כרטיס צהוב';
-            } else if (event.type === 'Card' && event.detail.includes('Red')) {
-                icon = '🟥';
-                mainText = playerName;
-                subText = 'כרטיס אדום';
-            } else if (event.type === 'subst') {
-                icon = '🔄';
-                mainText = `${playerName} (נכנס)`;
-                subText = `${assistName} (יצא)`;
-            } else {
-                return; 
+            if (window.leagueGoalTracker && window.leagueGoalTracker[fixtureId] && (Date.now() - window.leagueGoalTracker[fixtureId].goalTime < 60000)) {
+                isGoalRecent = true;
             }
 
-            const isHome = event.team.name === homeTeam;
-            const eventMarkup = `
-                <div class="event-item ${isHome ? 'event-home' : 'event-away'}">
-                    <span class="event-time">${time}'</span>
-                    <span class="event-icon">${icon}</span>
-                    <div class="event-text">
-                        <strong>${mainText}</strong>
-                        ${subText ? `<span class="event-subtext">${subText}</span>` : ''}
+            const scoreHTML = `
+            <div id="modalScoreBanner" class="score-banner ${isGoalRecent ? 'goal-active' : ''}">
+                ${isGoalRecent ? '<div class="modal-goal-flash">שער!</div>' : ''}
+                <div class="score-team home">${tHome}</div>
+                <div class="score-box">
+                    <span class="score-val">${goalsHome}</span>
+                    <span class="score-divider">-</span>
+                    <span class="score-val">${goalsAway}</span>
+                    <div class="score-minute">${matchStatus}</div>
+                </div>
+                <div class="score-team away">${tAway}</div>
+            </div>`;
+
+            const events = eventsData.response || [];
+            const stats = statsData.response || [];
+
+            let homeStatsArray = stats.length > 0 ? stats[0].statistics : [];
+            let awayStatsArray = stats.length > 1 ? stats[1].statistics : [];
+
+            let homePoss = getStatValue(homeStatsArray, "Ball Possession");
+            let awayPoss = getStatValue(awayStatsArray, "Ball Possession");
+            if (homePoss === '0' || !homePoss) homePoss = '50%';
+            if (awayPoss === '0' || !awayPoss) awayPoss = '50%';
+
+            let homeShotsOnGoal = getStatValue(homeStatsArray, "Shots on Goal");
+            let awayShotsOnGoal = getStatValue(awayStatsArray, "Shots on Goal");
+            let homeTotalShots = getStatValue(homeStatsArray, "Total Shots");
+            let awayTotalShots = getStatValue(awayStatsArray, "Total Shots");
+            let homeCorners = getStatValue(homeStatsArray, "Corner Kicks");
+            let awayCorners = getStatValue(awayStatsArray, "Corner Kicks");
+            let homeFouls = getStatValue(homeStatsArray, "Fouls");
+            let awayFouls = getStatValue(awayStatsArray, "Fouls");
+
+            // עכשיו הקופסה הזו *תמיד* תוזרק, גם אם ה-API עוד לא שלח נתונים
+            const statsHTML = `
+            <div id="modalStatsContainer" class="stats-container">
+                <div style="text-align: center; font-size: 11px; color: #8fa0b3; margin-bottom: 5px;">שליטה בכדור</div>
+                <div class="possession-labels">
+                    <span>${tHome} (${homePoss})</span>
+                    <span>${tAway} (${awayPoss})</span>
+                </div>
+                <div class="possession-bar">
+                    <div class="possession-home" style="width: ${homePoss}"></div>
+                    <div class="possession-away" style="width: ${awayPoss}"></div>
+                </div>
+                
+                <div class="extra-stats">
+                    <div class="stat-row">
+                        <span class="stat-val home-val">${homeShotsOnGoal}</span>
+                        <span class="stat-name">בעיטות למסגרת</span>
+                        <span class="stat-val away-val">${awayShotsOnGoal}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-val home-val">${homeTotalShots}</span>
+                        <span class="stat-name">סה"כ בעיטות</span>
+                        <span class="stat-val away-val">${awayTotalShots}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-val home-val">${homeCorners}</span>
+                        <span class="stat-name">קרנות</span>
+                        <span class="stat-val away-val">${awayCorners}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-val home-val">${homeFouls}</span>
+                        <span class="stat-name">עבירות</span>
+                        <span class="stat-val away-val">${awayFouls}</span>
                     </div>
                 </div>
-            `;
+            </div>`;
+            
+            // ניקוי אלמנטים ישנים לפני הזרקת החדשים (כדי למנוע כפילויות בריענון)
+            const oldStats = document.getElementById('modalStatsContainer');
+            if (oldStats) oldStats.remove();
+            const oldScore = document.getElementById('modalScoreBanner');
+            if (oldScore) oldScore.remove();
 
-            if (isHome) homeHtml += eventMarkup;
-            else awayHtml += eventMarkup;
-        });
+            document.querySelector('.modal-header').insertAdjacentHTML('afterend', scoreHTML);
+            document.getElementById('modalScoreBanner').insertAdjacentHTML('afterend', statsHTML);
 
-        homeHtml += '</div>';
-        awayHtml += '</div>';
+            // אירועי המשחק
+            let eventsHtml = '';
+            if (events.length === 0) {
+                eventsHtml = '<p style="text-align:center; width:100%; font-size:12px;">אין אירועים להצגה.</p>';
+            } else {
+                events.sort((a, b) => a.time.elapsed - b.time.elapsed);
 
-        content.innerHTML = homeHtml + awayHtml;
+                let homeHtml = `<div class="team-col"><div class="team-title">${tHome}</div>`;
+                let awayHtml = `<div class="team-col"><div class="team-title">${tAway}</div>`;
 
-    } catch (error) {
-        console.error(error);
-        content.innerHTML = '<p style="text-align:center; width:100%; color:#ff4d4d; font-size:12px;">שגיאה בטעינת הנתונים.</p>';
+                events.forEach(event => {
+                    let time = event.time.elapsed + (event.time.extra ? `+${event.time.extra}` : '');
+                    let playerName = typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name;
+                    let assistName = event.assist.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
+                    
+                    let icon = '';
+                    let mainText = '';
+                    let subText = '';
+
+                    if (event.type === 'Goal') {
+                        icon = '⚽';
+                        mainText = `שער! ${playerName}`;
+                        if (assistName) subText = `בישול: ${assistName}`;
+                    } else if (event.type === 'Card' && event.detail.includes('Yellow')) {
+                        icon = '🟨';
+                        mainText = playerName;
+                        subText = 'כרטיס צהוב';
+                    } else if (event.type === 'Card' && event.detail.includes('Red')) {
+                        icon = '🟥';
+                        mainText = playerName;
+                        subText = 'כרטיס אדום';
+                    } else if (event.type === 'subst') {
+                        icon = '🔄';
+                        mainText = `${playerName} (נכנס)`;
+                        subText = `${assistName} (יצא)`;
+                    } else {
+                        return; 
+                    }
+
+                    const isHome = event.team.name === homeTeam;
+                    const eventMarkup = `
+                        <div class="event-item ${isHome ? 'event-home' : 'event-away'}">
+                            <span class="event-time">${time}'</span>
+                            <span class="event-icon">${icon}</span>
+                            <div class="event-text">
+                                <strong>${mainText}</strong>
+                                ${subText ? `<span class="event-subtext">${subText}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+
+                    if (isHome) homeHtml += eventMarkup;
+                    else awayHtml += eventMarkup;
+                });
+
+                homeHtml += '</div>';
+                awayHtml += '</div>';
+                eventsHtml = homeHtml + awayHtml;
+            }
+
+            content.innerHTML = eventsHtml;
+
+            // חוסך לך כסף! אם המשחק הסתיים, עוצר את הריענון האוטומטי
+            if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
+                if (modalRefreshTimer) {
+                    clearInterval(modalRefreshTimer);
+                    modalRefreshTimer = null;
+                }
+            }
+
+        } catch (error) {
+            console.error(error);
+            if (isInitialLoad) {
+                content.innerHTML = '<p style="text-align:center; width:100%; color:#ff4d4d; font-size:12px;">שגיאה בטעינת הנתונים.</p>';
+            }
+        }
     }
+
+    // הפעלה ראשונה מיד בלחיצה
+    await updateModalData(true);
+    
+    // מפעיל את הריענון האוטומטי כל 60 שניות (רק למשחקים פעילים)
+    modalRefreshTimer = setInterval(() => updateModalData(false), 60000);
 }
