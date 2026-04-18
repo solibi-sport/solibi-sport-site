@@ -500,6 +500,35 @@
 
     <script>
         const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3'; 
+        // === מנוע תרגום ואיסוף מילים חסרות (לדף הבית) ===
+    const missingWords = new Set();
+
+    window.translateName = function(name) {
+        if (!name) return name;
+        
+        // כאן 'translations' הוא שם המשתנה של המילון שלך מהקובץ החיצוני.
+        // (אם קראת לו בשם אחר כמו myDictionary, שנה את זה פה)
+        if (typeof translations !== 'undefined' && translations[name]) {
+            return translations[name];
+        }
+        
+        missingWords.add(name);
+        return name;
+    };
+
+    window.printMissing = function() {
+        if (missingWords.size === 0) {
+            console.log("הכל מתורגם! אין מילים חסרות כרגע.");
+            return;
+        }
+        console.log("הנה המילים שחסרות לך (מוכן להעתקה):");
+        let result = "";
+        missingWords.forEach(word => {
+            result += `"${word}": "",\n`;
+        });
+        console.log(result);
+    };
+    // === סוף מנוע התרגום ===
         
         const staticUpdatesHTML = `
             <div style="display: flex; flex-direction: column; width: 100%;">
