@@ -12894,5 +12894,12 @@ const myDictionary = {
     "N. Sabag": "נ. סבג",
     "G. Diba": "ג. דיבה",
     "R. Shlomo": "ר. שלמה",
-    "B. Lederman": "ב. לדרמן"
+    "B. Lederman": "ב. לדרמן",
+    "Premier League , Championship Round": "פלייאוף עליון",
+"Premier League , Relegation Round": "פלייאוף תחתון",
+"Premier League": "עונה סדירה",
+"Pro League , Championship Round": "פלייאוף עליון",
+"Pro League , Qualifying Round": "פלייאוף אירופה",
+"Pro League , Relegation Round": "פלייאוף תחתון",
+"Pro League": "עונה סדירה",
         };
