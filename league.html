@@ -497,6 +497,42 @@
                 }
 
                 // סדר העדיפויות ברשימה הנפתחת (טבלה כללית תמיד בראש)
+                // === התיקון: מוסיף "טבלה כללית" שמתעדכנת ברצף *רק* לליגת העל (390) ===
+                if (parseInt(LEAGUE_ID) === 390 && standings.length > 1) {
+                    let teamMap = new Map();
+                    standings.forEach(group => {
+                        group.forEach(item => {
+                            if (!teamMap.has(item.team.id)) {
+                                teamMap.set(item.team.id, item);
+                            } else {
+                                // אם הקבוצה קיימת, לוקחים את הנתון עם הכי הרבה משחקים (הפלייאוף)
+                                let existing = teamMap.get(item.team.id);
+                                if (item.all.played > existing.all.played) {
+                                    teamMap.set(item.team.id, item);
+                                }
+                            }
+                        });
+                    });
+                    
+                    let combined = Array.from(teamMap.values());
+                    combined.sort((a, b) => {
+                        if (b.points !== a.points) return b.points - a.points;
+                        if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
+                        return b.all.goals.for - a.all.goals.for;
+                    });
+                    
+                    let combinedWithRanks = combined.map((item, index) => {
+                        let newItem = JSON.parse(JSON.stringify(item));
+                        newItem.rank = index + 1;
+                        newItem.group = "טבלה כללית"; 
+                        return newItem;
+                    });
+                    
+                    // דוחף את הטבלה הכללית להיות הראשונה במערך
+                    standings.unshift(combinedWithRanks);
+                }
+
+                // סדר העדיפויות ברשימה הנפתחת (מוודא שהטבלה הכללית תמיד מופיעה ראשונה)
                 const orderPriority = {
                     "טבלה כללית": 1,
                     "עונה סדירה": 2,
