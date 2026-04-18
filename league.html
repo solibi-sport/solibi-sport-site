@@ -442,6 +442,30 @@ async function getStandingsFromWikipedia() {
     const container = document.getElementById('api-table');
     container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
 
+    // מאגר הסמלים החכם - מכסה את כל שגיאות הכתיב האפשריות של ויקיפדיה
+    const leumitLogos = {
+        "פתח תקווה": "https://upload.wikimedia.org/wikipedia/en/d/dd/Maccabi_Petah_Tikva_FC.svg",
+        "הרצליה": "https://upload.wikimedia.org/wikipedia/he/e/e0/Maccabi_Herzliya.svg",
+        "רמת-גן": "https://upload.wikimedia.org/wikipedia/he/3/30/Hapoel_Ramat_Gan_logo.svg",
+        "רמת גן": "https://upload.wikimedia.org/wikipedia/he/3/30/Hapoel_Ramat_Gan_logo.svg",
+        "ראשון לציון": "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Rishon_LeZion_logo.svg",
+        "כפר-שלם": "https://upload.wikimedia.org/wikipedia/he/d/dd/Hapoel_Kfar_Shalem_logo.svg",
+        "כפר שלם": "https://upload.wikimedia.org/wikipedia/he/d/dd/Hapoel_Kfar_Shalem_logo.svg",
+        "בני יהודה": "https://upload.wikimedia.org/wikipedia/he/c/c5/Bnei_Yehuda_logo.svg",
+        "קריית ים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
+        "קרית ים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
+        "כפר סבא": "https://upload.wikimedia.org/wikipedia/he/e/e7/Hapoel_Kfar_Saba_logo.svg",
+        "רעננה": "https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_Ra%27anana_FC_logo.png",
+        "יפו": "https://upload.wikimedia.org/wikipedia/he/c/c8/Maccabi_Jaffa_FC_logo.svg",
+        "עפולה": "https://upload.wikimedia.org/wikipedia/he/9/9c/Hapoel_Afula_logo.svg",
+        "כפר קאסם": "https://upload.wikimedia.org/wikipedia/he/6/64/FC_Kafr_Qasim_logo.svg",
+        "נוף הגליל": "https://upload.wikimedia.org/wikipedia/he/a/af/Hapoel_Nof_HaGalil_logo.svg",
+        "מודיעין": "https://upload.wikimedia.org/wikipedia/he/0/07/Ironi_Modiin_logo.png",
+        "עכו": "https://upload.wikimedia.org/wikipedia/he/1/11/Hapoel_Acre_logo.svg",
+        "חדרה": "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Hadera_logo.svg",
+        "טבריה": "https://upload.wikimedia.org/wikipedia/he/f/fd/Ironi_Tiberias_logo.svg"
+    };
+
     try {
         const nextYear = parseInt(SEASON) + 1;
         let pageTitle = encodeURIComponent(`עונת_${SEASON}/${nextYear}_בליגה_הלאומית`);
@@ -487,7 +511,6 @@ async function getStandingsFromWikipedia() {
         uiHtml += `</select></div><div id="wiki-render-area"></div>`;
         container.innerHTML = uiHtml;
 
-        // פונקציית עזר חכמה שמנקה גם רווחים וגם מספרי הערות מויקיפדיה (כמו [1], [2])
         const cleanWikiText = (text) => text.replace(/\n/g, '').replace(/\[\d+\]/g, '').trim();
 
         window.renderWikiTable = function(index) {
@@ -514,7 +537,7 @@ async function getStandingsFromWikipedia() {
             let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
 
             rows.forEach((row, rowIdx) => {
-                if (rowIdx === 0) return; // מדלג על הכותרת
+                if (rowIdx === 0) return;
                 const cols = row.querySelectorAll('td, th');
                 if (cols.length >= 8) {
                     
@@ -523,20 +546,16 @@ async function getStandingsFromWikipedia() {
                     
                     const teamCell = cols[colMap.team || 1];
                     let teamName = '-';
-                    let teamLogo = 'https://media.api-sports.io/football/leagues/384.png'; // סמל ברירת מחדל
+                    let teamLogo = 'https://media.api-sports.io/football/leagues/384.png'; 
                     
                     if (teamCell) {
                         teamName = cleanWikiText(teamCell.innerText);
                         
-                        // קסם! שולפים את הקישור לתמונה מתוך תא הקבוצה בויקיפדיה
-                        const imgEl = teamCell.querySelector('img');
-                        if (imgEl) {
-                            let src = imgEl.getAttribute('src');
-                            if (src) {
-                                if (src.startsWith('//')) src = 'https:' + src;
-                                // מגדילים קצת את איכות התמונה שתראה טוב
-                                src = src.replace(/2\dpx-/, '40px-');
-                                teamLogo = src;
+                        // מחפשים במאגר שלנו לפי שם הקבוצה (מתעלמים מהסמל השגוי של ויקיפדיה)
+                        for (const [key, url] of Object.entries(leumitLogos)) {
+                            if (teamName.includes(key)) {
+                                teamLogo = url;
+                                break;
                             }
                         }
                     }
