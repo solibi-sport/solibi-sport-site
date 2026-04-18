@@ -407,26 +407,117 @@
 
         let allStandingsData = []; 
 
-        async function getStandings() {
-            try {
-                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
-                const data = await response.json();
+       // --- הפונקציה המעודכנת (מחליפה את הישנה) ---
+async function getStandings() {
+    const container = document.getElementById('api-table');
 
-                if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
-                    document.getElementById('api-table').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה זמינים</div>';
-                    return;
-                }
+    // בדיקה: אם זו הליגה הלאומית (ID 384), נפעיל את המנוע של ויקיפדיה
+    if (parseInt(LEAGUE_ID) === 384) {
+        getStandingsFromWikipedia();
+        return;
+    }
 
-                allStandingsData = data.response[0].league.standings;
-                buildStandingsUI();
+    // הקוד הרגיל לשאר הליגות (אנגליה, ספרד וכו')
+    try {
+        const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
+            headers: { 'x-apisports-key': API_KEY }
+        });
+        const data = await response.json();
 
-            } catch (error) {
-                console.error("שגיאה במשיכת נתוני טבלה:", error);
-                document.getElementById('api-table').innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
-            }
+        if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה זמינים</div>';
+            return;
         }
+
+        allStandingsData = data.response[0].league.standings;
+        buildStandingsUI();
+
+    } catch (error) {
+        console.error("שגיאה במשיכת נתוני טבלה:", error);
+        container.innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
+    }
+}
+
+// --- הפונקציה החדשה לגמרי שמביאה נתונים מויקיפדיה (להוסיף אותה כאן) ---
+async function getStandingsFromWikipedia() {
+    const container = document.getElementById('api-table');
+    container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
+
+    try {
+        const pageTitle = encodeURIComponent("ליגה_לאומית_בכדורגל_2025/2026");
+        const wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
+
+        const res = await fetch(wikiUrl);
+        const data = await res.json();
+        const htmlContent = data.parse.text["*"];
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlContent, 'text/html');
+
+        const tables = doc.querySelectorAll('table.wikitable');
+        let standingsTable = null;
+        
+        tables.forEach(t => {
+            if (t.innerText.includes("קבוצה") && t.innerText.includes("נקודות")) {
+                standingsTable = t;
+            }
+        });
+
+        if (!standingsTable) throw new Error("לא נמצאה טבלה");
+
+        // מיפוי עמודות חכם
+        const headerRow = standingsTable.querySelectorAll('tr')[0].querySelectorAll('th, td');
+        let colMap = {};
+        headerRow.forEach((h, index) => {
+            const text = h.innerText.trim();
+            if (text.includes('מיקום')) colMap.rank = index;
+            if (text.includes('קבוצה')) colMap.team = index;
+            if (text.includes('משחקים') || text === 'מש') colMap.played = index;
+            if (text.includes('ניצחונות') || text === 'נצ') colMap.win = index;
+            if (text.includes('תיקו')) colMap.draw = index;
+            if (text.includes('הפסדים') || text === 'הפ') colMap.lose = index;
+            if (text.includes('זכות') || text === 'שז') colMap.goalsFor = index;
+            if (text.includes('חובה') || text === 'שח') colMap.goalsAgainst = index;
+            if (text.includes('הפרש')) colMap.diff = index;
+            if (text.includes('נקודות') || text === 'נק') colMap.points = index;
+        });
+
+        const rows = standingsTable.querySelectorAll('tr');
+        let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
+
+        rows.forEach((row, index) => {
+            if (index === 0) return;
+            const cols = row.querySelectorAll('td, th');
+            if (cols.length >= 8) {
+                const getText = (idx) => cols[idx] ? cols[idx].innerText.replace(/\n/g, '').trim() : '-';
+                
+                const rank = getText(colMap.rank || 0);
+                const teamName = getText(colMap.team || 1);
+                
+                html += `<tr>
+                    <td>-</td>
+                    <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
+                    <td><div class="team-identity"><span class="team-name-text">${teamName}</span></div></td>
+                    <td>${getText(colMap.played || 2)}</td>
+                    <td>${getText(colMap.win || 3)}</td>
+                    <td>${getText(colMap.draw || 4)}</td>
+                    <td>${getText(colMap.lose || 5)}</td>
+                    <td>${getText(colMap.goalsFor || 6)}</td>
+                    <td>${getText(colMap.goalsAgainst || 7)}</td>
+                    <td>${getText(colMap.diff || 8)}</td>
+                    <td><strong style="color: var(--brand-green);">${getText(colMap.points || 9)}</strong></td>
+                </tr>`;
+            }
+        });
+
+        html += `</table><div style="font-size:10px; text-align:center; margin-top:10px; color:#8fa0b3;">מקור נתונים: ויקיפדיה</div>`;
+        container.innerHTML = html;
+
+    } catch (error) {
+        console.error("Wikipedia Scrape Error:", error);
+        container.innerHTML = '<div style="text-align:center; padding: 30px;">נתוני הליגה הלאומית אינם זמינים כרגע</div>';
+    }
+}
 
         function buildStandingsUI() {
             const container = document.getElementById('api-table');
