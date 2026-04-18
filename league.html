@@ -418,49 +418,128 @@ if (titleContainer) {
             console.log("הפנקס נוקה! אפשר להתחיל לסרוק מחדש.");
         }
 
-        async function getStandings() {
-            try {
-                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
-                const data = await response.json();
-                if(data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
-                    document.getElementById('api-table').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה זמינים</div>';
-                    return;
-                }
+        let allStandingsData = []; // משתנה גלובלי שישמור את כל הבתים
 
-                const standings = data.response[0].league.standings[0];
-                let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
-                
-                standings.forEach(item => {
-                    const hebrewName = translateName(item.team.name);
-                    let trendHtml = '<span class="trend-same">▬</span>';
-                    if (item.status === 'up') trendHtml = '<span class="trend-up">▲</span>';
-                    if (item.status === 'down') trendHtml = '<span class="trend-down">▼</span>';
-                    
-                    html += `<tr>
-                        <td>${trendHtml}</td>
-                        <td style="color: #94a3b8; font-weight: bold;">${item.rank}</td>
-                        <td>
-                            <div class="team-identity">
-                                <img src="${item.team.logo}" class="team-logo">
-                                <span class="team-name-text">${hebrewName}</span>
-                            </div>
-                        </td>
-                        <td>${item.all.played}</td>
-                        <td>${item.all.win}</td>
-                        <td>${item.all.draw}</td>
-                        <td>${item.all.lose}</td>
-                        <td>${item.all.goals.for}</td>
-                        <td>${item.all.goals.against}</td>
-                        <td dir="ltr">${item.goalsDiff > 0 ? '+' + item.goalsDiff : item.goalsDiff}</td>
-                        <td class="points">${item.points}</td>
-                    </tr>`;
-                });
-                html += `</table>`;
-                document.getElementById('api-table').innerHTML = html;
-            } catch (e) {}
+async function getStandings() {
+    try {
+        const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
+            headers: { 'x-apisports-key': API_KEY }
+        });
+        const data = await response.json();
+
+        if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
+            document.getElementById('api-table').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה זמינים</div>';
+            return;
         }
+
+        // פה הקסם: לוקחים את כל מערך הבתים/פלייאופים ולא רק את הראשון [0]
+        allStandingsData = data.response[0].league.standings;
+        buildStandingsUI();
+
+    } catch (error) {
+        console.error("שגיאה במשיכת נתוני טבלה:", error);
+        document.getElementById('api-table').innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
+    }
+}
+
+// פונקציה שבונה את הרשימה הנפתחת (אם צריך) ואת אזור הטבלה
+function buildStandingsUI() {
+    const container = document.getElementById('api-table');
+    
+    // אם יש רק בית אחד (כמו בליגה האנגלית), מציירים אותו רגיל
+    if (allStandingsData.length === 1) {
+        container.innerHTML = generateTableHtml(allStandingsData[0]);
+        return;
+    }
+
+    // אם יש כמה בתים, בונים רשימה נפתחת (Select)
+    let uiHtml = `
+        <div style="margin-bottom: 15px; text-align: center;">
+            <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
+    `;
+    
+    // עוברים על כל הבתים ומוסיפים אותם לרשימה הנפתחת
+    allStandingsData.forEach((groupArray, index) => {
+        let groupName = groupArray[0].group; // השם באנגלית מה-API (למשל Championship Group)
+        let translatedGroupName = typeof translateName === 'function' ? translateName(groupName) : groupName;
+        uiHtml += `<option value="${index}">${translatedGroupName}</option>`;
+    });
+    
+    // אופציה לטבלה כללית (משולבת) שמאחדת את כולם
+    uiHtml += `<option value="combined">טבלה כללית (משולבת)</option>`;
+    uiHtml += `</select></div><div id="table-render-area"></div>`;
+    
+    container.innerHTML = uiHtml;
+    
+    // מציגים כברירת מחדל את הבית הראשון שמצאנו
+    document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[0]);
+    
+    // מאזין: כשמשנים משהו ברשימה הנפתחת, הטבלה מתעדכנת מיד
+    document.getElementById('group-selector').addEventListener('change', function(e) {
+        const val = e.target.value;
+        if (val === 'combined') {
+            renderCombinedTable();
+        } else {
+            document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[parseInt(val)]);
+        }
+    });
+}
+
+// פונקציה שמאחדת את כל הבתים ומסדרת לפי נקודות
+function renderCombinedTable() {
+    let combined = [];
+    allStandingsData.forEach(group => { combined = combined.concat(group); });
+    
+    // מיון הקבוצות: קודם לפי נקודות, אחר כך הפרש שערים, ואז שערי זכות
+    combined.sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
+        return b.all.goals.for - a.all.goals.for;
+    });
+    
+    // מסדרים את המיקומים (Rank) מחדש מ-1 עד הסוף
+    let combinedWithRanks = combined.map((item, index) => {
+        let newItem = JSON.parse(JSON.stringify(item)); // העתק נקי
+        newItem.rank = index + 1;
+        return newItem;
+    });
+
+    document.getElementById('table-render-area').innerHTML = generateTableHtml(combinedWithRanks);
+}
+
+// הפונקציה המקורית שלך שרק מייצרת את ה-HTML של הטבלה
+function generateTableHtml(standingsArray) {
+    let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
+
+    standingsArray.forEach(item => {
+        const hebrewName = typeof translateName === 'function' ? translateName(item.team.name) : item.team.name;
+        
+        let trendHtml = '<span class="trend-same">-</span>';
+        if (item.status === 'up') trendHtml = '<span class="trend-up">▲</span>';
+        if (item.status === 'down') trendHtml = '<span class="trend-down">▼</span>';
+
+        html += `<tr>
+            <td>${trendHtml}</td>
+            <td style="color: #94a3b8; font-weight: bold;">${item.rank}</td>
+            <td>
+                <div class="team-identity">
+                    <img src="${item.team.logo}" class="team-logo">
+                    <span class="team-name-text">${hebrewName}</span>
+                </div>
+            </td>
+            <td>${item.all.played}</td>
+            <td>${item.all.win}</td>
+            <td>${item.all.draw}</td>
+            <td>${item.all.lose}</td>
+            <td>${item.all.goals.for}</td>
+            <td>${item.all.goals.against}</td>
+            <td>${item.goalsDiff}</td>
+            <td>${item.points}</td>
+        </tr>`;
+    });
+    html += `</table>`;
+    return html;
+}
         
         async function loadPlayerStats(endpoint) {
             const container = document.getElementById('api-stats-list');
