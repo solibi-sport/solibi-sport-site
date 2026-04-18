@@ -602,55 +602,53 @@
 }
 
         function rotatePanelContent() {
-            const contentDiv = document.getElementById('panel-content');
-            const titleSpan = document.getElementById('panel-title');
-            const iconSpan = document.getElementById('panel-icon');
-            const headerDiv = document.getElementById('panel-header');
+    const contentDiv = document.getElementById('panel-content');
+    const titleSpan = document.getElementById('panel-title');
+    const iconSpan = document.getElementById('panel-icon');
+    const headerDiv = document.getElementById('panel-header');
 
-            contentDiv.style.opacity = 0;
+    contentDiv.style.opacity = 0;
 
-            setTimeout(() => {
-                if (isShowingUpdates) {
-                    titleSpan.innerText = 'עידכונים חמים';
-                    iconSpan.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
-                    headerDiv.style.borderBottomColor = 'var(--brand-green)';
-                    contentDiv.innerHTML = staticUpdatesHTML;
-                    contentDiv.style.opacity = 1;
+    setTimeout(() => {
+        if (isShowingUpdates) {
+            titleSpan.innerText = 'עידכונים חמים';
+            iconSpan.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+            headerDiv.style.borderBottomColor = 'var(--brand-green)';
+            contentDiv.innerHTML = staticUpdatesHTML;
+            contentDiv.style.opacity = 1;
 
-                    isShowingUpdates = false; 
-                    panelTimer = setTimeout(rotatePanelContent, 16000); 
-                    
-                } else {
-                    titleSpan.innerText = 'תוצאות לייב';
-                    iconSpan.innerHTML = '<span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>';
-                    headerDiv.style.borderBottomColor = 'red'; 
-                    
-                    if (livePages.length > 0) {
-                        contentDiv.innerHTML = livePages[currentLivePageIndex];
-                        currentLivePageIndex++;
-                        if (currentLivePageIndex >= livePages.length) {
-                            isShowingUpdates = true;
-                        }
-                        panelTimer = setTimeout(rotatePanelContent, 6000); 
-                    } else {
-                        contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: var(--text-dark);">אין כרגע משחקים חיים בעולם ⚽</div>';
-                        isShowingUpdates = true;
-                        panelTimer = setTimeout(rotatePanelContent, 6000); 
-                    }
-                    
-                    contentDiv.style.opacity = 1;
-                }
-            }, 400); 
-        }
-
-        window.addEventListener('DOMContentLoaded', async () => {
-            document.getElementById('panel-content').innerHTML = staticUpdatesHTML;
-            await fetchLiveMatches();
-            panelTimer = setTimeout(rotatePanelContent, 16000);
+            isShowingUpdates = false; 
+            panelTimer = setTimeout(rotatePanelContent, 16000); 
             
-            setInterval(fetchLiveMatches, 60000);
-        });
-
-    </script>
-</body>
-</html>
+        } else {
+            titleSpan.innerText = 'תוצאות לייב';
+            iconSpan.innerHTML = '<span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>';
+            headerDiv.style.borderBottomColor = 'red'; 
+            
+            // הוספנו בדיקת ביטחון שהמערך באמת קיים
+            if (typeof livePages !== 'undefined' && livePages.length > 0) { 
+                
+                // מוודאים שאנחנו לא חורגים ממספר העמודים (במקרה שהמשחקים התעדכנו ברקע)
+                if (currentLivePageIndex >= livePages.length) {
+                    currentLivePageIndex = 0;
+                }
+                
+                contentDiv.innerHTML = livePages[currentLivePageIndex];
+                currentLivePageIndex++;
+                
+                if (currentLivePageIndex >= livePages.length) {
+                    isShowingUpdates = true;
+                    // === התיקון הקריטי: מאפסים את המונה לסיבוב הבא! ===
+                    currentLivePageIndex = 0; 
+                }
+                panelTimer = setTimeout(rotatePanelContent, 6000); 
+            } else {
+                contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים בעולם 🌍</div>';
+                isShowingUpdates = true;
+                panelTimer = setTimeout(rotatePanelContent, 6000); 
+            }
+            
+            contentDiv.style.opacity = 1;
+        }
+    }, 400); 
+}
