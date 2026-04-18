@@ -438,31 +438,9 @@ async function getStandings() {
     }
 }
 
-// --- 2. הפונקציה של ויקיפדיה (כולל הסמלים מהתמונה שלך!) ---
 async function getStandingsFromWikipedia() {
     const container = document.getElementById('api-table');
     container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
-
-    // מאגר הסמלים של הליגה הלאומית 
-    const leumitLogos = {
-        "פתח תקווה": "https://upload.wikimedia.org/wikipedia/en/d/dd/Maccabi_Petah_Tikva_FC.svg",
-        "הרצליה": "https://upload.wikimedia.org/wikipedia/he/e/e0/Maccabi_Herzliya.svg",
-        "רמת גן": "https://upload.wikimedia.org/wikipedia/he/3/30/Hapoel_Ramat_Gan_logo.svg",
-        "ראשון לציון": "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Rishon_LeZion_logo.svg",
-        "כפר שלם": "https://upload.wikimedia.org/wikipedia/he/d/dd/Hapoel_Kfar_Shalem_logo.svg",
-        "בני יהודה": "https://upload.wikimedia.org/wikipedia/he/c/c5/Bnei_Yehuda_logo.svg",
-        "קרית ים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
-        "כפר סבא": "https://upload.wikimedia.org/wikipedia/he/e/e7/Hapoel_Kfar_Saba_logo.svg",
-        "רעננה": "https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_Ra%27anana_FC_logo.png",
-        "יפו": "https://upload.wikimedia.org/wikipedia/he/c/c8/Maccabi_Jaffa_FC_logo.svg",
-        "עפולה": "https://upload.wikimedia.org/wikipedia/he/9/9c/Hapoel_Afula_logo.svg",
-        "כפר קאסם": "https://upload.wikimedia.org/wikipedia/he/6/64/FC_Kafr_Qasim_logo.svg",
-        "נוף הגליל": "https://upload.wikimedia.org/wikipedia/he/a/af/Hapoel_Nof_HaGalil_logo.svg",
-        "מודיעין": "https://upload.wikimedia.org/wikipedia/he/0/07/Ironi_Modiin_logo.png",
-        "עכו": "https://upload.wikimedia.org/wikipedia/he/1/11/Hapoel_Acre_logo.svg",
-        "חדרה": "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Hadera_logo.svg",
-        "טבריה": "https://upload.wikimedia.org/wikipedia/he/f/fd/Ironi_Tiberias_logo.svg"
-    };
 
     try {
         const nextYear = parseInt(SEASON) + 1;
@@ -509,6 +487,9 @@ async function getStandingsFromWikipedia() {
         uiHtml += `</select></div><div id="wiki-render-area"></div>`;
         container.innerHTML = uiHtml;
 
+        // פונקציית עזר חכמה שמנקה גם רווחים וגם מספרי הערות מויקיפדיה (כמו [1], [2])
+        const cleanWikiText = (text) => text.replace(/\n/g, '').replace(/\[\d+\]/g, '').trim();
+
         window.renderWikiTable = function(index) {
             const standingsTable = window.wikiTablesData[index];
             const renderArea = document.getElementById('wiki-render-area');
@@ -533,48 +514,57 @@ async function getStandingsFromWikipedia() {
             let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
 
             rows.forEach((row, rowIdx) => {
-                if (rowIdx === 0) return;
+                if (rowIdx === 0) return; // מדלג על הכותרת
                 const cols = row.querySelectorAll('td, th');
                 if (cols.length >= 8) {
-                    const getText = (idx) => cols[idx] ? cols[idx].innerText.replace(/\n/g, '').trim() : '-';
                     
-                    const rank = getText(colMap.rank || 0);
-                    const teamName = getText(colMap.team || 1);
-                    const points = getText(colMap.points || 9);
+                    const rank = cols[colMap.rank || 0] ? cleanWikiText(cols[colMap.rank || 0].innerText) : '-';
+                    const points = cols[colMap.points || 9] ? cleanWikiText(cols[colMap.points || 9].innerText) : '-';
                     
-                    if(points !== '-' && teamName !== '-') {
+                    const teamCell = cols[colMap.team || 1];
+                    let teamName = '-';
+                    let teamLogo = 'https://media.api-sports.io/football/leagues/384.png'; // סמל ברירת מחדל
+                    
+                    if (teamCell) {
+                        teamName = cleanWikiText(teamCell.innerText);
                         
-                        let teamLogo = "https://media.api-sports.io/football/leagues/384.png"; 
-                        for (const [key, url] of Object.entries(leumitLogos)) {
-                            if (teamName.includes(key)) {
-                                teamLogo = url;
-                                break;
+                        // קסם! שולפים את הקישור לתמונה מתוך תא הקבוצה בויקיפדיה
+                        const imgEl = teamCell.querySelector('img');
+                        if (imgEl) {
+                            let src = imgEl.getAttribute('src');
+                            if (src) {
+                                if (src.startsWith('//')) src = 'https:' + src;
+                                // מגדילים קצת את איכות התמונה שתראה טוב
+                                src = src.replace(/2\dpx-/, '40px-');
+                                teamLogo = src;
                             }
                         }
-
+                    }
+                    
+                    if(points !== '-' && teamName !== '-' && teamName !== '') {
                         html += `<tr>
                             <td>-</td>
                             <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
                             <td>
                                 <div class="team-identity" style="display: flex; align-items: center; gap: 8px;">
-                                    <img src="${teamLogo}" alt="logo" style="width: 18px; height: 18px; object-fit: contain;" onerror="this.style.display='none'">
+                                    <img src="${teamLogo}" alt="logo" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='https://media.api-sports.io/football/leagues/384.png'">
                                     <span class="team-name-text">${teamName}</span>
                                 </div>
                             </td>
-                            <td>${getText(colMap.played || 2)}</td>
-                            <td>${getText(colMap.win || 3)}</td>
-                            <td>${getText(colMap.draw || 4)}</td>
-                            <td>${getText(colMap.lose || 5)}</td>
-                            <td>${getText(colMap.goalsFor || 6)}</td>
-                            <td>${getText(colMap.goalsAgainst || 7)}</td>
-                            <td dir="ltr" style="text-align:center;">${getText(colMap.diff || 8)}</td>
+                            <td>${cols[colMap.played || 2] ? cleanWikiText(cols[colMap.played || 2].innerText) : '-'}</td>
+                            <td>${cols[colMap.win || 3] ? cleanWikiText(cols[colMap.win || 3].innerText) : '-'}</td>
+                            <td>${cols[colMap.draw || 4] ? cleanWikiText(cols[colMap.draw || 4].innerText) : '-'}</td>
+                            <td>${cols[colMap.lose || 5] ? cleanWikiText(cols[colMap.lose || 5].innerText) : '-'}</td>
+                            <td>${cols[colMap.goalsFor || 6] ? cleanWikiText(cols[colMap.goalsFor || 6].innerText) : '-'}</td>
+                            <td>${cols[colMap.goalsAgainst || 7] ? cleanWikiText(cols[colMap.goalsAgainst || 7].innerText) : '-'}</td>
+                            <td dir="ltr" style="text-align:center;">${cols[colMap.diff || 8] ? cleanWikiText(cols[colMap.diff || 8].innerText) : '-'}</td>
                             <td><strong style="color: var(--brand-green);">${points}</strong></td>
                         </tr>`;
                     }
                 }
             });
 
-            html += `</table><div style="font-size:10px; text-align:center; margin-top:10px; color:#8fa0b3;">מקור נתונים: ויקיפדיה</div>`;
+            html += `</table><div style="font-size:10px; text-align:center; margin-top:10px; color:#8fa0b3;">מקור נתונים: ויקיפדיה עברית</div>`;
             renderArea.innerHTML = html;
         };
 
