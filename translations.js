@@ -12902,4 +12902,9 @@ const myDictionary = {
 "Pro League , Qualifying Round": "פלייאוף אירופה",
 "Pro League , Relegation Round": "פלייאוף תחתון",
 "Pro League": "עונה סדירה",
+    "Round of 16": "שמינית גמר",
+"Quarter-finals": "רבע גמר",
+"Semi-finals": "חצי גמר",
+"Final": "גמר",
+"Knockout Round Play-offs": "פלייאוף נוקאאוט"
         };
