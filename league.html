@@ -407,17 +407,17 @@
 
         let allStandingsData = []; 
 
-       // --- הפונקציה המעודכנת (מחליפה את הישנה) ---
+      // --- 1. הפונקציה הראשית (מתקנת את כל הליגות) ---
 async function getStandings() {
     const container = document.getElementById('api-table');
 
-    // בדיקה: אם זו הליגה הלאומית (ID 384), נפעיל את המנוע של ויקיפדיה
+    // אם זו הליגה הלאומית, הולכים לויקיפדיה
     if (parseInt(LEAGUE_ID) === 384) {
         getStandingsFromWikipedia();
         return;
     }
 
-    // הקוד הרגיל לשאר הליגות (אנגליה, ספרד וכו')
+    // הקוד הרגיל לשאר הליגות מ-API
     try {
         const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
             headers: { 'x-apisports-key': API_KEY }
@@ -438,11 +438,12 @@ async function getStandings() {
     }
 }
 
-async async function getStandingsFromWikipedia() {
+// --- 2. הפונקציה של ויקיפדיה (כולל הסמלים מהתמונה שלך!) ---
+async function getStandingsFromWikipedia() {
     const container = document.getElementById('api-table');
     container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
 
-    // מאגר הסמלים של הליגה הלאומית (לפי התמונה שלך)
+    // מאגר הסמלים של הליגה הלאומית 
     const leumitLogos = {
         "פתח תקווה": "https://upload.wikimedia.org/wikipedia/en/d/dd/Maccabi_Petah_Tikva_FC.svg",
         "הרצליה": "https://upload.wikimedia.org/wikipedia/he/e/e0/Maccabi_Herzliya.svg",
@@ -543,8 +544,7 @@ async async function getStandingsFromWikipedia() {
                     
                     if(points !== '-' && teamName !== '-') {
                         
-                        // --- המנוע שמוצא את הסמל לפי שם הקבוצה ---
-                        let teamLogo = "https://media.api-sports.io/football/leagues/384.png"; // סמל ברירת מחדל
+                        let teamLogo = "https://media.api-sports.io/football/leagues/384.png"; 
                         for (const [key, url] of Object.entries(leumitLogos)) {
                             if (teamName.includes(key)) {
                                 teamLogo = url;
@@ -589,7 +589,6 @@ async async function getStandingsFromWikipedia() {
         container.innerHTML = '<div style="text-align:center; padding: 30px;">נתוני הליגה הלאומית אינם זמינים כרגע</div>';
     }
 }
-
         function buildStandingsUI() {
             const container = document.getElementById('api-table');
             
