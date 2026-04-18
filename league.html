@@ -606,35 +606,28 @@ async function getStandingsFromWikipedia() {
         return;
     }
 
-    // מתורגמן חכם לשמות הטבלאות
     const translateGroupName = (name) => {
         if (!name) return "טבלה כללית";
         let lowerName = name.toLowerCase();
-        
-        // התיקון לבלגיה - פלייאוף אמצעי
         if (lowerName.includes('conference') || lowerName.includes('qualifying') || lowerName.includes('europe')) return "פלייאוף אמצעי";
-        
         if (lowerName.includes('championship')) return "פלייאוף עליון";
         if (lowerName.includes('relegation')) return "פלייאוף תחתון";
         if (lowerName.includes('regular')) return "עונה סדירה";
         if (lowerName.includes('group')) return name.replace('Group', 'בית').replace('group', 'בית');
         if (lowerName.includes('western')) return "מערב";
         if (lowerName.includes('eastern')) return "מזרח";
-        
-        // אם ה-API שולח את השם המלא של הליגה, פשוט נכתוב "טבלה כללית"
-        if (lowerName.includes('primera') || lowerName.includes('league') || name === allStandingsData[0][0].league) return "טבלה כללית";
-        
-        return name;
+        return "טבלה כללית";
     };
 
-    // === התיקון החשוב: אם יש רק טבלה אחת, לא מציגים רשימה נפתחת בכלל! ===
-    if (allStandingsData.length === 1) {
+    // רשימת הליגות ה"רגילות" שבהן תמיד נציג רק טבלה אחת בלי תפריט נפתח (אנגליה, ספרד, צרפת, איטליה, גרמניה, ליגת האלופות, אירופית, קונפרנס וכו')
+    const regularLeagues = [39, 140, 135, 78, 61, 2, 3, 848]; 
+
+    if (allStandingsData.length === 1 || regularLeagues.includes(parseInt(LEAGUE_ID))) {
         container.innerHTML = '<div id="standings-render-area"></div>';
-        renderStandingsTable(0); // מצייר ישר את הטבלה הראשונה
+        renderStandingsTable(0); 
         return;
     }
 
-    // אם יש פיצולים (MLS, ארגנטינה, פלייאוף וכו') - בונים רשימה נפתחת
     let uiHtml = `
         <div style="margin-bottom: 15px; text-align: center;">
             <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
@@ -901,130 +894,189 @@ async function getStandingsFromWikipedia() {
             if (currentDateIndex >= allDates.length) currentDateIndex = allDates.length - 1;
             renderFixturesByDate();
         }
-
-        function renderFixturesByDate() {
-            const fixturesContainer = document.getElementById('api-fixtures-list');
-
-            if (!allMatches || allMatches.length === 0) {
-                fixturesContainer.innerHTML = '<div style="text-align:center; padding:20px;">אין משחקים זמינים</div>';
-                return;
-            }
-
-            if (allDates.length === 0) {
-                const datesSet = new Set();
-                allMatches.forEach(m => datesSet.add(m.fixture.date.split('T')[0]));
-                allDates = Array.from(datesSet).sort((a, b) => new Date(a) - new Date(b));
-                
-                const todayStr = new Date().toISOString().split('T')[0];
-                let closestIdx = allDates.findIndex(d => d >= todayStr);
-                if (closestIdx !== -1) currentDateIndex = closestIdx;
-            }
-
-            const selectedDateStr = allDates[currentDateIndex];
-            document.getElementById('matchday-title').innerText = formatHebrewDate(selectedDateStr);
-
-            const dailyMatches = allMatches.filter(m => m.fixture.date.split('T')[0] === selectedDateStr);
-
-            const matchesByRound = {};
-            dailyMatches.forEach(m => {
-                let roundName = translateName(m.league.round) || m.league.round;
-                if (!matchesByRound[roundName]) matchesByRound[roundName] = [];
-                matchesByRound[roundName].push(m);
-            });
-
-            let html = '';
-            for (const [roundName, matches] of Object.entries(matchesByRound)) {
-                
-                html += `<div class="date-separator" style="color: #8fa0b3; font-size: 13px; font-weight: bold; text-align: center; margin: 15px 0 10px; border-bottom: 1px solid #1f2d40; padding-bottom: 5px;">${roundName}</div>`;
-                
-                matches.forEach(m => {
-                    const homeTeam = translateName(m.teams.home.name);
-                    const awayTeam = translateName(m.teams.away.name);
-                    
-                    // --- 1. עדכון השערים בזיכרון ---
-                    const fixId = m.fixture.id;
-                    const currentHome = m.goals.home !== null ? m.goals.home : 0;
-                    const currentAway = m.goals.away !== null ? m.goals.away : 0;
-                    
-                    if (window.leagueGoalTracker[fixId]) {
-                        const prev = window.leagueGoalTracker[fixId];
-                        if (currentHome > prev.home || currentAway > prev.away) {
-                            window.leagueGoalTracker[fixId].goalTime = Date.now();
-                        }
-                        window.leagueGoalTracker[fixId].home = currentHome;
-                        window.leagueGoalTracker[fixId].away = currentAway;
-                    } else {
-                        window.leagueGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
-                    }
-
-                    // --- 2. האם יש אנימציית שער? ---
-                    const isGoalRecent = (Date.now() - window.leagueGoalTracker[fixId].goalTime) < 15000;
-                    
-                    // --- 3. השופט - סטטוס המשחק ---
-                    const shortStatus = m.fixture.status.short;
-                    let displayStatus = '';
-                    
-                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
-                        displayStatus = 'הסתיים';
-                    } else if (shortStatus === 'HT') {
-                        displayStatus = 'מחצית';
-                    } else if (m.fixture.status.elapsed) {
-                        displayStatus = `${m.fixture.status.elapsed}'`;
-                    }
-
-                    let centerHtml = '';
-                    // אם המשחק לא התחיל
-                    if (['NS', 'TBD'].includes(shortStatus)) {
-                        const time = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
-                        centerHtml = `<div style="font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.05); padding: 3px 10px; border-radius: 6px;">${time}</div>`;
-                    } 
-                    // אם המשחק רץ או הסתיים
-                    else {
-                        const goalClass = isGoalRecent ? 'animation: goalAlertPulse 0.6s infinite alternate; background: #7a9966; color: #fff; border-radius: 4px; padding: 2px 4px;' : 'color: #fff;';
-                        const statusClass = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(shortStatus) ? 'color: #ff4d4d;' : 'color: #8fa0b3;';
-                        
-                        centerHtml = `
-                            <div style="font-size: 11px; font-weight: bold; margin-bottom: 2px; ${statusClass}">${displayStatus}</div>
-                            <div style="font-size: 16px; font-weight: bold; ${goalClass}">
-                                ${isGoalRecent ? 'שער!' : `${m.goals.home} - ${m.goals.away}`}
-                            </div>
-                        `;
-                    }
-
-                    const safeHomeName = encodeURIComponent(m.teams.home.name);
-                    const safeAwayName = encodeURIComponent(m.teams.away.name);
-
-                    html += `
-                    <div class="match-row" onclick="openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}')" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03);">
-                        
-                        <div class="team team-home" style="flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; width: 40%;">
-                            <span class="team-name-text" style="text-align: right; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${homeTeam}</span>
-                            <img src="${m.teams.home.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
-                        </div>
-                        
-                        <div class="score-wrapper" style="width: 20%; min-width: 70px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0;">
-                            ${centerHtml}
-                        </div>
-                        
-                        <div class="team team-away" style="flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 40%;">
-                            <img src="${m.teams.away.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
-                            <span class="team-name-text" style="text-align: left; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${awayTeam}</span>
-                        </div>
-                        
-                    </div>`;
-                });
-            }
-
-            fixturesContainer.innerHTML = html;
-        }
-
-        getStandings();
-        loadPlayerStats('topscorers');
-        getFixtures();
+function translateFixtureRound(roundStr) {
+    if (!roundStr) return "";
+    let lower = roundStr.toLowerCase();
+    
+    // התיקון לבלגיה בלוח המשחקים
+    if (lower.includes('conference') || lower.includes('qualifying')) return "פלייאוף אמצעי";
+    
+    let translated = roundStr;
+    translated = translated.replace(/Regular Season/i, 'עונה סדירה');
+    translated = translated.replace(/1st Phase/i, 'שלב ראשון');
+    translated = translated.replace(/2nd Phase/i, 'שלב שני');
+    translated = translated.replace(/Group Stage/i, 'שלב הבתים');
+    translated = translated.replace(/Championship Round/i, 'פלייאוף עליון');
+    translated = translated.replace(/Relegation Round/i, 'פלייאוף תחתון');
+    translated = translated.replace(' - ', ' - מחזור ');
+    return translated;
+}
         
-        // ריענון המשחקים כל דקה כדי לתפוס שערים חדשים
-        setInterval(getFixtures, 60000);
-    </script>
-    <script src="matchEvents.js"></script> 
+        // --- פונקציית העזר שמתרגמת את שמות הבתים/מחזורים (כולל התיקון לבלגיה) ---
+function translateFixtureRound(roundStr) {
+    if (!roundStr) return "";
+    let lower = roundStr.toLowerCase();
+    
+    if (lower.includes('conference') || lower.includes('qualifying')) return "פלייאוף אמצעי";
+    
+    let translated = roundStr;
+    translated = translated.replace(/Regular Season/i, 'עונה סדירה');
+    translated = translated.replace(/1st Phase/i, 'שלב ראשון');
+    translated = translated.replace(/2nd Phase/i, 'שלב שני');
+    translated = translated.replace(/Group Stage/i, 'שלב הבתים');
+    translated = translated.replace(/Championship Round/i, 'פלייאוף עליון');
+    translated = translated.replace(/Relegation Round/i, 'פלייאוף תחתון');
+    translated = translated.replace(' - ', ' - מחזור ');
+    return translated;
+}
+
+// --- פונקציית העזר שמתרגמת את שמות הבתים/מחזורים ---
+function translateFixtureRound(roundStr) {
+    if (!roundStr) return "";
+    let lower = roundStr.toLowerCase();
+    
+    // התיקון לבלגיה - פלייאוף אמצעי
+    if (lower.includes('conference') || lower.includes('qualifying')) return "פלייאוף אמצעי";
+    
+    let translated = roundStr;
+    translated = translated.replace(/Regular Season/i, 'עונה סדירה');
+    translated = translated.replace(/1st Phase/i, 'שלב ראשון');
+    translated = translated.replace(/2nd Phase/i, 'שלב שני');
+    translated = translated.replace(/Group Stage/i, 'שלב הבתים');
+    translated = translated.replace(/Championship Round/i, 'פלייאוף עליון');
+    translated = translated.replace(/Relegation Round/i, 'פלייאוף תחתון');
+    translated = translated.replace(' - ', ' - מחזור ');
+    return translated;
+}
+
+function renderFixturesByDate() {
+    const fixturesContainer = document.getElementById('api-fixtures-list');
+
+    if (!allMatches || allMatches.length === 0) {
+        fixturesContainer.innerHTML = '<div style="text-align:center; padding:20px;">אין משחקים זמינים</div>';
+        return;
+    }
+
+    if (allDates.length === 0) {
+        const datesSet = new Set();
+        allMatches.forEach(m => datesSet.add(m.fixture.date.split('T')[0]));
+        allDates = Array.from(datesSet).sort((a, b) => new Date(a) - new Date(b));
+        
+        const todayStr = new Date().toISOString().split('T')[0];
+        let closestIdx = allDates.findIndex(d => d >= todayStr);
+        if (closestIdx !== -1) currentDateIndex = closestIdx;
+    }
+
+    const selectedDateStr = allDates[currentDateIndex];
+    document.getElementById('matchday-title').innerText = formatHebrewDate(selectedDateStr);
+
+    const dailyMatches = allMatches.filter(m => m.fixture.date.split('T')[0] === selectedDateStr);
+
+    // חלוקת המשחקים לפי הבתים / המחזורים (מתקן את ה-MLS וארגנטינה)
+    const matchesByRound = {};
+    dailyMatches.forEach(m => {
+        let roundName = translateFixtureRound(m.league.round) || "משחק";
+        if (!matchesByRound[roundName]) matchesByRound[roundName] = [];
+        matchesByRound[roundName].push(m);
+    });
+
+    let html = '';
+    for (const [roundName, matches] of Object.entries(matchesByRound)) {
+        
+        // כותרת הבית (למשל: מערב, מזרח, פלייאוף עליון)
+        html += `<div class="date-separator" style="color: #8fa0b3; font-size: 13px; font-weight: bold; text-align: center; margin: 15px 0 10px; border-bottom: 1px solid #1f2d40; padding-bottom: 5px;">${roundName}</div>`;
+        
+        matches.forEach(m => {
+            const homeTeam = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
+            const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
+            
+            // --- 1. עדכון השערים בזיכרון ---
+            const fixId = m.fixture.id;
+            const currentHome = m.goals.home !== null ? m.goals.home : 0;
+            const currentAway = m.goals.away !== null ? m.goals.away : 0;
+            
+            if (!window.leagueGoalTracker) window.leagueGoalTracker = {};
+            
+            if (window.leagueGoalTracker[fixId]) {
+                const prev = window.leagueGoalTracker[fixId];
+                if (currentHome > prev.home || currentAway > prev.away) {
+                    window.leagueGoalTracker[fixId].goalTime = Date.now();
+                }
+                window.leagueGoalTracker[fixId].home = currentHome;
+                window.leagueGoalTracker[fixId].away = currentAway;
+            } else {
+                window.leagueGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
+            }
+
+            // --- 2. האם יש אנימציית שער? ---
+            const isGoalRecent = (Date.now() - window.leagueGoalTracker[fixId].goalTime) < 15000;
+            
+            // --- 3. השופט - סטטוס המשחק ---
+            const shortStatus = m.fixture.status.short;
+            let displayStatus = '';
+            
+            if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
+                displayStatus = 'הסתיים';
+            } else if (shortStatus === 'HT') {
+                displayStatus = 'מחצית';
+            } else if (m.fixture.status.elapsed) {
+                displayStatus = `${m.fixture.status.elapsed}'`;
+            }
+
+            let centerHtml = '';
+            // אם המשחק לא התחיל
+            if (['NS', 'TBD'].includes(shortStatus)) {
+                const time = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                centerHtml = `<div style="font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.05); padding: 3px 10px; border-radius: 6px;">${time}</div>`;
+            } 
+            // אם המשחק רץ או הסתיים
+            else {
+                const goalClass = isGoalRecent ? 'animation: goalAlertPulse 0.6s infinite alternate; background: #7a9966; color: #fff; border-radius: 4px; padding: 2px 4px;' : 'color: #fff;';
+                const statusClass = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(shortStatus) ? 'color: #ff4d4d;' : 'color: #8fa0b3;';
+                
+                centerHtml = `
+                    <div style="font-size: 11px; font-weight: bold; margin-bottom: 2px; ${statusClass}">${displayStatus}</div>
+                    <div style="font-size: 16px; font-weight: bold; ${goalClass}">
+                        ${isGoalRecent ? 'שער!' : `${m.goals.home} - ${m.goals.away}`}
+                    </div>
+                `;
+            }
+
+            // העיצוב המקורי שלך!
+            const safeHomeName = encodeURIComponent(m.teams.home.name);
+            const safeAwayName = encodeURIComponent(m.teams.away.name);
+
+            html += `
+            <div class="match-row" onclick="openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}')" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                
+                <div class="team team-home" style="flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; width: 40%;">
+                    <span class="team-name-text" style="text-align: right; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${homeTeam}</span>
+                    <img src="${m.teams.home.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
+                </div>
+                
+                <div class="score-wrapper" style="width: 20%; min-width: 70px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0;">
+                    ${centerHtml}
+                </div>
+                
+                <div class="team team-away" style="flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 40%;">
+                    <img src="${m.teams.away.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
+                    <span class="team-name-text" style="text-align: left; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${awayTeam}</span>
+                </div>
+                
+            </div>`;
+        });
+    }
+
+    fixturesContainer.innerHTML = html;
+}
+
+getStandings();
+loadPlayerStats('topscorers');
+getFixtures();
+
+// ריענון המשחקים כל דקה כדי לתפוס שערים חדשים
+setInterval(getFixtures, 60000);
+</script>
+<script src="matchEvents.js"></script> 
 </body>
 </html>
