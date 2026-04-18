@@ -527,27 +527,28 @@ async function getStandingsFromWikipedia() {
                     if (teamCell) {
                         teamName = cleanWikiText(teamCell.innerText);
                         
-                        // 1. מנקים את השם ממקפים, נקודות ורווחים כפולים כדי שנוכל לזהות אותו תמיד!
-                        let searchName = teamName.replace(/[-_."']/g, ' ').replace(/\s+/g, ' ');
+                        // *** הפתרון האולטימטיבי: השמדת כל תו שהוא לא אות בעברית ***
+                        // זה מוחק רווחים, תווים נסתרים של ויקיפדיה, מקפים ונקודות
+                        let pureHebrew = teamName.replace(/[^א-ת]/g, '');
                         
-                        // 2. ההתאמה החכמה שלנו ללא קשר לויקיפדיה:
-                        if (searchName.includes("פתח תקו")) teamLogo = "https://upload.wikimedia.org/wikipedia/en/d/dd/Maccabi_Petah_Tikva_FC.svg";
-                        else if (searchName.includes("הרצליה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/e/e0/Maccabi_Herzliya.svg";
-                        else if (searchName.includes("רמת גן")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/3/30/Hapoel_Ramat_Gan_logo.svg";
-                        else if (searchName.includes("ראשון לציון")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Rishon_LeZion_logo.svg";
-                        else if (searchName.includes("כפר שלם")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/d/dd/Hapoel_Kfar_Shalem_logo.svg";
-                        else if (searchName.includes("בני יהודה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/c/c5/Bnei_Yehuda_logo.svg";
-                        else if (searchName.includes("קרית ים") || searchName.includes("קריית ים")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png";
-                        else if (searchName.includes("כפר סבא")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/e/e7/Hapoel_Kfar_Saba_logo.svg";
-                        else if (searchName.includes("רעננה")) teamLogo = "https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_Ra%27anana_FC_logo.png";
-                        else if (searchName.includes("יפו")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/c/c8/Maccabi_Jaffa_FC_logo.svg";
-                        else if (searchName.includes("עפולה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/9/9c/Hapoel_Afula_logo.svg";
-                        else if (searchName.includes("כפר קאסם") || searchName.includes("כפר קסם")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/6/64/FC_Kafr_Qasim_logo.svg";
-                        else if (searchName.includes("נוף הגליל")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/a/af/Hapoel_Nof_HaGalil_logo.svg";
-                        else if (searchName.includes("מודיעין")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/0/07/Ironi_Modiin_logo.png";
-                        else if (searchName.includes("עכו")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/1/11/Hapoel_Acre_logo.svg";
-                        else if (searchName.includes("חדרה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Hadera_logo.svg";
-                        else if (searchName.includes("טבריה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/f/fd/Ironi_Tiberias_logo.svg";
+                        // עכשיו החיפוש הוא 100% מדויק ובלי הפתעות
+                        if (pureHebrew.includes("פתחתקו")) teamLogo = "https://upload.wikimedia.org/wikipedia/en/d/dd/Maccabi_Petah_Tikva_FC.svg";
+                        else if (pureHebrew.includes("הרצליה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/e/e0/Maccabi_Herzliya.svg";
+                        else if (pureHebrew.includes("רמתגן")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/3/30/Hapoel_Ramat_Gan_logo.svg";
+                        else if (pureHebrew.includes("ראשוןלציון") || pureHebrew.includes("ראשלצ")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Rishon_LeZion_logo.svg";
+                        else if (pureHebrew.includes("כפרשלם")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/d/dd/Hapoel_Kfar_Shalem_logo.svg";
+                        else if (pureHebrew.includes("בנייהודה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/c/c5/Bnei_Yehuda_logo.svg";
+                        else if (pureHebrew.includes("קריתים") || pureHebrew.includes("קרייתים")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png";
+                        else if (pureHebrew.includes("כפרסבא")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/e/e7/Hapoel_Kfar_Saba_logo.svg";
+                        else if (pureHebrew.includes("רעננה")) teamLogo = "https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_Ra%27anana_FC_logo.png";
+                        else if (pureHebrew.includes("יפו")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/c/c8/Maccabi_Jaffa_FC_logo.svg";
+                        else if (pureHebrew.includes("עפולה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/9/9c/Hapoel_Afula_logo.svg";
+                        else if (pureHebrew.includes("כפרקאסם") || pureHebrew.includes("כפרקסם")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/6/64/FC_Kafr_Qasim_logo.svg";
+                        else if (pureHebrew.includes("נופהגליל")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/a/af/Hapoel_Nof_HaGalil_logo.svg";
+                        else if (pureHebrew.includes("מודיעין")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/0/07/Ironi_Modiin_logo.png";
+                        else if (pureHebrew.includes("עכו")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/1/11/Hapoel_Acre_logo.svg";
+                        else if (pureHebrew.includes("חדרה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Hadera_logo.svg";
+                        else if (pureHebrew.includes("טבריה")) teamLogo = "https://upload.wikimedia.org/wikipedia/he/f/fd/Ironi_Tiberias_logo.svg";
                     }
                     
                     if(points !== '-' && teamName !== '-' && teamName !== '') {
@@ -556,7 +557,7 @@ async function getStandingsFromWikipedia() {
                             <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
                             <td>
                                 <div class="team-identity" style="display: flex; align-items: center; gap: 8px;">
-                                    <img src="${teamLogo}" alt="logo" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='https://media.api-sports.io/football/leagues/384.png'">
+                                    <img src="${teamLogo}" alt="logo" style="width: 20px; height: 20px; object-fit: contain;">
                                     <span class="team-name-text">${teamName}</span>
                                 </div>
                             </td>
