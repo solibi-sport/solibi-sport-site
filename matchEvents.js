@@ -226,10 +226,10 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             }
 
             let isGoalRecent = false;
-            if (window.matchGoalTracker && window.matchGoalTracker[fixtureId] && (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 60000)) {
+            if (window.matchGoalTracker && window.matchGoalTracker[fixtureId] && (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 15000)) {
                 isGoalRecent = true;
             }
-            if (window.leagueGoalTracker && window.leagueGoalTracker[fixtureId] && (Date.now() - window.leagueGoalTracker[fixtureId].goalTime < 60000)) {
+            if (window.leagueGoalTracker && window.leagueGoalTracker[fixtureId] && (Date.now() - window.leagueGoalTracker[fixtureId].goalTime < 15000)) {
                 isGoalRecent = true;
             }
 
