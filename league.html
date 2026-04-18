@@ -600,73 +600,61 @@ async function getStandingsFromWikipedia() {
     }
 }
         function buildStandingsUI() {
-            const container = document.getElementById('api-table');
-            
-            allStandingsData.sort((a, b) => {
-                const getWeight = (name) => {
-                    let lowerName = name.toLowerCase();
-                    if (lowerName.includes('regular') || (!lowerName.includes('round') && !lowerName.includes('group') && !lowerName.includes('phase'))) return 1;
-                    if (lowerName.includes('championship') || lowerName.includes('1st')) return 2;
-                    if (lowerName.includes('qualifying') || lowerName.includes('conference')) return 3;
-                    if (lowerName.includes('relegation') || lowerName.includes('2nd')) return 4;
-                    return 5;
-                };
-                return getWeight(a[0].group) - getWeight(b[0].group);
-            });
+    const container = document.getElementById('api-table');
+    if (!allStandingsData || allStandingsData.length === 0) {
+        container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה</div>';
+        return;
+    }
 
-            let totalTeams = 0;
-            let uniqueTeams = new Set();
-            allStandingsData.forEach(group => {
-                group.forEach(item => {
-                    totalTeams++;
-                    uniqueTeams.add(item.team.id);
-                });
-            });
-            const isParallelGroups = (totalTeams === uniqueTeams.size); 
-            
-            const EUROPEAN_LEAGUES = [2, 3, 848]; 
-            const isEurope = EUROPEAN_LEAGUES.includes(parseInt(LEAGUE_ID));
+    // מתורגמן חכם לשמות הטבלאות
+    const translateGroupName = (name) => {
+        if (!name) return "טבלה כללית";
+        let lowerName = name.toLowerCase();
+        
+        // התיקון לבלגיה - פלייאוף אמצעי
+        if (lowerName.includes('conference') || lowerName.includes('qualifying') || lowerName.includes('europe')) return "פלייאוף אמצעי";
+        
+        if (lowerName.includes('championship')) return "פלייאוף עליון";
+        if (lowerName.includes('relegation')) return "פלייאוף תחתון";
+        if (lowerName.includes('regular')) return "עונה סדירה";
+        if (lowerName.includes('group')) return name.replace('Group', 'בית').replace('group', 'בית');
+        if (lowerName.includes('western')) return "מערב";
+        if (lowerName.includes('eastern')) return "מזרח";
+        
+        // אם ה-API שולח את השם המלא של הליגה, פשוט נכתוב "טבלה כללית"
+        if (lowerName.includes('primera') || lowerName.includes('league') || name === allStandingsData[0][0].league) return "טבלה כללית";
+        
+        return name;
+    };
 
-            let uiHtml = `
-                <div style="margin-bottom: 15px; text-align: center;">
-                    <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
-            `;
-            
-            if (isParallelGroups && !isEurope) {
-                uiHtml += `<option value="combined">טבלה כללית (משולבת)</option>`;
-            }
-            
-            allStandingsData.forEach((groupArray, index) => {
-                let groupName = groupArray[0].group;
-                let translatedGroupName = typeof translateName === 'function' ? translateName(groupName) : groupName;
-                uiHtml += `<option value="${index}">${translatedGroupName}</option>`;
-            });
+    // === התיקון החשוב: אם יש רק טבלה אחת, לא מציגים רשימה נפתחת בכלל! ===
+    if (allStandingsData.length === 1) {
+        container.innerHTML = '<div id="standings-render-area"></div>';
+        renderStandingsTable(0); // מצייר ישר את הטבלה הראשונה
+        return;
+    }
 
-            if (isEurope) {
-                uiHtml += `<option value="knockout" style="background:#7ca856; color:#fff;">🏆 שלבי נוקאאוט</option>`;
-            }
-            
-            uiHtml += `</select></div><div id="table-render-area"></div>`;
-            container.innerHTML = uiHtml;
-            
-            if (isParallelGroups && !isEurope) {
-                renderCombinedTable();
-            } else {
-                document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[0]);
-            }
-            
-            document.getElementById('group-selector').addEventListener('change', function(e) {
-                const val = e.target.value;
-                if (val === 'combined') {
-                    renderCombinedTable();
-                } else if (val === 'knockout') {
-                    fetchAndRenderKnockouts(); 
-                } else {
-                    document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[parseInt(val)]);
-                }
-            });
-        }
+    // אם יש פיצולים (MLS, ארגנטינה, פלייאוף וכו') - בונים רשימה נפתחת
+    let uiHtml = `
+        <div style="margin-bottom: 15px; text-align: center;">
+            <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
+    `;
 
+    allStandingsData.forEach((group, index) => {
+        let groupName = group[0].group;
+        let translatedName = translateGroupName(groupName);
+        uiHtml += `<option value="${index}">${translatedName}</option>`;
+    });
+
+    uiHtml += `</select></div><div id="standings-render-area"></div>`;
+    container.innerHTML = uiHtml;
+
+    document.getElementById('group-selector').addEventListener('change', function(e) {
+        renderStandingsTable(parseInt(e.target.value));
+    });
+
+    renderStandingsTable(0);
+}
         function renderCombinedTable() {
             let combined = [];
             let seenIds = new Set(); 
