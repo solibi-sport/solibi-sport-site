@@ -500,34 +500,6 @@
 
     <script>
         const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3'; 
-        // === מנוע תרגום ואיסוף מילים חסרות (מותאם ל-myDictionary) ===
-    const missingWords = new Set();
-
-    window.translateName = function(name) {
-        if (!name) return name;
-        
-        // כאן שינינו ל-myDictionary כדי שזה יתאים בדיוק לקובץ שלך
-        if (typeof myDictionary !== 'undefined' && myDictionary[name]) {
-            return myDictionary[name];
-        }
-        
-        missingWords.add(name);
-        return name;
-    };
-
-    window.printMissing = function() {
-        if (missingWords.size === 0) {
-            console.log("הכל מתורגם! אין מילים חסרות כרגע.");
-            return;
-        }
-        console.log("הנה המילים שחסרות לך (מוכן להעתקה):");
-        let result = "";
-        missingWords.forEach(word => {
-            result += `"${word}": "",\n`;
-        });
-        console.log(result);
-    };
-    // === סוף מנוע התרגום ===
         
         const staticUpdatesHTML = `
             <div style="display: flex; flex-direction: column; width: 100%;">
@@ -546,13 +518,63 @@
             </div>
         `;
 
+        // === מנוע תרגום לקבוצות (שמות הקבוצות עדיין דרך myDictionary) ===
+        const missingWords = new Set();
+
+        window.translateName = function(name) {
+            if (!name) return name;
+            if (typeof myDictionary !== 'undefined' && myDictionary[name]) {
+                return myDictionary[name];
+            }
+            missingWords.add(name);
+            return name;
+        };
+
+        window.printMissing = function() {
+            if (missingWords.size === 0) {
+                console.log("הכל מתורגם! אין מילים חסרות כרגע.");
+                return;
+            }
+            console.log("הנה המילים שחסרות לך (מוכן להעתקה):");
+            let result = "";
+            missingWords.forEach(word => {
+                result += `"${word}": "",\n`;
+            });
+            console.log(result);
+        };
+
+        // === מילון כוח לשמות הליגות (לפי ה-ID הקבוע שלהן) ===
+        const LEAGUE_NAMES_MAP = {
+            39: "ליגה אנגלית ראשונה",
+            140: "ליגה ספרדית ראשונה",
+            135: "ליגה איטלקית ראשונה",
+            78: "ליגה גרמנית ראשונה",
+            61: "ליגה צרפתית ראשונה",
+            383: "ליגת העל",
+            384: "ליגה לאומית",
+            2: "ליגת האלופות",
+            3: "הליגה האירופית",
+            848: "ליגת הקונפרנס",
+            88: "ליגה הולנדית ראשונה",
+            144: "ליגה בלגית ראשונה",
+            94: "ליגה פורטוגלית ראשונה",
+            203: "ליגה טורקית ראשונה",
+            253: "ליגת ה-MLS",
+            307: "ליגה סעודית ראשונה",
+            71: "ליגה ברזילאית ראשונה",
+            128: "ליגה ארגנטינאית ראשונה",
+            13: "קופה ליברטדורס",
+            11: "סודאמריקנה",
+            1: "מונדיאל"
+        };
+
         // === משתנים גלובליים ===
         let livePages = []; 
         let currentLivePageIndex = 0;
         let isShowingUpdates = false; 
         let panelTimer;
 
-        // === פונקציית משיכת משחקים + אריזה חכמה ===
+        // === פונקציית משיכת משחקים ===
         async function fetchLiveMatches() {
             try {
                 const MY_LEAGUES = "39-140-135-78-61-383-384-2-3-848-88-144-94-203-253-307-71-128-13-11-1";
@@ -567,14 +589,18 @@
 
                 const grouped = {};
                 matches.forEach(m => {
-                    const leagueName = typeof translateName === 'function' ? translateName(m.league.name) : m.league.name;
+                    // מושך את השם מהמילון החזק שלנו לפי ה-ID של הליגה
+                    let leagueName = LEAGUE_NAMES_MAP[m.league.id];
+                    // גיבוי: למקרה שיש ליגה לא מוכרת
+                    if (!leagueName) {
+                        leagueName = typeof translateName === 'function' ? translateName(m.league.name) : m.league.name;
+                    }
+
                     if(!grouped[leagueName]) grouped[leagueName] = { logo: m.league.logo, matches: [] };
                     grouped[leagueName].matches.push(m);
                 });
 
                 livePages = [];
-                
-                // הקיבולת של הדף: 10 שורות למסך (כדי שלא יהיה שטח מת)
                 const MAX_ITEMS_PER_PAGE = 10; 
                 
                 let currentPageHtml = '<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 15px; width: 100%;">';
@@ -584,7 +610,6 @@
                     const leagueData = grouped[leagueName];
                     const itemsForThisLeague = 1 + leagueData.matches.length; 
 
-                    // אם אין מקום בדף הנוכחי, חותכים אותו ועוברים לדף הבא
                     if (currentItemsCount > 0 && currentItemsCount + itemsForThisLeague > MAX_ITEMS_PER_PAGE) {
                         currentPageHtml += '</div>';
                         livePages.push(currentPageHtml);
@@ -606,15 +631,19 @@
                         const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
                         let elapsedTime = m.fixture.status.elapsed ? `${m.fixture.status.elapsed}'` : 'מחצית';
 
+                        // תצוגת תוצאות במאונך, אחת מול כל קבוצה
                         matchesHtml += `
                             <a href="#" style="background: #fff; border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: #112845; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;">
                                 <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; width: 60%;">
                                     <div style="display: flex; align-items: center; gap: 8px;"><img src="${m.teams.home.logo}" style="width: 16px; height: 16px;"> <span>${homeTeam}</span></div>
                                     <div style="display: flex; align-items: center; gap: 8px;"><img src="${m.teams.away.logo}" style="width: 16px; height: 16px;"> <span>${awayTeam}</span></div>
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: center; min-width: 45px; background: #f0f4f8; padding: 4px 8px; border-radius: 6px;">
-                                    <span style="font-size: 10px; color: #7ca856; font-weight: bold;">${elapsedTime}</span>
-                                    <span style="font-size: 14px; font-weight: 900; letter-spacing: 1px;">${m.goals.home}-${m.goals.away}</span>
+                                <div style="display: flex; flex-direction: column; align-items: center; min-width: 45px; background: #f0f4f8; padding: 6px 8px; border-radius: 6px;">
+                                    <span style="font-size: 10px; color: #7ca856; font-weight: bold; margin-bottom: 4px;">${elapsedTime}</span>
+                                    <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
+                                        <span style="font-size: 14px; font-weight: 900; height: 16px; display: flex; align-items: center;">${m.goals.home !== null ? m.goals.home : '-'}</span>
+                                        <span style="font-size: 14px; font-weight: 900; height: 16px; display: flex; align-items: center;">${m.goals.away !== null ? m.goals.away : '-'}</span>
+                                    </div>
                                 </div>
                             </a>
                         `;
@@ -678,13 +707,13 @@
                             currentLivePageIndex = 0; 
                         }
                         clearTimeout(panelTimer);
-                        panelTimer = setTimeout(rotatePanelContent, 6000); 
+                        panelTimer = setTimeout(rotatePanelContent, 10000); // 10 שניות
                         
                     } else {
                         contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים בעולם ⚽</div>';
                         isShowingUpdates = true;
                         clearTimeout(panelTimer);
-                        panelTimer = setTimeout(rotatePanelContent, 6000); 
+                        panelTimer = setTimeout(rotatePanelContent, 10000); // 10 שניות
                     }
                     
                     contentDiv.style.opacity = '1';
