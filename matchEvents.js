@@ -317,11 +317,13 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 eventsHtml = '<p style="text-align:center; width:100%; font-size:12px;">אין אירועים להצגה.</p>';
             } else {
                 
-                // קודם כל נמיין את האירועים לפי זמן כדי שנוכל לחפש אחורה בצורה בטוחה
+                // ממיינים קודם לפי זמן
                 events.sort((a, b) => a.time.elapsed - b.time.elapsed);
 
                 // === הרשת הכפולה לזיהוי שערים פסולים ===
                 const cancelledGoalIndices = new Set();
+                const standaloneVarIndices = new Set();
+                const hiddenVarIndices = new Set();
                 
                 events.forEach((e, idx) => {
                     const typeStr = String(e.type || '').toLowerCase();
@@ -333,16 +335,22 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         cancelledGoalIndices.add(idx);
                     }
                     
-                    // מקרה 2: אירוע VAR נפרד שמבטל שער. נלך אחורה ונפסול את השער האחרון של הקבוצה!
+                    // מקרה 2: הגיע אירוע VAR נפרד שאומר פסילה
                     if (typeStr === 'var' && (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel'))) {
+                        let foundGoal = false;
                         for (let i = idx - 1; i >= 0; i--) {
                             const prevE = events[i];
+                            // נחפש את השער האחרון של אותה קבוצה
                             if (String(prevE.type).toLowerCase() === 'goal' && prevE.team.id === e.team.id) {
-                                if (!cancelledGoalIndices.has(i)) {
-                                    cancelledGoalIndices.add(i);
-                                    break;
-                                }
+                                cancelledGoalIndices.add(i);
+                                hiddenVarIndices.add(idx); // נסתיר את ה-VAR עצמו
+                                foundGoal = true;
+                                break;
                             }
+                        }
+                        // השדרוג: אם ה-API מחק את השער המקורי לגמרי, נציג את ה-VAR בתור השער הפסול!
+                        if (!foundGoal) {
+                            standaloneVarIndices.add(idx);
                         }
                     }
                 });
@@ -351,28 +359,28 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 let awayHtml = `<div class="team-col"><div class="team-title">${tAway}</div>`;
 
                 events.forEach((event, index) => {
+                    // מדלגים על אירועי VAR כפולים שכבר מצאנו להם שער
+                    if (hiddenVarIndices.has(index)) return;
+
                     const typeStr = String(event.type || '').toLowerCase();
                     const detailStr = String(event.detail || '').toLowerCase();
                     const commentsStr = String(event.comments || '').toLowerCase();
 
-                    // מדלגים על שורת ה-VAR עצמה, כדי לא לעשות כפילות
-                    if (typeStr === 'var' && (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel'))) return;
-
                     let time = event.time.elapsed + (event.time.extra ? `+${event.time.extra}` : '');
-                    let playerName = typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name;
-                    let assistName = event.assist.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
+                    let playerName = event.player && event.player.name ? (typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name) : 'שחקן לא ידוע';
+                    let assistName = event.assist && event.assist.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
                     
                     let icon = '';
                     let mainText = '';
                     let subText = '';
-                    let isCancelled = cancelledGoalIndices.has(index);
+                    let isCancelled = cancelledGoalIndices.has(index) || standaloneVarIndices.has(index);
 
-                    // טיפול בשערים
-                    if (typeStr === 'goal') {
+                    // טיפול בשערים (או ב-VAR שהפך לשער פסול בגלל מחיקה של ה-API)
+                    if (typeStr === 'goal' || standaloneVarIndices.has(index)) {
                         if (detailStr.includes('missed penalty')) {
                             icon = '❌';
                             mainText = `החמצת פנדל! ${playerName}`;
-                            isCancelled = false; // זה פשוט החמצה, לא שער שנפסל
+                            isCancelled = false; // החמצה, לא פסילה
                         } else if (detailStr.includes('penalty')) {
                             icon = '⚽';
                             mainText = `שער! ${playerName} (פ')`;
@@ -388,7 +396,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             subText = `בישול: ${assistName}`;
                         }
                     } 
-                    // טיפול בכרטיסים (כולל צהוב שני כאדום)
+                    // טיפול בכרטיסים
                     else if (typeStr === 'card') {
                         if (detailStr.includes('yellow') && !detailStr.includes('second')) {
                             icon = '🟨';
@@ -414,7 +422,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
                     const isHome = event.team.name === homeTeam;
                     
-                    // מחיל עיצוב מיוחד אם השער בוטל
+                    // מחיל עיצוב מיוחד על כל מה שסומן כנפסל
                     const textClass = isCancelled ? 'event-text var-cancelled' : 'event-text';
                     const cancelledMarkup = isCancelled ? `<span class="event-subtext var-cancelled-sub">❌ נפסל ע"י VAR</span>` : '';
 
