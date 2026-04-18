@@ -443,16 +443,13 @@ async function getStandingsFromWikipedia() {
     container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
 
     try {
-        // מחשבים את העונה כדי ליצור את שם הדף הנכון בויקיפדיה (למשל 2025/2026)
         const nextYear = parseInt(SEASON) + 1;
         let pageTitle = encodeURIComponent(`עונת_${SEASON}/${nextYear}_בליגה_הלאומית`);
         let wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
 
-        // ניסיון ראשון: חיפוש הדף של העונה הספציפית
         let res = await fetch(wikiUrl);
         let data = await res.json();
 
-        // ניסיון שני: אם הדף לא קיים, הולכים לדף הראשי של הליגה הלאומית
         if (data.error) {
             pageTitle = encodeURIComponent("ליגה_לאומית_(כדורגל)");
             wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
@@ -466,70 +463,95 @@ async function getStandingsFromWikipedia() {
         const parser = new DOMParser();
         const doc = parser.parseFromString(htmlContent, 'text/html');
 
-        // חיפוש כל הטבלאות בדף
         const tables = doc.querySelectorAll('table.wikitable');
-        let standingsTable = null;
+        window.wikiTablesData = []; 
         
         tables.forEach(t => {
-            // מוודא שזו באמת טבלת ליגה ולא טבלת מלכי שערים
+            // אוספים את כל הטבלאות הרלוונטיות לבנק
             if (t.innerText.includes("קבוצה") && t.innerText.includes("נקודות") && (t.innerText.includes("ניצחונות") || t.innerText.includes("שערי זכות"))) {
-                standingsTable = t;
+                window.wikiTablesData.push(t);
             }
         });
 
-        if (!standingsTable) throw new Error("לא נמצאה טבלה");
+        if (window.wikiTablesData.length === 0) throw new Error("לא נמצאה טבלה");
 
-        // מיפוי עמודות חכם
-        const headerRow = standingsTable.querySelectorAll('tr')[0].querySelectorAll('th, td');
-        let colMap = {};
-        headerRow.forEach((h, index) => {
-            const text = h.innerText.trim();
-            if (text.includes('מיקום')) colMap.rank = index;
-            if (text.includes('קבוצה')) colMap.team = index;
-            if (text.includes('משחקים') || text === 'מש') colMap.played = index;
-            if (text.includes('ניצחונות') || text === 'נצ') colMap.win = index;
-            if (text.includes('תיקו')) colMap.draw = index;
-            if (text.includes('הפסדים') || text === 'הפ') colMap.lose = index;
-            if (text.includes('זכות') || text === 'שז') colMap.goalsFor = index;
-            if (text.includes('חובה') || text === 'שח') colMap.goalsAgainst = index;
-            if (text.includes('הפרש')) colMap.diff = index;
-            if (text.includes('נקודות') || text === 'נק') colMap.points = index;
+        // בניית תפריט בחירה חכם
+        let uiHtml = `
+            <div style="margin-bottom: 15px; text-align: center;">
+                <select id="wiki-group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
+        `;
+        
+        const tableNames = ["עונה סדירה", "פלייאוף עליון", "פלייאוף תחתון"];
+        window.wikiTablesData.forEach((t, index) => {
+            let name = tableNames[index] || `טבלה ${index + 1}`;
+            uiHtml += `<option value="${index}">${name}</option>`;
         });
+        uiHtml += `</select></div><div id="wiki-render-area"></div>`;
+        container.innerHTML = uiHtml;
 
-        const rows = standingsTable.querySelectorAll('tr');
-        let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
+        // פונקציית ציור הטבלה לפי מה שנבחר
+        window.renderWikiTable = function(index) {
+            const standingsTable = window.wikiTablesData[index];
+            const renderArea = document.getElementById('wiki-render-area');
+            
+            const headerRow = standingsTable.querySelectorAll('tr')[0].querySelectorAll('th, td');
+            let colMap = {};
+            headerRow.forEach((h, idx) => {
+                const text = h.innerText.trim();
+                if (text.includes('מיקום')) colMap.rank = idx;
+                if (text.includes('קבוצה')) colMap.team = idx;
+                if (text.includes('משחקים') || text === 'מש') colMap.played = idx;
+                if (text.includes('ניצחונות') || text === 'נצ') colMap.win = idx;
+                if (text.includes('תיקו')) colMap.draw = idx;
+                if (text.includes('הפסדים') || text === 'הפ') colMap.lose = idx;
+                if (text.includes('זכות') || text === 'שז') colMap.goalsFor = idx;
+                if (text.includes('חובה') || text === 'שח') colMap.goalsAgainst = idx;
+                if (text.includes('הפרש')) colMap.diff = idx;
+                if (text.includes('נקודות') || text === 'נק') colMap.points = idx;
+            });
 
-        rows.forEach((row, index) => {
-            if (index === 0) return;
-            const cols = row.querySelectorAll('td, th');
-            if (cols.length >= 8) {
-                const getText = (idx) => cols[idx] ? cols[idx].innerText.replace(/\n/g, '').trim() : '-';
-                
-                const rank = getText(colMap.rank || 0);
-                const teamName = getText(colMap.team || 1);
-                const points = getText(colMap.points || 9);
-                
-                // נוודא שזה באמת שורת קבוצה ולא שורת סיכום
-                if(points !== '-' && teamName !== '-') {
-                    html += `<tr>
-                        <td>-</td>
-                        <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
-                        <td><div class="team-identity"><span class="team-name-text">${teamName}</span></div></td>
-                        <td>${getText(colMap.played || 2)}</td>
-                        <td>${getText(colMap.win || 3)}</td>
-                        <td>${getText(colMap.draw || 4)}</td>
-                        <td>${getText(colMap.lose || 5)}</td>
-                        <td>${getText(colMap.goalsFor || 6)}</td>
-                        <td>${getText(colMap.goalsAgainst || 7)}</td>
-                        <td>${getText(colMap.diff || 8)}</td>
-                        <td><strong style="color: var(--brand-green);">${points}</strong></td>
-                    </tr>`;
+            const rows = standingsTable.querySelectorAll('tr');
+            let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
+
+            rows.forEach((row, rowIdx) => {
+                if (rowIdx === 0) return;
+                const cols = row.querySelectorAll('td, th');
+                if (cols.length >= 8) {
+                    const getText = (idx) => cols[idx] ? cols[idx].innerText.replace(/\n/g, '').trim() : '-';
+                    
+                    const rank = getText(colMap.rank || 0);
+                    const teamName = getText(colMap.team || 1);
+                    const points = getText(colMap.points || 9);
+                    
+                    if(points !== '-' && teamName !== '-') {
+                        html += `<tr>
+                            <td>-</td>
+                            <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
+                            <td><div class="team-identity"><span class="team-name-text">${teamName}</span></div></td>
+                            <td>${getText(colMap.played || 2)}</td>
+                            <td>${getText(colMap.win || 3)}</td>
+                            <td>${getText(colMap.draw || 4)}</td>
+                            <td>${getText(colMap.lose || 5)}</td>
+                            <td>${getText(colMap.goalsFor || 6)}</td>
+                            <td>${getText(colMap.goalsAgainst || 7)}</td>
+                            <td dir="ltr" style="text-align:center;">${getText(colMap.diff || 8)}</td>
+                            <td><strong style="color: var(--brand-green);">${points}</strong></td>
+                        </tr>`;
+                    }
                 }
-            }
+            });
+
+            html += `</table><div style="font-size:10px; text-align:center; margin-top:10px; color:#8fa0b3;">מקור נתונים: ויקיפדיה</div>`;
+            renderArea.innerHTML = html;
+        };
+
+        // מפעיל את כפתור הבחירה
+        document.getElementById('wiki-group-selector').addEventListener('change', function(e) {
+            window.renderWikiTable(e.target.value);
         });
 
-        html += `</table><div style="font-size:10px; text-align:center; margin-top:10px; color:#8fa0b3;">מקור נתונים: ויקיפדיה</div>`;
-        container.innerHTML = html;
+        // מציג אוטומטית את הטבלה הראשונה (עונה סדירה)
+        window.renderWikiTable(0); 
 
     } catch (error) {
         console.error("Wikipedia Scrape Error:", error);
