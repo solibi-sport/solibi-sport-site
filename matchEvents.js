@@ -53,7 +53,6 @@ if (!document.getElementById('modal-style-events')) {
     .event-text { color: #d1d5db; }
     .event-subtext { color: #888; font-size: 9px; display: block; margin-top: 1px; }
 
-    /* תוספת עבור שערים פסולים */
     .event-text.var-cancelled { color: #ef4444; text-decoration: line-through; opacity: 0.8; }
     .event-subtext.var-cancelled-sub { color: #ef4444; text-decoration: none; font-weight: bold; font-size: 10px; display: block; margin-top: 2px; }
     
@@ -316,71 +315,37 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             if (events.length === 0) {
                 eventsHtml = '<p style="text-align:center; width:100%; font-size:12px;">אין אירועים להצגה.</p>';
             } else {
-                
-                // ממיינים קודם לפי זמן
                 events.sort((a, b) => a.time.elapsed - b.time.elapsed);
-
-                // === הרשת הכפולה לזיהוי שערים פסולים ===
-                const cancelledGoalIndices = new Set();
-                const standaloneVarIndices = new Set();
-                const hiddenVarIndices = new Set();
-                
-                events.forEach((e, idx) => {
-                    const typeStr = String(e.type || '').toLowerCase();
-                    const detailStr = String(e.detail || '').toLowerCase();
-                    const commentsStr = String(e.comments || '').toLowerCase();
-
-                    // מקרה 1: השער עצמו הגיע עם סטטוס "פסול"
-                    if (typeStr === 'goal' && (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel'))) {
-                        cancelledGoalIndices.add(idx);
-                    }
-                    
-                    // מקרה 2: הגיע אירוע VAR נפרד שאומר פסילה
-                    if (typeStr === 'var' && (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel'))) {
-                        let foundGoal = false;
-                        for (let i = idx - 1; i >= 0; i--) {
-                            const prevE = events[i];
-                            // נחפש את השער האחרון של אותה קבוצה
-                            if (String(prevE.type).toLowerCase() === 'goal' && prevE.team.id === e.team.id) {
-                                cancelledGoalIndices.add(i);
-                                hiddenVarIndices.add(idx); // נסתיר את ה-VAR עצמו
-                                foundGoal = true;
-                                break;
-                            }
-                        }
-                        // השדרוג: אם ה-API מחק את השער המקורי לגמרי, נציג את ה-VAR בתור השער הפסול!
-                        if (!foundGoal) {
-                            standaloneVarIndices.add(idx);
-                        }
-                    }
-                });
 
                 let homeHtml = `<div class="team-col"><div class="team-title">${tHome}</div>`;
                 let awayHtml = `<div class="team-col"><div class="team-title">${tAway}</div>`;
 
-                events.forEach((event, index) => {
-                    // מדלגים על אירועי VAR כפולים שכבר מצאנו להם שער
-                    if (hiddenVarIndices.has(index)) return;
-
+                // המוח החדש והפשוט: כל אירוע עומד בפני עצמו
+                events.forEach((event) => {
                     const typeStr = String(event.type || '').toLowerCase();
                     const detailStr = String(event.detail || '').toLowerCase();
                     const commentsStr = String(event.comments || '').toLowerCase();
 
                     let time = event.time.elapsed + (event.time.extra ? `+${event.time.extra}` : '');
-                    let playerName = event.player && event.player.name ? (typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name) : 'שחקן לא ידוע';
+                    let playerName = event.player && event.player.name ? (typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name) : '';
                     let assistName = event.assist && event.assist.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
                     
                     let icon = '';
                     let mainText = '';
                     let subText = '';
-                    let isCancelled = cancelledGoalIndices.has(index) || standaloneVarIndices.has(index);
+                    let isCancelled = false;
 
-                    // טיפול בשערים (או ב-VAR שהפך לשער פסול בגלל מחיקה של ה-API)
-                    if (typeStr === 'goal' || standaloneVarIndices.has(index)) {
+                    // טיפול בשערים
+                    if (typeStr === 'goal') {
+                        // אם ה-API שולח מפורשות שהשער הזה נפסל
+                        if (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel')) {
+                            isCancelled = true;
+                        }
+
                         if (detailStr.includes('missed penalty')) {
                             icon = '❌';
                             mainText = `החמצת פנדל! ${playerName}`;
-                            isCancelled = false; // החמצה, לא פסילה
+                            isCancelled = false; 
                         } else if (detailStr.includes('penalty')) {
                             icon = '⚽';
                             mainText = `שער! ${playerName} (פ')`;
@@ -396,6 +361,23 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             subText = `בישול: ${assistName}`;
                         }
                     } 
+                    // טיפול עצמאי באירועי VAR
+                    else if (typeStr === 'var') {
+                        icon = '📺';
+                        mainText = 'החלטת VAR';
+                        if (playerName) mainText += ` (${playerName})`;
+                        
+                        if (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel')) {
+                            subText = '❌ שער נפסל';
+                            icon = '📺'; 
+                        } else if (detailStr.includes('penalty')) {
+                            subText = 'בדיקת פנדל';
+                        } else if (detailStr.includes('card')) {
+                            subText = 'בדיקת כרטיס';
+                        } else {
+                            subText = detailStr;
+                        }
+                    }
                     // טיפול בכרטיסים
                     else if (typeStr === 'card') {
                         if (detailStr.includes('yellow') && !detailStr.includes('second')) {
@@ -421,10 +403,13 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     }
 
                     const isHome = event.team.name === homeTeam;
+                    let textClass = 'event-text';
+                    let cancelledMarkup = '';
                     
-                    // מחיל עיצוב מיוחד על כל מה שסומן כנפסל
-                    const textClass = isCancelled ? 'event-text var-cancelled' : 'event-text';
-                    const cancelledMarkup = isCancelled ? `<span class="event-subtext var-cancelled-sub">❌ נפסל ע"י VAR</span>` : '';
+                    if (isCancelled && typeStr === 'goal') {
+                        textClass = 'event-text var-cancelled';
+                        cancelledMarkup = `<span class="event-subtext var-cancelled-sub">❌ נפסל ע"י VAR</span>`;
+                    }
 
                     const eventMarkup = `
                         <div class="event-item ${isHome ? 'event-home' : 'event-away'}">
