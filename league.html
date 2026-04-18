@@ -446,35 +446,51 @@ async function getStandings() {
 function buildStandingsUI() {
     const container = document.getElementById('api-table');
     
-    // אם יש רק בית אחד (כמו בליגה האנגלית), מציירים אותו רגיל
     if (allStandingsData.length === 1) {
         container.innerHTML = generateTableHtml(allStandingsData[0]);
         return;
     }
 
-    // אם יש כמה בתים, בונים רשימה נפתחת (Select)
+    // "המוח": בודקים האם יש קבוצות שחוזרות על עצמן כדי לדעת אם זה פלייאוף או בתים מקבילים
+    let totalTeams = 0;
+    let uniqueTeams = new Set();
+    allStandingsData.forEach(group => {
+        group.forEach(item => {
+            totalTeams++;
+            uniqueTeams.add(item.team.id);
+        });
+    });
+    // אם מספר הקבוצות שווה למספר הקבוצות הייחודיות - מדובר בבתים שונים לגמרי (כמו MLS)
+    const isParallelGroups = (totalTeams === uniqueTeams.size); 
+
     let uiHtml = `
         <div style="margin-bottom: 15px; text-align: center;">
             <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
     `;
     
-    // עוברים על כל הבתים ומוסיפים אותם לרשימה הנפתחת
+    // ב-MLS וארגנטינה נוסיף את המשולבת ראשונה
+    if (isParallelGroups) {
+        uiHtml += `<option value="combined">טבלה כללית (משולבת)</option>`;
+    }
+    
+    // מוסיפים את שאר הבתים/פלייאופים
     allStandingsData.forEach((groupArray, index) => {
-        let groupName = groupArray[0].group; // השם באנגלית מה-API (למשל Championship Group)
+        let groupName = groupArray[0].group;
         let translatedGroupName = typeof translateName === 'function' ? translateName(groupName) : groupName;
         uiHtml += `<option value="${index}">${translatedGroupName}</option>`;
     });
     
-    // אופציה לטבלה כללית (משולבת) שמאחדת את כולם
-    uiHtml += `<option value="combined">טבלה כללית (משולבת)</option>`;
     uiHtml += `</select></div><div id="table-render-area"></div>`;
-    
     container.innerHTML = uiHtml;
     
-    // מציגים כברירת מחדל את הבית הראשון שמצאנו
-    document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[0]);
+    // קובעים מה יוצג כברירת מחדל (משולבת ב-MLS, עונה סדירה בישראל/בלגיה)
+    if (isParallelGroups) {
+        renderCombinedTable();
+    } else {
+        document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[0]);
+    }
     
-    // מאזין: כשמשנים משהו ברשימה הנפתחת, הטבלה מתעדכנת מיד
+    // מאזין לשינויים
     document.getElementById('group-selector').addEventListener('change', function(e) {
         const val = e.target.value;
         if (val === 'combined') {
@@ -485,21 +501,30 @@ function buildStandingsUI() {
     });
 }
 
-// פונקציה שמאחדת את כל הבתים ומסדרת לפי נקודות
+// פונקציה חכמה שמאחדת טבלאות מבלי לשכפל קבוצות
 function renderCombinedTable() {
     let combined = [];
-    allStandingsData.forEach(group => { combined = combined.concat(group); });
+    let seenIds = new Set(); // מנגנון הגנה נגד כפילויות
     
-    // מיון הקבוצות: קודם לפי נקודות, אחר כך הפרש שערים, ואז שערי זכות
+    allStandingsData.forEach(group => { 
+        group.forEach(item => {
+            if (!seenIds.has(item.team.id)) {
+                seenIds.add(item.team.id);
+                combined.push(item);
+            }
+        });
+    });
+    
+    // סידור לפי נקודות
     combined.sort((a, b) => {
         if (b.points !== a.points) return b.points - a.points;
         if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
         return b.all.goals.for - a.all.goals.for;
     });
     
-    // מסדרים את המיקומים (Rank) מחדש מ-1 עד הסוף
+    // סידור מיקומים מחדש
     let combinedWithRanks = combined.map((item, index) => {
-        let newItem = JSON.parse(JSON.stringify(item)); // העתק נקי
+        let newItem = JSON.parse(JSON.stringify(item)); 
         newItem.rank = index + 1;
         return newItem;
     });
