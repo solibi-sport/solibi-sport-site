@@ -675,6 +675,7 @@
         }
 
         // --- פונקציית שלבי נוקאאוט אירופאיים ---
+        // --- פונקציית שלבי נוקאאוט אירופאיים (עיצוב פרימיום משולב) ---
         async function fetchAndRenderKnockouts() {
             const container = document.getElementById('standings-render-area');
             container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold; color:#cbd5e1;">טוען שלבי נוקאאוט... 🏆</div>';
@@ -696,48 +697,136 @@
                     return;
                 }
 
+                // 1. קיבוץ המשחקים לפי סיבוב, ואז לפי מפגש (צמד משחקים)
                 const rounds = {};
                 knockoutFixtures.forEach(m => {
                     let roundName = typeof translateName === 'function' ? translateName(m.league.round) : m.league.round;
-                    if (!rounds[roundName]) rounds[roundName] = [];
-                    rounds[roundName].push(m);
+                    if (!rounds[roundName]) rounds[roundName] = {};
+
+                    // יצירת "מזהה ייחודי" למפגש כדי לחבר את משחק הבית ומשחק החוץ יחד
+                    let t1 = m.teams.home.id;
+                    let t2 = m.teams.away.id;
+                    let tieKey = [t1, t2].sort().join('-');
+
+                    if (!rounds[roundName][tieKey]) rounds[roundName][tieKey] = [];
+                    rounds[roundName][tieKey].push(m);
                 });
 
-                let html = '<div style="display:flex; flex-direction:column; gap:20px; margin-top:15px; direction:rtl;">';
+                let html = '<div style="display:flex; flex-direction:column; gap:12px; margin-top:10px; direction:rtl;">';
                 
                 Object.keys(rounds).forEach(round => {
-                    html += `
-                    <div style="background:rgba(255,255,255,0.05); border-radius:12px; padding:15px; border:1px solid #1f2d40;">
-                        <h3 style="text-align:center; color:#fff; margin-top:0; border-bottom:2px solid #7ca856; padding-bottom:8px;">${round}</h3>
-                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">`;
+                    // כותרת השלב (למשל "שמינית גמר")
+                    html += `<div class="date-separator" style="color: #8fa0b3; font-size: 14px; font-weight: bold; text-align: center; margin: 20px 0 5px; border-bottom: 2px solid #1f2d40; padding-bottom: 5px;">${round}</div>`;
 
-                    rounds[round].forEach(m => {
-                        const homeTeam = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
-                        const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
-                        
-                        const homeScore = m.goals.home !== null ? m.goals.home : '-';
-                        const awayScore = m.goals.away !== null ? m.goals.away : '-';
-                        
-                        const matchDate = new Date(m.fixture.date).toLocaleDateString('he-IL');
+                    Object.values(rounds[round]).forEach(tieMatches => {
+                        // סידור צמד המשחקים לפי תאריך
+                        tieMatches.sort((a,b) => a.fixture.timestamp - b.fixture.timestamp);
 
-                        html += `
-                            <div style="background:#0b121c; border-radius:8px; padding:10px; border: 1px solid #1f2d40; display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:bold;">
-                                <div style="text-align:center; font-size:10px; color:#94a3b8; margin-bottom:4px;">${matchDate}</div>
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <div style="display:flex; align-items:center; gap:8px;"><img src="${m.teams.home.logo}" width="18"> <span>${homeTeam}</span></div>
-                                    <span style="color:#7ca856; font-size:15px;">${homeScore}</span>
+                        // הגדרת קבוצה 1 וקבוצה 2 לפי המשחק הראשון
+                        let t1Id = tieMatches[0].teams.home.id;
+                        let t1Name = typeof translateName === 'function' ? translateName(tieMatches[0].teams.home.name) : tieMatches[0].teams.home.name;
+                        let t1Logo = tieMatches[0].teams.home.logo;
+
+                        let t2Id = tieMatches[0].teams.away.id;
+                        let t2Name = typeof translateName === 'function' ? translateName(tieMatches[0].teams.away.name) : tieMatches[0].teams.away.name;
+                        let t2Logo = tieMatches[0].teams.away.logo;
+
+                        let t1Goals = 0;
+                        let t2Goals = 0;
+                        let playedCount = 0;
+                        let pensText = '';
+                        let legsHTML = '';
+
+                        // מעבר על המשחקים בתוך המפגש (משחק 1 ומשחק 2) לחישוב הסיכום
+                        tieMatches.forEach((m, idx) => {
+                            let homeIsT1 = m.teams.home.id === t1Id;
+                            let hGoals = m.goals.home;
+                            let aGoals = m.goals.away;
+
+                            if (hGoals !== null && aGoals !== null) {
+                                playedCount++;
+                                if (homeIsT1) {
+                                    t1Goals += hGoals; t2Goals += aGoals;
+                                } else {
+                                    t2Goals += hGoals; t1Goals += aGoals;
+                                }
+                            }
+
+                            // בדיקת פנדלים
+                            if (m.score && m.score.penalty && m.score.penalty.home !== null) {
+                                let pHome = m.score.penalty.home;
+                                let pAway = m.score.penalty.away;
+                                if (homeIsT1) pensText = `(פנדלים: ${pHome}-${pAway})`;
+                                else pensText = `(פנדלים: ${pAway}-${pHome})`;
+                            }
+
+                            // --- בניית שורת משחק בודדת (לחיצה פותחת את הזירה) ---
+                            let legDate = new Date(m.fixture.date).toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit'});
+                            let legHomeName = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
+                            let legAwayName = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
+                            let legHScore = hGoals !== null ? hGoals : '-';
+                            let legAScore = aGoals !== null ? aGoals : '-';
+                            let safeHome = encodeURIComponent(m.teams.home.name);
+                            let safeAway = encodeURIComponent(m.teams.away.name);
+                            
+                            let shortStatus = m.fixture.status.short;
+                            let timeOrStatus = '';
+                            if (['NS', 'TBD'].includes(shortStatus)) timeOrStatus = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                            else if (['FT', 'AET', 'PEN'].includes(shortStatus)) timeOrStatus = 'סיום';
+                            else if (shortStatus === 'HT') timeOrStatus = 'מחצית';
+                            else if (m.fixture.status.elapsed) timeOrStatus = `${m.fixture.status.elapsed}'`;
+
+                            let legTitle = tieMatches.length > 1 ? `משחק ${idx + 1}` : 'משחק יחיד';
+
+                            legsHTML += `
+                            <div onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${m.fixture.id}, '${safeHome}', '${safeAway}')" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-top: 1px solid #1f2d40; cursor: pointer; font-size: 11.5px; color: #cbd5e1; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                                <div style="width: 25%; text-align: right; color: #8fa0b3; display: flex; flex-direction: column;">
+                                    <span style="font-weight:bold;">${legTitle}</span>
+                                    <span style="font-size:10px;">${legDate} | ${timeOrStatus}</span>
                                 </div>
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <div style="display:flex; align-items:center; gap:8px;"><img src="${m.teams.away.logo}" width="18"> <span>${awayTeam}</span></div>
-                                    <span style="color:#7ca856; font-size:15px;">${awayScore}</span>
+                                <div style="width: 50%; text-align: center; font-weight: bold; letter-spacing: 0.5px;">
+                                    ${legHomeName} <span style="color:#fff; background:#192a45; padding:3px 8px; border-radius:6px; margin:0 6px; border:1px solid #2a3b4c;">${legHScore} - ${legAScore}</span> ${legAwayName}
+                                </div>
+                                <div style="width: 25%; text-align: left; color: #7ca856; font-weight: bold; display: flex; justify-content: flex-end; align-items: center; gap:5px;">
+                                    זירת משחק <span style="font-size:14px;">📊</span>
+                                </div>
+                            </div>`;
+                        });
+
+                        let aggScoreDisplay = playedCount > 0 ? `${t1Goals} - ${t2Goals}` : '-';
+                        let aggLabel = tieMatches.length > 1 ? 'סיכום' : 'תוצאה';
+
+                        // --- הקובייה המרכזית שעוטפת את המפגש ---
+                        html += `
+                        <div style="background: #0b121c; border-radius: 12px; margin-bottom: 8px; border: 1px solid #1f2d40; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                            
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px; background: radial-gradient(circle at center, #152438 0%, #0b121c 100%);">
+                                <div style="flex: 1; display: flex; align-items: center; gap: 12px; justify-content: flex-end;">
+                                    <span style="font-weight: 800; font-size: clamp(13px, 1.2vw, 16px); color: #fff;">${t1Name}</span>
+                                    <img src="${t1Logo}" style="width: 38px; height: 38px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));">
+                                </div>
+                                
+                                <div style="width: 100px; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                                    <span style="font-size: 10px; color: #8fa0b3; font-weight: bold; margin-bottom: 4px; text-transform: uppercase;">${aggLabel}</span>
+                                    <span style="font-size: 24px; font-weight: 900; color: #7ca856; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,0.6);">${aggScoreDisplay}</span>
+                                    ${pensText ? `<span style="font-size: 11px; color: #ff4d4d; font-weight: bold; margin-top: 2px;">${pensText}</span>` : ''}
+                                </div>
+                                
+                                <div style="flex: 1; display: flex; align-items: center; gap: 12px; justify-content: flex-start;">
+                                    <img src="${t2Logo}" style="width: 38px; height: 38px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));">
+                                    <span style="font-weight: 800; font-size: clamp(13px, 1.2vw, 16px); color: #fff;">${t2Name}</span>
                                 </div>
                             </div>
-                        `;
-                    });
-                    html += `</div></div>`;
-                });
-                html += '</div>';
 
+                            <div style="display: flex; flex-direction: column; background: #060a10;">
+                               ${legsHTML}
+                            </div>
+                            
+                        </div>`;
+                    });
+                });
+                
+                html += '</div>';
                 container.innerHTML = html;
 
             } catch (error) {
@@ -745,36 +834,6 @@
                 container.innerHTML = '<div style="text-align:center; padding:30px;">שגיאה בטעינת משחקי נוקאאוט</div>';
             }
         }
-
-        // --- משיכת משחקים ---
-        async function getFixtures() {
-            try {
-                if (parseInt(LEAGUE_ID) === 384) {
-                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#8fa0b3;">אין נתונים זמינים</div>';
-                    if (document.getElementById('matchday-title')) document.getElementById('matchday-title').innerText = "אין נתונים"; 
-                    return;
-                }
-
-                const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
-                const data = await response.json();
-                
-                if(!data.response || data.response.length === 0) {
-                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
-                    if (document.getElementById('matchday-title')) document.getElementById('matchday-title').innerText = "אין נתונים"; 
-                    return;
-                }
-                
-                allMatches = data.response;
-                renderFixturesByDate();
-                
-            } catch (error) {
-                console.error("שגיאה במשיכת המשחקים:", error);
-                document.getElementById('api-fixtures-list').innerHTML = "שגיאה בטעינת משחקים";
-            }
-        }
-
         // --- עזרי תאריך והמרה לזמן מקומי ---
         function getLocalYYYYMMDD(utcString) {
             const d = new Date(utcString);
