@@ -139,7 +139,12 @@ function getStatValue(statsArray, typeName) {
 }
 
 // 3. הפונקציה המרכזית לשאיבת הנתונים
-async function openMatchEvents(fixtureId, homeTeam, awayTeam) {
+async function openMatchEvents(fixtureId, paramHome, paramAway) {
+    // מפענחים בחזרה את השמות כדי למנוע שבירה של גרשיים בדף הבית
+    let homeTeam = paramHome;
+    let awayTeam = paramAway;
+    try { homeTeam = decodeURIComponent(paramHome); } catch(e) {}
+    try { awayTeam = decodeURIComponent(paramAway); } catch(e) {}
     const modal = document.getElementById('eventsModal');
     const box = document.querySelector('.modal-box');
     const content = document.getElementById('modalEventsContent');
