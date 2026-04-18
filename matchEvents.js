@@ -13,9 +13,17 @@ if (!document.getElementById('modal-style-events')) {
     .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
     .close-modal:hover { color: #ffffff; }
 
-    .score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 20px 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; }
-    .score-team { font-size: 15px; font-weight: 900; flex: 1; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; }
-    .score-box { display: flex; align-items: center; gap: 12px; background: #060c14; padding: 8px 20px; border-radius: 12px; border: 1px solid rgba(122, 153, 102, 0.4); position: relative; box-shadow: inset 0 3px 10px rgba(0,0,0,0.6); margin: 0 10px; }
+    /* === הוספה: אנימציות ועיצוב באנר === */
+    @keyframes bannerGoalPulse { 0% { box-shadow: inset 0 0 10px rgba(122,153,102,0.2); } 100% { box-shadow: inset 0 0 40px rgba(122,153,102,0.9); } }
+    @keyframes textGoalPop { 0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
+
+    .score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 20px 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; transition: box-shadow 0.3s; }
+    .score-banner.goal-active { animation: bannerGoalPulse 0.8s infinite alternate; }
+
+    .modal-goal-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; font-weight: 900; color: rgba(255,255,255,0.95); text-shadow: 0 0 20px #7a9966, 0 0 40px #7a9966; pointer-events: none; z-index: 20; animation: textGoalPop 0.8s infinite alternate; }
+
+    .score-team { font-size: 15px; font-weight: 900; flex: 1; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; position: relative; z-index: 2;}
+    .score-box { display: flex; align-items: center; gap: 12px; background: #060c14; padding: 8px 20px; border-radius: 12px; border: 1px solid rgba(122, 153, 102, 0.4); position: relative; box-shadow: inset 0 3px 10px rgba(0,0,0,0.6); margin: 0 10px; z-index: 2;}
     .score-val { font-size: 26px; font-weight: 900; color: #ffffff; line-height: 1; }
     .score-divider { font-size: 18px; color: #7a9966; font-weight: bold; line-height: 1; transform: translateY(-2px); }
     .score-minute { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #7a9966; color: #111926; font-size: 11px; font-weight: 900; padding: 2px 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); white-space: nowrap; border: 1px solid #fff; }
@@ -33,10 +41,11 @@ if (!document.getElementById('modal-style-events')) {
     .away-val { color: #4a90e2; }
     .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
     
+    /* === הוספה: align-items: stretch === */
     #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; align-items: stretch; }
     
-    /* התיקון לקופסה הנחתכת: הוספנו min-height: max-content */
-    .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content; }
+    /* === הוספה: min-height: max-content === */
+    .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
     .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
     
     .event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
@@ -187,7 +196,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         const statsData = await statsRes.json();
         const fixtureData = await fixtureRes.json();
 
-        // --- התיקון למשחקים שהסתיימו (השופט שלנו) ---
+        // --- הוספה: זיהוי סטטוס המשחק (הסתיים / מחצית / דקה) ---
         let goalsHome = '-';
         let goalsAway = '-';
         let matchStatus = '';
@@ -197,9 +206,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             goalsHome = info.goals.home !== null ? info.goals.home : '-';
             goalsAway = info.goals.away !== null ? info.goals.away : '-';
             
-            // בודקים את הסטטוס הקצר כדי לדעת אם נגמר, מחצית או משוחק
             const shortStatus = info.fixture.status.short;
-            
             if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
                 matchStatus = 'הסתיים';
             } else if (shortStatus === 'HT') {
@@ -211,8 +218,18 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             }
         }
 
+        // --- הוספה: בדיקה האם הובקע שער בדקה האחרונה ---
+        let isGoalRecent = false;
+        if (window.matchGoalTracker && window.matchGoalTracker[fixtureId]) {
+            if (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 60000) {
+                isGoalRecent = true;
+            }
+        }
+
+        // --- הוספה: הזרקת הבאנר המעודכן ---
         const scoreHTML = `
-        <div id="modalScoreBanner" class="score-banner">
+        <div id="modalScoreBanner" class="score-banner ${isGoalRecent ? 'goal-active' : ''}">
+            ${isGoalRecent ? '<div class="modal-goal-flash">שער!</div>' : ''}
             <div class="score-team home">${tHome}</div>
             <div class="score-box">
                 <span class="score-val">${goalsHome}</span>
@@ -223,6 +240,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             <div class="score-team away">${tAway}</div>
         </div>`;
         document.querySelector('.modal-header').insertAdjacentHTML('afterend', scoreHTML);
+
 
         const events = eventsData.response || [];
         const stats = statsData.response || [];
