@@ -446,30 +446,20 @@ async function getStandings() {
 function buildStandingsUI() {
     const container = document.getElementById('api-table');
     
-    // === תוספת חדשה: סדרן חכם שמסדר את הבתים לפני התצוגה ===
+    // סדרן חכם שמסדר את הבתים לפני התצוגה
     allStandingsData.sort((a, b) => {
         const getWeight = (name) => {
             let lowerName = name.toLowerCase();
-            // עונה סדירה (מכיל regular או שאין בו מילים של פלייאוף)
             if (lowerName.includes('regular') || (!lowerName.includes('round') && !lowerName.includes('group') && !lowerName.includes('phase'))) return 1;
-            // פלייאוף עליון / אליפות
             if (lowerName.includes('championship') || lowerName.includes('1st')) return 2;
-            // פלייאוף אמצעי (מוקדמות קונפרנס וכו')
             if (lowerName.includes('qualifying') || lowerName.includes('conference')) return 3;
-            // פלייאוף תחתון / הישרדות
             if (lowerName.includes('relegation') || lowerName.includes('2nd')) return 4;
             return 5;
         };
         return getWeight(a[0].group) - getWeight(b[0].group);
     });
-    // === סוף בלוק הסידור ===
 
-    if (allStandingsData.length === 1) {
-        container.innerHTML = generateTableHtml(allStandingsData[0]);
-        return;
-    }
-
-    // "המוח": בודקים האם יש קבוצות שחוזרות על עצמן
+    // המוח: בודקים האם יש קבוצות שחוזרות על עצמן
     let totalTeams = 0;
     let uniqueTeams = new Set();
     allStandingsData.forEach(group => {
@@ -478,34 +468,40 @@ function buildStandingsUI() {
             uniqueTeams.add(item.team.id);
         });
     });
-    
     const isParallelGroups = (totalTeams === uniqueTeams.size); 
+    
+    // מזהים אם זו ליגה אירופית כדי לדעת אם להוסיף אופציית נוקאאוט
+    const EUROPEAN_LEAGUES = [2, 3, 848]; 
+    const isEurope = EUROPEAN_LEAGUES.includes(parseInt(LEAGUE_ID));
 
     let uiHtml = `
         <div style="margin-bottom: 15px; text-align: center;">
             <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
     `;
     
-    // ב-MLS וארגנטינה נוסיף את המשולבת ראשונה
-    if (isParallelGroups) {
+    if (isParallelGroups && !isEurope) {
         uiHtml += `<option value="combined">טבלה כללית (משולבת)</option>`;
     }
     
-    // מוסיפים את שאר הבתים/פלייאופים
+    // מוסיפים את הטבלאות / שלב הבתים
     allStandingsData.forEach((groupArray, index) => {
         let groupName = groupArray[0].group;
         let translatedGroupName = typeof translateName === 'function' ? translateName(groupName) : groupName;
         uiHtml += `<option value="${index}">${translatedGroupName}</option>`;
     });
+
+    // === התוספת לאירופה ===
+    if (isEurope) {
+        uiHtml += `<option value="knockout" style="background:#7ca856; color:#fff;">🏆 שלבי נוקאאוט</option>`;
+    }
     
     uiHtml += `</select></div><div id="table-render-area"></div>`;
     container.innerHTML = uiHtml;
     
-    // קובעים מה יוצג כברירת מחדל
-    if (isParallelGroups) {
+    // תצוגת ברירת מחדל
+    if (isParallelGroups && !isEurope) {
         renderCombinedTable();
     } else {
-        // בגלל שסידרנו אותם למעלה, אינדקס 0 הוא עכשיו תמיד העונה הסדירה!
         document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[0]);
     }
     
@@ -514,6 +510,8 @@ function buildStandingsUI() {
         const val = e.target.value;
         if (val === 'combined') {
             renderCombinedTable();
+        } else if (val === 'knockout') {
+            fetchAndRenderKnockouts(); // קורא לפונקציית הנוקאאוט החדשה!
         } else {
             document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[parseInt(val)]);
         }
@@ -583,6 +581,83 @@ function generateTableHtml(standingsArray) {
     });
     html += `</table>`;
     return html;
+}
+
+        // פונקציה חדשה שמושכת ומציירת את עץ הנוקאאוט
+async function fetchAndRenderKnockouts() {
+    const container = document.getElementById('table-render-area');
+    container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold; color:#112845;">טוען שלבי נוקאאוט... 🏆</div>';
+
+    try {
+        const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
+            headers: { 'x-apisports-key': API_KEY }
+        });
+        const data = await response.json();
+        const allFixtures = data.response || [];
+
+        // סינון: לוקחים רק משחקים שהשם של השלב שלהם מכיל מילים של נוקאאוט
+        const knockoutFixtures = allFixtures.filter(f => {
+            const r = f.league.round.toLowerCase();
+            return r.includes('knockout') || r.includes('16') || r.includes('quarter') || r.includes('semi') || r.includes('final');
+        });
+
+        if (knockoutFixtures.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold;">טרם שוחקו משחקי נוקאאוט העונה.</div>';
+            return;
+        }
+
+        // מקבצים את המשחקים לפי השלב (למשל: כל משחקי "שמינית גמר" ביחד)
+        const rounds = {};
+        knockoutFixtures.forEach(m => {
+            let roundName = typeof translateName === 'function' ? translateName(m.league.round) : m.league.round;
+            if (!rounds[roundName]) rounds[roundName] = [];
+            rounds[roundName].push(m);
+        });
+
+        // מציירים את ה-HTML
+        let html = '<div style="display:flex; flex-direction:column; gap:20px; margin-top:15px; direction:rtl;">';
+        
+        Object.keys(rounds).forEach(round => {
+            html += `
+            <div style="background:rgba(255,255,255,0.6); border-radius:12px; padding:15px; border:1px solid #cbd5e1;">
+                <h3 style="text-align:center; color:#112845; margin-top:0; border-bottom:2px solid #7ca856; padding-bottom:8px;">${round}</h3>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px;">`;
+
+            rounds[round].forEach(m => {
+                const homeTeam = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
+                const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
+                
+                // בודקים אם המשחק שוחק (יש תוצאה) או שזה רק תכנון עתידי
+                const homeScore = m.goals.home !== null ? m.goals.home : '-';
+                const awayScore = m.goals.away !== null ? m.goals.away : '-';
+                
+                // הופכים את התאריך לפורמט ישראלי
+                const matchDate = new Date(m.fixture.date).toLocaleDateString('he-IL');
+
+                html += `
+                    <div style="background:#fff; border-radius:8px; padding:10px; box-shadow:0 2px 4px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:bold;">
+                        <div style="text-align:center; font-size:10px; color:#94a3b8; margin-bottom:4px;">${matchDate}</div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div style="display:flex; align-items:center; gap:8px;"><img src="${m.teams.home.logo}" width="18"> <span>${homeTeam}</span></div>
+                            <span style="color:#112845; font-size:15px;">${homeScore}</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div style="display:flex; align-items:center; gap:8px;"><img src="${m.teams.away.logo}" width="18"> <span>${awayTeam}</span></div>
+                            <span style="color:#112845; font-size:15px;">${awayScore}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div></div>`;
+        });
+        html += '</div>';
+
+        container.innerHTML = html;
+
+    } catch (error) {
+        console.error("שגיאה במשיכת נתוני נוקאאוט:", error);
+        container.innerHTML = '<div style="text-align:center; padding:30px;">שגיאה בטעינת משחקי נוקאאוט</div>';
+    }
 }
         
         async function loadPlayerStats(endpoint) {
