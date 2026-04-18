@@ -530,6 +530,11 @@
                         newItem.group = "טבלה כללית"; 
                         return newItem;
                     });
+
+                    // --> התוספת החדשה: מסנן ומעלים את ה"עונה סדירה" מהרשימה
+                    standings = standings.filter(group => {
+                        return translateGroupName(group[0].group) !== "עונה סדירה";
+                    });
                     
                     // דוחף את הטבלה הכללית להיות הראשונה במערך
                     standings.unshift(combinedWithRanks);
