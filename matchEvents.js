@@ -40,6 +40,7 @@ if (!document.getElementById('modal-style-events')) {
     .away-val { color: #4a90e2; }
     .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
     
+    /* פה נמצא ה-flex ששומר אותם אחד ליד השני */
     #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; align-items: stretch; }
     .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
     .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
@@ -67,7 +68,6 @@ function getStatValue(statsArray, typeName) {
     return (stat && stat.value !== null) ? stat.value : '0';
 }
 
-// === משתנה גלובלי לריענון החלון הצף ===
 let modalRefreshTimer = null;
 
 function closeEventsModal(event) {
@@ -75,7 +75,6 @@ function closeEventsModal(event) {
     const modal = document.getElementById('eventsModal');
     if (modal) modal.style.display = 'none';
     
-    // עצירת הריענון כשהחלון נסגר (חוסך קריאות API)
     if (modalRefreshTimer) {
         clearInterval(modalRefreshTimer);
         modalRefreshTimer = null;
@@ -88,7 +87,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
     try { homeTeam = decodeURIComponent(paramHome); } catch(e) {}
     try { awayTeam = decodeURIComponent(paramAway); } catch(e) {}
 
-    // בניית מסגרת ה-HTML אם לא קיימת
     if (!document.getElementById('eventsModal')) {
         const modalHTML = `
         <div id="eventsModal" class="modal-overlay">
@@ -164,7 +162,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
     const box = document.querySelector('.modal-box');
     const content = document.getElementById('modalEventsContent');
     
-    // איפוס אנימציות ומיקומים בעת פתיחה
     window.dragOffsetX = 0;
     window.dragOffsetY = 0;
     box.style.animation = 'none';
@@ -177,13 +174,11 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
     const tHome = typeof window.translateName === 'function' ? window.translateName(homeTeam) : homeTeam;
     const tAway = typeof window.translateName === 'function' ? window.translateName(awayTeam) : awayTeam;
 
-    // איפוס הטיימר הקודם אם קיים
     if (modalRefreshTimer) {
         clearInterval(modalRefreshTimer);
         modalRefreshTimer = null;
     }
 
-    // === פונקציית משיכת הנתונים (מופעלת גם ידנית וגם ע"י הטיימר) ===
     async function updateModalData(isInitialLoad) {
         if (isInitialLoad) {
             const existingStats = document.getElementById('modalStatsContainer');
@@ -191,7 +186,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             const existingScore = document.getElementById('modalScoreBanner');
             if (existingScore) existingScore.remove();
             content.innerHTML = '<p style="text-align:center; width:100%; margin-top:20px; font-size:13px; color:#888;">טוען נתונים...</p>';
-            content.style.display = 'block';
+            // התיקון כאן: דואגים שזה תמיד יישאר flex כדי לשמור על הימין והשמאל
+            content.style.display = 'flex'; 
         }
 
         try {
@@ -229,7 +225,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 }
             }
 
-            // זיהוי שער מול הזיכרון של דף הבית או הליגה
             let isGoalRecent = false;
             if (window.matchGoalTracker && window.matchGoalTracker[fixtureId] && (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 60000)) {
                 isGoalRecent = true;
@@ -271,7 +266,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             let homeFouls = getStatValue(homeStatsArray, "Fouls");
             let awayFouls = getStatValue(awayStatsArray, "Fouls");
 
-            // עכשיו הקופסה הזו *תמיד* תוזרק, גם אם ה-API עוד לא שלח נתונים
+            // הסטטיסטיקות מוזרקות תמיד (גם למשחק חי וגם להסתיים)
             const statsHTML = `
             <div id="modalStatsContainer" class="stats-container">
                 <div style="text-align: center; font-size: 11px; color: #8fa0b3; margin-bottom: 5px;">שליטה בכדור</div>
@@ -308,7 +303,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 </div>
             </div>`;
             
-            // ניקוי אלמנטים ישנים לפני הזרקת החדשים (כדי למנוע כפילויות בריענון)
             const oldStats = document.getElementById('modalStatsContainer');
             if (oldStats) oldStats.remove();
             const oldScore = document.getElementById('modalScoreBanner');
@@ -317,7 +311,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             document.querySelector('.modal-header').insertAdjacentHTML('afterend', scoreHTML);
             document.getElementById('modalScoreBanner').insertAdjacentHTML('afterend', statsHTML);
 
-            // אירועי המשחק
             let eventsHtml = '';
             if (events.length === 0) {
                 eventsHtml = '<p style="text-align:center; width:100%; font-size:12px;">אין אירועים להצגה.</p>';
@@ -379,7 +372,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             content.innerHTML = eventsHtml;
 
-            // חוסך לך כסף! אם המשחק הסתיים, עוצר את הריענון האוטומטי
+            // עוצר ריענון רק אם המשחק נגמר סופית
             if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
                 if (modalRefreshTimer) {
                     clearInterval(modalRefreshTimer);
@@ -395,9 +388,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         }
     }
 
-    // הפעלה ראשונה מיד בלחיצה
     await updateModalData(true);
-    
-    // מפעיל את הריענון האוטומטי כל 60 שניות (רק למשחקים פעילים)
     modalRefreshTimer = setInterval(() => updateModalData(false), 60000);
 }
