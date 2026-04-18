@@ -438,27 +438,41 @@ async function getStandings() {
     }
 }
 
-// --- הפונקציה החדשה לגמרי שמביאה נתונים מויקיפדיה (להוסיף אותה כאן) ---
 async function getStandingsFromWikipedia() {
     const container = document.getElementById('api-table');
     container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
 
     try {
-        const pageTitle = encodeURIComponent("ליגה_לאומית_בכדורגל_2025/2026");
-        const wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
+        // מחשבים את העונה כדי ליצור את שם הדף הנכון בויקיפדיה (למשל 2025/2026)
+        const nextYear = parseInt(SEASON) + 1;
+        let pageTitle = encodeURIComponent(`עונת_${SEASON}/${nextYear}_בליגה_הלאומית`);
+        let wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
 
-        const res = await fetch(wikiUrl);
-        const data = await res.json();
+        // ניסיון ראשון: חיפוש הדף של העונה הספציפית
+        let res = await fetch(wikiUrl);
+        let data = await res.json();
+
+        // ניסיון שני: אם הדף לא קיים, הולכים לדף הראשי של הליגה הלאומית
+        if (data.error) {
+            pageTitle = encodeURIComponent("ליגה_לאומית_(כדורגל)");
+            wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
+            res = await fetch(wikiUrl);
+            data = await res.json();
+        }
+
+        if (data.error) throw new Error("לא נמצא דף בויקיפדיה");
+
         const htmlContent = data.parse.text["*"];
-
         const parser = new DOMParser();
         const doc = parser.parseFromString(htmlContent, 'text/html');
 
+        // חיפוש כל הטבלאות בדף
         const tables = doc.querySelectorAll('table.wikitable');
         let standingsTable = null;
         
         tables.forEach(t => {
-            if (t.innerText.includes("קבוצה") && t.innerText.includes("נקודות")) {
+            // מוודא שזו באמת טבלת ליגה ולא טבלת מלכי שערים
+            if (t.innerText.includes("קבוצה") && t.innerText.includes("נקודות") && (t.innerText.includes("ניצחונות") || t.innerText.includes("שערי זכות"))) {
                 standingsTable = t;
             }
         });
@@ -493,20 +507,24 @@ async function getStandingsFromWikipedia() {
                 
                 const rank = getText(colMap.rank || 0);
                 const teamName = getText(colMap.team || 1);
+                const points = getText(colMap.points || 9);
                 
-                html += `<tr>
-                    <td>-</td>
-                    <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
-                    <td><div class="team-identity"><span class="team-name-text">${teamName}</span></div></td>
-                    <td>${getText(colMap.played || 2)}</td>
-                    <td>${getText(colMap.win || 3)}</td>
-                    <td>${getText(colMap.draw || 4)}</td>
-                    <td>${getText(colMap.lose || 5)}</td>
-                    <td>${getText(colMap.goalsFor || 6)}</td>
-                    <td>${getText(colMap.goalsAgainst || 7)}</td>
-                    <td>${getText(colMap.diff || 8)}</td>
-                    <td><strong style="color: var(--brand-green);">${getText(colMap.points || 9)}</strong></td>
-                </tr>`;
+                // נוודא שזה באמת שורת קבוצה ולא שורת סיכום
+                if(points !== '-' && teamName !== '-') {
+                    html += `<tr>
+                        <td>-</td>
+                        <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
+                        <td><div class="team-identity"><span class="team-name-text">${teamName}</span></div></td>
+                        <td>${getText(colMap.played || 2)}</td>
+                        <td>${getText(colMap.win || 3)}</td>
+                        <td>${getText(colMap.draw || 4)}</td>
+                        <td>${getText(colMap.lose || 5)}</td>
+                        <td>${getText(colMap.goalsFor || 6)}</td>
+                        <td>${getText(colMap.goalsAgainst || 7)}</td>
+                        <td>${getText(colMap.diff || 8)}</td>
+                        <td><strong style="color: var(--brand-green);">${points}</strong></td>
+                    </tr>`;
+                }
             }
         });
 
