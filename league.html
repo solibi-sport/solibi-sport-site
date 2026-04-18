@@ -446,12 +446,30 @@ async function getStandings() {
 function buildStandingsUI() {
     const container = document.getElementById('api-table');
     
+    // === תוספת חדשה: סדרן חכם שמסדר את הבתים לפני התצוגה ===
+    allStandingsData.sort((a, b) => {
+        const getWeight = (name) => {
+            let lowerName = name.toLowerCase();
+            // עונה סדירה (מכיל regular או שאין בו מילים של פלייאוף)
+            if (lowerName.includes('regular') || (!lowerName.includes('round') && !lowerName.includes('group') && !lowerName.includes('phase'))) return 1;
+            // פלייאוף עליון / אליפות
+            if (lowerName.includes('championship') || lowerName.includes('1st')) return 2;
+            // פלייאוף אמצעי (מוקדמות קונפרנס וכו')
+            if (lowerName.includes('qualifying') || lowerName.includes('conference')) return 3;
+            // פלייאוף תחתון / הישרדות
+            if (lowerName.includes('relegation') || lowerName.includes('2nd')) return 4;
+            return 5;
+        };
+        return getWeight(a[0].group) - getWeight(b[0].group);
+    });
+    // === סוף בלוק הסידור ===
+
     if (allStandingsData.length === 1) {
         container.innerHTML = generateTableHtml(allStandingsData[0]);
         return;
     }
 
-    // "המוח": בודקים האם יש קבוצות שחוזרות על עצמן כדי לדעת אם זה פלייאוף או בתים מקבילים
+    // "המוח": בודקים האם יש קבוצות שחוזרות על עצמן
     let totalTeams = 0;
     let uniqueTeams = new Set();
     allStandingsData.forEach(group => {
@@ -460,7 +478,7 @@ function buildStandingsUI() {
             uniqueTeams.add(item.team.id);
         });
     });
-    // אם מספר הקבוצות שווה למספר הקבוצות הייחודיות - מדובר בבתים שונים לגמרי (כמו MLS)
+    
     const isParallelGroups = (totalTeams === uniqueTeams.size); 
 
     let uiHtml = `
@@ -483,10 +501,11 @@ function buildStandingsUI() {
     uiHtml += `</select></div><div id="table-render-area"></div>`;
     container.innerHTML = uiHtml;
     
-    // קובעים מה יוצג כברירת מחדל (משולבת ב-MLS, עונה סדירה בישראל/בלגיה)
+    // קובעים מה יוצג כברירת מחדל
     if (isParallelGroups) {
         renderCombinedTable();
     } else {
+        // בגלל שסידרנו אותם למעלה, אינדקס 0 הוא עכשיו תמיד העונה הסדירה!
         document.getElementById('table-render-area').innerHTML = generateTableHtml(allStandingsData[0]);
     }
     
