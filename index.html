@@ -590,7 +590,7 @@
                 matches.forEach(m => {
                     let leagueName = LEAGUE_NAMES_MAP[m.league.id];
                     if (!leagueName) {
-                        leagueName = typeof translateName === 'function' ? translateName(m.league.name) : m.league.name;
+                        leagueName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
                     }
 
                     if(!grouped[leagueName]) grouped[leagueName] = { logo: m.league.logo, matches: [] };
@@ -624,18 +624,16 @@
                     let matchesHtml = '';
                     
                     leagueData.matches.forEach(m => {
-                        const homeTeam = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
-                        const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
+                        const homeTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
+                        const awayTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
                         let elapsedTime = m.fixture.status.elapsed ? `${m.fixture.status.elapsed}'` : 'מחצית';
-                        const safeHomeName = m.teams.home.name.replace(/'/g, "\\'");
-const safeAwayName = m.teams.away.name.replace(/'/g, "\\'");
 
+                        // קידוד מיוחד ובטוח לשמות القבוצות - מונע שגיאות של מסך לבן!
                         const safeHomeName = encodeURIComponent(m.teams.home.name);
                         const safeAwayName = encodeURIComponent(m.teams.away.name);
 
                         matchesHtml += `
-                            matchesHtml += `
-    <a href="#" onclick="openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" style="background: #fff; border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: flex-start; text-decoration: none; color: #112845; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;">
+                            <a href="#" onclick="openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" style="background: #fff; border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: flex-start; text-decoration: none; color: #112845; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;">
                                 
                                 <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; width: 60%; margin-top: 22px;">
                                     <div style="display: flex; align-items: center; gap: 8px; height: 16px;"><img src="${m.teams.home.logo}" style="width: 16px; height: 16px;"> <span>${homeTeam}</span></div>
