@@ -438,9 +438,30 @@ async function getStandings() {
     }
 }
 
-async function getStandingsFromWikipedia() {
+async async function getStandingsFromWikipedia() {
     const container = document.getElementById('api-table');
     container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
+
+    // מאגר הסמלים של הליגה הלאומית (לפי התמונה שלך)
+    const leumitLogos = {
+        "פתח תקווה": "https://upload.wikimedia.org/wikipedia/en/d/dd/Maccabi_Petah_Tikva_FC.svg",
+        "הרצליה": "https://upload.wikimedia.org/wikipedia/he/e/e0/Maccabi_Herzliya.svg",
+        "רמת גן": "https://upload.wikimedia.org/wikipedia/he/3/30/Hapoel_Ramat_Gan_logo.svg",
+        "ראשון לציון": "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Rishon_LeZion_logo.svg",
+        "כפר שלם": "https://upload.wikimedia.org/wikipedia/he/d/dd/Hapoel_Kfar_Shalem_logo.svg",
+        "בני יהודה": "https://upload.wikimedia.org/wikipedia/he/c/c5/Bnei_Yehuda_logo.svg",
+        "קרית ים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
+        "כפר סבא": "https://upload.wikimedia.org/wikipedia/he/e/e7/Hapoel_Kfar_Saba_logo.svg",
+        "רעננה": "https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_Ra%27anana_FC_logo.png",
+        "יפו": "https://upload.wikimedia.org/wikipedia/he/c/c8/Maccabi_Jaffa_FC_logo.svg",
+        "עפולה": "https://upload.wikimedia.org/wikipedia/he/9/9c/Hapoel_Afula_logo.svg",
+        "כפר קאסם": "https://upload.wikimedia.org/wikipedia/he/6/64/FC_Kafr_Qasim_logo.svg",
+        "נוף הגליל": "https://upload.wikimedia.org/wikipedia/he/a/af/Hapoel_Nof_HaGalil_logo.svg",
+        "מודיעין": "https://upload.wikimedia.org/wikipedia/he/0/07/Ironi_Modiin_logo.png",
+        "עכו": "https://upload.wikimedia.org/wikipedia/he/1/11/Hapoel_Acre_logo.svg",
+        "חדרה": "https://upload.wikimedia.org/wikipedia/he/e/e9/Hapoel_Hadera_logo.svg",
+        "טבריה": "https://upload.wikimedia.org/wikipedia/he/f/fd/Ironi_Tiberias_logo.svg"
+    };
 
     try {
         const nextYear = parseInt(SEASON) + 1;
@@ -467,7 +488,6 @@ async function getStandingsFromWikipedia() {
         window.wikiTablesData = []; 
         
         tables.forEach(t => {
-            // אוספים את כל הטבלאות הרלוונטיות לבנק
             if (t.innerText.includes("קבוצה") && t.innerText.includes("נקודות") && (t.innerText.includes("ניצחונות") || t.innerText.includes("שערי זכות"))) {
                 window.wikiTablesData.push(t);
             }
@@ -475,7 +495,6 @@ async function getStandingsFromWikipedia() {
 
         if (window.wikiTablesData.length === 0) throw new Error("לא נמצאה טבלה");
 
-        // בניית תפריט בחירה חכם
         let uiHtml = `
             <div style="margin-bottom: 15px; text-align: center;">
                 <select id="wiki-group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
@@ -489,7 +508,6 @@ async function getStandingsFromWikipedia() {
         uiHtml += `</select></div><div id="wiki-render-area"></div>`;
         container.innerHTML = uiHtml;
 
-        // פונקציית ציור הטבלה לפי מה שנבחר
         window.renderWikiTable = function(index) {
             const standingsTable = window.wikiTablesData[index];
             const renderArea = document.getElementById('wiki-render-area');
@@ -524,10 +542,25 @@ async function getStandingsFromWikipedia() {
                     const points = getText(colMap.points || 9);
                     
                     if(points !== '-' && teamName !== '-') {
+                        
+                        // --- המנוע שמוצא את הסמל לפי שם הקבוצה ---
+                        let teamLogo = "https://media.api-sports.io/football/leagues/384.png"; // סמל ברירת מחדל
+                        for (const [key, url] of Object.entries(leumitLogos)) {
+                            if (teamName.includes(key)) {
+                                teamLogo = url;
+                                break;
+                            }
+                        }
+
                         html += `<tr>
                             <td>-</td>
                             <td style="color: #94a3b8; font-weight: bold;">${rank}</td>
-                            <td><div class="team-identity"><span class="team-name-text">${teamName}</span></div></td>
+                            <td>
+                                <div class="team-identity" style="display: flex; align-items: center; gap: 8px;">
+                                    <img src="${teamLogo}" alt="logo" style="width: 18px; height: 18px; object-fit: contain;" onerror="this.style.display='none'">
+                                    <span class="team-name-text">${teamName}</span>
+                                </div>
+                            </td>
                             <td>${getText(colMap.played || 2)}</td>
                             <td>${getText(colMap.win || 3)}</td>
                             <td>${getText(colMap.draw || 4)}</td>
@@ -545,12 +578,10 @@ async function getStandingsFromWikipedia() {
             renderArea.innerHTML = html;
         };
 
-        // מפעיל את כפתור הבחירה
         document.getElementById('wiki-group-selector').addEventListener('change', function(e) {
             window.renderWikiTable(e.target.value);
         });
 
-        // מציג אוטומטית את הטבלה הראשונה (עונה סדירה)
         window.renderWikiTable(0); 
 
     } catch (error) {
