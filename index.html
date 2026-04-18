@@ -518,7 +518,7 @@
             </div>
         `;
 
-        // === מנוע תרגום לקבוצות (שמות הקבוצות עדיין דרך myDictionary) ===
+        // === מנוע תרגום לקבוצות ===
         const missingWords = new Set();
 
         window.translateName = function(name) {
@@ -589,9 +589,7 @@
 
                 const grouped = {};
                 matches.forEach(m => {
-                    // מושך את השם מהמילון החזק שלנו לפי ה-ID של הליגה
                     let leagueName = LEAGUE_NAMES_MAP[m.league.id];
-                    // גיבוי: למקרה שיש ליגה לא מוכרת
                     if (!leagueName) {
                         leagueName = typeof translateName === 'function' ? translateName(m.league.name) : m.league.name;
                     }
@@ -601,7 +599,7 @@
                 });
 
                 livePages = [];
-                const MAX_ITEMS_PER_PAGE = 7; 
+                const MAX_ITEMS_PER_PAGE = 10; 
                 
                 let currentPageHtml = '<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 15px; width: 100%;">';
                 let currentItemsCount = 0;
@@ -631,18 +629,20 @@
                         const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
                         let elapsedTime = m.fixture.status.elapsed ? `${m.fixture.status.elapsed}'` : 'מחצית';
 
-                        // תצוגת תוצאות במאונך, אחת מול כל קבוצה
+                        // === שינוי עיצובי: יישור פלס מושלם ואחידות גדלים ===
                         matchesHtml += `
-                            <a href="#" style="background: #fff; border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: #112845; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;">
-                                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; width: 60%;">
-                                    <div style="display: flex; align-items: center; gap: 8px;"><img src="${m.teams.home.logo}" style="width: 16px; height: 16px;"> <span>${homeTeam}</span></div>
-                                    <div style="display: flex; align-items: center; gap: 8px;"><img src="${m.teams.away.logo}" style="width: 16px; height: 16px;"> <span>${awayTeam}</span></div>
+                            <a href="#" style="background: #fff; border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: flex-start; text-decoration: none; color: #112845; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;">
+                                
+                                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; width: 60%; margin-top: 22px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; height: 16px;"><img src="${m.teams.home.logo}" style="width: 16px; height: 16px;"> <span>${homeTeam}</span></div>
+                                    <div style="display: flex; align-items: center; gap: 8px; height: 16px;"><img src="${m.teams.away.logo}" style="width: 16px; height: 16px;"> <span>${awayTeam}</span></div>
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: center; min-width: 45px; background: #f0f4f8; padding: 6px 8px; border-radius: 6px;">
-                                    <span style="font-size: 10px; color: #7ca856; font-weight: bold; margin-bottom: 4px;">${elapsedTime}</span>
+                                
+                                <div style="display: flex; flex-direction: column; align-items: center; min-width: 45px; background: #f0f4f8; padding: 4px 8px 6px 8px; border-radius: 6px;">
+                                    <span style="font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;">${elapsedTime}</span>
                                     <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
-                                        <span style="font-size: 14px; font-weight: 900; height: 16px; display: flex; align-items: center;">${m.goals.home !== null ? m.goals.home : '-'}</span>
-                                        <span style="font-size: 14px; font-weight: 900; height: 16px; display: flex; align-items: center;">${m.goals.away !== null ? m.goals.away : '-'}</span>
+                                        <span style="font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center;">${m.goals.home !== null ? m.goals.home : '-'}</span>
+                                        <span style="font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center;">${m.goals.away !== null ? m.goals.away : '-'}</span>
                                     </div>
                                 </div>
                             </a>
@@ -707,13 +707,13 @@
                             currentLivePageIndex = 0; 
                         }
                         clearTimeout(panelTimer);
-                        panelTimer = setTimeout(rotatePanelContent, 10000); // 10 שניות
+                        panelTimer = setTimeout(rotatePanelContent, 10000); 
                         
                     } else {
                         contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים בעולם ⚽</div>';
                         isShowingUpdates = true;
                         clearTimeout(panelTimer);
-                        panelTimer = setTimeout(rotatePanelContent, 10000); // 10 שניות
+                        panelTimer = setTimeout(rotatePanelContent, 10000); 
                     }
                     
                     contentDiv.style.opacity = '1';
