@@ -64,6 +64,7 @@
             height: 48px; /* גובה שנותן ללוגו קצת אוויר לנשום */
             display: flex; align-items: center; justify-content: center;
             /* שים לב: מחקנו מכאן את ה-width ואת ה-overflow כדי למנוע עיוותים! */
+        
         }
         .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
         .actual-logo-img { 
@@ -105,15 +106,15 @@
             width: calc(100% + 80px); box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; 
         }
 
-        /* === גוף האתר המרכזי === */
-        .main-content {
-            display: grid;
-            grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
-            align-content: center; 
-            align-items: stretch;  
-            flex: 1; 
-            overflow: hidden;
-        }
+       .main-content {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+    /* מחקנו את ה-align-content שעצר את הגובה! */
+    align-items: stretch;  
+    flex: 1; 
+    overflow: hidden;
+    padding: 20px 0; /* הוספנו 20 פיקסלים רווח יוקרתי מההדר ומהפוטר כדי שזה לא יגע בקו עצמו */
+}
 
         /* === עמודה ימנית === */
         .community-sidebar { 
