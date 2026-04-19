@@ -1,4 +1,4 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -122,12 +122,13 @@
         /* === תפריט ימני (Edge Folders / טאבים תלויים על הדופן) === */
         .edge-folders-sidebar {
             position: absolute;
-            right: 0;
+            right: 0; /* השארתי צמוד לימין, אבל נרכך את העיצוב הפנימי */
             top: 20px;
             display: flex;
             flex-direction: column;
             gap: 12px;
             z-index: 40;
+            padding-right: 10px; /* תוספת קטנה שמנתקת מעט מהקצה הקיצוני */
         }
 
         .edge-folder {
@@ -144,8 +145,6 @@
             text-decoration: none;
             box-shadow: -5px 5px 15px rgba(0,0,0,0.3); 
             transform: translateX(calc(100% - 65px));
-            
-            /* השהייה של 0.5s במעבר חזרה (כשהעכבר יוצא) */
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s, 
                         background 0.3s 0.5s, 
                         border-color 0.3s 0.5s, 
@@ -156,8 +155,6 @@
             transform: translateX(0);
             background: var(--brand-green);
             box-shadow: -8px 8px 20px rgba(0,0,0,0.5);
-            
-            /* פתיחה מיידית בלי השהייה (0s delay) כשעולים עם העכבר */
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, 
                         background 0.3s 0s, 
                         border-color 0.3s 0s, 
@@ -178,21 +175,20 @@
             background: rgba(255,255,255,0.1);
             display: flex; justify-content: center; align-items: center;
             flex-shrink: 0;
-            transition: background 0.3s 0.5s; /* השהייה של 0.5s בחזרה למצב רגיל */
+            transition: background 0.3s 0.5s; 
         }
 
         .edge-folder:hover .folder-icon { 
             background: rgba(255,255,255,0.2); 
-            transition: background 0.3s 0s; /* שינוי מיידי בפתיחה */
+            transition: background 0.3s 0s; 
         }
         
         .folder-icon svg { width: 20px; height: 20px; stroke: #fff; }
 
         .edge-folder.empty-folder {
-            border-color: rgba(255,255,255,0.4); 
-            border-style: dashed;
+            border-color: rgba(255,255,255,0.1); /* מסגרת חלקה ולא מקווקות יותר למראה נקי ורך */
             border-right: none;
-            background: rgba(17, 40, 69, 0.9); 
+            background: rgba(17, 40, 69, 0.6); 
         }
         
         .edge-folder.empty-folder:hover {
@@ -256,7 +252,7 @@
 
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-        /* === מרכז העמוד: 4 קוביות === */
+        /* === מרכז העמוד: 4 קוביות מיושרות ומאוזנות === */
         .center-content { 
             display: flex; flex-direction: column; justify-content: flex-start; align-items: center; 
             padding: 0 2vw; height: 100%; width: 100%; overflow: hidden; 
@@ -265,7 +261,8 @@
         .cards-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
-            grid-template-rows: minmax(0, 1.2fr) minmax(0, 1fr);
+            /* חלוקת שורות מאוזנת: הקוביה העליונה מקבלת פחות גובה מהתחתונות שזקוקות ליותר מרחב */
+            grid-template-rows: minmax(0, 1fr) minmax(0, 1.2fr); 
             gap: clamp(15px, 2.5vh, 25px); 
             max-width: min(850px, calc(100vw - (2 * var(--sidebar-width)) - 60px)); 
             width: 100%;
@@ -275,18 +272,27 @@
         .dashboard-card {
             background: var(--element-navy-gradient); border-radius: 16px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            padding: clamp(15px, 2.5vh, 30px) clamp(10px, 1.2vw, 20px); 
+            padding: clamp(15px, 2vh, 25px) clamp(10px, 1.2vw, 20px); /* ריווח פנימי מעודן */
             text-align: center; text-decoration: none; transition: 0.4s;
             border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
             height: 100%;
         }
-        .dashboard-card:hover { transform: translateY(-5px); border-color: var(--brand-green); box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 5;}
+        
+        .dashboard-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--brand-green); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 15px rgba(124, 168, 86, 0.2); /* הוספתי הילה עדינה */
+            z-index: 5;
+        }
 
+        /* מילוי הקוביה הריקה כדי למנוע את תחושת ה"נפילה" הצידה */
         .dashboard-card.empty-card {
-            background: transparent; border: 2px dashed rgba(255,255,255,0.2); opacity: 0.5; box-shadow: none;
+            background: rgba(17, 40, 69, 0.5); /* חצי שקיפות ולא שקיפות מלאה */
+            border: 1px solid rgba(255,255,255,0.05); /* מסגרת חלקה ולא מקווקות */
+            box-shadow: none;
         }
         .dashboard-card.empty-card:hover {
-            opacity: 1; border-color: var(--brand-green); background: rgba(17, 40, 69, 0.4); transform: translateY(0);
+            border-color: var(--brand-green); background: rgba(17, 40, 69, 0.7); transform: translateY(0);
         }
 
         .dashboard-icon-wrapper {
@@ -302,18 +308,18 @@
         .dashboard-card-title { color: #fff; font-size: clamp(14px, 1.8vh, 18px); font-weight: 900; margin-bottom: clamp(6px, 1.5vh, 12px); }
         .dashboard-card-desc { color: #a0aec0; font-size: clamp(11px, 1.4vh, 13px); line-height: 1.4; }
 
-        /* כרטיס ראשי (הירו) */
+        /* כרטיס ראשי (הירו) מוצר ומהודק יותר */
         .hero-card {
             grid-column: 1 / -1;
             background: linear-gradient(135deg, #112845 0%, #1a365d 100%);
             border: 2px solid var(--brand-green);
             flex-direction: row; justify-content: flex-start; text-align: right; gap: clamp(20px, 2.5vw, 30px);
-            padding: clamp(20px, 3vh, 40px) clamp(20px, 3vw, 45px);
+            padding: clamp(15px, 2.5vh, 30px) clamp(20px, 3vw, 45px); /* ריווח אנכי קטן יותר */
         }
-        .hero-card .dashboard-icon-wrapper { width: clamp(65px, 10vh, 85px); height: clamp(65px, 10vh, 85px); margin: 0;}
+        .hero-card .dashboard-icon-wrapper { width: clamp(60px, 9vh, 80px); height: clamp(60px, 9vh, 80px); margin: 0;} /* אייקון מעט קטן יותר */
         .hero-card .dashboard-icon-wrapper svg { width: 50%; height: 50%; }
-        .hero-card .dashboard-card-title { font-size: clamp(20px, 3vh, 30px); color: var(--brand-green); margin-bottom: clamp(6px, 1.5vh, 12px);}
-        .hero-card .dashboard-card-desc { font-size: clamp(13px, 1.8vh, 16px); color: #e2e8f0; max-width: 90%; }
+        .hero-card .dashboard-card-title { font-size: clamp(18px, 2.8vh, 28px); color: var(--brand-green); margin-bottom: clamp(4px, 1vh, 10px);}
+        .hero-card .dashboard-card-desc { font-size: clamp(12.5px, 1.6vh, 15px); color: #e2e8f0; max-width: 90%; }
 
         /* === שורת פוטר === */
         .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; }
