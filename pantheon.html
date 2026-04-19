@@ -1,1 +1,681 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי - פנתיאון הכדורגל הישראלי</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #7ca856;
+            --brand-green-glow: rgba(124, 168, 86, 0.6);
+            --bg-silver-matte: linear-gradient(145deg, #eef4f9 0%, #c9d4e0 100%);
+            --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
+            --text-light: #ffffff;
+            --text-dark: #112845;
+            --card-bg: #192a45;
+            --sidebar-width: clamp(220px, 18vw, 280px); 
+            --search-width: clamp(200px, 15vw, 300px);
+            --grid-gap: clamp(10px, 1.5vw, 20px);
+            --visual-center-right: calc((100vw - min(850px, 110vh)) / 4);
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            font-family: 'Rubik', sans-serif;
+            background: var(--bg-silver-matte);
+            width: 100%;
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* === הדר עליון === */
+        .header {
+            height: 65px;
+            background: var(--element-navy-gradient);
+            border-bottom: 2px solid var(--brand-green);
+            position: relative;
+            z-index: 1000;
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
+        
+        .logo-wrapper {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            background-color: #ffffff; padding: 0 18px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); z-index: 1100; transition: 0.3s;
+            height: 48px; display: flex; align-items: center; justify-content: center;
+        }
+        .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
+        .actual-logo-img { height: 32px; transform: scale(1.6); display: block; object-fit: contain; }
+
+        .personal-area-btn {
+            position: absolute; right: calc(var(--sidebar-width) + 20px); top: 50%; transform: translateY(-50%); 
+            background: rgba(255, 255, 255, 0.1); border: 2px solid var(--brand-green);
+            color: #ffffff; padding: 6px 18px; border-radius: 30px; text-decoration: none;
+            font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
+        }
+        .personal-area-btn:hover { background: var(--brand-green); transform: translateY(-50%) scale(1.05); }
+
+        .header-center-col { display: flex; justify-content: center; align-items: center; height: 100%; }
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); margin: 0; padding: 0; }
+        .header-nav a {
+            text-decoration: none; color: var(--text-light); font-weight: 700;
+            font-size: clamp(12px, 1vw, 15px); padding: 8px 12px; transition: 0.3s;
+        }
+        .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
+
+        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; height: 100%; }
+        .header-search { position: relative; width: var(--search-width); height: 34px; }
+        .header-search input {
+            position: absolute; left: 0; top: 0; width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s ease-out; font-family: inherit;
+        }
+        .header-search input:focus { width: calc(100% + 80px); box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
+
+        /* === גוף הדף המעודכן === */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1; 
+            overflow: hidden;
+            position: relative;
+            padding-top: clamp(15px, 2.5vh, 30px);
+        }
+
+        /* === פאנל שמאלי לייב מתקפל - הוחזר למעלה === */
+        .collapsible-live-panel {
+            position: absolute;
+            left: 20px;
+            top: 20px; /* הוחזר ל-20 פיקסלים מההדר העליון */
+            width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 50;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: calc(100% - 40px); /* מחושב כדי שלא יגלוש למטה */
+            max-height: 48px; /* מצב סגור */
+        }
+
+        .collapsible-live-panel.expanded {
+            max-height: calc(100% - 40px); /* מצב פתוח */
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .updates-header {
+            font-size: 14px; font-weight: 900; color: var(--text-dark); 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 20px; height: 48px; cursor: pointer; flex-shrink: 0;
+            border-bottom: 2px solid transparent; transition: 0.3s;
+            background: rgba(255,255,255,0.5);
+        }
+        
+        .collapsible-live-panel.expanded .updates-header { border-bottom-color: var(--brand-green); background: transparent; }
+        .updates-header:hover { background: rgba(255,255,255,0.8); }
+        .header-title-group { display: flex; align-items: center; gap: 8px; }
+        .toggle-arrow { transition: transform 0.4s ease; color: var(--text-dark); }
+        .collapsible-live-panel.expanded .toggle-arrow { transform: rotate(180deg); }
+
+        .dynamic-panel-content { position: relative; flex: 1; padding: 10px 0; overflow-y: auto; opacity: 0; transition: opacity 0.3s ease; }
+        .collapsible-live-panel.expanded .dynamic-panel-content { opacity: 1; }
+        .dynamic-panel-content::-webkit-scrollbar { width: 4px; }
+        .dynamic-panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        .updates-item { margin: 6px 15px; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.9); padding: 8px; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--text-dark); position: relative; transition: 0.3s; }
+        .updates-item:hover { transform: scale(1.02); background: #fff; border-color: var(--brand-green); }
+        .updates-icon { position: absolute; right: 8px; background: #f0f4f8; width: 28px; height: 28px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .updates-text { text-align: center; width: 100%; padding: 0 35px; } 
+        .updates-label { font-size: 9px; font-weight: 700; color: var(--brand-green); display: block; }
+        .updates-title { font-size: clamp(10px, 0.8vw, 12px); font-weight: 700; }
+        .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid var(--brand-green); }
+        .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+
+        /* כותרת הדף העליונה המופרדת */
+        .page-header {
+            flex-shrink: 0; display: flex; justify-content: center; align-items: center;
+            position: relative; margin-bottom: clamp(15px, 3vh, 30px); width: 100%;
+            gap: 15px; z-index: 5;
+        }
+        .page-header::before, .page-header::after { content: ''; height: 2px; flex: 1; max-width: 200px; }
+        .page-header::before { background: linear-gradient(to left, transparent, var(--brand-green)); }
+        .page-header::after { background: linear-gradient(to right, transparent, var(--brand-green)); }
+
+        .title-pill {
+            background: #ffffff; border: 2px solid var(--brand-green); border-radius: 50px;
+            padding: clamp(6px, 1vh, 10px) clamp(25px, 4vw, 40px);
+            font-size: clamp(18px, 2.5vh, 26px); font-weight: 900; position: relative; z-index: 2;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); display: flex; gap: 8px;
+        }
+        .title-dark { color: var(--text-dark); }
+        .title-green { color: var(--brand-green); }
+
+        /* אזור הגוף התחתון שמיישר את הכל לקו אחד */
+        .main-body {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* === תפריט ימני (אליפויות וגביעים) מיושר לטופ === */
+        .pantheon-right-sidebar {
+            position: absolute;
+            right: 20px;
+            top: 0;
+            width: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 40;
+        }
+
+        .pantheon-side-item {
+            background: var(--element-navy-gradient);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 15px;
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: clamp(12px, 1.1vw, 14px);
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .pantheon-side-item:hover { border-color: var(--brand-green); transform: translateX(-5px); color: var(--brand-green); }
+        .pantheon-side-item.empty-item { opacity: 0.6; border-style: dashed; }
+        .pantheon-side-item.empty-item:hover { opacity: 1; }
+
+        .side-icon {
+            background: rgba(255,255,255,0.05); width: 36px; height: 36px; border-radius: 8px;
+            display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: 0.3s;
+        }
+        .pantheon-side-item:hover .side-icon { background: var(--brand-green); }
+        .pantheon-side-item:hover .side-icon svg { stroke: #fff; }
+
+        /* === מרכז העמוד: פנתיאון הכדורגל הישראלי === */
+        .center-content { 
+            display: flex; flex-direction: column; justify-content: flex-start; align-items: center; 
+            padding: 0 2vw; height: 100%; width: 100%; overflow: hidden; 
+        }
+
+        /* גריד חכם ורספונסיבי - מכווץ חכם כדי להשאיר מקום לשני הבר-צדדים */
+        .pantheon-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+            gap: clamp(10px, 1.5vh, 15px); 
+            max-width: min(850px, calc(100vw - (2 * var(--sidebar-width)) - 60px)); 
+            width: 100%;
+            flex: 1; min-height: 0; padding-bottom: 2vh;
+        }
+
+        .pantheon-card {
+            background: var(--element-navy-gradient); border-radius: 16px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            padding: clamp(10px, 1.5vh, 20px) clamp(10px, 1.2vw, 15px); 
+            text-align: center; text-decoration: none; transition: 0.4s;
+            border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
+            height: 100%;
+        }
+        .pantheon-card:hover { transform: translateY(-5px); border-color: var(--brand-green); box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 5;}
+
+        .pantheon-icon-wrapper {
+            background: rgba(255,255,255,0.05);
+            width: clamp(35px, 6vh, 50px); height: clamp(35px, 6vh, 50px); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: clamp(6px, 1.2vh, 12px); border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s; flex-shrink: 0;
+        }
+        .pantheon-card:hover .pantheon-icon-wrapper { background: var(--brand-green); border-color: #fff; transform: scale(1.1) rotate(5deg); }
+        .pantheon-icon-wrapper svg { width: 50%; height: 50%; }
+
+        .pantheon-card-title { color: #fff; font-size: clamp(12px, 1.6vh, 16px); font-weight: 900; margin-bottom: clamp(4px, 1vh, 6px); }
+        .pantheon-card-desc { color: #a0aec0; font-size: clamp(10px, 1.3vh, 12px); line-height: 1.35; }
+
+        /* כרטיס ראשי (הירו) */
+        .pantheon-hero-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #112845 0%, #1a365d 100%);
+            border: 2px solid var(--brand-green);
+            flex-direction: row; justify-content: flex-start; text-align: right; gap: clamp(15px, 2vw, 25px);
+        }
+        .pantheon-hero-card .pantheon-icon-wrapper { width: clamp(50px, 8vh, 65px); height: clamp(50px, 8vh, 65px); margin: 0;}
+        .pantheon-hero-card .pantheon-card-title { font-size: clamp(16px, 2.5vh, 24px); color: var(--brand-green); margin-bottom: clamp(4px, 1vh, 8px);}
+        .pantheon-hero-card .pantheon-card-desc { font-size: clamp(11.5px, 1.5vh, 14px); color: #e2e8f0; max-width: 90%; }
+
+        /* === שורת פוטר === */
+        .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; }
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
+
+        /* === רספונסיביות למובייל ולטאבלט === */
+        @media (max-width: 1200px) {
+            .header { height: auto; padding: 15px 0; display: block; }
+            .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
+            .personal-area-btn { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px;}
+            .logo-wrapper { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
+            .header-search { display: none; }
+            
+            .main-content { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+            .main-body { display: flex; flex-direction: column; overflow: visible; height: auto; }
+            .page-header { margin-bottom: 20px; }
+            
+            .pantheon-right-sidebar { position: relative; right: auto; top: auto; width: 100%; max-width: 800px; flex-direction: row; flex-wrap: wrap; justify-content: center; margin: 0 auto 20px auto; }
+            .pantheon-side-item { flex: 1; min-width: 200px; justify-content: center;}
+            
+            .collapsible-live-panel { position: relative; left: auto; top: auto; width: 100%; max-width: 800px; margin: 0 auto 30px auto; z-index: 10; max-height: none; height: auto;}
+            .collapsible-live-panel.expanded { max-height: none; }
+            
+            .center-content { padding: 0; overflow: visible; height: auto; width: 100%; }
+            .pantheon-grid { max-width: 800px; grid-template-columns: repeat(2, 1fr); margin: 0 auto 30px auto; }
+            .pantheon-hero-card { flex-direction: column; text-align: center; align-items: center; }
+        }
+        @media (max-width: 768px) {
+            .pantheon-grid { grid-template-columns: 1fr; }
+            .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .pantheon-side-item { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header layout-grid">
+        <div class="header-right-col">
+            <a href="index.html" class="logo-wrapper">
+                <img src="a.png" alt="לוגו" class="actual-logo-img" onerror="this.src='https://via.placeholder.com/150x60?text=LOGO'">
+            </a>
+            <a href="#" class="personal-area-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>לאזור האישי</span>
+            </a>
+        </div>
+        <div class="header-center-col">
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="index.html">דף הבית</a></li>
+                    <li><a href="#">ארכיון</a></li>
+                    <li><a href="#">קרדיטים</a></li>
+                    <li><a href="#">אודות</a></li>
+                    <li><a href="#">צור קשר</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="header-left-col">
+            <div class="header-search">
+                <input type="text" placeholder="חיפוש תוכן...">
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        
+        <aside class="collapsible-live-panel" id="livePanel">
+            <div class="updates-header" id="panel-header">
+                <div class="header-title-group">
+                    <span id="panel-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+                    <span id="panel-title">עידכונים חמים</span>
+                </div>
+                <svg class="toggle-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="dynamic-panel-content" id="panel-content"></div>
+        </aside>
+
+        <div class="page-header">
+            <div class="title-pill">
+                <span class="title-dark">פנתיאון</span>
+                <span class="title-green">הכדורגל</span>
+                <span class="title-dark">הישראלי</span>
+            </div>
+        </div>
+
+        <div class="main-body">
+            
+            <aside class="pantheon-right-sidebar">
+                <a href="#" class="pantheon-side-item">
+                    <div class="side-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    </div>
+                    <span>היסטוריית אליפויות ליגת העל</span>
+                </a>
+                <a href="#" class="pantheon-side-item">
+                    <div class="side-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10"/><path d="M17 4v8a5 5 0 0 1-10 0V4"/><path d="M4 4h3v5H4z"/><path d="M17 4h3v5h-3z"/></svg>
+                    </div>
+                    <span>היסטוריית מחזיקות הגביע</span>
+                </a>
+                
+                <a href="#" class="pantheon-side-item empty-item">
+                    <div class="side-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </div>
+                    <span>קטגוריה עתידית</span>
+                </a>
+                <a href="#" class="pantheon-side-item empty-item">
+                    <div class="side-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </div>
+                    <span>קטגוריה עתידית</span>
+                </a>
+                <a href="#" class="pantheon-side-item empty-item">
+                    <div class="side-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </div>
+                    <span>קטגוריה עתידית</span>
+                </a>
+            </aside>
+
+            <div class="center-content">
+                <div class="pantheon-grid">
+                    
+                    <a href="#" class="pantheon-card pantheon-hero-card">
+                        <div class="pantheon-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        </div>
+                        <div>
+                            <div class="pantheon-card-title">דירוג סוליבי: 100 הישראלים הגדולים בכל הזמנים</div>
+                            <div class="pantheon-card-desc">פרויקט הדגל שלנו. מיהו הכדורגלן הישראלי הגדול מכולם? הדירוג המלא, הסיפורים המרתקים והמחלוקות מאחורי האגדות שעיצבו את פני הכדורגל המקומי.</div>
+                        </div>
+                    </a>
+
+                    <a href="#" class="pantheon-card">
+                        <div class="pantheon-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+                        </div>
+                        <div class="pantheon-card-title">דירוג סוליבי: 50 הזרים הגדולים</div>
+                        <div class="pantheon-card-desc">הזרים ששינו כאן הכל. דירוג 50 השחקנים הזרים האיכותיים והמשפיעים ביותר שנחתו בישראל והשאירו חותם בלתי נמחק על הליגה.</div>
+                    </a>
+
+                    <a href="#" class="pantheon-card">
+                        <div class="pantheon-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div class="pantheon-card-title">נבחרת ישראל: שיאים וציוני דרך</div>
+                        <div class="pantheon-card-desc">ההיסטוריה הלאומית. ממקסיקו 70' ועד ימינו – משחקים בלתי נשכחים, טבלאות שיאני ההופעות והכובשים הגדולים במדי התכלת-לבן.</div>
+                    </a>
+
+                    <a href="#" class="pantheon-card">
+                        <div class="pantheon-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <div class="pantheon-card-title">היכל הקבוצות וה-11 הגדולים</div>
+                        <div class="pantheon-card-desc">שיאי מועדונים, דירוגים, וגולת הכותרת: בחירת הרכבי החלומות וה-11 הגדולים ביותר של כל קבוצה משנת 1990 ועד היום.</div>
+                    </a>
+
+                    <a href="#" class="pantheon-card">
+                        <div class="pantheon-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                        </div>
+                        <div class="pantheon-card-title">ספר השיאים האישיים</div>
+                        <div class="pantheon-card-desc">מלך השערים ההיסטורי, שיאני הבישולים, וכל המספרים, הרצפים וההישגים האישיים יוצאי הדופן בזירה המקומית והבינלאומית.</div>
+                    </a>
+
+                    <a href="#" class="pantheon-card">
+                        <div class="pantheon-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        </div>
+                        <div class="pantheon-card-title">מחוץ לקופסא: מאמנים והנהלה</div>
+                        <div class="pantheon-card-desc">הכדורגל הוא לא רק שחקנים. דירוגים היסטוריים של המאמנים הגדולים, הבעלים המשפיעים, השופטים הבולטים ואנשי המפתח.</div>
+                    </a>
+
+                    <a href="#" class="pantheon-card">
+                        <div class="pantheon-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                        </div>
+                        <div class="pantheon-card-title">מעקב ליגיונרים ודירוג עוצמה</div>
+                        <div class="pantheon-card-desc">השגרירים שלנו מעבר לים. מעקב סטטיסטי שוטף, ודירוג עוצמה (Power Rankings) שבוחן מי הישראלים בכושר הטוב ביותר כרגע.</div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="ticker-wrap">
+            <span class="ticker-item">ספורט ישראלי: אין יותר הגבלת קהל במגרשים</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">בתום 7 שנים: ביבראס נאתכו מודיע שיעזוב את פרטיזן בלגרד בתום העונה</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">פרמיירליג: קובנטרי חוזרת לליגה הבכירה לאחר היעדרות של 25 שנים</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">העברות: באסטוני שחקנה של אינטר סיכם את תנאיו בברצלונה</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">שמועות: צ'אבי הרננדז המועמד המוביל לאימון אינטר מיאמי</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">ברק יצחקי: אליפות זאת לא מילה גסה</span>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const panelHeader = document.getElementById('panel-header');
+            const panel = document.getElementById('livePanel');
+
+            if (panelHeader && panel) {
+                panelHeader.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    panel.classList.toggle('expanded');
+                });
+            }
+
+            document.addEventListener('click', function(e) {
+                if (panel && panel.classList.contains('expanded') && !panel.contains(e.target)) {
+                    panel.classList.remove('expanded');
+                }
+            });
+        });
+    </script>
+
+   <script src="translations.js"></script>
+   <script src="matchEvents.js"></script>
+
+    <script>
+        const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3'; 
+        
+        const staticUpdatesHTML = `
+            <div style="display: flex; flex-direction: column; width: 100%;">
+                <a href="#" class="updates-item">
+                    <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <div class="updates-text"><span class="updates-label">פנטזי ליג</span><span class="updates-title">מקום 1: קבוצת "האריות"</span></div>
+                </a>
+                <a href="#" class="updates-item">
+                    <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div>
+                    <div class="updates-text"><span class="updates-label">שוק הקלפים</span><span class="updates-title">הקלף החם: אמבפה 94</span></div>
+                </a>
+                <a href="#" class="updates-item">
+                    <div class="updates-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"/></svg></div>
+                    <div class="updates-text"><span class="updates-label">חדשות</span><span class="updates-title">מאמן חדש חתם בליגה!</span></div>
+                </a>
+            </div>
+        `;
+
+        window.translateName = function(name) {
+            if (!name) return name;
+            if (typeof myDictionary !== 'undefined' && myDictionary[name]) { return myDictionary[name]; }
+            return name;
+        };
+
+        const LEAGUE_NAMES_MAP = {
+            39: "ליגה אנגלית ראשונה", 140: "ליגה ספרדית ראשונה", 135: "ליגה איטלקית ראשונה", 78: "ליגה גרמנית ראשונה",
+            61: "ליגה צרפתית ראשונה", 383: "ליגת העל", 384: "ליגה לאומית", 2: "ליגת האלופות", 3: "הליגה האירופית",
+            848: "ליגת הקונפרנס", 88: "ליגה הולנדית ראשונה", 144: "ליגה בלגית ראשונה", 94: "ליגה פורטוגלית ראשונה",
+            203: "ליגה טורקית ראשונה", 253: "ליגת ה-MLS", 307: "ליגה סעודית ראשונה", 71: "ליגה ברזילאית ראשונה",
+            128: "ליגה ארגנטינאית ראשונה", 13: "קופה ליברטדורס", 11: "סודאמריקנה", 1: "מונדיאל"
+        };
+
+        let livePages = []; 
+        let currentLivePageIndex = 0;
+        let isShowingUpdates = false; 
+        let panelTimer;
+        window.matchGoalTracker = window.matchGoalTracker || {};
+
+        async function fetchLiveMatches() {
+            try {
+                const MY_LEAGUES = "39-140-135-78-61-383-384-2-3-848-88-144-94-203-253-307-71-128-13-11-1";
+                const response = await fetch(`https://v3.football.api-sports.io/fixtures?live=${MY_LEAGUES}`, { headers: { 'x-apisports-key': API_KEY } });
+                const data = await response.json();
+                const matches = data.response || [];
+                matches.sort((a, b) => new Date(a.fixture.date) - new Date(b.fixture.date));
+
+                const grouped = {};
+                matches.forEach(m => {
+                    let leagueName = LEAGUE_NAMES_MAP[m.league.id];
+                    if (!leagueName) leagueName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
+                    if(!grouped[leagueName]) grouped[leagueName] = { logo: m.league.logo, matches: [] };
+                    grouped[leagueName].matches.push(m);
+                });
+
+                livePages = [];
+                const MAX_ITEMS_PER_PAGE = 10; 
+                let currentPageHtml = '<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 15px; width: 100%;">';
+                let currentItemsCount = 0;
+
+                Object.keys(grouped).forEach(leagueName => {
+                    const leagueData = grouped[leagueName];
+                    const itemsForThisLeague = 1 + leagueData.matches.length; 
+
+                    if (currentItemsCount > 0 && currentItemsCount + itemsForThisLeague > MAX_ITEMS_PER_PAGE) {
+                        currentPageHtml += '</div>';
+                        livePages.push(currentPageHtml);
+                        currentPageHtml = '<div style="display: flex; flex-direction: column; gap: 8px; padding: 0 15px; width: 100%;">';
+                        currentItemsCount = 0;
+                    }
+
+                    let leagueHtml = `
+                        <div style="display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.9); padding: 4px 10px; border-radius: 6px; color: #112845; font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid #7ca856;">
+                            <img src="${leagueData.logo}" style="width: 14px; height: 14px; object-fit: contain;">
+                            <span>${leagueName}</span>
+                        </div>
+                    `;
+                    let matchesHtml = '';
+                    
+                    leagueData.matches.forEach(m => {
+                        const homeTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
+                        const awayTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
+                        const fixId = m.fixture.id;
+                        const currentHome = m.goals.home !== null ? m.goals.home : 0;
+                        const currentAway = m.goals.away !== null ? m.goals.away : 0;
+                        
+                        if (window.matchGoalTracker[fixId]) {
+                            const prev = window.matchGoalTracker[fixId];
+                            if (currentHome > prev.home || currentAway > prev.away) window.matchGoalTracker[fixId].goalTime = Date.now();
+                            window.matchGoalTracker[fixId].home = currentHome;
+                            window.matchGoalTracker[fixId].away = currentAway;
+                        } else {
+                            window.matchGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
+                        }
+
+                        let matchStatus = '';
+                        const shortStatus = m.fixture.status.short;
+                        if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
+                        else if (shortStatus === 'HT') matchStatus = 'מחצית';
+                        else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
+                        else matchStatus = 'לא התחיל';
+
+                        const safeHomeName = encodeURIComponent(m.teams.home.name);
+                        const safeAwayName = encodeURIComponent(m.teams.away.name);
+
+                        matchesHtml += `
+                            <a href="#" onclick="if(typeof openMatchEvents==='function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" style="background: #fff; border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: flex-start; text-decoration: none; color: #112845; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;">
+                                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; width: 60%; margin-top: 15px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; height: 16px;"><img src="${m.teams.home.logo}" style="width: 16px; height: 16px;"> <span>${homeTeam}</span></div>
+                                    <div style="display: flex; align-items: center; gap: 8px; height: 16px;"><img src="${m.teams.away.logo}" style="width: 16px; height: 16px;"> <span>${awayTeam}</span></div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; align-items: center; min-width: 45px; background: #f0f4f8; padding: 4px 8px 6px 8px; border-radius: 6px;">
+                                    <span style="font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;">${matchStatus}</span>
+                                    <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
+                                        <span style="font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center;">${m.goals.home !== null ? m.goals.home : '-'}</span>
+                                        <span style="font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center;">${m.goals.away !== null ? m.goals.away : '-'}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    currentPageHtml += leagueHtml + matchesHtml;
+                    currentItemsCount += itemsForThisLeague; 
+                });
+
+                if (currentItemsCount > 0) {
+                    currentPageHtml += '</div>';
+                    livePages.push(currentPageHtml);
+                }
+            } catch (error) { console.error("שגיאה במשיכת נתונים בלייב:", error); }
+        }
+
+        function rotatePanelContent() {
+            const contentDiv = document.getElementById('panel-content');
+            const titleSpan = document.getElementById('panel-title');
+            const iconSpan = document.getElementById('panel-icon');
+            const headerDiv = document.getElementById('panel-header');
+            if (!contentDiv) return;
+            contentDiv.style.opacity = '0';
+
+            setTimeout(() => {
+                if (isShowingUpdates) {
+                    titleSpan.innerText = 'עידכונים חמים';
+                    iconSpan.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
+                    headerDiv.style.borderBottomColor = 'transparent';
+                    if (typeof staticUpdatesHTML !== 'undefined') contentDiv.innerHTML = staticUpdatesHTML;
+                    contentDiv.style.opacity = '1';
+                    isShowingUpdates = false; 
+                    clearTimeout(panelTimer);
+                    panelTimer = setTimeout(rotatePanelContent, 16000); 
+                } else {
+                    titleSpan.innerText = 'תוצאות לייב';
+                    iconSpan.innerHTML = '<span style="color:red; font-size:14px;">⬤</span>';
+                    headerDiv.style.borderBottomColor = 'red'; 
+                    if (typeof livePages !== 'undefined' && livePages.length > 0) { 
+                        if (currentLivePageIndex >= livePages.length) currentLivePageIndex = 0;
+                        contentDiv.innerHTML = livePages[currentLivePageIndex];
+                        currentLivePageIndex++;
+                        if (currentLivePageIndex >= livePages.length) { isShowingUpdates = true; currentLivePageIndex = 0; }
+                        clearTimeout(panelTimer);
+                        panelTimer = setTimeout(rotatePanelContent, 10000); 
+                    } else {
+                        contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים ⚽</div>';
+                        isShowingUpdates = true;
+                        clearTimeout(panelTimer);
+                        panelTimer = setTimeout(rotatePanelContent, 10000); 
+                    }
+                    contentDiv.style.opacity = '1';
+                }
+            }, 400); 
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof staticUpdatesHTML !== 'undefined' && document.getElementById('panel-content')) {
+                document.getElementById('panel-content').innerHTML = staticUpdatesHTML;
+            }
+            fetchLiveMatches();
+            panelTimer = setTimeout(rotatePanelContent, 16000);
+            setInterval(fetchLiveMatches, 60000);
+        });
+    </script>
+</body>
+</html>
