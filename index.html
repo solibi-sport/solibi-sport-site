@@ -179,16 +179,17 @@
         .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-        /* === מרכז העמוד והגריד === */
+       /* === מרכז העמוד והגריד === */
         .center-wrapper {
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; /* מחזיר למרכוז טבעי ומושלם */
+            justify-content: center; 
             width: 100%; 
             height: 100%;
             padding: 0 calc(var(--sidebar-width) + 40px);
-            padding-bottom: clamp(60px, 8vh, 90px); /* מרחיק את הכפתור למטה לפי גובה המסך */
+            /* השווינו את הרווח התחתון לרווח העליון לאיזון מושלם */
+            padding-bottom: clamp(30px, 5vh, 60px); 
         }
 
         /* === כותרת הלובי הראשי === */
@@ -198,8 +199,9 @@
             justify-content: center;
             gap: 15px;
             width: 100%;
-            max-width: clamp(500px, 120vh, 760px); /* הכותרת תמיד תהיה ברוחב המדויק של הגריד */
-            margin-bottom: clamp(15px, 3.5vh, 40px); /* מרווח חי שנושם יחד עם המסך - לא עוד דחיסות! */
+            max-width: clamp(500px, 120vh, 760px);
+            /* השווינו את הרווח העליון לרווח התחתון לאיזון מושלם */
+            margin-bottom: clamp(30px, 5vh, 60px); 
             flex-shrink: 0;
         }
 
