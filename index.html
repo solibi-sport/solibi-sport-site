@@ -199,16 +199,16 @@
             justify-content: center;
             gap: 15px;
             width: 100%;
-            max-width: clamp(500px, 120vh, 760px);
+            max-width: 760px;
             
-            /* סוד הקסם: מעלית שמשייכת את הכותרת למעלה בהתאם לגודל המסך, 
-               מבלי להוריד או להזיז את הקוביות אפילו בפיקסל! */
-            transform: translateY(clamp(-30px, -6vh, -70px));
-            margin-bottom: 15px; 
+            /* המנוף שמרים את הכותרת כלפי מעלה (מגדיל את הקו האדום העליון שלך) */
+            transform: translateY(-40px); 
             
+            /* שומר על רווח בריא מלמטה כדי שהקוביות יישארו בדיוק במרכז */
+            margin-bottom: 30px; 
             flex-shrink: 0;
         }
-
+        
         .page-title {
             color: var(--text-dark);
             font-size: clamp(18px, 1.5vw, 22px);
