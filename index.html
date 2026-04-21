@@ -184,23 +184,22 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center;
+            justify-content: center; /* מחזיר למרכוז טבעי ומושלם */
             width: 100%; 
             height: 100%;
             padding: 0 calc(var(--sidebar-width) + 40px);
-            padding-bottom: 80px; /* הותאם כדי לאזן מול הכפתור למטה */
-            /* margin-top הוסר כדי לאפשר מרכוז טבעי ונכון בדיוק באמצע המסך */
+            padding-bottom: clamp(60px, 8vh, 90px); /* מרחיק את הכפתור למטה לפי גובה המסך */
         }
 
-        /* === כותרת הלובי הראשי החדשה === */
+        /* === כותרת הלובי הראשי === */
         .premium-title-wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
             width: 100%;
-            max-width: 760px; /* תואם לרוחב הגריד שלא יבלוט החוצה */
-            margin-bottom: 50px; /* הוגדל מ-25 ל-50 כדי לדחוף את הקוביות למטה למרכז המושלם */
+            max-width: clamp(500px, 120vh, 760px); /* הכותרת תמיד תהיה ברוחב המדויק של הגריד */
+            margin-bottom: clamp(15px, 3.5vh, 40px); /* מרווח חי שנושם יחד עם המסך - לא עוד דחיסות! */
             flex-shrink: 0;
         }
 
@@ -233,9 +232,10 @@
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
             grid-template-rows: repeat(2, 1fr); 
-            gap: clamp(10px, 1.2vh, 15px); 
-            max-width: 760px; /* הגודל נשאר קטן פלס */
+            gap: clamp(10px, 1.5vh, 15px); 
             width: 100%;
+            /* סוד הקסם: אם גובה המסך קטן, רוחב הקוביות יקטן אוטומטית, והן לא יימחצו! */
+            max-width: clamp(500px, 120vh, 760px); 
         }
 
         .square-box {
