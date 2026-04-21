@@ -195,11 +195,12 @@
 
         /* === גלילה פנימית רק לאזור הקוביות! === */
         .leagues-scroll-area {
-            flex: 1; 
-            overflow-y: auto; 
-            padding-right: 10px; 
-            padding-bottom: 30px; /* הוגדל קצת כדי לתת אוויר בסוף הגלילה */
-        }
+    flex: 1; 
+    overflow-y: auto; 
+    padding-right: 25px; /* יוצר אוויר ורווח בין פס הגלילה לקוביות */
+    padding-bottom: 30px;
+    direction: ltr; /* מכריח את פס הגלילה לעבור לצד ימין */
+}
 
         .leagues-scroll-area::-webkit-scrollbar { width: 8px; }
         .leagues-scroll-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
@@ -208,12 +209,13 @@
 
         /* === גריד הקוביות: 8 בדיוק בשורה! === */
         .leagues-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr); /* 8 עמודות בדיוק! */
-            column-gap: 20px; 
-            row-gap: 35px; /* הוגדל משמעותית כדי לדחוף את השורה הרביעית אל מחוץ לפריים! */
-            width: 100%;
-        }
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    column-gap: 20px; 
+    row-gap: 35px;
+    width: 100%;
+    direction: rtl; /* מחזיר את הקוביות עצמן להסתדר מימין לשמאל */
+}
 
         .league-cube {
             width: 100%;
