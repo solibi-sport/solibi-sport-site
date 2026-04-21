@@ -14,7 +14,7 @@
             --text-light: #ffffff;
             --text-dark: #112845;
             
-            /* משתני הרוחב הסימטריים מדף הבית! */
+            /* משתני הרוחב הסימטריים */
             --sidebar-width: clamp(240px, 20vw, 320px); 
             --search-width: clamp(380px, 28vw, 480px);
 
@@ -35,7 +35,7 @@
             overflow: hidden; /* אין גלילה במסך הראשי! */
         }
 
-        /* === הדר עליון מושלם מדף הבית === */
+        /* === הדר עליון === */
         .header {
             height: 65px;
             background: var(--element-navy-gradient);
@@ -106,15 +106,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* ממורכז בצורה אנכית מושלמת גם במסכי ענק! */
             padding: 2.5vh 20px;
             overflow: hidden; 
-            min-height: 0; /* מונע פריצה של הגובה ודחיפה של הפוטר */
+            min-height: 0; 
         }
 
         .content-container {
             width: 100%;
             max-width: 1350px; 
-            height: 100%; 
+            /* הפכתי את הקונטיינר לחכם - הוא עוטף בדיוק את התוכן ולא נמתח עד האינסוף */
+            height: auto; 
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
@@ -123,18 +125,19 @@
             display: flex;
             flex-direction: column;
             overflow: hidden; 
-            min-height: 0;
+            /* מגדיר את הקונטיינר לצורך חישובים פנימיים */
+            container-type: inline-size;
         }
 
         /* === אזור עליון בתוך הקונטיינר: כותרת ממורכזת פלס וחיפוש פנימי === */
         .leagues-top-bar {
             display: flex;
             align-items: center;
-            justify-content: center; /* מיישר את הכותרת לאמצע המוחלט */
-            position: relative; /* כדי שהחיפוש יוכל לשבת בצד באבסולוט בלי להזיז את הכותרת */
+            justify-content: center; 
+            position: relative; 
             width: 100%;
             flex-shrink: 0;
-            margin-bottom: 40px; /* הוגדל כדי לדחוף את השורה הרביעית למטה ולא תציץ */
+            margin-bottom: 45px; /* הוספתי עוד הרבה "אוויר" לפני הקוביות כמו שביקשת */
         }
 
         .premium-title-wrapper {
@@ -166,7 +169,6 @@
         }
         .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
 
-        /* חיפוש פנימי מצד ימין עליון של הקוביות - מיקום אבסולוטי כדי לא להשפיע על מרכז הכותרת */
         .internal-search {
             position: absolute;
             right: 0;
@@ -193,29 +195,44 @@
             width: 16px; height: 16px; stroke: #a0aec0; pointer-events: none;
         }
 
-        /* === גלילה פנימית רק לאזור הקוביות! === */
+        /* === גלילה פנימית רק לאזור הקוביות === */
         .leagues-scroll-area {
-    flex: 1; 
-    overflow-y: auto; 
-    padding-right: 25px; /* יוצר אוויר ורווח בין פס הגלילה לקוביות */
-    padding-bottom: 30px;
-    direction: ltr; /* מכריח את פס הגלילה לעבור לצד ימין */
-}
+            flex: 1; 
+            overflow-y: auto; 
+            padding-right: 25px; /* יוצר רווח של אוויר בין פס הגלילה לקוביות מצד ימין */
+            padding-bottom: 20px;
+            direction: ltr; /* מעביר את פס הגלילה לצד ימין */
+        }
+
+        /* החישוב המתמטי שנועל את אזור הגלילה ל-3 שורות מדויקות על כל מסך בעולם! */
+        @media (min-width: 1101px) {
+            .leagues-scroll-area {
+                --grid-gap: 20px;
+                /* רוחב הגריד הזמין = 100% מהקונטיינר פחות הפדינג (40+40=80) ופחות הריווח של הסקרול (25) */
+                --grid-usable: calc(100cqi - 105px);
+                /* רוחב של קוביה אחת = חלוקה ל-8 עמודות פחות 7 מרווחים */
+                --cube-width: calc((var(--grid-usable) - (7 * var(--grid-gap))) / 8);
+                /* גובה הקוביה (יחס 1:1.05) */
+                --cube-height: calc(var(--cube-width) * 1.05);
+                /* הגובה המקסימלי = בדיוק 3 שורות + 2 מרווחי שורות (30+30) + קצת מרווח צל */
+                max-height: calc((var(--cube-height) * 3) + 60px + 10px); 
+            }
+        }
 
         .leagues-scroll-area::-webkit-scrollbar { width: 8px; }
         .leagues-scroll-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
         .leagues-scroll-area::-webkit-scrollbar-thumb { background: rgba(17, 40, 69, 0.3); border-radius: 10px; }
         .leagues-scroll-area::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
 
-        /* === גריד הקוביות: 8 בדיוק בשורה! === */
+        /* === גריד הקוביות: 8 בדיוק בשורה === */
         .leagues-grid {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    column-gap: 20px; 
-    row-gap: 35px;
-    width: 100%;
-    direction: rtl; /* מחזיר את הקוביות עצמן להסתדר מימין לשמאל */
-}
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            column-gap: 20px; 
+            row-gap: 30px; 
+            width: 100%;
+            direction: rtl; /* מחזיר את הקוביות להסתדר מימין לשמאל למרות ה-LTR למעלה */
+        }
 
         .league-cube {
             width: 100%;
@@ -278,7 +295,6 @@
             z-index: 2; 
         }
         
-        /* מחלקה מיוחדת לסוגריים מתחת לשם הליגה */
         .sub-league {
             display: block;
             font-size: 0.75em;
@@ -306,7 +322,7 @@
         .league-cube.svg-bg::before { background-size: 60%; background-repeat: no-repeat; mix-blend-mode: normal; }
         .league-cube.svg-bg:hover::before { opacity: 0.12; }
 
-        /* מנגנון סינון קוביות דרך JS (Hide class) */
+        /* מנגנון סינון קוביות דרך JS */
         .league-cube.hidden { display: none; }
 
         /* === שורת עדכונים רצה (Footer) === */
@@ -332,14 +348,14 @@
             100% { transform: translateX(100vw); } 
         }
 
-        /* === התאמה רספונסיבית (לא לשבור סלולר) === */
+        /* === התאמה רספונסיבית === */
         @media (max-width: 1100px) {
             body { height: auto; overflow-y: auto; }
             .header { height: auto; padding: 15px 0; flex-direction: column; gap: 15px; }
             .header-right-col, .header-center-col, .header-left-col { width: 100%; justify-content: center; }
             .header-search { display: none; }
             .content-container { height: auto; overflow: visible; }
-            .leagues-scroll-area { overflow-y: visible; }
+            .leagues-scroll-area { overflow-y: visible; max-height: none; }
             .leagues-grid { grid-template-columns: repeat(6, 1fr); } 
         }
 
@@ -375,8 +391,8 @@
                     <li><a href="index.html">דף הבית</a></li>
                     <li><a href="pantheon.html">ארכיון</a></li>
                     <li><a href="#">קרדיטים</a></li>
-                    <li><a href="#">צור קשר</a></li>
                     <li><a href="#">אודות</a></li>
+                    <li><a href="#">צור קשר</a></li>
                 </ul>
             </nav>
         </div>
@@ -704,9 +720,7 @@
                 const searchTerm = e.target.value.toLowerCase().trim();
 
                 leagueCubes.forEach(cube => {
-                    // מחפש לפי המאפיין data-name ששמתי (מכיל מילות מפתח) או לפי הטקסט הרגיל
                     const searchableText = (cube.getAttribute('data-name') || '') + ' ' + cube.textContent;
-                    
                     if (searchableText.toLowerCase().includes(searchTerm)) {
                         cube.classList.remove('hidden');
                     } else {
@@ -715,7 +729,6 @@
                 });
             });
 
-            // לחיצה על "Enter" כשיש רק תוצאה אחת מובילה אליה ישירות
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     const visibleCubes = document.querySelectorAll('.league-cube:not(.hidden)');
