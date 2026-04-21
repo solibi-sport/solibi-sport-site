@@ -179,20 +179,20 @@
         .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-        /* === מרכז העמוד: הגריד === */
+        /* === מרכז העמוד והגריד === */
         .center-wrapper {
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; /* ממקם הכל בדיוק באמצע האנכי */
+            justify-content: center;
             width: 100%; 
             height: 100%;
             padding: 0 calc(var(--sidebar-width) + 40px);
-            padding-bottom: 70px; /* משאיר מקום לסרגל המתרחב למטה */
-            margin-top: -20px; /* מושך הכל טיפה למעלה לאיזון מושלם מול הכותרת החדשה */
+            padding-bottom: 80px; /* הותאם כדי לאזן מול הכפתור למטה */
+            /* margin-top הוסר כדי לאפשר מרכוז טבעי ונכון בדיוק באמצע המסך */
         }
 
-        /* === כותרת הלובי הראשי === */
+        /* === כותרת הלובי הראשי החדשה === */
         .premium-title-wrapper {
             display: flex;
             align-items: center;
@@ -200,7 +200,7 @@
             gap: 15px;
             width: 100%;
             max-width: 760px; /* תואם לרוחב הגריד שלא יבלוט החוצה */
-            margin-bottom: 25px; /* מרווח יפה בין הכותרת לקוביות */
+            margin-bottom: 50px; /* הוגדל מ-25 ל-50 כדי לדחוף את הקוביות למטה למרכז המושלם */
             flex-shrink: 0;
         }
 
