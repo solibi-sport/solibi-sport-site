@@ -200,8 +200,12 @@
             gap: 15px;
             width: 100%;
             max-width: clamp(500px, 120vh, 760px);
-            /* השווינו את הרווח העליון לרווח התחתון לאיזון מושלם */
-            margin-bottom: clamp(30px, 5vh, 60px); 
+            
+            /* סוד הקסם: מעלית שמשייכת את הכותרת למעלה בהתאם לגודל המסך, 
+               מבלי להוריד או להזיז את הקוביות אפילו בפיקסל! */
+            transform: translateY(clamp(-30px, -6vh, -70px));
+            margin-bottom: 15px; 
+            
             flex-shrink: 0;
         }
 
