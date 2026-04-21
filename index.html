@@ -308,6 +308,36 @@
         .square-box:hover .tech-chat { opacity: 0.8; transform: scale(1.1); }
         .square-box:hover .tech-chat svg { stroke: var(--brand-green); }
 
+/* === כותרת הלובי הראשי === */
+        .premium-title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 25px; /* מרווח יפה בין הכותרת לקוביות */
+        }
+        .page-title {
+            color: var(--text-dark);
+            font-size: clamp(20px, 1.6vw, 24px);
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(124, 168, 86, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin: 0;
+        }
+        .page-title span { color: var(--brand-green); }
+        .title-line {
+            height: 2px;
+            width: clamp(50px, 8vw, 120px); /* קו שמתארך ומתכווץ בטבעיות */
+            background: linear-gradient(90deg, transparent, var(--brand-green));
+            border-radius: 2px;
+        }
+        .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
+        
         /* === הסרגל האופקי המתרחב === */
         .dynamic-action-bar {
             position: absolute;
@@ -474,6 +504,18 @@
         </aside>
 
         <div class="center-wrapper">
+
+            <div class="center-wrapper">
+            
+            <div class="premium-title-wrapper">
+                <div class="title-line"></div>
+                <h1 class="page-title">הלובי הראשי - <span>עולמות התוכן</span></h1>
+                <div class="title-line left"></div>
+            </div>
+            <div class="cards-grid">
+                
+                ...
+            
             <div class="cards-grid">
                 
                 <a href="tables.html" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1762013315117-1c8005ad2b41?q=80&w=686&auto=format&fit=crop');">
