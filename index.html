@@ -184,14 +184,14 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            /* הפקודה הזו ממקמת את התוכן במרכז המדויק של המקום הפנוי! */
-            justify-content: center; 
+            /* חשוב: מבטלים פה את המרכוז הכללי כדי לתת לקוביות לעשות את החישוב בעצמן */
+            justify-content: flex-start; 
             width: 100%; 
             height: 100%;
             padding: 0 calc(var(--sidebar-width) + 40px);
-            /* מכיוון שכפתור סוליבי לוקח בערך 80px מלמטה, אנחנו נותנים פדינג זהה ל-wrapper 
-               כדי שה"אמצע" שהדפדפן מחשב יהיה בדיוק האמצע שבין ההדר לכפתור! */
-            padding-bottom: 80px; 
+            padding-top: 30px; /* מרווח קבוע ויפה מההדר העליון */
+            /* 81px זה בדיוק הגובה של כפתור סוליבי+ יחד עם הרווח שלו מהרצפה. זה יוצר את ה"רצפה" המדויקת לחישוב! */
+            padding-bottom: 81px; 
         }
 
         /* === כותרת הלובי הראשי === */
@@ -202,9 +202,9 @@
             gap: 15px;
             width: 100%;
             max-width: 760px;
-            /* הרווח בין הכותרת לקוביות יחסי לגובה המסך (vh) - תמיד סימטרי */
-            margin-bottom: min(4vh, 40px); 
+            margin-bottom: 0; /* מאפסים את הרווח - המחשב יחשב אותו לבד עכשיו! */
             flex-shrink: 0;
+            transform: none; /* חשוב מאוד: לוודא שאין פה שורת transform יותר */
         }
 
         .page-title {
@@ -236,13 +236,15 @@
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
             grid-template-rows: repeat(2, 1fr); 
-            gap: min(2vh, 15px); /* גם הרווחים בין הקוביות קטנים כשהמסך קטן */
+            gap: min(2vh, 15px); 
             width: 100%;
-            /* נוסחת הקסם: הגריד לעולם לא יעבור 760px. אבל! אם גובה המסך קטן מדי (לפטופ), 
-               הוא יקטין את הרוחב אוטומטית כדי לא להימעך! */
+            /* המנגנון שמקטין את הקוביות אוטומטית כשהמסך קטן: */
             max-width: min(760px, calc((100vh - 280px) * 1.8)); 
+            
+            /* סוד הקסם שיוצר סימטריה מוחלטת: זה מחלק את המקום הנותר למעלה ולמטה שווה בשווה! */
+            margin-top: auto; 
+            margin-bottom: auto;
         }
-
         .square-box {
             aspect-ratio: 1 / 1.05; 
             background: var(--element-navy-gradient); border-radius: 12px;
