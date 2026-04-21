@@ -183,7 +183,7 @@
         .table-container::-webkit-scrollbar-track, .stats-list-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
         .table-container::-webkit-scrollbar-thumb, .stats-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-/* =========================================
+        /* =========================================
            עיצוב אחיד לכל 3 העמודות (טבלה, משחקים, שחקנים)
            ========================================= */
         table { width: 100%; border-collapse: collapse; font-size: clamp(13px, 1.2vh, 15px); min-width: 450px; }
@@ -433,20 +433,35 @@
             
             if (lowerName.includes('western')) return "מערב";
             if (lowerName.includes('eastern')) return "מזרח";
+            
             if (lowerName.includes('conference') || lowerName.includes('qualifying') || lowerName.includes('europe')) return "פלייאוף אמצעי";
             if (lowerName.includes('championship')) return "פלייאוף עליון";
             if (lowerName.includes('relegation')) return "פלייאוף תחתון";
+            
             if (lowerName.includes('regular') || lowerName.includes('premier league') || lowerName.includes('ligat ha\'al') || lowerName.includes('pro league')) return "עונה סדירה";
             if (lowerName.includes('group')) return name.replace(/Group/i, 'בית').replace('A', "א'").replace('B', "ב'").replace('C', "ג'").replace('D', "ד'");
+            
             return name;
         }
 
+        let allStandingsData = []; 
+        let allMatches = [];
+        let allDates = [];
+        let currentDateIndex = 0;
+        window.leagueGoalTracker = window.leagueGoalTracker || {};
+
         async function getStandings() {
             const container = document.getElementById('api-table');
-            if (parseInt(LEAGUE_ID) === 384) { getStandingsFromWikipedia(); return; }
+
+            if (parseInt(LEAGUE_ID) === 384) {
+                getStandingsFromWikipedia();
+                return;
+            }
 
             try {
-                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, { headers: { 'x-apisports-key': API_KEY } });
+                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
+                    headers: { 'x-apisports-key': API_KEY }
+                });
                 const data = await response.json();
 
                 if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
@@ -456,7 +471,6 @@
 
                 let standings = data.response[0].league.standings;
 
-                // תיקון ספציפי לארגנטינה (הסרת טבלאות מצטברות מיותרות)
                 if (parseInt(LEAGUE_ID) === 128) {
                     standings = standings.filter(group => {
                         let groupName = (group[0].group || "").toLowerCase();
@@ -464,14 +478,13 @@
                     });
                 }
 
-                // האם יש בתים/מזרח/מערב בליגה הזו?
+                // בניית הטבלה הכללית לפי הנתון העדכני ביותר לכל קבוצה
                 let hasGroups = standings.some(g => {
                     let n = (g[0].group || "").toLowerCase();
-                    return n.includes('group') || n.includes('western') || n.includes('eastern');
+                    return n.includes('group') || n.includes('western') || n.includes('eastern') || standings.length > 1;
                 });
 
-                // יצירת "טבלה כללית" חכמה מכל הבתים (מתעלם מנקודות של פלייאופים כדי לא לשבש)
-                if (hasGroups || (parseInt(LEAGUE_ID) === 383 && standings.length > 1)) {
+                if (hasGroups) {
                     let teamMap = new Map();
                     standings.forEach(group => {
                         let gName = translateGroupName(group[0].group);
@@ -494,31 +507,22 @@
                         
                         let combinedWithRanks = combined.map((item, index) => {
                             let newItem = JSON.parse(JSON.stringify(item));
-                            newItem.rank = index + 1; newItem.group = "טבלה כללית"; 
+                            newItem.rank = index + 1;
+                            newItem.group = "טבלה כללית"; 
                             return newItem;
                         });
                         standings.unshift(combinedWithRanks);
                     }
                 }
 
-                // מניעת כפילות עונה סדירה בליגת העל הישראלית
-                if (parseInt(LEAGUE_ID) === 383 || parseInt(LEAGUE_ID) === 390) {
+                // מניעת כפילויות ליגת העל
+                if (parseInt(LEAGUE_ID) === 383 || parseInt(LEAGUE_ID) === 390 || data.response[0].league.country === "Israel") {
                     standings = standings.filter(group => translateGroupName(group[0].group) !== "עונה סדירה");
                 }
 
-                // סדר עדיפויות מוחלט להופעה בתפריט הנפתח
                 const orderPriority = { 
-                    "טבלה כללית": 1, 
-                    "עונה סדירה": 2, 
-                    "פלייאוף עליון": 3, 
-                    "פלייאוף אמצעי": 4, 
-                    "פלייאוף תחתון": 5,
-                    "מזרח": 6, 
-                    "מערב": 7, 
-                    "בית א'": 8, 
-                    "בית ב'": 9,
-                    "בית ג'": 10,
-                    "בית ד'": 11
+                    "טבלה כללית": 1, "עונה סדירה": 2, "פלייאוף עליון": 3, "פלייאוף אמצעי": 4, 
+                    "פלייאוף תחתון": 5, "מזרח": 6, "מערב": 7, "בית א'": 8, "בית ב'": 9, "בית ג'": 10, "בית ד'": 11 
                 };
 
                 standings.sort((a, b) => {
@@ -533,7 +537,7 @@
                 buildStandingsUI();
 
             } catch (error) {
-                console.error(error);
+                console.error("שגיאה במשיכת נתוני טבלה:", error);
                 container.innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
             }
         }
@@ -545,9 +549,16 @@
             const currentLeagueId = parseInt(LEAGUE_ID);
             const euroLeagues = [2, 3, 848]; 
 
-            // מפעלים אירופאיים (ליגת האלופות וכו')
             if (euroLeagues.includes(currentLeagueId)) {
-                let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;"><option value="0">שלב הליגה</option><option value="knockout">שלבי נוקאאוט</option></select></div><div id="standings-render-area"></div>`;
+                let uiHtml = `
+                    <div style="margin-bottom: 15px; text-align: center;">
+                        <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
+                            <option value="0">שלב הליגה (טבלה)</option>
+                            <option value="knockout">שלבי נוקאאוט</option>
+                        </select>
+                    </div>
+                    <div id="standings-render-area"></div>
+                `;
                 container.innerHTML = uiHtml;
                 document.getElementById('group-selector').addEventListener('change', function(e) {
                     if (e.target.value === 'knockout') fetchAndRenderKnockouts();
@@ -557,25 +568,24 @@
                 return; 
             }
 
-            // *** המנגנון החכם שמסתיר את הרשימה אם יש רק טבלה אחת! ***
+            // הסתרת רשימה נפתחת אם יש רק טבלה אחת!
             if (window.allStandingsData.length <= 1) {
                 container.innerHTML = '<div id="standings-render-area"></div>';
                 renderStandingsTable(0); 
                 return;
             }
 
-            // אם יש פלייאופים/בתים - בונים רשימה נפתחת
-            let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;">`;
+            let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" style="padding: 8px 35px 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">`;
             window.allStandingsData.forEach((group, index) => {
                 uiHtml += `<option value="${index}">${translateGroupName(group[0].group)}</option>`;
             });
             uiHtml += `</select></div><div id="standings-render-area"></div>`;
-            
             container.innerHTML = uiHtml;
-            document.getElementById('group-selector').addEventListener('change', function(e) { 
-                renderStandingsTable(parseInt(e.target.value)); 
+
+            document.getElementById('group-selector').addEventListener('change', function(e) {
+                renderStandingsTable(parseInt(e.target.value));
             });
-            
+
             renderStandingsTable(0);
         }
 
@@ -747,6 +757,7 @@
             }
         }
 
+        // --- תיקון מנגנון המשחקים (קפיצה אוטומטית לתאריך הנכון) ---
         async function getFixtures() {
             try {
                 if (parseInt(LEAGUE_ID) === 384) {
@@ -826,6 +837,7 @@
                 return;
             }
 
+            // יצירת רשימת תאריכים ומציאת התאריך הרלוונטי (היום או המשחק הקרוב)
             if (allDates.length === 0) {
                 const datesSet = new Set();
                 allMatches.forEach(m => datesSet.add(getLocalYYYYMMDD(m.fixture.date)));
@@ -833,8 +845,12 @@
                 
                 const todayStr = getLocalYYYYMMDD(new Date().toISOString());
                 let closestIdx = allDates.findIndex(d => d >= todayStr);
-                if (closestIdx !== -1) currentDateIndex = closestIdx;
-                else currentDateIndex = 0;
+                
+                // אם הגענו לסוף העונה (אין תאריכים בעתיד), נציג את המחזור האחרון ששוחק
+                if (closestIdx === -1) {
+                    closestIdx = allDates.length - 1;
+                }
+                currentDateIndex = closestIdx;
             }
 
             const selectedDateStr = allDates[currentDateIndex];
