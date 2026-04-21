@@ -179,16 +179,19 @@
         .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-       /* === מרכז העמוד והגריד === */
+/* === מרכז העמוד והגריד === */
         .center-wrapper {
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; /* מחזיר למרכז טבעי ומושלם */
+            /* הפקודה הזו ממקמת את התוכן במרכז המדויק של המקום הפנוי! */
+            justify-content: center; 
             width: 100%; 
             height: 100%;
             padding: 0 calc(var(--sidebar-width) + 40px);
-            padding-bottom: clamp(60px, 10vh, 100px); /* מפנה מקום חכם לסוליבי+ בהתאם לגובה המסך */
+            /* מכיוון שכפתור סוליבי לוקח בערך 80px מלמטה, אנחנו נותנים פדינג זהה ל-wrapper 
+               כדי שה"אמצע" שהדפדפן מחשב יהיה בדיוק האמצע שבין ההדר לכפתור! */
+            padding-bottom: 80px; 
         }
 
         /* === כותרת הלובי הראשי === */
@@ -199,15 +202,14 @@
             gap: 15px;
             width: 100%;
             max-width: 760px;
-            /* מרווח דינמי שמתכווץ כשהמסך קטן */
-            margin-bottom: clamp(15px, 3.5vh, 40px); 
+            /* הרווח בין הכותרת לקוביות יחסי לגובה המסך (vh) - תמיד סימטרי */
+            margin-bottom: min(4vh, 40px); 
             flex-shrink: 0;
-            /* ביטלנו את המנוף (transform) שעשה את הבלאגן וחתך את הכותרת בלפטופ! */
         }
 
         .page-title {
             color: var(--text-dark);
-            font-size: clamp(16px, 1.8vw, 22px); /* מתאים את עצמו גם למסכים קטנים */
+            font-size: clamp(16px, 1.8vw, 22px);
             font-weight: 900;
             letter-spacing: 1px;
             background: rgba(255, 255, 255, 0.6);
@@ -234,10 +236,11 @@
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
             grid-template-rows: repeat(2, 1fr); 
-            gap: clamp(8px, 1.5vh, 15px); 
+            gap: min(2vh, 15px); /* גם הרווחים בין הקוביות קטנים כשהמסך קטן */
             width: 100%;
-            /* סוד הקסם!! הרוחב מוגבל ע"י גובה המסך (100vh). בלפטופ זה יקטין את הקוביות, ב-27 אינץ' יעצור ב-760px */
-            max-width: min(760px, calc((100vh - 310px) * 1.9)); 
+            /* נוסחת הקסם: הגריד לעולם לא יעבור 760px. אבל! אם גובה המסך קטן מדי (לפטופ), 
+               הוא יקטין את הרוחב אוטומטית כדי לא להימעך! */
+            max-width: min(760px, calc((100vh - 280px) * 1.8)); 
         }
 
         .square-box {
@@ -249,6 +252,8 @@
             padding: 16% 5% 5% 5%; 
             text-align: center; text-decoration: none; transition: 0.4s;
             border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
+            /* הפקודה הזו (container-type) מאפשרת לטקסטים להקטין את עצמם ביחס לקוביה! */
+            container-type: inline-size;
         }
         .square-box:hover { transform: translateY(-5px); border-color: var(--brand-green); box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 5; }
 
@@ -302,10 +307,12 @@
             100% { transform: translateX(100%) rotate(45deg); } 
         }
 
-        /* === טקסטים דינמיים שקְטֵנִים כשהקוביות קטנות (vmin) === */
-        .box-title { color: #fff; font-size: clamp(11px, 1.5vmin, 17px); font-weight: 900; margin: 2px 0 4px 0; line-height: 1.1; }
-        .box-tag { color: var(--brand-green); font-size: clamp(9px, 1vmin, 11.5px); font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px;}
-        .box-desc { color: #e2e8f0; font-size: clamp(9.5px, 1.1vmin, 12.5px); line-height: 1.25; padding: 0 2px;}
+        /* === טקסטים דינמיים שקְטֵנִים כשהקוביות קטנות === */
+        /* יחידת המידה cqi אומרת "תגדל ותקטן בדיוק לפי הרוחב של הקוביה שמכילה אותך" */
+        .box-title { color: #fff; font-size: clamp(10px, 12cqi, 17px); font-weight: 900; margin: 2px 0 4px 0; line-height: 1.1; }
+        .box-tag { color: var(--brand-green); font-size: clamp(8px, 8.5cqi, 11.5px); font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px;}
+        .box-desc { color: #e2e8f0; font-size: clamp(8px, 9cqi, 12.5px); line-height: 1.25; padding: 0 2px;}
+        
         /* אלמנטים גיאומטריים */
         .tech-bars { position: absolute; top: 10px; left: 10px; display: flex; gap: 3px; align-items: flex-end; opacity: 0.15; transition: 0.4s; height: 14px; }
         .tech-bars span { width: 2px; background: #fff; border-radius: 2px; }
