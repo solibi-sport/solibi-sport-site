@@ -52,17 +52,24 @@
         .header-right-col { 
             width: var(--sidebar-width); 
             display: flex; 
-            justify-content: center; 
+            justify-content: center; /* ממקם את הלוגו פלס באמצע עמודת הפאנל הימני */
             align-items: center; 
         }
         
         .logo-wrapper {
-            background-color: #ffffff; padding: 0 18px; border-radius: 12px;
+            background-color: #ffffff; 
+            padding: 0 28px; /* הורחב כדי לתת לקובייה מראה רחב יותר */
+            border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s;
-            height: 48px; display: flex; align-items: center; justify-content: center;
+            height: 52px; /* הוגדל מעט כדי להכיל לוגו גדול יותר */
+            display: flex; align-items: center; justify-content: center;
         }
         .logo-wrapper:hover { transform: scale(1.05); }
-        .actual-logo-img { height: 32px; transform: scale(1.6); display: block; object-fit: contain; }
+        .actual-logo-img { 
+            height: 38px; /* הוגדל לקריאות טובה יותר */
+            transform: scale(1.7); /* הוגדל מעט */
+            display: block; object-fit: contain; 
+        }
 
         /* מרכז ההדר - התפריט העליון והאזור האישי */
         .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1;}
@@ -83,12 +90,12 @@
         .header-left-col { 
             width: var(--sidebar-width); 
             display: flex; 
-            justify-content: center; 
+            justify-content: center; /* ממקם את החיפוש פלס באמצע עמודת פאנל הלייב */
             align-items: center; 
         }
         
         .header-search { 
-            width: 65%; 
+            width: 65%; /* גודל התחלתי אלגנטי */
             height: 34px; 
             transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             position: relative;
@@ -98,6 +105,7 @@
             border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit;
             box-shadow: none; transition: 0.4s ease;
         }
+        /* אפקט ההתרחבות - מתפרס משני הצדדים ל-100% רוחב פאנל הלייב */
         .header-search:focus-within { width: 100%; }
         .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
 
@@ -210,12 +218,13 @@
 
         /* === עיצוב פרימיום מיוחד ל"ליגת החלומות" === */
         .fantasy-highlight {
-            background: linear-gradient(135deg, #112845 0%, #1b4332 100%); 
+            background: linear-gradient(135deg, #112845 0%, #1b4332 100%); /* גרדיאנט שונה ובולט - שילוב של נייבי וירוק בקבוק */
             border: 2px solid var(--brand-green);
-            animation: premiumPulse 2.5s infinite alternate; 
+            animation: premiumPulse 2.5s infinite alternate; /* פעימה זוהרת מתמדת */
             z-index: 3;
         }
 
+        /* אפקט "ברק" שקוף שרץ על הקוביה ונותן תחושה של קלף יוקרתי */
         .fantasy-highlight::after {
             content: '';
             position: absolute;
@@ -228,15 +237,15 @@
         }
 
         .fantasy-highlight:hover {
-            transform: translateY(-8px) scale(1.05); 
+            transform: translateY(-8px) scale(1.05); /* קופצת קצת יותר גבוה מהשאר */
             border-color: #fff;
             box-shadow: 0 15px 40px rgba(124, 168, 86, 0.8), inset 0 0 30px rgba(124, 168, 86, 0.4);
             z-index: 10;
-            animation: none; 
+            animation: none; /* מפסיק לפעום בהובר כדי לא להציק לעין */
         }
         
         .fantasy-highlight .box-title {
-            text-shadow: 0 0 12px rgba(124, 168, 86, 0.8); 
+            text-shadow: 0 0 12px rgba(124, 168, 86, 0.8); /* הילה ירוקה למילים "ליגת החלומות" */
         }
 
         @keyframes premiumPulse {
@@ -247,16 +256,15 @@
         @keyframes shimmer {
             0% { transform: translateX(-100%) rotate(45deg); }
             20% { transform: translateX(100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); } 
+            100% { transform: translateX(100%) rotate(45deg); } /* עושה הפסקה בין הברקים */
         }
 
-        /* === טקסטים מוגדלים - זה השינוי המרכזי החדש! === */
-        /* הגדלנו משמעותית את הפונטים כדי שיהיו ברורים וקריאים, וצמצמנו מעט את המרווחים כדי שהכל ייכנס לקוביה */
+        /* === טקסטים מוגדלים === */
         .box-title { color: #fff; font-size: clamp(14px, 1.6vh, 17px); font-weight: 900; margin: 2px 0 4px 0; line-height: 1.1; }
         .box-tag { color: var(--brand-green); font-size: clamp(10px, 1.1vh, 11.5px); font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px;}
         .box-desc { color: #e2e8f0; font-size: clamp(10.5px, 1.25vh, 12.5px); line-height: 1.25; padding: 0 2px;}
 
-        /* אלמנטים גיאומטריים (נשארו כפי שהיו) */
+        /* אלמנטים גיאומטריים */
         .tech-bars { position: absolute; top: 10px; left: 10px; display: flex; gap: 3px; align-items: flex-end; opacity: 0.15; transition: 0.4s; height: 14px; }
         .tech-bars span { width: 2px; background: #fff; border-radius: 2px; }
         .square-box:hover .tech-bars { opacity: 0.8; gap: 4px; }
@@ -415,9 +423,9 @@
             <nav class="header-nav">
                 <ul>
                     <li><a href="index.html">דף הבית</a></li>
-                    <li><a href="pantheon.html">ארכיון</a></li>
+                    <li><a href="pantheon.html">פנתיאון</a></li>
+                    <li><a href="#">ארכיון</a></li>
                     <li><a href="#">קרדיטים</a></li>
-                    <li><a href="#">אודות</a></li>
                     <li><a href="#">צור קשר</a></li>
                 </ul>
             </nav>
@@ -434,8 +442,8 @@
         
         <aside class="side-panel panel-right">
             <div class="panel-header">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 <span>עידכונים חמים</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             </div>
             <div class="panel-content" id="updates-content">
                 <div style="display: flex; flex-direction: column; width: 100%;">
@@ -457,8 +465,8 @@
 
         <aside class="side-panel panel-left">
             <div class="panel-header">
-                <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
                 <span>תוצאות לייב</span>
+                <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
             </div>
             <div class="panel-content" id="live-content">
                 <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">טוען משחקים... ⚽</div>
