@@ -20,104 +20,117 @@
             --white: #ffffff;
             --border-dark: rgba(255, 255, 255, 0.08);
             
-            --sidebar-width: clamp(280px, 22vw, 380px); 
-            --search-width: clamp(200px, 15vw, 300px);
-            --grid-gap: clamp(10px, 1.5vw, 20px);
-
-            /* הנוסחה המתמטית לסנכרון מושלם מול דף הבית */
-            --visual-center-right: calc((100vw - min(850px, 110vh)) / 4);
+            /* משתני רוחב אחידים להדר בדיוק כמו בדף הבית! */
+            --sidebar-width: clamp(240px, 20vw, 320px); 
+            --search-width: clamp(380px, 28vw, 480px);
         }
 
-        body {
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
             font-family: 'Rubik', sans-serif; 
             background-color: var(--bg-gray);
-            margin: 0; padding: 0;
-            height: 100vh; width: 100vw;
+            height: 100vh; width: 100%;
             overflow: hidden; 
             display: flex; flex-direction: column;
         }
 
         /* =========================================
-           תפריט ניווט עליון (בלוק הדר מושלם)
+           תפריט ניווט עליון חדש! זהה לדף הבית
            ========================================= */
-        .layout-grid {
-            display: grid;
-            grid-template-columns: var(--sidebar-width) 1fr var(--sidebar-width);
-            width: 100%;
-        }
-
         .header {
-            flex-shrink: 0; 
             height: 65px;
             background: var(--element-navy-gradient);
             border-bottom: 2px solid var(--brand-green);
             position: relative;
             z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px; 
+            width: 100%;
+            flex-shrink: 0;
         }
 
-        .header-right-col { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
+        .header-right-col { 
+            width: var(--sidebar-width); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
         
         .logo-wrapper {
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            background-color: #ffffff; 
-            padding: 0 18px; 
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25); 
-            z-index: 1100; transition: 0.3s;
-            height: 48px; 
-            display: flex; align-items: center; justify-content: center;
+            background-color: #ffffff; padding: 0 28px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s;
+            height: 52px; display: flex; align-items: center; justify-content: center;
         }
-        .logo-wrapper:hover { transform: translateY(-50%) scale(1.05); }
-        .actual-logo-img { 
-            height: 32px; 
-            transform: scale(1.6); 
-            display: block; 
-            object-fit: contain; 
-        }
+        .logo-wrapper:hover { transform: scale(1.05); }
+        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
 
+        .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1;}
+        
         .personal-area-btn {
-            position: absolute; 
-            right: var(--visual-center-right); 
-            top: 50%; 
-            transform: translate(50%, -50%); 
-            background: rgba(255, 255, 255, 0.1); border: 2px solid var(--brand-green);
-            color: #ffffff; padding: 6px 18px; border-radius: 30px; text-decoration: none;
-            font-weight: 700; font-size: clamp(11px, 0.9vw, 13px); transition: 0.3s;
+            background: transparent; border: 1.5px solid var(--brand-green);
+            color: #ffffff; padding: 6px 16px; border-radius: 30px; text-decoration: none;
+            font-weight: 700; font-size: clamp(12px, 1vw, 14px); transition: 0.3s;
             display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
         }
-        .personal-area-btn:hover { background: var(--brand-green); transform: translate(50%, -50%) scale(1.05); }
+        .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; border-color: var(--brand-green); transform: scale(1.05); }
 
-        .header-center-col { display: flex; justify-content: center; align-items: center; height: 100%; }
-        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1.2vw, 20px); margin: 0; padding: 0;}
-        .header-nav a {
-            text-decoration: none; color: var(--text-light); font-weight: 700;
-            font-size: clamp(12px, 1vw, 15px); padding: 8px 12px; transition: 0.3s;
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); margin: 0; padding: 0; align-items: center; }
+        .header-nav a { text-decoration: none; color: var(--text-light); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
+        .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
+
+        .header-left-col { 
+            width: var(--sidebar-width); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
         }
-        .header-nav a:hover { color: var(--brand-green); background: #fff; border-radius: 8px; }
-
-        .header-left-col { display: flex; align-items: center; justify-content: flex-start; padding: 0 10px; height: 100%; }
-        .header-search { position: relative; width: var(--search-width); height: 34px; }
+        
+        .header-search { 
+            width: 65%; 
+            height: 34px; 
+            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative;
+        }
         .header-search input {
-            position: absolute; left: 0; top: 0; 
             width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; transition: 0.4s ease-out;
+            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit;
+            box-shadow: none; transition: 0.4s ease;
         }
-        .header-search input:focus { width: calc(100% + 80px); box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
+        .header-search:focus-within { width: 100%; }
+        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
 
         /* =========================================
-           2. תוכן מרכזי - דאשבורד
+           2. תוכן מרכזי - המנגנון החכם והדינמי
            ========================================= */
         .main-content { 
-            flex: 1; min-height: 0; 
-            display: flex; flex-direction: column;
-            padding: clamp(10px, 2vh, 25px) clamp(10px, 2vw, 20px); 
-            max-width: 1600px; margin: 0 auto; width: 100%;
-            box-sizing: border-box;
+            flex: 1; 
+            min-height: 0; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; /* ממורכז לאמצע המסך */
+            justify-content: center; /* מתמרכז אנכית אם יש מקום */
+            width: 100%;
+            /* המעטפת גדלה וקטנה באופן פרופורציונלי. ב-27 אינץ' תהיה מרווחת, בלפטופ תתכווץ קצת */
+            padding: clamp(15px, 2vh, 40px) 20px; 
+        }
+
+        .dashboard-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            /* סוד הקסם - מגביל את כל הדאשבורד להתכווץ אם המסך נמוך (לפטופ) */
+            max-width: min(1600px, calc((100vh - 180px) * 2.5));
+            height: 100%;
+            max-height: 85vh; /* מונע פריצה של העמוד */
         }
 
         .page-header {
             flex-shrink: 0; display: flex; justify-content: center; align-items: center;
-            position: relative; margin-bottom: clamp(15px, 2.5vh, 30px);
+            position: relative; 
+            margin-bottom: clamp(15px, 2.5vh, 30px); /* מרווח שנושם עם המסך */
         }
         .page-header::before {
             content: ''; position: absolute; width: 60%; max-width: 800px; height: 2px;
@@ -125,32 +138,38 @@
         }
         .title-pill {
             background: var(--white); border: 2px solid var(--brand-green); border-radius: 50px;
-            padding: clamp(6px, 1vh, 10px) clamp(25px, 4vw, 40px);
-            font-size: clamp(20px, 2.5vw, 28px); font-weight: 900; position: relative; z-index: 2;
+            /* גודל הכותרת קטן/גדל בהתאם לאחוזים של המסך */
+            padding: clamp(6px, 1.2vh, 10px) clamp(25px, 4vw, 40px);
+            font-size: clamp(18px, 2vw, 26px); 
+            font-weight: 900; position: relative; z-index: 2;
             box-shadow: 0 10px 20px rgba(0,0,0,0.05); display: flex; gap: 8px;
+            white-space: nowrap;
         }
         .title-dark { color: var(--card-bg); }
         .title-green { color: var(--brand-green); }
 
         .dashboard {
-            flex: 1; min-height: 0; 
-            width: 100%; display: grid;
-            grid-template-columns: 34fr 41fr 25fr; gap: var(--grid-gap);
+            flex: 1; 
+            min-height: 0; 
+            width: 100%; 
+            display: grid;
+            grid-template-columns: 34fr 41fr 25fr; 
+            gap: clamp(10px, 1.5vh, 20px); /* מרווחים חיים בין העמודות */
         }
 
         .widget {
             height: 100%; background-color: var(--card-bg); border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(25, 42, 69, 0.15); padding: clamp(10px, 1.5vw, 20px);
+            box-shadow: 0 6px 20px rgba(25, 42, 69, 0.15); padding: clamp(10px, 1.5vh, 20px);
             display: flex; flex-direction: column; color: var(--white); overflow: hidden;
             box-sizing: border-box;
         }
         
         .widget-header-wrapper { flex-shrink: 0; text-align: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border-dark); }
-        .widget-header-pill { display: inline-block; background-color: var(--white); color: var(--card-bg); padding: 6px clamp(15px, 2vw, 22px); border-radius: 50px; font-size: clamp(13px, 1.2vw, 15px); font-weight: 800; border: 2px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .widget-header-pill { display: inline-block; background-color: var(--white); color: var(--card-bg); padding: 6px clamp(15px, 2vw, 22px); border-radius: 50px; font-size: clamp(12px, 1.2vw, 15px); font-weight: 800; border: 2px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.3); white-space: nowrap;}
 
         .stat-dropdown-pill {
             display: inline-block; background-color: var(--white); color: var(--card-bg);
-            padding: 6px 15px 6px 35px; border-radius: 50px; font-size: clamp(13px, 1.2vw, 15px);
+            padding: 6px 15px 6px 35px; border-radius: 50px; font-size: clamp(12px, 1.2vw, 15px);
             font-weight: 900; border: 2px solid var(--brand-green); appearance: none; cursor: pointer;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23192a45' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat; background-position: left 12px center; background-size: 14px;
@@ -164,37 +183,36 @@
         .table-container::-webkit-scrollbar-track, .stats-list-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
         .table-container::-webkit-scrollbar-thumb, .stats-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        table { width: 100%; border-collapse: collapse; font-size: clamp(11px, 1vw, 12px); min-width: 450px; }
+        table { width: 100%; border-collapse: collapse; font-size: clamp(10px, 1vh, 12px); min-width: 450px; }
         th { color: var(--text-light); padding: 10px 2px; text-align: center; position: sticky; top: 0; background-color: var(--card-bg); z-index: 10; border-bottom: 1px solid var(--border-dark); font-weight: normal; }
-        td { padding: clamp(6px, 1vh, 10px) 2px; border-bottom: 1px solid var(--border-dark); text-align: center; }
+        td { padding: clamp(4px, 0.8vh, 10px) 2px; border-bottom: 1px solid var(--border-dark); text-align: center; }
         tr:hover td { background-color: var(--card-hover); }
         .team-identity { display: flex; align-items: center; gap: 8px; direction: rtl; text-align: right; justify-content: flex-start; }
         .team-name-text { unicode-bidi: isolate; font-weight: 600; }
-        .team-logo { width: clamp(16px, 1.5vw, 18px); height: clamp(16px, 1.5vw, 18px); object-fit: contain; flex-shrink: 0; }
+        .team-logo { width: clamp(14px, 1.2vw, 18px); height: clamp(14px, 1.2vw, 18px); object-fit: contain; flex-shrink: 0; }
         .points { color: var(--brand-green); font-weight: 900; }
         .trend-up { color: var(--brand-green); font-size: 11px; }
         .trend-down { color: #ef4444; font-size: 11px; }
         .trend-same { color: #64748b; font-size: 11px; }
 
-        .fixtures-nav { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 15px; margin-bottom: 15px; flex-shrink: 0;}
+        .fixtures-nav { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); border-radius: 8px; padding: clamp(6px, 1vh, 10px) 15px; margin-bottom: 15px; flex-shrink: 0;}
         .nav-btn { background: none; border: none; color: var(--brand-green); font-size: 18px; cursor: pointer; transition: 0.2s;}
         .nav-btn:hover { transform: scale(1.3); }
         .nav-btn:disabled { color: #555; cursor: not-allowed; transform: none; }
-        .matchday-title { font-weight: bold; font-size: clamp(13px, 1.2vw, 14px); text-align: center; }
+        .matchday-title { font-weight: bold; font-size: clamp(12px, 1.1vw, 14px); text-align: center; }
 
-        .match-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border-dark); min-width: 300px; }
+        .match-row { display: flex; justify-content: space-between; align-items: center; padding: clamp(8px, 1.2vh, 12px); border-bottom: 1px solid var(--border-dark); min-width: 300px; }
         .match-row:hover { background-color: rgba(255,255,255,0.05); border-radius: 8px; }
-        .match-team { flex: 1; font-weight: 600; display: flex; align-items: center; font-size: clamp(12px, 1.1vw, 13px);}
+        .match-team { flex: 1; font-weight: 600; display: flex; align-items: center; font-size: clamp(11px, 1vw, 13px);}
         .team-home { justify-content: flex-end; }
         .team-away { justify-content: flex-start; }
-        .match-center { display: flex; flex-direction: column; align-items: center; margin: 0 clamp(15px, 2vw, 35px); }
+        .match-center { display: flex; flex-direction: column; align-items: center; margin: 0 clamp(10px, 1.5vw, 35px); }
         .match-score-box { background: var(--card-bg); border: 1px solid var(--border-dark); padding: 5px 12px; border-radius: 6px; font-weight: bold; text-align: center; min-width: 50px; font-size: 13px;}
         .live-match { border-color: var(--brand-green); color: var(--brand-green); }
         .live-minute { font-size: 11px; color: var(--brand-green); animation: blink 1.5s infinite; font-weight: bold; }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-        .fixture-logo { width: 20px; height: 20px; max-width: 20px; max-height: 20px; object-fit: contain; flex-shrink: 0; }
+        .fixture-logo { width: clamp(16px, 1.5vw, 20px); height: clamp(16px, 1.5vw, 20px); max-width: 20px; max-height: 20px; object-fit: contain; flex-shrink: 0; }
         
-        /* עיצוב לתאריך המפריד בין המשחקים */
         .date-separator {
             background: rgba(255, 255, 255, 0.04);
             color: var(--brand-green);
@@ -207,12 +225,12 @@
             border: 1px solid rgba(124, 168, 86, 0.2);
         }
 
-        .player-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 5px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .player-row { display: flex; align-items: center; justify-content: space-between; padding: clamp(6px, 1vh, 10px) 5px; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .player-rank { color: #94a3b8; font-weight: bold; width: 20px; font-size: 12px; }
         .player-info { flex: 1; display: flex; align-items: center; gap: 10px; }
-        .player-photo { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--brand-green); object-fit: cover; background: #fff;}
-        .player-name { font-size: 12px; font-weight: 600; color: var(--white); }
-        .player-stat { font-weight: 900; color: var(--brand-green); font-size: 15px; }
+        .player-photo { width: clamp(26px, 2.5vw, 32px); height: clamp(26px, 2.5vw, 32px); border-radius: 50%; border: 1px solid var(--brand-green); object-fit: cover; background: #fff;}
+        .player-name { font-size: clamp(11px, 1vw, 12px); font-weight: 600; color: var(--white); }
+        .player-stat { font-weight: 900; color: var(--brand-green); font-size: clamp(13px, 1.2vw, 15px); }
 
         /* =========================================
            3. שורת עדכונים רצה למטה
@@ -227,7 +245,7 @@
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         /* =========================================
-           4. רספונסיביות
+           4. רספונסיביות למסכים קטנים
            ========================================= */
         @media (max-width: 1250px) {
             .dashboard { grid-template-columns: 1fr 1fr; }
@@ -237,13 +255,11 @@
         @media (max-width: 1100px) {
             body { height: auto; overflow-y: auto; display: block; }
             .main-content { display: block; height: auto; }
+            .dashboard-wrapper { max-height: none; max-width: 100%;}
             .dashboard { display: grid; height: auto; }
             .widget { min-height: 400px; margin-bottom: 20px;}
-            .layout-grid { grid-template-columns: 1fr; } 
-            .header { height: auto; padding: 15px 0; }
+            .header { height: auto; padding: 15px 0; flex-direction: column; gap: 15px; }
             .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
-            .personal-area-btn { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px;}
-            .logo-wrapper { position: relative; right: auto; top: auto; transform: none; margin-bottom: 15px; }
             .header-search { display: none; }
             .footer { position: fixed; bottom: 0; left: 0; } 
         }
@@ -255,20 +271,21 @@
 </head>
 <body>
 
-    <header class="header layout-grid">
+    <header class="header">
         <div class="header-right-col">
-            <a href="#" class="logo-wrapper">
+            <a href="index.html" class="logo-wrapper">
                 <img src="a.png" alt="לוגו" class="actual-logo-img" onerror="this.src='https://via.placeholder.com/150x60?text=LOGO'">
             </a>
+        </div>
+        
+        <div class="header-center-col">
             <a href="#" class="personal-area-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 <span>לאזור האישי</span>
             </a>
-        </div>
-        <div class="header-center-col">
             <nav class="header-nav">
                 <ul>
-                    <li><a href="index.html">דף הבית</a></li>
+                    <li><a href="index.html">דף הבית</a></li>                
                     <li><a href="#">ארכיון</a></li>
                     <li><a href="#">קרדיטים</a></li>
                     <li><a href="#">אודות</a></li>
@@ -276,60 +293,63 @@
                 </ul>
             </nav>
         </div>
+
         <div class="header-left-col">
             <div class="header-search">
-                <input type="text" class="search-bar" placeholder="חיפוש תוכן...">
+                <input type="text" placeholder="חיפוש תוכן...">
             </div>
         </div>
     </header>
 
     <main class="main-content">
-        <div class="page-header">
-            <div class="title-pill" id="dynamic-title-container">
-                <span class="title-dark">טוען</span>
-                <span class="title-green">ליגה...</span>
-            </div>
-        </div>
-
-        <div class="dashboard">
-            
-            <div class="widget">
-                <div class="widget-header-wrapper">
-                    <div class="widget-header-pill">טבלת הליגה</div>
-                </div>
-                <div class="table-container" id="api-table">
-                    <div style="text-align:center; padding: 30px;">טוען טבלה... ⚽</div>
+        <div class="dashboard-wrapper">
+            <div class="page-header">
+                <div class="title-pill" id="dynamic-title-container">
+                    <span class="title-dark">טוען</span>
+                    <span class="title-green">ליגה...</span>
                 </div>
             </div>
 
-            <div class="widget">
-                <div class="widget-header-wrapper">
-                    <div class="widget-header-pill">לוח משחקים ותוצאות</div>
+            <div class="dashboard">
+                
+                <div class="widget">
+                    <div class="widget-header-wrapper">
+                        <div class="widget-header-pill">טבלת הליגה</div>
+                    </div>
+                    <div class="table-container" id="api-table">
+                        <div style="text-align:center; padding: 30px;">טוען טבלה... ⚽</div>
+                    </div>
                 </div>
-                <div class="fixtures-nav">
-                    <button class="nav-btn" onclick="changeDate(-1)" id="btn-prev">▶</button>
-                    <div class="matchday-title" id="matchday-title">טוען משחקים...</div>
-                    <button class="nav-btn" onclick="changeDate(1)" id="btn-next">◀</button>
-                </div>
-                <div style="flex: 1; overflow-y: auto;" id="api-fixtures-list">
-                    <div style="text-align:center; padding: 30px;">טוען נתונים... ⏳</div>
-                </div>
-            </div>
 
-            <div class="widget">
-                <div class="widget-header-wrapper">
-                    <select id="stat-selector" class="stat-dropdown-pill" onchange="loadPlayerStats(this.value)">
-                        <option value="topscorers">מלך השערים</option>
-                        <option value="topassists">מלך הבישולים</option>
-                        <option value="topyellowcards">כרטיסים צהובים</option>
-                        <option value="topredcards">כרטיסים אדומים</option>
-                    </select>
+                <div class="widget">
+                    <div class="widget-header-wrapper">
+                        <div class="widget-header-pill">לוח משחקים ותוצאות</div>
+                    </div>
+                    <div class="fixtures-nav">
+                        <button class="nav-btn" onclick="changeDate(-1)" id="btn-prev">▶</button>
+                        <div class="matchday-title" id="matchday-title">טוען משחקים...</div>
+                        <button class="nav-btn" onclick="changeDate(1)" id="btn-next">◀</button>
+                    </div>
+                    <div style="flex: 1; overflow-y: auto;" id="api-fixtures-list">
+                        <div style="text-align:center; padding: 30px;">טוען נתונים... ⏳</div>
+                    </div>
                 </div>
-                <div class="stats-list-container" id="api-stats-list">
-                    <div style="text-align:center; padding: 30px; color: var(--text-light);">טוען נתונים... ⏳</div>
-                </div>
-            </div>
 
+                <div class="widget">
+                    <div class="widget-header-wrapper">
+                        <select id="stat-selector" class="stat-dropdown-pill" onchange="loadPlayerStats(this.value)">
+                            <option value="topscorers">מלך השערים</option>
+                            <option value="topassists">מלך הבישולים</option>
+                            <option value="topyellowcards">כרטיסים צהובים</option>
+                            <option value="topredcards">כרטיסים אדומים</option>
+                        </select>
+                    </div>
+                    <div class="stats-list-container" id="api-stats-list">
+                        <div style="text-align:center; padding: 30px; color: var(--text-light);">טוען נתונים... ⏳</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </main>
 
@@ -356,9 +376,8 @@
         const LEAGUE_ID = urlParams.get('id') || 39; 
         const LEAGUE_NAME = urlParams.get('name') || "הליגה האנגלית";
 
-        // === מחשב את העונה המדויקת לפי הליגה ===
         function getCalculatedSeason(leagueId) {
-            const summerLeagues = [253, 128, 71, 72, 254, 255]; // MLS, ארגנטינה, ברזיל וכו'
+            const summerLeagues = [253, 128, 71, 72, 254, 255]; 
             const date = new Date();
             const year = date.getFullYear(); 
             const month = date.getMonth() + 1; 
@@ -402,7 +421,6 @@
             }
         }
 
-        // --- מתרגם שמות בתים / פלייאוף ומתקן שמות באנגלית ---
         function translateGroupName(name) {
             if (!name) return "טבלה כללית";
             if (name === "טבלה כללית") return name; 
@@ -428,11 +446,9 @@
         let currentDateIndex = 0;
         window.leagueGoalTracker = window.leagueGoalTracker || {};
 
-        // --- משיכת נתוני טבלה ---
         async function getStandings() {
             const container = document.getElementById('api-table');
 
-            // ליגה לאומית (ויקיפדיה)
             if (parseInt(LEAGUE_ID) === 384) {
                 getStandingsFromWikipedia();
                 return;
@@ -451,7 +467,6 @@
 
                 let standings = data.response[0].league.standings;
 
-                // תיקון לליגה הארגנטינאית
                 if (parseInt(LEAGUE_ID) === 128) {
                     standings = standings.filter(group => {
                         let groupName = (group[0].group || "").toLowerCase();
@@ -459,7 +474,6 @@
                     });
                 }
 
-                // חוק מיוחד רק לליגת העל - בניית טבלה כללית מעודכנת והסרת "עונה סדירה"
                 const isLigatHaal = parseInt(LEAGUE_ID) === 383 || parseInt(LEAGUE_ID) === 390 || data.response[0].league.country === "Israel";
                 if (isLigatHaal && standings.length > 1) {
                     let teamMap = new Map();
@@ -485,12 +499,10 @@
                         return newItem;
                     });
 
-                    // מסנן ומעלים את ה"עונה סדירה" מליגת העל
                     standings = standings.filter(group => translateGroupName(group[0].group) !== "עונה סדירה");
                     standings.unshift(combinedWithRanks);
                 }
 
-                // סדר העדיפויות ברשימה הנפתחת
                 const orderPriority = { "טבלה כללית": 1, "עונה סדירה": 2, "מזרח": 3, "מערב": 4, "בית א'": 5, "בית ב'": 6, "פלייאוף עליון": 7, "פלייאוף אמצעי": 8, "פלייאוף תחתון": 9 };
                 standings.sort((a, b) => {
                     let weightA = orderPriority[translateGroupName(a[0].group)] || 99;
@@ -507,7 +519,6 @@
             }
         }
 
-        // --- בניית ממשק הטבלה והתפריט הנפתח ---
         function buildStandingsUI() {
             const container = document.getElementById('api-table');
             if (!window.allStandingsData || window.allStandingsData.length === 0) return;
@@ -555,7 +566,6 @@
             renderStandingsTable(0);
         }
 
-        // --- ציור טבלת הליגה עצמה ---
         function renderStandingsTable(groupIndex) {
             const standingsArray = window.allStandingsData[groupIndex];
             if (!standingsArray) return;
@@ -589,7 +599,6 @@
             document.getElementById('standings-render-area').innerHTML = html;
         }
 
-        // --- פונקציית שלבי נוקאאוט אירופאיים (מעודכן קומפקטי וכולל פלייאוף מוקדם) ---
         async function fetchAndRenderKnockouts() {
             const container = document.getElementById('standings-render-area');
             container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold; color:#cbd5e1;">טוען שלבי נוקאאוט... 🏆</div>';
@@ -603,7 +612,6 @@
 
                 const knockoutFixtures = allFixtures.filter(f => {
                     const r = f.league.round.toLowerCase();
-                    // הוספנו את play-off כדי לתפוס גם את שלבי ההעפלה לשמינית!
                     return r.includes('knockout') || r.includes('16') || r.includes('quarter') || r.includes('semi') || r.includes('final') || r.includes('play-off');
                 });
 
@@ -673,7 +681,6 @@
 
                             let legTitle = tieMatches.length > 1 ? `משחק ${idx + 1}` : 'משחק יחיד';
 
-                            // שורת משחק מוקטנת (פדים ופונטים קטנים)
                             legsHTML += `
                             <div onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${m.fixture.id}, '${safeHome}', '${safeAway}')" style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-top: 1px solid #1f2d40; cursor: pointer; color: #cbd5e1; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
                                 <div style="width: 25%; text-align: right; color: #8fa0b3; display: flex; flex-direction: column; line-height: 1.2;">
@@ -692,7 +699,6 @@
                         let aggScoreDisplay = playedCount > 0 ? `${t1Goals} - ${t2Goals}` : '-';
                         let aggLabel = tieMatches.length > 1 ? 'סיכום' : 'תוצאה';
 
-                        // קובייה ראשית מוקטנת (סמלים 22px, פונטים קטנים יותר)
                         html += `
                         <div style="background: #0b121c; border-radius: 8px; margin-bottom: 5px; border: 1px solid #1f2d40; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
                             <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: radial-gradient(circle at center, #152438 0%, #0b121c 100%);">
@@ -728,7 +734,6 @@
             }
         }
 
-        // --- משיכת משחקים ---
         async function getFixtures() {
             try {
                 if (parseInt(LEAGUE_ID) === 384) {
@@ -757,7 +762,6 @@
             }
         }
 
-        // --- עזרי תאריך והמרה לזמן מקומי ---
         function getLocalYYYYMMDD(utcString) {
             const d = new Date(utcString);
             d.setHours(d.getHours() - 6); 
@@ -891,7 +895,6 @@
             fixturesContainer.innerHTML = html;
         }
 
-        // --- נתוני שחקנים ---
         async function loadPlayerStats(endpoint) {
             const container = document.getElementById('api-stats-list');
             container.innerHTML = '<div style="text-align:center; padding: 30px; color: var(--text-light);">מעדכן נתונים... ⏳</div>';
@@ -934,7 +937,6 @@
             } catch(e) { container.innerHTML = '<div style="color:red; text-align:center; padding:20px;">שגיאה בטעינת נתונים</div>'; }
         }
 
-        // --- ויקיפדיה ללאומית ---
         async function getStandingsFromWikipedia() {
             const container = document.getElementById('api-table');
             container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
@@ -1073,7 +1075,6 @@
             }
         }
 
-        // --- הפעלת הפונקציות בטעינה ---
         getStandings();
         loadPlayerStats('topscorers');
         getFixtures();
