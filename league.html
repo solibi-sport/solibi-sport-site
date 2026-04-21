@@ -429,40 +429,24 @@
         function translateGroupName(name) {
             if (!name) return "טבלה כללית";
             if (name === "טבלה כללית") return name; 
-            
             let lowerName = name.toLowerCase();
             
             if (lowerName.includes('western')) return "מערב";
             if (lowerName.includes('eastern')) return "מזרח";
-            
             if (lowerName.includes('conference') || lowerName.includes('qualifying') || lowerName.includes('europe')) return "פלייאוף אמצעי";
             if (lowerName.includes('championship')) return "פלייאוף עליון";
             if (lowerName.includes('relegation')) return "פלייאוף תחתון";
-            
             if (lowerName.includes('regular') || lowerName.includes('premier league') || lowerName.includes('ligat ha\'al') || lowerName.includes('pro league')) return "עונה סדירה";
-            if (lowerName.includes('group')) return name.replace(/Group/i, 'בית');
-            
+            if (lowerName.includes('group')) return name.replace(/Group/i, 'בית').replace('A', "א'").replace('B', "ב'").replace('C', "ג'").replace('D', "ד'");
             return name;
         }
 
-        let allStandingsData = []; 
-        let allMatches = [];
-        let allDates = [];
-        let currentDateIndex = 0;
-        window.leagueGoalTracker = window.leagueGoalTracker || {};
-
         async function getStandings() {
             const container = document.getElementById('api-table');
-
-            if (parseInt(LEAGUE_ID) === 384) {
-                getStandingsFromWikipedia();
-                return;
-            }
+            if (parseInt(LEAGUE_ID) === 384) { getStandingsFromWikipedia(); return; }
 
             try {
-                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
+                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, { headers: { 'x-apisports-key': API_KEY } });
                 const data = await response.json();
 
                 if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
@@ -472,6 +456,7 @@
 
                 let standings = data.response[0].league.standings;
 
+                // תיקון ספציפי לארגנטינה (הסרת טבלאות מצטברות מיותרות)
                 if (parseInt(LEAGUE_ID) === 128) {
                     standings = standings.filter(group => {
                         let groupName = (group[0].group || "").toLowerCase();
@@ -479,10 +464,19 @@
                     });
                 }
 
-                const isLigatHaal = parseInt(LEAGUE_ID) === 383 || parseInt(LEAGUE_ID) === 390 || data.response[0].league.country === "Israel";
-                if (isLigatHaal && standings.length > 1) {
+                // האם יש בתים/מזרח/מערב בליגה הזו?
+                let hasGroups = standings.some(g => {
+                    let n = (g[0].group || "").toLowerCase();
+                    return n.includes('group') || n.includes('western') || n.includes('eastern');
+                });
+
+                // יצירת "טבלה כללית" חכמה מכל הבתים (מתעלם מנקודות של פלייאופים כדי לא לשבש)
+                if (hasGroups || (parseInt(LEAGUE_ID) === 383 && standings.length > 1)) {
                     let teamMap = new Map();
                     standings.forEach(group => {
+                        let gName = translateGroupName(group[0].group);
+                        if(gName.includes('פלייאוף')) return; 
+                        
                         group.forEach(item => {
                             if (!teamMap.has(item.team.id) || item.all.played > teamMap.get(item.team.id).all.played) {
                                 teamMap.set(item.team.id, item);
@@ -491,27 +485,47 @@
                     });
                     
                     let combined = Array.from(teamMap.values());
-                    combined.sort((a, b) => {
-                        if (b.points !== a.points) return b.points - a.points;
-                        if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
-                        return b.all.goals.for - a.all.goals.for;
-                    });
-                    
-                    let combinedWithRanks = combined.map((item, index) => {
-                        let newItem = JSON.parse(JSON.stringify(item));
-                        newItem.rank = index + 1;
-                        newItem.group = "טבלה כללית"; 
-                        return newItem;
-                    });
-
-                    standings = standings.filter(group => translateGroupName(group[0].group) !== "עונה סדירה");
-                    standings.unshift(combinedWithRanks);
+                    if (combined.length > 0) {
+                        combined.sort((a, b) => {
+                            if (b.points !== a.points) return b.points - a.points;
+                            if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
+                            return b.all.goals.for - a.all.goals.for;
+                        });
+                        
+                        let combinedWithRanks = combined.map((item, index) => {
+                            let newItem = JSON.parse(JSON.stringify(item));
+                            newItem.rank = index + 1; newItem.group = "טבלה כללית"; 
+                            return newItem;
+                        });
+                        standings.unshift(combinedWithRanks);
+                    }
                 }
 
-                const orderPriority = { "טבלה כללית": 1, "עונה סדירה": 2, "מזרח": 3, "מערב": 4, "בית א'": 5, "בית ב'": 6, "פלייאוף עליון": 7, "פלייאוף אמצעי": 8, "פלייאוף תחתון": 9 };
+                // מניעת כפילות עונה סדירה בליגת העל הישראלית
+                if (parseInt(LEAGUE_ID) === 383 || parseInt(LEAGUE_ID) === 390) {
+                    standings = standings.filter(group => translateGroupName(group[0].group) !== "עונה סדירה");
+                }
+
+                // סדר עדיפויות מוחלט להופעה בתפריט הנפתח
+                const orderPriority = { 
+                    "טבלה כללית": 1, 
+                    "עונה סדירה": 2, 
+                    "פלייאוף עליון": 3, 
+                    "פלייאוף אמצעי": 4, 
+                    "פלייאוף תחתון": 5,
+                    "מזרח": 6, 
+                    "מערב": 7, 
+                    "בית א'": 8, 
+                    "בית ב'": 9,
+                    "בית ג'": 10,
+                    "בית ד'": 11
+                };
+
                 standings.sort((a, b) => {
-                    let weightA = orderPriority[translateGroupName(a[0].group)] || 99;
-                    let weightB = orderPriority[translateGroupName(b[0].group)] || 99;
+                    let nameA = translateGroupName(a[0].group);
+                    let nameB = translateGroupName(b[0].group);
+                    let weightA = orderPriority[nameA] || 99;
+                    let weightB = orderPriority[nameB] || 99;
                     return weightA - weightB;
                 });
 
@@ -519,7 +533,7 @@
                 buildStandingsUI();
 
             } catch (error) {
-                console.error("שגיאה במשיכת נתוני טבלה:", error);
+                console.error(error);
                 container.innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
             }
         }
@@ -531,16 +545,9 @@
             const currentLeagueId = parseInt(LEAGUE_ID);
             const euroLeagues = [2, 3, 848]; 
 
+            // מפעלים אירופאיים (ליגת האלופות וכו')
             if (euroLeagues.includes(currentLeagueId)) {
-                let uiHtml = `
-                    <div style="margin-bottom: 15px; text-align: center;">
-                        <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
-                            <option value="0">שלב הליגה (טבלה)</option>
-                            <option value="knockout">שלבי נוקאאוט</option>
-                        </select>
-                    </div>
-                    <div id="standings-render-area"></div>
-                `;
+                let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;"><option value="0">שלב הליגה</option><option value="knockout">שלבי נוקאאוט</option></select></div><div id="standings-render-area"></div>`;
                 container.innerHTML = uiHtml;
                 document.getElementById('group-selector').addEventListener('change', function(e) {
                     if (e.target.value === 'knockout') fetchAndRenderKnockouts();
@@ -550,24 +557,25 @@
                 return; 
             }
 
-            const regularLeagues = [39, 140, 135, 78, 61]; 
-            if (window.allStandingsData.length === 1 || regularLeagues.includes(currentLeagueId)) {
+            // *** המנגנון החכם שמסתיר את הרשימה אם יש רק טבלה אחת! ***
+            if (window.allStandingsData.length <= 1) {
                 container.innerHTML = '<div id="standings-render-area"></div>';
                 renderStandingsTable(0); 
                 return;
             }
 
-            let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">`;
+            // אם יש פלייאופים/בתים - בונים רשימה נפתחת
+            let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;">`;
             window.allStandingsData.forEach((group, index) => {
                 uiHtml += `<option value="${index}">${translateGroupName(group[0].group)}</option>`;
             });
             uiHtml += `</select></div><div id="standings-render-area"></div>`;
+            
             container.innerHTML = uiHtml;
-
-            document.getElementById('group-selector').addEventListener('change', function(e) {
-                renderStandingsTable(parseInt(e.target.value));
+            document.getElementById('group-selector').addEventListener('change', function(e) { 
+                renderStandingsTable(parseInt(e.target.value)); 
             });
-
+            
             renderStandingsTable(0);
         }
 
