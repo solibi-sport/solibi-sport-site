@@ -181,11 +181,53 @@
 
         /* === מרכז העמוד: הגריד === */
         .center-wrapper {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            width: 100%; height: 100%;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; /* ממקם הכל בדיוק באמצע האנכי */
+            width: 100%; 
+            height: 100%;
             padding: 0 calc(var(--sidebar-width) + 40px);
-            padding-bottom: 70px; 
+            padding-bottom: 70px; /* משאיר מקום לסרגל המתרחב למטה */
+            margin-top: -20px; /* מושך הכל טיפה למעלה לאיזון מושלם מול הכותרת החדשה */
         }
+
+        /* === כותרת הלובי הראשי === */
+        .premium-title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            max-width: 760px; /* תואם לרוחב הגריד שלא יבלוט החוצה */
+            margin-bottom: 25px; /* מרווח יפה בין הכותרת לקוביות */
+            flex-shrink: 0;
+        }
+
+        .page-title {
+            color: var(--text-dark);
+            font-size: clamp(18px, 1.5vw, 22px);
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 30px;
+            border-radius: 30px;
+            border: 1px solid rgba(124, 168, 86, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin: 0;
+            white-space: nowrap; /* מונע שבירת שורות במסכים קטנים */
+        }
+        
+        .page-title span { color: var(--brand-green); }
+        
+        .title-line {
+            height: 2px;
+            flex: 1; /* לוקח את כל המקום הנותר בצדדים */
+            background: linear-gradient(90deg, transparent, var(--brand-green));
+            border-radius: 2px;
+        }
+        .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
+        /* ============================ */
 
         .cards-grid { 
             display: grid; 
@@ -423,7 +465,8 @@
             <nav class="header-nav">
                 <ul>
                     <li><a href="index.html">דף הבית</a></li>
-                    <li><a href="pantheon.html">ארכיון</a></li>
+                    <li><a href="pantheon.html">פנתיאון</a></li>
+                    <li><a href="#">ארכיון</a></li>
                     <li><a href="#">קרדיטים</a></li>
                     <li><a href="#">אודות</a></li>
                     <li><a href="#">צור קשר</a></li>
@@ -475,6 +518,11 @@
 
         <div class="center-wrapper">
             
+            <div class="premium-title-wrapper">
+                <div class="title-line"></div>
+                <h1 class="page-title">הלובי הראשי - <span>עולמות התוכן</span></h1>
+                <div class="title-line left"></div>
+            </div>
             <div class="cards-grid">
                 
                 <a href="tables.html" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1762013315117-1c8005ad2b41?q=80&w=686&auto=format&fit=crop');">
