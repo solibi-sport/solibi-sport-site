@@ -184,12 +184,11 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: center; 
+            justify-content: center; /* מחזיר למרכז טבעי ומושלם */
             width: 100%; 
             height: 100%;
             padding: 0 calc(var(--sidebar-width) + 40px);
-            /* השווינו את הרווח התחתון לרווח העליון לאיזון מושלם */
-            padding-bottom: clamp(30px, 5vh, 60px); 
+            padding-bottom: clamp(60px, 10vh, 100px); /* מפנה מקום חכם לסוליבי+ בהתאם לגובה המסך */
         }
 
         /* === כותרת הלובי הראשי === */
@@ -200,18 +199,15 @@
             gap: 15px;
             width: 100%;
             max-width: 760px;
-            
-            /* המנוף שמרים את הכותרת כלפי מעלה (מגדיל את הקו האדום העליון שלך) */
-            transform: translateY(-60px); 
-            
-            /* שומר על רווח בריא מלמטה כדי שהקוביות יישארו בדיוק במרכז */
-            margin-bottom: 30px; 
+            /* מרווח דינמי שמתכווץ כשהמסך קטן */
+            margin-bottom: clamp(15px, 3.5vh, 40px); 
             flex-shrink: 0;
+            /* ביטלנו את המנוף (transform) שעשה את הבלאגן וחתך את הכותרת בלפטופ! */
         }
-        
+
         .page-title {
             color: var(--text-dark);
-            font-size: clamp(18px, 1.5vw, 22px);
+            font-size: clamp(16px, 1.8vw, 22px); /* מתאים את עצמו גם למסכים קטנים */
             font-weight: 900;
             letter-spacing: 1px;
             background: rgba(255, 255, 255, 0.6);
@@ -220,28 +216,28 @@
             border: 1px solid rgba(124, 168, 86, 0.3);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             margin: 0;
-            white-space: nowrap; /* מונע שבירת שורות במסכים קטנים */
+            white-space: nowrap; 
         }
         
         .page-title span { color: var(--brand-green); }
         
         .title-line {
             height: 2px;
-            flex: 1; /* לוקח את כל המקום הנותר בצדדים */
+            flex: 1; 
             background: linear-gradient(90deg, transparent, var(--brand-green));
             border-radius: 2px;
         }
         .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
-        /* ============================ */
 
+        /* === הגריד === */
         .cards-grid { 
             display: grid; 
             grid-template-columns: repeat(4, 1fr); 
             grid-template-rows: repeat(2, 1fr); 
-            gap: clamp(10px, 1.5vh, 15px); 
+            gap: clamp(8px, 1.5vh, 15px); 
             width: 100%;
-            /* סוד הקסם: אם גובה המסך קטן, רוחב הקוביות יקטן אוטומטית, והן לא יימחצו! */
-            max-width: clamp(500px, 120vh, 760px); 
+            /* סוד הקסם!! הרוחב מוגבל ע"י גובה המסך (100vh). בלפטופ זה יקטין את הקוביות, ב-27 אינץ' יעצור ב-760px */
+            max-width: min(760px, calc((100vh - 310px) * 1.9)); 
         }
 
         .square-box {
@@ -266,13 +262,12 @@
 
         /* === עיצוב פרימיום מיוחד ל"ליגת החלומות" === */
         .fantasy-highlight {
-            background: linear-gradient(135deg, #112845 0%, #1b4332 100%); /* גרדיאנט שונה ובולט - שילוב של נייבי וירוק בקבוק */
+            background: linear-gradient(135deg, #112845 0%, #1b4332 100%); 
             border: 2px solid var(--brand-green);
-            animation: premiumPulse 2.5s infinite alternate; /* פעימה זוהרת מתמדת */
+            animation: premiumPulse 2.5s infinite alternate; 
             z-index: 3;
         }
 
-        /* אפקט "ברק" שקוף שרץ על הקוביה ונותן תחושה של קלף יוקרתי */
         .fantasy-highlight::after {
             content: '';
             position: absolute;
@@ -285,15 +280,15 @@
         }
 
         .fantasy-highlight:hover {
-            transform: translateY(-8px) scale(1.05); /* קופצת קצת יותר גבוה מהשאר */
+            transform: translateY(-8px) scale(1.05); 
             border-color: #fff;
             box-shadow: 0 15px 40px rgba(124, 168, 86, 0.8), inset 0 0 30px rgba(124, 168, 86, 0.4);
             z-index: 10;
-            animation: none; /* מפסיק לפעום בהובר כדי לא להציק לעין */
+            animation: none; 
         }
         
         .fantasy-highlight .box-title {
-            text-shadow: 0 0 12px rgba(124, 168, 86, 0.8); /* הילה ירוקה למילים "ליגת החלומות" */
+            text-shadow: 0 0 12px rgba(124, 168, 86, 0.8); 
         }
 
         @keyframes premiumPulse {
@@ -304,14 +299,13 @@
         @keyframes shimmer {
             0% { transform: translateX(-100%) rotate(45deg); }
             20% { transform: translateX(100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); } /* עושה הפסקה בין הברקים */
+            100% { transform: translateX(100%) rotate(45deg); } 
         }
 
-        /* === טקסטים מוגדלים === */
-        .box-title { color: #fff; font-size: clamp(14px, 1.6vh, 17px); font-weight: 900; margin: 2px 0 4px 0; line-height: 1.1; }
-        .box-tag { color: var(--brand-green); font-size: clamp(10px, 1.1vh, 11.5px); font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px;}
-        .box-desc { color: #e2e8f0; font-size: clamp(10.5px, 1.25vh, 12.5px); line-height: 1.25; padding: 0 2px;}
-
+        /* === טקסטים דינמיים שקְטֵנִים כשהקוביות קטנות (vmin) === */
+        .box-title { color: #fff; font-size: clamp(11px, 1.5vmin, 17px); font-weight: 900; margin: 2px 0 4px 0; line-height: 1.1; }
+        .box-tag { color: var(--brand-green); font-size: clamp(9px, 1vmin, 11.5px); font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px;}
+        .box-desc { color: #e2e8f0; font-size: clamp(9.5px, 1.1vmin, 12.5px); line-height: 1.25; padding: 0 2px;}
         /* אלמנטים גיאומטריים */
         .tech-bars { position: absolute; top: 10px; left: 10px; display: flex; gap: 3px; align-items: flex-end; opacity: 0.15; transition: 0.4s; height: 14px; }
         .tech-bars span { width: 2px; background: #fff; border-radius: 2px; }
