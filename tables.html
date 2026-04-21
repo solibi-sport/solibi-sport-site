@@ -99,14 +99,13 @@
         }
         .header-search:focus-within { width: 100%; }
         .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
-
-        /* === אזור מרכזי: קונטיינר גמיש שמונע גלילה בדף === */
+/* === אזור מרכזי: קונטיינר גמיש שמתמרכז אוטומטית === */
         .inner-page-main {
             flex: 1; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* ממורכז בצורה אנכית מושלמת גם במסכי ענק! */
+            justify-content: center; /* פלס באמצע המוחלט בכל מסך! */
             padding: 2.5vh 20px;
             overflow: hidden; 
             min-height: 0; 
@@ -114,22 +113,23 @@
 
         .content-container {
             width: 100%;
-            max-width: 1350px; 
-            /* הפכתי את הקונטיינר לחכם - הוא עוטף בדיוק את התוכן ולא נמתח עד האינסוף */
+            /* המנגנון החכם: מתכווץ בלפטופ וגדל במסך ענק בהתאם לגובה הפנוי */
+            max-width: min(1450px, calc((100vh - 200px) * 2.6)); 
+            /* הפרופורציה שנועלת את הראות ל-3 שורות בדיוק ומונעת מהשורה ה-4 להציץ */
+            aspect-ratio: 2.3 / 1; 
             height: auto; 
+            max-height: 88vh; /* מגן מפני פריצת גבולות המסך */
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 20px;
-            padding: 30px 40px; 
+            padding: clamp(15px, 3vh, 30px) clamp(20px, 3vw, 40px); 
             display: flex;
             flex-direction: column;
             overflow: hidden; 
-            /* מגדיר את הקונטיינר לצורך חישובים פנימיים */
-            container-type: inline-size;
         }
 
-        /* === אזור עליון בתוך הקונטיינר: כותרת ממורכזת פלס וחיפוש פנימי === */
+        /* === סרגל עליון בתוך הקונטיינר === */
         .leagues-top-bar {
             display: flex;
             align-items: center;
@@ -137,7 +137,7 @@
             position: relative; 
             width: 100%;
             flex-shrink: 0;
-            margin-bottom: 45px; /* הוספתי עוד הרבה "אוויר" לפני הקוביות כמו שביקשת */
+            margin-bottom: clamp(15px, 3vh, 35px); /* רווח דינמי ונושם מהקוביות */
         }
 
         .premium-title-wrapper {
@@ -148,7 +148,7 @@
 
         .page-title {
             color: var(--text-dark);
-            font-size: clamp(20px, 1.6vw, 24px);
+            font-size: clamp(16px, 1.8vw, 24px); /* טקסט גמיש בהתאם למסך */
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -158,12 +158,13 @@
             border: 1px solid rgba(124, 168, 86, 0.3);
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             margin: 0;
+            white-space: nowrap;
         }
         .page-title span { color: var(--brand-green); }
 
         .title-line {
             height: 2px;
-            width: 100px;
+            width: clamp(50px, 8vw, 100px); /* קו צדדי גמיש */
             background: linear-gradient(90deg, transparent, var(--brand-green));
             border-radius: 2px;
         }
@@ -174,7 +175,7 @@
             right: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: 250px;
+            width: clamp(160px, 18vw, 250px); /* תיבת חיפוש גמישה */
             height: 38px;
         }
         .internal-search input {
@@ -195,28 +196,13 @@
             width: 16px; height: 16px; stroke: #a0aec0; pointer-events: none;
         }
 
-        /* === גלילה פנימית רק לאזור הקוביות === */
+        /* === גלילה פנימית מותאמת === */
         .leagues-scroll-area {
             flex: 1; 
             overflow-y: auto; 
-            padding-right: 25px; /* יוצר רווח של אוויר בין פס הגלילה לקוביות מצד ימין */
+            padding-right: clamp(10px, 2vw, 25px); /* רווח גלילה גמיש ליצירת אוויר */
             padding-bottom: 20px;
-            direction: ltr; /* מעביר את פס הגלילה לצד ימין */
-        }
-
-        /* החישוב המתמטי שנועל את אזור הגלילה ל-3 שורות מדויקות על כל מסך בעולם! */
-        @media (min-width: 1101px) {
-            .leagues-scroll-area {
-                --grid-gap: 20px;
-                /* רוחב הגריד הזמין = 100% מהקונטיינר פחות הפדינג (40+40=80) ופחות הריווח של הסקרול (25) */
-                --grid-usable: calc(100cqi - 105px);
-                /* רוחב של קוביה אחת = חלוקה ל-8 עמודות פחות 7 מרווחים */
-                --cube-width: calc((var(--grid-usable) - (7 * var(--grid-gap))) / 8);
-                /* גובה הקוביה (יחס 1:1.05) */
-                --cube-height: calc(var(--cube-width) * 1.05);
-                /* הגובה המקסימלי = בדיוק 3 שורות + 2 מרווחי שורות (30+30) + קצת מרווח צל */
-                max-height: calc((var(--cube-height) * 3) + 60px + 10px); 
-            }
+            direction: ltr; 
         }
 
         .leagues-scroll-area::-webkit-scrollbar { width: 8px; }
@@ -224,14 +210,14 @@
         .leagues-scroll-area::-webkit-scrollbar-thumb { background: rgba(17, 40, 69, 0.3); border-radius: 10px; }
         .leagues-scroll-area::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
 
-        /* === גריד הקוביות: 8 בדיוק בשורה === */
+        /* === גריד הקוביות החכם === */
         .leagues-grid {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            column-gap: 20px; 
-            row-gap: 30px; 
+            grid-template-columns: repeat(8, 1fr); 
+            column-gap: clamp(10px, 1.5vw, 20px); 
+            row-gap: clamp(15px, 2.5vh, 35px); /* הרווחים בין השורות גם הם גמישים! */
             width: 100%;
-            direction: rtl; /* מחזיר את הקוביות להסתדר מימין לשמאל למרות ה-LTR למעלה */
+            direction: rtl; 
         }
 
         .league-cube {
@@ -250,6 +236,8 @@
             overflow: hidden;
             padding: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            /* הפעולה החשובה שמאפשרת לטקסט להקטין את עצמו ביחס לקוביה! */
+            container-type: inline-size; 
         }
 
         .league-cube:hover {
@@ -259,14 +247,14 @@
         }
 
         .league-icon-modern {
-            width: 36px; 
-            height: 36px;
+            width: clamp(24px, 35cqi, 40px); /* אייקון גמיש שיורד בגודל בלפטופ */
+            height: clamp(24px, 35cqi, 40px);
             border: 1.5px solid rgba(255,255,255,0.2);
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: clamp(4px, 8cqi, 8px);
             background: rgba(255,255,255,0.05);
             transition: 0.3s;
             position: relative;
@@ -284,10 +272,10 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        /* עיצוב הטקסט בתוך הקוביה (ליגה וסוגריים) */
+        /* === טקסטים דינמיים (cqi) === */
         .league-name {
             color: #fff;
-            font-size: clamp(10.5px, 0.9vw, 12.5px);
+            font-size: clamp(9px, 12.5cqi, 13px); /* נמתח ומתכווץ בול לפי הקוביה */
             font-weight: 700;
             text-align: center;
             line-height: 1.15;
@@ -297,10 +285,10 @@
         
         .sub-league {
             display: block;
-            font-size: 0.75em;
+            font-size: clamp(7.5px, 9cqi, 10.5px);
             font-weight: 400;
             color: #a0aec0;
-            margin-top: 5px;
+            margin-top: clamp(2px, 4cqi, 5px);
         }
 
         /* תמונת הדגל הגדולה שמופיעה ברקע */
