@@ -41,7 +41,7 @@ if (!document.getElementById('modal-style-events')) {
     .pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.3); transform: translateX(-50%); }
     .pitch-circle { position: absolute; left: 50%; top: 50%; width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%); }
     .pitch-team { flex: 1; position: relative; }
-    .pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 45px; z-index: 2; }
+    .pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 45px; z-index: 2; transition: 0.3s ease; }
     .pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; border: 1.5px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.4); }
     .pitch-player-name { color: #fff; font-size: 9px; background: rgba(0,0,0,0.65); padding: 2px 4px; border-radius: 3px; margin-top: 3px; white-space: nowrap; text-align: center; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
 
@@ -221,7 +221,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         try {
             const headers = { 'x-apisports-key': 'd580159a7d19ead2bc2054c8b57e6ee3' };
 
-            // מושך את כל הנתונים הנדרשים ללשוניות
             const [eventsRes, statsRes, fixtureRes, lineupsRes] = await Promise.all([
                 fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, { headers }),
                 fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers }),
@@ -256,7 +255,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 else matchStatus = 'לא התחיל';
             }
 
-            // משיכה משנית של ראש בראש וטבלה
             const [h2hRes, standingsRes] = await Promise.all([
                 fetch(`https://v3.football.api-sports.io/fixtures/headtohead?h2h=${homeId}-${awayId}&last=5`, { headers }),
                 fetch(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, { headers })
@@ -281,7 +279,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 <div class="score-team away">${tAway}</div>
             </div>`;
 
-            // HTML לשוניות
             const tabsHTML = `
             <div class="modal-tabs">
                 <button class="modal-tab-btn active" onclick="switchModalTab('stats', this)">אירועים וסטט'</button>
@@ -357,10 +354,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         else { icon = '🟨'; mainText = playerName; subText = event.detail; }
                     } 
                     else if (typeStr === 'subst') {
-                        // התיקון הגדול שלך: שחקן נכנס (assist) ושחקן יוצא (player)
-                        icon = '🔄';
-                        mainText = `${assistName} (נכנס)`;
-                        subText = `${playerName} (יצא)`;
+                        icon = '🔄'; mainText = `${assistName} (נכנס)`; subText = `${playerName} (יצא)`;
                     } 
                     else { icon = '🔔'; mainText = event.type + (playerName ? ` - ${playerName}` : ''); subText = event.detail || ''; }
 
@@ -388,32 +382,56 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
                 const aL = lineupsData.response.find(r => r.team.id === awayId) || lineupsData.response[1];
                 
+                // אלגוריתם חכם וחדש לסידור השחקנים בצורה מושלמת על המגרש
                 const renderPlayers = (players, isHome) => {
-                    return players.map(p => {
-                        let grid = p.player.grid || (isHome ? '1:1' : '1:1');
+                    let rows = {};
+                    players.forEach(p => {
+                        let grid = p.player.grid || '1:1';
                         let [row, col] = grid.split(':').map(Number);
-                        
-                        // חישוב מיקום הגיוני על המגרש
-                        let left, top;
-                        if (isHome) {
-                            // קבוצת הבית: שוער בצד שמאל (18%), התקפה בצד ימין (90%)
-                            left = 18 + ((row - 1) * 18);
-                            top = col * 18; 
-                        } else {
-                            // קבוצת החוץ: שוער בצד ימין (82%), התקפה בצד שמאל (10%)
-                            left = 82 - ((row - 1) * 18);
-                            top = col * 18;
-                        }
-                        
-                        let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
-                        let textColor = isHome ? (hL.team.colors?.player?.number || '000000') : (aL.team.colors?.player?.number || 'ffffff');
-                        let name = typeof window.translateName === 'function' ? window.translateName(p.player.name) : p.player.name;
-                        
-                        return `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
-                            <div class="pitch-player-num" style="background: #${bgColor}; color: #${textColor};">${p.player.number}</div>
-                            <div class="pitch-player-name">${name}</div>
-                        </div>`;
-                    }).join('');
+                        if (!row) row = 1;
+                        if (!rows[row]) rows[row] = [];
+                        rows[row].push({ ...p, originalCol: col || 1 });
+                    });
+
+                    let html = '';
+                    Object.keys(rows).forEach(r => {
+                        let rowPlayers = rows[r];
+                        let rowNum = parseInt(r);
+                        let rowCount = rowPlayers.length;
+
+                        // סידור פנימי של השחקנים באותה שורה כדי שלא יעלו אחד על השני
+                        rowPlayers.sort((a, b) => a.originalCol - b.originalCol);
+
+                        rowPlayers.forEach((p, index) => {
+                            let colNum = index + 1; 
+                            let left, top;
+
+                            if (isHome) {
+                                // קבוצת הבית (ימין): שוער נמצא הכי ימינה במגרש (באזור 88%) 
+                                left = 88 - ((rowNum - 1) * 18);
+                            } else {
+                                // קבוצת החוץ (שמאל): שוער נמצא הכי שמאלה במגרש (באזור 12%)
+                                left = 12 + ((rowNum - 1) * 18);
+                            }
+                            
+                            // חלוקה אנכית (Top) שווה בהתאם למספר השחקנים באותה חוליה
+                            top = (100 / (rowCount + 1)) * colNum;
+                            
+                            let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
+                            if (bgColor && !bgColor.startsWith('#')) bgColor = '#' + bgColor;
+                            
+                            let textColor = isHome ? (hL.team.colors?.player?.number || '000000') : (aL.team.colors?.player?.number || 'ffffff');
+                            if (textColor && !textColor.startsWith('#')) textColor = '#' + textColor;
+                            
+                            let name = typeof window.translateName === 'function' ? window.translateName(p.player.name) : p.player.name;
+                            
+                            html += `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
+                                <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
+                                <div class="pitch-player-name">${name}</div>
+                            </div>`;
+                        });
+                    });
+                    return html;
                 };
 
                 lineupsHtml = `
@@ -439,11 +457,10 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 let targetGroup = standings[0];
                 standings.forEach(g => { if (g.some(t => t.team.id === homeId || t.team.id === awayId)) targetGroup = g; });
 
-                // --- לוגיקת עדכון טבלה בלייב בתוך ה-modal ---
                 const liveStatuses = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'];
                 const isLiveMatch = shortStatus && liveStatuses.includes(shortStatus);
 
-                let targetGroupLive = JSON.parse(JSON.stringify(targetGroup)); // עותק של הטבלה המקורית
+                let targetGroupLive = JSON.parse(JSON.stringify(targetGroup)); 
                 
                 if (isLiveMatch) {
                     targetGroupLive.forEach(teamStats => {
@@ -452,34 +469,29 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         
                         if (teamId === homeId) { isHome = true; gFor = goalsHome; gAgainst = goalsAway; } 
                         else if (teamId === awayId) { isHome = false; gFor = goalsAway; gAgainst = goalsHome; } 
-                        else { return; } // לא אחת מהקבוצות המשחקות - אל תעדכן
+                        else { return; } 
 
-                        // עדכון זמני של הנקודות והשערים בלייב
                         teamStats.all.played += 1;
                         teamStats.all.goals.for += gFor;
                         teamStats.all.goals.against += gAgainst;
                         teamStats.goalsDiff = teamStats.all.goals.for - teamStats.all.goals.against;
 
-                        // עדכון ניצחונות ונקודות
                         if (gFor > gAgainst) { teamStats.all.win += 1; teamStats.points += 3; } 
                         else if (gFor === gAgainst) { teamStats.all.draw += 1; teamStats.points += 1; } 
                         else { teamStats.all.lose += 1; }
                         
-                        teamStats.isLiveUpdated = true; // מדליק דגל לעיצוב
+                        teamStats.isLiveUpdated = true; 
                     });
 
-                    // מיון מחדש של הטבלה החיה לפי הנקודות המעודכנות
                     targetGroupLive.sort((a, b) => {
                         if (b.points !== a.points) return b.points - a.points;
                         if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
                         return b.all.goals.for - a.all.goals.for;
                     });
                     
-                    // סידור מיקום מחדש
                     targetGroupLive.forEach((t, idx) => { t.rank = idx + 1; });
                 }
 
-                // --- יצירת ה-HTML של הטבלה (חיה או מקורית) ---
                 stdHtml = `
                 <div style="padding: 10px 15px;">
                     <table class="modal-mini-table">
@@ -512,17 +524,26 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             }
 
 
-            /* ------ יצירת תוכן ללשונית ראש בראש ------ */
+            /* ------ יצירת תוכן ללשונית ראש בראש (מתוקן לתצוגה ברורה מימין לשמאל + תאריכים ומפעלים) ------ */
             let h2hHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין היסטוריית מפגשים קודמת</div>';
             if (h2hData.response && h2hData.response.length > 0) {
                 h2hHtml = `<div style="padding: 10px 15px; display:flex; flex-direction:column; gap:6px;">` +
                 h2hData.response.slice(0,5).map(m => {
                     let hName = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
                     let aName = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
+                    let lName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
+                    
                     return `
-                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; display:flex; justify-content: space-between; font-size: 11px; border: 1px solid #1f2d40;">
-                        <span style="color:#8fa0b3;">${new Date(m.fixture.date).toLocaleDateString('he-IL')}</span>
-                        <span style="font-weight:bold;">${hName} <span style="color:#7a9966; margin:0 5px;">${m.goals.home}-${m.goals.away}</span> ${aName}</span>
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; display:flex; align-items: center; font-size: 11px; border: 1px solid #1f2d40; margin-bottom: 5px;">
+                        <div style="width: 30%; color:#8fa0b3; text-align:right; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
+                            <div style="font-weight:bold;">${new Date(m.fixture.date).toLocaleDateString('he-IL')}</div>
+                            <div style="font-size: 9px; margin-top:2px; color:#7a9966; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${lName}</div>
+                        </div>
+                        <div style="width: 70%; display:flex; justify-content:space-between; align-items:center; padding-right: 10px;">
+                            <span style="flex:1; text-align:left; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${hName}</span>
+                            <span dir="ltr" style="font-weight:900; background:#1e293b; padding:2px 8px; border-radius:4px; color:#ffffff; margin:0 10px; flex-shrink:0;">${m.goals.away} - ${m.goals.home}</span>
+                            <span style="flex:1; text-align:right; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${aName}</span>
+                        </div>
                     </div>`;
                 }).join('') + `</div>`;
             }
@@ -537,7 +558,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 <div id="tab-h2h" class="tab-content">${h2hHtml}</div>
             `;
 
-            // עצירת רענון אם המשחק נגמר
             if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
                 if (modalRefreshTimer) { clearInterval(modalRefreshTimer); modalRefreshTimer = null; }
             }
