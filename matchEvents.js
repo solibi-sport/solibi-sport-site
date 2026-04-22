@@ -94,7 +94,6 @@ function getStatValue(statsArray, typeName) {
     return (stat && stat.value !== null) ? stat.value : '0';
 }
 
-// פונקציית קיצור שמות: מציגה אות ראשונה של שם פרטי ואת שם המשפחה
 function getShortPlayerName(fullName) {
     if (!fullName) return '';
     let translated = typeof window.translateName === 'function' ? window.translateName(fullName) : fullName;
@@ -252,7 +251,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             const h2hData = await h2hRes.json();
             const stdData = await standingsRes.json();
 
-            // הלוגיקה של הגול שלא נגענו בה בכלל!
             let isGoalRecent = false;
             if (window.matchGoalTracker && window.matchGoalTracker[fixtureId] && (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 15000)) isGoalRecent = true;
             if (window.leagueGoalTracker && window.leagueGoalTracker[fixtureId] && (Date.now() - window.leagueGoalTracker[fixtureId].goalTime < 15000)) isGoalRecent = true;
@@ -280,7 +278,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             let events = eventsData.response || [];
 
-            /* ------ הרכבים - פיזור מושלם + קיצור שמות פרימיום ------ */
+            /* ------ הרכבים - עוגנים מושלמים על רחבות ואמצע מגרש ------ */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
             if (lineupsData.response && lineupsData.response.length === 2) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
@@ -314,15 +312,22 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         let rowCount = rowPlayers.length;
                         rowPlayers.sort((a, b) => a.originalCol - b.originalCol);
 
-                        // פיזור רוחב מושלם וסימטרי
-                        let availableWidth = 45; 
-                        let startX = isHome ? 92 : 8; 
-                        let stepX = numRows > 1 ? availableWidth / (numRows - 1) : 0;
-
                         rowPlayers.forEach((p, colIndex) => {
                             let left, top;
-                            if (isHome) { left = startX - (rowIndex * stepX); } 
-                            else { left = startX + (rowIndex * stepX); }
+
+                            // אלגוריתם עוגנים - שוער ב-5, הגנה ב-16, התקפה באמצע, השאר שווה בשווה
+                            if (rowIndex === 0) {
+                                left = isHome ? 96 : 4; 
+                            } else if (rowIndex === 1) {
+                                left = isHome ? 83 : 17; 
+                            } else if (rowIndex === numRows - 1) {
+                                left = isHome ? 55 : 45; 
+                            } else {
+                                let defX = isHome ? 83 : 17;
+                                let fwdX = isHome ? 55 : 45;
+                                let fraction = (rowIndex - 1) / Math.max(1, numRows - 2);
+                                left = defX + fraction * (fwdX - defX);
+                            }
 
                             top = (100 / (rowCount + 1)) * (colIndex + 1);
 
@@ -331,7 +336,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             let textColor = isHome ? (hL.team.colors?.player?.number || '000000') : (aL.team.colors?.player?.number || 'ffffff');
                             if (textColor && !textColor.startsWith('#')) textColor = '#' + textColor;
                             
-                            // קריאה לפונקציית הקיצור החדשה!
                             let shortName = getShortPlayerName(p.player.name);
                             
                             let teamIdForEvent = isHome ? homeId : awayId;
@@ -342,9 +346,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             if (subEvent) {
                                 let subInShortName = getShortPlayerName(subEvent.assist.name);
                                 let subTime = subEvent.time.elapsed;
-                                // תג קטן על העיגול
                                 subBadgeHtml = `<div class="pitch-player-sub-badge">🔃${subTime}'</div>`;
-                                // טקסט ירוק ועדין מתחת לשם הראשי
                                 subTextHtml = `<div style="font-size:9px; color:#10b981; margin-top:1px; font-weight:bold; text-shadow:1px 1px 2px #000;">(${subInShortName})</div>`;
                             }
                             
