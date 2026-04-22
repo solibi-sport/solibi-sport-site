@@ -778,6 +778,75 @@
             }
         }
 
+function updateLiveStandings() {
+            if (!window.originalStandingsData || window.originalStandingsData.length === 0) return;
+            if (!allMatches || allMatches.length === 0) return;
+
+            // מוצאים רק משחקים שקורים *עכשיו* כדי למנוע כפילויות נתונים בסיום המשחק
+            const liveStatuses = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'];
+            const liveMatches = allMatches.filter(m => liveStatuses.includes(m.fixture.status.short));
+
+            const selector = document.getElementById('group-selector');
+            const isKnockout = selector && selector.value === 'knockout';
+
+            if (liveMatches.length === 0) {
+                // אם אין משחקים חיים - מחזירים את הטבלה המקורית ללא שינוי
+                window.allStandingsData = JSON.parse(JSON.stringify(window.originalStandingsData));
+                if (!isKnockout) renderStandingsTable(selector ? parseInt(selector.value) : 0);
+                return;
+            }
+
+            // לוקחים עותק של הטבלה המקורית כדי להלביש עליה את תוצאות הלייב
+            let liveStandings = JSON.parse(JSON.stringify(window.originalStandingsData));
+
+            liveStandings.forEach(group => {
+                group.forEach(teamStats => {
+                    const teamId = teamStats.team.id;
+                    const match = liveMatches.find(m => m.teams.home.id === teamId || m.teams.away.id === teamId);
+
+                    if (match) {
+                        const isHome = match.teams.home.id === teamId;
+                        const goalsFor = isHome ? (match.goals.home || 0) : (match.goals.away || 0);
+                        const goalsAgainst = isHome ? (match.goals.away || 0) : (match.goals.home || 0);
+
+                        // עדכון זמני של המשחקים והשערים
+                        teamStats.all.played += 1;
+                        teamStats.all.goals.for += goalsFor;
+                        teamStats.all.goals.against += goalsAgainst;
+                        teamStats.goalsDiff = teamStats.all.goals.for - teamStats.all.goals.against;
+
+                        // עדכון ניצחונות ונקודות לפי התוצאה כרגע!
+                        if (goalsFor > goalsAgainst) {
+                            teamStats.all.win += 1;
+                            teamStats.points += 3;
+                        } else if (goalsFor === goalsAgainst) {
+                            teamStats.all.draw += 1;
+                            teamStats.points += 1;
+                        } else {
+                            teamStats.all.lose += 1;
+                        }
+                        
+                        // מדליק דגל שהקבוצה הזו עודכנה בלייב כדי שהעיצוב יגיב
+                        teamStats.isLiveUpdated = true;
+                    }
+                });
+
+                // מיון הטבלה מחדש לפי הנקודות והשערים המעודכנים!
+                group.sort((a, b) => {
+                    if (b.points !== a.points) return b.points - a.points;
+                    if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
+                    return b.all.goals.for - a.all.goals.for;
+                });
+                
+                // סידור מחדש של מספרי המיקום (1, 2, 3...) אחרי המיון
+                group.forEach((t, idx) => { t.rank = idx + 1; });
+            });
+
+            // שמירה וציור של הטבלה החיה
+            window.allStandingsData = liveStandings;
+            if (!isKnockout) renderStandingsTable(selector ? parseInt(selector.value) : 0);
+        }
+          
         async function getFixtures() {
             try {
                 if (parseInt(LEAGUE_ID) === 384) {
@@ -799,6 +868,7 @@
 
                 allMatches = data.response;
                 renderFixturesByDate();
+                updateLiveStandings();
 
             } catch (error) {
                 console.error("שגיאה במשיכת המשחקים:", error);
