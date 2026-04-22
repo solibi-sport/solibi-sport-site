@@ -1196,7 +1196,10 @@ function updateLiveStandings() {
         loadPlayerStats('topscorers');
         getFixtures();
 
+        // מרענן את המשחקים כל דקה
         setInterval(getFixtures, 60000);
+        // מרענן את הטבלה הרשמית כל 3 דקות (כדי לתפוס משחקים שהסתיימו, בלי לבזבז לך סתם מלא קריאות API)
+        setInterval(getStandings, 180000);
     </script>
     <script src="matchEvents.js"></script> 
 </body>
