@@ -560,7 +560,33 @@
                     let weightB = orderPriority[translateGroupName(b[0].group)] || 99;
                     return weightA - weightB;
                 });
+// --- כאן אנחנו מוחקים אופציות מהרשימה הנפתחת ---
+standings = standings.filter(group => {
+    let currentGroupName = translateGroupName(group[0].group);
+    let currentLeague = parseInt(LEAGUE_ID);
 
+    // דוגמה 1: מחיקת "טבלה כללית" רק בליגה הבלגית (144)
+    if (currentLeague === 144 && currentGroupName === "טבלה כללית") {
+        return false; // false אומר "תמחק את זה"
+    }
+
+    // דוגמה 2: מחיקת "Premiership" בליגה הסקוטית (179)
+    if (currentLeague === 179 && currentGroupName === "Premiership") {
+        return false; 
+    }
+
+    // דוגמה 3: מחיקת "עונה סדירה" בכמה ליגות ביחד (אוסטריה 218, סלובקיה 332)
+    if ((currentLeague === 218 || currentLeague === 332) && currentGroupName === "עונה סדירה") {
+        return false;
+    }
+
+    // תשמור את כל שאר האופציות רגיל
+    return true; 
+});
+
+// ואז השורה המקורית שכבר קיימת אצלך:
+window.allStandingsData = standings;
+                
                 window.allStandingsData = standings;
                 buildStandingsUI();
 
