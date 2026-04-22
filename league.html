@@ -782,7 +782,7 @@ function updateLiveStandings() {
             if (!window.originalStandingsData || window.originalStandingsData.length === 0) return;
             if (!allMatches || allMatches.length === 0) return;
 
-            // מוצאים רק משחקים שקורים *עכשיו* כדי למנוע כפילויות נתונים בסיום המשחק
+            // מוצאים רק משחקים שקורים *עכשיו*
             const liveStatuses = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'];
             const liveMatches = allMatches.filter(m => liveStatuses.includes(m.fixture.status.short));
 
@@ -796,13 +796,42 @@ function updateLiveStandings() {
                 return;
             }
 
-            // לוקחים עותק של הטבלה המקורית כדי להלביש עליה את תוצאות הלייב
+            // לוקחים עותק של הטבלה המקורית
             let liveStandings = JSON.parse(JSON.stringify(window.originalStandingsData));
 
             liveStandings.forEach(group => {
+                // שולפים את השם האמיתי של הטבלה הנוכחית בעברית
+                let gName = translateGroupName(group[0].group);
+
                 group.forEach(teamStats => {
                     const teamId = teamStats.team.id;
-                    const match = liveMatches.find(m => m.teams.home.id === teamId || m.teams.away.id === teamId);
+                    
+                    // מחפשים את המשחק של הקבוצה הזו עכשיו
+                    const match = liveMatches.find(m => {
+                        // בודקים קודם כל אם הקבוצה בכלל משחקת
+                        if (m.teams.home.id !== teamId && m.teams.away.id !== teamId) return false;
+                        
+                        let matchRoundStr = (m.league.round || "").toLowerCase();
+                        let isPlayoffMatch = matchRoundStr.includes("championship") || matchRoundStr.includes("relegation") || matchRoundStr.includes("play") || matchRoundStr.includes("conference");
+                        let isRegularMatch = matchRoundStr.includes("regular");
+
+                        // --- הלוגיקה החדשה לקיזוז ---
+                        // אם אנחנו בליגה עם קיזוז (כרגע הוגדרה הליגה הבלגית 144) 
+                        // והמשחק הוא פלייאוף - אל תעדכן את ה"עונה סדירה" או ה"טבלה כללית"!
+                        let isKizuzLeague = parseInt(LEAGUE_ID) === 144; // ניתן להוסיף עוד IDs למערך פה אם תרצה בעתיד
+                        
+                        if (isKizuzLeague && (gName === "עונה סדירה" || gName === "טבלה כללית") && isPlayoffMatch) {
+                            return false; 
+                        }
+                        
+                        // לגבי *כל* הליגות: אם הטבלה היא פלייאוף, והמשחק הוא משחק עונה סדירה - כמובן שאין מה לעדכן
+                        if (gName.includes("פלייאוף") && isRegularMatch) {
+                            return false;
+                        }
+
+                        // אם עברנו, מאשרים את המשחק לטבלה הזו!
+                        return true;
+                    });
 
                     if (match) {
                         const isHome = match.teams.home.id === teamId;
@@ -815,7 +844,7 @@ function updateLiveStandings() {
                         teamStats.all.goals.against += goalsAgainst;
                         teamStats.goalsDiff = teamStats.all.goals.for - teamStats.all.goals.against;
 
-                        // עדכון ניצחונות ונקודות לפי התוצאה כרגע!
+                        // עדכון ניצחונות ונקודות
                         if (goalsFor > goalsAgainst) {
                             teamStats.all.win += 1;
                             teamStats.points += 3;
@@ -826,23 +855,22 @@ function updateLiveStandings() {
                             teamStats.all.lose += 1;
                         }
                         
-                        // מדליק דגל שהקבוצה הזו עודכנה בלייב כדי שהעיצוב יגיב
+                        // מדליק דגל לעיצוב הלייב
                         teamStats.isLiveUpdated = true;
                     }
                 });
 
-                // מיון הטבלה מחדש לפי הנקודות והשערים המעודכנים!
+                // מיון מחדש אחרי חישוב הלייב
                 group.sort((a, b) => {
                     if (b.points !== a.points) return b.points - a.points;
                     if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
                     return b.all.goals.for - a.all.goals.for;
                 });
                 
-                // סידור מחדש של מספרי המיקום (1, 2, 3...) אחרי המיון
+                // סידור מספר המיקום מחדש
                 group.forEach((t, idx) => { t.rank = idx + 1; });
             });
 
-            // שמירה וציור של הטבלה החיה
             window.allStandingsData = liveStandings;
             if (!isKnockout) renderStandingsTable(selector ? parseInt(selector.value) : 0);
         }
