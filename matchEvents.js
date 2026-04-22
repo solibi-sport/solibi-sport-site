@@ -5,7 +5,7 @@ if (!document.getElementById('modal-style-events')) {
     modalStyle.innerHTML = `
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(6, 12, 20, 0.65); z-index: 9999; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; }
     
-    .modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 500px; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 65vh; will-change: transform; touch-action: none; position: relative; }
+    .modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 500px; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); border: 1px solid #1f2d40; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; max-height: 70vh; will-change: transform; touch-action: none; position: relative; }
     
     .modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; border-bottom: 1px solid #1f2d40; }
     .modal-header:active { cursor: grabbing; }
@@ -16,7 +16,7 @@ if (!document.getElementById('modal-style-events')) {
     @keyframes bannerGoalPulse { 0% { box-shadow: inset 0 0 10px rgba(122,153,102,0.2); } 100% { box-shadow: inset 0 0 40px rgba(122,153,102,0.9); } }
     @keyframes textGoalPop { 0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
 
-    .score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 20px 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; transition: box-shadow 0.3s; }
+    .score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; transition: box-shadow 0.3s; }
     .score-banner.goal-active { animation: bannerGoalPulse 0.8s infinite alternate; }
 
     .modal-goal-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; font-weight: 900; color: rgba(255,255,255,0.95); text-shadow: 0 0 20px #7a9966, 0 0 40px #7a9966; pointer-events: none; z-index: 20; animation: textGoalPop 0.8s infinite alternate; }
@@ -26,6 +26,30 @@ if (!document.getElementById('modal-style-events')) {
     .score-val { font-size: 26px; font-weight: 900; color: #ffffff; line-height: 1; }
     .score-divider { font-size: 18px; color: #7a9966; font-weight: bold; line-height: 1; transform: translateY(-2px); }
     .score-minute { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #7a9966; color: #111926; font-size: 11px; font-weight: 900; padding: 2px 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); white-space: nowrap; border: 1px solid #fff; }
+
+    /* עיצוב הלשוניות החדשות */
+    .modal-tabs { display: flex; justify-content: space-between; background: #0d131d; border-bottom: 1px solid #1f2d40; flex-shrink: 0; }
+    .modal-tab-btn { flex: 1; background: transparent; border: none; color: #8fa0b3; padding: 10px 0; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; border-bottom: 2px solid transparent; font-family: inherit; outline: none; }
+    .modal-tab-btn.active { color: #7a9966; border-bottom: 2px solid #7a9966; background: rgba(255,255,255,0.02); }
+    .modal-tab-btn:hover { color: #ffffff; }
+
+    .tab-content { display: none; flex-direction: column; overflow-y: auto; flex-grow: 1; }
+    .tab-content.active { display: flex; }
+
+    /* עיצוב המגרש להרכבים */
+    .pitch-wrapper { background: linear-gradient(180deg, #1b4332 0%, #2d6a4f 100%); border: 2px solid rgba(255,255,255,0.3); border-radius: 6px; position: relative; height: 320px; width: 100%; margin: 10px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+    .pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.3); transform: translateX(-50%); }
+    .pitch-circle { position: absolute; left: 50%; top: 50%; width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; transform: translate(-50%, -50%); }
+    .pitch-team { flex: 1; position: relative; }
+    .pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 45px; z-index: 2; }
+    .pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; border: 1.5px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.4); }
+    .pitch-player-name { color: #fff; font-size: 9px; background: rgba(0,0,0,0.65); padding: 2px 4px; border-radius: 3px; margin-top: 3px; white-space: nowrap; text-align: center; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+
+    /* עיצוב טבלה מיני */
+    .modal-mini-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-top: 5px; }
+    .modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #1f2d40; }
+    .modal-mini-table td { padding: 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .modal-mini-table tr.highlight { background: rgba(122,153,102,0.15); font-weight: bold; }
 
     .stats-container { padding: 10px 15px; flex-shrink: 0; background: #0f1620; border-bottom: 1px solid #1f2d40; }
     .possession-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: #fff; }
@@ -40,7 +64,7 @@ if (!document.getElementById('modal-style-events')) {
     .away-val { color: #4a90e2; }
     .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
     
-    #modalEventsContent { padding: 10px 15px; overflow-y: auto; flex-grow: 1; display: flex; gap: 15px; position: relative; z-index: 1; align-items: stretch; }
+    .events-wrapper { padding: 10px 15px; display: flex; gap: 15px; align-items: stretch; }
     .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
     .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
     
@@ -52,8 +76,6 @@ if (!document.getElementById('modal-style-events')) {
     .event-icon { font-size: 14px; margin: 0 4px; }
     .event-text { color: #d1d5db; }
     .event-subtext { color: #888; font-size: 9px; display: block; margin-top: 1px; }
-
-    /* תוספת עבור שערים פסולים */
     .event-text.var-cancelled { color: #ef4444; text-decoration: line-through; opacity: 0.8; }
     .event-subtext.var-cancelled-sub { color: #ef4444; text-decoration: none; font-weight: bold; font-size: 10px; display: block; margin-top: 2px; }
     
@@ -65,6 +87,14 @@ if (!document.getElementById('modal-style-events')) {
     `;
     document.head.appendChild(modalStyle);
 }
+
+// פונקציה גלובלית להחלפת לשוניות
+window.switchModalTab = function(tabId, btn) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+};
 
 function getStatValue(statsArray, typeName) {
     const stat = statsArray.find(s => s.type === typeName);
@@ -98,7 +128,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     <span class="close-modal" onclick="closeEventsModal(event)">✖</span>
                     <h2 id="modalMatchTitle">זירת משחק</h2>
                 </div>
-                <div id="modalEventsContent"></div>
+                <div id="modalDynamicArea" style="display:flex; flex-direction:column; flex-grow:1; overflow:hidden;"></div>
             </div>
         </div>`;
         document.body.insertAdjacentHTML('beforeend', modalHTML);
@@ -134,11 +164,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             const vW = window.innerWidth;
             const vH = window.innerHeight;
             const mH = boxRect.height;
-            const mW = boxRect.width;
-
-            const defaultTop = (vH - mH) / 2;
-            const limitUpY = -defaultTop; 
-            const limitDownY = vH - defaultTop - (mH / 2); 
+            const limitUpY = -((vH - mH) / 2); 
+            const limitDownY = vH - ((vH - mH) / 2) - (mH / 2); 
             const limitX = (vW / 2); 
 
             if (targetY < limitUpY) targetY = limitUpY;
@@ -163,7 +190,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
     const modal = document.getElementById('eventsModal');
     const box = document.querySelector('.modal-box');
-    const content = document.getElementById('modalEventsContent');
+    const dynamicArea = document.getElementById('modalDynamicArea');
     
     window.dragOffsetX = 0;
     window.dragOffsetY = 0;
@@ -184,56 +211,58 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
     async function updateModalData(isInitialLoad) {
         if (isInitialLoad) {
-            const existingStats = document.getElementById('modalStatsContainer');
-            if (existingStats) existingStats.remove();
-            const existingScore = document.getElementById('modalScoreBanner');
-            if (existingScore) existingScore.remove();
-            content.innerHTML = '<p style="text-align:center; width:100%; margin-top:20px; font-size:13px; color:#888;">טוען נתונים...</p>';
-            content.style.display = 'flex'; 
+            dynamicArea.innerHTML = '<p style="text-align:center; width:100%; margin-top:30px; font-size:13px; color:#888;">טוען נתונים...</p>';
         }
 
         try {
             const headers = { 'x-apisports-key': 'd580159a7d19ead2bc2054c8b57e6ee3' };
 
-            const [eventsRes, statsRes, fixtureRes] = await Promise.all([
+            // מושך את כל הנתונים הנדרשים ללשוניות
+            const [eventsRes, statsRes, fixtureRes, lineupsRes] = await Promise.all([
                 fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, { headers }),
                 fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers }),
-                fetch(`https://v3.football.api-sports.io/fixtures?id=${fixtureId}`, { headers })
+                fetch(`https://v3.football.api-sports.io/fixtures?id=${fixtureId}`, { headers }),
+                fetch(`https://v3.football.api-sports.io/fixtures/lineups?fixture=${fixtureId}`, { headers })
             ]);
             
             const eventsData = await eventsRes.json();
             const statsData = await statsRes.json();
             const fixtureData = await fixtureRes.json();
+            const lineupsData = await lineupsRes.json();
 
             let goalsHome = '-';
             let goalsAway = '-';
             let matchStatus = '';
             let shortStatus = '';
+            let homeId = 0, awayId = 0, leagueId = 0, season = 0;
             
             if (fixtureData && fixtureData.response && fixtureData.response.length > 0) {
                 const info = fixtureData.response[0];
+                homeId = info.teams.home.id;
+                awayId = info.teams.away.id;
+                leagueId = info.league.id;
+                season = info.league.season;
                 goalsHome = info.goals.home !== null ? info.goals.home : '-';
                 goalsAway = info.goals.away !== null ? info.goals.away : '-';
-                
                 shortStatus = info.fixture.status.short;
-                if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
-                    matchStatus = 'הסתיים';
-                } else if (shortStatus === 'HT') {
-                    matchStatus = 'מחצית';
-                } else if (info.fixture.status.elapsed) {
-                    matchStatus = `${info.fixture.status.elapsed}'`;
-                } else {
-                    matchStatus = 'לא התחיל';
-                }
+
+                if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'הסתיים';
+                else if (shortStatus === 'HT') matchStatus = 'מחצית';
+                else if (info.fixture.status.elapsed) matchStatus = `${info.fixture.status.elapsed}'`;
+                else matchStatus = 'לא התחיל';
             }
 
+            // משיכה משנית של ראש בראש וטבלה (רצים ברקע כדי לא לתקוע)
+            const [h2hRes, standingsRes] = await Promise.all([
+                fetch(`https://v3.football.api-sports.io/fixtures/headtohead?h2h=${homeId}-${awayId}&last=5`, { headers }),
+                fetch(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, { headers })
+            ]);
+            const h2hData = await h2hRes.json();
+            const stdData = await standingsRes.json();
+
             let isGoalRecent = false;
-            if (window.matchGoalTracker && window.matchGoalTracker[fixtureId] && (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 15000)) {
-                isGoalRecent = true;
-            }
-            if (window.leagueGoalTracker && window.leagueGoalTracker[fixtureId] && (Date.now() - window.leagueGoalTracker[fixtureId].goalTime < 15000)) {
-                isGoalRecent = true;
-            }
+            if (window.matchGoalTracker && window.matchGoalTracker[fixtureId] && (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 15000)) isGoalRecent = true;
+            if (window.leagueGoalTracker && window.leagueGoalTracker[fixtureId] && (Date.now() - window.leagueGoalTracker[fixtureId].goalTime < 15000)) isGoalRecent = true;
 
             const scoreHTML = `
             <div id="modalScoreBanner" class="score-banner ${isGoalRecent ? 'goal-active' : ''}">
@@ -248,28 +277,25 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 <div class="score-team away">${tAway}</div>
             </div>`;
 
-            let events = eventsData.response || [];
-            const stats = statsData.response || [];
+            // HTML לשוניות
+            const tabsHTML = `
+            <div class="modal-tabs">
+                <button class="modal-tab-btn active" onclick="switchModalTab('stats', this)">אירועים וסטט'</button>
+                <button class="modal-tab-btn" onclick="switchModalTab('lineups', this)">הרכבים</button>
+                <button class="modal-tab-btn" onclick="switchModalTab('standings', this)">טבלה</button>
+                <button class="modal-tab-btn" onclick="switchModalTab('h2h', this)">ראש בראש</button>
+            </div>`;
 
+            /* ------ יצירת תוכן ללשונית סטטיסטיקה ואירועים ------ */
+            const stats = statsData.response || [];
             let homeStatsArray = stats.length > 0 ? stats[0].statistics : [];
             let awayStatsArray = stats.length > 1 ? stats[1].statistics : [];
 
-            let homePoss = getStatValue(homeStatsArray, "Ball Possession");
-            let awayPoss = getStatValue(awayStatsArray, "Ball Possession");
-            if (homePoss === '0' || !homePoss) homePoss = '50%';
-            if (awayPoss === '0' || !awayPoss) awayPoss = '50%';
-
-            let homeShotsOnGoal = getStatValue(homeStatsArray, "Shots on Goal");
-            let awayShotsOnGoal = getStatValue(awayStatsArray, "Shots on Goal");
-            let homeTotalShots = getStatValue(homeStatsArray, "Total Shots");
-            let awayTotalShots = getStatValue(awayStatsArray, "Total Shots");
-            let homeCorners = getStatValue(homeStatsArray, "Corner Kicks");
-            let awayCorners = getStatValue(awayStatsArray, "Corner Kicks");
-            let homeFouls = getStatValue(homeStatsArray, "Fouls");
-            let awayFouls = getStatValue(awayStatsArray, "Fouls");
+            let homePoss = getStatValue(homeStatsArray, "Ball Possession") || '50%';
+            let awayPoss = getStatValue(awayStatsArray, "Ball Possession") || '50%';
 
             const statsHTML = `
-            <div id="modalStatsContainer" class="stats-container">
+            <div class="stats-container">
                 <div style="text-align: center; font-size: 11px; color: #8fa0b3; margin-bottom: 5px;">שליטה בכדור</div>
                 <div class="possession-labels">
                     <span>${tHome} (${homePoss})</span>
@@ -279,180 +305,181 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     <div class="possession-home" style="width: ${homePoss}"></div>
                     <div class="possession-away" style="width: ${awayPoss}"></div>
                 </div>
-                
                 <div class="extra-stats">
-                    <div class="stat-row">
-                        <span class="stat-val home-val">${homeShotsOnGoal}</span>
-                        <span class="stat-name">בעיטות למסגרת</span>
-                        <span class="stat-val away-val">${awayShotsOnGoal}</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-val home-val">${homeTotalShots}</span>
-                        <span class="stat-name">סה"כ בעיטות</span>
-                        <span class="stat-val away-val">${awayTotalShots}</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-val home-val">${homeCorners}</span>
-                        <span class="stat-name">קרנות</span>
-                        <span class="stat-val away-val">${awayCorners}</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-val home-val">${homeFouls}</span>
-                        <span class="stat-name">עבירות</span>
-                        <span class="stat-val away-val">${awayFouls}</span>
-                    </div>
+                    <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Shots on Goal")}</span><span class="stat-name">בעיטות למסגרת</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Shots on Goal")}</span></div>
+                    <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Total Shots")}</span><span class="stat-name">סה"כ בעיטות</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Total Shots")}</span></div>
+                    <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Corner Kicks")}</span><span class="stat-name">קרנות</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Corner Kicks")}</span></div>
+                    <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Fouls")}</span><span class="stat-name">עבירות</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Fouls")}</span></div>
                 </div>
             </div>`;
-            
-            const oldStats = document.getElementById('modalStatsContainer');
-            if (oldStats) oldStats.remove();
-            const oldScore = document.getElementById('modalScoreBanner');
-            if (oldScore) oldScore.remove();
 
-            document.querySelector('.modal-header').insertAdjacentHTML('afterend', scoreHTML);
-            document.getElementById('modalScoreBanner').insertAdjacentHTML('afterend', statsHTML);
-
+            let events = eventsData.response || [];
             let eventsHtml = '';
             if (events.length === 0) {
-                eventsHtml = '<p style="text-align:center; width:100%; font-size:12px;">אין אירועים להצגה.</p>';
+                eventsHtml = '<p style="text-align:center; width:100%; font-size:12px; margin-top:20px;">אין אירועים להצגה.</p>';
             } else {
-                
-                // מסדר לפי זמן האירוע
                 events.sort((a, b) => a.time.elapsed - b.time.elapsed);
-
                 let homeHtml = `<div class="team-col"><div class="team-title">${tHome}</div>`;
                 let awayHtml = `<div class="team-col"><div class="team-title">${tAway}</div>`;
 
                 events.forEach((event) => {
-                    // מושך הכל, לא מסנן כלום!
                     const typeStr = String(event.type || '').toLowerCase();
                     const detailStr = String(event.detail || '').toLowerCase();
                     const commentsStr = String(event.comments || '').toLowerCase();
 
                     let time = event.time.elapsed + (event.time.extra ? `+${event.time.extra}` : '');
-                    let playerName = event.player && event.player.name ? (typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name) : '';
-                    let assistName = event.assist && event.assist.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
+                    let playerName = event.player?.name ? (typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name) : '';
+                    let assistName = event.assist?.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
                     
-                    let icon = '📌'; 
-                    let mainText = '';
-                    let subText = '';
-                    let isGoalCancelled = false;
+                    let icon = '📌', mainText = '', subText = '', isGoalCancelled = false;
 
-                    // 1. טיפול בשערים מכל הסוגים
                     if (typeStr === 'goal') {
-                        // בדיקה האם זה שער פסול
-                        if (detailStr.includes('cancel') || detailStr.includes('disallow') || detailStr.includes('void') || commentsStr.includes('cancel')) {
-                            icon = '❌';
-                            mainText = `שער! ${playerName}`;
-                            isGoalCancelled = true;
-                        } 
-                        else if (detailStr.includes('missed penalty')) {
-                            icon = '❌';
-                            mainText = `החמצת פנדל! ${playerName}`;
-                        } else if (detailStr.includes('penalty')) {
-                            icon = '⚽';
-                            mainText = `שער! ${playerName} (פ')`;
-                            if (assistName) subText = `בישול: ${assistName}`;
-                        } else if (detailStr.includes('own goal')) {
-                            icon = '⚽';
-                            mainText = `שער עצמי! ${playerName}`;
-                        } else {
-                            icon = '⚽';
-                            mainText = `שער! ${playerName}`;
-                            if (assistName) subText = `בישול: ${assistName}`;
-                        }
+                        if (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel')) { icon = '❌'; mainText = `שער! ${playerName}`; isGoalCancelled = true; } 
+                        else if (detailStr.includes('missed penalty')) { icon = '❌'; mainText = `החמצת פנדל! ${playerName}`; } 
+                        else if (detailStr.includes('penalty')) { icon = '⚽'; mainText = `שער! ${playerName} (פ')`; if (assistName) subText = `בישול: ${assistName}`; } 
+                        else if (detailStr.includes('own goal')) { icon = '⚽'; mainText = `שער עצמי! ${playerName}`; } 
+                        else { icon = '⚽'; mainText = `שער! ${playerName}`; if (assistName) subText = `בישול: ${assistName}`; }
                     } 
-                    // 2. טיפול באירועי VAR שמגיעים בנפרד
                     else if (typeStr === 'var') {
-                        icon = '📺';
-                        mainText = 'החלטת VAR';
-                        if (playerName) mainText += ` (${playerName})`;
-                        
-                        // מה ה-VAR קבע?
-                        if (detailStr.includes('cancel') || detailStr.includes('disallow') || detailStr.includes('void') || commentsStr.includes('cancel')) {
-                            subText = '❌ שער נפסל';
-                        } else if (detailStr.includes('penalty')) {
-                            subText = 'בדיקת פנדל';
-                        } else if (detailStr.includes('card')) {
-                            subText = 'בדיקת כרטיס';
-                        } else {
-                            subText = event.detail || 'בדיקה'; // מציג מה שה-API שלח
-                        }
-                    }
-                    // 3. טיפול בכרטיסים
+                        icon = '📺'; mainText = 'החלטת VAR'; if (playerName) mainText += ` (${playerName})`;
+                        if (detailStr.includes('cancel') || commentsStr.includes('cancel')) subText = '❌ שער נפסל';
+                        else if (detailStr.includes('penalty')) subText = 'בדיקת פנדל';
+                        else if (detailStr.includes('card')) subText = 'בדיקת כרטיס';
+                        else subText = event.detail || 'בדיקה';
+                    } 
                     else if (typeStr === 'card') {
-                        if (detailStr.includes('yellow') && !detailStr.includes('second')) {
-                            icon = '🟨';
-                            mainText = playerName;
-                            subText = 'כרטיס צהוב';
-                        } else if (detailStr.includes('red') || detailStr.includes('second yellow')) {
-                            icon = '🟥';
-                            mainText = playerName;
-                            subText = 'כרטיס אדום';
-                        } else {
-                            icon = '🟨';
-                            mainText = playerName;
-                            subText = event.detail; // מציג אם זה משהו אחר
-                        }
+                        if (detailStr.includes('yellow') && !detailStr.includes('second')) { icon = '🟨'; mainText = playerName; subText = 'כרטיס צהוב'; } 
+                        else if (detailStr.includes('red') || detailStr.includes('second yellow')) { icon = '🟥'; mainText = playerName; subText = 'כרטיס אדום'; } 
+                        else { icon = '🟨'; mainText = playerName; subText = event.detail; }
                     } 
-                    // 4. טיפול בחילופים
                     else if (typeStr === 'subst') {
+                        // פה התיקון הגדול שלך: שחקן נכנס (assist) ושחקן יוצא (player)
                         icon = '🔄';
-                        mainText = `${playerName} (נכנס)`;
-                        subText = `${assistName} (יצא)`;
+                        mainText = `${assistName} (נכנס)`;
+                        subText = `${playerName} (יצא)`;
                     } 
-                    // 5. רשת הביטחון! אירוע שאנחנו לא מכירים
-                    else {
-                        icon = '🔔';
-                        mainText = event.type + (playerName ? ` - ${playerName}` : '');
-                        subText = event.detail || '';
-                    }
+                    else { icon = '🔔'; mainText = event.type + (playerName ? ` - ${playerName}` : ''); subText = event.detail || ''; }
 
-                    const isHome = event.team.name === homeTeam;
-                    
-                    let textClass = 'event-text';
-                    let cancelledMarkup = '';
-                    
-                    if (isGoalCancelled) {
-                        textClass = 'event-text var-cancelled';
-                        cancelledMarkup = `<span class="event-subtext var-cancelled-sub">❌ נפסל ע"י VAR / שופט</span>`;
-                    }
+                    const isHome = event.team.id === homeId;
+                    let textClass = isGoalCancelled ? 'event-text var-cancelled' : 'event-text';
+                    let cancelledMarkup = isGoalCancelled ? `<span class="event-subtext var-cancelled-sub">❌ נפסל ע"י VAR</span>` : '';
 
                     const eventMarkup = `
                         <div class="event-item ${isHome ? 'event-home' : 'event-away'}">
-                            <span class="event-time">${time}'</span>
-                            <span class="event-icon">${icon}</span>
-                            <div class="${textClass}">
-                                <strong>${mainText}</strong>
-                                ${subText && !isGoalCancelled ? `<span class="event-subtext">${subText}</span>` : ''}
-                                ${cancelledMarkup}
-                            </div>
-                        </div>
-                    `;
+                            <span class="event-time">${time}'</span><span class="event-icon">${icon}</span>
+                            <div class="${textClass}"><strong>${mainText}</strong>${subText && !isGoalCancelled ? `<span class="event-subtext">${subText}</span>` : ''}${cancelledMarkup}</div>
+                        </div>`;
 
-                    if (isHome) homeHtml += eventMarkup;
-                    else awayHtml += eventMarkup;
+                    if (isHome) homeHtml += eventMarkup; else awayHtml += eventMarkup;
                 });
 
-                homeHtml += '</div>';
-                awayHtml += '</div>';
-                eventsHtml = homeHtml + awayHtml;
+                homeHtml += '</div>'; awayHtml += '</div>';
+                eventsHtml = `<div class="events-wrapper">${homeHtml}${awayHtml}</div>`;
             }
 
-            content.innerHTML = eventsHtml;
 
+            /* ------ יצירת תוכן ללשונית הרכבים ------ */
+            let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
+            if (lineupsData.response && lineupsData.response.length === 2) {
+                const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
+                const aL = lineupsData.response.find(r => r.team.id === awayId) || lineupsData.response[1];
+                
+                const renderPlayers = (players, isHome) => {
+                    return players.map(p => {
+                        let grid = p.player.grid || (isHome ? '1:1' : '1:1');
+                        let [row, col] = grid.split(':').map(Number);
+                        // חישוב מיקום הגיוני על המגרש
+                        let left = isHome ? (row * 18) : 100 - (row * 18);
+                        let top = col * 18; 
+                        
+                        let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
+                        let textColor = isHome ? (hL.team.colors?.player?.number || '000000') : (aL.team.colors?.player?.number || 'ffffff');
+                        let name = typeof window.translateName === 'function' ? window.translateName(p.player.name) : p.player.name;
+                        
+                        return `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
+                            <div class="pitch-player-num" style="background: #${bgColor}; color: #${textColor};">${p.player.number}</div>
+                            <div class="pitch-player-name">${name}</div>
+                        </div>`;
+                    }).join('');
+                };
+
+                lineupsHtml = `
+                <div style="padding: 10px 15px;">
+                    <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:5px;">
+                        <span>מערך: ${hL.formation || '?'}</span>
+                        <span>מערך: ${aL.formation || '?'}</span>
+                    </div>
+                    <div class="pitch-wrapper">
+                        <div class="pitch-line-center"></div>
+                        <div class="pitch-circle"></div>
+                        <div class="pitch-team">${renderPlayers(hL.startXI, true)}</div>
+                        <div class="pitch-team">${renderPlayers(aL.startXI, false)}</div>
+                    </div>
+                </div>`;
+            }
+
+
+            /* ------ יצירת תוכן ללשונית טבלה ------ */
+            let stdHtml = '<div style="padding:20px; text-align:center; font-size:12px;">לא קיימת טבלה רלוונטית למשחק זה</div>';
+            if (stdData.response && stdData.response.length > 0) {
+                const standings = stdData.response[0].league.standings;
+                let targetGroup = standings[0];
+                standings.forEach(g => { if (g.some(t => t.team.id === homeId || t.team.id === awayId)) targetGroup = g; });
+
+                stdHtml = `
+                <div style="padding: 10px 15px;">
+                    <table class="modal-mini-table">
+                        <tr><th>#</th><th style="text-align:right;">קבוצה</th><th>מש'</th><th>הפרש</th><th>נק'</th></tr>
+                        ${targetGroup.map(t => {
+                            let isPlaying = t.team.id === homeId || t.team.id === awayId;
+                            let rowClass = isPlaying ? 'highlight' : '';
+                            let name = typeof window.translateName === 'function' ? window.translateName(t.team.name) : t.team.name;
+                            return `<tr class="${rowClass}">
+                                <td>${t.rank}</td>
+                                <td style="text-align:right;"><img src="${t.team.logo}" style="width:14px; height:14px; vertical-align:middle; margin-left:5px;">${name}</td>
+                                <td>${t.all.played}</td>
+                                <td dir="ltr">${t.goalsDiff}</td>
+                                <td style="color:#7a9966;">${t.points}</td>
+                            </tr>`;
+                        }).join('')}
+                    </table>
+                </div>`;
+            }
+
+
+            /* ------ יצירת תוכן ללשונית ראש בראש ------ */
+            let h2hHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין היסטוריית מפגשים קודמת</div>';
+            if (h2hData.response && h2hData.response.length > 0) {
+                h2hHtml = `<div style="padding: 10px 15px; display:flex; flex-direction:column; gap:6px;">` +
+                h2hData.response.slice(0,5).map(m => {
+                    let hName = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
+                    let aName = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
+                    return `
+                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; display:flex; justify-content: space-between; font-size: 11px; border: 1px solid #1f2d40;">
+                        <span style="color:#8fa0b3;">${new Date(m.fixture.date).toLocaleDateString('he-IL')}</span>
+                        <span style="font-weight:bold;">${hName} <span style="color:#7a9966; margin:0 5px;">${m.goals.home}-${m.goals.away}</span> ${aName}</span>
+                    </div>`;
+                }).join('') + `</div>`;
+            }
+
+            // הרכבת כל המבנה אל תוך ה-Modal
+            dynamicArea.innerHTML = `
+                ${scoreHTML}
+                ${tabsHTML}
+                <div id="tab-stats" class="tab-content active">${statsHTML}${eventsHtml}</div>
+                <div id="tab-lineups" class="tab-content">${lineupsHtml}</div>
+                <div id="tab-standings" class="tab-content">${stdHtml}</div>
+                <div id="tab-h2h" class="tab-content">${h2hHtml}</div>
+            `;
+
+            // עצירת רענון אם המשחק נגמר
             if (['FT', 'AET', 'PEN'].includes(shortStatus)) {
-                if (modalRefreshTimer) {
-                    clearInterval(modalRefreshTimer);
-                    modalRefreshTimer = null;
-                }
+                if (modalRefreshTimer) { clearInterval(modalRefreshTimer); modalRefreshTimer = null; }
             }
 
         } catch (error) {
             console.error(error);
-            if (isInitialLoad) {
-                content.innerHTML = '<p style="text-align:center; width:100%; color:#ff4d4d; font-size:12px;">שגיאה בטעינת הנתונים.</p>';
-            }
+            if (isInitialLoad) dynamicArea.innerHTML = '<p style="text-align:center; width:100%; color:#ff4d4d; font-size:12px; margin-top:20px;">שגיאה בטעינת הנתונים.</p>';
         }
     }
 
