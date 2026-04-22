@@ -27,7 +27,7 @@ modalStyle.innerHTML = `
 .tab-content { display: none; flex-direction: column; overflow-y: auto; flex-grow: 1; }
 .tab-content.active { display: flex; }
 
-/* פרימיום מגרש UX */
+/* עיצוב המגרש */
 .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 15px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
 .pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.4); transform: translateX(-50%); z-index: 1;}
 .pitch-circle { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;}
@@ -37,9 +37,9 @@ modalStyle.innerHTML = `
 .pitch-small-box-right { position: absolute; right: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-right: none; z-index: 1;}
 
 .pitch-team { flex: 1; position: relative; }
-.pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 65px; z-index: 3; transition: 0.3s ease; }
+.pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 75px; z-index: 3; transition: 0.3s ease; }
 .pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.9); box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(0,0,0,0.3); z-index: 4; position: relative;}
-.pitch-player-name { color: #ffffff; font-size: 10px; font-weight: bold; margin-top: 3px; white-space: nowrap; text-align: center; text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 0 3px 5px rgba(0,0,0,0.9); z-index: 3;}
+.pitch-player-name { color: #ffffff; font-size: 10px; font-weight: bold; margin-top: 3px; text-align: center; text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 0 3px 5px rgba(0,0,0,0.9); z-index: 3; max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr;}
 .pitch-player-sub-badge { position: absolute; top: -5px; right: -6px; background: #10b981; color: #fff; font-size: 8px; font-weight: bold; padding: 1px 3px; border-radius: 4px; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 5; }
 
 .modal-mini-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-top: 5px; }
@@ -278,7 +278,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             let events = eventsData.response || [];
 
-            /* ------ הרכבים - עוגנים מושלמים על רחבות ואמצע מגרש ------ */
+            /* ------ הרכבים - עוגנים מושלמים עם יישור גיאומטרי ------ */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
             if (lineupsData.response && lineupsData.response.length === 2) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
@@ -315,21 +315,31 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         rowPlayers.forEach((p, colIndex) => {
                             let left, top;
 
-                            // אלגוריתם עוגנים - שוער ב-5, הגנה ב-16, התקפה באמצע, השאר שווה בשווה
+                            // אלגוריתם עוגנים מוחלט לפי קווי המגרש ב-CSS!
                             if (rowIndex === 0) {
-                                left = isHome ? 96 : 4; 
+                                // שוער - בדיוק בתוך רחבת ה-5 (CSS: 6% מהקצה)
+                                left = isHome ? 97 : 3; 
                             } else if (rowIndex === 1) {
-                                left = isHome ? 83 : 17; 
+                                // הגנה - בדיוק על קו ה-16 (CSS: 16% מהקצה)
+                                left = isHome ? 84 : 16; 
                             } else if (rowIndex === numRows - 1) {
-                                left = isHome ? 55 : 45; 
+                                // התקפה - בדיוק על עיגול האמצע (קצת פנימה כדי לא לעלות אחד על השני)
+                                left = isHome ? 54 : 46; 
                             } else {
-                                let defX = isHome ? 83 : 17;
-                                let fwdX = isHome ? 55 : 45;
-                                let fraction = (rowIndex - 1) / Math.max(1, numRows - 2);
-                                left = defX + fraction * (fwdX - defX);
+                                // קישור - מפוזר בצורה מושלמת בין ההגנה להתקפה
+                                let defX = isHome ? 84 : 16;
+                                let attX = isHome ? 54 : 46;
+                                let steps = numRows - 2; 
+                                let currentStep = rowIndex - 1;
+                                left = defX + (currentStep / steps) * (attX - defX);
                             }
 
-                            top = (100 / (rowCount + 1)) * (colIndex + 1);
+                            // פריסה לאורך (Y) המנצלת את רוב הגובה של המגרש
+                            if (rowCount === 1) {
+                                top = 50;
+                            } else {
+                                top = 10 + (80 / (rowCount - 1)) * colIndex;
+                            }
 
                             let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
                             if (bgColor && !bgColor.startsWith('#')) bgColor = '#' + bgColor;
@@ -347,7 +357,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                                 let subInShortName = getShortPlayerName(subEvent.assist.name);
                                 let subTime = subEvent.time.elapsed;
                                 subBadgeHtml = `<div class="pitch-player-sub-badge">🔃${subTime}'</div>`;
-                                subTextHtml = `<div style="font-size:9px; color:#10b981; margin-top:1px; font-weight:bold; text-shadow:1px 1px 2px #000;">(${subInShortName})</div>`;
+                                subTextHtml = `<div style="font-size:9px; color:#10b981; margin-top:1px; font-weight:bold; text-shadow:1px 1px 2px #000; white-space:nowrap; max-width:70px; overflow:hidden; text-overflow:ellipsis;">(${subInShortName})</div>`;
                             }
                             
                             html += `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
@@ -355,7 +365,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                                     <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
                                     ${subBadgeHtml}
                                 </div>
-                                <div class="pitch-player-name">${shortName}</div>
+                                <div class="pitch-player-name" title="${p.player.name}">${shortName}</div>
                                 ${subTextHtml}
                             </div>`;
                         });
