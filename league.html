@@ -494,20 +494,9 @@
                             } else {
                                 let existing = teamMap.get(teamId);
 
-                                if (!isRegular) {
-                                    if (item.all.played < existing.all.played) {
-                                        existing.all.played += item.all.played;
-                                        existing.all.win += item.all.win;
-                                        existing.all.draw += item.all.draw;
-                                        existing.all.lose += item.all.lose;
-                                        existing.all.goals.for += item.all.goals.for;
-                                        existing.all.goals.against += item.all.goals.against;
-                                        existing.goalsDiff = existing.all.goals.for - existing.all.goals.against;
-                                    } else {
-                                        existing.all = JSON.parse(JSON.stringify(item.all));
-                                        existing.goalsDiff = item.goalsDiff;
-                                    }
-                                    existing.points = Math.max(existing.points, item.points);
+                                // פשוט לוקחים את הנתון הכי מעודכן (זה עם הכי הרבה משחקים, או זה עם הכי הרבה נקודות אם המשחקים שווים)
+                                if (item.all.played > existing.all.played || (item.all.played === existing.all.played && item.points > existing.points)) {
+                                    teamMap.set(teamId, JSON.parse(JSON.stringify(item)));
                                 }
                             }
                         });
