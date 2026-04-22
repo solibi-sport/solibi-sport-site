@@ -278,101 +278,85 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             let events = eventsData.response || [];
 
-            /* ------ הרכבים - עוגנים מושלמים עם יישור גיאומטרי ------ */
+            /* ------ הרכבים - תבנית 4-3-3 קבועה וברזל ------ */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
             if (lineupsData.response && lineupsData.response.length === 2) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
                 const aL = lineupsData.response.find(r => r.team.id === awayId) || lineupsData.response[1];
                 
-                const renderPlayers = (players, isHome) => {
-                    let rows = {};
-                    players.forEach((p, idx) => {
-                        let row = 1, col = 1;
-                        if (p.player.grid) {
-                            let parts = p.player.grid.split(':');
-                            row = parseInt(parts[0]) || 1;
-                            col = parseInt(parts[1]) || 1;
-                        } else {
-                            if (idx === 0) row = 1;
-                            else if (idx < 5) row = 2;
-                            else if (idx < 9) row = 3;
-                            else row = 4;
-                            col = idx;
-                        }
-                        if (!rows[row]) rows[row] = [];
-                        rows[row].push({ ...p, originalCol: col });
-                    });
+                const renderPlayersFixed = (players, isHome) => {
+                    // אלו ה-11 מיקומים המושלמים במגרש - הם חקוקים באבן ולא ישתנו!
+                    // סדר: שוער, מגן, בלם, בלם, מגן, קשר, קשר, קשר, חלוץ/כנף, חלוץ, חלוץ/כנף
+                    const homePositions = [
+                        { left: 93, top: 50 }, // שוער ברחבת 5
+                        { left: 76, top: 15 }, // מגן ימני על קו 16
+                        { left: 76, top: 38 }, // בלם ימני על קו 16
+                        { left: 76, top: 62 }, // בלם שמאלי על קו 16
+                        { left: 76, top: 85 }, // מגן שמאלי על קו 16
+                        { left: 58, top: 25 }, // קשר ימני
+                        { left: 55, top: 50 }, // קשר אמצע (אחורי/קדמי)
+                        { left: 58, top: 75 }, // קשר שמאלי
+                        { left: 40, top: 20 }, // כנף ימין
+                        { left: 37, top: 50 }, // חלוץ מרכזי
+                        { left: 40, top: 80 }  // כנף שמאל
+                    ];
 
-                    let sortedRows = Object.keys(rows).map(Number).sort((a, b) => a - b);
-                    let numRows = sortedRows.length;
+                    const awayPositions = [
+                        { left: 7, top: 50 },  // שוער ברחבת 5
+                        { left: 24, top: 15 }, // מגן שמאלי על קו 16
+                        { left: 24, top: 38 }, // בלם שמאלי על קו 16
+                        { left: 24, top: 62 }, // בלם ימני על קו 16
+                        { left: 24, top: 85 }, // מגן ימני על קו 16
+                        { left: 42, top: 25 }, // קשר שמאלי
+                        { left: 45, top: 50 }, // קשר אמצע
+                        { left: 42, top: 75 }, // קשר ימני
+                        { left: 60, top: 20 }, // כנף שמאל
+                        { left: 63, top: 50 }, // חלוץ מרכזי
+                        { left: 60, top: 80 }  // כנף ימין
+                    ];
+
                     let html = '';
+                    const fixedPositions = isHome ? homePositions : awayPositions;
+                    
+                    // רצים רק על 11 השחקנים הראשונים (הפותחים)
+                    players.slice(0, 11).forEach((p, index) => {
+                        let pos = fixedPositions[index] || fixedPositions[0]; // פולבק ליתר ביטחון
+                        let left = pos.left;
+                        let top = pos.top;
 
-                    sortedRows.forEach((r, rowIndex) => {
-                        let rowPlayers = rows[r];
-                        let rowCount = rowPlayers.length;
-                        rowPlayers.sort((a, b) => a.originalCol - b.originalCol);
-
-                        rowPlayers.forEach((p, colIndex) => {
-                            let left, top;
-
-                            // אלגוריתם עוגנים מוחלט לפי קווי המגרש ב-CSS!
-                            if (rowIndex === 0) {
-                                // שוער - בדיוק בתוך רחבת ה-5 (CSS: 6% מהקצה)
-                                left = isHome ? 97 : 3; 
-                            } else if (rowIndex === 1) {
-                                // הגנה - בדיוק על קו ה-16 (CSS: 16% מהקצה)
-                                left = isHome ? 84 : 16; 
-                            } else if (rowIndex === numRows - 1) {
-                                // התקפה - בדיוק על עיגול האמצע (קצת פנימה כדי לא לעלות אחד על השני)
-                                left = isHome ? 54 : 46; 
-                            } else {
-                                // קישור - מפוזר בצורה מושלמת בין ההגנה להתקפה
-                                let defX = isHome ? 84 : 16;
-                                let attX = isHome ? 54 : 46;
-                                let steps = numRows - 2; 
-                                let currentStep = rowIndex - 1;
-                                left = defX + (currentStep / steps) * (attX - defX);
-                            }
-
-                            // פריסה לאורך (Y) המנצלת את רוב הגובה של המגרש
-                            if (rowCount === 1) {
-                                top = 50;
-                            } else {
-                                top = 10 + (80 / (rowCount - 1)) * colIndex;
-                            }
-
-                            let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
-                            if (bgColor && !bgColor.startsWith('#')) bgColor = '#' + bgColor;
-                            let textColor = isHome ? (hL.team.colors?.player?.number || '000000') : (aL.team.colors?.player?.number || 'ffffff');
-                            if (textColor && !textColor.startsWith('#')) textColor = '#' + textColor;
-                            
-                            let shortName = getShortPlayerName(p.player.name);
-                            
-                            let teamIdForEvent = isHome ? homeId : awayId;
-                            let subEvent = events.find(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && e.player.name === p.player.name);
-                            
-                            let subBadgeHtml = '';
-                            let subTextHtml = '';
-                            if (subEvent) {
-                                let subInShortName = getShortPlayerName(subEvent.assist.name);
-                                let subTime = subEvent.time.elapsed;
-                                subBadgeHtml = `<div class="pitch-player-sub-badge">🔃${subTime}'</div>`;
-                                subTextHtml = `<div style="font-size:9px; color:#10b981; margin-top:1px; font-weight:bold; text-shadow:1px 1px 2px #000; white-space:nowrap; max-width:70px; overflow:hidden; text-overflow:ellipsis;">(${subInShortName})</div>`;
-                            }
-                            
-                            html += `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
-                                <div style="position:relative;">
-                                    <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
-                                    ${subBadgeHtml}
-                                </div>
-                                <div class="pitch-player-name" title="${p.player.name}">${shortName}</div>
-                                ${subTextHtml}
-                            </div>`;
-                        });
+                        let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
+                        if (bgColor && !bgColor.startsWith('#')) bgColor = '#' + bgColor;
+                        let textColor = isHome ? (hL.team.colors?.player?.number || '000000') : (aL.team.colors?.player?.number || 'ffffff');
+                        if (textColor && !textColor.startsWith('#')) textColor = '#' + textColor;
+                        
+                        let shortName = getShortPlayerName(p.player.name);
+                        
+                        let teamIdForEvent = isHome ? homeId : awayId;
+                        let subEvent = events.find(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && e.player.name === p.player.name);
+                        
+                        let subBadgeHtml = '';
+                        let subTextHtml = '';
+                        if (subEvent) {
+                            let subInShortName = getShortPlayerName(subEvent.assist.name);
+                            let subTime = subEvent.time.elapsed;
+                            subBadgeHtml = `<div class="pitch-player-sub-badge">🔃${subTime}'</div>`;
+                            subTextHtml = `<div style="font-size:9px; color:#10b981; margin-top:1px; font-weight:bold; text-shadow:1px 1px 2px #000; white-space:nowrap; max-width:70px; overflow:hidden; text-overflow:ellipsis;">(${subInShortName})</div>`;
+                        }
+                        
+                        html += `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
+                            <div style="position:relative;">
+                                <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
+                                ${subBadgeHtml}
+                            </div>
+                            <div class="pitch-player-name" title="${p.player.name}">${shortName}</div>
+                            ${subTextHtml}
+                        </div>`;
                     });
+                    
                     return html;
                 };
 
+                // התצוגה אומרת את המערך האמיתי מה-API, אבל הציור עצמו הוא תמיד ה-4-3-3 המושלם שלנו
                 lineupsHtml = `
                 <div style="padding: 10px 15px;">
                     <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:5px; color:#a0aec0;">
@@ -386,8 +370,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         <div class="pitch-small-box-right"></div>
                         <div class="pitch-line-center"></div>
                         <div class="pitch-circle"></div>
-                        <div class="pitch-team">${renderPlayers(hL.startXI, true)}</div>
-                        <div class="pitch-team">${renderPlayers(aL.startXI, false)}</div>
+                        <div class="pitch-team">${renderPlayersFixed(hL.startXI, true)}</div>
+                        <div class="pitch-team">${renderPlayersFixed(aL.startXI, false)}</div>
                     </div>
                 </div>`;
             }
