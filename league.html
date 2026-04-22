@@ -372,6 +372,7 @@
     </footer>
 
     <script>
+       <script>
         const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3'; 
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -433,12 +434,13 @@
             if (lowerName.includes('conference') || lowerName.includes('qualifying') || lowerName.includes('europe')) return "פלייאוף אמצעי";
             if (lowerName.includes('championship')) return "פלייאוף עליון";
             if (lowerName.includes('relegation')) return "פלייאוף תחתון";
-            
-            // תרגום ל"עונה סדירה" כולל עכשיו גם את ליגות כמו סקוטלנד (Premiership)
             if (lowerName.includes('regular') || lowerName.includes('premier league') || lowerName.includes('ligat ha\'al') || lowerName.includes('pro league') || lowerName.includes('1st phase') || lowerName.includes('premiership') || lowerName.includes('super liga')) return "עונה סדירה";
             
-            if (lowerName.includes('group')) return name.replace(/Group/i, 'בית').replace('A', "א'").replace('B', "ב'").replace('C', "ג'").replace('D', "ד'");
-            
+            if (lowerName.includes('group')) {
+                let gName = name.replace(/Group/i, 'בית').trim();
+                gName = gName.replace('A', "א'").replace('B', "ב'").replace('C', "ג'").replace('D', "ד'");
+                return gName;
+            }
             return name;
         }
 
@@ -477,7 +479,6 @@
                     });
                 }
 
-                // אם יש בתים או פלייאוף - יוצר טבלה כללית (חוץ מבלגיה)
                 let hasMultipleGroups = standings.length > 1;
 
                 if (hasMultipleGroups) {
@@ -495,7 +496,6 @@
                                 let existing = teamMap.get(teamId);
                                 
                                 if (!isRegular) {
-                                    // חיבור משחקים לפלייאוף (אם הAPI מאפס אותם) כדי שהטבלה הכללית תהיה הגיונית
                                     if (item.all.played < existing.all.played) {
                                         existing.all.played += item.all.played;
                                         existing.all.win += item.all.win;
@@ -504,12 +504,11 @@
                                         existing.all.goals.for += item.all.goals.for;
                                         existing.all.goals.against += item.all.goals.against;
                                         existing.goalsDiff = existing.all.goals.for - existing.all.goals.against;
-                                        existing.points += item.points; 
                                     } else {
                                         existing.all = JSON.parse(JSON.stringify(item.all));
                                         existing.goalsDiff = item.goalsDiff;
-                                        existing.points = Math.max(existing.points, item.points);
                                     }
+                                    existing.points = Math.max(existing.points, item.points);
                                 }
                             }
                         });
@@ -517,14 +516,14 @@
                     
                     let combined = Array.from(teamMap.values());
                     
-                    // חישוב מחדש של נקודות בליגות שחוצות נקודות (אוסטריה, סלובקיה) לטבלה הכללית בלבד
+                    // חישוב מחדש של נקודות בליגות שחוצות נקודות לטבלה הכללית
                     if ([218, 332].includes(parseInt(LEAGUE_ID))) {
                         combined.forEach(item => {
                             item.points = (item.all.win * 3) + item.all.draw;
                         });
                     }
                     
-                    // ביטול טבלה כללית בליגה הבלגית בגלל קיזוז
+                    // ביטול טבלה כללית בבלגיה (144)
                     if (parseInt(LEAGUE_ID) !== 144) {
                         if (combined.length > 0) {
                             combined.sort((a, b) => {
@@ -539,7 +538,6 @@
                                 return newItem;
                             });
 
-                            // מסתיר כפילות של עונה סדירה בליגות עם פלייאופים
                             let hideRegularLeagues = [383, 390, 218, 332, 179, 119]; 
                             if (hideRegularLeagues.includes(parseInt(LEAGUE_ID)) || data.response[0].league.country === "Israel") {
                                 standings = standings.filter(group => translateGroupName(group[0].group) !== "עונה סדירה");
@@ -550,22 +548,10 @@
                     }
                 }
 
-                const orderPriority = { 
-                    "טבלה כללית": 1, "עונה סדירה": 2, "פלייאוף עליון": 3, "פלייאוף אמצעי": 4, 
-                    "פלייאוף תחתון": 5, "מזרח": 6, "מערב": 7, "בית א'": 8, "בית ב'": 9, "בית ג'": 10, "בית ד'": 11 
-                };
-
-                standings.sort((a, b) => {
-                    let weightA = orderPriority[translateGroupName(a[0].group)] || 99;
-                    let weightB = orderPriority[translateGroupName(b[0].group)] || 99;
-                    return weightA - weightB;
-                });
-// 1. סינון אוטומטי של "זבל" - מחיקת טבלאות באנגלית (רק אם יש פלייאופים/בתים)
+                // 1. מחיקת טבלאות באנגלית (סינון זבל)
                 if (standings.length > 1) {
                     standings = standings.filter(group => {
                         let gName = translateGroupName(group[0].group);
-                        
-                        // אם יש בשם אות באנגלית, או שזו "טבלה כללית" בבלגיה (144) - מחק!
                         if (/[a-zA-Z]/.test(gName) || (parseInt(LEAGUE_ID) === 144 && gName === "טבלה כללית")) {
                             return false;
                         }
@@ -573,7 +559,7 @@
                     });
                 }
 
-                // 2. סדר עדיפויות מוחלט להופעה בתפריט הנפתח (מה נשאר אחרי הסינון)
+                // 2. סדר עדיפויות מוחלט להופעה בתפריט הנפתח
                 const orderPriority = { 
                     "טבלה כללית": 1, "עונה סדירה": 2, "פלייאוף עליון": 3, "פלייאוף אמצעי": 4, 
                     "פלייאוף תחתון": 5, "מזרח": 6, "מערב": 7, "בית א'": 8, "בית ב'": 9, "בית ג'": 10, "בית ד'": 11 
@@ -585,15 +571,6 @@
                     return weightA - weightB;
                 });
 
-                window.allStandingsData = standings;
-                buildStandingsUI();
-
-            } catch (error) {
-                console.error("שגיאה במשיכת נתוני טבלה:", error);
-                container.innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
-            }
-        }
-                
                 window.allStandingsData = standings;
                 buildStandingsUI();
 
@@ -613,7 +590,7 @@
             if (euroLeagues.includes(currentLeagueId)) {
                 let uiHtml = `
                     <div style="margin-bottom: 15px; text-align: center;">
-                        <select id="group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">
+                        <select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;">
                             <option value="0">שלב הליגה (טבלה)</option>
                             <option value="knockout">שלבי נוקאאוט</option>
                         </select>
@@ -629,14 +606,13 @@
                 return; 
             }
 
-            // העלמת הרשימה הנפתחת בליגות עם טבלה אחת
             if (window.allStandingsData.length <= 1) {
                 container.innerHTML = '<div id="standings-render-area"></div>';
                 renderStandingsTable(0); 
                 return;
             }
 
-            let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" style="padding: 8px 35px 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">`;
+            let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;">`;
             window.allStandingsData.forEach((group, index) => {
                 uiHtml += `<option value="${index}">${translateGroupName(group[0].group)}</option>`;
             });
@@ -905,7 +881,6 @@
                 const todayStr = getLocalYYYYMMDD(new Date().toISOString());
                 let closestIdx = allDates.findIndex(d => d >= todayStr);
                 
-                // קפיצה אוטומטית למשחק הקרוב או האחרון (לא ייתקע על טוען נתונים)
                 if (closestIdx === -1) {
                     closestIdx = allDates.length - 1;
                 }
