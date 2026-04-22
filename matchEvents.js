@@ -483,7 +483,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 stdHtml = `
                 <div style="padding: 10px 15px;">
                     <table class="modal-mini-table">
-                        <tr><th>#</th><th style="text-align:right;">קבוצה</th><th>מש'</th><th>הפרש</th><th>נק'</th></tr>
+                        <tr><th>#</th><th style="text-align:right;">קבוצה</th><th>מש'</th><th>נצ'</th><th>תיקו</th><th>הפ'</th><th>ש.ז</th><th>ש.ח</th><th>הפרש</th><th>נק'</th></tr>
                         ${targetGroupLive.map(t => {
                             let isPlaying = t.team.id === homeId || t.team.id === awayId;
                             let rowClass = isPlaying ? 'highlight' : '';
@@ -498,6 +498,11 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                                     </div>
                                 </td>
                                 <td>${t.all.played}</td>
+                                <td>${t.all.win}</td>
+                                <td>${t.all.draw}</td>
+                                <td>${t.all.lose}</td>
+                                <td>${t.all.goals.for}</td>
+                                <td>${t.all.goals.against}</td>
                                 <td dir="ltr">${t.goalsDiff}</td>
                                 <td style="color:#7a9966;">${t.points}</td>
                             </tr>`;
