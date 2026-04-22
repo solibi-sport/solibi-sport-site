@@ -515,12 +515,7 @@
 
                     let combined = Array.from(teamMap.values());
 
-                    // חישוב מחדש של נקודות בליגות שחוצות נקודות לטבלה הכללית
-                    if ([218, 332].includes(parseInt(LEAGUE_ID))) {
-                        combined.forEach(item => {
-                            item.points = (item.all.win * 3) + item.all.draw;
-                        });
-                    }
+                    
 
                     // ביטול טבלה כללית בבלגיה (144)
                     if (parseInt(LEAGUE_ID) !== 144) {
