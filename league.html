@@ -560,32 +560,39 @@
                     let weightB = orderPriority[translateGroupName(b[0].group)] || 99;
                     return weightA - weightB;
                 });
-// --- כאן אנחנו מוחקים אופציות מהרשימה הנפתחת ---
-standings = standings.filter(group => {
-    let currentGroupName = translateGroupName(group[0].group);
-    let currentLeague = parseInt(LEAGUE_ID);
+// 1. סינון אוטומטי של "זבל" - מחיקת טבלאות באנגלית (רק אם יש פלייאופים/בתים)
+                if (standings.length > 1) {
+                    standings = standings.filter(group => {
+                        let gName = translateGroupName(group[0].group);
+                        
+                        // אם יש בשם אות באנגלית, או שזו "טבלה כללית" בבלגיה (144) - מחק!
+                        if (/[a-zA-Z]/.test(gName) || (parseInt(LEAGUE_ID) === 144 && gName === "טבלה כללית")) {
+                            return false;
+                        }
+                        return true;
+                    });
+                }
 
-    // דוגמה 1: מחיקת "טבלה כללית" רק בליגה הבלגית (144)
-    if (currentLeague === 144 && currentGroupName === "טבלה כללית") {
-        return false; // false אומר "תמחק את זה"
-    }
+                // 2. סדר עדיפויות מוחלט להופעה בתפריט הנפתח (מה נשאר אחרי הסינון)
+                const orderPriority = { 
+                    "טבלה כללית": 1, "עונה סדירה": 2, "פלייאוף עליון": 3, "פלייאוף אמצעי": 4, 
+                    "פלייאוף תחתון": 5, "מזרח": 6, "מערב": 7, "בית א'": 8, "בית ב'": 9, "בית ג'": 10, "בית ד'": 11 
+                };
 
-    // דוגמה 2: מחיקת "Premiership" בליגה הסקוטית (179)
-    if (currentLeague === 179 && currentGroupName === "Premiership") {
-        return false; 
-    }
+                standings.sort((a, b) => {
+                    let weightA = orderPriority[translateGroupName(a[0].group)] || 99;
+                    let weightB = orderPriority[translateGroupName(b[0].group)] || 99;
+                    return weightA - weightB;
+                });
 
-    // דוגמה 3: מחיקת "עונה סדירה" בכמה ליגות ביחד (אוסטריה 218, סלובקיה 332)
-    if ((currentLeague === 218 || currentLeague === 332) && currentGroupName === "עונה סדירה") {
-        return false;
-    }
+                window.allStandingsData = standings;
+                buildStandingsUI();
 
-    // תשמור את כל שאר האופציות רגיל
-    return true; 
-});
-
-// ואז השורה המקורית שכבר קיימת אצלך:
-window.allStandingsData = standings;
+            } catch (error) {
+                console.error("שגיאה במשיכת נתוני טבלה:", error);
+                container.innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
+            }
+        }
                 
                 window.allStandingsData = standings;
                 buildStandingsUI();
