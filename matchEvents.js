@@ -26,18 +26,22 @@ modalStyle.innerHTML = `
 .modal-tab-btn:hover { color: #ffffff; }
 .tab-content { display: none; flex-direction: column; overflow-y: auto; flex-grow: 1; }
 .tab-content.active { display: flex; }
-.pitch-wrapper { background: repeating-linear-gradient(90deg, #1f4f33, #1f4f33 10%, #24583a 10%, #24583a 20%); border: 2px solid rgba(255,255,255,0.6); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 15px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.5); }
-.pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.5); transform: translateX(-50%); z-index: 1;}
-.pitch-circle { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.5); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;}
-.pitch-box-left { position: absolute; left: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.5); border-left: none; z-index: 1;}
-.pitch-box-right { position: absolute; right: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.5); border-right: none; z-index: 1;}
-.pitch-small-box-left { position: absolute; left: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.5); border-left: none; z-index: 1;}
-.pitch-small-box-right { position: absolute; right: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.5); border-right: none; z-index: 1;}
+
+/* פרימיום מגרש UX */
+.pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 15px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+.pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.4); transform: translateX(-50%); z-index: 1;}
+.pitch-circle { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;}
+.pitch-box-left { position: absolute; left: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
+.pitch-box-right { position: absolute; right: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-right: none; z-index: 1;}
+.pitch-small-box-left { position: absolute; left: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
+.pitch-small-box-right { position: absolute; right: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-right: none; z-index: 1;}
+
 .pitch-team { flex: 1; position: relative; }
-.pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 60px; z-index: 3; transition: 0.3s ease; }
-.pitch-player-num { border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.7); z-index: 4;}
-.pitch-player-name { color: #fff; font-size: 9px; background: rgba(0,0,0,0.8); padding: 3px 6px; border-radius: 4px; margin-top: -3px; white-space: nowrap; text-align: center; text-shadow: 0 1px 2px rgba(0,0,0,0.9); z-index: 3; border: 1px solid rgba(255,255,255,0.15);}
-.pitch-player-sub { color: #ffffff; font-size: 8px; font-weight: bold; background: linear-gradient(135deg, #064e3b 0%, #047857 100%); padding: 3px 5px; border-radius: 4px; margin-top: 3px; white-space: nowrap; border: 1px solid #34d399; box-shadow: 0 2px 5px rgba(0,0,0,0.8); display: flex; align-items: center; gap: 3px; z-index: 5; text-shadow: 0 1px 1px rgba(0,0,0,0.5); }
+.pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 65px; z-index: 3; transition: 0.3s ease; }
+.pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.9); box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(0,0,0,0.3); z-index: 4; position: relative;}
+.pitch-player-name { color: #ffffff; font-size: 10px; font-weight: bold; margin-top: 3px; white-space: nowrap; text-align: center; text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 0 3px 5px rgba(0,0,0,0.9); z-index: 3;}
+.pitch-player-sub-badge { position: absolute; top: -5px; right: -6px; background: #10b981; color: #fff; font-size: 8px; font-weight: bold; padding: 1px 3px; border-radius: 4px; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 5; }
+
 .modal-mini-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-top: 5px; }
 .modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #1f2d40; }
 .modal-mini-table td { padding: 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); }
@@ -88,6 +92,15 @@ window.switchModalTab = function(tabId, btn) {
 function getStatValue(statsArray, typeName) {
     const stat = statsArray.find(s => s.type === typeName);
     return (stat && stat.value !== null) ? stat.value : '0';
+}
+
+// פונקציית קיצור שמות: מציגה אות ראשונה של שם פרטי ואת שם המשפחה
+function getShortPlayerName(fullName) {
+    if (!fullName) return '';
+    let translated = typeof window.translateName === 'function' ? window.translateName(fullName) : fullName;
+    let parts = translated.trim().split(' ');
+    if (parts.length <= 1) return parts[0];
+    return parts[0].charAt(0) + '. ' + parts.slice(1).join(' ');
 }
 
 let modalRefreshTimer = null;
@@ -144,10 +157,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             e.preventDefault();
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
             const clientY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-            
             let targetX = clientX - startX;
             let targetY = clientY - startY;
-
             const boxRect = box.getBoundingClientRect();
             const vW = window.innerWidth;
             const vH = window.innerHeight;
@@ -155,19 +166,16 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             const limitUpY = -((vH - mH) / 2); 
             const limitDownY = vH - ((vH - mH) / 2) - (mH / 2); 
             const limitX = (vW / 2); 
-
             if (targetY < limitUpY) targetY = limitUpY;
             if (targetY > limitDownY) targetY = limitDownY;
             if (targetX > limitX) targetX = limitX;
             if (targetX < -limitX) targetX = -limitX;
-
             window.dragOffsetX = targetX;
             window.dragOffsetY = targetY;
             box.style.transform = `translate(${window.dragOffsetX}px, ${window.dragOffsetY}px)`;
         }
 
         function onDragEnd() { isDragging = false; }
-
         header.addEventListener('mousedown', onDragStart);
         document.addEventListener('mousemove', onDragMove, { passive: false });
         document.addEventListener('mouseup', onDragEnd);
@@ -244,6 +252,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             const h2hData = await h2hRes.json();
             const stdData = await standingsRes.json();
 
+            // הלוגיקה של הגול שלא נגענו בה בכלל!
             let isGoalRecent = false;
             if (window.matchGoalTracker && window.matchGoalTracker[fixtureId] && (Date.now() - window.matchGoalTracker[fixtureId].goalTime < 15000)) isGoalRecent = true;
             if (window.leagueGoalTracker && window.leagueGoalTracker[fixtureId] && (Date.now() - window.leagueGoalTracker[fixtureId].goalTime < 15000)) isGoalRecent = true;
@@ -271,7 +280,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             let events = eventsData.response || [];
 
-            /* ------ הרכבים - אלגוריתם פיזור מושלם ------ */
+            /* ------ הרכבים - פיזור מושלם + קיצור שמות פרימיום ------ */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
             if (lineupsData.response && lineupsData.response.length === 2) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
@@ -305,47 +314,47 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         let rowCount = rowPlayers.length;
                         rowPlayers.sort((a, b) => a.originalCol - b.originalCol);
 
-                        let availableWidth = 45;
-                        let startX = isHome ? 75 : 25;
-                        let stepX = numRows > 2 ? availableWidth / (numRows - 2) : 0;
+                        // פיזור רוחב מושלם וסימטרי
+                        let availableWidth = 45; 
+                        let startX = isHome ? 92 : 8; 
+                        let stepX = numRows > 1 ? availableWidth / (numRows - 1) : 0;
 
                         rowPlayers.forEach((p, colIndex) => {
                             let left, top;
+                            if (isHome) { left = startX - (rowIndex * stepX); } 
+                            else { left = startX + (rowIndex * stepX); }
 
-                            // פיזור לרוחב (X) - שימוש מלא בחצי מגרש
-                            if (isHome) {
-                                if (rowIndex === 0) left = 93;
-                                else left = startX - ((rowIndex - 1) * stepX);
-                            } else {
-                                if (rowIndex === 0) left = 7;
-                                else left = startX + ((rowIndex - 1) * stepX);
-                            }
-
-                            // פיזור לאורך (Y) מתמטי מדויק - לעולם לא יעלו אחד על השני!
                             top = (100 / (rowCount + 1)) * (colIndex + 1);
 
                             let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
                             if (bgColor && !bgColor.startsWith('#')) bgColor = '#' + bgColor;
-                            
                             let textColor = isHome ? (hL.team.colors?.player?.number || '000000') : (aL.team.colors?.player?.number || 'ffffff');
                             if (textColor && !textColor.startsWith('#')) textColor = '#' + textColor;
                             
-                            let name = typeof window.translateName === 'function' ? window.translateName(p.player.name) : p.player.name;
+                            // קריאה לפונקציית הקיצור החדשה!
+                            let shortName = getShortPlayerName(p.player.name);
                             
                             let teamIdForEvent = isHome ? homeId : awayId;
                             let subEvent = events.find(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && e.player.name === p.player.name);
                             
-                            let subHtml = '';
+                            let subBadgeHtml = '';
+                            let subTextHtml = '';
                             if (subEvent) {
-                                let subInName = typeof window.translateName === 'function' ? window.translateName(subEvent.assist.name) : subEvent.assist.name;
+                                let subInShortName = getShortPlayerName(subEvent.assist.name);
                                 let subTime = subEvent.time.elapsed;
-                                subHtml = `<div class="pitch-player-sub">🔃 ${subInName} (${subTime}')</div>`;
+                                // תג קטן על העיגול
+                                subBadgeHtml = `<div class="pitch-player-sub-badge">🔃${subTime}'</div>`;
+                                // טקסט ירוק ועדין מתחת לשם הראשי
+                                subTextHtml = `<div style="font-size:9px; color:#10b981; margin-top:1px; font-weight:bold; text-shadow:1px 1px 2px #000;">(${subInShortName})</div>`;
                             }
                             
                             html += `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
-                                <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
-                                <div class="pitch-player-name">${name}</div>
-                                ${subHtml}
+                                <div style="position:relative;">
+                                    <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
+                                    ${subBadgeHtml}
+                                </div>
+                                <div class="pitch-player-name">${shortName}</div>
+                                ${subTextHtml}
                             </div>`;
                         });
                     });
