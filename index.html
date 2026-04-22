@@ -714,10 +714,10 @@
                 // מפעילים את הטיימר לדפדוף כל 10 שניות (עבור 7 משחקים)
                 if (!window.livePageInterval) {
                     window.livePageInterval = setInterval(() => {
-                        if (window.allLiveMatches && window.allLiveMatches.length > 7) {
+                        if (window.allLiveMatches && window.allLiveMatches.length > 6) {
                             window.currentLivePage++;
                             // אם הגענו לסוף - חוזרים להתחלה
-                            if (window.currentLivePage * 7 >= window.allLiveMatches.length) {
+                            if (window.currentLivePage * 6 >= window.allLiveMatches.length) {
                                 window.currentLivePage = 0;
                             }
                             renderLivePage();
@@ -737,7 +737,7 @@
             }
 
             // לוקח 7 משחקים לעמוד הנוכחי
-            const startIndex = window.currentLivePage * 7;
+            const startIndex = window.currentLivePage * 6;
             const pageMatches = window.allLiveMatches.slice(startIndex, startIndex + 7);
 
             const grouped = {};
