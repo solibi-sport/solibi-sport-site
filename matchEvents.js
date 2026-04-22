@@ -271,7 +271,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             let events = eventsData.response || [];
 
-            /* ------ הרכבים - פיזור רחב + חכם + רחבות 5 ------ */
+            /* ------ הרכבים - אלגוריתם פיזור מושלם ------ */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
             if (lineupsData.response && lineupsData.response.length === 2) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
@@ -279,47 +279,51 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 
                 const renderPlayers = (players, isHome) => {
                     let rows = {};
-                    players.forEach(p => {
-                        let grid = p.player.grid || '1:1';
-                        let [row, col] = grid.split(':').map(Number);
-                        if (!row) row = 1;
+                    players.forEach((p, idx) => {
+                        let row = 1, col = 1;
+                        if (p.player.grid) {
+                            let parts = p.player.grid.split(':');
+                            row = parseInt(parts[0]) || 1;
+                            col = parseInt(parts[1]) || 1;
+                        } else {
+                            if (idx === 0) row = 1;
+                            else if (idx < 5) row = 2;
+                            else if (idx < 9) row = 3;
+                            else row = 4;
+                            col = idx;
+                        }
                         if (!rows[row]) rows[row] = [];
-                        rows[row].push({ ...p, originalCol: col || 1 });
+                        rows[row].push({ ...p, originalCol: col });
                     });
 
-                    let maxRow = Math.max(...Object.keys(rows).map(Number));
+                    let sortedRows = Object.keys(rows).map(Number).sort((a, b) => a - b);
+                    let numRows = sortedRows.length;
                     let html = '';
-                    
-                    Object.keys(rows).forEach(r => {
-                        let rowPlayers = rows[r];
-                        let rowNum = parseInt(r);
-                        let rowCount = rowPlayers.length;
 
+                    sortedRows.forEach((r, rowIndex) => {
+                        let rowPlayers = rows[r];
+                        let rowCount = rowPlayers.length;
                         rowPlayers.sort((a, b) => a.originalCol - b.originalCol);
 
-                        // סדר אנכי חכם - מונע חפיפה וממרכז את השחקנים!
-                        let topPositions;
-                        if (rowCount === 1) topPositions = [50];
-                        else if (rowCount === 2) topPositions = [35, 65];
-                        else if (rowCount === 3) topPositions = [20, 50, 80];
-                        else if (rowCount === 4) topPositions = [15, 38, 62, 85];
-                        else if (rowCount === 5) topPositions = [10, 30, 50, 70, 90];
-                        else topPositions = Array.from({length: rowCount}, (_, i) => 10 + (80 / (rowCount - 1)) * i);
+                        let availableWidth = 45;
+                        let startX = isHome ? 75 : 25;
+                        let stepX = numRows > 2 ? availableWidth / (numRows - 2) : 0;
 
-                        rowPlayers.forEach((p, index) => {
+                        rowPlayers.forEach((p, colIndex) => {
                             let left, top;
 
-                            // פריסה אופקית רחבה על כל החצי
+                            // פיזור לרוחב (X) - שימוש מלא בחצי מגרש
                             if (isHome) {
-                                if (rowNum === 1) left = 96; // שוער ברחבת 5
-                                else left = 78 - ((rowNum - 2) * (26 / Math.max(1, maxRow - 2)));
+                                if (rowIndex === 0) left = 93;
+                                else left = startX - ((rowIndex - 1) * stepX);
                             } else {
-                                if (rowNum === 1) left = 4; // שוער ברחבת 5
-                                else left = 22 + ((rowNum - 2) * (26 / Math.max(1, maxRow - 2)));
+                                if (rowIndex === 0) left = 7;
+                                else left = startX + ((rowIndex - 1) * stepX);
                             }
-                            
-                            top = topPositions[index];
-                            
+
+                            // פיזור לאורך (Y) מתמטי מדויק - לעולם לא יעלו אחד על השני!
+                            top = (100 / (rowCount + 1)) * (colIndex + 1);
+
                             let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
                             if (bgColor && !bgColor.startsWith('#')) bgColor = '#' + bgColor;
                             
