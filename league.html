@@ -552,7 +552,8 @@
                     return weightA - weightB;
                 });
 
-                window.allStandingsData = standings;
+               window.originalStandingsData = JSON.parse(JSON.stringify(standings));
+                window.allStandingsData = JSON.parse(JSON.stringify(standings));
                 buildStandingsUI();
 
             } catch (error) {
@@ -610,20 +611,23 @@
         function renderStandingsTable(groupIndex) {
             const standingsArray = window.allStandingsData[groupIndex];
             if (!standingsArray) return;
-
             let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
-
+            
             standingsArray.forEach(item => {
                 const hebrewName = typeof translateName === 'function' ? translateName(item.team.name) : item.team.name;
                 let trendHtml = item.status === 'up' ? '<span class="trend-up">▲</span>' : (item.status === 'down' ? '<span class="trend-down">▼</span>' : '<span class="trend-same">-</span>');
+                
+                // עיצוב לייב מיוחד לקבוצות שמשחקות עכשיו
+                let liveClass = item.isLiveUpdated ? 'background: rgba(124, 168, 86, 0.15);' : '';
+                let liveDot = item.isLiveUpdated ? '<span style="color:#ef4444; font-size:9px; animation: blink 1.5s infinite; margin-right:6px; vertical-align: middle;">⬤</span>' : '';
 
-                html += `<tr>
+                html += `<tr style="${liveClass}">
                     <td>${trendHtml}</td>
                     <td style="color: #94a3b8; font-weight: bold;">${item.rank}</td>
                     <td>
                         <div class="team-identity">
                             <img src="${item.team.logo}" class="team-logo">
-                            <span class="team-name-text">${hebrewName}</span>
+                            <span class="team-name-text">${hebrewName}${liveDot}</span>
                         </div>
                     </td>
                     <td>${item.all.played}</td>
@@ -636,8 +640,7 @@
                     <td><strong class="points">${item.points}</strong></td>
                 </tr>`;
             });
-            html += `</table>`;
-            document.getElementById('standings-render-area').innerHTML = html;
+            document.getElementById('standings-render-area').innerHTML = html + `</table>`;
         }
 
         async function fetchAndRenderKnockouts() {
