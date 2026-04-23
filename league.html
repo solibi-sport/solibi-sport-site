@@ -372,9 +372,8 @@
     </footer>
 
       <script>
-        const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
-
-        const urlParams = new URLSearchParams(window.location.search);
+        
+      const urlParams = new URLSearchParams(window.location.search);
         const LEAGUE_ID = urlParams.get('id') || 39;
         const LEAGUE_NAME = urlParams.get('name') || "הליגה האנגלית";
 
@@ -458,9 +457,8 @@
             }
 
             try {
-                const response = await fetch(`https://v3.football.api-sports.io/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
+                // 👇 הפנייה המאובטחת לשרת שלנו 👇
+                const response = await fetch(`/api/football-standings?league=${LEAGUE_ID}&season=${SEASON}`);
                 const data = await response.json();
 
                 if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
@@ -493,8 +491,6 @@
                                 teamMap.set(teamId, JSON.parse(JSON.stringify(item)));
                             } else {
                                 let existing = teamMap.get(teamId);
-
-                                // פשוט לוקחים את הנתון הכי מעודכן (זה עם הכי הרבה משחקים, או זה עם הכי הרבה נקודות אם המשחקים שווים)
                                 if (item.all.played > existing.all.played || (item.all.played === existing.all.played && item.points > existing.points)) {
                                     teamMap.set(teamId, JSON.parse(JSON.stringify(item)));
                                 }
@@ -504,7 +500,6 @@
 
                     let combined = Array.from(teamMap.values());
 
-                    // ביטול טבלה כללית בבלגיה (144)
                     if (parseInt(LEAGUE_ID) !== 144) {
                         if (combined.length > 0) {
                             combined.sort((a, b) => {
@@ -529,7 +524,6 @@
                     }
                 }
 
-                // 1. מחיקת טבלאות באנגלית (סינון זבל)
                 if (standings.length > 1) {
                     standings = standings.filter(group => {
                         let gName = translateGroupName(group[0].group);
@@ -540,7 +534,6 @@
                     });
                 }
 
-                // 2. סדר עדיפויות מוחלט להופעה בתפריט הנפתח
                 const orderPriority = {
                     "טבלה כללית": 1, "עונה סדירה": 2, "פלייאוף עליון": 3, "פלייאוף אמצעי": 4,
                     "פלייאוף תחתון": 5, "מזרח": 6, "מערב": 7, "בית א'": 8, "בית ב'": 9, "בית ג'": 10, "בית ד'": 11
@@ -617,7 +610,6 @@
                 const hebrewName = typeof translateName === 'function' ? translateName(item.team.name) : item.team.name;
                 let trendHtml = item.status === 'up' ? '<span class="trend-up">▲</span>' : (item.status === 'down' ? '<span class="trend-down">▼</span>' : '<span class="trend-same">-</span>');
                 
-                // עיצוב לייב מיוחד לקבוצות שמשחקות עכשיו
                 let liveClass = item.isLiveUpdated ? 'background: rgba(124, 168, 86, 0.15);' : '';
                 let liveDot = item.isLiveUpdated ? '<span style="color:#ef4444; font-size:9px; animation: blink 1.5s infinite; margin-right:6px; vertical-align: middle;">⬤</span>' : '';
 
@@ -648,9 +640,8 @@
             container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold; color:#cbd5e1;">טוען שלבי נוקאאוט... 🏆</div>';
 
             try {
-                const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
+                // 👇 הפנייה המאובטחת לשרת שלנו (נוקאאוט/משחקים) 👇
+                const response = await fetch(`/api/football-fixtures?league=${LEAGUE_ID}&season=${SEASON}`);
                 const data = await response.json();
                 const allFixtures = data.response || [];
 
@@ -782,7 +773,6 @@ function updateLiveStandings() {
             if (!window.originalStandingsData || window.originalStandingsData.length === 0) return;
             if (!allMatches || allMatches.length === 0) return;
 
-            // מוצאים רק משחקים שקורים *עכשיו*
             const liveStatuses = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'];
             const liveMatches = allMatches.filter(m => liveStatuses.includes(m.fixture.status.short));
 
@@ -790,46 +780,36 @@ function updateLiveStandings() {
             const isKnockout = selector && selector.value === 'knockout';
 
             if (liveMatches.length === 0) {
-                // אם אין משחקים חיים - מחזירים את הטבלה המקורית ללא שינוי
                 window.allStandingsData = JSON.parse(JSON.stringify(window.originalStandingsData));
                 if (!isKnockout) renderStandingsTable(selector ? parseInt(selector.value) : 0);
                 return;
             }
 
-            // לוקחים עותק של הטבלה המקורית
             let liveStandings = JSON.parse(JSON.stringify(window.originalStandingsData));
 
             liveStandings.forEach(group => {
-                // שולפים את השם האמיתי של הטבלה הנוכחית בעברית
                 let gName = translateGroupName(group[0].group);
 
                 group.forEach(teamStats => {
                     const teamId = teamStats.team.id;
                     
-                    // מחפשים את המשחק של הקבוצה הזו עכשיו
                     const match = liveMatches.find(m => {
-                        // בודקים קודם כל אם הקבוצה בכלל משחקת
                         if (m.teams.home.id !== teamId && m.teams.away.id !== teamId) return false;
                         
                         let matchRoundStr = (m.league.round || "").toLowerCase();
                         let isPlayoffMatch = matchRoundStr.includes("championship") || matchRoundStr.includes("relegation") || matchRoundStr.includes("play") || matchRoundStr.includes("conference");
                         let isRegularMatch = matchRoundStr.includes("regular");
 
-                        // --- הלוגיקה החדשה לקיזוז ---
-                        // אם אנחנו בליגה עם קיזוז (כרגע הוגדרה הליגה הבלגית 144) 
-                        // והמשחק הוא פלייאוף - אל תעדכן את ה"עונה סדירה" או ה"טבלה כללית"!
-                        let isKizuzLeague = parseInt(LEAGUE_ID) === 144; // ניתן להוסיף עוד IDs למערך פה אם תרצה בעתיד
+                        let isKizuzLeague = parseInt(LEAGUE_ID) === 144; 
                         
                         if (isKizuzLeague && (gName === "עונה סדירה" || gName === "טבלה כללית") && isPlayoffMatch) {
                             return false; 
                         }
                         
-                        // לגבי *כל* הליגות: אם הטבלה היא פלייאוף, והמשחק הוא משחק עונה סדירה - כמובן שאין מה לעדכן
                         if (gName.includes("פלייאוף") && isRegularMatch) {
                             return false;
                         }
 
-                        // אם עברנו, מאשרים את המשחק לטבלה הזו!
                         return true;
                     });
 
@@ -838,13 +818,11 @@ function updateLiveStandings() {
                         const goalsFor = isHome ? (match.goals.home || 0) : (match.goals.away || 0);
                         const goalsAgainst = isHome ? (match.goals.away || 0) : (match.goals.home || 0);
 
-                        // עדכון זמני של המשחקים והשערים
                         teamStats.all.played += 1;
                         teamStats.all.goals.for += goalsFor;
                         teamStats.all.goals.against += goalsAgainst;
                         teamStats.goalsDiff = teamStats.all.goals.for - teamStats.all.goals.against;
 
-                        // עדכון ניצחונות ונקודות
                         if (goalsFor > goalsAgainst) {
                             teamStats.all.win += 1;
                             teamStats.points += 3;
@@ -855,19 +833,16 @@ function updateLiveStandings() {
                             teamStats.all.lose += 1;
                         }
                         
-                        // מדליק דגל לעיצוב הלייב
                         teamStats.isLiveUpdated = true;
                     }
                 });
 
-                // מיון מחדש אחרי חישוב הלייב
                 group.sort((a, b) => {
                     if (b.points !== a.points) return b.points - a.points;
                     if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
                     return b.all.goals.for - a.all.goals.for;
                 });
                 
-                // סידור מספר המיקום מחדש
                 group.forEach((t, idx) => { t.rank = idx + 1; });
             });
 
@@ -883,9 +858,8 @@ function updateLiveStandings() {
                     return;
                 }
 
-                const response = await fetch(`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
-                    headers: { 'x-apisports-key': API_KEY }
-                });
+                // 👇 הפנייה המאובטחת לשרת שלנו (משחקים) 👇
+                const response = await fetch(`/api/football-fixtures?league=${LEAGUE_ID}&season=${SEASON}`);
                 const data = await response.json();
 
                 if(!data.response || data.response.length === 0) {
@@ -1044,7 +1018,8 @@ function updateLiveStandings() {
             const container = document.getElementById('api-stats-list');
             container.innerHTML = '<div style="text-align:center; padding: 30px; color: var(--text-light);">מעדכן נתונים... ⏳</div>';
             try {
-                const response = await fetch(`https://v3.football.api-sports.io/players/${endpoint}?league=${LEAGUE_ID}&season=${SEASON}`, { headers: { 'x-apisports-key': API_KEY } });
+                // 👇 הפנייה המאובטחת לשרת שלנו (שחקנים) 👇
+                const response = await fetch(`/api/football-players?endpoint=${endpoint}&league=${LEAGUE_ID}&season=${SEASON}`);
                 const data = await response.json();
                 if (!data.response || data.response.length === 0) { container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתונים זמינים</div>'; return; }
 
@@ -1227,7 +1202,7 @@ function updateLiveStandings() {
         // מרענן את המשחקים כל דקה
         setInterval(getFixtures, 60000);
         // מרענן את הטבלה הרשמית כל 3 דקות (כדי לתפוס משחקים שהסתיימו, בלי לבזבז לך סתם מלא קריאות API)
-        setInterval(getStandings, 180000);
+        setInterval(getStandings, 180000);  
     </script>
     <script src="matchEvents.js"></script> 
 </body>
