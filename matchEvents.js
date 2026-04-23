@@ -209,12 +209,12 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         }
 
         try {
-            const headers = { 'x-apisports-key': '#' };
+            // 👇 המפתח נמחק! פונים לשרת ה"ראוטר" החכם שלנו שבנינו הרגע 👇
             const [eventsRes, statsRes, fixtureRes, lineupsRes] = await Promise.all([
-                fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, { headers }),
-                fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers }),
-                fetch(`https://v3.football.api-sports.io/fixtures?id=${fixtureId}`, { headers }),
-                fetch(`https://v3.football.api-sports.io/fixtures/lineups?fixture=${fixtureId}`, { headers })
+                fetch(`/api/football-proxy?endpoint=fixtures/events&fixture=${fixtureId}`),
+                fetch(`/api/football-proxy?endpoint=fixtures/statistics&fixture=${fixtureId}`),
+                fetch(`/api/football-proxy?endpoint=fixtures&id=${fixtureId}`),
+                fetch(`/api/football-proxy?endpoint=fixtures/lineups&fixture=${fixtureId}`)
             ]);
             
             const eventsData = await eventsRes.json();
@@ -244,9 +244,10 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 else matchStatus = 'לא התחיל';
             }
 
+            // 👇 הפנייה השנייה המאובטחת 👇
             const [h2hRes, standingsRes] = await Promise.all([
-                fetch(`https://v3.football.api-sports.io/fixtures/headtohead?h2h=${homeId}-${awayId}&last=5`, { headers }),
-                fetch(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, { headers })
+                fetch(`/api/football-proxy?endpoint=fixtures/headtohead&h2h=${homeId}-${awayId}&last=5`),
+                fetch(`/api/football-standings?league=${leagueId}&season=${season}`)
             ]);
             const h2hData = await h2hRes.json();
             const stdData = await standingsRes.json();
@@ -285,8 +286,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 const aL = lineupsData.response.find(r => r.team.id === awayId) || lineupsData.response[1];
                 
                 const renderPlayersFixed = (players, isHome) => {
-                    // אלו ה-11 מיקומים המושלמים במגרש - הם חקוקים באבן ולא ישתנו!
-                    // סדר: שוער, מגן, בלם, בלם, מגן, קשר, קשר, קשר, חלוץ/כנף, חלוץ, חלוץ/כנף
                     const homePositions = [
                         { left: 93, top: 50 }, // שוער ברחבת 5
                         { left: 76, top: 15 }, // מגן ימני על קו 16
@@ -318,9 +317,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     let html = '';
                     const fixedPositions = isHome ? homePositions : awayPositions;
                     
-                    // רצים רק על 11 השחקנים הראשונים (הפותחים)
                     players.slice(0, 11).forEach((p, index) => {
-                        let pos = fixedPositions[index] || fixedPositions[0]; // פולבק ליתר ביטחון
+                        let pos = fixedPositions[index] || fixedPositions[0]; 
                         let left = pos.left;
                         let top = pos.top;
 
@@ -356,7 +354,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     return html;
                 };
 
-                // התצוגה אומרת את המערך האמיתי מה-API, אבל הציור עצמו הוא תמיד ה-4-3-3 המושלם שלנו
                 lineupsHtml = `
                 <div style="padding: 10px 15px;">
                     <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:5px; color:#a0aec0;">
