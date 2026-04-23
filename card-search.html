@@ -122,10 +122,22 @@
         .trend-down { color: #ef4444; display: flex; align-items: center; gap: 4px; font-weight: 900; font-size: 13px; background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 6px;}
         .trend-item svg { width: 14px; height: 14px; stroke-width: 3;}
 
-        /* עיצוב תוצאות לייב */
+        /* עיצוב תוצאות לייב - מתוקן */
+        .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid var(--brand-green); margin-bottom: 8px; }
+        .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
+
         .live-match-card-light { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl; margin: 0 10px 8px 10px; }
         .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
 
+        .match-teams-col { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; flex: 1; min-width: 0; }
+        .team-line { display: flex; align-items: center; gap: 8px; height: 16px; }
+        .team-line img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
+        .team-line span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 105px; }
+
+        .match-score-col { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 40px; flex-shrink: 0; background: #f0f4f8; padding: 4px 8px; border-radius: 6px; position: relative; }
+        .match-score-col .score-num { font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center; }
+        .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px; }
+        
         /* === מרכז הדף: flex-start כדי לדחוף למעלה === */
         .center-wrapper {
             display: flex; 
