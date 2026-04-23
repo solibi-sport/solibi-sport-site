@@ -500,135 +500,153 @@
 
     <script src="translations.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Panels Logic
-            const setupPanel = (headerId, panelId) => {
-                const header = document.getElementById(headerId);
-                const panel = document.getElementById(panelId);
-                if (header && panel) {
-                    header.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        panel.classList.toggle('expanded');
-                    });
-                }
-            };
-            setupPanel('live-panel-header', 'livePanel');
-            setupPanel('trend-panel-header', 'trendPanel');
+    const LEAGUE_NAMES_MAP = {
+            383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה",
+            40: "אנגלית שנייה", 41: "אנגלית שלישית", 42: "אנגלית רביעית", 141: "ספרדית שנייה", 136: "איטלקית שנייה", 79: "גרמנית שנייה", 62: "צרפתית שנייה",
+            88: "הולנדית ראשונה", 144: "בלגית ראשונה", 94: "פורטוגלית ראשונה", 203: "טורקית ראשונה", 179: "סקוטית ראשונה", 119: "דנית ראשונה",
+            113: "שבדית ראשונה", 106: "שווייצרית ראשונה", 218: "אוסטרית ראשונה", 172: "בולגרית ראשונה", 286: "סרבית ראשונה", 271: "הונגרית ראשונה",
+            332: "סלובקית ראשונה", 373: "סלובנית ראשונה", 288: "דרום אפריקאית ראשונה", 362: "גיאורגית ראשונה", 343: "אסטונית ראשונה",
+            345: "אזרבייג'אנית", 71: "ברזילאית ראשונה", 72: "ברזילאית שנייה", 128: "ארגנטינאית ראשונה", 239: "קולומביאנית ראשונה",
+            268: "אורוגוואית ראשונה", 253: "אמריקאית ראשונה", 307: "סעודית ראשונה", 301: "ליגת האמירויות", 2: "ליגת האלופות",
+            3: "הליגה האירופית", 848: "ליגת הקונפרנס", 13: "ליברטדורס", 11: "סודאמריקנה", 1: "מונדיאל",
+            283: "רומנית ראשונה", 197: "יוונית ראשונה", 318: "קפריסאית ראשונה", 333: "אוקראינית ראשונה", 235: "רוסית ראשונה",
+            107: "פולנית ראשונה", 262: "מקסיקנית ראשונה", 98: "יפנית ראשונה", 292: "דרום קוריאנית", 169: "סינית ראשונה",
+            233: "מצרית ראשונה", 200: "מרוקאית ראשונה", 188: "אוסטרלית ראשונה", 5: "ליגת האומות", 4: "יורו", 9: "קופה אמריקה", 17: "אליפות אסיה", 6: "אליפות אפריקה"
+        };
 
-            // Search & Filter Logic
-            const mainInput = document.getElementById('mainSearchInput');
-            const dropdown = document.getElementById('searchDropdown');
-            const cardResult = document.getElementById('cardResult');
-            const dropdownItems = document.querySelectorAll('.dropdown-item');
-            const filterBtn = document.getElementById('filterBtn');
-            const filterDropdown = document.getElementById('filterDropdown');
-            const filterTags = document.querySelectorAll('.filter-tag');
+        const ORDERED_LEAGUES = [
+            383, 384, 39, 140, 135, 78, 61,
+            40, 41, 42, 141, 136, 79, 62, 88, 144, 94, 203, 179, 119, 113, 106, 218, 107, 345, 332, 271, 286, 373,
+            283, 172, 197, 318, 333, 235, 362, 343, 71, 72, 128, 268, 239, 265, 253, 262, 307, 301, 98, 292, 169, 288, 233, 200, 188,
+            2, 3, 848, 5, 4, 13, 11, 9, 17, 6, 1
+        ];
 
-            mainInput.addEventListener('input', function() {
-                if (this.value.length > 0) {
-                    dropdown.classList.add('active');
-                    cardResult.classList.remove('show-result');
-                    filterDropdown.classList.remove('active');
-                } else {
-                    dropdown.classList.remove('active');
-                }
-            });
+        window.matchGoalTracker = window.matchGoalTracker || {};
+        window.allLiveMatches = [];
+        window.currentLivePage = 0;
+        window.livePageInterval = null;
 
-            dropdownItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    mainInput.value = this.querySelector('span').innerText;
-                    dropdown.classList.remove('active');
-                    cardResult.classList.add('show-result');
-                });
-            });
-
-            filterBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                filterDropdown.classList.toggle('active');
-                dropdown.classList.remove('active');
-            });
-
-            filterTags.forEach(tag => {
-                tag.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const siblings = this.parentElement.querySelectorAll('.filter-tag');
-                    siblings.forEach(s => s.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-
-            document.addEventListener('click', function(e) {
-                const closeIfNotContains = (element, target) => {
-                    if (element && element.classList.contains('expanded') && !element.contains(target)) {
-                        element.classList.remove('expanded');
-                    }
-                };
-                closeIfNotContains(document.getElementById('livePanel'), e.target);
-                closeIfNotContains(document.getElementById('trendPanel'), e.target);
-
-                if (dropdown && dropdown.classList.contains('active') && e.target !== mainInput && !dropdown.contains(e.target)) {
-                    dropdown.classList.remove('active');
-                }
-                if (filterDropdown && filterDropdown.classList.contains('active') && e.target !== filterBtn && !filterDropdown.contains(e.target)) {
-                    filterDropdown.classList.remove('active');
-                }
-            });
-        });
-        // --- פונקציה להפעלת פאנל כדורגל לייב בצד שמאל דרך השרת שלנו ---
-        async function fetchLiveScoresPanel() {
-            const liveContent = document.getElementById('live-content');
-            if (!liveContent) return;
-
+        async function fetchLiveMatches() {
             try {
                 const MY_LEAGUES = "39-140-135-78-61-383-384-2-3-848-88-144-94-203-253-307-71-128-13-11-1-107-141-40-41-42-43-136-119-113-106-95-179-114-103-283-72-239-268-288-373-73-286-271-332-66-218-172-108-109-110-111-112-254-255-266-362-343-265-272-345-301-197-318-333-235-262-98-292-169-233-200-188-5-4-9-17-6";
-                // פנייה לראוטר המאובטח שלנו ב-Vercel (אין מפתח חשוף!)
+                // פנייה לראוטר המאובטח שלנו בורסל
                 const response = await fetch(`/api/football-proxy?endpoint=fixtures&live=${MY_LEAGUES}`);
                 const data = await response.json();
-                
-                if (data && data.response && data.response.length > 0) {
-                    liveContent.innerHTML = '';
-                    
-                    data.response.slice(0, 5).forEach(match => {
-                        const homeTeam = typeof window.translateName === 'function' ? window.translateName(match.teams.home.name) : match.teams.home.name;
-                        const awayTeam = typeof window.translateName === 'function' ? window.translateName(match.teams.away.name) : match.teams.away.name;
-                        
-                        let matchStatus = '';
-                        const shortStatus = match.fixture.status.short;
-                        if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
-                        else if (shortStatus === 'HT') matchStatus = 'מחצית';
-                        else if (match.fixture.status.elapsed) matchStatus = `${match.fixture.status.elapsed}'`;
-                        else matchStatus = 'לא התחיל';
+                window.allLiveMatches = data.response || [];
 
-                        liveContent.innerHTML += `
-                            <div class="live-match-card-light">
-                                <div class="match-teams-col">
-                                    <div class="team-line"><img src="${match.teams.home.logo}"> <span>${homeTeam}</span></div>
-                                    <div class="team-line"><img src="${match.teams.away.logo}"> <span>${awayTeam}</span></div>
-                                </div>
-                                <div class="match-score-col">
-                                    <span class="minute">${matchStatus}</span>
-                                    <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
-                                        <span class="score-num">${match.goals.home ?? '-'}</span>
-                                        <span class="score-num">${match.goals.away ?? '-'}</span>
-                                    </div>
+                window.allLiveMatches.sort((a, b) => {
+                    let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
+                    let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
+                    if (idxA === -1) idxA = 999;
+                    if (idxB === -1) idxB = 999;
+                    return idxA - idxB;
+                });
+
+                window.currentLivePage = 0;
+                renderLivePage();
+
+                // הפעלת טיימר הדפדוף (כל 10 שניות מעביר עמוד)
+                if (!window.livePageInterval) {
+                    window.livePageInterval = setInterval(() => {
+                        if (window.allLiveMatches && window.allLiveMatches.length > 6) {
+                            window.currentLivePage++;
+                            if (window.currentLivePage * 6 >= window.allLiveMatches.length) {
+                                window.currentLivePage = 0;
+                            }
+                            renderLivePage();
+                        }
+                    }, 10000);
+                }
+            } catch (error) { console.error("שגיאה במשיכת נתונים בלייב:", error); }
+        }
+
+        function renderLivePage() {
+            const contentDiv = document.getElementById('live-content');
+            if (!window.allLiveMatches || window.allLiveMatches.length === 0) {
+                contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים בעולם ⚽</div>';
+                return;
+            }
+
+            const startIndex = window.currentLivePage * 6;
+            const pageMatches = window.allLiveMatches.slice(startIndex, startIndex + 6);
+
+            const grouped = {};
+            pageMatches.forEach(m => {
+                let leagueName = LEAGUE_NAMES_MAP[m.league.id];
+                if (!leagueName) leagueName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
+                if(!grouped[leagueName]) grouped[leagueName] = { logo: m.league.logo, matches: [] };
+                grouped[leagueName].matches.push(m);
+            });
+
+            let allHtml = '';
+            Object.keys(grouped).forEach(leagueName => {
+                const leagueData = grouped[leagueName];
+                let leagueHtml = `
+                    <div class="live-league-header">
+                        <img src="${leagueData.logo}">
+                        <span>${leagueName}</span>
+                    </div>
+                `;
+                let matchesHtml = '';
+                
+                leagueData.matches.forEach(m => {
+                    const homeTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
+                    const awayTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
+                    const fixId = m.fixture.id;
+                    const currentHome = m.goals.home !== null ? m.goals.home : 0;
+                    const currentAway = m.goals.away !== null ? m.goals.away : 0;
+                    
+                    if (window.matchGoalTracker[fixId]) {
+                        const prev = window.matchGoalTracker[fixId];
+                        if (currentHome > prev.home || currentAway > prev.away) window.matchGoalTracker[fixId].goalTime = Date.now();
+                        window.matchGoalTracker[fixId].home = currentHome;
+                        window.matchGoalTracker[fixId].away = currentAway;
+                    } else {
+                        window.matchGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
+                    }
+
+                    let matchStatus = '';
+                    const shortStatus = m.fixture.status.short;
+                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
+                    else if (shortStatus === 'HT') matchStatus = 'מחצית';
+                    else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
+                    else matchStatus = 'לא התחיל';
+                    
+                    const isGoalRecent = (Date.now() - window.matchGoalTracker[fixId].goalTime) < 15000;
+                    const goalOverlay = isGoalRecent ? `<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #7a9966; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; border-radius: 6px; z-index: 10; animation: goalAlertPulse 0.6s infinite alternate;">שער!</div>` : '';
+
+                    const safeHomeName = encodeURIComponent(m.teams.home.name);
+                    const safeAwayName = encodeURIComponent(m.teams.away.name);
+
+                    matchesHtml += `
+                        <a href="#" onclick="if(typeof openMatchEvents==='function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" class="live-match-card-light">
+                            <div class="match-teams-col">
+                                <div class="team-line"><img src="${m.teams.home.logo}"> <span>${homeTeam}</span></div>
+                                <div class="team-line"><img src="${m.teams.away.logo}"> <span>${awayTeam}</span></div>
+                            </div>
+                            <div class="match-score-col">
+                                ${goalOverlay}
+                                <span class="minute">${matchStatus}</span>
+                                <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
+                                    <span class="score-num">${currentHome}</span>
+                                    <span class="score-num">${currentAway}</span>
                                 </div>
                             </div>
-                        `;
-                    });
-                } else {
-                    liveContent.innerHTML = '<div style="text-align:center; padding: 20px; color: #8fa0b3; font-weight: bold;">אין משחקים חיים כרגע</div>';
-                }
-            } catch (error) {
-                console.error("שגיאה בלייב פאנל:", error);
-                liveContent.innerHTML = '<div style="text-align:center; padding: 20px; color: red;">שגיאת תקשורת</div>';
-            }
+                        </a>
+                    `;
+                });
+                allHtml += leagueHtml + matchesHtml;
+            });
+
+            contentDiv.innerHTML = allHtml;
         }
-        
-        // הפעלה כשהדף עולה
+
+        // חובה: מאזין לעליית הדף כדי להפעיל את הפונקציה
         document.addEventListener('DOMContentLoaded', () => {
-            fetchLiveScoresPanel();
-            setInterval(fetchLiveScoresPanel, 60000);
-        });
+            fetchLiveMatches();
+            // מרענן את נתוני השרת כל דקה
+            setInterval(fetchLiveMatches, 60000); 
+        });    
     </script>
 
 </body>
