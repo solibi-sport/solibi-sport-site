@@ -209,7 +209,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         }
 
         try {
-            const headers = { 'x-apisports-key': 'd580159a7d19ead2bc2054c8b57e6ee3' };
+            const headers = { 'x-apisports-key': '#' };
             const [eventsRes, statsRes, fixtureRes, lineupsRes] = await Promise.all([
                 fetch(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureId}`, { headers }),
                 fetch(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureId}`, { headers }),
