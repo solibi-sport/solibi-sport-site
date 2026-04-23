@@ -498,6 +498,7 @@
         </div>
     </footer>
 
+    <script src="translations.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Panels Logic
@@ -572,6 +573,61 @@
                     filterDropdown.classList.remove('active');
                 }
             });
+        });
+        // --- פונקציה להפעלת פאנל כדורגל לייב בצד שמאל דרך השרת שלנו ---
+        async function fetchLiveScoresPanel() {
+            const liveContent = document.getElementById('live-content');
+            if (!liveContent) return;
+
+            try {
+                const MY_LEAGUES = "39-140-135-78-61-383-384-2-3-848-88-144-94-203-13-11-1";
+                // פנייה לראוטר המאובטח שלנו ב-Vercel (אין מפתח חשוף!)
+                const response = await fetch(`/api/football-proxy?endpoint=fixtures&live=${MY_LEAGUES}`);
+                const data = await response.json();
+                
+                if (data && data.response && data.response.length > 0) {
+                    liveContent.innerHTML = '';
+                    
+                    data.response.slice(0, 5).forEach(match => {
+                        const homeTeam = typeof window.translateName === 'function' ? window.translateName(match.teams.home.name) : match.teams.home.name;
+                        const awayTeam = typeof window.translateName === 'function' ? window.translateName(match.teams.away.name) : match.teams.away.name;
+                        
+                        let matchStatus = '';
+                        const shortStatus = match.fixture.status.short;
+                        if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
+                        else if (shortStatus === 'HT') matchStatus = 'מחצית';
+                        else if (match.fixture.status.elapsed) matchStatus = `${match.fixture.status.elapsed}'`;
+                        else matchStatus = 'לא התחיל';
+
+                        liveContent.innerHTML += `
+                            <div class="live-match-card-light">
+                                <div class="match-teams-col">
+                                    <div class="team-line"><img src="${match.teams.home.logo}"> <span>${homeTeam}</span></div>
+                                    <div class="team-line"><img src="${match.teams.away.logo}"> <span>${awayTeam}</span></div>
+                                </div>
+                                <div class="match-score-col">
+                                    <span class="minute">${matchStatus}</span>
+                                    <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
+                                        <span class="score-num">${match.goals.home ?? '-'}</span>
+                                        <span class="score-num">${match.goals.away ?? '-'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    liveContent.innerHTML = '<div style="text-align:center; padding: 20px; color: #8fa0b3; font-weight: bold;">אין משחקים חיים כרגע</div>';
+                }
+            } catch (error) {
+                console.error("שגיאה בלייב פאנל:", error);
+                liveContent.innerHTML = '<div style="text-align:center; padding: 20px; color: red;">שגיאת תקשורת</div>';
+            }
+        }
+        
+        // הפעלה כשהדף עולה
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLiveScoresPanel();
+            setInterval(fetchLiveScoresPanel, 60000);
         });
     </script>
 
