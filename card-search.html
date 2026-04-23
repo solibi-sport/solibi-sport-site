@@ -501,6 +501,35 @@
     <script src="translations.js"></script>
     <script src="matchEvents.js"></script>
     <script>
+        // --- מנגנון פתיחה וסגירה של הפאנלים הצדדיים ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const setupPanel = (headerId, panelId) => {
+                const header = document.getElementById(headerId);
+                const panel = document.getElementById(panelId);
+                if (header && panel) {
+                    header.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        panel.classList.toggle('expanded');
+                    });
+                }
+            };
+            
+            // מפעיל את פאנל הלייב (וגם את פאנל המגמות אם קיים בדף)
+            setupPanel('live-panel-header', 'livePanel');
+            setupPanel('trend-panel-header', 'trendPanel');
+
+            // סגירה כשלוחצים מחוץ לפאנל
+            document.addEventListener('click', function(e) {
+                const closeIfNotContains = (element, target) => {
+                    if (element && element.classList.contains('expanded') && !element.contains(target)) {
+                        element.classList.remove('expanded');
+                    }
+                };
+                closeIfNotContains(document.getElementById('livePanel'), e.target);
+                closeIfNotContains(document.getElementById('trendPanel'), e.target);
+            });
+        });
+        // ------------------------------------------------
     const LEAGUE_NAMES_MAP = {
             383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה",
             40: "אנגלית שנייה", 41: "אנגלית שלישית", 42: "אנגלית רביעית", 141: "ספרדית שנייה", 136: "איטלקית שנייה", 79: "גרמנית שנייה", 62: "צרפתית שנייה",
