@@ -499,102 +499,81 @@
     </footer>
 
     <script>
-     document.addEventListener('DOMContentLoaded', () => {
-    // --- ניהול הפאנלים בצדדים (נשאר ללא שינוי) ---
-    const setupPanel = (headerId, panelId) => {
-        const header = document.getElementById(headerId);
-        const panel = document.getElementById(panelId);
-        if (header && panel) {
-            header.addEventListener('click', (e) => {
-                e.stopPropagation();
-                panel.classList.toggle('expanded');
-            });
-        }
-    };
-    setupPanel('live-panel-header', 'livePanel');
-    setupPanel('trend-panel-header', 'trendPanel');
-
-    // --- לוגיקת החיפוש החי מול ה-API ---
-    const mainInput = document.getElementById('mainSearchInput');
-    const dropdown = document.getElementById('searchDropdown');
-    const cardResult = document.getElementById('cardResult');
-    
-    // 🚨 שים פה את ה-API KEY האמיתי שלך מתוך הגוגל שיטס 🚨
-    const API_KEY = "הכנס_פה_את_המפתח_שלך";
-    let searchTimeout;
-
-    mainInput.addEventListener('input', function() {
-        const query = this.value.trim();
-        
-        // מתחיל לחפש רק אם הקלדת יותר מ-2 אותיות (למשל "Messi")
-        if (query.length > 2) {
-            clearTimeout(searchTimeout); // מאפס את הטיימר כדי לא להציף את השרת
-            
-            // מראה "טוען" בתפריט
-            dropdown.innerHTML = '<div class="dropdown-item" style="justify-content: center; direction: rtl;">מחפש נתונים בשרת... ⏳</div>';
-            dropdown.classList.add('active');
-            cardResult.classList.remove('show-result');
-
-            // ממתין 600 אלפיות שנייה מסיום ההקלדה ורק אז שולח בקשה ל-API
-            searchTimeout = setTimeout(async () => {
-                try {
-                    // קריאה לנקודת ה"חיפוש" (products ברבים + הפרמטר q שזה Query)
-                    const response = await fetch(`https://www.sportscardspro.com/api/products?t=${API_KEY}&q=${encodeURIComponent(query)}`);
-                    const data = await response.json();
-                    
-                    dropdown.innerHTML = ''; // מנקה את טקסט הטעינה
-
-                    if (data && data.products && data.products.length > 0) {
-                        // לוקח רק את 5 התוצאות הראשונות כדי לא להעמיס על המסך
-                        data.products.slice(0, 5).forEach(product => {
-                            const itemDiv = document.createElement('div');
-                            itemDiv.className = 'dropdown-item';
-                            // יוצר שורה לכל תוצאה
-                            itemDiv.innerHTML = `
-                                <img src="https://via.placeholder.com/30x40/7ca856/ffffff?text=Card" alt="card">
-                                <span style="direction: ltr; text-align: left; width: 100%;">${product['product-name']} - ${product['console-name']}</span>
-                            `;
-                            
-                            // מה קורה כשלוחצים על תוצאה בתפריט?
-                            itemDiv.addEventListener('click', () => {
-                                mainInput.value = product['product-name'];
-                                dropdown.classList.remove('active');
-                                
-                                // שולף את המחיר של דירוג 10 (או מחיר מדורג כללי), וממיר מסנטים לדולרים
-                                const rawPrice = product['psa-10-price'] || product['graded-price'] || product['loose-price'] || 0;
-                                const priceInDollars = (rawPrice / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-                                
-                                // מעדכן את העיצוב שלנו עם הנתונים!
-                                document.querySelector('.mockup-player-name').innerText = product['product-name'];
-                                document.querySelector('.mockup-card-set').innerText = product['console-name'];
-                                document.querySelector('.current-price').innerText = priceInDollars;
-                                
-                                cardResult.classList.add('show-result');
-                            });
-                            
-                            dropdown.appendChild(itemDiv);
-                        });
-                    } else {
-                        dropdown.innerHTML = '<div class="dropdown-item" style="justify-content: center; color: red;">לא נמצאו קלפים תואמים 🤷‍♂️</div>';
-                    }
-                } catch (e) {
-                    console.error("שגיאת API:", e);
-                    dropdown.innerHTML = '<div class="dropdown-item" style="justify-content: center; color: red;">שגיאת התחברות ל-API. תציץ בקונסול (F12).</div>';
+        document.addEventListener('DOMContentLoaded', () => {
+            // Panels Logic
+            const setupPanel = (headerId, panelId) => {
+                const header = document.getElementById(headerId);
+                const panel = document.getElementById(panelId);
+                if (header && panel) {
+                    header.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        panel.classList.toggle('expanded');
+                    });
                 }
-            }, 600);
-            
-        } else {
-            dropdown.classList.remove('active');
-        }
-    });
+            };
+            setupPanel('live-panel-header', 'livePanel');
+            setupPanel('trend-panel-header', 'trendPanel');
 
-    // סגירת חלונות כשלוחצים מחוץ אליהם (נשאר ללא שינוי)
-    document.addEventListener('click', function(e) {
-        if (dropdown && dropdown.classList.contains('active') && e.target !== mainInput && !dropdown.contains(e.target)) {
-            dropdown.classList.remove('active');
-        }
-    });
-});   
+            // Search & Filter Logic
+            const mainInput = document.getElementById('mainSearchInput');
+            const dropdown = document.getElementById('searchDropdown');
+            const cardResult = document.getElementById('cardResult');
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            const filterBtn = document.getElementById('filterBtn');
+            const filterDropdown = document.getElementById('filterDropdown');
+            const filterTags = document.querySelectorAll('.filter-tag');
+
+            mainInput.addEventListener('input', function() {
+                if (this.value.length > 0) {
+                    dropdown.classList.add('active');
+                    cardResult.classList.remove('show-result');
+                    filterDropdown.classList.remove('active');
+                } else {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    mainInput.value = this.querySelector('span').innerText;
+                    dropdown.classList.remove('active');
+                    cardResult.classList.add('show-result');
+                });
+            });
+
+            filterBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterDropdown.classList.toggle('active');
+                dropdown.classList.remove('active');
+            });
+
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const siblings = this.parentElement.querySelectorAll('.filter-tag');
+                    siblings.forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                const closeIfNotContains = (element, target) => {
+                    if (element && element.classList.contains('expanded') && !element.contains(target)) {
+                        element.classList.remove('expanded');
+                    }
+                };
+                closeIfNotContains(document.getElementById('livePanel'), e.target);
+                closeIfNotContains(document.getElementById('trendPanel'), e.target);
+
+                if (dropdown && dropdown.classList.contains('active') && e.target !== mainInput && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+                if (filterDropdown && filterDropdown.classList.contains('active') && e.target !== filterBtn && !filterDropdown.contains(e.target)) {
+                    filterDropdown.classList.remove('active');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
