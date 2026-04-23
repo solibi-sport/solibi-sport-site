@@ -1,1 +1,508 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי - מנוע חיפוש קלפים</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #7ca856;
+            --brand-green-glow: rgba(124, 168, 86, 0.6);
+            --bg-silver-matte: linear-gradient(145deg, #eef4f9 0%, #c9d4e0 100%);
+            --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
+            --text-light: #ffffff;
+            --text-dark: #112845;
+            
+            --sidebar-width: clamp(240px, 20vw, 320px); 
+            --search-width: clamp(380px, 28vw, 480px);
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            font-family: 'Rubik', sans-serif;
+            background: var(--bg-silver-matte);
+            width: 100%;
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* === הדר עליון === */
+        .header {
+            height: 65px;
+            background: var(--element-navy-gradient);
+            border-bottom: 2px solid var(--brand-green);
+            position: relative;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px; 
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
+        
+        .logo-wrapper {
+            background-color: #ffffff; padding: 0 28px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s;
+            height: 52px; display: flex; align-items: center; justify-content: center;
+        }
+        .logo-wrapper:hover { transform: scale(1.05); }
+        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
+
+        .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1;}
+        
+        .personal-area-btn {
+            background: transparent; border: 1.5px solid var(--brand-green);
+            color: #ffffff; padding: 6px 16px; border-radius: 30px; text-decoration: none;
+            font-weight: 700; font-size: clamp(12px, 1vw, 14px); transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
+        }
+        .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; border-color: var(--brand-green); transform: scale(1.05); }
+
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); margin: 0; padding: 0; align-items: center; }
+        .header-nav a { text-decoration: none; color: var(--text-light); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
+        .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
+
+        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
+        
+        .header-search { width: 65%; height: 34px; transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .header-search input { width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit; box-shadow: none; transition: 0.4s ease; }
+        .header-search:focus-within { width: 100%; }
+        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
+
+        /* === גוף הדף === */
+        .main-content {
+            display: flex;
+            flex: 1; 
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* === פאנל שמאלי לייב (מתקפל בלחיצה) === */
+        .collapsible-live-panel {
+            position: absolute;
+            left: 20px;
+            top: 20px; 
+            width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--brand-green);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 50;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: 48px; 
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .collapsible-live-panel.expanded { height: calc(100% - 40px); background: rgba(255, 255, 255, 0.85); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .panel-header { font-size: 14px; font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 48px; cursor: pointer; flex-shrink: 0; transition: 0.3s; }
+        .panel-header:hover { background: rgba(255,255,255,0.4); }
+        .header-title-group { display: flex; align-items: center; gap: 8px; }
+        .toggle-arrow { transition: transform 0.4s ease; color: var(--text-dark); width: 20px; height: 20px;}
+        .collapsible-live-panel.expanded .toggle-arrow { transform: rotate(180deg); }
+
+        .panel-content { position: relative; flex: 1; padding: 10px 0; overflow: hidden; opacity: 0; transition: opacity 0.3s ease; }
+        .collapsible-live-panel.expanded .panel-content { opacity: 1; overflow-y: auto;}
+        .panel-content::-webkit-scrollbar { width: 4px; }
+        .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+
+        /* === מרכז הדף: מיושר למעלה (flex-start) עם ריווח פנימי === */
+        .center-wrapper {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; /* מרים הכל למעלה */
+            width: 100%; 
+            height: 100%;
+            /* המרווח העליון דוחף את הכותרת למיקום יציב */
+            padding: clamp(30px, 8vh, 80px) calc(var(--sidebar-width) + 20px) 20px;
+            gap: clamp(15px, 3vh, 25px); 
+        }
+
+        .premium-title-wrapper {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            width: 100%; max-width: 900px; flex-shrink: 0;
+        }
+
+        .page-title {
+            background: rgba(255, 255, 255, 0.6); padding: 8px 30px; border-radius: 30px;
+            border: 1px solid rgba(124, 168, 86, 0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin: 0; white-space: nowrap; 
+            font-size: clamp(18px, 2vw, 24px); font-weight: 900; letter-spacing: 1px;
+        }
+        
+        .title-dark { color: var(--text-dark); }
+        .title-green { color: var(--brand-green); }
+        .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--brand-green)); border-radius: 2px; }
+        .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
+
+        /* === שורת החיפוש הראשית === */
+        .main-search-wrapper {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            flex-shrink: 0;
+            z-index: 20; 
+        }
+
+        .main-search-input {
+            width: 100%;
+            /* פדינג סימטרי מדויק מימין ומשמאל כדי שהטקסט יהיה בדיוק באמצע המסך */
+            padding: clamp(15px, 2vh, 20px) 60px clamp(15px, 2vh, 20px) 60px; 
+            font-size: clamp(16px, 1.5vw, 20px);
+            font-weight: 700;
+            color: var(--text-dark);
+            border: 2px solid rgba(124, 168, 86, 0.5);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            outline: none;
+            font-family: inherit;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            text-align: center; /* ממורכז בדיוק פלס */
+        }
+
+        .main-search-input:focus {
+            background: #ffffff;
+            border-color: var(--brand-green);
+            box-shadow: 0 15px 35px rgba(124, 168, 86, 0.3);
+            border-radius: 25px 25px 0 0;
+        }
+
+        .main-search-icon {
+            position: absolute; right: 20px; top: 22px; 
+            color: var(--brand-green); pointer-events: none;
+            transition: 0.3s;
+        }
+
+        /* הרשימה הנגללת (Dropdown) */
+        .search-dropdown {
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: #fff;
+            border: 2px solid var(--brand-green);
+            border-top: none;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: none; 
+            flex-direction: column;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .search-dropdown.active {
+            display: flex;
+        }
+
+        .dropdown-item {
+            padding: 12px 25px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: 0.2s;
+            text-align: left; 
+            direction: ltr;
+        }
+
+        .dropdown-item:last-child { border-bottom: none; }
+        
+        .dropdown-item:hover {
+            background: rgba(124, 168, 86, 0.1);
+            color: var(--brand-green);
+            font-weight: 700;
+            padding-left: 30px;
+        }
+
+        .dropdown-item img {
+            width: 30px; height: 40px; object-fit: cover; border-radius: 4px;
+        }
+
+        /* === תצוגת הקלף === */
+        .card-result-mockup {
+            width: 100%;
+            max-width: 900px;
+            background: var(--element-navy-gradient);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: clamp(15px, 2.5vh, 30px);
+            gap: clamp(20px, 3vw, 40px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            height: auto;
+            max-height: calc(100vh - 320px); /* מגביל את הגובה שלא ידרוס את הפוטר */
+            
+            display: none; 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .card-result-mockup.show-result {
+            display: flex;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mockup-image-area {
+            width: 30%; display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.2); border-radius: 12px; padding: 10px;
+            border: 1px solid rgba(255,255,255,0.05); min-height: 200px;
+        }
+
+        .mockup-card-img {
+            max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg');
+            background-size: cover; background-position: center top; width: 100%; aspect-ratio: 2.5/3.5; 
+            border: 3px solid #silver; position: relative;
+        }
+        
+        .mockup-card-img::before {
+            content: "PSA 10 GEM MT"; position: absolute; top: 0; left: 0; right: 0;
+            background: linear-gradient(to right, #cc0000, #ff3333); color: white; font-size: 10px; font-weight: bold;
+            text-align: center; padding: 4px 0; border-radius: 5px 5px 0 0; font-family: sans-serif; letter-spacing: 1px;
+        }
+
+        .mockup-data-area {
+            flex: 1; display: flex; flex-direction: column; justify-content: center;
+            color: #fff; gap: 15px; overflow-y: auto; padding-right: 10px;
+        }
+        .mockup-data-area::-webkit-scrollbar { width: 4px; }
+        .mockup-data-area::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 10px; }
+
+        .mockup-player-name { font-size: clamp(22px, 2.5vw, 32px); font-weight: 900; color: #fff; margin-bottom: 5px; line-height: 1.1; direction: ltr; text-align: right;}
+        .mockup-card-set { font-size: clamp(14px, 1.2vw, 16px); color: #a0aec0; font-weight: 500; direction: ltr; text-align: right;}
+
+        .price-trend-box { display: flex; align-items: center; gap: 20px; background: rgba(255,255,255,0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+        .current-price { font-size: clamp(24px, 2.5vw, 36px); font-weight: 900; color: #fff; font-family: sans-serif; }
+        .trend-indicator { display: flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 6px 12px; border-radius: 30px; font-weight: 700; font-size: clamp(12px, 1.2vw, 15px); border: 1px solid rgba(16, 185, 129, 0.5); direction: ltr; }
+        .trend-indicator svg { width: 16px; height: 16px; }
+
+        .graph-mockup-area { flex: 1; width: 100%; min-height: 120px; background: rgba(0,0,0,0.15); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); position: relative; display: flex; align-items: flex-end; padding: 10px; overflow: hidden; }
+        .graph-title { position: absolute; top: 15px; right: 15px; font-size: 12px; font-weight: 700; color: #8fa0b3; }
+        .chart-svg { width: 100%; height: 100%; overflow: visible; }
+        .chart-line { fill: none; stroke: #10b981; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 5px 5px rgba(16, 185, 129, 0.4)); animation: drawLine 2s ease-out forwards; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+        /* === שורת פוטר === */
+        .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
+
+        @media (max-width: 1000px) {
+            .center-wrapper { padding: clamp(15px, 2vh, 20px) 20px; }
+            .collapsible-live-panel { position: relative; left: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto; margin-bottom: 20px;}
+            html, body { overflow: auto; height: auto; }
+            .card-result-mockup { flex-direction: column; max-height: none; height: auto;}
+            .mockup-image-area { width: 100%; height: 300px; max-height: 40vh; }
+            .mockup-card-img { width: auto; }
+        }
+        @media (max-width: 768px) {
+            .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .header-center-col { flex-direction: column; }
+            .price-trend-box { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-right-col">
+            <a href="index.html" class="logo-wrapper">
+                <img src="a.png" alt="לוגו" class="actual-logo-img" onerror="this.src='https://via.placeholder.com/150x60?text=LOGO'">
+            </a>
+        </div>
+        
+        <div class="header-center-col">
+            <a href="#" class="personal-area-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>לאזור האישי</span>
+            </a>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="index.html">דף הבית</a></li>
+                    <li><a href="pantheon.html">פנתיאון</a></li>
+                    <li><a href="#">ארכיון</a></li>
+                    <li><a href="#">קרדיטים</a></li>
+                    <li><a href="#">צור קשר</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="header-left-col">
+            <div class="header-search">
+                <input type="text" placeholder="חיפוש תוכן...">
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        <aside class="collapsible-live-panel" id="livePanel">
+            <div class="panel-header" id="live-panel-header">
+                <div class="header-title-group">
+                    <span>תוצאות לייב</span>
+                    <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
+                </div>
+                <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="panel-content" id="live-content">
+                <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">טוען משחקים... ⚽</div>
+            </div>
+        </aside>
+
+        <div class="center-wrapper">
+            
+            <div class="premium-title-wrapper">
+                <div class="title-line"></div>
+                <h1 class="page-title">
+                    <span class="title-dark">חיפוש</span>
+                    <span class="title-green">ואנליטיקה</span>
+                </h1>
+                <div class="title-line left"></div>
+            </div>
+
+            <div class="main-search-wrapper">
+                <svg class="main-search-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="main-search-input" id="mainSearchInput" placeholder="חפש שחקן, סדרת קלפים, שנה..." autocomplete="off">
+                
+                <div class="search-dropdown" id="searchDropdown">
+                    <div class="dropdown-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="card">
+                        <span>Lionel Messi - 2022 Panini Prizm World Cup Base</span>
+                    </div>
+                    <div class="dropdown-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="card">
+                        <span>Lionel Messi - 2022 Panini Prizm World Cup Silver Refractor</span>
+                    </div>
+                    <div class="dropdown-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="card">
+                        <span>Lionel Messi - 2022 Donruss Optic Base</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-result-mockup" id="cardResult">
+                
+                <div class="mockup-image-area">
+                    <div class="mockup-card-img"></div>
+                </div>
+
+                <div class="mockup-data-area">
+                    <div>
+                        <div class="mockup-player-name">Lionel Messi</div>
+                        <div class="mockup-card-set">2022 Panini Prizm World Cup - Base #7</div>
+                        <div style="color: #7ca856; font-weight: bold; font-size: 12px; margin-top: 5px; direction: ltr; text-align: right;">Grade: PSA 10 Gem Mint</div>
+                    </div>
+
+                    <div class="price-trend-box">
+                        <div>
+                            <div style="font-size: 11px; color: #8fa0b3; margin-bottom: 2px;">מחיר שוק נוכחי (ממוצע איביי)</div>
+                            <div class="current-price">$345.00</div>
+                        </div>
+                        <div class="trend-indicator">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            <span>+ $45.50 (15.2%)</span>
+                        </div>
+                    </div>
+
+                    <div class="graph-mockup-area">
+                        <div class="graph-title">מגמת מחיר - 30 ימים אחרונים (מבוסס מכירות)</div>
+                        <svg class="chart-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
+                            <path class="chart-line" d="M0,90 L50,85 L100,60 L150,70 L200,50 L250,55 L300,30 L350,40 L400,15 L450,25 L500,10"></path>
+                            <circle cx="500" cy="10" r="6" fill="#10b981" stroke="#112845" stroke-width="2"></circle>
+                        </svg>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="ticker-wrap">
+            <span class="ticker-item">ספורט ישראלי: אין יותר הגבלת קהל במגרשים</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">מגמת השוק: קלפי מסי מזנקים בעקבות הזכייה במונדיאל</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">PSA: זמני הדירוג התקצרו משמעותית בחודש האחרון</span>
+            <span class="ticker-separator">|</span>
+            <span class="ticker-item">איביי חושפת: מכירות קלפי ספורט עלו ב-20% ברבעון האחרון</span>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // פאנל לייב
+            const liveHeader = document.getElementById('live-panel-header');
+            const livePanel = document.getElementById('livePanel');
+
+            if (liveHeader && livePanel) {
+                liveHeader.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    livePanel.classList.toggle('expanded');
+                });
+            }
+
+            // חיפוש
+            const mainInput = document.getElementById('mainSearchInput');
+            const dropdown = document.getElementById('searchDropdown');
+            const cardResult = document.getElementById('cardResult');
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+            mainInput.addEventListener('input', function() {
+                if (this.value.length > 0) {
+                    dropdown.classList.add('active');
+                    cardResult.classList.remove('show-result');
+                } else {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const text = this.querySelector('span').innerText;
+                    mainInput.value = text;
+                    dropdown.classList.remove('active');
+                    cardResult.classList.add('show-result');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (livePanel && livePanel.classList.contains('expanded') && !livePanel.contains(e.target)) {
+                    livePanel.classList.remove('expanded');
+                }
+                if (dropdown && dropdown.classList.contains('active') && e.target !== mainInput && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
