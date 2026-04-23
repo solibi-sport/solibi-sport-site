@@ -15,7 +15,6 @@
             --text-dark: #112845;
             
             --sidebar-width: clamp(240px, 20vw, 320px); 
-            --search-width: clamp(380px, 28vw, 480px);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -77,47 +76,57 @@
         .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
 
         /* === גוף הדף === */
-        .main-content {
-            display: flex;
-            flex: 1; 
-            overflow: hidden;
-            position: relative;
-        }
+        .main-content { display: flex; flex: 1; overflow: hidden; position: relative; }
 
-        /* === פאנל שמאלי לייב (מתקפל בלחיצה) === */
+        /* === פאנל שמאלי לייב === */
         .collapsible-live-panel {
-            position: absolute;
-            left: 20px;
-            top: 20px; 
-            width: var(--sidebar-width);
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(20px);
-            border: 2px solid var(--brand-green);
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 50;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            height: 48px; 
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: absolute; left: 20px; top: 20px; width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(20px);
+            border: 2px solid var(--brand-green); border-radius: 16px;
+            display: flex; flex-direction: column; overflow: hidden; z-index: 50;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: 48px; transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-
         .collapsible-live-panel.expanded { height: calc(100% - 40px); background: rgba(255, 255, 255, 0.85); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+
+        /* === פאנל ימני: מגמות שוק === */
+        .collapsible-trend-panel {
+            position: absolute; right: 20px; top: 20px; width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(20px);
+            border: 2px solid var(--brand-green); border-radius: 16px;
+            display: flex; flex-direction: column; overflow: hidden; z-index: 50;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: 48px; transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .collapsible-trend-panel.expanded { height: calc(100% - 40px); background: rgba(255, 255, 255, 0.85); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+
         .panel-header { font-size: 14px; font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 48px; cursor: pointer; flex-shrink: 0; transition: 0.3s; }
         .panel-header:hover { background: rgba(255,255,255,0.4); }
         .header-title-group { display: flex; align-items: center; gap: 8px; }
         .toggle-arrow { transition: transform 0.4s ease; color: var(--text-dark); width: 20px; height: 20px;}
-        .collapsible-live-panel.expanded .toggle-arrow { transform: rotate(180deg); }
+        .expanded .toggle-arrow { transform: rotate(180deg); }
 
         .panel-content { position: relative; flex: 1; padding: 10px 0; overflow: hidden; opacity: 0; transition: opacity 0.3s ease; }
-        .collapsible-live-panel.expanded .panel-content { opacity: 1; overflow-y: auto;}
+        .expanded .panel-content { opacity: 1; overflow-y: auto;}
         .panel-content::-webkit-scrollbar { width: 4px; }
         .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
 
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-        /* === מרכז הדף: מיושר למעלה (flex-start) עם ריווח פנימי === */
+        /* עיצוב פנימי לפאנל מגמות שוק */
+        .trend-category { font-size: 11px; font-weight: 900; color: #8fa0b3; padding: 10px 15px 5px 15px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .trend-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid rgba(0,0,0,0.05); transition: 0.2s; cursor: pointer; text-decoration: none; }
+        .trend-item:hover { background: #fff; border-right: 3px solid var(--brand-green); }
+        .trend-info { display: flex; flex-direction: column; gap: 4px; }
+        .trend-name { font-size: 12px; font-weight: 700; color: var(--text-dark); direction: ltr; text-align: right;}
+        .trend-set { font-size: 10px; color: #8fa0b3; direction: ltr; text-align: right;}
+        .trend-up { color: #10b981; display: flex; align-items: center; gap: 4px; font-weight: 900; font-size: 13px; background: rgba(16,185,129,0.1); padding: 4px 8px; border-radius: 6px;}
+        .trend-down { color: #ef4444; display: flex; align-items: center; gap: 4px; font-weight: 900; font-size: 13px; background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 6px;}
+        .trend-item svg { width: 14px; height: 14px; stroke-width: 3;}
+
+        /* עיצוב תוצאות לייב */
+        .live-match-card-light { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl; margin: 0 10px 8px 10px; }
+        .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
+
+        /* === מרכז הדף: flex-start כדי לדחוף למעלה === */
         .center-wrapper {
             display: flex; 
             flex-direction: column; 
@@ -125,166 +134,110 @@
             justify-content: flex-start; /* מרים הכל למעלה */
             width: 100%; 
             height: 100%;
-            /* המרווח העליון דוחף את הכותרת למיקום יציב */
-            padding: clamp(30px, 8vh, 80px) calc(var(--sidebar-width) + 20px) 20px;
+            /* המרווח העליון דוחף את הכותרת למיקום יציב וסימטרי */
+            padding: clamp(30px, 8vh, 80px) calc(var(--sidebar-width) + 20px) 20px calc(var(--sidebar-width) + 20px);
             gap: clamp(15px, 3vh, 25px); 
         }
 
-        .premium-title-wrapper {
-            display: flex; align-items: center; justify-content: center; gap: 15px;
-            width: 100%; max-width: 900px; flex-shrink: 0;
-        }
-
-        .page-title {
-            background: rgba(255, 255, 255, 0.6); padding: 8px 30px; border-radius: 30px;
-            border: 1px solid rgba(124, 168, 86, 0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin: 0; white-space: nowrap; 
-            font-size: clamp(18px, 2vw, 24px); font-weight: 900; letter-spacing: 1px;
-        }
-        
-        .title-dark { color: var(--text-dark); }
-        .title-green { color: var(--brand-green); }
+        .premium-title-wrapper { display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; max-width: 900px; flex-shrink: 0; }
+        .page-title { background: rgba(255, 255, 255, 0.6); padding: 8px 30px; border-radius: 30px; border: 1px solid rgba(124, 168, 86, 0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin: 0; white-space: nowrap; font-size: clamp(18px, 2vw, 24px); font-weight: 900; letter-spacing: 1px; }
+        .title-dark { color: var(--text-dark); } .title-green { color: var(--brand-green); }
         .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--brand-green)); border-radius: 2px; }
         .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
 
-        /* === שורת החיפוש הראשית === */
+        /* === שורת החיפוש הראשית עם לחצן הסינון === */
         .main-search-wrapper {
-            width: 100%;
-            max-width: 800px;
-            position: relative;
-            flex-shrink: 0;
-            z-index: 20; 
+            width: 100%; max-width: 800px; position: relative; flex-shrink: 0; z-index: 20; 
         }
 
         .main-search-input {
             width: 100%;
-            /* פדינג סימטרי מדויק מימין ומשמאל כדי שהטקסט יהיה בדיוק באמצע המסך */
-            padding: clamp(15px, 2vh, 20px) 60px clamp(15px, 2vh, 20px) 60px; 
-            font-size: clamp(16px, 1.5vw, 20px);
-            font-weight: 700;
-            color: var(--text-dark);
-            border: 2px solid rgba(124, 168, 86, 0.5);
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.85);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            outline: none;
-            font-family: inherit;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(10px);
-            text-align: center; /* ממורכז בדיוק פלס */
+            /* פדינג סימטרי: 100px מימין לאייקון, 100px משמאל ללחצן הסינון. זה שומר את הטקסט בדיוק באמצע! */
+            padding: clamp(15px, 2vh, 20px) 100px clamp(15px, 2vh, 20px) 100px; 
+            font-size: clamp(16px, 1.5vw, 20px); font-weight: 700; color: var(--text-dark);
+            border: 2px solid rgba(124, 168, 86, 0.5); border-radius: 50px;
+            background: rgba(255, 255, 255, 0.85); box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            outline: none; font-family: inherit; transition: all 0.4s ease; backdrop-filter: blur(10px);
+            text-align: center; /* ממורכז בדיוק */
         }
 
         .main-search-input:focus {
-            background: #ffffff;
-            border-color: var(--brand-green);
-            box-shadow: 0 15px 35px rgba(124, 168, 86, 0.3);
+            background: #ffffff; border-color: var(--brand-green); box-shadow: 0 15px 35px rgba(124, 168, 86, 0.3);
             border-radius: 25px 25px 0 0;
         }
 
-        .main-search-icon {
-            position: absolute; right: 20px; top: 22px; 
-            color: var(--brand-green); pointer-events: none;
-            transition: 0.3s;
-        }
+        .main-search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--brand-green); pointer-events: none; transition: 0.3s; }
 
-        /* הרשימה הנגללת (Dropdown) */
-        .search-dropdown {
-            position: absolute;
-            top: 100%; left: 0; right: 0;
-            background: #fff;
-            border: 2px solid var(--brand-green);
-            border-top: none;
-            border-radius: 0 0 25px 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            overflow: hidden;
-            display: none; 
-            flex-direction: column;
-            max-height: 250px;
-            overflow-y: auto;
+        /* לחצן הסינון בתוך שורת החיפוש - מצד שמאל */
+        .filter-btn {
+            position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+            background: rgba(17, 40, 69, 0.05); color: var(--text-dark); border: 1px solid rgba(17,40,69,0.1);
+            border-radius: 30px; padding: 8px 16px; cursor: pointer; display: flex; align-items: center; gap: 6px;
+            font-weight: 700; font-size: 13px; font-family: inherit; transition: 0.3s; z-index: 10;
         }
+        .filter-btn:hover, .filter-btn.active { background: var(--brand-green); color: #fff; border-color: var(--brand-green); }
+        .filter-btn svg { width: 16px; height: 16px; }
 
-        .search-dropdown.active {
-            display: flex;
+        /* תפריט הסינונים הנפתח */
+        .filter-dropdown {
+            position: absolute; top: calc(100% + 15px); left: 0; background: #fff;
+            border-radius: 16px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            border: 2px solid var(--brand-green); display: none; z-index: 30; width: 320px;
         }
-
-        .dropdown-item {
-            padding: 12px 25px;
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--text-dark);
-            cursor: pointer;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: 0.2s;
-            text-align: left; 
-            direction: ltr;
-        }
-
-        .dropdown-item:last-child { border-bottom: none; }
+        .filter-dropdown.active { display: block; animation: fadeIn 0.3s ease-out; }
         
-        .dropdown-item:hover {
-            background: rgba(124, 168, 86, 0.1);
-            color: var(--brand-green);
-            font-weight: 700;
-            padding-left: 30px;
+        .filter-group { margin-bottom: 15px; }
+        .filter-group:last-child { margin-bottom: 0; }
+        .filter-label { display: block; font-size: 12px; font-weight: 900; color: #8fa0b3; margin-bottom: 8px; }
+        .filter-options { display: flex; flex-wrap: wrap; gap: 8px; }
+        .filter-tag { 
+            padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
+            background: #f0f4f8; color: var(--text-dark); border: 1px solid transparent; transition: 0.2s; direction: ltr;
         }
+        .filter-tag:hover { background: rgba(124, 168, 86, 0.1); }
+        .filter-tag.selected { background: var(--brand-green); color: #fff; box-shadow: 0 4px 10px rgba(124,168,86,0.3); }
 
-        .dropdown-item img {
-            width: 30px; height: 40px; object-fit: cover; border-radius: 4px;
+        /* רשימת תוצאות חיפוש נגללת */
+        .search-dropdown {
+            position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 2px solid var(--brand-green);
+            border-top: none; border-radius: 0 0 25px 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden; display: none; flex-direction: column; max-height: 250px; overflow-y: auto;
         }
+        .search-dropdown.active { display: flex; }
+        .dropdown-item { padding: 12px 25px; font-size: 15px; font-weight: 500; color: var(--text-dark); cursor: pointer; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; transition: 0.2s; text-align: left; direction: ltr; }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item:hover { background: rgba(124, 168, 86, 0.1); color: var(--brand-green); font-weight: 700; padding-left: 30px; }
+        .dropdown-item img { width: 30px; height: 40px; object-fit: cover; border-radius: 4px; }
+
+        /* === שורת מועדפים וחיפושים (Watchlist) === */
+        .watchlist-row {
+            display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 800px;
+        }
+        .watchlist-title { font-size: 11px; font-weight: 900; color: #8fa0b3; }
+        .watch-chip {
+            background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.8); color: var(--text-dark);
+            padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; gap: 6px; transition: 0.2s; direction: ltr; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .watch-chip svg { width: 12px; height: 12px; stroke: #f59e0b; fill: #f59e0b;} 
+        .watch-chip.recent svg { stroke: #8fa0b3; fill: none; } 
+        .watch-chip:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-color: var(--brand-green);}
 
         /* === תצוגת הקלף === */
         .card-result-mockup {
-            width: 100%;
-            max-width: 900px;
-            background: var(--element-navy-gradient);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: clamp(15px, 2.5vh, 30px);
-            gap: clamp(20px, 3vw, 40px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-            height: auto;
-            max-height: calc(100vh - 320px); /* מגביל את הגובה שלא ידרוס את הפוטר */
-            
-            display: none; 
-            opacity: 0;
-            transform: translateY(20px);
+            width: 100%; max-width: 900px; background: var(--element-navy-gradient); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: clamp(15px, 2.5vh, 30px); gap: clamp(20px, 3vw, 40px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4); height: auto; max-height: calc(100vh - 320px);
+            display: none; opacity: 0; transform: translateY(20px); z-index: 10;
         }
+        .card-result-mockup.show-result { display: flex; animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-        .card-result-mockup.show-result {
-            display: flex;
-            animation: fadeIn 0.6s ease-out forwards;
-        }
+        .mockup-image-area { width: 30%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 10px; border: 1px solid rgba(255,255,255,0.05); min-height: 200px; }
+        .mockup-card-img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg'); background-size: cover; background-position: center top; width: 100%; aspect-ratio: 2.5/3.5; border: 3px solid #silver; position: relative; }
+        .mockup-card-img::before { content: "PSA 10 GEM MT"; position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(to right, #cc0000, #ff3333); color: white; font-size: 10px; font-weight: bold; text-align: center; padding: 4px 0; border-radius: 5px 5px 0 0; font-family: sans-serif; letter-spacing: 1px; }
 
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .mockup-image-area {
-            width: 30%; display: flex; align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.2); border-radius: 12px; padding: 10px;
-            border: 1px solid rgba(255,255,255,0.05); min-height: 200px;
-        }
-
-        .mockup-card-img {
-            max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg');
-            background-size: cover; background-position: center top; width: 100%; aspect-ratio: 2.5/3.5; 
-            border: 3px solid #silver; position: relative;
-        }
-        
-        .mockup-card-img::before {
-            content: "PSA 10 GEM MT"; position: absolute; top: 0; left: 0; right: 0;
-            background: linear-gradient(to right, #cc0000, #ff3333); color: white; font-size: 10px; font-weight: bold;
-            text-align: center; padding: 4px 0; border-radius: 5px 5px 0 0; font-family: sans-serif; letter-spacing: 1px;
-        }
-
-        .mockup-data-area {
-            flex: 1; display: flex; flex-direction: column; justify-content: center;
-            color: #fff; gap: 15px; overflow-y: auto; padding-right: 10px;
-        }
+        .mockup-data-area { flex: 1; display: flex; flex-direction: column; justify-content: center; color: #fff; gap: 15px; overflow-y: auto; padding-right: 10px; }
         .mockup-data-area::-webkit-scrollbar { width: 4px; }
         .mockup-data-area::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 10px; }
 
@@ -300,9 +253,8 @@
         .graph-title { position: absolute; top: 15px; right: 15px; font-size: 12px; font-weight: 700; color: #8fa0b3; }
         .chart-svg { width: 100%; height: 100%; overflow: visible; }
         .chart-line { fill: none; stroke: #10b981; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 5px 5px rgba(16, 185, 129, 0.4)); animation: drawLine 2s ease-out forwards; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
-        @keyframes drawLine { to { stroke-dashoffset: 0; } }
-
-        /* === שורת פוטר === */
+        
+        /* === שורת פוטר (האנימציה תוקנה) === */
         .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
         .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
@@ -311,7 +263,7 @@
 
         @media (max-width: 1000px) {
             .center-wrapper { padding: clamp(15px, 2vh, 20px) 20px; }
-            .collapsible-live-panel { position: relative; left: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto; margin-bottom: 20px;}
+            .collapsible-live-panel, .collapsible-trend-panel { position: relative; left: auto; right: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto 20px auto;}
             html, body { overflow: auto; height: auto; }
             .card-result-mockup { flex-direction: column; max-height: none; height: auto;}
             .mockup-image-area { width: 100%; height: 300px; max-height: 40vh; }
@@ -321,6 +273,8 @@
             .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
             .header-center-col { flex-direction: column; }
             .price-trend-box { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .main-search-input { padding: clamp(15px, 2vh, 20px) 20px; } /* מסדר במובייל */
+            .filter-btn { position: relative; transform: none; top: auto; left: auto; margin-top: 10px; justify-content: center; }
         }
     </style>
 </head>
@@ -341,7 +295,7 @@
             <nav class="header-nav">
                 <ul>
                     <li><a href="index.html">דף הבית</a></li>
-                    <li><a href="pantheon.html">ארכיון</a></li>
+                    <li><a href="#">ארכיון</a></li>
                     <li><a href="#">קרדיטים</a></li>
                     <li><a href="#">אודות</a></li>
                     <li><a href="#">צור קשר</a></li>
@@ -371,6 +325,47 @@
             </div>
         </aside>
 
+        <aside class="collapsible-trend-panel" id="trendPanel">
+            <div class="panel-header" id="trend-panel-header">
+                <div class="header-title-group">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" width="18" height="18" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span>מגמות שוק</span>
+                </div>
+                <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="panel-content">
+                <div class="trend-category">עולים החודש</div>
+                <a href="#" class="trend-item">
+                    <div class="trend-info">
+                        <span class="trend-name">Lamine Yamal RC</span>
+                        <span class="trend-set">2023 Topps Chrome</span>
+                    </div>
+                    <div class="trend-up">
+                        <span>18%</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    </div>
+                </a>
+                <a href="#" class="trend-item">
+                    <div class="trend-info">
+                        <span class="trend-name">Phil Foden Auto</span>
+                        <span class="trend-set">2018 Panini Prizm</span>
+                    </div>
+                    <div class="trend-up">
+                        <span>12%</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    </div>
+                </a>
+                <div class="trend-category">יורדים החודש</div>
+                <a href="#" class="trend-item">
+                    <div class="trend-info">
+                        <span class="trend-name">Kevin De Bruyne</span>
+                        <span class="trend-set">2021 Select Base</span>
+                    </div>
+                    <div class="trend-down">
+                        <span>5%</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+                    </div>
+                </a>
+            </div>
+        </aside>
+
         <div class="center-wrapper">
             
             <div class="premium-title-wrapper">
@@ -387,8 +382,49 @@
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
+                
+                <button class="filter-btn" id="filterBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                    סינון
+                </button>
+                
                 <input type="text" class="main-search-input" id="mainSearchInput" placeholder="חפש שחקן, סדרת קלפים, שנה..." autocomplete="off">
                 
+                <div class="filter-dropdown" id="filterDropdown">
+                    <div class="filter-group">
+                        <span class="filter-label">חברת דירוג</span>
+                        <div class="filter-options">
+                            <span class="filter-tag selected">PSA</span>
+                            <span class="filter-tag">BGS</span>
+                            <span class="filter-tag">SGC</span>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">ציון</span>
+                        <div class="filter-options">
+                            <span class="filter-tag selected">10</span>
+                            <span class="filter-tag">9</span>
+                            <span class="filter-tag">Raw (לא מדורג)</span>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">סדרה/מותג</span>
+                        <div class="filter-options">
+                            <span class="filter-tag selected">Prizm</span>
+                            <span class="filter-tag">Topps Chrome</span>
+                            <span class="filter-tag">Select</span>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">סוג קלף</span>
+                        <div class="filter-options">
+                            <span class="filter-tag selected">Rookie (RC)</span>
+                            <span class="filter-tag">Auto</span>
+                            <span class="filter-tag">Base</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="search-dropdown" id="searchDropdown">
                     <div class="dropdown-item">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="card">
@@ -398,26 +434,35 @@
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="card">
                         <span>Lionel Messi - 2022 Panini Prizm World Cup Silver Refractor</span>
                     </div>
-                    <div class="dropdown-item">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="card">
-                        <span>Lionel Messi - 2022 Donruss Optic Base</span>
-                    </div>
+                </div>
+            </div>
+
+            <div class="watchlist-row">
+                <span class="watchlist-title">חיפשת לאחרונה:</span>
+                <div class="watch-chip" onclick="document.getElementById('mainSearchInput').value='L. Messi 2022 Prizm'; document.getElementById('cardResult').classList.add('show-result');">
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Messi Prizm 2022
+                </div>
+                <div class="watch-chip">
+                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Haaland Rookie
+                </div>
+                <div class="watch-chip recent">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Yamal Chrome
                 </div>
             </div>
 
             <div class="card-result-mockup" id="cardResult">
-                
                 <div class="mockup-image-area">
                     <div class="mockup-card-img"></div>
                 </div>
-
                 <div class="mockup-data-area">
                     <div>
                         <div class="mockup-player-name">Lionel Messi</div>
                         <div class="mockup-card-set">2022 Panini Prizm World Cup - Base #7</div>
                         <div style="color: #7ca856; font-weight: bold; font-size: 12px; margin-top: 5px; direction: ltr; text-align: right;">Grade: PSA 10 Gem Mint</div>
                     </div>
-
                     <div class="price-trend-box">
                         <div>
                             <div style="font-size: 11px; color: #8fa0b3; margin-bottom: 2px;">מחיר שוק נוכחי (ממוצע איביי)</div>
@@ -428,7 +473,6 @@
                             <span>+ $45.50 (15.2%)</span>
                         </div>
                     </div>
-
                     <div class="graph-mockup-area">
                         <div class="graph-title">מגמת מחיר - 30 ימים אחרונים (מבוסס מכירות)</div>
                         <svg class="chart-svg" viewBox="0 0 500 100" preserveAspectRatio="none">
@@ -436,12 +480,10 @@
                             <circle cx="500" cy="10" r="6" fill="#10b981" stroke="#112845" stroke-width="2"></circle>
                         </svg>
                     </div>
-
                 </div>
             </div>
 
         </div>
-
     </main>
 
     <footer class="footer">
@@ -458,27 +500,34 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // פאנל לייב
-            const liveHeader = document.getElementById('live-panel-header');
-            const livePanel = document.getElementById('livePanel');
+            // Panels Logic
+            const setupPanel = (headerId, panelId) => {
+                const header = document.getElementById(headerId);
+                const panel = document.getElementById(panelId);
+                if (header && panel) {
+                    header.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        panel.classList.toggle('expanded');
+                    });
+                }
+            };
+            setupPanel('live-panel-header', 'livePanel');
+            setupPanel('trend-panel-header', 'trendPanel');
 
-            if (liveHeader && livePanel) {
-                liveHeader.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    livePanel.classList.toggle('expanded');
-                });
-            }
-
-            // חיפוש
+            // Search & Filter Logic
             const mainInput = document.getElementById('mainSearchInput');
             const dropdown = document.getElementById('searchDropdown');
             const cardResult = document.getElementById('cardResult');
             const dropdownItems = document.querySelectorAll('.dropdown-item');
+            const filterBtn = document.getElementById('filterBtn');
+            const filterDropdown = document.getElementById('filterDropdown');
+            const filterTags = document.querySelectorAll('.filter-tag');
 
             mainInput.addEventListener('input', function() {
                 if (this.value.length > 0) {
                     dropdown.classList.add('active');
                     cardResult.classList.remove('show-result');
+                    filterDropdown.classList.remove('active');
                 } else {
                     dropdown.classList.remove('active');
                 }
@@ -486,19 +535,41 @@
 
             dropdownItems.forEach(item => {
                 item.addEventListener('click', function() {
-                    const text = this.querySelector('span').innerText;
-                    mainInput.value = text;
+                    mainInput.value = this.querySelector('span').innerText;
                     dropdown.classList.remove('active');
                     cardResult.classList.add('show-result');
                 });
             });
 
+            filterBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterDropdown.classList.toggle('active');
+                dropdown.classList.remove('active');
+            });
+
+            filterTags.forEach(tag => {
+                tag.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const siblings = this.parentElement.querySelectorAll('.filter-tag');
+                    siblings.forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
             document.addEventListener('click', function(e) {
-                if (livePanel && livePanel.classList.contains('expanded') && !livePanel.contains(e.target)) {
-                    livePanel.classList.remove('expanded');
-                }
+                const closeIfNotContains = (element, target) => {
+                    if (element && element.classList.contains('expanded') && !element.contains(target)) {
+                        element.classList.remove('expanded');
+                    }
+                };
+                closeIfNotContains(document.getElementById('livePanel'), e.target);
+                closeIfNotContains(document.getElementById('trendPanel'), e.target);
+
                 if (dropdown && dropdown.classList.contains('active') && e.target !== mainInput && !dropdown.contains(e.target)) {
                     dropdown.classList.remove('active');
+                }
+                if (filterDropdown && filterDropdown.classList.contains('active') && e.target !== filterBtn && !filterDropdown.contains(e.target)) {
+                    filterDropdown.classList.remove('active');
                 }
             });
         });
