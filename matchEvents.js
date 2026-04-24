@@ -380,7 +380,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             } else if (numPlayersInLine === 3) {
                                 yPercent = i === 0 ? 20 : (i === 1 ? 50 : 80); 
                             } else if (numPlayersInLine === 4) {
-                                yPercent = i === 0 ? 25 : (i === 1 ? 45 : (i === 2 ? 55 : 75)); 
+                                yPercent = i === 0 ? 15 : (i === 1 ? 38 : (i === 2 ? 62 : 85)); 
                             } else if (numPlayersInLine === 5) {
                                 yPercent = i === 0 ? 10 : (i === 1 ? 30 : (i === 2 ? 50 : (i === 3 ? 70 : 90))); 
                             } else {
