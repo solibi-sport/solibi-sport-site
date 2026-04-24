@@ -27,14 +27,14 @@ if (!document.getElementById('modal-style-events')) {
     .tab-content { display: none; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 10px; }
     .tab-content.active { display: flex; }
 
-    /* לשוניות משניות (הרכב / ספסל) */
-    .sub-tabs { display: flex; border-bottom: 1px solid #1f2d40; margin-bottom: 10px; }
-    .sub-tab-btn { flex: 1; background: transparent; border: none; color: #8fa0b3; padding: 10px 0; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; border-bottom: 2px solid transparent; font-family: inherit; outline: none; }
-    .sub-tab-btn.active { color: #7a9966; border-bottom: 2px solid #7a9966; }
+    /* הלשוניות של הרכב / ספסל */
+    .sub-tabs { display: flex; justify-content: center; gap: 20px; border-bottom: 1px solid #1f2d40; margin-bottom: 15px; }
+    .sub-tab-btn { background: transparent; border: none; color: #8fa0b3; padding: 10px 20px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.3s; border-bottom: 3px solid transparent; font-family: inherit; outline: none; }
+    .sub-tab-btn.active { color: #7a9966; border-bottom: 3px solid #7a9966; }
     .sub-tab-btn:hover { color: #ffffff; }
 
     /* עיצוב המגרש */
-    .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 5px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+    .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 5px 0; overflow: visible; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
     .pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.4); transform: translateX(-50%); z-index: 1;}
     .pitch-circle { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;}
     .pitch-box-left { position: absolute; left: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
@@ -42,13 +42,13 @@ if (!document.getElementById('modal-style-events')) {
     .pitch-small-box-left { position: absolute; left: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
     .pitch-small-box-right { position: absolute; right: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-right: none; z-index: 1;}
 
-    .pitch-team { flex: 1; position: relative; }
+    .pitch-team { flex: 1; position: relative; overflow: visible; }
     .pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 75px; z-index: 3; transition: 0.3s ease; }
     .pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.9); box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(0,0,0,0.3); z-index: 4; position: relative;}
     .pitch-player-name { color: #ffffff; font-size: 10px; font-weight: bold; margin-top: 3px; text-align: center; text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 0 3px 5px rgba(0,0,0,0.9); z-index: 3; max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr;}
     
-    /* עיצוב הספסל החדש והאלגנטי */
-    .bench-view { width: 100%; display: flex; gap: 15px; margin-top: 10px; }
+    /* עיצוב הספסל החדש */
+    .bench-view { width: 100%; display: flex; gap: 15px; margin-top: 5px; }
     .bench-col { flex: 1; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid #1f2d40; padding: 10px; }
     .bench-title { text-align: center; font-weight: bold; color: #fff; padding-bottom: 8px; border-bottom: 1px solid #2a3b4c; margin-bottom: 10px; font-size: 13px; }
     .bench-item { display: flex; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; }
@@ -96,7 +96,7 @@ if (!document.getElementById('modal-style-events')) {
     document.head.appendChild(modalStyle);
 }
 
-// מעבר בין המגרש לספסל (הלשוניות המשניות שביקשת)
+// פונקציית הלשוניות של הרכב / ספסל
 window.toggleLineupView = function(view) {
     const pBtn = document.getElementById('btnPitchView');
     const bBtn = document.getElementById('btnBenchView');
@@ -171,7 +171,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         let startX, startY;
 
         function onDragStart(e) {
-            // החרגה קריטית כדי שניתן יהיה ללחוץ על הלשוניות החדשות!
             if (e.target.closest('.close-modal') || e.target.tagName.toLowerCase() === 'button') return;
             isDragging = true;
             box.style.animation = 'none'; 
@@ -308,7 +307,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             let events = eventsData.response || [];
 
             /* ==========================================
-               המנוע הדינמי למערכים ולספסל (הקסם קורה פה!)
+               מנוע ה-"Football Manager" - מיקומים קבועים וברורים!
                ========================================== */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
             
@@ -318,7 +317,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 
                 const renderPlayersDynamic = (players, isHome) => {
                     const rows = {};
-                    // חלוקת השחקנים לשורות (הגנה, קישור, התקפה) לפי הנתונים מהשרת
                     players.slice(0, 11).forEach(p => {
                         let grid = p.player.grid || "1:1"; 
                         const r = grid.split(':')[0];
@@ -330,7 +328,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     let html = '';
 
                     Object.keys(rows).forEach(rNum => {
-                        // סידור השחקנים מלמעלה למטה
                         const rowPlayers = rows[rNum].sort((a,b) => {
                             const cA = parseInt((a.player.grid||"1:1").split(':')[1]);
                             const cB = parseInt((b.player.grid||"1:1").split(':')[1]);
@@ -341,29 +338,30 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         const r = parseInt(rNum);
 
                         rowPlayers.forEach((p, idx) => {
-                            // חישוב ציר ה-Y בצורה סימטרית
-                            let yPercent = ((idx + 1) / (totalInRow + 1)) * 100;
-                            
-                            // חישוב ציר ה-X לפי החוקים שביקשת!
-                            let xPercent = 50; 
-                            if (r === 1) xPercent = 92; // שוער
-                            else if (r === 2) xPercent = 82; // הגנה (בול על קו 16!)
-                            else if (r === 3) xPercent = 65; // קישור (אמצע מדויק)
-                            else if (r === 4) xPercent = 50; // התקפה
-                            else if (r === 5) xPercent = 35; // התקפה קדמית
-                            
-                            // חוק צורת ה-V של ההתקפה: חלוץ על החצי (50), כנפיים קדימה (35)
-                            if (r === maxRow && totalInRow >= 3) {
-                                xPercent = 50; // ברירת מחדל: חלוץ על העיגול
-                                if (idx === 0 || idx === totalInRow - 1) { // שחקן ראשון או אחרון בשורה (כנפיים)
-                                    xPercent = 35; // דוחף אותם קדימה לזהות פרופורציה!
-                                }
+                            // ציר Y: פריסה רחבה ומושלמת של השחקנים לאורך כל הדשא (15% עד 85%)
+                            let yPercent = totalInRow === 1 ? 50 : 15 + (idx / (totalInRow - 1)) * 70;
+
+                            // ציר X: "הצמדה לרשת" בדיוק לפי הקווים האדומים שביקשת!
+                            let homeX;
+                            if (maxRow === 4) {
+                                // מערך 4 שורות (כמו 4-4-2)
+                                const xMap = { 1: 93, 2: 80, 3: 62, 4: 48 };
+                                homeX = xMap[r] || 50;
+                            } else if (maxRow === 5) {
+                                // מערך 5 שורות (כמו 4-2-3-1)
+                                const xMap = { 1: 93, 2: 80, 3: 68, 4: 56, 5: 48 };
+                                homeX = xMap[r] || 50;
+                            } else if (maxRow === 6) {
+                                // גיבוי למערך נדיר של 6 שורות
+                                const xMap = { 1: 93, 2: 82, 3: 71, 4: 61, 5: 53, 6: 46 };
+                                homeX = xMap[r] || 50;
+                            } else {
+                                // גיבוי אחרון
+                                homeX = 93 - ((r - 1) * (45 / (maxRow - 1 || 1)));
                             }
 
-                            // היפוך כיוון לקבוצת החוץ
-                            if (!isHome) {
-                                xPercent = 100 - xPercent;
-                            }
+                            // תרגום למיקום ימין/שמאל בהתאם לקבוצה
+                            let xPercent = isHome ? homeX : (100 - homeX);
 
                             let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
                             if (bgColor && !bgColor.startsWith('#')) bgColor = '#' + bgColor;
@@ -377,7 +375,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             let subTextHtml = '';
                             if (subEvent) {
                                 let subInShortName = getShortPlayerName(subEvent.assist.name);
-                                // התגית היוקרתית של החילוף על המגרש עצמו
+                                // תגית חילוף משודרגת על המגרש
                                 subTextHtml = `<div style="background: rgba(255, 255, 255, 0.95); color: #111926; border: 1.5px solid #10b981; border-radius: 4px; padding: 2px 5px; margin-top: 4px; font-size: 9px; font-weight: 900; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 3px; direction: ltr; z-index: 10;">
                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
                                     <span>${subInShortName}</span>
