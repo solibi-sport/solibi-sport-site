@@ -20,37 +20,19 @@ export default async function handler(req, res) {
     try {
         const cleanApiKey = apiKey.trim();
         
-        // מחפשים בדיוק את מה שהקלדת
-        const apiUrl = `https://www.pricecharting.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(query)}`;
+        // התיקון האמיתי: הכתובת הרשמית של קלפי הספורט (sportscards - עם S!)
+        const apiUrl = `https://www.sportscardspro.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(query)}`;
         
         const response = await fetch(apiUrl);
         const data = await response.json();
 
+        // אם יש שגיאה, מציגים אותה
         if (data.status === "error" || data.error) {
             return res.status(400).json({ error: "API Error", raw: data });
         }
 
-        // === המסנן החדש: רק רשימה שחורה ===
-        const filteredProducts = (data.products || []).filter(item => {
-            const category = (item['console-name'] || "").toLowerCase();
-            const name = (item['product-name'] || item.name || "").toLowerCase();
-            
-            // המילים שאנחנו לא מוכנים לראות
-            const isJunk = category.includes('marvel') || 
-                           category.includes('star wars') || 
-                           category.includes('comic') || 
-                           category.includes('pokemon') ||
-                           category.includes('magic') ||
-                           category.includes('video') ||
-                           name.includes('lego') ||
-                           name.includes('funko') ||
-                           name.includes('pop!');
-
-            // אם זה לא זבל - זה בפנים!
-            return !isJunk;
-        });
-
-        const formattedResults = filteredProducts.map(item => ({
+        // שום מסננים מסובכים! פשוט לוקחים את הקלפים מהמאגר שמוקדש נטו לספורט
+        const formattedResults = (data.products || []).map(item => ({
             id: item.id,
             name: item['product-name'] || item.name,
             set: item['console-name'], 
