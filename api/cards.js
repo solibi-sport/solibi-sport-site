@@ -9,8 +9,9 @@ export default async function handler(req, res) {
 
     // שולף את מילת החיפוש שהגולש הקליד
     const query = req.query.q;
-    // שולף את המפתח הסודי מהכספת של Vercel
-    const apiKey = process.env.SPORTSCARDPRO_API_KEY;
+    
+    // שינוי חשוב: שולף את המפתח בדיוק לפי השם שמופיע לך ב-Vercel!
+    const apiKey = process.env.SPORTSCARDS_API_KEY;
 
     if (!apiKey) {
         return res.status(500).json({ error: "Missing API Key in Vercel" });
@@ -22,7 +23,6 @@ export default async function handler(req, res) {
 
     try {
         // פנייה לשרתים של SportsCardPro
-        // ה-API שלהם בדרך כלל עובד עם פרמטר t עבור המפתח
         const apiUrl = `https://www.sportscardpro.com/api/products?t=${apiKey}&q=${encodeURIComponent(query)}`;
         
         const response = await fetch(apiUrl);
@@ -33,12 +33,11 @@ export default async function handler(req, res) {
 
         const data = await response.json();
 
-        // אנחנו עוטפים את התשובה במבנה שהחזית שלנו מצפה לו
-        // נתאים את זה למבנה המדויק של SportsCardPro (הם מחזירים מערך של products)
+        // מתאימים את התשובה למבנה שגיבשנו
         const formattedResults = (data.products || []).map(item => ({
             id: item.id,
             name: item['product-name'] || item.name,
-            set: item['console-name'] || 'ספורט', // בספורטקארד זה בדרך כלל הסדרה/שנה
+            set: item['console-name'] || 'ספורט', 
             image: item.image || 'https://via.placeholder.com/30x40?text=Card',
             price: item['loose-price'] || item.price || 0
         }));
