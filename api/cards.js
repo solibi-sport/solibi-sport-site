@@ -19,7 +19,16 @@ export default async function handler(req, res) {
 
     try {
         const cleanApiKey = apiKey.trim();
-        const apiUrl = `https://www.pricecharting.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(query)}`;
+        
+        // הטריק שלנו: מוסיפים את המילה "card" בסתר כדי להכריח את השרת
+        // להביא קלפי ספורט אמיתיים ב-20 התוצאות הראשונות, ולא קומיקס או משחקים.
+        let apiQuery = query.trim();
+        const lowerQ = apiQuery.toLowerCase();
+        if (!lowerQ.includes('card') && !lowerQ.includes('cards')) {
+            apiQuery += " card";
+        }
+
+        const apiUrl = `https://www.pricecharting.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(apiQuery)}`;
         
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -28,35 +37,31 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: "API Error", raw: data });
         }
 
-        // המילה שהגולש חיפש, באותיות קטנות כדי שנוכל להשוות במדויק
-        const queryLower = query.toLowerCase();
-
-        // === המסנן הקפדני והאכזרי ===
+        // === המסנן החכם (משאיר רק ענפי ספורט אמיתיים) ===
         const filteredProducts = (data.products || []).filter(item => {
             const category = (item['console-name'] || "").toLowerCase();
             const name = (item['product-name'] || item.name || "").toLowerCase();
             
-            // 1. חובה שהטקסט שחיפשנו יופיע *בדיוק* בשם של השחקן/קלף
-            const isExactMatch = name.includes(queryLower);
-
-            // 2. אישור רק לקטגוריות ספורט נטו
+            // מוודא שהקטגוריה שייכת לענף ספורט
             const isSportsCard = category.includes('soccer') || 
                                  category.includes('football') || 
                                  category.includes('basketball') || 
                                  category.includes('baseball') ||
                                  category.includes('hockey') ||
                                  category.includes('ufc') ||
+                                 category.includes('wrestling') ||
+                                 category.includes('boxing') ||
                                  category.includes('racing');
                                  
-            // 3. רשימה שחורה (מעיף מארוול, סטאר וורס, קומיקס, פוקימון)
+            // חוסם מפורשות כל מה שהוא קומיקס או צעצועים (למקרה שמשהו הסתנן)
             const isJunk = category.includes('marvel') || 
                            category.includes('star wars') || 
                            category.includes('comic') || 
                            category.includes('pokemon') ||
                            category.includes('magic') ||
-                           category.includes('video');
+                           name.includes('lego');
 
-            return isExactMatch && isSportsCard && !isJunk;
+            return isSportsCard && !isJunk;
         });
 
         const formattedResults = filteredProducts.map(item => ({
