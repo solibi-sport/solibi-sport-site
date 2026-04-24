@@ -351,13 +351,13 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         if (r === 1) {
                             xHome = 93; // קו 1: שוער 
                         } else if (r === 2) {
-                            xHome = 60; // קו 2: הגנה 
+                            xHome = 70; // קו 2: הגנה 
                         } else if (r === 3) {
                             xHome = 50; // קו 3: קישור אחורי / מרכזי
                         } else if (r === 4) {
                             xHome = 30; // קו 4: קישור התקפי / כנפיים
                         } else if (r === 5) {
-                            xHome = 20; // קו 5: חלוצים
+                            xHome = 18; // קו 5: חלוצים
                         } else {
                             xHome = 93 - (r * 12); // גיבוי
                         }
