@@ -179,6 +179,53 @@
             .side-panel-hover, .side-panel-toggle { display: none; }
             .center-wrapper { padding: 20px; }
         }
+       /* עיצוב ייחודי ללובי הגיימינג */
+        .gaming-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 20px;
+        }
+
+        .gaming-card {
+            background: var(--element-navy-gradient);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .gaming-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--brand-green);
+            box-shadow: 0 20px 40px rgba(124, 168, 86, 0.3);
+        }
+
+        .card-banner {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .card-banner::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
+            background: linear-gradient(to top, #112845, transparent);
+        }
+
+        .card-body { padding: 20px; color: white; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .card-badge { position: absolute; top: 15px; right: 15px; background: var(--brand-green); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 900; z-index: 10; }
+        .card-title { font-size: 20px; font-weight: 900; margin: 0; }
+        .card-text { font-size: 14px; color: #a0aec0; line-height: 1.5; }
+        .card-footer { padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; color: var(--brand-green); } 
     </style>
 </head>
 <body>
@@ -240,15 +287,64 @@
         <div class="center-wrapper">
             
             <div class="premium-title-wrapper">
-                <div class="title-line"></div>
-                <h1 class="page-title">כותרת הדף - <span>תת כותרת</span></h1>
-                <div class="title-line left"></div>
-            </div>
+    <div class="title-line"></div>
+    <h1 class="page-title">המגרש הווירטואלי - <span>גיימינג ומנג'ר</span></h1>
+    <div class="title-line left"></div>
+</div>
 
-            <div style="width:100%; max-width:800px; background:white; padding:40px; border-radius:15px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.05);">
-                <h2 style="color:var(--text-dark);">זהו אזור התוכן הראשי</h2>
-                <p style="margin-top:20px; color:#666;">התבנית הזו מוכנה. הפאנל משמאל נפתח ונסגר בלחיצה על החץ, והתפריט מימין מתרחב כשמעבירים עליו עכבר.</p>
-            </div>
+ <div class="gaming-grid">
+    <a href="#" class="gaming-card">
+        <div class="card-badge">PC / Mobile</div>
+        <div class="card-banner" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1471&auto=format&fit=crop');"></div>
+        <div class="card-body">
+            <h3 class="card-title">Football Manager</h3>
+            <p class="card-text">מעמדת המאמן ועד להנפת הגביע. מדריכי אימון, ניתוחי Wonderkids (כישרונות צעירים) והורדות מומלצות לכל הגרסאות.</p>
+        </div>
+        <div class="card-footer">
+            <span>לכל המדריכים והסיקורים</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </div>
+    </a>
+
+    <a href="#" class="gaming-card">
+        <div class="card-badge">Console / PC</div>
+        <div class="card-banner" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1470&auto=format&fit=crop');"></div>
+        <div class="card-body">
+            <h3 class="card-title">EA Sports FC (FIFA)</h3>
+            <p class="card-text">שולטים ב-Ultimate Team. המלצות לכרטיסים חמים, פתרונות SBC, סיקורי אירועים וכל מה שחדש בסדרת ה-FC.</p>
+        </div>
+        <div class="card-footer">
+            <span>היכנס לעולם ה-FC</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </div>
+    </a>
+
+    <a href="#" class="gaming-card">
+        <div class="card-badge">PRO TIPS</div>
+        <div class="card-banner" style="background-image: url('https://images.unsplash.com/photo-1552667466-07770ae110d0?q=80&w=1470&auto=format&fit=crop');"></div>
+        <div class="card-body">
+            <h3 class="card-title">מעבדת הטקטיקות</h3>
+            <p class="card-text">בניית מערכים, הוראות שחקנים וסודות טקטיים שיעזרו לכם לנצח יריבים חזקים יותר. איך לבנות קבוצה מנצחת.</p>
+        </div>
+        <div class="card-footer">
+            <span>צפה בטקטיקות מנצחות</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </div>
+    </a>
+
+    <a href="#" class="gaming-card">
+        <div class="card-badge">RETRO</div>
+        <div class="card-banner" style="background-image: url('https://images.unsplash.com/photo-1550745679-33f01f01d27f?q=80&w=1470&auto=format&fit=crop');"></div>
+        <div class="card-body">
+            <h3 class="card-title">היכל הנוסטלגיה</h3>
+            <p class="card-text">מ-Championship Manager 01/02 ועד פיפ"א 98. חוזרים למשחקים שעיצבו את הילדות שלנו עם סיקורים ועדכונים.</p>
+        </div>
+        <div class="card-footer">
+            <span>חזור לעבר</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </div>
+    </a>
+</div>           
 
         </div>
 
