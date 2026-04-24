@@ -731,7 +731,7 @@
                 searchTimeout = setTimeout(async () => {
                     try {
                         // פנייה לראוטר המאובטח של הקלפים בשרת שלנו (Vercel)
-                        const response = await fetch(`/api/cards-proxy?q=${encodeURIComponent(query)}`);
+                        const response = await fetch(`/api/cards?q=${encodeURIComponent(query)}`);
                         const data = await response.json();
 
                         // ננקה את התפריט
