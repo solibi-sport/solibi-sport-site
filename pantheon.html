@@ -568,7 +568,7 @@
         window.currentLivePage = 0; 
         window.livePageInterval = null;
 
-        async async function fetchLiveMatches() {
+        async function fetchLiveMatches() {
     try {
         const response = await fetch(`/api/football-proxy?endpoint=fixtures&live=all`);
         const data = await response.json();
