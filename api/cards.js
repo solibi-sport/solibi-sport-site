@@ -9,8 +9,9 @@ export default async function handler(req, res) {
     const query = req.query.q;
     const apiKey = process.env.SPORTSCARDS_API_KEY;
 
-    if (!apiKey) {
-        return res.status(500).json({ error: "Vercel: Missing API Key" });
+    // בדיקה קשוחה יותר למפתח - מוודא שהוא באמת קיים ולא ריק
+    if (!apiKey || apiKey === "undefined" || apiKey.trim() === "") {
+        return res.status(500).json({ error: "Vercel Error: The API Key is empty or missing. Please check Vercel environment variables." });
     }
 
     if (!query) {
@@ -18,14 +19,19 @@ export default async function handler(req, res) {
     }
 
     try {
-        const apiUrl = `https://www.sportscardpro.com/api/products?t=${apiKey}&q=${encodeURIComponent(query)}`;
+        // מנקה רווחים מיותרים מהמפתח למקרה שהועתק בטעות עם רווח
+        const cleanApiKey = apiKey.trim();
+        const apiUrl = `https://www.sportscardpro.com/api/products?q=${encodeURIComponent(query)}&t=${cleanApiKey}`;
+        
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        // גלאי שגיאות מיוחד: אם ספורטקארדס מחזירים שגיאה (כמו מפתח לא תקין)
         if (data.status === "error" || data.error) {
-            console.error("API Error Response:", data);
-            return res.status(400).json({ error: data.message || "SportsCardPro API Error", raw: data });
+            return res.status(400).json({ 
+                error: "SportsCardPro API Error", 
+                raw: data,
+                debug_url_used: apiUrl.replace(cleanApiKey, "HIDDEN_TOKEN") 
+            });
         }
 
         const formattedResults = (data.products || []).map(item => ({
@@ -39,7 +45,6 @@ export default async function handler(req, res) {
         res.status(200).json({ results: formattedResults });
 
     } catch (error) {
-        console.error("Fetch Error:", error);
-        res.status(500).json({ error: "Failed to communicate with API" });
+        res.status(500).json({ error: "Failed to communicate with API", details: error.message });
     }
 }
