@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     const apiKey = process.env.SPORTSCARDS_API_KEY;
 
     if (!apiKey || apiKey === "undefined" || apiKey.trim() === "") {
-        return res.status(500).json({ error: "Vercel Error: The API Key is empty." });
+        return res.status(500).json({ error: "API Key is missing." });
     }
 
     if (!query) {
@@ -20,16 +20,15 @@ export default async function handler(req, res) {
     try {
         const cleanApiKey = apiKey.trim();
         
-        // התיקון הגדול: ה-t (מפתח) מגיע ראשון, לפני ה-q (חיפוש)!
-        const apiUrl = `https://www.sportscardpro.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(query)}`;
+        // התיקון האמיתי: פנייה לשרת הראשי של PriceCharting במקום לאתר הבת
+        const apiUrl = `https://www.pricecharting.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(query)}`;
         
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        // גלאי שגיאות
         if (data.status === "error" || data.error) {
             return res.status(400).json({ 
-                error: "SportsCardPro API Error", 
+                error: "API Error", 
                 raw: data,
                 debug_url_used: apiUrl.replace(cleanApiKey, "HIDDEN_TOKEN") 
             });
