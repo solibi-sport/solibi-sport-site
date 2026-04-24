@@ -20,15 +20,8 @@ export default async function handler(req, res) {
     try {
         const cleanApiKey = apiKey.trim();
         
-        // הטריק שלנו: מוסיפים את המילה "card" בסתר כדי להכריח את השרת
-        // להביא קלפי ספורט אמיתיים ב-20 התוצאות הראשונות, ולא קומיקס או משחקים.
-        let apiQuery = query.trim();
-        const lowerQ = apiQuery.toLowerCase();
-        if (!lowerQ.includes('card') && !lowerQ.includes('cards')) {
-            apiQuery += " card";
-        }
-
-        const apiUrl = `https://www.pricecharting.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(apiQuery)}`;
+        // מחפשים בדיוק את מה שהקלדת
+        const apiUrl = `https://www.pricecharting.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(query)}`;
         
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -37,31 +30,24 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: "API Error", raw: data });
         }
 
-        // === המסנן החכם (משאיר רק ענפי ספורט אמיתיים) ===
+        // === המסנן החדש: רק רשימה שחורה ===
         const filteredProducts = (data.products || []).filter(item => {
             const category = (item['console-name'] || "").toLowerCase();
             const name = (item['product-name'] || item.name || "").toLowerCase();
             
-            // מוודא שהקטגוריה שייכת לענף ספורט
-            const isSportsCard = category.includes('soccer') || 
-                                 category.includes('football') || 
-                                 category.includes('basketball') || 
-                                 category.includes('baseball') ||
-                                 category.includes('hockey') ||
-                                 category.includes('ufc') ||
-                                 category.includes('wrestling') ||
-                                 category.includes('boxing') ||
-                                 category.includes('racing');
-                                 
-            // חוסם מפורשות כל מה שהוא קומיקס או צעצועים (למקרה שמשהו הסתנן)
+            // המילים שאנחנו לא מוכנים לראות
             const isJunk = category.includes('marvel') || 
                            category.includes('star wars') || 
                            category.includes('comic') || 
                            category.includes('pokemon') ||
                            category.includes('magic') ||
-                           name.includes('lego');
+                           category.includes('video') ||
+                           name.includes('lego') ||
+                           name.includes('funko') ||
+                           name.includes('pop!');
 
-            return isSportsCard && !isJunk;
+            // אם זה לא זבל - זה בפנים!
+            return !isJunk;
         });
 
         const formattedResults = filteredProducts.map(item => ({
