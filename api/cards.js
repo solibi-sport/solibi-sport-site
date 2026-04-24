@@ -1,16 +1,52 @@
 export default async function handler(req, res) {
-    const { q } = req.query; // המילה שהמשתמש חיפש
-    const API_KEY = process.env.SPORTSCARDS_API_KEY; // המפתח יישלף מהכספת של ורסל
+    // הגדרות אבטחה ו-CORS כדי לאפשר לאתר שלך לפנות לשרת
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
-    if (!q) return res.status(400).json({ error: "Query is required" });
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    // שולף את מילת החיפוש שהגולש הקליד
+    const query = req.query.q;
+    // שולף את המפתח הסודי מהכספת של Vercel
+    const apiKey = process.env.SPORTSCARDPRO_API_KEY;
+
+    if (!apiKey) {
+        return res.status(500).json({ error: "Missing API Key in Vercel" });
+    }
+
+    if (!query) {
+        return res.status(400).json({ error: "Missing search query" });
+    }
 
     try {
-        const response = await fetch(`https://www.sportscardspro.com/api/products?t=${API_KEY}&q=${encodeURIComponent(q)}`);
-        const data = await response.json();
+        // פנייה לשרתים של SportsCardPro
+        // ה-API שלהם בדרך כלל עובד עם פרמטר t עבור המפתח
+        const apiUrl = `https://www.sportscardpro.com/api/products?t=${apiKey}&q=${encodeURIComponent(query)}`;
         
-        // מחזיר את הנתונים לאתר שלך
-        res.status(200).json(data);
+        const response = await fetch(apiUrl);
+        
+        if (!response.ok) {
+            throw new Error(`SportsCardPro API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // אנחנו עוטפים את התשובה במבנה שהחזית שלנו מצפה לו
+        // נתאים את זה למבנה המדויק של SportsCardPro (הם מחזירים מערך של products)
+        const formattedResults = (data.products || []).map(item => ({
+            id: item.id,
+            name: item['product-name'] || item.name,
+            set: item['console-name'] || 'ספורט', // בספורטקארד זה בדרך כלל הסדרה/שנה
+            image: item.image || 'https://via.placeholder.com/30x40?text=Card',
+            price: item['loose-price'] || item.price || 0
+        }));
+
+        res.status(200).json({ results: formattedResults });
+
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch cards" });
+        console.error("Error fetching from SportsCardPro:", error);
+        res.status(500).json({ error: "Failed to fetch data from API" });
     }
 }
