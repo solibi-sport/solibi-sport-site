@@ -28,7 +28,7 @@
             flex-direction: column;
         }
 
-        /* === הדר עליון === */
+        /* === הדר עליון (מעוצב ומלא) === */
         .header {
             height: 65px;
             background: var(--element-navy-gradient);
@@ -40,7 +40,13 @@
             align-items: center;
             padding: 0 20px; 
             flex-shrink: 0;
+            width: 100%;
         }
+
+        /* התיקון: חלוקת ההדר ל-3 עמודות מדויקות */
+        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
+        .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1; }
+        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
 
         .logo-wrapper {
             background-color: #ffffff; padding: 0 28px; border-radius: 12px;
@@ -57,15 +63,17 @@
         .personal-area-btn {
             background: transparent; border: 1.5px solid var(--brand-green);
             color: #ffffff; padding: 6px 16px; border-radius: 30px; text-decoration: none;
-            font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px;
+            font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; white-space: nowrap;
         }
+        .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; border-color: var(--brand-green); transform: scale(1.05); }
 
-        .header-search { position: relative; }
+        .header-search { position: relative; width: 65%; height: 34px; transition: width 0.4s ease; }
         .header-search input { 
-            width: 180px; height: 34px; border: none; background: rgba(255, 255, 255, 0.95); 
+            width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); 
             border-radius: 30px; padding: 0 20px; outline: none; transition: 0.4s; font-family: inherit; font-size: 13px;
         }
-        .header-search input:focus { width: 220px; box-shadow: 0 0 15px var(--brand-green-glow); }
+        .header-search:focus-within { width: 100%; }
+        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
 
         /* === גוף הדף === */
         .main-content { display: flex; flex: 1; overflow: hidden; position: relative; }
@@ -79,7 +87,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100;
         }
         .vertical-action-bar:hover {
-            height: 200px; background: var(--brand-green); border-color: #fff;
+            height: 220px; background: var(--brand-green); border-color: #fff;
             transition: height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, background 0.4s 0s, border-color 0.4s 0s;
         }
         .v-action-header { height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 900; font-size: 14px; flex-shrink: 0; cursor: default; }
@@ -129,6 +137,11 @@
         }
 
         /* === עיצוב הכותרת המיוחדת והשליטה במיקום === */
+        .premium-title-wrapper {
+            display: flex; align-items: center; justify-content: center; gap: 15px; 
+            width: 100%; max-width: 950px; flex-shrink: 0; 
+            transform: translateY(-40px); /* מנגנון הרמה והורדה של הכותרת! */
+        }
         .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--brand-green)); border-radius: 2px; }
         .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
         .page-title {
@@ -160,6 +173,7 @@
                 <img src="a.png" alt="לוגו" class="actual-logo-img">
             </a>
         </div>
+        
         <div class="header-center-col">
             <a href="#" class="personal-area-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -175,6 +189,7 @@
                 </ul>
             </nav>
         </div>
+
         <div class="header-left-col">
             <div class="header-search"><input type="text" placeholder="חיפוש תוכן..."></div>
         </div>
@@ -207,16 +222,16 @@
 
         <div class="center-wrapper">
             
-            <div class="premium-title-wrapper" style="display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; max-width: 900px; flex-shrink: 0; transform: translateY(-40px);">
+            <div class="premium-title-wrapper">
                 <div class="title-line"></div>
                 <h1 class="page-title">
-                    <span style="color: var(--text-dark);">מילה1</span>
-                    <span style="color: var(--brand-green);">מילה2</span>
-                    <span style="color: var(--text-dark);">מילה3</span>
-                    <span style="color: var(--brand-green);">מילה4</span>
+                    <span style="color: var(--text-dark);">שם</span>
+                    <span style="color: var(--brand-green);">הדף</span>
+                    <span style="color: var(--text-dark);">שלך</span>
                 </h1>
                 <div class="title-line left"></div>
             </div>
+
             <div style="width: 100%; text-align: center; color: var(--text-dark); font-weight: 500; font-size: 20px;">
                 [הכנס את הגריד או התוכן כאן]
             </div>
@@ -245,7 +260,7 @@
         });
 
         // ==========================================
-        //  מנוע שאיבת נתוני לייב (הקוד המלא המקורי!)
+        // === מנוע שאיבת נתוני לייב (קוד המלא) ===
         // ==========================================
         const LEAGUE_NAMES_MAP = { 383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה", 88: "הולנדית ראשונה", 144: "בלגית ראשונה", 94: "פורטוגלית ראשונה", 203: "טורקית ראשונה", 2: "ליגת האלופות", 3: "הליגה האירופית", 848: "ליגת הקונפרנס", 13: "ליברטדורס", 11: "סודאמריקנה", 1: "מונדיאל" };
         const ORDERED_LEAGUES = [ 383, 384, 39, 140, 135, 78, 61, 40, 41, 42, 141, 136, 79, 62, 88, 144, 94, 203, 179, 119, 113, 106, 218, 107, 345, 332, 271, 286, 373, 283, 172, 197, 318, 333, 235, 362, 343, 71, 72, 128, 268, 239, 265, 253, 262, 307, 301, 98, 292, 169, 288, 233, 200, 188, 2, 3, 848, 5, 4, 13, 11, 9, 17, 6, 1 ];
@@ -304,8 +319,12 @@
                     else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
                     else matchStatus = 'לא התחיל';
 
+                    // קריטי לפתיחת החלון הצף!
+                    const safeHomeName = encodeURIComponent(m.teams.home.name);
+                    const safeAwayName = encodeURIComponent(m.teams.away.name);
+
                     matchesHtml += `
-                        <div class="live-match-card-light">
+                        <a href="#" onclick="if(typeof openMatchEvents==='function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" class="live-match-card-light">
                             <div class="match-teams-col">
                                 <div class="team-line"><img src="${m.teams.home.logo}"> <span>${m.teams.home.name}</span></div>
                                 <div class="team-line"><img src="${m.teams.away.logo}"> <span>${m.teams.away.name}</span></div>
@@ -317,7 +336,7 @@
                                     <span class="score-num">${currentAway}</span>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     `;
                 });
                 allHtml += leagueHtml + matchesHtml;
@@ -333,17 +352,18 @@
             }
         }, 10000);
 
-        // הפעלת לוח התוצאות רק אם יש תוצאות להציג (הפונקציות ירוצו ברקע)
         fetchLiveMatches();
         setInterval(fetchLiveMatches, 60000);
 
         // ==========================================
-        //  מנוע שאיבת הטיקר מקובץ חיצוני
+        // === שאיבת הטיקר מקובץ חיצוני ===
         // ==========================================
         fetch('ticker.html')
             .then(res => res.text())
             .then(data => document.getElementById('ticker-placeholder').innerHTML = data)
             .catch(err => console.error('שגיאה בשאיבת הטיקר:', err));
     </script>
+    <script src="translations.js"></script>
+    <script src="matchEvents.js"></script>
 </body>
 </html>
