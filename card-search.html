@@ -752,15 +752,25 @@
         }
 
         // === מנוע חיפוש קלפים (התחברות ל-API) ===
+      // === פונקציית עזר: הוספת פסיקים והמרה מסנטים לדולרים ===
+        function formatPrice(price) {
+            if (!price) return '0.00';
+            const num = parseFloat(price) / 100;
+            if (isNaN(num)) return price;
+            return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // === מנוע חיפוש, סינון ומיון ===
         const mainSearchInput = document.getElementById('mainSearchInput');
         const searchDropdown = document.getElementById('searchDropdown');
         const filterBtn = document.getElementById('filterBtn');
         const filterDropdown = document.getElementById('filterDropdown');
         const cardResult = document.getElementById('cardResult');
+        const sortSelect = document.getElementById('sortResults');
         let searchTimeout;
-        let currentResults = []; // משתנה גלובלי לשמירת תוצאות לאנטר
+        let currentResults = []; // שומר את כל התוצאות המקוריות מהשרת
 
-        // 1. פתיחה וסגירה של תפריט הסינונים + לחיצה על כפתורי סינון
+        // 1. ניהול חלון הפילטרים (פתיחה/סגירה)
         if (filterBtn && filterDropdown) {
             filterBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -774,17 +784,71 @@
                 }
             });
 
-            // הפעלת כפתורי הסינון (צביעה שלהם כשלוחצים)
+            // 2. לחיצה על כפתורי הסינון (הפילטרים)
             document.querySelectorAll('.filter-tag').forEach(tag => {
                 tag.addEventListener('click', (e) => {
                     const group = e.target.parentElement;
+                    const wasSelected = e.target.classList.contains('selected');
+                    
+                    // מוריד את הבחירה מכל שאר הכפתורים באותה שורה
                     group.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('selected'));
-                    e.target.classList.add('selected');
+                    
+                    // אם הכפתור לא היה לחוץ - נלחץ עליו. אם כן היה - הוא יישאר כבוי (ביטול סינון)
+                    if (!wasSelected) {
+                        e.target.classList.add('selected');
+                    }
+                    
+                    // ברגע ששינינו פילטר, מריצים את פונקציית העדכון!
+                    applyFiltersAndSort();
                 });
             });
         }
 
-        // 2. האזנה להקלדה בשורת החיפוש
+        // 3. פונקציית הליבה: מסננת וממיינת את התוצאות בהתאם למה שהגולש בחר
+        function applyFiltersAndSort() {
+            let filtered = [...currentResults];
+
+            // אוספים את כל המילים של הפילטרים הפעילים
+            const activeFilters = Array.from(document.querySelectorAll('.filter-tag.selected')).map(t => {
+                let text = t.innerText.toLowerCase();
+                // מתרגמים כפתורים לשפה שה-API מבין
+                if(text.includes('rookie') || text.includes('rc')) return 'rc';
+                if(text.includes('auto')) return 'auto';
+                return text;
+            });
+
+            // מסננים: רק קלפים שמכילים את *כל* מילות הפילטרים שנבחרו
+            if (activeFilters.length > 0) {
+                filtered = filtered.filter(card => {
+                    const searchStr = (card.name + " " + (card.set || '')).toLowerCase();
+                    return activeFilters.every(filter => searchStr.includes(filter));
+                });
+            }
+
+            // ממיינים
+            if (sortSelect) {
+                const sortType = sortSelect.value;
+                if (sortType === 'priceDesc') {
+                    filtered.sort((a, b) => parseFloat(b.price || 0) - parseFloat(a.price || 0));
+                } else if (sortType === 'priceAsc') {
+                    filtered.sort((a, b) => parseFloat(a.price || 0) - parseFloat(b.price || 0));
+                } else if (sortType === 'nameAsc') {
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+                }
+            }
+
+            // מציירים מחדש את המסך עם התוצאות שעברו סינון/מיון
+            renderFullGrid(filtered);
+        }
+
+        // מאזין לשינוי בתיבת המיון (מהיקר לזול וכו')
+        if(sortSelect) {
+            sortSelect.addEventListener('change', () => {
+                applyFiltersAndSort();
+            });
+        }
+
+        // 4. האזנה להקלדה בשורת החיפוש (משיכת הנתונים מהשרת)
         if (mainSearchInput && searchDropdown) {
             mainSearchInput.addEventListener('input', (e) => {
                 const query = e.target.value.trim();
@@ -804,19 +868,7 @@
                         const data = await response.json();
                         let cards = data.results || [];
 
-                        // === הסינון החכם של מילות העזר (כמו Panini) ===
-                        const searchWords = query.toLowerCase().split(' ').filter(word => word.length > 0);
-                        let filteredCards = cards.filter(card => {
-                            const textToSearch = (card.name + " " + (card.set || '')).toLowerCase();
-                            return searchWords.every(word => textToSearch.includes(word));
-                        });
-
-                        // אם הסינון הקפדני מחק הכל בטעות, נחזור למה שה-API הביא במקור
-                        if (filteredCards.length > 0) {
-                            cards = filteredCards;
-                        }
-
-                        currentResults = cards; // שומרים את התוצאות לאנטר
+                        currentResults = cards; // שומרים את התוצאות הטריות
                         searchDropdown.innerHTML = '';
 
                         if (cards.length === 0) {
@@ -824,17 +876,17 @@
                             return;
                         }
 
-                        cards.forEach(card => {
+                        // מציגים בתפריט המהיר (עד 5 תוצאות ראשונות כדי לא להעמיס)
+                        cards.slice(0, 5).forEach(card => {
                             const item = document.createElement('div');
                             item.className = 'dropdown-item';
                             
                             const imgSrc = (card.image && card.image !== 'no-image') ? card.image : 'https://via.placeholder.com/30x40?text=Card';
-                            // תמונת גיבוי חכמה שמונעת אייקון שבור
                             const fallbackImg = "this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22200%22%20viewBox%3D%220%200%20150%20200%22%3E%3Crect%20width%3D%22150%22%20height%3D%22200%22%20fill%3D%22%23f0f0f0%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20fill%3D%22%23999%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';";
                             
                             item.innerHTML = `
                                 <img src="${imgSrc}" onerror="${fallbackImg}" alt="card">
-                                <span>${card.name} - ${card.set || 'ספורט'}</span>
+                                <span>${card.name} <small style="color:gray;">(${card.set || 'ספורט'})</small></span>
                             `;
                             
                             item.addEventListener('click', () => {
@@ -846,6 +898,15 @@
                             searchDropdown.appendChild(item);
                         });
 
+                        // מוסיף כפתור "הצג את כל התוצאות" בסוף התפריט המהיר
+                        const showAllItem = document.createElement('div');
+                        showAllItem.className = 'dropdown-item';
+                        showAllItem.style.justifyContent = 'center';
+                        showAllItem.style.color = '#7ca856';
+                        showAllItem.style.fontWeight = 'bold';
+                        showAllItem.innerHTML = `לחץ ENTER כדי לראות את כל ${cards.length} התוצאות`;
+                        searchDropdown.appendChild(showAllItem);
+
                     } catch (error) {
                         console.error("שגיאה בחיפוש קלפים:", error);
                         searchDropdown.innerHTML = '<div class="dropdown-item" style="justify-content: center; color: red;">שגיאת תקשורת. נסה שוב.</div>';
@@ -853,31 +914,25 @@
                 }, 500);
             });
 
-            // 3. מאזין למקש אנטר (ENTER)
+            // 5. מאזין למקש אנטר (ENTER) - פותח את הרשימה המלאה ועושה סינון ראשוני
             mainSearchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     searchDropdown.classList.remove('active');
                     
-                    // מסתיר את הקלף הבודד שמוצג למעלה (אם יש)
                     if (cardResult) cardResult.classList.remove('show-result'); 
                     
-                    // מציג את אזור התוצאות המלא וקורא לפונקציה לצייר אותן
                     const resContainer = document.getElementById('resultsContainer');
                     if (resContainer) resContainer.style.display = 'flex';
                     
-                    // מחזיר את המיון לברירת מחדל באנטר חדש
-                    const sortSelect = document.getElementById('sortResults');
-                    if (sortSelect) sortSelect.value = 'default';
-                    
-                    renderFullGrid(currentResults);
+                    // מריץ את המסננים והמיון הקיימים על התוצאות החדשות שנטענו
+                    applyFiltersAndSort();
                 }
             });
         }
 
-        // 4. פונקציה שמציגה את הקלף הנבחר למעלה
+        // 6. פונקציה שמציגה את הקלף הנבחר למעלה (הקופסה הכחולה)
         function showCardResult(card) {
-            // מעלים את אזור התוצאות המלא אם הוא פתוח
             const resContainer = document.getElementById('resultsContainer');
             if (resContainer) resContainer.style.display = 'none';
 
@@ -887,7 +942,7 @@
             if (nameEl) nameEl.innerText = card.name;
 
             const setEl = document.getElementById('displayCardSet');
-            if (setEl) setEl.innerText = card.set || 'ספורט';
+            if (setEl) setEl.innerHTML = `${card.set || 'ספורט'} <div style="color: #7ca856; font-weight: bold; font-size: 12px; margin-top: 5px; direction: ltr; text-align: right;">Condition: Raw / Ungraded</div>`;
 
             const priceEl = document.getElementById('displayCardPrice');
             if (priceEl) priceEl.innerText = '$' + formatPrice(card.price);
@@ -898,7 +953,7 @@
             }
         }
 
-        // 5. פונקציה שמציירת את התוצאות למטה בלחיצה על אנטר (תומכת במיון החדש)
+        // 7. פונקציה שמציירת את התוצאות למטה בלחיצה על אנטר (עברה שדרוג לעיצוב ברור יותר)
         function renderFullGrid(cards) {
             const fullGrid = document.getElementById('fullResultsGrid');
             if (!fullGrid) return;
@@ -907,11 +962,10 @@
             
             if (cards.length === 0) {
                 fullGrid.style.display = 'block';
-                fullGrid.innerHTML = '<div style="text-align: center; padding: 30px; font-weight: bold;">לא נמצאו תוצאות מדוייקות לחיפוש שלך.</div>';
+                fullGrid.innerHTML = '<div style="text-align: center; padding: 30px; font-weight: bold; color: #8fa0b3;">לא נמצאו תוצאות התואמות לסינון המבוקש. נסה לבטל פילטרים.</div>';
                 return;
             }
             
-            // תצוגת הקוביות כברירת מחדל
             if(!fullGrid.className.includes('list-view')) {
                 fullGrid.style.display = 'grid';
                 fullGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(180px, 1fr))';
@@ -932,17 +986,20 @@
                 cardDiv.onmouseover = () => cardDiv.style.borderColor = '#7ca856';
                 cardDiv.onmouseout = () => cardDiv.style.borderColor = '#ddd';
 
-                // הוספנו פה את ה-onerror למניעת אייקון תמונה שבור - מציג ריבוע אפור עם טקסט
                 const imgSrc = (card.image && card.image !== 'no-image') ? card.image : '';
                 const fallbackImg = "this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22200%22%20viewBox%3D%220%200%20150%20200%22%3E%3Crect%20width%3D%22150%22%20height%3D%22200%22%20fill%3D%22%23f0f0f0%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20fill%3D%22%23999%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';";
 
+                // כאן אנחנו מדגישים שמדובר במחיר Raw!
                 cardDiv.innerHTML = `
                     <img src="${imgSrc}" onerror="${fallbackImg}" style="width:100%; height:180px; object-fit:contain; border-radius: 5px; margin-bottom: 10px;">
                     <div class="card-details-wrapper">
                         <div style="font-weight:bold; font-size:14px; color:#333;">${card.name}</div>
                         <div style="font-size:12px; color:gray;">${card.set || 'ספורט'}</div>
                     </div>
-                    <div class="card-price-tag" style="color:#2ecc71; font-weight:bold; margin-top:10px; font-size:16px;">$${formatPrice(card.price)}</div>
+                    <div style="margin-top:12px;">
+                        <div style="font-size: 10px; color: #8fa0b3; font-weight: bold;">מחיר שוק (Raw / לא מדורג):</div>
+                        <div class="card-price-tag" style="color:#2ecc71; font-weight:900; font-size:18px;">$${formatPrice(card.price)}</div>
+                    </div>
                 `;
 
                 cardDiv.onclick = () => {
@@ -954,11 +1011,10 @@
             });
         }
 
-        // 6. הפעלת כפתורי שינוי תצוגה (רשימה / קוביות) ומנגנון המיון
+        // 8. הפעלת כפתורי שינוי תצוגה (רשימה / קוביות)
         const gridBtn = document.getElementById('gridViewBtn');
         const listBtn = document.getElementById('listViewBtn');
         const gridContainer = document.getElementById('fullResultsGrid');
-        const sortSelect = document.getElementById('sortResults');
 
         if(gridBtn && listBtn && gridContainer) {
             gridBtn.addEventListener('click', () => {
@@ -973,29 +1029,9 @@
                 listBtn.classList.add('active');
                 gridBtn.classList.remove('active');
                 gridContainer.className = 'full-results-grid list-view';
-                gridContainer.style.display = ''; // ה-CSS הקומפקטי החדש ישתלט
+                gridContainer.style.display = ''; 
             });
-        }
-        
-        if(sortSelect) {
-            sortSelect.addEventListener('change', (e) => {
-                const sortType = e.target.value;
-                let sortedCards = [...currentResults];
-                
-                if (sortType === 'priceDesc') {
-                    // מהגבוה לנמוך
-                    sortedCards.sort((a, b) => parseFloat(b.price || 0) - parseFloat(a.price || 0));
-                } else if (sortType === 'priceAsc') {
-                    // מהנמוך לגבוה
-                    sortedCards.sort((a, b) => parseFloat(a.price || 0) - parseFloat(b.price || 0));
-                } else if (sortType === 'nameAsc') {
-                    // לפי ה-א'-ב'
-                    sortedCards.sort((a, b) => a.name.localeCompare(b.name));
-                }
-                
-                renderFullGrid(sortedCards);
-            });
-        }
+        }  
     </script>
 
 </body>
