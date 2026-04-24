@@ -1,85 +1,94 @@
 // 1. מזריק את העיצוב (CSS)
 if (!document.getElementById('modal-style-events')) {
-const modalStyle = document.createElement('style');
-modalStyle.id = 'modal-style-events';
-modalStyle.innerHTML = `
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(6, 12, 20, 0.75); z-index: 9999; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; backdrop-filter: blur(3px); }
-.modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 500px; border-radius: 12px; box-shadow: 0 15px 50px rgba(0,0,0,0.9); border: 1px solid #2a3b4c; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; height: 620px; max-height: 85vh; will-change: transform; touch-action: none; position: relative; }
-.modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; border-bottom: 1px solid #1f2d40; }
-.modal-header:active { cursor: grabbing; }
-.modal-header h2 { margin: 0; font-size: 14px; font-weight: bold; color: #8fa0b3; pointer-events: none; letter-spacing: 0.5px;}
-.close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
-.close-modal:hover { color: #ffffff; }
-@keyframes bannerGoalPulse { 0% { box-shadow: inset 0 0 10px rgba(122,153,102,0.2); } 100% { box-shadow: inset 0 0 40px rgba(122,153,102,0.9); } }
-@keyframes textGoalPop { 0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
-.score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; transition: box-shadow 0.3s; }
-.score-banner.goal-active { animation: bannerGoalPulse 0.8s infinite alternate; }
-.modal-goal-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; font-weight: 900; color: rgba(255,255,255,0.95); text-shadow: 0 0 20px #7a9966, 0 0 40px #7a9966; pointer-events: none; z-index: 20; animation: textGoalPop 0.8s infinite alternate; }
-.score-team { font-size: 15px; font-weight: 900; flex: 1; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; position: relative; z-index: 2;}
-.score-box { display: flex; align-items: center; gap: 12px; background: #060c14; padding: 8px 20px; border-radius: 12px; border: 1px solid rgba(122, 153, 102, 0.4); position: relative; box-shadow: inset 0 3px 10px rgba(0,0,0,0.6); margin: 0 10px; z-index: 2;}
-.score-val { font-size: 26px; font-weight: 900; color: #ffffff; line-height: 1; }
-.score-divider { font-size: 18px; color: #7a9966; font-weight: bold; line-height: 1; transform: translateY(-2px); }
-.score-minute { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #7a9966; color: #111926; font-size: 11px; font-weight: 900; padding: 2px 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); white-space: nowrap; border: 1px solid #fff; }
-.modal-tabs { display: flex; justify-content: space-between; background: #0d131d; border-bottom: 1px solid #1f2d40; flex-shrink: 0; }
-.modal-tab-btn { flex: 1; background: transparent; border: none; color: #8fa0b3; padding: 12px 0; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; border-bottom: 3px solid transparent; font-family: inherit; outline: none; }
-.modal-tab-btn.active { color: #7a9966; border-bottom: 3px solid #7a9966; background: rgba(255,255,255,0.02); }
-.modal-tab-btn:hover { color: #ffffff; }
-.tab-content { display: none; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 10px; }
-.tab-content.active { display: flex; }
+    const modalStyle = document.createElement('style');
+    modalStyle.id = 'modal-style-events';
+    modalStyle.innerHTML = `
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(6, 12, 20, 0.75); z-index: 9999; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; backdrop-filter: blur(3px); }
+    .modal-box { background: #111926; color: #ffffff; width: 95%; max-width: 500px; border-radius: 12px; box-shadow: 0 15px 50px rgba(0,0,0,0.9); border: 1px solid #2a3b4c; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; height: 620px; max-height: 85vh; will-change: transform; touch-action: none; position: relative; }
+    .modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; border-bottom: 1px solid #1f2d40; }
+    .modal-header:active { cursor: grabbing; }
+    .modal-header h2 { margin: 0; font-size: 14px; font-weight: bold; color: #8fa0b3; pointer-events: none; letter-spacing: 0.5px;}
+    .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
+    .close-modal:hover { color: #ffffff; }
+    @keyframes bannerGoalPulse { 0% { box-shadow: inset 0 0 10px rgba(122,153,102,0.2); } 100% { box-shadow: inset 0 0 40px rgba(122,153,102,0.9); } }
+    @keyframes textGoalPop { 0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
+    .score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; transition: box-shadow 0.3s; }
+    .score-banner.goal-active { animation: bannerGoalPulse 0.8s infinite alternate; }
+    .modal-goal-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; font-weight: 900; color: rgba(255,255,255,0.95); text-shadow: 0 0 20px #7a9966, 0 0 40px #7a9966; pointer-events: none; z-index: 20; animation: textGoalPop 0.8s infinite alternate; }
+    .score-team { font-size: 15px; font-weight: 900; flex: 1; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; position: relative; z-index: 2;}
+    .score-box { display: flex; align-items: center; gap: 12px; background: #060c14; padding: 8px 20px; border-radius: 12px; border: 1px solid rgba(122, 153, 102, 0.4); position: relative; box-shadow: inset 0 3px 10px rgba(0,0,0,0.6); margin: 0 10px; z-index: 2;}
+    .score-val { font-size: 26px; font-weight: 900; color: #ffffff; line-height: 1; }
+    .score-divider { font-size: 18px; color: #7a9966; font-weight: bold; line-height: 1; transform: translateY(-2px); }
+    .score-minute { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #7a9966; color: #111926; font-size: 11px; font-weight: 900; padding: 2px 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); white-space: nowrap; border: 1px solid #fff; }
+    .modal-tabs { display: flex; justify-content: space-between; background: #0d131d; border-bottom: 1px solid #1f2d40; flex-shrink: 0; }
+    .modal-tab-btn { flex: 1; background: transparent; border: none; color: #8fa0b3; padding: 12px 0; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; border-bottom: 3px solid transparent; font-family: inherit; outline: none; }
+    .modal-tab-btn.active { color: #7a9966; border-bottom: 3px solid #7a9966; background: rgba(255,255,255,0.02); }
+    .modal-tab-btn:hover { color: #ffffff; }
+    .tab-content { display: none; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 10px; }
+    .tab-content.active { display: flex; }
 
-/* עיצוב המגרש */
-.pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 15px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
-.pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.4); transform: translateX(-50%); z-index: 1;}
-.pitch-circle { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;}
-.pitch-box-left { position: absolute; left: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
-.pitch-box-right { position: absolute; right: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-right: none; z-index: 1;}
-.pitch-small-box-left { position: absolute; left: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
-.pitch-small-box-right { position: absolute; right: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-right: none; z-index: 1;}
+    /* עיצוב המגרש */
+    .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 15px 0 5px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+    .pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.4); transform: translateX(-50%); z-index: 1;}
+    .pitch-circle { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;}
+    .pitch-box-left { position: absolute; left: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
+    .pitch-box-right { position: absolute; right: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-right: none; z-index: 1;}
+    .pitch-small-box-left { position: absolute; left: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
+    .pitch-small-box-right { position: absolute; right: -2px; top: 36%; height: 28%; width: 6%; border: 2px solid rgba(255,255,255,0.4); border-right: none; z-index: 1;}
 
-.pitch-team { flex: 1; position: relative; }
-.pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 75px; z-index: 3; transition: 0.3s ease; }
-.pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.9); box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(0,0,0,0.3); z-index: 4; position: relative;}
-.pitch-player-name { color: #ffffff; font-size: 10px; font-weight: bold; margin-top: 3px; text-align: center; text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 0 3px 5px rgba(0,0,0,0.9); z-index: 3; max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr;}
-.pitch-player-sub-badge { position: absolute; top: -5px; right: -6px; background: #10b981; color: #fff; font-size: 8px; font-weight: bold; padding: 1px 3px; border-radius: 4px; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.5); z-index: 5; }
+    .pitch-team { flex: 1; position: relative; }
+    .pitch-player { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 75px; z-index: 3; transition: 0.3s ease; }
+    .pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.9); box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(0,0,0,0.3); z-index: 4; position: relative;}
+    .pitch-player-name { color: #ffffff; font-size: 10px; font-weight: bold; margin-top: 3px; text-align: center; text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 0 3px 5px rgba(0,0,0,0.9); z-index: 3; max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr;}
+    
+    /* עיצוב הספסל החדש */
+    .bench-container { display: none; margin-top: 15px; padding: 10px; background: #0b1018; border-radius: 8px; border: 1px solid #1f2d40; gap: 15px; }
+    .bench-container.show-bench { display: flex; animation: fadeIn 0.3s ease; }
+    .bench-col { flex: 1; }
+    .bench-title { font-size: 13px; font-weight: bold; color: #fff; border-bottom: 1px solid #2a3b4c; padding-bottom: 6px; margin-bottom: 8px; text-align: center; }
+    .bench-player { display: flex; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 11.5px; }
+    .bench-num { width: 22px; text-align: center; color: #7a9966; font-weight: bold; margin-left: 8px; font-size: 10px; background: rgba(122,153,102,0.1); border-radius: 4px; padding: 2px 0;}
+    .bench-name { color: #d1d5db; flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sub-in-badge { color: #10b981; font-weight: bold; font-size: 10px; margin-right: auto; padding-left: 5px; background: rgba(16,185,129,0.1); padding: 2px 6px; border-radius: 4px; white-space: nowrap;}
 
-.modal-mini-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-top: 5px; }
-.modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #1f2d40; }
-.modal-mini-table td { padding: 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-.modal-mini-table tr.highlight { background: rgba(122,153,102,0.15); font-weight: bold; }
-.modal-mini-table td .team-name-text { display: flex; align-items: center; vertical-align: middle; justify-content: flex-end; }
-.modal-mini-table td .team-logo { width: 14px; height: 14px; margin-left: 5px; }
-.modal-mini-table td .live-dot { color: #ef4444; font-size: 9px; animation: blink 1.5s infinite; margin-right: 6px; vertical-align: middle; }
-.stats-container { padding: 10px 15px; flex-shrink: 0; background: #0f1620; border-bottom: 1px solid #1f2d40; }
-.possession-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: #fff; }
-.possession-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: #1f2d40; margin-bottom: 10px;}
-.possession-home { background: #7a9966; height: 100%; transition: width 1s ease-out; }
-.possession-away { background: #4a90e2; height: 100%; transition: width 1s ease-out; }
-.extra-stats { display: flex; flex-direction: column; gap: 3px; }
-.stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; background: rgba(255,255,255,0.015); padding: 4px 8px; border-radius: 4px; }
-.stat-val { font-weight: bold; width: 35px; text-align: center; font-size: 12px; }
-.home-val { color: #7a9966; }
-.away-val { color: #4a90e2; }
-.stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
-.events-wrapper { padding: 10px 15px; display: flex; gap: 15px; align-items: stretch; }
-.team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
-.team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
-.event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
-.event-home { justify-content: flex-start; text-align: right; } 
-.event-away { justify-content: flex-end; text-align: left; flex-direction: row-reverse; }
-.event-time { font-weight: bold; color: #7a9966; min-width: 25px; text-align: center; font-size: 11px; background: rgba(122, 153, 102, 0.1); padding: 2px 4px; border-radius: 3px; margin: 0 6px; }
-.event-icon { font-size: 14px; margin: 0 4px; }
-.event-text { color: #d1d5db; }
-.event-subtext { color: #888; font-size: 9px; display: block; margin-top: 1px; }
-.event-text.var-cancelled { color: #ef4444; text-decoration: line-through; opacity: 0.8; }
-.event-subtext.var-cancelled-sub { color: #ef4444; text-decoration: none; font-weight: bold; font-size: 10px; display: block; margin-top: 2px; }
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #2a3b4c; border-radius: 10px; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes scaleUp { from { transform: scale(0.9); } to { transform: scale(1); } }
-@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-`;
-document.head.appendChild(modalStyle);
+    .modal-mini-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-top: 5px; }
+    .modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #1f2d40; }
+    .modal-mini-table td { padding: 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .modal-mini-table tr.highlight { background: rgba(122,153,102,0.15); font-weight: bold; }
+    .modal-mini-table td .team-name-text { display: flex; align-items: center; vertical-align: middle; justify-content: flex-end; }
+    .modal-mini-table td .team-logo { width: 14px; height: 14px; margin-left: 5px; }
+    .modal-mini-table td .live-dot { color: #ef4444; font-size: 9px; animation: blink 1.5s infinite; margin-right: 6px; vertical-align: middle; }
+    .stats-container { padding: 10px 15px; flex-shrink: 0; background: #0f1620; border-bottom: 1px solid #1f2d40; }
+    .possession-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: #fff; }
+    .possession-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: #1f2d40; margin-bottom: 10px;}
+    .possession-home { background: #7a9966; height: 100%; transition: width 1s ease-out; }
+    .possession-away { background: #4a90e2; height: 100%; transition: width 1s ease-out; }
+    .extra-stats { display: flex; flex-direction: column; gap: 3px; }
+    .stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; background: rgba(255,255,255,0.015); padding: 4px 8px; border-radius: 4px; }
+    .stat-val { font-weight: bold; width: 35px; text-align: center; font-size: 12px; }
+    .home-val { color: #7a9966; }
+    .away-val { color: #4a90e2; }
+    .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
+    .events-wrapper { padding: 10px 15px; display: flex; gap: 15px; align-items: stretch; }
+    .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
+    .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
+    .event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
+    .event-home { justify-content: flex-start; text-align: right; } 
+    .event-away { justify-content: flex-end; text-align: left; flex-direction: row-reverse; }
+    .event-time { font-weight: bold; color: #7a9966; min-width: 25px; text-align: center; font-size: 11px; background: rgba(122, 153, 102, 0.1); padding: 2px 4px; border-radius: 3px; margin: 0 6px; }
+    .event-icon { font-size: 14px; margin: 0 4px; }
+    .event-text { color: #d1d5db; }
+    .event-subtext { color: #888; font-size: 9px; display: block; margin-top: 1px; }
+    .event-text.var-cancelled { color: #ef4444; text-decoration: line-through; opacity: 0.8; }
+    .event-subtext.var-cancelled-sub { color: #ef4444; text-decoration: none; font-weight: bold; font-size: 10px; display: block; margin-top: 2px; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #2a3b4c; border-radius: 10px; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scaleUp { from { transform: scale(0.9); } to { transform: scale(1); } }
+    @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+    `;
+    document.head.appendChild(modalStyle);
 }
 
 window.switchModalTab = function(tabId, btn) {
@@ -209,7 +218,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         }
 
         try {
-            // 👇 המפתח נמחק! פונים לשרת ה"ראוטר" החכם שלנו שבנינו הרגע 👇
             const [eventsRes, statsRes, fixtureRes, lineupsRes] = await Promise.all([
                 fetch(`/api/football-proxy?endpoint=fixtures/events&fixture=${fixtureId}`),
                 fetch(`/api/football-proxy?endpoint=fixtures/statistics&fixture=${fixtureId}`),
@@ -244,7 +252,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 else matchStatus = 'לא התחיל';
             }
 
-            // 👇 הפנייה השנייה המאובטחת 👇
             const [h2hRes, standingsRes] = await Promise.all([
                 fetch(`/api/football-proxy?endpoint=fixtures/headtohead&h2h=${homeId}-${awayId}&last=5`),
                 fetch(`/api/football-standings?league=${leagueId}&season=${season}`)
@@ -279,39 +286,41 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             let events = eventsData.response || [];
 
-            /* ------ הרכבים - תבנית 4-3-3 קבועה וברזל ------ */
+            /* ------ הרכבים + ספסל משודרג ------ */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
+            
             if (lineupsData.response && lineupsData.response.length === 2) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
                 const aL = lineupsData.response.find(r => r.team.id === awayId) || lineupsData.response[1];
                 
+                // התיקון הקריטי של העמדות הסימטריות
                 const renderPlayersFixed = (players, isHome) => {
                     const homePositions = [
-                        { left: 93, top: 50 }, // שוער ברחבת 5
-                        { left: 76, top: 15 }, // מגן ימני על קו 16
-                        { left: 76, top: 38 }, // בלם ימני על קו 16
-                        { left: 76, top: 62 }, // בלם שמאלי על קו 16
-                        { left: 76, top: 85 }, // מגן שמאלי על קו 16
-                        { left: 58, top: 25 }, // קשר ימני
-                        { left: 55, top: 50 }, // קשר אמצע (אחורי/קדמי)
-                        { left: 58, top: 75 }, // קשר שמאלי
-                        { left: 40, top: 20 }, // כנף ימין
-                        { left: 37, top: 50 }, // חלוץ מרכזי
-                        { left: 40, top: 80 }  // כנף שמאל
+                        { left: 93, top: 50 }, // שוער 
+                        { left: 84, top: 15 }, // מגן ימני (על קו 16)
+                        { left: 84, top: 38 }, // בלם ימני (על קו 16)
+                        { left: 84, top: 62 }, // בלם שמאלי (על קו 16)
+                        { left: 84, top: 85 }, // מגן שמאלי (על קו 16)
+                        { left: 69, top: 25 }, // קשר ימני (באמצע בין הגנה להתקפה)
+                        { left: 69, top: 50 }, // קשר אמצע
+                        { left: 69, top: 75 }, // קשר שמאלי
+                        { left: 57, top: 20 }, // כנף ימין (פרופורציה שווה)
+                        { left: 54, top: 50 }, // חלוץ (חצי בעיגול, חצי בשטח שלו)
+                        { left: 57, top: 80 }  // כנף שמאל
                     ];
 
                     const awayPositions = [
-                        { left: 7, top: 50 },  // שוער ברחבת 5
-                        { left: 24, top: 15 }, // מגן שמאלי על קו 16
-                        { left: 24, top: 38 }, // בלם שמאלי על קו 16
-                        { left: 24, top: 62 }, // בלם ימני על קו 16
-                        { left: 24, top: 85 }, // מגן ימני על קו 16
-                        { left: 42, top: 25 }, // קשר שמאלי
-                        { left: 45, top: 50 }, // קשר אמצע
-                        { left: 42, top: 75 }, // קשר ימני
-                        { left: 60, top: 20 }, // כנף שמאל
-                        { left: 63, top: 50 }, // חלוץ מרכזי
-                        { left: 60, top: 80 }  // כנף ימין
+                        { left: 7, top: 50 },  // שוער
+                        { left: 16, top: 15 }, // מגן שמאלי (על קו 16)
+                        { left: 16, top: 38 }, // בלם שמאלי (על קו 16)
+                        { left: 16, top: 62 }, // בלם ימני (על קו 16)
+                        { left: 16, top: 85 }, // מגן ימני (על קו 16)
+                        { left: 31, top: 25 }, // קשר שמאלי
+                        { left: 31, top: 50 }, // קשר אמצע
+                        { left: 31, top: 75 }, // קשר ימני
+                        { left: 43, top: 20 }, // כנף שמאל
+                        { left: 46, top: 50 }, // חלוץ (חצי בעיגול)
+                        { left: 43, top: 80 }  // כנף ימין
                     ];
 
                     let html = '';
@@ -332,20 +341,16 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         let teamIdForEvent = isHome ? homeId : awayId;
                         let subEvent = events.find(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && e.player.name === p.player.name);
                         
-                        let subBadgeHtml = '';
                         let subTextHtml = '';
                         if (subEvent) {
                             let subInShortName = getShortPlayerName(subEvent.assist.name);
                             let subTime = subEvent.time.elapsed;
-                            subBadgeHtml = `<div class="pitch-player-sub-badge">🔃${subTime}'</div>`;
-                            subTextHtml = `<div style="font-size:9px; color:#10b981; margin-top:1px; font-weight:bold; text-shadow:1px 1px 2px #000; white-space:nowrap; max-width:70px; overflow:hidden; text-overflow:ellipsis;">(${subInShortName})</div>`;
+                            // אינדיקציה יפה ומקצועית לחילוף על המגרש
+                            subTextHtml = `<div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 4px; padding: 1px 4px; margin-top: 2px; font-size: 8px; color: #10b981; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.5);">🔄 ${subInShortName} (${subTime}')</div>`;
                         }
                         
                         html += `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
-                            <div style="position:relative;">
-                                <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
-                                ${subBadgeHtml}
-                            </div>
+                            <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
                             <div class="pitch-player-name" title="${p.player.name}">${shortName}</div>
                             ${subTextHtml}
                         </div>`;
@@ -354,12 +359,28 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     return html;
                 };
 
+                // פונקציית רינדור לשחקן ספסל יחיד
+                const renderBenchPlayer = (p, evts, tId) => {
+                    let subEvt = evts.find(e => e.type.toLowerCase() === 'subst' && e.team.id === tId && e.assist.name === p.player.name);
+                    let statusHtml = '';
+                    if (subEvt) {
+                        statusHtml = `<span class="sub-in-badge">▲ נכנס (${subEvt.time.elapsed}')</span>`;
+                    }
+                    let playerName = typeof window.translateName === 'function' ? window.translateName(p.player.name) : p.player.name;
+                    return `<div class="bench-player">
+                        <span class="bench-num">${p.player.number || '-'}</span>
+                        <span class="bench-name">${playerName}</span>
+                        ${statusHtml}
+                    </div>`;
+                };
+
                 lineupsHtml = `
                 <div style="padding: 10px 15px;">
                     <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:5px; color:#a0aec0;">
                         <span>מערך: ${hL.formation || '?'}</span>
                         <span>מערך: ${aL.formation || '?'}</span>
                     </div>
+                    
                     <div class="pitch-wrapper">
                         <div class="pitch-box-left"></div>
                         <div class="pitch-box-right"></div>
@@ -370,6 +391,25 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         <div class="pitch-team">${renderPlayersFixed(hL.startXI, true)}</div>
                         <div class="pitch-team">${renderPlayersFixed(aL.startXI, false)}</div>
                     </div>
+
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button onclick="document.getElementById('bench-container').classList.toggle('show-bench')" style="background: #1e293b; color: #fff; border: 1px solid #7a9966; padding: 6px 16px; border-radius: 20px; font-family: inherit; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 6px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            ספסל וחילופים
+                        </button>
+                    </div>
+
+                    <div id="bench-container" class="bench-container">
+                        <div class="bench-col" style="border-left: 1px solid #1f2d40; padding-left: 15px;">
+                            <div class="bench-title">${tHome}</div>
+                            ${hL.substitutes.map(p => renderBenchPlayer(p, events, homeId)).join('')}
+                        </div>
+                        <div class="bench-col">
+                            <div class="bench-title">${tAway}</div>
+                            ${aL.substitutes.map(p => renderBenchPlayer(p, events, awayId)).join('')}
+                        </div>
+                    </div>
+
                 </div>`;
             }
 
