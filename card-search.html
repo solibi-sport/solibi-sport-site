@@ -246,8 +246,7 @@
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
         .mockup-image-area { width: 30%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 10px; border: 1px solid rgba(255,255,255,0.05); min-height: 200px; }
-        .mockup-card-img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg'); background-size: cover; background-position: center top; width: 100%; aspect-ratio: 2.5/3.5; border: 3px solid #silver; position: relative; }
-        .mockup-card-img::before { content: "PSA 10 GEM MT"; position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(to right, #cc0000, #ff3333); color: white; font-size: 10px; font-weight: bold; text-align: center; padding: 4px 0; border-radius: 5px 5px 0 0; font-family: sans-serif; letter-spacing: 1px; }
+        .mockup-card-img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); width: 100%; aspect-ratio: 2.5/3.5; border: 3px solid #silver; position: relative; background-color: #f8f9fa; }
 
         .mockup-data-area { flex: 1; display: flex; flex-direction: column; justify-content: center; color: #fff; gap: 15px; overflow-y: auto; padding-right: 10px; }
         .mockup-data-area::-webkit-scrollbar { width: 4px; }
@@ -272,7 +271,8 @@
         .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
         .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
-/* === כפתורי תצוגה (גריד/רשימה) === */
+
+        /* === כפתורי תצוגה (גריד/רשימה) === */
         .view-toggle-btns { display: flex; gap: 8px; }
         .view-toggle-btns button { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px; cursor: pointer; color: #8fa0b3; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
         .view-toggle-btns button.active { background: var(--brand-green); color: #fff; border-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.3); }
@@ -463,15 +463,7 @@
                 </div>
 
                 <div class="search-dropdown" id="searchDropdown">
-                    <div class="dropdown-item">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="card">
-                        <span>Lionel Messi - 2022 Panini Prizm World Cup Base</span>
                     </div>
-                    <div class="dropdown-item">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="card">
-                        <span>Lionel Messi - 2022 Panini Prizm World Cup Silver Refractor</span>
-                    </div>
-                </div>
             </div>
 
             <div class="watchlist-row">
@@ -519,6 +511,24 @@
                     </div>
                 </div>
             </div>
+            </div>
+
+            <div id="resultsContainer" style="display: none; width: 100%; max-width: 900px; margin-top: 20px; flex-direction: column;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px;">
+                    <div style="font-weight: 900; color: var(--text-dark); font-size: 16px;">תוצאות חיפוש:</div>
+                    <div class="view-toggle-btns">
+                        <button id="gridViewBtn" class="active" title="תצוגת קוביות">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        </button>
+                        <button id="listViewBtn" title="תצוגת רשימה">
+                            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="results-scroll-area">
+                    <div id="fullResultsGrid" class="full-results-grid grid-view"></div>
+                </div>
+            </div>
 
         </div>
     </main>
@@ -537,23 +547,6 @@
 
     <script src="translations.js"></script>
     <script src="matchEvents.js"></script>
-
-<div id="resultsContainer" style="display: none; width: 100%; max-width: 900px; margin-top: 20px; flex-direction: column;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 10px;">
-            <div style="font-weight: 900; color: var(--text-dark); font-size: 16px;">תוצאות חיפוש:</div>
-            <div class="view-toggle-btns">
-                <button id="gridViewBtn" class="active" title="תצוגת קוביות">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                </button>
-                <button id="listViewBtn" title="תצוגת רשימה">
-                    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                </button>
-            </div>
-        </div>
-        <div class="results-scroll-area">
-            <div id="fullResultsGrid" class="full-results-grid grid-view"></div>
-        </div>
-    </div>
     
     <script>
         // --- מנגנון פתיחה וסגירה של הפאנלים הצדדיים ---
@@ -731,7 +724,8 @@
             // מרענן את נתוני השרת כל דקה
             setInterval(fetchLiveMatches, 60000); 
         });  
-// === מנוע חיפוש קלפים (התחברות ל-API) ===
+
+        // === מנוע חיפוש קלפים (התחברות ל-API) ===
         const mainSearchInput = document.getElementById('mainSearchInput');
         const searchDropdown = document.getElementById('searchDropdown');
         const filterBtn = document.getElementById('filterBtn');
@@ -786,10 +780,15 @@
 
                         // === הסינון החכם של מילות העזר (כמו Panini) ===
                         const searchWords = query.toLowerCase().split(' ').filter(word => word.length > 0);
-                        cards = cards.filter(card => {
+                        let filteredCards = cards.filter(card => {
                             const textToSearch = (card.name + " " + (card.set || '')).toLowerCase();
                             return searchWords.every(word => textToSearch.includes(word));
                         });
+
+                        // אם הסינון הקפדני מחק הכל בטעות, נחזור למה שה-API הביא במקור
+                        if (filteredCards.length > 0) {
+                            cards = filteredCards;
+                        }
 
                         currentResults = cards; // שומרים את התוצאות לאנטר
                         searchDropdown.innerHTML = '';
@@ -802,8 +801,12 @@
                         cards.forEach(card => {
                             const item = document.createElement('div');
                             item.className = 'dropdown-item';
+                            
+                            const imgSrc = (card.image && card.image !== 'no-image') ? card.image : 'https://via.placeholder.com/30x40?text=Card';
+                            const fallbackImg = "this.onerror=null; this.src='https://via.placeholder.com/30x40?text=Card';";
+                            
                             item.innerHTML = `
-                                <img src="${card.image !== 'no-image' ? card.image : 'https://via.placeholder.com/30x40?text=Card'}" alt="card">
+                                <img src="${imgSrc}" onerror="${fallbackImg}" alt="card">
                                 <span>${card.name} - ${card.set || 'ספורט'}</span>
                             `;
                             
@@ -828,16 +831,24 @@
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     searchDropdown.classList.remove('active');
-                    cardResult.classList.remove('show-result'); // מעלים את הפאנל העליון כדי לפנות מקום
+                    
+                    // מסתיר את הקלף הבודד שמוצג למעלה (אם יש)
+                    if (cardResult) cardResult.classList.remove('show-result'); 
+                    
+                    // מציג את אזור התוצאות המלא
+                    const resContainer = document.getElementById('resultsContainer');
+                    if (resContainer) resContainer.style.display = 'flex';
+                    
                     renderFullGrid(currentResults);
                 }
             });
         }
 
-        // 4. פונקציה שמציגה את הקלף הנבחר למעלה (מחליפה את מסי)
+        // 4. פונקציה שמציגה את הקלף הנבחר למעלה
         function showCardResult(card) {
-            const fullGrid = document.getElementById('fullResultsGrid');
-            if(fullGrid) fullGrid.style.display = 'none'; // מעלים את הגריד אם פתוח
+            // מעלים את אזור התוצאות המלא אם הוא פתוח
+            const resContainer = document.getElementById('resultsContainer');
+            if (resContainer) resContainer.style.display = 'none';
 
             cardResult.classList.add('show-result');
 
@@ -856,12 +867,18 @@
             }
         }
 
-     // 5. פונקציה שמציירת את התוצאות למטה בלחיצה על אנטר
+        // 5. פונקציה שמציירת את התוצאות למטה בלחיצה על אנטר
         function renderFullGrid(cards) {
             const fullGrid = document.getElementById('fullResultsGrid');
             if (!fullGrid) return;
 
             fullGrid.innerHTML = '';
+            
+            if (cards.length === 0) {
+                fullGrid.style.display = 'block';
+                fullGrid.innerHTML = '<div style="text-align: center; padding: 30px; font-weight: bold;">לא נמצאו תוצאות מדוייקות לחיפוש שלך.</div>';
+                return;
+            }
             
             // תצוגת הקוביות כברירת מחדל
             if(!fullGrid.className.includes('list-view')) {
