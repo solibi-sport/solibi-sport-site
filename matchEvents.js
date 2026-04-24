@@ -357,7 +357,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         } else if (r === 4) {
                             xHome = 30; // קו 4: קישור התקפי / כנפיים
                         } else if (r === 5) {
-                            xHome = 18; // קו 5: חלוצים
+                            xHome = 10; // קו 5: חלוצים
                         } else {
                             xHome = 93 - (r * 12); // גיבוי
                         }
