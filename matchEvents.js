@@ -96,18 +96,23 @@ if (!document.getElementById('modal-style-events')) {
     document.head.appendChild(modalStyle);
 }
 
-// פונקציית הלשוניות של הרכב / ספסל
-window.toggleLineupView = function(view) {
-    const pBtn = document.getElementById('btnPitchView');
-    const bBtn = document.getElementById('btnBenchView');
-    const pCont = document.getElementById('pitch-container');
-    const bCont = document.getElementById('bench-container');
-    if(view === 'pitch') {
-        pCont.style.display = 'block'; bCont.style.display = 'none';
-        pBtn.classList.add('active'); bBtn.classList.remove('active');
+// פונקציית הלשוניות - נפרדת לכל קבוצה (בית / חוץ)
+window.toggleTeamView = function(team, view) {
+    const pBtn = document.getElementById('btn-' + team + '-pitch');
+    const bBtn = document.getElementById('btn-' + team + '-bench');
+    const pCont = document.getElementById(team + '-pitch');
+    const bCont = document.getElementById(team + '-bench');
+    
+    if (view === 'pitch') {
+        pCont.style.display = 'block'; 
+        bCont.style.display = 'none';
+        pBtn.classList.add('active'); 
+        bBtn.classList.remove('active');
     } else {
-        pCont.style.display = 'none'; bCont.style.display = 'flex';
-        bBtn.classList.add('active'); pBtn.classList.remove('active');
+        pCont.style.display = 'none'; 
+        bCont.style.display = 'block';
+        bBtn.classList.add('active'); 
+        pBtn.classList.remove('active');
     }
 };
 
@@ -436,44 +441,50 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         ${statusHtml}
                     </div>`;
                 };
-
-                lineupsHtml = `
+lineupsHtml = `
                 <div style="padding: 10px 15px;">
                     
-                    <div class="sub-tabs">
-                        <button id="btnPitchView" class="sub-tab-btn active" onclick="toggleLineupView('pitch')">הרכב פותח</button>
-                        <button id="btnBenchView" class="sub-tab-btn" onclick="toggleLineupView('bench')">ספסל מחליפים</button>
+                    <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:5px; color:#a0aec0; padding: 0 10px;">
+                        <span>מערך: ${aL.formation || '?'}</span>
+                        <span>מערך: ${hL.formation || '?'}</span>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                        
+                        <div class="sub-tabs" style="margin:0; border:none; gap:5px; flex:1; justify-content: flex-start; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;">
+                            <button id="btn-away-pitch" class="sub-tab-btn active" onclick="toggleTeamView('away', 'pitch')" style="padding: 4px 8px; font-size: 11px;">הרכב פותח</button>
+                            <button id="btn-away-bench" class="sub-tab-btn" onclick="toggleTeamView('away', 'bench')" style="padding: 4px 8px; font-size: 11px;">ספסל מחליפים</button>
+                        </div>
+
+                        <div class="sub-tabs" style="margin:0; border:none; gap:5px; flex:1; justify-content: flex-end; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;">
+                            <button id="btn-home-bench" class="sub-tab-btn" onclick="toggleTeamView('home', 'bench')" style="padding: 4px 8px; font-size: 11px;">ספסל מחליפים</button>
+                            <button id="btn-home-pitch" class="sub-tab-btn active" onclick="toggleTeamView('home', 'pitch')" style="padding: 4px 8px; font-size: 11px;">הרכב פותח</button>
+                        </div>
+                        
                     </div>
                     
-                    <div id="pitch-container">
-                        <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:5px; color:#a0aec0;">
-                            <span>מערך: ${hL.formation || '?'}</span>
-                            <span>מערך: ${aL.formation || '?'}</span>
-                        </div>
-                        <div class="pitch-wrapper">
-                            <div class="pitch-box-left"></div>
-                            <div class="pitch-box-right"></div>
-                            <div class="pitch-small-box-left"></div>
-                            <div class="pitch-small-box-right"></div>
-                            <div class="pitch-line-center"></div>
-                            <div class="pitch-circle"></div>
-                            <div class="pitch-team">${renderPlayersSnapToGrid(hL, true)}</div>
-                            <div class="pitch-team">${renderPlayersSnapToGrid(aL, false)}</div>
-                        </div>
-                    </div>
-
-                    <div id="bench-container" class="bench-view" style="display:none;">
-                        <div class="bench-col">
-                            <div class="bench-title">${tHome}</div>
-                            ${hL.substitutes.map(p => renderBenchPlayer(p, events, homeId)).join('')}
-                        </div>
-                        <div class="bench-col">
-                            <div class="bench-title">${tAway}</div>
+                    <div class="pitch-wrapper" style="position: relative;">
+                        <div class="pitch-box-left"></div>
+                        <div class="pitch-box-right"></div>
+                        <div class="pitch-small-box-left"></div>
+                        <div class="pitch-small-box-right"></div>
+                        <div class="pitch-line-center"></div>
+                        <div class="pitch-circle"></div>
+                        
+                        <div id="away-pitch" class="pitch-team" style="display:block;">${renderPlayersSnapToGrid(aL, false)}</div>
+                        <div id="away-bench" class="bench-col" style="display:none; position:absolute; top:0; left:0; width:50%; height:100%; background:rgba(13,19,29,0.95); z-index:20; overflow-y:auto; border-right:2px solid #2a3b4c; padding:10px; box-sizing:border-box;">
+                            <div class="bench-title" style="color:#fff; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #1f2d40;">${tAway} (ספסל)</div>
                             ${aL.substitutes.map(p => renderBenchPlayer(p, events, awayId)).join('')}
                         </div>
-                    </div>
 
+                        <div id="home-pitch" class="pitch-team" style="display:block;">${renderPlayersSnapToGrid(hL, true)}</div>
+                        <div id="home-bench" class="bench-col" style="display:none; position:absolute; top:0; right:0; width:50%; height:100%; background:rgba(13,19,29,0.95); z-index:20; overflow-y:auto; border-left:2px solid #2a3b4c; padding:10px; box-sizing:border-box;">
+                            <div class="bench-title" style="color:#fff; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #1f2d40;">${tHome} (ספסל)</div>
+                            ${hL.substitutes.map(p => renderBenchPlayer(p, events, homeId)).join('')}
+                        </div>
+                    </div>
                 </div>`;
+                
             }
 
             /* ------ סטטיסטיקה ואירועים ------ */
