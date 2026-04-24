@@ -357,7 +357,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         } else if (r === numLines) {
                             // המפתח לפתרון: השורה האחרונה היא תמיד חלוצים!
                             // 50 זה קו החצי. 45 זה קצת מעבר לקו החצי לכיוון ההתקפה.
-                            xHome = 14; 
+                            xHome = 13; 
                         } else if (numLines === 4 && r === 3) {
                             xHome = 42; // קישור מרכזי במערך של 4 שורות (כמו 4-4-2)
                         } else if (numLines === 5 && r === 3) {
