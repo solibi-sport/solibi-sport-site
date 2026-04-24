@@ -9,9 +9,8 @@ export default async function handler(req, res) {
     const query = req.query.q;
     const apiKey = process.env.SPORTSCARDS_API_KEY;
 
-    // בדיקה קשוחה יותר למפתח - מוודא שהוא באמת קיים ולא ריק
     if (!apiKey || apiKey === "undefined" || apiKey.trim() === "") {
-        return res.status(500).json({ error: "Vercel Error: The API Key is empty or missing. Please check Vercel environment variables." });
+        return res.status(500).json({ error: "Vercel Error: The API Key is empty." });
     }
 
     if (!query) {
@@ -19,13 +18,15 @@ export default async function handler(req, res) {
     }
 
     try {
-        // מנקה רווחים מיותרים מהמפתח למקרה שהועתק בטעות עם רווח
         const cleanApiKey = apiKey.trim();
-        const apiUrl = `https://www.sportscardpro.com/api/products?q=${encodeURIComponent(query)}&t=${cleanApiKey}`;
+        
+        // התיקון הגדול: ה-t (מפתח) מגיע ראשון, לפני ה-q (חיפוש)!
+        const apiUrl = `https://www.sportscardpro.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(query)}`;
         
         const response = await fetch(apiUrl);
         const data = await response.json();
 
+        // גלאי שגיאות
         if (data.status === "error" || data.error) {
             return res.status(400).json({ 
                 error: "SportsCardPro API Error", 
