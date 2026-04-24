@@ -344,23 +344,29 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     // עוברים קו-קו וממקמים את השחקנים
                     linesCounts.forEach((numPlayersInLine, lineIdx) => {
                         
-                        // === שליטה בציר X (הקווים לאורך המגרש) ===
+                       // === (הקווים לאורך המגרש) X שליטה בציר ===
+                        // מזהים כמה קווים יש סך הכל לקבוצה (4 או 5)
+                        let numLines = linesCounts.length;
                         let r = lineIdx + 1; // קו 1 (שוער), קו 2 (הגנה) וכו'
                         let xHome;
-                        
+
                         if (r === 1) {
-                            xHome = 93; // קו 1: שוער 
+                            xHome = 93; // קו 1: שוער (תמיד ברחבה)
                         } else if (r === 2) {
-                            xHome = 70; // קו 2: הגנה 
-                        } else if (r === 3) {
-                            xHome = 50; // קו 3: קישור אחורי / מרכזי
-                        } else if (r === 4) {
-                            xHome = 30; // קו 4: קישור התקפי / כנפיים
-                        } else if (r === 5) {
-                            xHome = 8; // קו 5: חלוצים
+                            xHome = 75; // קו 2: הגנה (תמיד על קו ה-16)
+                        } else if (r === numLines) {
+                            // המפתח לפתרון: השורה האחרונה היא תמיד חלוצים!
+                            // 50 זה קו החצי. 45 זה קצת מעבר לקו החצי לכיוון ההתקפה.
+                            xHome = 45; 
+                        } else if (numLines === 4 && r === 3) {
+                            xHome = 60; // קישור מרכזי במערך של 4 שורות (כמו 4-4-2)
+                        } else if (numLines === 5 && r === 3) {
+                            xHome = 65; // קישור אחורי במערך של 5 שורות (כמו 4-2-3-1)
+                        } else if (numLines === 5 && r === 4) {
+                            xHome = 55; // קישור קדמי/כנפיים במערך של 5 שורות
                         } else {
                             xHome = 93 - (r * 12); // גיבוי
-                        }
+                        } 
 
                         // הופך אוטומטית לקבוצת החוץ
                         let xPercent = isHome ? xHome : (100 - xHome);
