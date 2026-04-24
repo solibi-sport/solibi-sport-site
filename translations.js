@@ -13193,90 +13193,24 @@ const myDictionary = {
     "Yelimay Semey 2": "ילימאי סמיי 2",
         };
 
-// =====================================================================
-// 1. מנוע התרגום החכם (מדלג על אזורי הקלפים ושומר עליהם באנגלית)
-// =====================================================================
-
-function runSmartTranslation() {
-    // רשימת האזורים שאסור לתרגם בהם (שמות הקלפים והסדרות יישארו באנגלית)
-    const ignoreSelectors = [
-        '#mainSearchInput',   // שורת החיפוש
-        '#searchDropdown',    // ההשלמה האוטומטית
-        '#cardResult',        // הקלף המוצג בגדול
-        '#resultsContainer',  // גריד התוצאות המלא
-        '.watch-chip',        // מועדפים / חיפושים אחרונים
-        '.trend-item'         // מגמות שוק (עולים/יורדים)
-    ];
-
-    // פונקציית עזר שבודקת אם הטקסט נמצא בתוך אזור מוגן
-    function shouldIgnore(node) {
-        const el = node.nodeType === 1 ? node : node.parentElement;
-        if (!el || !el.closest) return false;
-        // אם האלמנט נמצא בתוך אחד מהאזורים ברשימה - נדלג עליו
-        return ignoreSelectors.some(selector => el.closest(selector));
-    }
-
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-    let node;
-    const nodesToTranslate = [];
-
-    // שלב א': סורקים ואוספים את כל הטקסטים
-    while (node = walker.nextNode()) {
-        const parentName = node.parentNode.nodeName;
-        // מתעלמים מקוד וסטייל
-        if (parentName === 'SCRIPT' || parentName === 'STYLE' || parentName === 'NOSCRIPT') continue;
-        
-        // --- כאן הקסם: השומר סף! ---
-        if (shouldIgnore(node)) continue; 
-
-        const text = node.nodeValue.trim();
-        // אם מצאנו את המילה במילון שלך, שומרים להחלפה
-        if (text && myDictionary[text]) {
-            nodesToTranslate.push({ node: node, translated: myDictionary[text] });
-        }
-    }
-
-    // שלב ב': מחליפים בפועל
-    nodesToTranslate.forEach(item => {
-        item.node.nodeValue = item.translated;
-    });
-}
-
-// מפעילים את התרגום כשהדף נטען
-document.addEventListener('DOMContentLoaded', runSmartTranslation);
-// הפעלה מיידית לגיבוי
-runSmartTranslation();
-
-
-// =====================================================================
-// 2. כלי למפתחים: איתור מילים חסרות במילון (שגם הוא מתעלם מקלפים!)
-// =====================================================================
+// ==========================================
+// כלי עזר למפתח: שליפת מילים חסרות באנגלית (תמיד פעיל)
+// ==========================================
 window.printMissing = function() {
-    const ignoreSelectors = ['#mainSearchInput', '#searchDropdown', '#cardResult', '#resultsContainer', '.watch-chip', '.trend-item'];
-    
-    function shouldIgnore(node) {
-        const el = node.nodeType === 1 ? node : node.parentElement;
-        if (!el || !el.closest) return false;
-        return ignoreSelectors.some(selector => el.closest(selector));
-    }
-
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
     const englishPhrases = new Set();
 
     let node;
     while (node = walker.nextNode()) {
         const parentName = node.parentNode.nodeName;
+        // מתעלם מסקריפטים וסגנונות
         if (parentName === 'SCRIPT' || parentName === 'STYLE' || parentName === 'NOSCRIPT') continue;
-        if (shouldIgnore(node)) continue; // מתעלם משמות קלפים כדי לא להוסיף אותם למילון בטעות!
 
         const text = node.nodeValue.trim();
         // מחפש טקסט באנגלית (ללא עברית)
         if (/[a-zA-Z]/.test(text) && !/[\u0590-\u05FF]/.test(text)) {
             const cleanText = text.replace(/\s+/g, ' ');
-            // מוסיף לרשימה רק אם זה לא קיים כבר במילון
-            if (cleanText.length > 1 && !myDictionary[cleanText]) {
-                englishPhrases.add(cleanText);
-            }
+            if (cleanText.length > 1) englishPhrases.add(cleanText);
         }
     }
 
@@ -13287,21 +13221,22 @@ window.printMissing = function() {
     });
 
     if (outputText === "") {
-        alert("הכל מתורגם! לא נמצאו טקסטים חסרים באנגלית (מחוץ לאזורי הקלפים).");
+        alert("לא נמצאו טקסטים באנגלית בדף הזה!");
         return;
     }
 
+    // יצירת חלונית קופצת מעוצבת
     const modal = document.createElement('div');
     modal.id = 'missingWordsModal';
     modal.style.cssText = "position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:25px; border:2px solid #7ca856; border-radius:16px; z-index:999999; width:90%; max-width:600px; box-shadow:0 15px 40px rgba(0,0,0,0.4); direction:ltr; font-family:sans-serif;";
     
     modal.innerHTML = `
-        <h3 style="margin-top:0; color:#112845; text-align:center;">Found ${englishPhrases.size} Missing Phrases</h3>
-        <p style="font-size:12px; color:gray; text-align:center;">(Card names and sets were automatically ignored)</p>
+        <h3 style="margin-top:0; color:#112845; text-align:center;">Found ${englishPhrases.size} English Phrases</h3>
+        <p style="font-size:13px; text-align:center; color:#666; margin-bottom:15px;">Copy this ready-to-use JSON format into your translations.js dictionary:</p>
         <textarea id="missingWordsTextarea" style="width:100%; height:300px; font-family:monospace; font-size:13px; padding:12px; border:1px solid #ddd; border-radius:8px; margin-bottom:20px; outline:none; resize:none;" readonly>${outputText}</textarea>
         <div style="display:flex; justify-content:center; gap:15px;">
-            <button id="copyMissingBtn" style="background:#7ca856; color:#fff; border:none; padding:10px 25px; border-radius:30px; cursor:pointer; font-weight:bold;">Copy to Clipboard</button>
-            <button id="closeMissingBtn" style="background:#ef4444; color:#fff; border:none; padding:10px 25px; border-radius:30px; cursor:pointer; font-weight:bold;">Close</button>
+            <button id="copyMissingBtn" style="background:#7ca856; color:#fff; border:none; padding:10px 25px; border-radius:30px; cursor:pointer; font-weight:bold; transition:0.2s;">Copy to Clipboard</button>
+            <button id="closeMissingBtn" style="background:#ef4444; color:#fff; border:none; padding:10px 25px; border-radius:30px; cursor:pointer; font-weight:bold; transition:0.2s;">Close</button>
         </div>
     `;
     
@@ -13309,6 +13244,7 @@ window.printMissing = function() {
     if (existingModal) existingModal.remove();
     document.body.appendChild(modal);
 
+    // הגדרת פעולות לכפתורים בחלונית
     document.getElementById('closeMissingBtn').onclick = () => modal.remove();
     document.getElementById('copyMissingBtn').onclick = () => {
         const ta = document.getElementById('missingWordsTextarea');
