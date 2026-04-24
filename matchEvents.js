@@ -307,7 +307,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             let events = eventsData.response || [];
 
             /* ==========================================
-               מנוע ה-"Football Manager" - מיקומים קבועים וברורים!
+               מנוע "Football Manager" - סנאפ לקווים קבועים
                ========================================== */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
             
@@ -315,57 +315,76 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
                 const aL = lineupsData.response.find(r => r.team.id === awayId) || lineupsData.response[1];
                 
-                const renderPlayersDynamic = (players, isHome) => {
-                    const rows = {};
-                    players.slice(0, 11).forEach(p => {
-                        let grid = p.player.grid || "1:1"; 
-                        const r = grid.split(':')[0];
-                        if (!rows[r]) rows[r] = [];
-                        rows[r].push(p);
-                    });
+                const renderPlayersSnapToGrid = (teamLineup, isHome) => {
+                    // לוקחים את ההרכב (עד 11 שחקנים)
+                    let players = (teamLineup.startXI || []).slice(0, 11);
+                    if (players.length === 0) return '';
 
-                    const maxRow = Math.max(...Object.keys(rows).map(Number));
+                    // פירוק שם המערך כדי לדעת כמה שחקנים בכל קו (למשל "4-2-3-1" יהפוך ל [1, 4, 2, 3, 1])
+                    let formationStr = teamLineup.formation;
+                    let linesCounts = [1]; // תמיד יש שוער 1 בהתחלה
+                    
+                    if (formationStr && formationStr.includes('-')) {
+                        linesCounts = linesCounts.concat(formationStr.split('-').map(Number));
+                    } else {
+                        // גיבוי למקרה שאין מערך ב-API
+                        linesCounts = [1, 4, 4, 2]; 
+                    }
+
+                    // מוודאים שיש בדיוק 11 שחקנים בחלוקה (לפעמים הAPI מביא שטויות)
+                    let totalInFormation = linesCounts.reduce((a, b) => a + b, 0);
+                    if (totalInFormation !== 11) {
+                        linesCounts = [1, 4, 4, 2]; // גיבוי קשיח
+                    }
+
                     let html = '';
+                    let playerIndex = 0;
+                    let numLines = linesCounts.length;
 
-                    Object.keys(rows).forEach(rNum => {
-                        const rowPlayers = rows[rNum].sort((a,b) => {
-                            const cA = parseInt((a.player.grid||"1:1").split(':')[1]);
-                            const cB = parseInt((b.player.grid||"1:1").split(':')[1]);
-                            return cA - cB;
-                        });
+                    // עוברים קו-קו וממקמים את השחקנים
+                    linesCounts.forEach((numPlayersInLine, lineIdx) => {
                         
-                        const totalInRow = rowPlayers.length;
-                        const r = parseInt(rNum);
+                        // קביעת מיקום X קשיח לפי מספר הקווים במערך (מבוסס על השרטוט שלך!)
+                        let xHome;
+                        if (numLines === 4) {
+                            // מערך של 4 שורות (כמו 4-4-2)
+                            const xMap = [93, 80, 60, 48];
+                            xHome = xMap[lineIdx];
+                        } else if (numLines === 5) {
+                            // מערך של 5 שורות (כמו 4-2-3-1)
+                            const xMap = [93, 80, 68, 56, 48];
+                            xHome = xMap[lineIdx];
+                        } else if (numLines === 6) {
+                            // מערך של 6 שורות (נדיר, כמו 4-1-4-1)
+                            const xMap = [93, 82, 71, 60, 50, 42];
+                            xHome = xMap[lineIdx];
+                        } else {
+                            // חישוב דינאמי בטוח אם יש משהו מוזר
+                            xHome = 93 - (lineIdx * (45 / (numLines - 1)));
+                        }
 
-                        rowPlayers.forEach((p, idx) => {
-                            // ציר Y: פריסה רחבה ומושלמת של השחקנים לאורך כל הדשא (15% עד 85%)
-                            let yPercent = totalInRow === 1 ? 50 : 15 + (idx / (totalInRow - 1)) * 70;
+                        // הופכים צד אם זו קבוצת החוץ
+                        let xPercent = isHome ? xHome : (100 - xHome);
 
-                            // ציר X: "הצמדה לרשת" בדיוק לפי הקווים האדומים שביקשת!
-                            let homeX;
-                            if (maxRow === 4) {
-                                // מערך 4 שורות (כמו 4-4-2)
-                                const xMap = { 1: 93, 2: 80, 3: 62, 4: 48 };
-                                homeX = xMap[r] || 50;
-                            } else if (maxRow === 5) {
-                                // מערך 5 שורות (כמו 4-2-3-1)
-                                const xMap = { 1: 93, 2: 80, 3: 68, 4: 56, 5: 48 };
-                                homeX = xMap[r] || 50;
-                            } else if (maxRow === 6) {
-                                // גיבוי למערך נדיר של 6 שורות
-                                const xMap = { 1: 93, 2: 82, 3: 71, 4: 61, 5: 53, 6: 46 };
-                                homeX = xMap[r] || 50;
-                            } else {
-                                // גיבוי אחרון
-                                homeX = 93 - ((r - 1) * (45 / (maxRow - 1 || 1)));
-                            }
+                        // עוברים על כל שחקן שנמצא בקו הנוכחי
+                        for (let i = 0; i < numPlayersInLine; i++) {
+                            if (playerIndex >= players.length) break;
+                            let p = players[playerIndex];
+                            playerIndex++;
 
-                            // תרגום למיקום ימין/שמאל בהתאם לקבוצה
-                            let xPercent = isHome ? homeX : (100 - homeX);
+                            // קביעת מיקום Y - פיזור אחיד ומרווח לרוחב הדשא!
+                            let yPercent;
+                            if (numPlayersInLine === 1) yPercent = 50;
+                            else if (numPlayersInLine === 2) yPercent = i === 0 ? 30 : 70;
+                            else if (numPlayersInLine === 3) yPercent = i === 0 ? 20 : (i === 1 ? 50 : 80);
+                            else if (numPlayersInLine === 4) yPercent = i === 0 ? 15 : (i === 1 ? 38 : (i === 2 ? 62 : 85));
+                            else if (numPlayersInLine === 5) yPercent = i === 0 ? 10 : (i === 1 ? 30 : (i === 2 ? 50 : (i === 3 ? 70 : 90)));
+                            else yPercent = 10 + (i / (numPlayersInLine - 1)) * 80;
 
-                            let bgColor = isHome ? (hL.team.colors?.player?.primary || 'ffffff') : (aL.team.colors?.player?.primary || '000000');
+                            // צבעים
+                            let bgColor = isHome ? (teamLineup.team.colors?.player?.primary || 'ffffff') : (teamLineup.team.colors?.player?.primary || '000000');
                             if (bgColor && !bgColor.startsWith('#')) bgColor = '#' + bgColor;
-                            let textColor = isHome ? (hL.team.colors?.player?.number || '000000') : (aL.team.colors?.player?.number || 'ffffff');
+                            let textColor = isHome ? (teamLineup.team.colors?.player?.number || '000000') : (teamLineup.team.colors?.player?.number || 'ffffff');
                             if (textColor && !textColor.startsWith('#')) textColor = '#' + textColor;
                             
                             let shortName = getShortPlayerName(p.player.name);
@@ -375,7 +394,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             let subTextHtml = '';
                             if (subEvent) {
                                 let subInShortName = getShortPlayerName(subEvent.assist.name);
-                                // תגית חילוף משודרגת על המגרש
                                 subTextHtml = `<div style="background: rgba(255, 255, 255, 0.95); color: #111926; border: 1.5px solid #10b981; border-radius: 4px; padding: 2px 5px; margin-top: 4px; font-size: 9px; font-weight: 900; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 3px; direction: ltr; z-index: 10;">
                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
                                     <span>${subInShortName}</span>
@@ -387,8 +405,9 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                                 <div class="pitch-player-name" title="${p.player.name}">${shortName}</div>
                                 ${subTextHtml}
                             </div>`;
-                        });
+                        }
                     });
+
                     return html;
                 };
 
@@ -426,8 +445,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             <div class="pitch-small-box-right"></div>
                             <div class="pitch-line-center"></div>
                             <div class="pitch-circle"></div>
-                            <div class="pitch-team">${renderPlayersDynamic(hL.startXI, true)}</div>
-                            <div class="pitch-team">${renderPlayersDynamic(aL.startXI, false)}</div>
+                            <div class="pitch-team">${renderPlayersSnapToGrid(hL, true)}</div>
+                            <div class="pitch-team">${renderPlayersSnapToGrid(aL, false)}</div>
                         </div>
                     </div>
 
