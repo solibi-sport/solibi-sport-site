@@ -13174,6 +13174,23 @@ const myDictionary = {
     "Tusker": "טאסקר",
     "U19 League": "ליגת U19",
     "Young Lions": "יאנג ליונס",
+    "1. Division": "הליגה הראשונה",
+    "Bayswater City": "בייסווטר סיטי",
+    "Chengdu Rongcheng II": "צ'נגדו רונגצ'נג 2",
+    "Guangzhou Dandelion": "גוואנגז'ו דנדליון",
+    "Langfang Glory City": "לאנגפאנג גלורי סיטי",
+    "NorthEast United": "נורת'איסט יונייטד",
+    "Perth": "פרת'",
+    "PVF-CAND": "PVF-CAND",
+    "Qingdao Red Lions": "צ'ינגדאו רד ליונס",
+    "Shandong Taishan II": "שאנדונג טאישאן 2",
+    "Shangyu Pterosaur": "שאנגיו פטרוזאור",
+    "Taraz": "טראז",
+    "V.I.P": "וי.איי.פי",
+    "V.League 2": "ליגה וייטנאמית 2",
+    "Văn Hiến": "ואן היין",
+    "Western Australia NPL": "NPL מערב אוסטרליה",
+    "Yelimay Semey 2": "ילימאי סמיי 2",
         };
 
 // =====================================================================
