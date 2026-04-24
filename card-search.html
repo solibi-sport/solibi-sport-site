@@ -122,7 +122,7 @@
         .trend-down { color: #ef4444; display: flex; align-items: center; gap: 4px; font-weight: 900; font-size: 13px; background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 6px;}
         .trend-item svg { width: 14px; height: 14px; stroke-width: 3;}
 
-        /* עיצוב תוצאות לייב - מתוקן */
+        /* עיצוב תוצאות לייב */
         .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid var(--brand-green); margin-bottom: 8px; }
         .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
 
@@ -138,15 +138,14 @@
         .match-score-col .score-num { font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center; }
         .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px; }
         
-        /* === מרכז הדף: flex-start כדי לדחוף למעלה === */
+        /* === מרכז הדף === */
         .center-wrapper {
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            justify-content: flex-start; /* מרים הכל למעלה */
+            justify-content: flex-start; 
             width: 100%; 
             height: 100%;
-            /* המרווח העליון דוחף את הכותרת למיקום יציב וסימטרי */
             padding: clamp(30px, 8vh, 80px) calc(var(--sidebar-width) + 20px) 20px calc(var(--sidebar-width) + 20px);
             gap: clamp(15px, 3vh, 25px); 
         }
@@ -157,20 +156,19 @@
         .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--brand-green)); border-radius: 2px; }
         .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
 
-        /* === שורת החיפוש הראשית עם לחצן הסינון === */
+        /* === שורת החיפוש הראשית === */
         .main-search-wrapper {
             width: 100%; max-width: 800px; position: relative; flex-shrink: 0; z-index: 20; 
         }
 
         .main-search-input {
             width: 100%;
-            /* פדינג סימטרי: 100px מימין לאייקון, 100px משמאל ללחצן הסינון. זה שומר את הטקסט בדיוק באמצע! */
             padding: clamp(15px, 2vh, 20px) 100px clamp(15px, 2vh, 20px) 100px; 
             font-size: clamp(16px, 1.5vw, 20px); font-weight: 700; color: var(--text-dark);
             border: 2px solid rgba(124, 168, 86, 0.5); border-radius: 50px;
             background: rgba(255, 255, 255, 0.85); box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             outline: none; font-family: inherit; transition: all 0.4s ease; backdrop-filter: blur(10px);
-            text-align: center; /* ממורכז בדיוק */
+            text-align: center; 
         }
 
         .main-search-input:focus {
@@ -180,7 +178,6 @@
 
         .main-search-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--brand-green); pointer-events: none; transition: 0.3s; }
 
-        /* לחצן הסינון בתוך שורת החיפוש - מצד שמאל */
         .filter-btn {
             position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
             background: rgba(17, 40, 69, 0.05); color: var(--text-dark); border: 1px solid rgba(17,40,69,0.1);
@@ -190,11 +187,11 @@
         .filter-btn:hover, .filter-btn.active { background: var(--brand-green); color: #fff; border-color: var(--brand-green); }
         .filter-btn svg { width: 16px; height: 16px; }
 
-        /* תפריט הסינונים הנפתח */
+        /* === תפריט הסינונים החדש === */
         .filter-dropdown {
             position: absolute; top: calc(100% + 15px); left: 0; background: #fff;
             border-radius: 16px; padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            border: 2px solid var(--brand-green); display: none; z-index: 30; width: 320px;
+            border: 2px solid var(--brand-green); display: none; z-index: 30; width: 340px;
         }
         .filter-dropdown.active { display: block; animation: fadeIn 0.3s ease-out; }
         
@@ -209,7 +206,6 @@
         .filter-tag:hover { background: rgba(124, 168, 86, 0.1); }
         .filter-tag.selected { background: var(--brand-green); color: #fff; box-shadow: 0 4px 10px rgba(124,168,86,0.3); }
 
-        /* רשימת תוצאות חיפוש נגללת */
         .search-dropdown {
             position: absolute; top: 100%; left: 0; right: 0; background: #fff; border: 2px solid var(--brand-green);
             border-top: none; border-radius: 0 0 25px 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
@@ -221,10 +217,7 @@
         .dropdown-item:hover { background: rgba(124, 168, 86, 0.1); color: var(--brand-green); font-weight: 700; padding-left: 30px; }
         .dropdown-item img { width: 30px; height: 40px; object-fit: cover; border-radius: 4px; }
 
-        /* === שורת מועדפים וחיפושים (Watchlist) === */
-        .watchlist-row {
-            display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 800px;
-        }
+        .watchlist-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 800px; }
         .watchlist-title { font-size: 11px; font-weight: 900; color: #8fa0b3; }
         .watch-chip {
             background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.8); color: var(--text-dark);
@@ -265,24 +258,20 @@
         .chart-svg { width: 100%; height: 100%; overflow: visible; }
         .chart-line { fill: none; stroke: #10b981; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 5px 5px rgba(16, 185, 129, 0.4)); animation: drawLine 2s ease-out forwards; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
         
-        /* === שורת פוטר === */
         .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
         .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
         .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
-        /* === כפתורי תצוגה (גריד/רשימה) === */
         .view-toggle-btns { display: flex; gap: 8px; }
         .view-toggle-btns button { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 6px 10px; cursor: pointer; color: #8fa0b3; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
         .view-toggle-btns button.active { background: var(--brand-green); color: #fff; border-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.3); }
         .view-toggle-btns button svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* === סלקט לסינון תוצאות === */
         #sortResults { padding: 6px 12px; border-radius: 8px; border: 1px solid #ddd; font-family: inherit; font-size: 13px; color: var(--text-dark); outline: none; cursor: pointer; background-color: #fff; font-weight: 500;}
         #sortResults:hover { border-color: var(--brand-green); }
 
-        /* === גלילה פנימית של התוצאות === */
         .results-scroll-area {
             width: 100%;
             max-height: 45vh; 
@@ -295,7 +284,6 @@
         .results-scroll-area::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 10px; }
         .results-scroll-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
 
-        /* === תצוגת רשימה (List View) משופרת וקומפקטית === */
         .full-results-grid.list-view { display: flex !important; flex-direction: column; gap: 8px; }
         .full-results-grid.list-view .grid-card-item { display: flex; flex-direction: row; align-items: center; text-align: right; padding: 8px 15px; gap: 15px; min-height: 60px; }
         .full-results-grid.list-view .grid-card-item img { width: 40px !important; height: 55px !important; margin: 0; border-radius: 4px; }
@@ -435,36 +423,37 @@
                 
                 <div class="filter-dropdown" id="filterDropdown">
                     <div class="filter-group">
-                        <span class="filter-label">חברת דירוג</span>
+                        <span class="filter-label">חברת ייצור</span>
                         <div class="filter-options">
-                            <span class="filter-tag selected">PSA</span>
-                            <span class="filter-tag">BGS</span>
-                            <span class="filter-tag">SGC</span>
-                        </div>
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">ציון</span>
-                        <div class="filter-options">
-                            <span class="filter-tag selected">10</span>
-                            <span class="filter-tag">9</span>
-                            <span class="filter-tag">Raw (לא מדורג)</span>
+                            <span class="filter-tag">Panini</span>
+                            <span class="filter-tag">Topps</span>
+                            <span class="filter-tag">Bowman</span>
+                            <span class="filter-tag">Leaf</span>
                         </div>
                     </div>
                     <div class="filter-group">
                         <span class="filter-label">סדרה/מותג</span>
                         <div class="filter-options">
-                            <span class="filter-tag selected">Prizm</span>
-                            <span class="filter-tag">Topps Chrome</span>
+                            <span class="filter-tag">Prizm</span>
+                            <span class="filter-tag">Optic</span>
                             <span class="filter-tag">Select</span>
+                            <span class="filter-tag">Chrome</span>
+                            <span class="filter-tag">Donruss</span>
                         </div>
                     </div>
                     <div class="filter-group">
-                        <span class="filter-label">סוג קלף</span>
+                        <span class="filter-label">סוג קלף ונדירות</span>
                         <div class="filter-options">
-                            <span class="filter-tag selected">Rookie (RC)</span>
+                            <span class="filter-tag">Rookie</span>
                             <span class="filter-tag">Auto</span>
+                            <span class="filter-tag">Patch</span>
+                            <span class="filter-tag">Refractor</span>
+                            <span class="filter-tag">Silver</span>
                             <span class="filter-tag">Base</span>
                         </div>
+                    </div>
+                    <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; text-align: center;">
+                        <button id="clearFiltersBtn" style="background: #ef4444; color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; font-family: inherit; font-size: 13px; width: 100%; transition: 0.2s;">נקה סינונים והצג הכל</button>
                     </div>
                 </div>
 
@@ -495,12 +484,11 @@
                 <div class="mockup-data-area">
                     <div>
                         <div class="mockup-player-name" id="displayCardName">Lionel Messi</div>
-                        <div class="mockup-card-set" id="displayCardSet">2022 Panini Prizm World Cup -
-                        <div style="color: #7ca856; font-weight: bold; font-size: 12px; margin-top: 5px; direction: ltr; text-align: right;">Grade: PSA 10 Gem Mint</div>
+                        <div class="mockup-card-set" id="displayCardSet">2022 Panini Prizm World Cup</div>
                     </div>
                     <div class="price-trend-box">
                         <div>
-                            <div style="font-size: 11px; color: #8fa0b3; margin-bottom: 2px;">מחיר שוק נוכחי (ממוצע איביי)</div>
+                            <div style="font-size: 11px; color: #8fa0b3; margin-bottom: 2px;">מחיר שוק (Raw / לא מדורג)</div>
                             <div class="current-price" id="displayCardPrice">$345.00</div>
                         </div>
                         <div class="trend-indicator">
@@ -516,7 +504,6 @@
                         </svg>
                     </div>
                 </div>
-            </div>
             </div>
 
             <div id="resultsContainer" style="display: none; width: 100%; max-width: 900px; margin-top: 20px; flex-direction: column;">
@@ -578,11 +565,9 @@
                 }
             };
             
-            // מפעיל את פאנל הלייב (וגם את פאנל המגמות אם קיים בדף)
             setupPanel('live-panel-header', 'livePanel');
             setupPanel('trend-panel-header', 'trendPanel');
 
-            // סגירה כשלוחצים מחוץ לפאנל
             document.addEventListener('click', function(e) {
                 const closeIfNotContains = (element, target) => {
                     if (element && element.classList.contains('expanded') && !element.contains(target)) {
@@ -593,7 +578,7 @@
                 closeIfNotContains(document.getElementById('trendPanel'), e.target);
             });
         });
-        // ------------------------------------------------
+        
     const LEAGUE_NAMES_MAP = {
             383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה",
             40: "אנגלית שנייה", 41: "אנגלית שלישית", 42: "אנגלית רביעית", 141: "ספרדית שנייה", 136: "איטלקית שנייה", 79: "גרמנית שנייה", 62: "צרפתית שנייה",
@@ -622,7 +607,6 @@
 
         async function fetchLiveMatches() {
             try {
-                 // פנייה לראוטר המאובטח שלנו בורסל
                 const response = await fetch(`/api/football-proxy?endpoint=fixtures&live=all`);
                 const data = await response.json();
                 window.allLiveMatches = data.response || [];
@@ -638,7 +622,6 @@
                 window.currentLivePage = 0;
                 renderLivePage();
 
-                // הפעלת טיימר הדפדוף (כל 10 שניות מעביר עמוד)
                 if (!window.livePageInterval) {
                     window.livePageInterval = setInterval(() => {
                         if (window.allLiveMatches && window.allLiveMatches.length > 6) {
@@ -734,25 +717,12 @@
             contentDiv.innerHTML = allHtml;
         }
 
-        // חובה: מאזין לעליית הדף כדי להפעיל את הפונקציה
         document.addEventListener('DOMContentLoaded', () => {
             fetchLiveMatches();
-            // מרענן את נתוני השרת כל דקה
             setInterval(fetchLiveMatches, 60000); 
         });  
 
         // === פונקציית עזר: הוספת פסיקים והמרה מסנטים לדולרים ===
-        function formatPrice(price) {
-            if (!price) return '0.00';
-            // ה-API מחזיר נתונים בסנטים, לכן אנחנו מחלקים ב-100!
-            const num = parseFloat(price) / 100;
-            if (isNaN(num)) return price;
-            // מציג תמיד 2 ספרות אחרי הנקודה (למשל 3,875.00$)
-            return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-
-        // === מנוע חיפוש קלפים (התחברות ל-API) ===
-      // === פונקציית עזר: הוספת פסיקים והמרה מסנטים לדולרים ===
         function formatPrice(price) {
             if (!price) return '0.00';
             const num = parseFloat(price) / 100;
@@ -784,40 +754,45 @@
                 }
             });
 
-            // 2. לחיצה על כפתורי הסינון (הפילטרים)
+            // 2. לחיצה על כפתורי הסינון
             document.querySelectorAll('.filter-tag').forEach(tag => {
                 tag.addEventListener('click', (e) => {
                     const group = e.target.parentElement;
                     const wasSelected = e.target.classList.contains('selected');
                     
-                    // מוריד את הבחירה מכל שאר הכפתורים באותה שורה
+                    // מוריד את הבחירה משאר הכפתורים באותה קבוצה
                     group.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('selected'));
                     
-                    // אם הכפתור לא היה לחוץ - נלחץ עליו. אם כן היה - הוא יישאר כבוי (ביטול סינון)
+                    // אם לא היה לחוץ קודם - נסמן אותו. אם היה לחוץ - הוא פשוט יתבטל!
                     if (!wasSelected) {
                         e.target.classList.add('selected');
                     }
                     
-                    // ברגע ששינינו פילטר, מריצים את פונקציית העדכון!
                     applyFiltersAndSort();
                 });
             });
+
+            // 3. כפתור "נקה הכל" חדש!
+            const clearBtn = document.getElementById('clearFiltersBtn');
+            if (clearBtn) {
+                clearBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // מוריד את הסימון מכל הכפתורים בחלון הפילטרים
+                    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('selected'));
+                    // מרענן את התוצאות
+                    applyFiltersAndSort();
+                });
+            }
         }
 
-        // 3. פונקציית הליבה: מסננת וממיינת את התוצאות בהתאם למה שהגולש בחר
+        // 4. פונקציית הליבה: מסננת וממיינת
         function applyFiltersAndSort() {
             let filtered = [...currentResults];
 
-            // אוספים את כל המילים של הפילטרים הפעילים
-            const activeFilters = Array.from(document.querySelectorAll('.filter-tag.selected')).map(t => {
-                let text = t.innerText.toLowerCase();
-                // מתרגמים כפתורים לשפה שה-API מבין
-                if(text.includes('rookie') || text.includes('rc')) return 'rc';
-                if(text.includes('auto')) return 'auto';
-                return text;
-            });
+            // אוספים את כל הפילטרים הפעילים
+            const activeFilters = Array.from(document.querySelectorAll('.filter-tag.selected')).map(t => t.innerText.toLowerCase());
 
-            // מסננים: רק קלפים שמכילים את *כל* מילות הפילטרים שנבחרו
+            // מסננים לפי הפילטרים
             if (activeFilters.length > 0) {
                 filtered = filtered.filter(card => {
                     const searchStr = (card.name + " " + (card.set || '')).toLowerCase();
@@ -837,18 +812,17 @@
                 }
             }
 
-            // מציירים מחדש את המסך עם התוצאות שעברו סינון/מיון
             renderFullGrid(filtered);
         }
 
-        // מאזין לשינוי בתיבת המיון (מהיקר לזול וכו')
+        // מאזין לשינוי במיון
         if(sortSelect) {
             sortSelect.addEventListener('change', () => {
                 applyFiltersAndSort();
             });
         }
 
-        // 4. האזנה להקלדה בשורת החיפוש (משיכת הנתונים מהשרת)
+        // 5. האזנה להקלדה בשורת החיפוש
         if (mainSearchInput && searchDropdown) {
             mainSearchInput.addEventListener('input', (e) => {
                 const query = e.target.value.trim();
@@ -876,7 +850,6 @@
                             return;
                         }
 
-                        // מציגים בתפריט המהיר (עד 5 תוצאות ראשונות כדי לא להעמיס)
                         cards.slice(0, 5).forEach(card => {
                             const item = document.createElement('div');
                             item.className = 'dropdown-item';
@@ -898,7 +871,6 @@
                             searchDropdown.appendChild(item);
                         });
 
-                        // מוסיף כפתור "הצג את כל התוצאות" בסוף התפריט המהיר
                         const showAllItem = document.createElement('div');
                         showAllItem.className = 'dropdown-item';
                         showAllItem.style.justifyContent = 'center';
@@ -914,24 +886,21 @@
                 }, 500);
             });
 
-            // 5. מאזין למקש אנטר (ENTER) - פותח את הרשימה המלאה ועושה סינון ראשוני
+            // 6. מאזין למקש אנטר
             mainSearchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     searchDropdown.classList.remove('active');
-                    
                     if (cardResult) cardResult.classList.remove('show-result'); 
-                    
                     const resContainer = document.getElementById('resultsContainer');
                     if (resContainer) resContainer.style.display = 'flex';
                     
-                    // מריץ את המסננים והמיון הקיימים על התוצאות החדשות שנטענו
                     applyFiltersAndSort();
                 }
             });
         }
 
-        // 6. פונקציה שמציגה את הקלף הנבחר למעלה (הקופסה הכחולה)
+        // 7. פונקציה שמציגה את הקלף הנבחר למעלה (עברה עדכון שקיפות)
         function showCardResult(card) {
             const resContainer = document.getElementById('resultsContainer');
             if (resContainer) resContainer.style.display = 'none';
@@ -953,7 +922,7 @@
             }
         }
 
-        // 7. פונקציה שמציירת את התוצאות למטה בלחיצה על אנטר (עברה שדרוג לעיצוב ברור יותר)
+        // 8. פונקציה שמציירת את התוצאות למטה בלחיצה על אנטר
         function renderFullGrid(cards) {
             const fullGrid = document.getElementById('fullResultsGrid');
             if (!fullGrid) return;
@@ -962,7 +931,7 @@
             
             if (cards.length === 0) {
                 fullGrid.style.display = 'block';
-                fullGrid.innerHTML = '<div style="text-align: center; padding: 30px; font-weight: bold; color: #8fa0b3;">לא נמצאו תוצאות התואמות לסינון המבוקש. נסה לבטל פילטרים.</div>';
+                fullGrid.innerHTML = '<div style="text-align: center; padding: 30px; font-weight: bold; color: #8fa0b3;">לא נמצאו תוצאות התואמות לסינון המבוקש. נסה לבטל פילטרים או לחפש שם אחר.</div>';
                 return;
             }
             
@@ -989,7 +958,6 @@
                 const imgSrc = (card.image && card.image !== 'no-image') ? card.image : '';
                 const fallbackImg = "this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22200%22%20viewBox%3D%220%200%20150%20200%22%3E%3Crect%20width%3D%22150%22%20height%3D%22200%22%20fill%3D%22%23f0f0f0%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20fill%3D%22%23999%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';";
 
-                // כאן אנחנו מדגישים שמדובר במחיר Raw!
                 cardDiv.innerHTML = `
                     <img src="${imgSrc}" onerror="${fallbackImg}" style="width:100%; height:180px; object-fit:contain; border-radius: 5px; margin-bottom: 10px;">
                     <div class="card-details-wrapper">
@@ -1011,7 +979,7 @@
             });
         }
 
-        // 8. הפעלת כפתורי שינוי תצוגה (רשימה / קוביות)
+        // 9. הפעלת כפתורי שינוי תצוגה (רשימה / קוביות)
         const gridBtn = document.getElementById('gridViewBtn');
         const listBtn = document.getElementById('listViewBtn');
         const gridContainer = document.getElementById('fullResultsGrid');
@@ -1031,7 +999,7 @@
                 gridContainer.className = 'full-results-grid list-view';
                 gridContainer.style.display = ''; 
             });
-        }  
+        }
     </script>
 
 </body>
