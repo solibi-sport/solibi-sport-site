@@ -687,7 +687,95 @@
             fetchLiveMatches();
             // מרענן את נתוני השרת כל דקה
             setInterval(fetchLiveMatches, 60000); 
-        });    
+        });  
+        // === מנוע חיפוש קלפים (התחברות ל-API) ===
+        const mainSearchInput = document.getElementById('mainSearchInput');
+        const searchDropdown = document.getElementById('searchDropdown');
+        const filterBtn = document.getElementById('filterBtn');
+        const filterDropdown = document.getElementById('filterDropdown');
+        const cardResult = document.getElementById('cardResult');
+        let searchTimeout;
+
+        // 1. פתיחה וסגירה של תפריט הסינונים
+        if (filterBtn && filterDropdown) {
+            filterBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterDropdown.classList.toggle('active');
+                filterBtn.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (!filterDropdown.contains(e.target) && !filterBtn.contains(e.target)) {
+                    filterDropdown.classList.remove('active');
+                    filterBtn.classList.remove('active');
+                }
+            });
+        }
+
+        // 2. האזנה להקלדה בשורת החיפוש
+        if (mainSearchInput && searchDropdown) {
+            mainSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim();
+                clearTimeout(searchTimeout);
+
+                // מסתיר את התפריט אם אין מספיק תווים
+                if (query.length < 2) {
+                    searchDropdown.classList.remove('active');
+                    return;
+                }
+
+                // מציג הודעת טעינה מעוצבת
+                searchDropdown.innerHTML = '<div class="dropdown-item" style="justify-content: center;">מחפש קלפים... ⏳</div>';
+                searchDropdown.classList.add('active');
+
+                // מחכה חצי שנייה מסיום ההקלדה (Debounce) ואז פונה לשרת
+                searchTimeout = setTimeout(async () => {
+                    try {
+                        // פנייה לראוטר המאובטח של הקלפים בשרת שלנו (Vercel)
+                        const response = await fetch(`/api/cards-proxy?q=${encodeURIComponent(query)}`);
+                        const data = await response.json();
+
+                        // ננקה את התפריט
+                        searchDropdown.innerHTML = '';
+
+                        // אם אין תוצאות
+                        if (!data.results || data.results.length === 0) {
+                            searchDropdown.innerHTML = '<div class="dropdown-item" style="justify-content: center;">לא נמצאו קלפים. נסה שם אחר.</div>';
+                            return;
+                        }
+
+                        // אם יש תוצאות - נייצר את הרשימה
+                        data.results.forEach(card => {
+                            const item = document.createElement('div');
+                            item.className = 'dropdown-item';
+                            item.innerHTML = `
+                                <img src="${card.image || 'https://via.placeholder.com/30x40?text=Card'}" alt="card">
+                                <span>${card.name} - ${card.set}</span>
+                            `;
+                            
+                            // כשלוחצים על קלף מהרשימה
+                            item.addEventListener('click', () => {
+                                searchDropdown.classList.remove('active');
+                                mainSearchInput.value = card.name;
+                                showCardResult(card);
+                            });
+                            
+                            searchDropdown.appendChild(item);
+                        });
+
+                    } catch (error) {
+                        console.error("שגיאה בחיפוש קלפים:", error);
+                        searchDropdown.innerHTML = '<div class="dropdown-item" style="justify-content: center; color: red;">שגיאת תקשורת. נסה שוב.</div>';
+                    }
+                }, 500);
+            });
+        }
+
+        // 3. פונקציה שמציגה את הקלף במסך המרכזי
+        function showCardResult(card) {
+            // כרגע רק נחשוף את הפאנל המעוצב שלך (בהמשך נשתול פה את המחיר והתמונה האמיתיים)
+            cardResult.classList.add('show-result');
+        }
+        // ===========================================
     </script>
 
 </body>
