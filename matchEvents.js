@@ -344,42 +344,48 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     // עוברים קו-קו וממקמים את השחקנים
                     linesCounts.forEach((numPlayersInLine, lineIdx) => {
                         
-                        // קביעת מיקום X קשיח לפי מספר הקווים במערך (מבוסס על השרטוט שלך!)
+                        // === שליטה בציר X (הקווים לאורך המגרש) ===
+                        let r = lineIdx + 1; // קו 1 (שוער), קו 2 (הגנה) וכו'
                         let xHome;
-                        if (numLines === 4) {
-                            // מערך של 4 שורות (כמו 4-4-2)
-                            const xMap = [93, 80, 60, 48];
-                            xHome = xMap[lineIdx];
-                        } else if (numLines === 5) {
-                            // מערך של 5 שורות (כמו 4-2-3-1)
-                            const xMap = [93, 80, 68, 56, 48];
-                            xHome = xMap[lineIdx];
-                        } else if (numLines === 6) {
-                            // מערך של 6 שורות (נדיר, כמו 4-1-4-1)
-                            const xMap = [93, 82, 71, 60, 50, 42];
-                            xHome = xMap[lineIdx];
+                        
+                        if (r === 1) {
+                            xHome = 93; // קו 1: שוער 
+                        } else if (r === 2) {
+                            xHome = 60; // קו 2: הגנה 
+                        } else if (r === 3) {
+                            xHome = 50; // קו 3: קישור אחורי / מרכזי
+                        } else if (r === 4) {
+                            xHome = 30; // קו 4: קישור התקפי / כנפיים
+                        } else if (r === 5) {
+                            xHome = 20; // קו 5: חלוצים
                         } else {
-                            // חישוב דינאמי בטוח אם יש משהו מוזר
-                            xHome = 93 - (lineIdx * (45 / (numLines - 1)));
+                            xHome = 93 - (r * 12); // גיבוי
                         }
 
-                        // הופכים צד אם זו קבוצת החוץ
+                        // הופך אוטומטית לקבוצת החוץ
                         let xPercent = isHome ? xHome : (100 - xHome);
 
-                        // עוברים על כל שחקן שנמצא בקו הנוכחי
+                        // הלולאה שעוברת על השחקנים בקו הנוכחי
                         for (let i = 0; i < numPlayersInLine; i++) {
                             if (playerIndex >= players.length) break;
                             let p = players[playerIndex];
                             playerIndex++;
 
-                            // קביעת מיקום Y - פיזור אחיד ומרווח לרוחב הדשא!
+                            // === שליטה בציר Y (רוחב המגרש למעלה ולמטה) ===
                             let yPercent;
-                            if (numPlayersInLine === 1) yPercent = 50;
-                            else if (numPlayersInLine === 2) yPercent = i === 0 ? 30 : 70;
-                            else if (numPlayersInLine === 3) yPercent = i === 0 ? 20 : (i === 1 ? 50 : 80);
-                            else if (numPlayersInLine === 4) yPercent = i === 0 ? 15 : (i === 1 ? 38 : (i === 2 ? 62 : 85));
-                            else if (numPlayersInLine === 5) yPercent = i === 0 ? 10 : (i === 1 ? 30 : (i === 2 ? 50 : (i === 3 ? 70 : 90)));
-                            else yPercent = 10 + (i / (numPlayersInLine - 1)) * 80;
+                            if (numPlayersInLine === 1) {
+                                yPercent = 50; 
+                            } else if (numPlayersInLine === 2) {
+                                yPercent = i === 0 ? 30 : 70; 
+                            } else if (numPlayersInLine === 3) {
+                                yPercent = i === 0 ? 20 : (i === 1 ? 50 : 80); 
+                            } else if (numPlayersInLine === 4) {
+                                yPercent = i === 0 ? 15 : (i === 1 ? 38 : (i === 2 ? 62 : 85)); 
+                            } else if (numPlayersInLine === 5) {
+                                yPercent = i === 0 ? 10 : (i === 1 ? 30 : (i === 2 ? 50 : (i === 3 ? 70 : 90))); 
+                            } else {
+                                yPercent = 10 + (i / (numPlayersInLine - 1)) * 80; 
+                            }
 
                             // צבעים
                             let bgColor = isHome ? (teamLineup.team.colors?.player?.primary || 'ffffff') : (teamLineup.team.colors?.player?.primary || '000000');
