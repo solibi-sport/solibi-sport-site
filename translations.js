@@ -12438,7 +12438,7 @@ const myDictionary = {
             "Racing Club": "ראסינג קלוב",
             "Independiente": "אינדפנדיינטה",
     "Ashdod": "אשדוד",
-    "Hapoel Katamon": "הפועל קטמון",
+    "Hapoel Katamon": "הפועל ירושלים",
     "D. Biton": "ד. ביטון",
     "A. Ugarriza": "א. אוגריזה",
     "A. Yona": "ע. יונה",
