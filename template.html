@@ -299,5 +299,15 @@
 
         window.addEventListener('DOMContentLoaded', fetchLiveMatches);
     </script>
+<script>
+    // פונקציה שטוענת את הטיקר מקובץ חיצוני
+    fetch('ticker.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('ticker-placeholder').innerHTML = data;
+        })
+        .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
+</script>
+    
 </body>
 </html>
