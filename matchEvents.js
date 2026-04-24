@@ -363,7 +363,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         } else if (numLines === 5 && r === 3) {
                             xHome = 53; // קישור אחורי במערך של 5 שורות (כמו 4-2-3-1)
                         } else if (numLines === 5 && r === 4) {
-                            xHome = 30; // קישור קדמי/כנפיים במערך של 5 שורות
+                            xHome = 31; // קישור קדמי/כנפיים במערך של 5 שורות
                         } else {
                             xHome = 93 - (r * 12); // גיבוי
                         } 
