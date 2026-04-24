@@ -741,13 +741,14 @@
             setInterval(fetchLiveMatches, 60000); 
         });  
 
-        // === פונקציית עזר: הוספת פסיקים למחיר ===
+        // === פונקציית עזר: הוספת פסיקים והמרה מסנטים לדולרים ===
         function formatPrice(price) {
             if (!price) return '0.00';
-            const num = parseFloat(price);
+            // ה-API מחזיר נתונים בסנטים, לכן אנחנו מחלקים ב-100!
+            const num = parseFloat(price) / 100;
             if (isNaN(num)) return price;
-            // הופך מ- 1717453 ל- 1,717,453
-            return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+            // מציג תמיד 2 ספרות אחרי הנקודה (למשל 3,875.00$)
+            return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
         // === מנוע חיפוש קלפים (התחברות ל-API) ===
