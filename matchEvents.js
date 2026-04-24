@@ -26,7 +26,6 @@ modalStyle.innerHTML = `
 .modal-tab-btn:hover { color: #ffffff; }
 .tab-content { display: none; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 10px; }
 .tab-content.active { display: flex; }
-`;
 
 /* עיצוב המגרש */
 .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 15px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
