@@ -13162,6 +13162,18 @@ const myDictionary = {
     "M. Bajamich": "מ. בחאמיץ'",
     "J. Ferreira": "ח. פריירה",
     "German Conti": "חרמאן קונטי",
+    "Didube 2014": "דידובה 2014",
+    "FKF Premier League": "ליגת העל הקנייתית",
+    "Iveria Khashuri": "איבריה חאשורי",
+    "Kashima": "קאשימה",
+    "Kolos Kovalivka U19": "קולוס קובאליבקה U19",
+    "Liga 3": "ליגה 3",
+    "Mara Sugar": "מארה שוגר",
+    "SK Poltava U19": "ס.ק. פולטבה U19",
+    "Tampines Rovers": "טמפינס רוברס",
+    "Tusker": "טאסקר",
+    "U19 League": "ליגת U19",
+    "Young Lions": "יאנג ליונס",
         };
 
 // =====================================================================
