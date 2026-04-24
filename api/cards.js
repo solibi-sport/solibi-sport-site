@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-    // הגדרות אבטחה ו-CORS כדי לאפשר לאתר שלך לפנות לשרת
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
 
@@ -7,14 +6,11 @@ export default async function handler(req, res) {
         return res.status(200).end();
     }
 
-    // שולף את מילת החיפוש שהגולש הקליד
     const query = req.query.q;
-    
-    // שינוי חשוב: שולף את המפתח בדיוק לפי השם שמופיע לך ב-Vercel!
     const apiKey = process.env.SPORTSCARDS_API_KEY;
 
     if (!apiKey) {
-        return res.status(500).json({ error: "Missing API Key in Vercel" });
+        return res.status(500).json({ error: "Vercel: Missing API Key" });
     }
 
     if (!query) {
@@ -22,18 +18,16 @@ export default async function handler(req, res) {
     }
 
     try {
-        // פנייה לשרתים של SportsCardPro
         const apiUrl = `https://www.sportscardpro.com/api/products?t=${apiKey}&q=${encodeURIComponent(query)}`;
-        
         const response = await fetch(apiUrl);
-        
-        if (!response.ok) {
-            throw new Error(`SportsCardPro API Error: ${response.status}`);
-        }
-
         const data = await response.json();
 
-        // מתאימים את התשובה למבנה שגיבשנו
+        // גלאי שגיאות מיוחד: אם ספורטקארדס מחזירים שגיאה (כמו מפתח לא תקין)
+        if (data.status === "error" || data.error) {
+            console.error("API Error Response:", data);
+            return res.status(400).json({ error: data.message || "SportsCardPro API Error", raw: data });
+        }
+
         const formattedResults = (data.products || []).map(item => ({
             id: item.id,
             name: item['product-name'] || item.name,
@@ -45,7 +39,7 @@ export default async function handler(req, res) {
         res.status(200).json({ results: formattedResults });
 
     } catch (error) {
-        console.error("Error fetching from SportsCardPro:", error);
-        res.status(500).json({ error: "Failed to fetch data from API" });
+        console.error("Fetch Error:", error);
+        res.status(500).json({ error: "Failed to communicate with API" });
     }
 }
