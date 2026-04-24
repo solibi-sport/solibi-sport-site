@@ -202,9 +202,10 @@
             gap: 15px;
             width: 100%;
             max-width: 760px;
-            margin-bottom: 0; /* מאפסים את הרווח - המחשב יחשב אותו לבד עכשיו! */
+            margin-bottom: 0;
             flex-shrink: 0;
-            transform: none; /* חשוב מאוד: לוודא שאין פה שורת transform יותר */
+            /* הפקודה הזו מחליקה את הכותרת 30 פיקסלים למטה, קרוב לקוביות! */
+            transform: translateY(50px); 
         }
 
         .page-title {
