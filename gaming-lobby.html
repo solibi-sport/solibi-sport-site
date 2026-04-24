@@ -78,22 +78,20 @@
         /* === גוף הדף === */
         .main-content { display: flex; flex: 1; overflow: hidden; position: relative; }
 
-        /* === תפריט ימני: דיליי חצי שניה, כחול נייבי, כתב באמצע === */
+        /* === תפריט ימני (דיליי, כחול נייבי, כתב באמצע) === */
         .vertical-action-bar {
             position: absolute; top: 20px; right: 20px; width: var(--sidebar-width); height: 48px; 
             background: var(--element-navy-gradient); 
             border: 1px solid var(--brand-green); border-radius: 14px;
             display: flex; flex-direction: column; overflow: hidden;
-            /* הדיליי של חצי שניה ביציאה */
             transition: height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s, background 0.4s 0.5s, box-shadow 0.4s 0.5s;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100;
         }
 
         .vertical-action-bar:hover {
-            height: 220px; /* נפתח למטה */
-            background: var(--brand-green); /* הופך לירוק! */
+            height: 220px; 
+            background: var(--brand-green); 
             box-shadow: 0 10px 30px rgba(0,0,0,0.4); border-color: #fff;
-            /* נפתח מיידית במעבר עכבר */
             transition: height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, background 0.4s 0s, box-shadow 0.4s 0s;
         }
 
@@ -117,10 +115,9 @@
         }
         .v-item:first-child { border-top: none; }
         .v-item:hover { text-shadow: 0 0 8px rgba(255,255,255,0.8); }
-        /* האייקון מצד ימין */
         .v-item svg { position: absolute; right: 10px; width: 18px; height: 18px; stroke: currentColor; }
 
-        /* === פאנל לייב משמאל (נפתח עד למטה בלחיצה) === */
+        /* === פאנל לייב משמאל (נפתח עד 20px מהתחתית) === */
         .collapsible-live-panel {
             position: absolute; top: 20px; left: 20px; width: var(--sidebar-width);
             background: #ffffff; border: 1px solid var(--brand-green); border-radius: 14px;
@@ -130,8 +127,8 @@
         }
 
         .collapsible-live-panel.expanded { 
-            /* גובה עד למטה פחות הרווחים */
-            height: calc(100vh - 105px); 
+            /* הגובה מחושב כדי להשאיר בדיוק 20px מרווח תחתון! */
+            height: calc(100% - 40px); 
             box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
         }
 
@@ -164,14 +161,19 @@
         .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-        /* === מרכז העמוד והקוביות (קטנות ב-30% ו-3 קוביות בלבד) === */
+        /* === מרכז העמוד והקוביות === */
         .center-wrapper {
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             width: 100%; height: 100%; padding: 0 calc(var(--sidebar-width) + 20px); 
-            gap: clamp(15px, 3vh, 30px); overflow-y: auto;
+            overflow-y: auto;
         }
 
-        .premium-title-wrapper { display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%; max-width: 850px; flex-shrink: 0; margin: 0; }
+        .premium-title-wrapper { 
+            display: flex; align-items: center; justify-content: center; gap: 15px; 
+            width: 100%; max-width: 850px; flex-shrink: 0; 
+            margin: 0 0 40px 0; /* הורחק כלפי מעלה כדי לא להיות צמוד לקוביות */
+        }
+        
         .page-title { background: rgba(255, 255, 255, 0.6); padding: 8px 30px; border-radius: 30px; border: 1px solid rgba(124, 168, 86, 0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin: 0; white-space: nowrap; font-size: clamp(18px, 2vw, 24px); font-weight: 900; letter-spacing: 1px; color: var(--text-dark); }
         .page-title span { color: var(--brand-green); }
         .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--brand-green)); border-radius: 2px; }
@@ -179,10 +181,10 @@
 
         .gaming-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* בדיוק 3 עמודות! */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 20px;
             width: 100%;
-            max-width: 850px; /* הוקטן ב-30% */
+            max-width: 850px;
             margin: 0;
         }
 
@@ -192,30 +194,19 @@
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex; flex-direction: column; position: relative;
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            height: 310px; /* גובה קומפקטי ומדויק */
+            height: 310px; 
         }
         .gaming-card:hover { transform: translateY(-8px); border-color: var(--brand-green); box-shadow: 0 15px 35px rgba(124, 168, 86, 0.3); z-index: 5;}
 
-        .card-banner { height: 120px; background-size: cover; background-position: center; position: relative; } /* תמונה קטנה יותר */
+        .card-banner { height: 120px; background-size: cover; background-position: center; position: relative; } 
         .card-banner::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: linear-gradient(to top, #112845, transparent); }
         
-        .card-body { padding: 15px; color: white; flex: 1; display: flex; flex-direction: column; gap: 8px; } /* ריווחים קטנים יותר */
+        .card-body { padding: 15px; color: white; flex: 1; display: flex; flex-direction: column; gap: 8px; } 
         .card-badge { position: absolute; top: 10px; right: 10px; background: var(--brand-green); color: white; padding: 4px 10px; border-radius: 15px; font-size: 10px; font-weight: 900; z-index: 10; }
         .card-title { font-size: 17px; font-weight: 900; margin: 0; }
         .card-text { font-size: 12.5px; color: #a0aec0; line-height: 1.4; }
         
         .card-footer { padding: 12px 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: var(--brand-green); }
-
-        /* === הסרגל האופקי המתרחב === */
-        .dynamic-action-bar { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); height: 56px; width: 140px; background: var(--element-navy-gradient); border: 2px solid var(--brand-green); border-radius: 40px; display: flex; align-items: center; justify-content: flex-start; padding: 0 20px; overflow: hidden; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 100; }
-        .dynamic-action-bar:hover { width: 360px; background: var(--brand-green); box-shadow: 0 15px 40px rgba(124, 168, 86, 0.5); border-color: #fff; }
-        .action-brand { display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 900; font-size: 15px; white-space: nowrap; flex-shrink: 0; cursor: default; }
-        .action-brand svg { width: 18px; height: 18px; stroke-width: 2.5px; }
-        .action-items { display: flex; align-items: center; gap: 20px; margin-right: auto; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding-right: 20px; border-right: 1px solid rgba(255,255,255,0.3); }
-        .dynamic-action-bar:hover .action-items { opacity: 1; pointer-events: auto; transition-delay: 0.2s; }
-        .action-item { display: flex; align-items: center; gap: 6px; text-decoration: none; color: #fff; font-weight: 700; font-size: 12px; transition: transform 0.2s; white-space: nowrap; }
-        .action-item:hover { transform: scale(1.1); text-shadow: 0 0 10px rgba(255,255,255,0.8); }
-        .action-item svg { width: 18px; height: 18px; stroke: currentColor; }
 
         /* === שורת פוטר === */
         .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
@@ -230,13 +221,11 @@
             .center-wrapper { padding: 150px 20px 100px 20px; height: auto; justify-content: flex-start; } 
             .collapsible-live-panel { position: relative; left: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto 20px auto; z-index: 2;}
             .vertical-action-bar { position: relative; right: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto 20px auto; z-index: 1;}
-            .dynamic-action-bar { position: fixed; bottom: 40px; }
             .gaming-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
         }
         @media (max-width: 768px) {
             .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
             .header-center-col { flex-direction: column; }
-            .dynamic-action-bar:hover { width: 90vw; }
         }
     </style>
 </head>
@@ -356,18 +345,6 @@
                 </a>
             </div>
 
-        </div>
-
-        <div class="dynamic-action-bar">
-            <div class="action-brand">
-                <span>סוליבי</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </div>
-            <div class="action-items">
-                <a href="#" class="action-item"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>V.I.P</span></a>
-                <a href="#" class="action-item"><svg viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>חנות</span></a>
-                <a href="#" class="action-item"><svg viewBox="0 0 24 24" fill="none"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg><span>החלפות</span></a>
-            </div>
         </div>
     </main>
 
