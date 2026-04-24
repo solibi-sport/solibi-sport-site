@@ -168,10 +168,11 @@
             overflow-y: auto;
         }
 
-        .premium-title-wrapper { 
+        ..premium-title-wrapper { 
             display: flex; align-items: center; justify-content: center; gap: 15px; 
             width: 100%; max-width: 850px; flex-shrink: 0; 
-            margin: -50px 0 50px 0;
+            margin: 0; /* איפסנו את המרווח הרגיל */
+            transform: translateY(-60px); /* הקסם: מושך רק את הכותרת 60 פיקסלים למעלה! */
         }
         
         .page-title { background: rgba(255, 255, 255, 0.6); padding: 8px 30px; border-radius: 30px; border: 1px solid rgba(124, 168, 86, 0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin: 0; white-space: nowrap; font-size: clamp(18px, 2vw, 24px); font-weight: 900; letter-spacing: 1px; color: var(--text-dark); }
