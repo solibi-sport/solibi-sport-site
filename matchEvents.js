@@ -28,7 +28,7 @@ if (!document.getElementById('modal-style-events')) {
     .tab-content.active { display: flex; }
 
     /* עיצוב המגרש */
-    .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 15px 0 5px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+    .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 10px 0; overflow: hidden; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
     .pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.4); transform: translateX(-50%); z-index: 1;}
     .pitch-circle { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;}
     .pitch-box-left { position: absolute; left: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
@@ -41,15 +41,14 @@ if (!document.getElementById('modal-style-events')) {
     .pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.9); box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(0,0,0,0.3); z-index: 4; position: relative;}
     .pitch-player-name { color: #ffffff; font-size: 10px; font-weight: bold; margin-top: 3px; text-align: center; text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 0 3px 5px rgba(0,0,0,0.9); z-index: 3; max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr;}
     
-    /* עיצוב הספסל החדש */
-    .bench-container { display: none; margin-top: 15px; padding: 10px; background: #0b1018; border-radius: 8px; border: 1px solid #1f2d40; gap: 15px; }
-    .bench-container.show-bench { display: flex; animation: fadeIn 0.3s ease; }
-    .bench-col { flex: 1; }
-    .bench-title { font-size: 13px; font-weight: bold; color: #fff; border-bottom: 1px solid #2a3b4c; padding-bottom: 6px; margin-bottom: 8px; text-align: center; }
-    .bench-player { display: flex; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 11.5px; }
-    .bench-num { width: 22px; text-align: center; color: #7a9966; font-weight: bold; margin-left: 8px; font-size: 10px; background: rgba(122,153,102,0.1); border-radius: 4px; padding: 2px 0;}
-    .bench-name { color: #d1d5db; flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sub-in-badge { color: #10b981; font-weight: bold; font-size: 10px; margin-right: auto; padding-left: 5px; background: rgba(16,185,129,0.1); padding: 2px 6px; border-radius: 4px; white-space: nowrap;}
+    /* עיצוב הספסל החדש והאלגנטי */
+    .bench-view { width: 100%; display: flex; gap: 15px; margin-top: 10px; }
+    .bench-col { flex: 1; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid #1f2d40; padding: 10px; }
+    .bench-title { text-align: center; font-weight: bold; color: #fff; padding-bottom: 8px; border-bottom: 1px solid #2a3b4c; margin-bottom: 10px; font-size: 13px; }
+    .bench-item { display: flex; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; }
+    .bench-num { font-weight: 900; color: #7a9966; background: rgba(122,153,102,0.1); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-left: 8px; font-size: 11px; flex-shrink: 0; }
+    .bench-name { color: #d1d5db; flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+    .bench-sub-badge { color: #10b981; font-size: 10px; font-weight: bold; background: rgba(16,185,129,0.1); padding: 2px 6px; border-radius: 12px; border: 1px solid rgba(16,185,129,0.3); margin-right: 5px; flex-shrink: 0; }
 
     .modal-mini-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-top: 5px; }
     .modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #1f2d40; }
@@ -90,6 +89,23 @@ if (!document.getElementById('modal-style-events')) {
     `;
     document.head.appendChild(modalStyle);
 }
+
+// פונקציית טאבים פנימית לספסל והרכב
+window.toggleLineupView = function(view) {
+    const pBtn = document.getElementById('btnPitchView');
+    const bBtn = document.getElementById('btnBenchView');
+    const pCont = document.getElementById('pitch-container');
+    const bCont = document.getElementById('bench-container');
+    if(view === 'pitch') {
+        pCont.style.display = 'block'; bCont.style.display = 'none';
+        pBtn.style.color = '#7a9966'; pBtn.style.borderBottomColor = '#7a9966';
+        bBtn.style.color = '#8fa0b3'; bBtn.style.borderBottomColor = 'transparent';
+    } else {
+        pCont.style.display = 'none'; bCont.style.display = 'flex';
+        bBtn.style.color = '#7a9966'; bBtn.style.borderBottomColor = '#7a9966';
+        pBtn.style.color = '#8fa0b3'; pBtn.style.borderBottomColor = 'transparent';
+    }
+};
 
 window.switchModalTab = function(tabId, btn) {
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -151,7 +167,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         let startX, startY;
 
         function onDragStart(e) {
-            if (e.target.closest('.close-modal')) return;
+            if (e.target.closest('.close-modal') || e.target.closest('button')) return;
             isDragging = true;
             box.style.animation = 'none'; 
             const clientX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
@@ -286,41 +302,40 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
             let events = eventsData.response || [];
 
-            /* ------ הרכבים + ספסל משודרג ------ */
+            /* ------ הרכבים מדוייקים מתמטית + לשוניות ספסל ------ */
             let lineupsHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין נתוני הרכבים עדיין</div>';
             
             if (lineupsData.response && lineupsData.response.length === 2) {
                 const hL = lineupsData.response.find(r => r.team.id === homeId) || lineupsData.response[0];
                 const aL = lineupsData.response.find(r => r.team.id === awayId) || lineupsData.response[1];
                 
-                // התיקון הקריטי של העמדות הסימטריות
                 const renderPlayersFixed = (players, isHome) => {
                     const homePositions = [
-                        { left: 93, top: 50 }, // שוער 
-                        { left: 84, top: 15 }, // מגן ימני (על קו 16)
-                        { left: 84, top: 38 }, // בלם ימני (על קו 16)
-                        { left: 84, top: 62 }, // בלם שמאלי (על קו 16)
-                        { left: 84, top: 85 }, // מגן שמאלי (על קו 16)
-                        { left: 69, top: 25 }, // קשר ימני (באמצע בין הגנה להתקפה)
-                        { left: 69, top: 50 }, // קשר אמצע
-                        { left: 69, top: 75 }, // קשר שמאלי
-                        { left: 57, top: 20 }, // כנף ימין (פרופורציה שווה)
-                        { left: 54, top: 50 }, // חלוץ (חצי בעיגול, חצי בשטח שלו)
-                        { left: 57, top: 80 }  // כנף שמאל
+                        { left: 92, top: 50 }, // שוער
+                        { left: 84, top: 15 }, // מגן ימני (בדיוק על קו 16)
+                        { left: 84, top: 38 }, // בלם
+                        { left: 84, top: 62 }, // בלם
+                        { left: 84, top: 85 }, // מגן שמאלי
+                        { left: 66, top: 25 }, // קשר ימני (בדיוק באמצע בין הגנה להתקפה)
+                        { left: 66, top: 50 }, // קשר אמצע
+                        { left: 66, top: 75 }, // קשר שמאלי
+                        { left: 56, top: 20 }, // כנף ימין (פרופורציה שווה קדימה מהקשרים)
+                        { left: 48, top: 50 }, // חלוץ מרכזי (חצי בתוך עיגול האמצע)
+                        { left: 56, top: 80 }  // כנף שמאל
                     ];
 
                     const awayPositions = [
-                        { left: 7, top: 50 },  // שוער
-                        { left: 16, top: 15 }, // מגן שמאלי (על קו 16)
-                        { left: 16, top: 38 }, // בלם שמאלי (על קו 16)
-                        { left: 16, top: 62 }, // בלם ימני (על קו 16)
-                        { left: 16, top: 85 }, // מגן ימני (על קו 16)
-                        { left: 31, top: 25 }, // קשר שמאלי
-                        { left: 31, top: 50 }, // קשר אמצע
-                        { left: 31, top: 75 }, // קשר ימני
-                        { left: 43, top: 20 }, // כנף שמאל
-                        { left: 46, top: 50 }, // חלוץ (חצי בעיגול)
-                        { left: 43, top: 80 }  // כנף ימין
+                        { left: 8, top: 50 },  // שוער
+                        { left: 16, top: 15 }, // מגן (על קו 16)
+                        { left: 16, top: 38 }, // בלם
+                        { left: 16, top: 62 }, // בלם
+                        { left: 16, top: 85 }, // מגן
+                        { left: 34, top: 25 }, // קשר שמאל
+                        { left: 34, top: 50 }, // קשר אמצע
+                        { left: 34, top: 75 }, // קשר ימין
+                        { left: 44, top: 20 }, // כנף שמאל
+                        { left: 52, top: 50 }, // חלוץ
+                        { left: 44, top: 80 }  // כנף ימין
                     ];
 
                     let html = '';
@@ -344,9 +359,11 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         let subTextHtml = '';
                         if (subEvent) {
                             let subInShortName = getShortPlayerName(subEvent.assist.name);
-                            let subTime = subEvent.time.elapsed;
-                            // אינדיקציה יפה ומקצועית לחילוף על המגרש
-                            subTextHtml = `<div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; border-radius: 4px; padding: 1px 4px; margin-top: 2px; font-size: 8px; color: #10b981; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.5);">🔄 ${subInShortName} (${subTime}')</div>`;
+                            // אינדיקציה אלגנטית ומקצועית לחילוף על המגרש עצמו
+                            subTextHtml = `<div style="background: #10b981; color: #fff; border-radius: 3px; padding: 2px 4px; margin-top: 3px; font-size: 8px; font-weight: bold; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 2px;">
+                                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                                <span>${subInShortName}</span>
+                            </div>`;
                         }
                         
                         html += `<div class="pitch-player" style="left: ${left}%; top: ${top}%;">
@@ -359,15 +376,14 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     return html;
                 };
 
-                // פונקציית רינדור לשחקן ספסל יחיד
                 const renderBenchPlayer = (p, evts, tId) => {
                     let subEvt = evts.find(e => e.type.toLowerCase() === 'subst' && e.team.id === tId && e.assist.name === p.player.name);
                     let statusHtml = '';
                     if (subEvt) {
-                        statusHtml = `<span class="sub-in-badge">▲ נכנס (${subEvt.time.elapsed}')</span>`;
+                        statusHtml = `<span class="bench-sub-badge">▲ ${subEvt.time.elapsed}'</span>`;
                     }
                     let playerName = typeof window.translateName === 'function' ? window.translateName(p.player.name) : p.player.name;
-                    return `<div class="bench-player">
+                    return `<div class="bench-item">
                         <span class="bench-num">${p.player.number || '-'}</span>
                         <span class="bench-name">${playerName}</span>
                         ${statusHtml}
@@ -376,31 +392,30 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
                 lineupsHtml = `
                 <div style="padding: 10px 15px;">
-                    <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:5px; color:#a0aec0;">
-                        <span>מערך: ${hL.formation || '?'}</span>
-                        <span>מערך: ${aL.formation || '?'}</span>
+                    <div style="display:flex; justify-content:center; gap:20px; margin-bottom:15px; border-bottom:1px solid #1f2d40;">
+                        <button id="btnPitchView" onclick="toggleLineupView('pitch')" style="background:transparent; color:#7a9966; border:none; border-bottom:2px solid #7a9966; padding:8px 15px; font-weight:bold; cursor:pointer; font-family:inherit; font-size:13px; transition:0.3s; outline:none;">הרכב פותח</button>
+                        <button id="btnBenchView" onclick="toggleLineupView('bench')" style="background:transparent; color:#8fa0b3; border:none; border-bottom:2px solid transparent; padding:8px 15px; font-weight:bold; cursor:pointer; font-family:inherit; font-size:13px; transition:0.3s; outline:none;">ספסל מחליפים</button>
                     </div>
                     
-                    <div class="pitch-wrapper">
-                        <div class="pitch-box-left"></div>
-                        <div class="pitch-box-right"></div>
-                        <div class="pitch-small-box-left"></div>
-                        <div class="pitch-small-box-right"></div>
-                        <div class="pitch-line-center"></div>
-                        <div class="pitch-circle"></div>
-                        <div class="pitch-team">${renderPlayersFixed(hL.startXI, true)}</div>
-                        <div class="pitch-team">${renderPlayersFixed(aL.startXI, false)}</div>
+                    <div id="pitch-container">
+                        <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:bold; margin-bottom:5px; color:#a0aec0;">
+                            <span>מערך: ${hL.formation || '?'}</span>
+                            <span>מערך: ${aL.formation || '?'}</span>
+                        </div>
+                        <div class="pitch-wrapper">
+                            <div class="pitch-box-left"></div>
+                            <div class="pitch-box-right"></div>
+                            <div class="pitch-small-box-left"></div>
+                            <div class="pitch-small-box-right"></div>
+                            <div class="pitch-line-center"></div>
+                            <div class="pitch-circle"></div>
+                            <div class="pitch-team">${renderPlayersFixed(hL.startXI, true)}</div>
+                            <div class="pitch-team">${renderPlayersFixed(aL.startXI, false)}</div>
+                        </div>
                     </div>
 
-                    <div style="text-align: center; margin-top: 15px;">
-                        <button onclick="document.getElementById('bench-container').classList.toggle('show-bench')" style="background: #1e293b; color: #fff; border: 1px solid #7a9966; padding: 6px 16px; border-radius: 20px; font-family: inherit; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 6px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                            ספסל וחילופים
-                        </button>
-                    </div>
-
-                    <div id="bench-container" class="bench-container">
-                        <div class="bench-col" style="border-left: 1px solid #1f2d40; padding-left: 15px;">
+                    <div id="bench-container" class="bench-view" style="display:none;">
+                        <div class="bench-col">
                             <div class="bench-title">${tHome}</div>
                             ${hL.substitutes.map(p => renderBenchPlayer(p, events, homeId)).join('')}
                         </div>
@@ -409,7 +424,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             ${aL.substitutes.map(p => renderBenchPlayer(p, events, awayId)).join('')}
                         </div>
                     </div>
-
                 </div>`;
             }
 
