@@ -19,25 +19,50 @@ export default async function handler(req, res) {
 
     try {
         const cleanApiKey = apiKey.trim();
-        
-        // התיקון האמיתי: פנייה לשרת הראשי של PriceCharting במקום לאתר הבת
         const apiUrl = `https://www.pricecharting.com/api/products?t=${cleanApiKey}&q=${encodeURIComponent(query)}`;
         
         const response = await fetch(apiUrl);
         const data = await response.json();
 
         if (data.status === "error" || data.error) {
-            return res.status(400).json({ 
-                error: "API Error", 
-                raw: data,
-                debug_url_used: apiUrl.replace(cleanApiKey, "HIDDEN_TOKEN") 
-            });
+            return res.status(400).json({ error: "API Error", raw: data });
         }
 
-        const formattedResults = (data.products || []).map(item => ({
+        // המילה שהגולש חיפש, באותיות קטנות כדי שנוכל להשוות במדויק
+        const queryLower = query.toLowerCase();
+
+        // === המסנן הקפדני והאכזרי ===
+        const filteredProducts = (data.products || []).filter(item => {
+            const category = (item['console-name'] || "").toLowerCase();
+            const name = (item['product-name'] || item.name || "").toLowerCase();
+            
+            // 1. חובה שהטקסט שחיפשנו יופיע *בדיוק* בשם של השחקן/קלף
+            const isExactMatch = name.includes(queryLower);
+
+            // 2. אישור רק לקטגוריות ספורט נטו
+            const isSportsCard = category.includes('soccer') || 
+                                 category.includes('football') || 
+                                 category.includes('basketball') || 
+                                 category.includes('baseball') ||
+                                 category.includes('hockey') ||
+                                 category.includes('ufc') ||
+                                 category.includes('racing');
+                                 
+            // 3. רשימה שחורה (מעיף מארוול, סטאר וורס, קומיקס, פוקימון)
+            const isJunk = category.includes('marvel') || 
+                           category.includes('star wars') || 
+                           category.includes('comic') || 
+                           category.includes('pokemon') ||
+                           category.includes('magic') ||
+                           category.includes('video');
+
+            return isExactMatch && isSportsCard && !isJunk;
+        });
+
+        const formattedResults = filteredProducts.map(item => ({
             id: item.id,
             name: item['product-name'] || item.name,
-            set: item['console-name'] || 'ספורט', 
+            set: item['console-name'], 
             image: item.image || 'https://via.placeholder.com/30x40?text=Card',
             price: item['loose-price'] || item.price || 0
         }));
