@@ -539,21 +539,31 @@
         
         async function fetchLiveMatches() {
             try {
-                // קריאה אמיתית לשרת ה-API שלך ללא נתוני טסט
-                const res = await fetch(`/api/football-proxy?endpoint=fixtures&live=all`);
-                const data = await res.json();
+                // קריאה ישירה ל-API (ודא שהנתיב /api/football-proxy קיים ומוגדר נכון בשרת שלך)
+                const response = await fetch('/api/football-proxy?endpoint=fixtures&live=all');
                 
-                window.allLiveMatches = (data.response || []).sort((a, b) => {
-                    let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
-                    let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
-                    return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
-                });
-                renderLivePage(); // מרנדר את התוצאות האמיתיות מיד
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data && data.response) {
+                    window.allLiveMatches = data.response.sort((a, b) => {
+                        let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
+                        let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
+                        return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+                    });
+                    renderLivePage(); 
+                } else {
+                    document.getElementById('live-content').innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים ⚽</div>';
+                }
             } catch (e) { 
-                console.error("Live fetch error", e); 
+                console.error("שגיאה בשאיבת תוצאות הלייב:", e);
+                document.getElementById('live-content').innerHTML = '<div style="text-align:center; padding: 20px 10px; font-weight: bold; color: #b71c1c;">שגיאה בטעינת הנתונים. נסה לרענן.</div>';
             }
         }
-
+        
         function getTranslatedName(englishName) {
             if (typeof window.translateTeamName === 'function') return window.translateTeamName(englishName);
             return teamTranslations[englishName] || englishName;
