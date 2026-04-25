@@ -78,25 +78,6 @@
         /* === גוף הדף === */
         .main-content { display: flex; flex: 1; overflow: hidden; position: relative; }
 
-        /* === תפריט ימני === */
-        .vertical-action-bar {
-            position: absolute; top: 20px; right: 20px; width: var(--sidebar-width);
-            height: 48px; background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
-            border-radius: 24px; display: flex; flex-direction: column; overflow: hidden;
-            transition: height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s, background 0.4s 0.5s, border-color 0.4s 0.5s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 100;
-        }
-        .vertical-action-bar:hover {
-            height: 220px; background: var(--brand-green); border-color: #fff;
-            transition: height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s, background 0.4s 0s, border-color 0.4s 0s;
-        }
-        .v-action-header { height: 44px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 900; font-size: 14px; flex-shrink: 0; cursor: default; }
-        .v-action-items { display: flex; flex-direction: column; gap: 10px; padding: 10px 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s 0.5s; }
-        .vertical-action-bar:hover .v-action-items { opacity: 1; pointer-events: auto; transition: opacity 0.3s 0.2s; }
-        .v-item { color: #fff; text-decoration: none; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2); transition: 0.2s; }
-        .v-item:hover { transform: translateX(-5px); text-shadow: 0 0 5px #fff; border-bottom-color: #fff; }
-        .v-item svg { width: 18px; height: 18px; stroke: currentColor; }
-
         /* === פאנל לייב משמאל (מעוצב ומלא) === */
         .collapsible-live-panel {
             position: absolute; top: 20px; left: 20px; width: var(--sidebar-width);
@@ -131,26 +112,12 @@
 
         /* === מעטפת התוכן המרכזית (סימטריה) === */
         .center-wrapper {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; /* הורדנו קצת כדי שיישר עם ה-Top Bar */
             width: 100%; height: 100%; padding: 0 calc(var(--sidebar-width) + 30px);
-            gap: clamp(15px, 3vh, 35px); 
+            gap: 0; /* ננהל את ה-Gap בתוך ה-Layout עצמו */
         }
 
-        /* === עיצוב הכותרת המיוחדת והשליטה במיקום === */
-        .premium-title-wrapper {
-            display: flex; align-items: center; justify-content: center; gap: 15px; 
-            width: 100%; max-width: 950px; flex-shrink: 0; 
-            transform: translateY(-40px); /* מנגנון הרמה והורדה של הכותרת! */
-        }
-        .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--brand-green)); border-radius: 2px; }
-        .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
-        .page-title {
-            background: rgba(255, 255, 255, 0.6); padding: 8px 30px; border-radius: 30px;
-            border: 1px solid rgba(124, 168, 86, 0.3); font-size: clamp(18px, 2vw, 24px); 
-            font-weight: 900; white-space: nowrap; margin: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        /* === פוטר וטיקר (הקוד המלא והרץ) === */
+        /* פוטר וטיקר */
         .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
         .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
@@ -161,7 +128,7 @@
         @media (max-width: 1200px) {
             html, body { overflow: auto; height: auto; }
             .center-wrapper { padding: 120px 20px; height: auto; justify-content: flex-start; gap: 30px;}
-            .collapsible-live-panel, .vertical-action-bar { position: relative; margin: 0 auto 20px; width: 100%; max-width: 600px; left: auto; right: auto; top: auto; }
+            .collapsible-live-panel { position: relative; margin: 0 auto 20px; width: 100%; max-width: 600px; left: auto; top: auto; }
         }
 
         /* === ממשק פנטזי - V3 PREMIUM HIGH-TECH === */
@@ -190,7 +157,7 @@
         .fm-menu-item svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; transition: 0.3s; }
         .fm-menu-item.active svg { stroke: var(--brand-green); filter: drop-shadow(0 0 5px var(--brand-green-glow)); }
 
-        .fm-layout { display: flex; flex-direction: column; width: 100%; max-width: 1100px; flex: 1; height: 100%; gap: 20px; padding-bottom: 20px; }
+        .fm-layout { display: flex; flex-direction: column; width: 100%; max-width: 1100px; flex: 1; height: 100%; gap: 20px; padding-bottom: 20px; margin-top: 15px; /* מוריד את כל ה-Layout כדי ליצור סימטריה */ }
 
         /* סרגל עליון - תצוגה עילית (HUD) */
         .fm-top-bar {
@@ -225,12 +192,13 @@
         .fm-tab.active { display: flex; flex-direction: column; }
         @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* === מגרש טקטיקת פרימיום (Dark Tactical Board) === */
+        /* === מגרש טקטיקת פרימיום (Bright Tactical Board) === */
         .soccer-field {
-            background: linear-gradient(180deg, #0d2b17 0%, #06140b 100%);
+            /* התיקון: הבהרנו את גווני הירוק כדי שיהיה יותר חי ופחות חשוך */
+            background: linear-gradient(180deg, #164024 0%, #0c2414 100%);
             position: relative; border: 1px solid rgba(124,168,86,0.3); border-radius: 16px;
             min-height: 400px; display: flex; flex-direction: column; justify-content: space-around;
-            box-shadow: inset 0 0 50px rgba(0,0,0,0.8), 0 10px 25px rgba(0,0,0,0.2); overflow: hidden;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.6), 0 10px 25px rgba(0,0,0,0.2); overflow: hidden;
             padding: 15px 0;
         }
         
@@ -467,7 +435,7 @@
         }  
 
         // ==========================================
-        // === מנוע שאיבת נתוני לייב (קוד המלא) ===
+        // === מנוע שאיבת נתוני לייב ===
         // ==========================================
         const LEAGUE_NAMES_MAP = { 383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה", 88: "הולנדית ראשונה", 144: "בלגית ראשונה", 94: "פורטוגלית ראשונה", 203: "טורקית ראשונה", 2: "ליגת האלופות", 3: "הליגה האירופית", 848: "ליגת הקונפרנס", 13: "ליברטדורס", 11: "סודאמריקנה", 1: "מונדיאל" };
         const ORDERED_LEAGUES = [ 383, 384, 39, 140, 135, 78, 61, 40, 41, 42, 141, 136, 79, 62, 88, 144, 94, 203, 179, 119, 113, 106, 218, 107, 345, 332, 271, 286, 373, 283, 172, 197, 318, 333, 235, 362, 343, 71, 72, 128, 268, 239, 265, 253, 262, 307, 301, 98, 292, 169, 288, 233, 200, 188, 2, 3, 848, 5, 4, 13, 11, 9, 17, 6, 1 ];
@@ -526,7 +494,6 @@
                     else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
                     else matchStatus = 'לא התחיל';
 
-                    // קריטי לפתיחת החלון הצף!
                     const safeHomeName = encodeURIComponent(m.teams.home.name);
                     const safeAwayName = encodeURIComponent(m.teams.away.name);
 
@@ -562,9 +529,6 @@
         fetchLiveMatches();
         setInterval(fetchLiveMatches, 60000);
 
-        // ==========================================
-        // === שאיבת הטיקר מקובץ חיצוני ===
-        // ==========================================
         fetch('ticker.html')
             .then(res => res.text())
             .then(data => document.getElementById('ticker-placeholder').innerHTML = data)
