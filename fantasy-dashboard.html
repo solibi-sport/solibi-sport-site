@@ -655,7 +655,16 @@
         }, 10000);
 
         // מפעיל מיד כדי לראות את התוצאות
+        // מפעיל מיד כדי לראות את התוצאות ומגדיר את הפאנל להיות פתוח בהתחלה לטובת הטסט
         fetchLiveMatches();
+        document.addEventListener('DOMContentLoaded', () => {
+             const livePanel = document.getElementById('livePanel');
+             if(livePanel) {
+                 setTimeout(() => {
+                     livePanel.classList.add('expanded');
+                 }, 500); // פותח את הפאנל אחרי חצי שנייה
+             }
+        });
 
         fetch('ticker.html')
             .then(res => res.text())
