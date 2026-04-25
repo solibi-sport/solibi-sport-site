@@ -494,7 +494,7 @@
 
     <div id="ticker-placeholder"></div>
 
-    <script>
+   <script>
         // ניהול פתיחת פאנל לייב
         document.addEventListener('DOMContentLoaded', () => {
             const liveHeader = document.getElementById('live-panel-header');
@@ -534,39 +534,70 @@
         }  
 
         // ==========================================
-        // === מנוע שאיבת נתוני לייב (קוד הטסט) ===
+        // === מנוע שאיבת נתוני לייב (קוד עובד) ===
         // ==========================================
         
+        if (!document.getElementById('goal-animations-style')) {
+            const style = document.createElement('style');
+            style.id = 'goal-animations-style';
+            style.innerHTML = `
+                @keyframes goalAlertPulse { 0% { transform: scale(0.95); background: rgba(122, 153, 102, 0.85); box-shadow: 0 0 5px rgba(122,153,102,0.5); } 100% { transform: scale(1.05); background: rgba(122, 153, 102, 1); box-shadow: 0 0 15px rgba(122,153,102,1); } }
+            `;
+            document.head.appendChild(style);
+        }
+
+        window.translateName = function(name) {
+            if (!name) return name;
+            if (typeof myDictionary !== 'undefined' && myDictionary[name]) { return myDictionary[name]; }
+            return name;
+        };
+
+        const LEAGUE_NAMES_MAP = {
+            383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה",
+            88: "הולנדית ראשונה", 144: "בלגית ראשונה", 94: "פורטוגלית ראשונה", 203: "טורקית ראשונה",
+            2: "ליגת האלופות", 3: "הליגה האירופית", 848: "ליגת הקונפרנס", 13: "ליברטדורס", 11: "סודאמריקנה", 1: "מונדיאל"
+        };
+        const ORDERED_LEAGUES = [
+            383, 384, 39, 140, 135, 78, 61,
+            40, 41, 42, 141, 136, 79, 62, 88, 144, 94, 203, 179, 119, 113, 106, 218, 107, 345, 332, 271, 286, 373,
+            283, 172, 197, 318, 333, 235, 362, 343, 71, 72, 128, 268, 239, 265, 253, 262, 307, 301, 98, 292, 169, 288, 233, 200, 188,
+            2, 3, 848, 5, 4, 13, 11, 9, 17, 6, 1
+        ];
+        
+        window.matchGoalTracker = window.matchGoalTracker || {};
+        window.allLiveMatches = []; 
+        window.currentLivePage = 0; 
+        window.livePageInterval = null;
+
         async function fetchLiveMatches() {
             try {
-                // קריאה ישירה ל-API (ודא שהנתיב /api/football-proxy קיים ומוגדר נכון בשרת שלך)
-                const response = await fetch('/api/football-proxy?endpoint=fixtures&live=all');
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
+                const response = await fetch(`/api/football-proxy?endpoint=fixtures&live=all`);
                 const data = await response.json();
-                
-                if (data && data.response) {
-                    window.allLiveMatches = data.response.sort((a, b) => {
-                        let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
-                        let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
-                        return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
-                    });
-                    renderLivePage(); 
-                } else {
-                    document.getElementById('live-content').innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים ⚽</div>';
+                window.allLiveMatches = data.response || [];
+
+                window.allLiveMatches.sort((a, b) => {
+                    let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
+                    let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
+                    if (idxA === -1) idxA = 999;
+                    if (idxB === -1) idxB = 999;
+                    return idxA - idxB;
+                });
+
+                window.currentLivePage = 0;
+                renderLivePage();
+
+                if (!window.livePageInterval) {
+                    window.livePageInterval = setInterval(() => {
+                        if (window.allLiveMatches && window.allLiveMatches.length > 6) {
+                            window.currentLivePage++;
+                            if (window.currentLivePage * 6 >= window.allLiveMatches.length) {
+                                window.currentLivePage = 0;
+                            }
+                            renderLivePage();
+                        }
+                    }, 10000);
                 }
-            } catch (e) { 
-                console.error("שגיאה בשאיבת תוצאות הלייב:", e);
-                document.getElementById('live-content').innerHTML = '<div style="text-align:center; padding: 20px 10px; font-weight: bold; color: #b71c1c;">שגיאה בטעינת הנתונים. נסה לרענן.</div>';
-            }
-        }
-        
-        function getTranslatedName(englishName) {
-            if (typeof window.translateTeamName === 'function') return window.translateTeamName(englishName);
-            return teamTranslations[englishName] || englishName;
+            } catch (error) { console.error("שגיאה במשיכת נתונים בלייב:", error); }
         }
 
         function renderLivePage() {
@@ -581,7 +612,8 @@
 
             const grouped = {};
             pageMatches.forEach(m => {
-                let leagueName = leagueTranslations[m.league.name] || m.league.name;
+                let leagueName = LEAGUE_NAMES_MAP[m.league.id];
+                if (!leagueName) leagueName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
                 if(!grouped[leagueName]) grouped[leagueName] = { logo: m.league.logo, matches: [] };
                 grouped[leagueName].matches.push(m);
             });
@@ -598,28 +630,42 @@
                 let matchesHtml = '';
                 
                 leagueData.matches.forEach(m => {
+                    const homeTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
+                    const awayTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
+                    const fixId = m.fixture.id;
                     const currentHome = m.goals.home !== null ? m.goals.home : 0;
                     const currentAway = m.goals.away !== null ? m.goals.away : 0;
+                    
+                    if (window.matchGoalTracker[fixId]) {
+                        const prev = window.matchGoalTracker[fixId];
+                        if (currentHome > prev.home || currentAway > prev.away) window.matchGoalTracker[fixId].goalTime = Date.now();
+                        window.matchGoalTracker[fixId].home = currentHome;
+                        window.matchGoalTracker[fixId].away = currentAway;
+                    } else {
+                        window.matchGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
+                    }
+
                     let matchStatus = '';
                     const shortStatus = m.fixture.status.short;
                     if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
                     else if (shortStatus === 'HT') matchStatus = 'מחצית';
                     else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
                     else matchStatus = 'לא התחיל';
+                    
+                    const isGoalRecent = (Date.now() - window.matchGoalTracker[fixId].goalTime) < 15000;
+                    const goalOverlay = isGoalRecent ? `<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #7a9966; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; border-radius: 6px; z-index: 10; animation: goalAlertPulse 0.6s infinite alternate;">שער!</div>` : '';
 
-                    const hebHomeName = getTranslatedName(m.teams.home.name);
-                    const hebAwayName = getTranslatedName(m.teams.away.name);
-
-                    const safeHomeName = encodeURIComponent(hebHomeName);
-                    const safeAwayName = encodeURIComponent(hebAwayName);
+                    const safeHomeName = encodeURIComponent(homeTeam);
+                    const safeAwayName = encodeURIComponent(awayTeam);
 
                     matchesHtml += `
                         <a href="#" onclick="if(typeof openMatchEvents==='function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" class="live-match-card-light">
                             <div class="match-teams-col">
-                                <div class="team-line"><img src="${m.teams.home.logo}"> <span>${hebHomeName}</span></div>
-                                <div class="team-line"><img src="${m.teams.away.logo}"> <span>${hebAwayName}</span></div>
+                                <div class="team-line"><img src="${m.teams.home.logo}"> <span>${homeTeam}</span></div>
+                                <div class="team-line"><img src="${m.teams.away.logo}"> <span>${awayTeam}</span></div>
                             </div>
                             <div class="match-score-col">
+                                ${goalOverlay}
                                 <span class="minute">${matchStatus}</span>
                                 <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
                                     <span class="score-num">${currentHome}</span>
@@ -635,24 +681,27 @@
             contentDiv.innerHTML = allHtml;
         }
 
-        setInterval(() => {
-            if (window.allLiveMatches.length > 6) {
-                window.currentLivePage = (window.currentLivePage + 1) % Math.ceil(window.allLiveMatches.length / 6);
-                renderLivePage();
-            }
-        }, 10000);
-
-        fetch('ticker.html')
-            .then(res => res.text())
-            .then(data => document.getElementById('ticker-placeholder').innerHTML = data)
-            .catch(err => console.error('שגיאה בשאיבת הטיקר:', err));
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchLiveMatches();
+            setInterval(fetchLiveMatches, 60000); 
+        });
+        
     </script>
+    <script>
+        // פונקציה שטוענת את הטיקר מקובץ חיצוני
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('ticker-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
+    </script>
+
     <script src="translations.js"></script>
     <script src="matchEvents.js"></script>
-<script type="module">
+    <script type="module">
         import { supabase } from './api/supabaseClient.js';
         console.log("לובי הפנטזי נטען עם תבנית סוליבי בהצלחה!");
     </script>
-    
 </body>
-</html>
+</html> 
