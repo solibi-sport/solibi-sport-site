@@ -163,6 +163,88 @@
             .center-wrapper { padding: 120px 20px; height: auto; justify-content: flex-start; gap: 30px;}
             .collapsible-live-panel, .vertical-action-bar { position: relative; margin: 0 auto 20px; width: 100%; max-width: 600px; left: auto; right: auto; top: auto; }
         }
+/* === סגנונות לובי הפנטזי (מותאם אישית לסוליבי ספורט) === */
+        .fantasy-dashboard {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .fantasy-welcome {
+            background: var(--element-navy-gradient);
+            border: 2px solid var(--brand-green);
+            border-radius: 16px;
+            padding: 24px 30px;
+            color: #fff;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .fantasy-stats {
+            display: flex;
+            gap: 15px;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .fantasy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+        .fantasy-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        .fantasy-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--brand-green);
+            box-shadow: 0 15px 30px rgba(124, 168, 86, 0.2);
+            background: #fff;
+        }
+        .fantasy-card-icon {
+            font-size: 45px;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+        .fantasy-card h3 {
+            font-size: 20px;
+            font-weight: 900;
+            margin: 0;
+            color: var(--text-dark);
+        }
+        .fantasy-card p {
+            font-size: 14px;
+            color: #555;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
     </style>
 </head>
 <body>
@@ -220,23 +302,77 @@
             </div>
         </aside>
 
-        <div class="center-wrapper">
+    <div class="center-wrapper">
             
             <div class="premium-title-wrapper">
                 <div class="title-line"></div>
                 <h1 class="page-title">
-                    <span style="color: var(--text-dark);">שם</span>
-                    <span style="color: var(--brand-green);">הדף</span>
-                    <span style="color: var(--text-dark);">שלך</span>
+                    <span style="color: var(--text-dark);">לובי</span>
+                    <span style="color: var(--brand-green);">פנטזי</span>
                 </h1>
                 <div class="title-line left"></div>
             </div>
 
-            <div style="width: 100%; text-align: center; color: var(--text-dark); font-weight: 500; font-size: 20px;">
-                [הכנס את הגריד או התוכן כאן]
-            </div>
+            <div class="fantasy-dashboard">
+                
+                <div class="fantasy-welcome">
+                    <div>
+                        <h2 style="font-size: 26px; font-weight: 900; margin-bottom: 5px;">ברוך שובך, מנג'ר! 👋</h2>
+                        <p style="font-size: 15px; opacity: 0.8; font-weight: 500;">חלון ההעברות פתוח. שים לב לדד-ליין לקביעת ההרכב.</p>
+                    </div>
+                    <div class="fantasy-stats">
+                        <div class="stat-box">
+                            <div style="font-size: 13px; opacity: 0.8; font-weight: bold;">תקציב רכש</div>
+                            <div style="font-size: 22px; font-weight: 900; color: var(--brand-green);">₪100,000,000</div>
+                        </div>
+                        <div class="stat-box">
+                            <div style="font-size: 13px; opacity: 0.8; font-weight: bold;">דירוג כללי</div>
+                            <div style="font-size: 22px; font-weight: 900;">---</div>
+                        </div>
+                    </div>
+                </div>
 
-        </div>
+                <div class="fantasy-grid">
+                    
+                    <a href="fantasy-squad.html" class="fantasy-card">
+                        <div class="fantasy-card-icon">👕</div>
+                        <h3>הקבוצה שלי</h3>
+                        <p>נהל את ההרכב השבועי, בצע חילופים וקבע קפטן לקראת המחזור הקרוב.</p>
+                    </a>
+                    
+                    <a href="#" class="fantasy-card">
+                        <div class="fantasy-card-icon">📈</div>
+                        <h3>בורסת השחקנים</h3>
+                        <p>דירוג עולמי של 2,000 שחקנים. קנה נמוך, מכור גבוה, ועקוב אחרי עליות ערך.</p>
+                    </a>
+
+                    <a href="#" class="fantasy-card">
+                        <div class="fantasy-card-icon">⚡</div>
+                        <h3>חדר דראפט</h3>
+                        <p>היכנס למכרזים חיים מול מנג'רים אחרים בליגה שלך על שחקנים שפנויים בשוק.</p>
+                    </a>
+
+                    <a href="#" class="fantasy-card">
+                        <div class="fantasy-card-icon">🏆</div>
+                        <h3>אולם הקהילה</h3>
+                        <p>נהל ליגות חברים פרטיות (מיני-ליגות) או הצטרף לליגות ציבוריות מול כולם.</p>
+                    </a>
+
+                    <a href="#" class="fantasy-card">
+                        <div class="fantasy-card-icon">🏪</div>
+                        <h3>חנות בונוסים</h3>
+                        <p>קנה כרטיסי שדרוג, תעודות ביטוח פציעות, או סובב את גלגל המזל היומי.</p>
+                    </a>
+
+                    <a href="#" class="fantasy-card">
+                        <div class="fantasy-card-icon">⚔️</div>
+                        <h3>מרכז משחקים</h3>
+                        <p>עקוב אחר משחקי הליגות, מצ'אפים ותוצאות H2H בקרבות הפנטזי בזמן אמת.</p>
+                    </a>
+
+                </div>
+            </div>
+        </div>    
     </main>
 
     <div id="ticker-placeholder"></div>
@@ -365,5 +501,10 @@
     </script>
     <script src="translations.js"></script>
     <script src="matchEvents.js"></script>
+<script type="module">
+        import { supabase } from './api/supabaseClient.js';
+        console.log("לובי הפנטזי נטען עם תבנית סוליבי בהצלחה!");
+    </script>
+    
 </body>
 </html>
