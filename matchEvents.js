@@ -122,7 +122,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 .home-val { color: #7a9966; }
                 .away-val { color: #4a90e2; }
                 .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
-                .events-wrapper { padding: 10px 15px; display: flex; gap: 15px; align-items: stretch; }
+                /* תיקון הגלילה: הגדרנו שרק events-wrapper יגלל */
+                .events-wrapper { padding: 10px 15px; display: flex; gap: 15px; align-items: stretch; overflow-y: auto; flex: 1; min-height: 0; }
                 .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
                 .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
                 .event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
@@ -328,9 +329,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         let numLines = linesCounts.length;
                         let r = lineIdx + 1; // קו השחקנים. קו 1 תמיד יהיה השוער.
 
-                        // מיקומים על בסיס משחק אמיתי:
-                        // קבוצת הבית (ימין): שוער ב-90 (ימין), התקפה ב-15 (שמאל)
-                        // קבוצת חוץ (שמאל): שוער ב-10 (שמאל), התקפה ב-85 (ימין)
                         let xPercent;
                         
                         if (isHome) {
@@ -371,7 +369,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                                 yPercent = 10 + (i / (numPlayersInLine - 1)) * 80; 
                             }
 
-                            // תמונת מראה לקבוצת החוץ כדי ששחקני האגף יעמדו בדיוק במקביל
                             if (!isHome) {
                                 yPercent = 100 - yPercent;
                             }
@@ -384,7 +381,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             let shortName = getShortPlayerName(p.player.name);
                             let teamIdForEvent = isHome ? homeId : awayId;
                             
-                            let subEvents = events.filter(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && e.player.name === p.player.name);
+                            // שימוש בזיהוי מבוסס ID של השחקן כדי לא לפספס אף חילוף
+                            let subEvents = events.filter(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && (String(e.player.id) === String(p.player.id) || e.player.name === p.player.name));
                             
                             let subTextHtml = '';
                             subEvents.forEach(subEvent => {
@@ -407,7 +405,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 };
 
                 const renderBenchPlayer = (p, evts, tId) => {
-                    let subEvt = evts.find(e => e.type.toLowerCase() === 'subst' && e.team.id === tId && e.assist.name === p.player.name);
+                    let subEvt = evts.find(e => e.type.toLowerCase() === 'subst' && e.team.id === tId && (String(e.assist.id) === String(p.player.id) || e.assist.name === p.player.name));
                     let statusHtml = '';
                     if (subEvt) {
                         statusHtml = `<span class="bench-sub-badge">▲ נכנס (${subEvt.time.elapsed}')</span>`;
@@ -482,8 +480,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     <div class="possession-away" style="width: ${awayPoss}"></div>
                 </div>
                 <div class="extra-stats">
-                    <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Shots on Goal")}</span><span class="stat-name">בעיטות למסגרת</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Shots on Goal")}</span></div>
                     <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Total Shots")}</span><span class="stat-name">סה"כ בעיטות</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Total Shots")}</span></div>
+                    <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Shots on Goal")}</span><span class="stat-name">בעיטות למסגרת</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Shots on Goal")}</span></div>
                     <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Corner Kicks")}</span><span class="stat-name">קרנות</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Corner Kicks")}</span></div>
                     <div class="stat-row"><span class="stat-val home-val">${getStatValue(homeStatsArray, "Fouls")}</span><span class="stat-name">עבירות</span><span class="stat-val away-val">${getStatValue(awayStatsArray, "Fouls")}</span></div>
                 </div>
@@ -626,7 +624,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 </div>`;
             }
 
-            /* ------ ראש בראש (מסינון המשחק הנוכחי) ------ */
+            /* ------ ראש בראש ------ */
             let h2hHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין היסטוריית מפגשים קודמת</div>';
             if (h2hData.response && h2hData.response.length > 0) {
                 let filteredH2H = h2hData.response.filter(m => String(m.fixture.id) !== String(fixtureId)).slice(0, 5);
@@ -657,7 +655,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             dynamicArea.innerHTML = `
                 ${scoreHTML}
                 ${tabsHTML}
-                <div id="tab-stats" class="tab-content active">${statsHTML}${eventsHtml}</div>
+                <div id="tab-stats" class="tab-content active" style="overflow: hidden;">${statsHTML}${eventsHtml}</div>
                 <div id="tab-lineups" class="tab-content">${lineupsHtml}</div>
                 <div id="tab-standings" class="tab-content">${stdHtml}</div>
                 <div id="tab-h2h" class="tab-content">${h2hHtml}</div>
