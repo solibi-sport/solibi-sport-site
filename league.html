@@ -1072,12 +1072,14 @@ function updateLiveStandings() {
 
             try {
                 const nextYear = parseInt(SEASON) + 1;
+                // נסה למצוא את הדף של העונה הספציפית
                 let pageTitle = encodeURIComponent(`עונת_${SEASON}/${nextYear}_בליגה_הלאומית`);
                 let wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
 
                 let res = await fetch(wikiUrl);
                 let data = await res.json();
 
+                // אם אין דף לעונה הספציפית, חפש בדף הכללי של הליגה הלאומית
                 if (data.error) {
                     pageTitle = encodeURIComponent("ליגה_לאומית_(כדורגל)");
                     wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
@@ -1093,13 +1095,16 @@ function updateLiveStandings() {
                 const tables = doc.querySelectorAll('table.wikitable');
                 window.wikiTablesData = []; 
                 
+                // זיהוי גמיש יותר של טבלאות
                 tables.forEach(t => {
-                    if (t.innerText.includes("קבוצה") && t.innerText.includes("נקודות") && (t.innerText.includes("ניצחונות") || t.innerText.includes("שערי זכות"))) {
+                    const text = t.innerText;
+                    // מחפש טבלה שכוללת מילות מפתח קלאסיות של טבלת כדורגל
+                    if (text.includes("קבוצה") && text.includes("נקודות") && (text.includes("ניצחונות") || text.includes("נצ'") || text.includes("שערי זכות"))) {
                         window.wikiTablesData.push(t);
                     }
                 });
 
-                if (window.wikiTablesData.length === 0) throw new Error("לא נמצאה טבלה");
+                if (window.wikiTablesData.length === 0) throw new Error("לא נמצאה טבלה תואמת");
 
                 let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="wiki-group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">`;
                 const tableNames = ["עונה סדירה", "פלייאוף עליון", "פלייאוף תחתון"];
@@ -1117,30 +1122,40 @@ function updateLiveStandings() {
                     const renderArea = document.getElementById('wiki-render-area');
                     const headerRow = standingsTable.querySelectorAll('tr')[0].querySelectorAll('th, td');
                     let colMap = {};
+                    
+                    // מיפוי חכם של עמודות לפי שם
                     headerRow.forEach((h, idx) => {
                         const text = h.innerText.trim();
-                        if (text.includes('מיקום')) colMap.rank = idx;
-                        if (text.includes('קבוצה')) colMap.team = idx;
-                        if (text.includes('משחקים') || text === 'מש') colMap.played = idx;
-                        if (text.includes('ניצחונות') || text === 'נצ') colMap.win = idx;
+                        if (text.includes('מיקום') || text === 'מקום' || text === '#') colMap.rank = idx;
+                        if (text.includes('קבוצה') || text.includes('שם')) colMap.team = idx;
+                        if (text.includes('משחקים') || text.includes('משחק') || text === 'מש') colMap.played = idx;
+                        if (text.includes('ניצחונות') || text.includes('נצחון') || text === 'נצ') colMap.win = idx;
                         if (text.includes('תיקו')) colMap.draw = idx;
-                        if (text.includes('הפסדים') || text === 'הפ') colMap.lose = idx;
-                        if (text.includes('זכות') || text === 'שז') colMap.goalsFor = idx;
-                        if (text.includes('חובה') || text === 'שח') colMap.goalsAgainst = idx;
+                        if (text.includes('הפסדים') || text.includes('הפסד') || text === 'הפ') colMap.lose = idx;
+                        if (text.includes('זכות') || text.includes('שערי זכות') || text === 'שז') colMap.goalsFor = idx;
+                        if (text.includes('חובה') || text.includes('שערי חובה') || text === 'שח') colMap.goalsAgainst = idx;
                         if (text.includes('הפרש')) colMap.diff = idx;
-                        if (text.includes('נקודות') || text === 'נק') colMap.points = idx;
+                        if (text.includes('נקודות') || text.includes('נקודה') || text === 'נק') colMap.points = idx;
                     });
+
+                    // גיבוי למיפוי במקרה שהויקיפדיה ממש שבורה
+                    if (Object.keys(colMap).length < 5) {
+                         colMap = { rank:0, team:1, played:2, win:3, draw:4, lose:5, goalsFor:6, goalsAgainst:7, diff:8, points:9 };
+                    }
 
                     const rows = standingsTable.querySelectorAll('tr');
                     let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
 
                     rows.forEach((row, rowIdx) => {
-                        if (rowIdx === 0) return;
+                        // דילוג על שורת הכותרת (או שורות מיותרות בויקיפדיה שמכילות th בלבד)
+                        if (rowIdx === 0 || row.querySelectorAll('td').length === 0) return;
+                        
                         const cols = row.querySelectorAll('td, th');
-                        if (cols.length >= 8) {
-                            const rank = cols[colMap.rank || 0] ? cleanWikiText(cols[colMap.rank || 0].innerText) : '-';
-                            const points = cols[colMap.points || 9] ? cleanWikiText(cols[colMap.points || 9].innerText) : '-';
-                            const teamCell = cols[colMap.team || 1];
+                        // מוודא שיש מספיק עמודות בשורה הזו כדי למנוע קריסה
+                        if (cols.length >= 7) {
+                            const rank = cols[colMap.rank] ? cleanWikiText(cols[colMap.rank].innerText) : '-';
+                            const points = cols[colMap.points] ? cleanWikiText(cols[colMap.points].innerText) : '-';
+                            const teamCell = cols[colMap.team];
                             let teamName = '-', teamLogo = 'https://media.api-sports.io/football/leagues/384.png'; 
                             
                             if (teamCell) {
@@ -1151,17 +1166,18 @@ function updateLiveStandings() {
                                 }
                             }
                             
-                            if(points !== '-' && teamName !== '-' && teamName !== '') {
+                            // בודק שהנקודות הן אכן מספר ושהשם קיים
+                            if(points !== '-' && points !== '' && teamName !== '-' && teamName !== '') {
                                 html += `<tr>
                                     <td>-</td><td style="color: #94a3b8; font-weight: bold;">${rank}</td>
                                     <td><div class="team-identity" style="display: flex; align-items: center; gap: 8px;"><img src="${teamLogo}" alt="logo" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='https://media.api-sports.io/football/leagues/384.png'"><span class="team-name-text">${teamName}</span></div></td>
-                                    <td>${cols[colMap.played || 2] ? cleanWikiText(cols[colMap.played || 2].innerText) : '-'}</td>
-                                    <td>${cols[colMap.win || 3] ? cleanWikiText(cols[colMap.win || 3].innerText) : '-'}</td>
-                                    <td>${cols[colMap.draw || 4] ? cleanWikiText(cols[colMap.draw || 4].innerText) : '-'}</td>
-                                    <td>${cols[colMap.lose || 5] ? cleanWikiText(cols[colMap.lose || 5].innerText) : '-'}</td>
-                                    <td>${cols[colMap.goalsFor || 6] ? cleanWikiText(cols[colMap.goalsFor || 6].innerText) : '-'}</td>
-                                    <td>${cols[colMap.goalsAgainst || 7] ? cleanWikiText(cols[colMap.goalsAgainst || 7].innerText) : '-'}</td>
-                                    <td dir="ltr" style="text-align:center;">${cols[colMap.diff || 8] ? cleanWikiText(cols[colMap.diff || 8].innerText) : '-'}</td>
+                                    <td>${cols[colMap.played] ? cleanWikiText(cols[colMap.played].innerText) : '-'}</td>
+                                    <td>${cols[colMap.win] ? cleanWikiText(cols[colMap.win].innerText) : '-'}</td>
+                                    <td>${cols[colMap.draw] ? cleanWikiText(cols[colMap.draw].innerText) : '-'}</td>
+                                    <td>${cols[colMap.lose] ? cleanWikiText(cols[colMap.lose].innerText) : '-'}</td>
+                                    <td>${cols[colMap.goalsFor] ? cleanWikiText(cols[colMap.goalsFor].innerText) : '-'}</td>
+                                    <td>${cols[colMap.goalsAgainst] ? cleanWikiText(cols[colMap.goalsAgainst].innerText) : '-'}</td>
+                                    <td dir="ltr" style="text-align:center;">${cols[colMap.diff] ? cleanWikiText(cols[colMap.diff].innerText) : '-'}</td>
                                     <td><strong style="color: var(--brand-green);">${points}</strong></td>
                                 </tr>`;
                             }
@@ -1180,7 +1196,7 @@ function updateLiveStandings() {
                 container.innerHTML = '<div style="text-align:center; padding: 30px;">נתוני הליגה הלאומית אינם זמינים כרגע</div>';
             }
         }
-
+          
         getStandings();
         loadPlayerStats('topscorers');
         getFixtures();
