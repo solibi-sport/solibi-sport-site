@@ -55,7 +55,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
     try { homeTeam = decodeURIComponent(paramHome); } catch(e) {}
     try { awayTeam = decodeURIComponent(paramAway); } catch(e) {}
 
-    // בניית המודל כולל ה-CSS בתוכו, כדי למנוע קריסה של עיצוב
     if (!document.getElementById('eventsModalWrapper')) {
         const modalHTML = `
         <div id="eventsModalWrapper">
@@ -109,9 +108,10 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 .modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #1f2d40; }
                 .modal-mini-table td { padding: 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); }
                 .modal-mini-table tr.highlight { background: rgba(122,153,102,0.15); font-weight: bold; }
-                .modal-mini-table td .team-name-text { display: flex; align-items: center; vertical-align: middle; justify-content: flex-end; }
-                .modal-mini-table td .team-logo { width: 14px; height: 14px; margin-left: 5px; }
-                .modal-mini-table td .live-dot { color: #ef4444; font-size: 9px; animation: blink 1.5s infinite; margin-right: 6px; vertical-align: middle; }
+                /* תיקון היישור של הקבוצות בטבלה - סימטרי וצמוד ימינה */
+                .modal-mini-table td .team-name-text { display: flex; align-items: center; justify-content: flex-start; gap: 6px; direction: rtl; }
+                .modal-mini-table td .team-logo { width: 14px; height: 14px; }
+                .modal-mini-table td .live-dot { color: #ef4444; font-size: 9px; animation: blink 1.5s infinite; margin-right: 2px; vertical-align: middle; }
                 .stats-container { padding: 10px 15px; flex-shrink: 0; background: #0f1620; border-bottom: 1px solid #1f2d40; }
                 .possession-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: #fff; }
                 .possession-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: #1f2d40; margin-bottom: 10px;}
@@ -230,6 +230,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         }
 
         try {
+            // עבור H2H אנחנו מבקשים 6 משחקים, למקרה שהמשחק הנוכחי כלול ונסנן אותו.
             const [eventsRes, statsRes, fixtureRes, lineupsRes] = await Promise.all([
                 fetch(`/api/football-proxy?endpoint=fixtures/events&fixture=${fixtureId}`),
                 fetch(`/api/football-proxy?endpoint=fixtures/statistics&fixture=${fixtureId}`),
@@ -265,7 +266,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             }
 
             const [h2hRes, standingsRes] = await Promise.all([
-                fetch(`/api/football-proxy?endpoint=fixtures/headtohead&h2h=${homeId}-${awayId}&last=5`),
+                fetch(`/api/football-proxy?endpoint=fixtures/headtohead&h2h=${homeId}-${awayId}&last=6`),
                 fetch(`/api/football-standings?league=${leagueId}&season=${season}`)
             ]);
             const h2hData = await h2hRes.json();
@@ -327,7 +328,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     let numLines = linesCounts.length;
 
                     linesCounts.forEach((numPlayersInLine, lineIdx) => {
-                        let numLines = linesCounts.length;
                         let r = lineIdx + 1;
                         let xHome;
 
@@ -347,7 +347,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             xHome = 93 - (r * 12); 
                         } 
 
-                        let xPercent = isHome ? (100 - xHome) : xHome;
+                        // תיקון ציר X: קבוצת הבית (ימין) מקבלת xHome (לדוגמה 93% לשוער). קבוצת חוץ מקבלת ההיפך (7% לשוער).
+                        let xPercent = isHome ? xHome : (100 - xHome);
 
                         for (let i = 0; i < numPlayersInLine; i++) {
                             if (playerIndex >= players.length) break;
@@ -364,9 +365,14 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             } else if (numPlayersInLine === 4) {
                                 yPercent = i === 0 ? 15 : (i === 1 ? 38 : (i === 2 ? 62 : 85)); 
                             } else if (numPlayersInLine === 5) {
-                                yPercent = i === 0 ? 10 : (i === 1 ? 30 : (i === 2 ? 50 : (i === 3 ? 70 : 90))); // תוקן פה הסוגר החסר!
+                                yPercent = i === 0 ? 10 : (i === 1 ? 30 : (i === 2 ? 50 : (i === 3 ? 70 : 90)));
                             } else {
                                 yPercent = 10 + (i / (numPlayersInLine - 1)) * 80; 
+                            }
+
+                            // תיקון ציר Y: מהפך את צדדי השחקנים (ימין/שמאל) אך ורק לקבוצת החוץ, כדי שיעמדו במראה מול קבוצת הבית!
+                            if (!isHome) {
+                                yPercent = 100 - yPercent;
                             }
 
                             let bgColor = isHome ? (teamLineup.team.colors?.player?.primary || 'ffffff') : (teamLineup.team.colors?.player?.primary || '000000');
@@ -578,7 +584,18 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 stdHtml = `
                 <div style="padding: 10px 15px;">
                     <table class="modal-mini-table">
-                        <tr><th>#</th><th style="text-align:right;">קבוצה</th><th>מש'</th><th>נצ'</th><th>תיקו</th><th>הפ'</th><th>ש.ז</th><th>ש.ח</th><th>הפרש</th><th>נק'</th></tr>
+                        <tr>
+                            <th>#</th>
+                            <th style="text-align:right; padding-right:5px;">קבוצה</th>
+                            <th>מש'</th>
+                            <th>נצ'</th>
+                            <th>תיקו</th>
+                            <th>הפ'</th>
+                            <th>ש.ז</th>
+                            <th>ש.ח</th>
+                            <th>הפרש</th>
+                            <th>נק'</th>
+                        </tr>
                         ${targetGroupLive.map(t => {
                             let isPlaying = t.team.id === homeId || t.team.id === awayId;
                             let rowClass = isPlaying ? 'highlight' : '';
@@ -586,7 +603,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             let liveDot = t.isLiveUpdated ? '<span class="live-dot">⬤</span>' : '';
                             return `<tr class="${rowClass}">
                                 <td>${t.rank}</td>
-                                <td style="text-align:right;">
+                                <td style="text-align:right; padding-right:5px;">
                                     <div class="team-name-text">
                                         <img src="${t.team.logo}" class="team-logo">
                                         <span>${name}${liveDot}</span>
@@ -606,28 +623,33 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 </div>`;
             }
 
-            /* ------ ראש בראש ------ */
+            /* ------ ראש בראש (מסינון המשחק הנוכחי) ------ */
             let h2hHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין היסטוריית מפגשים קודמת</div>';
             if (h2hData.response && h2hData.response.length > 0) {
-                h2hHtml = `<div style="padding: 10px 15px; display:flex; flex-direction:column; gap:6px;">` +
-                h2hData.response.slice(0,5).map(m => {
-                    let hName = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
-                    let aName = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
-                    let lName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
-                    
-                    return `
-                    <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; display:flex; align-items: center; font-size: 11px; border: 1px solid #1f2d40; margin-bottom: 5px;">
-                        <div style="width: 30%; color:#8fa0b3; text-align:right; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
-                            <div style="font-weight:bold;">${new Date(m.fixture.date).toLocaleDateString('he-IL')}</div>
-                            <div style="font-size: 9px; margin-top:2px; color:#7a9966; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${lName}</div>
-                        </div>
-                        <div style="width: 70%; display:flex; justify-content:space-between; align-items:center; padding-right: 10px;">
-                            <span style="flex:1; text-align:left; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${hName}</span>
-                            <span dir="ltr" style="font-weight:900; background:#1e293b; padding:2px 8px; border-radius:4px; color:#ffffff; margin:0 10px; flex-shrink:0;">${m.goals.away} - ${m.goals.home}</span>
-                            <span style="flex:1; text-align:right; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${aName}</span>
-                        </div>
-                    </div>`;
-                }).join('') + `</div>`;
+                // מסננים את המשחק הנוכחי, ולוקחים רק את ה-5 שנותרו
+                let filteredH2H = h2hData.response.filter(m => String(m.fixture.id) !== String(fixtureId)).slice(0, 5);
+                
+                if (filteredH2H.length > 0) {
+                    h2hHtml = `<div style="padding: 10px 15px; display:flex; flex-direction:column; gap:6px;">` +
+                    filteredH2H.map(m => {
+                        let hName = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
+                        let aName = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
+                        let lName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
+                        
+                        return `
+                        <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; display:flex; align-items: center; font-size: 11px; border: 1px solid #1f2d40; margin-bottom: 5px;">
+                            <div style="width: 30%; color:#8fa0b3; text-align:right; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
+                                <div style="font-weight:bold;">${new Date(m.fixture.date).toLocaleDateString('he-IL')}</div>
+                                <div style="font-size: 9px; margin-top:2px; color:#7a9966; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${lName}</div>
+                            </div>
+                            <div style="width: 70%; display:flex; justify-content:space-between; align-items:center; padding-right: 10px;">
+                                <span style="flex:1; text-align:left; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${hName}</span>
+                                <span dir="ltr" style="font-weight:900; background:#1e293b; padding:2px 8px; border-radius:4px; color:#ffffff; margin:0 10px; flex-shrink:0;">${m.goals.away} - ${m.goals.home}</span>
+                                <span style="flex:1; text-align:right; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${aName}</span>
+                            </div>
+                        </div>`;
+                    }).join('') + `</div>`;
+                }
             }
 
             dynamicArea.innerHTML = `
