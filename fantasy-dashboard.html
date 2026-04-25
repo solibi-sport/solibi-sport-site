@@ -96,7 +96,6 @@
         .panel-content::-webkit-scrollbar { width: 4px; }
         .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
 
-        /* עיצוב כרטיסיות המשחקים בתוך הפאנל */
         .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid var(--brand-green); }
         .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
         .live-match-card-light { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl; margin: 0 10px 8px 10px; }
@@ -215,7 +214,7 @@
 
         /* === מגרש טקטיקת פרימיום === */
         .soccer-field {
-            background: linear-gradient(180deg, #1e5b34 0%, #113a20 100%); /* הבהרה לירוק חי יותר */
+            background: linear-gradient(180deg, #1e5b34 0%, #113a20 100%); 
             position: relative; border: 1px solid rgba(124,168,86,0.5); border-radius: 16px;
             min-height: 400px; display: flex; flex-direction: column; justify-content: space-around;
             box-shadow: inset 0 0 50px rgba(0,0,0,0.4), 0 10px 25px rgba(0,0,0,0.15); overflow: hidden;
@@ -224,7 +223,7 @@
         
         .field-lines { position: absolute; inset: 15px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; pointer-events: none; }
         .field-lines::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255,255,255,0.15); transform: translateY(-50%); }
-        .field-lines::after { content: ''; position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; transform: translate(-50%, -50%); }
+        .field-lines::after { content: ''; position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px rgba(124,168,86,0.3), inset 0 0 15px rgba(124,168,86,0.3); }
 
         .squad-layout { display: flex; gap: 20px; flex: 1; }
         .squad-layout > .soccer-field { flex: 2.5; }
@@ -235,7 +234,7 @@
             border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             backdrop-filter: blur(5px); transition: all 0.3s ease; cursor: pointer; position: relative; z-index: 10;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
         .player-slot:hover {
             border-color: var(--brand-green); transform: translateY(-5px);
@@ -251,7 +250,6 @@
             border-radius: 50%; border: 1px solid #000; z-index: 20; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        /* עיצוב 9 מחליפים בספסל */
         .bench-slot {
             background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.15);
             border-radius: 6px; padding: 8px; text-align: center; font-size: 11px; color: rgba(255,255,255,0.5);
@@ -330,19 +328,6 @@
                     </div>
                 </div>
 
-            <div class="fm-nav-group" onclick="toggleNavGroup(this)">
-                    <div class="fm-menu-item">
-                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        <span>ליגות ותחרויות</span>
-                        <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="fm-submenu">
-                        <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-leagues', this)">טבלת הליגה (H2H)</div>
-                        <div class="fm-sub-item" onclick="event.stopPropagation()">לוח משחקים</div>
-                        <div class="fm-sub-item" onclick="event.stopPropagation()">עולם הקהילה</div>
-                    </div>
-                </div>  
-
                 <div class="fm-nav-group" onclick="toggleNavGroup(this)">
                     <div class="fm-menu-item">
                         <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
@@ -353,6 +338,19 @@
                         <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-market', this)">בורסת שחקנים (המאגר)</div>
                         <div class="fm-sub-item" onclick="event.stopPropagation()">מכרזים יומיים (Waivers)</div>
                         <div class="fm-sub-item" onclick="event.stopPropagation()">שוק מנג'רים וטריידים</div>
+                    </div>
+                </div>
+
+                <div class="fm-nav-group" onclick="toggleNavGroup(this)">
+                    <div class="fm-menu-item">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span>ליגות ותחרויות</span>
+                        <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="fm-submenu">
+                        <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-leagues', this)">טבלת הליגה (H2H)</div>
+                        <div class="fm-sub-item" onclick="event.stopPropagation()">לוח משחקים</div>
+                        <div class="fm-sub-item" onclick="event.stopPropagation()">אולם הקהילה</div>
                     </div>
                 </div>
 
@@ -483,9 +481,206 @@
                         </div>
                     </div>
 
-                    <div id="tab-market" class="fm-tab"><h2 style="font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 20px;">בורסת השחקנים (Live)</h2><p style="color: #555;">כאן יופיעו 2,000 שחקנים למסחר עם גרף עליות וירידות ערך.</p></div>
+                    <div id="tab-market" class="fm-tab">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 20px;">
+                            <h2 style="font-size: 24px; color: var(--text-dark); font-weight: 900; margin: 0;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                בורסת השחקנים (Master Database)
+                            </h2>
+                            <div style="background: var(--element-navy-gradient); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--brand-green); color: #fff; font-size: 13px; font-weight: 700;">
+                                2,000 שחקנים רשומים
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                            <input type="text" placeholder="חפש שחקן, ID או קבוצה..." style="flex: 1; padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(17,40,69,0.2); font-family: inherit; outline: none; background: rgba(255,255,255,0.8);">
+                            <select style="padding: 10px; border-radius: 8px; border: 1px solid var(--brand-green); background: var(--element-navy-gradient); color: #fff; font-family: inherit; font-weight: bold; outline: none; cursor: pointer;">
+                                <option>כל העמדות</option>
+                                <option>שוערים</option>
+                                <option>הגנה</option>
+                                <option>קישור</option>
+                                <option>התקפה</option>
+                            </select>
+                            <select style="padding: 10px; border-radius: 8px; border: 1px solid var(--brand-green); background: var(--element-navy-gradient); color: #fff; font-family: inherit; font-weight: bold; outline: none; cursor: pointer;">
+                                <option>כל הליגות</option>
+                                <option>פרמייר ליג</option>
+                                <option>לה ליגה</option>
+                                <option>סרייה א'</option>
+                                <option>בונדסליגה</option>
+                                <option>ליג 1</option>
+                            </select>
+                        </div>
+
+                        <div style="flex: 1; overflow-y: auto; overflow-x: auto; background: var(--element-navy-gradient); border-radius: 12px; border: 1px solid var(--brand-green); box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
+                            <style>
+                                .market-table { width: 100%; border-collapse: collapse; color: #fff; font-size: 12px; min-width: 1200px; }
+                                .market-table th { background: rgba(0,0,0,0.4); padding: 12px 8px; text-align: center; font-weight: 900; color: #cbd5e1; position: sticky; top: 0; z-index: 5; border-bottom: 2px solid var(--brand-green); white-space: nowrap; }
+                                .market-table td { padding: 10px 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; white-space: nowrap;}
+                                .market-table tr:hover td { background: rgba(124,168,86,0.15); }
+                                
+                                .tier-badge { padding: 4px 8px; border-radius: 6px; font-weight: 900; font-size: 11px; display: inline-block; }
+                                .tier-star { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
+                                .tier-1 { background: #e2e8f0; color: #0f172a; }
+                                .tier-2 { background: #cbd5e1; color: #1e293b; }
+                                .tier-3 { background: #94a3b8; color: #334155; }
+                                .tier-4 { background: #64748b; color: #f8fafc; }
+                                .tier-5 { background: #475569; color: #f8fafc; }
+
+                                .manager-badge { background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3); padding: 3px 6px; border-radius: 4px; font-size: 10px; color: #cbd5e1; }
+                                .manager-badge.taken { border-color: var(--brand-green); color: var(--brand-green); background: rgba(124,168,86,0.1); }
+                                
+                                .stat-col { color: #94a3b8; font-weight: bold; }
+                                .value-col { font-weight: 900; color: #82ca5c; font-size: 13px; }
+                                .rank-col { font-weight: 900; color: #fff; font-size: 14px; background: rgba(0,0,0,0.2); }
+                            </style>
+                            
+                            <table class="market-table">
+                                <thead>
+                                    <tr>
+                                        <th title="דירוג בבורסה מ-1 עד 2000">#</th>
+                                        <th>מזהה ID</th>
+                                        <th style="text-align: right;">שחקן</th>
+                                        <th>גיל</th>
+                                        <th>עמדה</th>
+                                        <th style="text-align: right;">קבוצה (ליגה)</th>
+                                        <th title="הופעות העונה">הופ'</th>
+                                        <th title="דקות משחק">דק'</th>
+                                        <th title="שערים">⚽</th>
+                                        <th title="בישולים">👟</th>
+                                        <th title="תיקולים/חטיפות">🛡️</th>
+                                        <th title="נקודות פנטזי העונה">נק'</th>
+                                        <th>סטטוס בעלות</th>
+                                        <th>רמה (Tier)</th>
+                                        <th>שווי שוק (₪)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="rank-col">1</td>
+                                        <td style="color:#64748b;">1100</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 14px;">ארלינג הולאנד</td>
+                                        <td>23</td>
+                                        <td>חלוץ</td>
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
+                                            <img src="https://media.api-sports.io/football/teams/50.png" width="16" height="16"> מנצ'סטר סיטי
+                                        </td>
+                                        <td class="stat-col">30</td>
+                                        <td class="stat-col">2,650</td>
+                                        <td class="stat-col" style="color: #fff;">27</td>
+                                        <td class="stat-col">5</td>
+                                        <td class="stat-col">12</td>
+                                        <td style="font-weight: 900; color: #ffd700;">215</td>
+                                        <td><span class="manager-badge taken">אבירם כהן</span></td>
+                                        <td><span class="tier-badge tier-star">כוכב על 🌟</span></td>
+                                        <td class="value-col">50,000,000</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="rank-col">2</td>
+                                        <td style="color:#64748b;">934</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 14px;">קיליאן אמבפה</td>
+                                        <td>25</td>
+                                        <td>חלוץ</td>
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
+                                            <img src="https://media.api-sports.io/football/teams/541.png" width="16" height="16"> ריאל מדריד
+                                        </td>
+                                        <td class="stat-col">29</td>
+                                        <td class="stat-col">2,500</td>
+                                        <td class="stat-col" style="color: #fff;">24</td>
+                                        <td class="stat-col">7</td>
+                                        <td class="stat-col">15</td>
+                                        <td style="font-weight: 900; color: #ffd700;">208</td>
+                                        <td><span class="manager-badge">חופשי</span></td>
+                                        <td><span class="tier-badge tier-star">כוכב על 🌟</span></td>
+                                        <td class="value-col">49,480,000</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="rank-col">3</td>
+                                        <td style="color:#64748b;">738</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 14px;">מוחמד סלאח</td>
+                                        <td>31</td>
+                                        <td>קישור</td>
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
+                                            <img src="https://media.api-sports.io/football/teams/40.png" width="16" height="16"> ליברפול
+                                        </td>
+                                        <td class="stat-col">28</td>
+                                        <td class="stat-col">2,410</td>
+                                        <td class="stat-col" style="color: #fff;">18</td>
+                                        <td class="stat-col">9</td>
+                                        <td class="stat-col">22</td>
+                                        <td style="font-weight: 900; color: #ffd700;">195</td>
+                                        <td><span class="manager-badge taken">יניב לוי</span></td>
+                                        <td><span class="tier-badge tier-star">כוכב על 🌟</span></td>
+                                        <td class="value-col">48,960,000</td>
+                                    </tr>
+
+                                    <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
+                                        <td class="rank-col">31</td>
+                                        <td style="color:#64748b;">4311</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;">מרטין אודגור</td>
+                                        <td>25</td>
+                                        <td>קישור</td>
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
+                                            <img src="https://media.api-sports.io/football/teams/42.png" width="16" height="16"> ארסנל
+                                        </td>
+                                        <td class="stat-col">27</td>
+                                        <td class="stat-col">2,300</td>
+                                        <td class="stat-col" style="color: #fff;">7</td>
+                                        <td class="stat-col">8</td>
+                                        <td class="stat-col">31</td>
+                                        <td style="font-weight: bold; color: #fff;">142</td>
+                                        <td><span class="manager-badge taken">מכבי סוליבי</span></td>
+                                        <td><span class="tier-badge tier-1">רמה 1</span></td>
+                                        <td class="value-col">34,900,000</td>
+                                    </tr>
+
+                                    <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
+                                        <td class="rank-col">151</td>
+                                        <td style="color:#64748b;">8214</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;">אנטואן גריזמן</td>
+                                        <td>33</td>
+                                        <td>חלוץ</td>
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
+                                            <img src="https://media.api-sports.io/football/teams/530.png" width="16" height="16"> אתלטיקו מדריד
+                                        </td>
+                                        <td class="stat-col">24</td>
+                                        <td class="stat-col">1,950</td>
+                                        <td class="stat-col" style="color: #fff;">11</td>
+                                        <td class="stat-col">6</td>
+                                        <td class="stat-col">14</td>
+                                        <td style="font-weight: bold; color: #fff;">110</td>
+                                        <td><span class="manager-badge">חופשי</span></td>
+                                        <td><span class="tier-badge tier-2">רמה 2</span></td>
+                                        <td class="value-col">21,900,000</td>
+                                    </tr>
+
+                                     <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
+                                        <td class="rank-col">501</td>
+                                        <td style="color:#64748b;">1522</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;">דוגלאס לואיז</td>
+                                        <td>25</td>
+                                        <td>קישור</td>
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
+                                            <img src="https://media.api-sports.io/football/teams/497.png" width="16" height="16"> אסטון וילה
+                                        </td>
+                                        <td class="stat-col">28</td>
+                                        <td class="stat-col">2,100</td>
+                                        <td class="stat-col" style="color: #fff;">8</td>
+                                        <td class="stat-col">4</td>
+                                        <td class="stat-col">45</td>
+                                        <td style="font-weight: bold; color: #fff;">88</td>
+                                        <td><span class="manager-badge">חופשי</span></td>
+                                        <td><span class="tier-badge tier-3">רמה 3</span></td>
+                                        <td class="value-col">11,900,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <div id="tab-draft" class="fm-tab"><h2 style="font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 20px;">חדר דראפט</h2><p>ממתין לפתיחת חלון המכרזים...</p></div>
-                    <div id="tab-leagues" class="fm-tab"><h2 style="font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 20px;">עולם הקהילה</h2><p>הצטרף לליגה קיימת או פתח ליגת חברים.</p></div>
+                    <div id="tab-leagues" class="fm-tab"><h2 style="font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 20px;">אולם הקהילה</h2><p>הצטרף לליגה קיימת או פתח ליגת חברים.</p></div>
                     <div id="tab-store" class="fm-tab"><h2 style="font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 20px;">חנות וירטואלית</h2><p>קנה כרטיסי שדרוג או סובב את גלגל המזל.</p></div>
                 </div>
             </div>
@@ -494,7 +689,7 @@
 
     <div id="ticker-placeholder"></div>
 
-   <script>
+    <script>
         // ניהול פתיחת פאנל לייב
         document.addEventListener('DOMContentLoaded', () => {
             const liveHeader = document.getElementById('live-panel-header');
@@ -688,12 +883,9 @@
         
     </script>
     <script>
-        // פונקציה שטוענת את הטיקר מקובץ חיצוני
         fetch('ticker.html')
             .then(response => response.text())
-            .then(data => {
-                document.getElementById('ticker-placeholder').innerHTML = data;
-            })
+            .then(data => { document.getElementById('ticker-placeholder').innerHTML = data; })
             .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
     </script>
 
@@ -704,4 +896,4 @@
         console.log("לובי הפנטזי נטען עם תבנית סוליבי בהצלחה!");
     </script>
 </body>
-</html> 
+</html>
