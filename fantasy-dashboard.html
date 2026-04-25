@@ -539,42 +539,20 @@
         
         async function fetchLiveMatches() {
             try {
-                // במקום API, נכניס נתוני טסט (MOCK) ישירות למערך, כדי שיוצגו מיד
-                window.allLiveMatches = [
-                    {
-                        fixture: { id: 1, status: { short: '2H', elapsed: 75 } },
-                        league: { id: 39, name: "Premier League", logo: "https://media.api-sports.io/football/leagues/39.png" },
-                        teams: { 
-                            home: { name: "Arsenal", logo: "https://media.api-sports.io/football/teams/42.png" }, 
-                            away: { name: "Liverpool", logo: "https://media.api-sports.io/football/teams/40.png" } 
-                        },
-                        goals: { home: 2, away: 1 }
-                    },
-                     {
-                        fixture: { id: 2, status: { short: 'HT', elapsed: 45 } },
-                        league: { id: 140, name: "La Liga", logo: "https://media.api-sports.io/football/leagues/140.png" },
-                        teams: { 
-                            home: { name: "Real Madrid", logo: "https://media.api-sports.io/football/teams/541.png" }, 
-                            away: { name: "Barcelona", logo: "https://media.api-sports.io/football/teams/529.png" } 
-                        },
-                        goals: { home: 0, away: 0 }
-                    }
-                ];
-                renderLivePage();
-            } catch (e) { console.error("Live fetch error", e); }
+                // קריאה אמיתית לשרת ה-API שלך ללא נתוני טסט
+                const res = await fetch(`/api/football-proxy?endpoint=fixtures&live=all`);
+                const data = await res.json();
+                
+                window.allLiveMatches = (data.response || []).sort((a, b) => {
+                    let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
+                    let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
+                    return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+                });
+                renderLivePage(); // מרנדר את התוצאות האמיתיות מיד
+            } catch (e) { 
+                console.error("Live fetch error", e); 
+            }
         }
-
-        // מילון תרגום מובנה (כדי שלא תצטרך קובץ נפרד כרגע)
-        const teamTranslations = {
-            "Arsenal": "ארסנל",
-            "Liverpool": "ליברפול",
-            "Real Madrid": "ריאל מדריד",
-            "Barcelona": "ברצלונה"
-        };
-        const leagueTranslations = {
-            "Premier League": "פרמייר ליג",
-            "La Liga": "לה ליגה"
-        };
 
         function getTranslatedName(englishName) {
             if (typeof window.translateTeamName === 'function') return window.translateTeamName(englishName);
@@ -653,18 +631,6 @@
                 renderLivePage();
             }
         }, 10000);
-
-        // מפעיל מיד כדי לראות את התוצאות
-        // מפעיל מיד כדי לראות את התוצאות ומגדיר את הפאנל להיות פתוח בהתחלה לטובת הטסט
-        fetchLiveMatches();
-        document.addEventListener('DOMContentLoaded', () => {
-             const livePanel = document.getElementById('livePanel');
-             if(livePanel) {
-                 setTimeout(() => {
-                     livePanel.classList.add('expanded');
-                 }, 500); // פותח את הפאנל אחרי חצי שנייה
-             }
-        });
 
         fetch('ticker.html')
             .then(res => res.text())
