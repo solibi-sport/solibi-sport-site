@@ -550,15 +550,17 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             if (stdData.response && stdData.response.length > 0) {
                 const standings = stdData.response[0].league.standings;
                 
-                // מחפש את הטבלה הספציפית והעדכנית ביותר שבה נמצאות שתי הקבוצות (למשל פלייאוף עליון)
-                let targetGroup = standings.slice().reverse().find(g => g.some(t => t.team.id === homeId) && g.some(t => t.team.id === awayId));
+                // התיקון: מסנן ושולף אך ורק את קבוצת הטבלה הספציפית שבה נמצאות שתי הקבוצות במדויק (למשל פלייאוף עליון)
+                // ע"י מיון טבלאות מהקטנה ביותר (פלייאוף) לגדולה ביותר (עונה סדירה)
+                let validGroups = standings.filter(g => g.some(t => t.team.id === homeId || t.team.id === awayId));
+                validGroups.sort((a, b) => a.length - b.length); 
                 
-                // אם לא נמצאו באותה טבלה, ניקח את הטבלה העדכנית של אחת מהן
-                if (!targetGroup) {
-                    targetGroup = standings.slice().reverse().find(g => g.some(t => t.team.id === homeId || t.team.id === awayId));
+                let targetGroup = validGroups.find(g => g.some(t => t.team.id === homeId) && g.some(t => t.team.id === awayId));
+                
+                if (!targetGroup && validGroups.length > 0) {
+                    targetGroup = validGroups[0];
                 }
                 
-                // גיבוי לטבלה הראשונה במידה והכל נכשל
                 if (!targetGroup) {
                     targetGroup = standings[0];
                 }
