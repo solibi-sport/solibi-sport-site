@@ -108,7 +108,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 .modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #1f2d40; }
                 .modal-mini-table td { padding: 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); }
                 .modal-mini-table tr.highlight { background: rgba(122,153,102,0.15); font-weight: bold; }
-                /* תיקון היישור של הקבוצות בטבלה - סימטרי וצמוד ימינה */
                 .modal-mini-table td .team-name-text { display: flex; align-items: center; justify-content: flex-start; gap: 6px; direction: rtl; }
                 .modal-mini-table td .team-logo { width: 14px; height: 14px; }
                 .modal-mini-table td .live-dot { color: #ef4444; font-size: 9px; animation: blink 1.5s infinite; margin-right: 2px; vertical-align: middle; }
@@ -230,7 +229,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         }
 
         try {
-            // עבור H2H אנחנו מבקשים 6 משחקים, למקרה שהמשחק הנוכחי כלול ונסנן אותו.
             const [eventsRes, statsRes, fixtureRes, lineupsRes] = await Promise.all([
                 fetch(`/api/football-proxy?endpoint=fixtures/events&fixture=${fixtureId}`),
                 fetch(`/api/football-proxy?endpoint=fixtures/statistics&fixture=${fixtureId}`),
@@ -325,12 +323,13 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
                     let html = '';
                     let playerIndex = 0;
-                    let numLines = linesCounts.length;
 
                     linesCounts.forEach((numPlayersInLine, lineIdx) => {
+                        let numLines = linesCounts.length;
                         let r = lineIdx + 1;
                         let xHome;
 
+                        // מיקומים על בסיס קבוצת הבית (צד ימין - שוער על 93)
                         if (r === 1) {
                             xHome = 93; 
                         } else if (r === 2) {
@@ -347,7 +346,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             xHome = 93 - (r * 12); 
                         } 
 
-                        // תיקון ציר X: קבוצת הבית (ימין) מקבלת xHome (לדוגמה 93% לשוער). קבוצת חוץ מקבלת ההיפך (7% לשוער).
+                        // תיקון סופי לציר ה-X: קבוצת בית (ימין) נשארת כרגיל, קבוצת חוץ (שמאל) מתהפכת כדי שהשוער יהיה ב-7
                         let xPercent = isHome ? xHome : (100 - xHome);
 
                         for (let i = 0; i < numPlayersInLine; i++) {
@@ -370,7 +369,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                                 yPercent = 10 + (i / (numPlayersInLine - 1)) * 80; 
                             }
 
-                            // תיקון ציר Y: מהפך את צדדי השחקנים (ימין/שמאל) אך ורק לקבוצת החוץ, כדי שיעמדו במראה מול קבוצת הבית!
+                            // תיקון לציר ה-Y: קבוצת החוץ נמצאת במראה מול קבוצת הבית ולכן כנף ימין ושמאל מתהפכים רק אצלה!
                             if (!isHome) {
                                 yPercent = 100 - yPercent;
                             }
@@ -425,14 +424,15 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         <span>מערך: ${hL.formation || '?'}</span>
                     </div>
 
-                    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px; direction: rtl;">
                         <div class="sub-tabs" style="margin:0; border:none; gap:5px; flex:1; justify-content: flex-start; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;">
-                            <button id="btn-away-pitch" class="sub-tab-btn active" onclick="toggleTeamView('away', 'pitch')" style="padding: 4px 8px; font-size: 11px;">הרכב פותח</button>
-                            <button id="btn-away-bench" class="sub-tab-btn" onclick="toggleTeamView('away', 'bench')" style="padding: 4px 8px; font-size: 11px;">ספסל מחליפים</button>
-                        </div>
-                        <div class="sub-tabs" style="margin:0; border:none; gap:5px; flex:1; justify-content: flex-end; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;">
-                            <button id="btn-home-bench" class="sub-tab-btn" onclick="toggleTeamView('home', 'bench')" style="padding: 4px 8px; font-size: 11px;">ספסל מחליפים</button>
                             <button id="btn-home-pitch" class="sub-tab-btn active" onclick="toggleTeamView('home', 'pitch')" style="padding: 4px 8px; font-size: 11px;">הרכב פותח</button>
+                            <button id="btn-home-bench" class="sub-tab-btn" onclick="toggleTeamView('home', 'bench')" style="padding: 4px 8px; font-size: 11px;">ספסל מחליפים</button>
+                        </div>
+                        
+                        <div class="sub-tabs" style="margin:0; border:none; gap:5px; flex:1; justify-content: flex-end; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;">
+                            <button id="btn-away-bench" class="sub-tab-btn" onclick="toggleTeamView('away', 'bench')" style="padding: 4px 8px; font-size: 11px;">ספסל מחליפים</button>
+                            <button id="btn-away-pitch" class="sub-tab-btn active" onclick="toggleTeamView('away', 'pitch')" style="padding: 4px 8px; font-size: 11px;">הרכב פותח</button>
                         </div>
                     </div>
                     
@@ -626,7 +626,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             /* ------ ראש בראש (מסינון המשחק הנוכחי) ------ */
             let h2hHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין היסטוריית מפגשים קודמת</div>';
             if (h2hData.response && h2hData.response.length > 0) {
-                // מסננים את המשחק הנוכחי, ולוקחים רק את ה-5 שנותרו
                 let filteredH2H = h2hData.response.filter(m => String(m.fixture.id) !== String(fixtureId)).slice(0, 5);
                 
                 if (filteredH2H.length > 0) {
