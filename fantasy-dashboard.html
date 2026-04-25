@@ -530,13 +530,21 @@
                                /* עמדה (עמודה 5) - רוחב שמתאים למילה קצרה כמו 'חלוץ' או 'קישור' */
                                .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 35px; text-align: center; } 
 
-                               /* חלוקה מדויקת לפי השרטוט: עמודות קבועות בפיקסלים, שחקן וקבוצה שואבים את השארית */
+                            /* חלוקה מדויקת לפי השרטוט: עמודות קבועות בפיקסלים, שחקן וקבוצה שואבים את השארית */
 .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 35px; } /* # */
 .market-table th:nth-child(2), .market-table td:nth-child(2) { width: 45px; } /* ID */
-.market-table th:nth-child(3), .market-table td:nth-child(3) { width: auto; text-align: right; padding-right: 10px; } /* שחקן */
+
+/* שחקן: כותרת באמצע, תוכן בימין */
+.market-table th:nth-child(3) { width: auto; text-align: center; } 
+.market-table td:nth-child(3) { width: auto; text-align: right; padding-right: 10px; } 
+
 .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 35px; } /* גיל */
 .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 50px; } /* עמדה */
-.market-table th:nth-child(6), .market-table td:nth-child(6) { width: auto; text-align: right; padding-right: 5px; } /* קבוצה */
+
+/* קבוצה: כותרת באמצע, תוכן בימין */
+.market-table th:nth-child(6) { width: auto; text-align: center; } 
+.market-table td:nth-child(6) { width: auto; text-align: right; padding-right: 5px; } 
+
 .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 35px; } /* הופ' */
 .market-table th:nth-child(8), .market-table td:nth-child(8) { width: 45px; } /* דק' */
 .market-table th:nth-child(9), .market-table td:nth-child(9) { width: 35px; } /* ⚽ */
@@ -573,10 +581,10 @@
                                     <tr>
                                         <th title="דירוג">#</th>
                                         <th title="ID שחקן">ID</th>
-                                        <th style="text-align: right; padding-right: 10px;">שחקן</th>
+                                        <th title="שם השחקן">שחקן</th>
                                         <th title="גיל">גיל</th>
                                         <th title="עמדה">עמדה</th>
-                                        <th style="text-align: right; padding-right: 5px;">קבוצה</th>
+                                        <th title="קבוצה מכהנת">קבוצה</th>
                                         <th title="הופעות העונה">הופ'</th>
                                         <th title="דקות משחק">דק'</th>
                                         <th title="שערים">⚽</th>
@@ -597,12 +605,12 @@
                                     <tr>
                                         <td class="rank-col">1</td>
                                         <td style="color:#64748b;">1100</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px; padding-right: 10px;" title="ארלינג הולאנד">
+                                        <td title="ארלינג הולאנד">
                                             <div style="overflow: hidden; text-overflow: ellipsis;">ארלינג הולאנד</div>
                                         </td>
                                         <td>23</td>
                                         <td>חלוץ</td>
-                                        <td style="text-align: right; padding-right: 5px;">
+                                        <td>
                                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="מנצ'סטר סיטי">
                                                 <img src="https://media.api-sports.io/football/teams/50.png" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;">
                                                 <span style="overflow: hidden; text-overflow: ellipsis;">מנצ' סיטי</span>
@@ -627,12 +635,12 @@
                                     <tr>
                                         <td class="rank-col">2</td>
                                         <td style="color:#64748b;">934</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px; padding-right: 10px;" title="קיליאן אמבפה">
+                                        <td title="קיליאן אמבפה">
                                             <div style="overflow: hidden; text-overflow: ellipsis;">קיליאן אמבפה</div>
                                         </td>
                                         <td>25</td>
                                         <td>חלוץ</td>
-                                        <td style="text-align: right; padding-right: 5px;">
+                                        <td>
                                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="ריאל מדריד">
                                                 <img src="https://media.api-sports.io/football/teams/541.png" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;">
                                                 <span style="overflow: hidden; text-overflow: ellipsis;">ריאל מדריד</span>
@@ -657,12 +665,12 @@
                                     <tr>
                                         <td class="rank-col">3</td>
                                         <td style="color:#64748b;">738</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px; padding-right: 10px;" title="מוחמד סלאח">
+                                        <td title="מוחמד סלאח">
                                             <div style="overflow: hidden; text-overflow: ellipsis;">מוחמד סלאח</div>
                                         </td>
                                         <td>31</td>
                                         <td>קישור</td>
-                                        <td style="text-align: right; padding-right: 5px;">
+                                        <td>
                                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="ליברפול">
                                                 <img src="https://media.api-sports.io/football/teams/40.png" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;">
                                                 <span style="overflow: hidden; text-overflow: ellipsis;">ליברפול</span>
@@ -687,12 +695,12 @@
                                     <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
                                         <td class="rank-col">31</td>
                                         <td style="color:#64748b;">4311</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px; padding-right: 10px;" title="מרטין אודגור">
+                                        <td title="מרטין אודגור">
                                             <div style="overflow: hidden; text-overflow: ellipsis;">מרטין אודגור</div>
                                         </td>
                                         <td>25</td>
                                         <td>קישור</td>
-                                        <td style="text-align: right; padding-right: 5px;">
+                                        <td>
                                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="ארסנל">
                                                 <img src="https://media.api-sports.io/football/teams/42.png" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;">
                                                 <span style="overflow: hidden; text-overflow: ellipsis;">ארסנל</span>
@@ -717,12 +725,12 @@
                                     <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
                                         <td class="rank-col">151</td>
                                         <td style="color:#64748b;">8214</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px; padding-right: 10px;" title="אנטואן גריזמן">
+                                        <td title="אנטואן גריזמן">
                                             <div style="overflow: hidden; text-overflow: ellipsis;">אנטואן גריזמן</div>
                                         </td>
                                         <td>33</td>
                                         <td>חלוץ</td>
-                                        <td style="text-align: right; padding-right: 5px;">
+                                        <td>
                                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="אתלטיקו מדריד">
                                                 <img src="https://media.api-sports.io/football/teams/530.png" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;">
                                                 <span style="overflow: hidden; text-overflow: ellipsis;">את. מדריד</span>
@@ -747,12 +755,12 @@
                                      <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
                                         <td class="rank-col">501</td>
                                         <td style="color:#64748b;">1522</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px; padding-right: 10px;" title="דוגלאס לואיז">
+                                        <td title="דוגלאס לואיז">
                                             <div style="overflow: hidden; text-overflow: ellipsis;">דוגלאס לואיז</div>
                                         </td>
                                         <td>25</td>
                                         <td>קישור</td>
-                                        <td style="text-align: right; padding-right: 5px;">
+                                        <td>
                                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="אסטון וילה">
                                                 <img src="https://media.api-sports.io/football/teams/497.png" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;">
                                                 <span style="overflow: hidden; text-overflow: ellipsis;">אסטון וילה</span>
@@ -774,15 +782,15 @@
                                         <td class="value-col">11.90M</td>
                                     </tr>
                                     
-                                    <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
+                                     <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
                                         <td class="rank-col">780</td>
                                         <td style="color:#64748b;">2145</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px; padding-right: 10px;" title="אליסון בקר">
+                                        <td title="אליסון בקר">
                                             <div style="overflow: hidden; text-overflow: ellipsis;">אליסון בקר</div>
                                         </td>
                                         <td>31</td>
                                         <td>שוער</td>
-                                        <td style="text-align: right; padding-right: 5px;">
+                                        <td>
                                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="ליברפול">
                                                 <img src="https://media.api-sports.io/football/teams/40.png" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;">
                                                 <span style="overflow: hidden; text-overflow: ellipsis;">ליברפול</span>
@@ -804,9 +812,7 @@
                                         <td class="value-col">8.50M</td>
                                     </tr>
                                 </tbody>
-                            </table>
-                        </div>
-                    </div>
+                            </table>  
 
                     <div id="tab-draft" class="fm-tab"><h2 style="font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 20px;">חדר דראפט</h2><p>ממתין לפתיחת חלון המכרזים...</p></div>
                     <div id="tab-leagues" class="fm-tab"><h2 style="font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 20px;">אולם הקהילה</h2><p>הצטרף לליגה קיימת או פתח ליגת חברים.</p></div>
