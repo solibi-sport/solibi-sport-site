@@ -3,7 +3,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 // המפתחות שלך
 const supabaseUrl = 'https://fkuvgvlxlmzmyacaosgi.supabase.co'
-const supabaseKey = 'הדבק_כאן_את_מפתח_ה_PUBLISHABLE_שלך_מהתמונה_האחרונה'
+const supabaseKey = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR'
 
 // יצירת החיבור שאותו נייבא לכל שאר הדפים באתר
 export const supabase = createClient(supabaseUrl, supabaseKey)
