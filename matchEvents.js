@@ -383,16 +383,17 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             
                             let shortName = getShortPlayerName(p.player.name);
                             let teamIdForEvent = isHome ? homeId : awayId;
-                            let subEvent = events.find(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && e.player.name === p.player.name);
+                            
+                            let subEvents = events.filter(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && e.player.name === p.player.name);
                             
                             let subTextHtml = '';
-                            if (subEvent) {
+                            subEvents.forEach(subEvent => {
                                 let subInShortName = getShortPlayerName(subEvent.assist.name);
-                                subTextHtml = `<div style="background: rgba(255, 255, 255, 0.95); color: #111926; border: 1.5px solid #10b981; border-radius: 4px; padding: 2px 5px; margin-top: 4px; font-size: 9px; font-weight: 900; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 3px; direction: ltr; z-index: 10;">
+                                subTextHtml += `<div style="background: rgba(255, 255, 255, 0.95); color: #111926; border: 1.5px solid #10b981; border-radius: 4px; padding: 2px 5px; margin-top: 4px; font-size: 9px; font-weight: 900; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 3px; direction: ltr; z-index: 10;">
                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
                                     <span>${subInShortName}</span>
                                 </div>`;
-                            }
+                            });
                             
                             html += `<div class="pitch-player" style="left: ${xPercent}%; top: ${yPercent}%;">
                                 <div class="pitch-player-num" style="background: ${bgColor}; color: ${textColor};">${p.player.number}</div>
@@ -433,8 +434,8 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         </div>
                         
                         <div class="sub-tabs" style="margin:0; border:none; gap:5px; flex:1; justify-content: flex-end; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom:5px;">
-                            <button id="btn-away-bench" class="sub-tab-btn" onclick="toggleTeamView('away', 'bench')" style="padding: 4px 8px; font-size: 11px;">ספסל מחליפים</button>
                             <button id="btn-away-pitch" class="sub-tab-btn active" onclick="toggleTeamView('away', 'pitch')" style="padding: 4px 8px; font-size: 11px;">הרכב פותח</button>
+                            <button id="btn-away-bench" class="sub-tab-btn" onclick="toggleTeamView('away', 'bench')" style="padding: 4px 8px; font-size: 11px;">ספסל מחליפים</button>
                         </div>
                     </div>
                     
