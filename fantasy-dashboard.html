@@ -513,19 +513,33 @@
 
                         <div style="flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--element-navy-gradient); border-radius: 12px; border: 1px solid var(--brand-green); box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
                             <style>
-                                /* ביטלנו פה את ה-min-width שהרחיב את המסך */
+                                /* Table Layout Fixed מבטיח שהכל ייכנס ב-100% רוחב */
                                 .market-table { width: 100%; border-collapse: collapse; color: #fff; font-size: 11px; table-layout: fixed; } 
-                                .market-table th { background: rgba(0,0,0,0.4); padding: 10px 4px; text-align: center; font-weight: 900; color: #cbd5e1; position: sticky; top: 0; z-index: 5; border-bottom: 2px solid var(--brand-green); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-                                .market-table td { padding: 8px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+                                .market-table th { background: rgba(0,0,0,0.4); padding: 10px 2px; text-align: center; font-weight: 900; color: #cbd5e1; position: sticky; top: 0; z-index: 5; border-bottom: 2px solid var(--brand-green); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+                                .market-table td { padding: 8px 2px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
                                 .market-table tr:hover td { background: rgba(124,168,86,0.15); }
                                 
-                                /* התאמות רוחב לעמודות ספציפיות כדי שהכל ייכנס חלק */
-                                .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 40px; } /* דירוג */
-                                .market-table th:nth-child(2), .market-table td:nth-child(2) { width: 50px; } /* ID */
-                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 140px; text-align: right; } /* שחקן */
-                                .market-table th:nth-child(6), .market-table td:nth-child(6) { width: 120px; text-align: right; } /* קבוצה */
+                                /* חלוקת אחוזים מדויקת ל-18 עמודות כדי למנוע גלילה לצדדים */
+                                .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 3%; } /* דירוג */
+                                .market-table th:nth-child(2), .market-table td:nth-child(2) { width: 4%; } /* ID */
+                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 15%; text-align: right; padding-right: 5px; } /* שחקן */
+                                .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 3%; } /* גיל */
+                                .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 5%; } /* עמדה */
+                                .market-table th:nth-child(6), .market-table td:nth-child(6) { width: 14%; text-align: right; padding-right: 5px; } /* קבוצה */
+                                .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 4%; } /* הופ' */
+                                .market-table th:nth-child(8), .market-table td:nth-child(8) { width: 5%; } /* דק' */
+                                .market-table th:nth-child(9), .market-table td:nth-child(9) { width: 3%; } /* ⚽ */
+                                .market-table th:nth-child(10), .market-table td:nth-child(10) { width: 3%; } /* 👟 */
+                                .market-table th:nth-child(11), .market-table td:nth-child(11) { width: 3%; } /* 🛡️ */
+                                .market-table th:nth-child(12), .market-table td:nth-child(12) { width: 3%; } /* 🎯 פנדלים */
+                                .market-table th:nth-child(13), .market-table td:nth-child(13) { width: 3%; } /* 🟨 צהובים */
+                                .market-table th:nth-child(14), .market-table td:nth-child(14) { width: 3%; } /* 🟥 אדומים */
+                                .market-table th:nth-child(15), .market-table td:nth-child(15) { width: 5%; } /* נק' */
+                                .market-table th:nth-child(16), .market-table td:nth-child(16) { width: 8%; } /* בעלות */
+                                .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 8%; } /* רמה */
+                                .market-table th:nth-child(18), .market-table td:nth-child(18) { width: 8%; } /* שווי */
                                 
-                                .tier-badge { padding: 3px 6px; border-radius: 6px; font-weight: 900; font-size: 10px; display: inline-block; white-space: nowrap;}
+                                .tier-badge { padding: 3px 4px; border-radius: 6px; font-weight: 900; font-size: 10px; display: inline-block; white-space: nowrap; width: 100%; text-align: center;}
                                 .tier-star { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
                                 .tier-1 { background: #e2e8f0; color: #0f172a; }
                                 .tier-2 { background: #cbd5e1; color: #1e293b; }
@@ -533,28 +547,31 @@
                                 .tier-4 { background: #64748b; color: #f8fafc; }
                                 .tier-5 { background: #475569; color: #f8fafc; }
 
-                                .manager-badge { background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3); padding: 2px 4px; border-radius: 4px; font-size: 9px; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; max-width: 70px; margin: 0 auto;}
+                                .manager-badge { background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3); padding: 2px 4px; border-radius: 4px; font-size: 10px; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; width: 100%; text-align: center;}
                                 .manager-badge.taken { border-color: var(--brand-green); color: var(--brand-green); background: rgba(124,168,86,0.1); }
                                 
                                 .stat-col { color: #94a3b8; font-weight: bold; }
-                                .value-col { font-weight: 900; color: #82ca5c; font-size: 12px; }
+                                .value-col { font-weight: 900; color: #82ca5c; font-size: 13px; direction: ltr; text-align: center;}
                                 .rank-col { font-weight: 900; color: #fff; font-size: 13px; background: rgba(0,0,0,0.2); }
                             </style>
                             
                             <table class="market-table">
                                 <thead>
                                     <tr>
-                                        <th title="דירוג בבורסה מ-1 עד 2000">#</th>
-                                        <th>ID</th>
+                                        <th title="דירוג">#</th>
+                                        <th title="ID שחקן">ID</th>
                                         <th style="text-align: right;">שחקן</th>
-                                        <th>גיל</th>
-                                        <th>עמדה</th>
+                                        <th title="גיל">גיל</th>
+                                        <th title="עמדה">עמדה</th>
                                         <th style="text-align: right;">קבוצה</th>
                                         <th title="הופעות העונה">הופ'</th>
                                         <th title="דקות משחק">דק'</th>
                                         <th title="שערים">⚽</th>
                                         <th title="בישולים">👟</th>
                                         <th title="תיקולים/חטיפות">🛡️</th>
+                                        <th title="פנדלים">🎯</th>
+                                        <th title="כרטיסים צהובים">🟨</th>
+                                        <th title="כרטיסים אדומים">🟥</th>
                                         <th title="נקודות פנטזי העונה">נק'</th>
                                         <th>בעלות</th>
                                         <th>רמה</th>
@@ -565,121 +582,139 @@
                                     <tr>
                                         <td class="rank-col">1</td>
                                         <td style="color:#64748b;">1100</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px;">ארלינג הולאנד</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;" title="ארלינג הולאנד">ארלינג הולאנד</td>
                                         <td>23</td>
                                         <td>חלוץ</td>
-                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
-                                            <img src="https://media.api-sports.io/football/teams/50.png" width="14" height="14"> מנצ'סטר סיטי
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 4px;" title="מנצ'סטר סיטי">
+                                            <img src="https://media.api-sports.io/football/teams/50.png" width="14" height="14" style="flex-shrink:0;"> מנצ' סיטי
                                         </td>
                                         <td class="stat-col">30</td>
                                         <td class="stat-col">2650</td>
                                         <td class="stat-col" style="color: #fff;">27</td>
                                         <td class="stat-col">5</td>
                                         <td class="stat-col">12</td>
+                                        <td class="stat-col">5</td>
+                                        <td class="stat-col" style="color: #fbbf24;">2</td>
+                                        <td class="stat-col" style="color: #ef4444;">0</td>
                                         <td style="font-weight: 900; color: #ffd700;">215</td>
                                         <td><span class="manager-badge taken" title="אבירם כהן">אבירם כהן</span></td>
                                         <td><span class="tier-badge tier-star">כוכב על 🌟</span></td>
-                                        <td class="value-col">50,000,000</td>
+                                        <td class="value-col">50.00M</td>
                                     </tr>
 
                                     <tr>
                                         <td class="rank-col">2</td>
                                         <td style="color:#64748b;">934</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px;">קיליאן אמבפה</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;" title="קיליאן אמבפה">קיליאן אמבפה</td>
                                         <td>25</td>
                                         <td>חלוץ</td>
-                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
-                                            <img src="https://media.api-sports.io/football/teams/541.png" width="14" height="14"> ריאל מדריד
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 4px;" title="ריאל מדריד">
+                                            <img src="https://media.api-sports.io/football/teams/541.png" width="14" height="14" style="flex-shrink:0;"> ריאל מדריד
                                         </td>
                                         <td class="stat-col">29</td>
                                         <td class="stat-col">2500</td>
                                         <td class="stat-col" style="color: #fff;">24</td>
                                         <td class="stat-col">7</td>
                                         <td class="stat-col">15</td>
+                                        <td class="stat-col">6</td>
+                                        <td class="stat-col" style="color: #fbbf24;">3</td>
+                                        <td class="stat-col" style="color: #ef4444;">0</td>
                                         <td style="font-weight: 900; color: #ffd700;">208</td>
-                                        <td><span class="manager-badge">חופשי</span></td>
+                                        <td><span class="manager-badge" title="חופשי">חופשי</span></td>
                                         <td><span class="tier-badge tier-star">כוכב על 🌟</span></td>
-                                        <td class="value-col">49,480,000</td>
+                                        <td class="value-col">49.48M</td>
                                     </tr>
 
                                     <tr>
                                         <td class="rank-col">3</td>
                                         <td style="color:#64748b;">738</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 13px;">מוחמד סלאח</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;" title="מוחמד סלאח">מוחמד סלאח</td>
                                         <td>31</td>
                                         <td>קישור</td>
-                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
-                                            <img src="https://media.api-sports.io/football/teams/40.png" width="14" height="14"> ליברפול
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 4px;" title="ליברפול">
+                                            <img src="https://media.api-sports.io/football/teams/40.png" width="14" height="14" style="flex-shrink:0;"> ליברפול
                                         </td>
                                         <td class="stat-col">28</td>
                                         <td class="stat-col">2410</td>
                                         <td class="stat-col" style="color: #fff;">18</td>
                                         <td class="stat-col">9</td>
                                         <td class="stat-col">22</td>
+                                        <td class="stat-col">4</td>
+                                        <td class="stat-col" style="color: #fbbf24;">1</td>
+                                        <td class="stat-col" style="color: #ef4444;">0</td>
                                         <td style="font-weight: 900; color: #ffd700;">195</td>
                                         <td><span class="manager-badge taken" title="יניב לוי">יניב לוי</span></td>
                                         <td><span class="tier-badge tier-star">כוכב על 🌟</span></td>
-                                        <td class="value-col">48,960,000</td>
+                                        <td class="value-col">48.96M</td>
                                     </tr>
 
                                     <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
                                         <td class="rank-col">31</td>
                                         <td style="color:#64748b;">4311</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 12px;">מרטין אודגור</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;" title="מרטין אודגור">מרטין אודגור</td>
                                         <td>25</td>
                                         <td>קישור</td>
-                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
-                                            <img src="https://media.api-sports.io/football/teams/42.png" width="14" height="14"> ארסנל
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 4px;" title="ארסנל">
+                                            <img src="https://media.api-sports.io/football/teams/42.png" width="14" height="14" style="flex-shrink:0;"> ארסנל
                                         </td>
                                         <td class="stat-col">27</td>
                                         <td class="stat-col">2300</td>
                                         <td class="stat-col" style="color: #fff;">7</td>
                                         <td class="stat-col">8</td>
                                         <td class="stat-col">31</td>
+                                        <td class="stat-col">2</td>
+                                        <td class="stat-col" style="color: #fbbf24;">4</td>
+                                        <td class="stat-col" style="color: #ef4444;">0</td>
                                         <td style="font-weight: bold; color: #fff;">142</td>
                                         <td><span class="manager-badge taken" title="מכבי סוליבי">מכבי סוליבי</span></td>
                                         <td><span class="tier-badge tier-1">רמה 1</span></td>
-                                        <td class="value-col">34,900,000</td>
+                                        <td class="value-col">34.90M</td>
                                     </tr>
 
                                     <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
                                         <td class="rank-col">151</td>
                                         <td style="color:#64748b;">8214</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 12px;">אנטואן גריזמן</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;" title="אנטואן גריזמן">אנטואן גריזמן</td>
                                         <td>33</td>
                                         <td>חלוץ</td>
-                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
-                                            <img src="https://media.api-sports.io/football/teams/530.png" width="14" height="14"> את. מדריד
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 4px;" title="אתלטיקו מדריד">
+                                            <img src="https://media.api-sports.io/football/teams/530.png" width="14" height="14" style="flex-shrink:0;"> את. מדריד
                                         </td>
                                         <td class="stat-col">24</td>
                                         <td class="stat-col">1950</td>
                                         <td class="stat-col" style="color: #fff;">11</td>
                                         <td class="stat-col">6</td>
                                         <td class="stat-col">14</td>
+                                        <td class="stat-col">3</td>
+                                        <td class="stat-col" style="color: #fbbf24;">2</td>
+                                        <td class="stat-col" style="color: #ef4444;">0</td>
                                         <td style="font-weight: bold; color: #fff;">110</td>
-                                        <td><span class="manager-badge">חופשי</span></td>
+                                        <td><span class="manager-badge" title="חופשי">חופשי</span></td>
                                         <td><span class="tier-badge tier-2">רמה 2</span></td>
-                                        <td class="value-col">21,900,000</td>
+                                        <td class="value-col">21.90M</td>
                                     </tr>
 
                                      <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
                                         <td class="rank-col">501</td>
                                         <td style="color:#64748b;">1522</td>
-                                        <td style="text-align: right; font-weight: bold; font-size: 12px;">דוגלאס לואיז</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;" title="דוגלאס לואיז">דוגלאס לואיז</td>
                                         <td>25</td>
                                         <td>קישור</td>
-                                        <td style="text-align: right; display: flex; align-items: center; gap: 5px;">
-                                            <img src="https://media.api-sports.io/football/teams/497.png" width="14" height="14"> אסטון וילה
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 4px;" title="אסטון וילה">
+                                            <img src="https://media.api-sports.io/football/teams/497.png" width="14" height="14" style="flex-shrink:0;"> אסטון וילה
                                         </td>
                                         <td class="stat-col">28</td>
                                         <td class="stat-col">2100</td>
                                         <td class="stat-col" style="color: #fff;">8</td>
                                         <td class="stat-col">4</td>
                                         <td class="stat-col">45</td>
+                                        <td class="stat-col">4</td>
+                                        <td class="stat-col" style="color: #fbbf24;">8</td>
+                                        <td class="stat-col" style="color: #ef4444;">0</td>
                                         <td style="font-weight: bold; color: #fff;">88</td>
-                                        <td><span class="manager-badge">חופשי</span></td>
+                                        <td><span class="manager-badge" title="חופשי">חופשי</span></td>
                                         <td><span class="tier-badge tier-3">רמה 3</span></td>
-                                        <td class="value-col">11,900,000</td>
+                                        <td class="value-col">11.90M</td>
                                     </tr>
                                 </tbody>
                             </table>
