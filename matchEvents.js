@@ -326,28 +326,30 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
                     linesCounts.forEach((numPlayersInLine, lineIdx) => {
                         let numLines = linesCounts.length;
-                        let r = lineIdx + 1;
-                        let xHome;
+                        let r = lineIdx + 1; // קו השחקנים. קו 1 תמיד יהיה השוער.
 
-                        // מיקומים על בסיס קבוצת הבית (צד ימין - שוער על 93)
-                        if (r === 1) {
-                            xHome = 93; 
-                        } else if (r === 2) {
-                            xHome = 73; 
-                        } else if (r === numLines) {
-                            xHome = 13; 
-                        } else if (numLines === 4 && r === 3) {
-                            xHome = 42; 
-                        } else if (numLines === 5 && r === 3) {
-                            xHome = 53; 
-                        } else if (numLines === 5 && r === 4) {
-                            xHome = 32; 
+                        // מיקומים על בסיס משחק אמיתי:
+                        // קבוצת הבית (ימין): שוער ב-90 (ימין), התקפה ב-15 (שמאל)
+                        // קבוצת חוץ (שמאל): שוער ב-10 (שמאל), התקפה ב-85 (ימין)
+                        let xPercent;
+                        
+                        if (isHome) {
+                            if (r === 1) xPercent = 90;
+                            else if (r === 2) xPercent = 72;
+                            else if (r === numLines) xPercent = 15;
+                            else if (numLines === 4 && r === 3) xPercent = 45;
+                            else if (numLines === 5 && r === 3) xPercent = 55;
+                            else if (numLines === 5 && r === 4) xPercent = 35;
+                            else xPercent = 90 - (r * 18);
                         } else {
-                            xHome = 93 - (r * 12); 
-                        } 
-
-                        // תיקון סופי לציר ה-X: קבוצת בית (ימין) נשארת כרגיל, קבוצת חוץ (שמאל) מתהפכת כדי שהשוער יהיה ב-7
-                        let xPercent = isHome ? xHome : (100 - xHome);
+                            if (r === 1) xPercent = 10;
+                            else if (r === 2) xPercent = 28;
+                            else if (r === numLines) xPercent = 85;
+                            else if (numLines === 4 && r === 3) xPercent = 55;
+                            else if (numLines === 5 && r === 3) xPercent = 45;
+                            else if (numLines === 5 && r === 4) xPercent = 65;
+                            else xPercent = 10 + (r * 18);
+                        }
 
                         for (let i = 0; i < numPlayersInLine; i++) {
                             if (playerIndex >= players.length) break;
@@ -369,7 +371,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                                 yPercent = 10 + (i / (numPlayersInLine - 1)) * 80; 
                             }
 
-                            // תיקון לציר ה-Y: קבוצת החוץ נמצאת במראה מול קבוצת הבית ולכן כנף ימין ושמאל מתהפכים רק אצלה!
+                            // תמונת מראה לקבוצת החוץ כדי ששחקני האגף יעמדו בדיוק במקביל
                             if (!isHome) {
                                 yPercent = 100 - yPercent;
                             }
@@ -444,16 +446,16 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         <div class="pitch-line-center"></div>
                         <div class="pitch-circle"></div>
                         
-                        <div id="away-pitch" class="pitch-team" style="display:block;">${renderPlayersSnapToGrid(aL, false)}</div>
-                        <div id="away-bench" class="bench-col" style="display:none; position:absolute; top:0; left:0; width:50%; height:100%; background:rgba(13,19,29,0.95); z-index:20; overflow-y:auto; border-right:2px solid #2a3b4c; padding:10px; box-sizing:border-box;">
-                            <div class="bench-title" style="color:#fff; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #1f2d40;">${tAway} (ספסל)</div>
-                            ${aL.substitutes.map(p => renderBenchPlayer(p, events, awayId)).join('')}
-                        </div>
-
                         <div id="home-pitch" class="pitch-team" style="display:block;">${renderPlayersSnapToGrid(hL, true)}</div>
                         <div id="home-bench" class="bench-col" style="display:none; position:absolute; top:0; right:0; width:50%; height:100%; background:rgba(13,19,29,0.95); z-index:20; overflow-y:auto; border-left:2px solid #2a3b4c; padding:10px; box-sizing:border-box;">
                             <div class="bench-title" style="color:#fff; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #1f2d40;">${tHome} (ספסל)</div>
                             ${hL.substitutes.map(p => renderBenchPlayer(p, events, homeId)).join('')}
+                        </div>
+                        
+                        <div id="away-pitch" class="pitch-team" style="display:block;">${renderPlayersSnapToGrid(aL, false)}</div>
+                        <div id="away-bench" class="bench-col" style="display:none; position:absolute; top:0; left:0; width:50%; height:100%; background:rgba(13,19,29,0.95); z-index:20; overflow-y:auto; border-right:2px solid #2a3b4c; padding:10px; box-sizing:border-box;">
+                            <div class="bench-title" style="color:#fff; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #1f2d40;">${tAway} (ספסל)</div>
+                            ${aL.substitutes.map(p => renderBenchPlayer(p, events, awayId)).join('')}
                         </div>
                     </div>
                 </div>`;
