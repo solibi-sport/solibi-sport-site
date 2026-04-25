@@ -122,7 +122,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 .home-val { color: #7a9966; }
                 .away-val { color: #4a90e2; }
                 .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
-                /* תיקון הגלילה: הגדרנו שרק events-wrapper יגלל */
                 .events-wrapper { padding: 10px 15px; display: flex; gap: 15px; align-items: stretch; overflow-y: auto; flex: 1; min-height: 0; }
                 .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
                 .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
@@ -327,7 +326,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
 
                     linesCounts.forEach((numPlayersInLine, lineIdx) => {
                         let numLines = linesCounts.length;
-                        let r = lineIdx + 1; // קו השחקנים. קו 1 תמיד יהיה השוער.
+                        let r = lineIdx + 1;
 
                         let xPercent;
                         
@@ -381,7 +380,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                             let shortName = getShortPlayerName(p.player.name);
                             let teamIdForEvent = isHome ? homeId : awayId;
                             
-                            // שימוש בזיהוי מבוסס ID של השחקן כדי לא לפספס אף חילוף
                             let subEvents = events.filter(e => e.type.toLowerCase() === 'subst' && e.team.id === teamIdForEvent && (String(e.player.id) === String(p.player.id) || e.player.name === p.player.name));
                             
                             let subTextHtml = '';
@@ -551,8 +549,19 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             let stdHtml = '<div style="padding:20px; text-align:center; font-size:12px;">לא קיימת טבלה רלוונטית למשחק זה</div>';
             if (stdData.response && stdData.response.length > 0) {
                 const standings = stdData.response[0].league.standings;
-                let targetGroup = standings[0];
-                standings.forEach(g => { if (g.some(t => t.team.id === homeId || t.team.id === awayId)) targetGroup = g; });
+                
+                // מחפש את הטבלה הספציפית והעדכנית ביותר שבה נמצאות שתי הקבוצות (למשל פלייאוף עליון)
+                let targetGroup = standings.slice().reverse().find(g => g.some(t => t.team.id === homeId) && g.some(t => t.team.id === awayId));
+                
+                // אם לא נמצאו באותה טבלה, ניקח את הטבלה העדכנית של אחת מהן
+                if (!targetGroup) {
+                    targetGroup = standings.slice().reverse().find(g => g.some(t => t.team.id === homeId || t.team.id === awayId));
+                }
+                
+                // גיבוי לטבלה הראשונה במידה והכל נכשל
+                if (!targetGroup) {
+                    targetGroup = standings[0];
+                }
 
                 const liveStatuses = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'];
                 const isLiveMatch = shortStatus && liveStatuses.includes(shortStatus);
@@ -627,7 +636,13 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             /* ------ ראש בראש ------ */
             let h2hHtml = '<div style="padding:20px; text-align:center; font-size:12px;">אין היסטוריית מפגשים קודמת</div>';
             if (h2hData.response && h2hData.response.length > 0) {
-                let filteredH2H = h2hData.response.filter(m => String(m.fixture.id) !== String(fixtureId)).slice(0, 5);
+                let isMatchFinished = ['FT', 'AET', 'PEN'].includes(shortStatus);
+                let filteredH2H = h2hData.response.filter(m => {
+                    if (String(m.fixture.id) === String(fixtureId)) {
+                        return isMatchFinished; 
+                    }
+                    return true;
+                }).slice(0, 5);
                 
                 if (filteredH2H.length > 0) {
                     h2hHtml = `<div style="padding: 10px 15px; display:flex; flex-direction:column; gap:6px;">` +
