@@ -513,31 +513,32 @@
 
                         <div style="flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--element-navy-gradient); border-radius: 12px; border: 1px solid var(--brand-green); box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
                             <style>
-                                /* Table Layout Fixed מבטיח שהכל ייכנס ב-100% רוחב */
                                 .market-table { width: 100%; border-collapse: collapse; color: #fff; font-size: 11px; table-layout: fixed; } 
                                 .market-table th { background: rgba(0,0,0,0.4); padding: 10px 2px; text-align: center; font-weight: 900; color: #cbd5e1; position: sticky; top: 0; z-index: 5; border-bottom: 2px solid var(--brand-green); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
                                 .market-table td { padding: 8px 2px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
                                 .market-table tr:hover td { background: rgba(124,168,86,0.15); }
                                 
-                                /* חלוקת אחוזים מדויקת ל-18 עמודות כדי למנוע גלילה לצדדים */
+                                /* חלוקת אחוזים מהודקת כדי לסגור את החורים הריקים (סה"כ 100%) */
                                 .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 3%; } /* דירוג */
                                 .market-table th:nth-child(2), .market-table td:nth-child(2) { width: 4%; } /* ID */
-                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 15%; text-align: right; padding-right: 5px; } /* שחקן */
+                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 13%; text-align: right; padding-right: 5px; } /* שחקן */
                                 .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 3%; } /* גיל */
-                                .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 5%; } /* עמדה */
-                                .market-table th:nth-child(6), .market-table td:nth-child(6) { width: 14%; text-align: right; padding-right: 5px; } /* קבוצה */
-                                .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 4%; } /* הופ' */
-                                .market-table th:nth-child(8), .market-table td:nth-child(8) { width: 5%; } /* דק' */
+                                .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 4%; } /* עמדה */
+                                .market-table th:nth-child(6), .market-table td:nth-child(6) { width: 11%; text-align: right; padding-right: 5px; } /* קבוצה */
+                                .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 3.5%; } /* הופ' */
+                                .market-table th:nth-child(8), .market-table td:nth-child(8) { width: 4.5%; } /* דק' */
                                 .market-table th:nth-child(9), .market-table td:nth-child(9) { width: 3%; } /* ⚽ */
                                 .market-table th:nth-child(10), .market-table td:nth-child(10) { width: 3%; } /* 👟 */
                                 .market-table th:nth-child(11), .market-table td:nth-child(11) { width: 3%; } /* 🛡️ */
-                                .market-table th:nth-child(12), .market-table td:nth-child(12) { width: 3%; } /* 🎯 פנדלים */
-                                .market-table th:nth-child(13), .market-table td:nth-child(13) { width: 3%; } /* 🟨 צהובים */
-                                .market-table th:nth-child(14), .market-table td:nth-child(14) { width: 3%; } /* 🟥 אדומים */
-                                .market-table th:nth-child(15), .market-table td:nth-child(15) { width: 5%; } /* נק' */
-                                .market-table th:nth-child(16), .market-table td:nth-child(16) { width: 8%; } /* בעלות */
-                                .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 8%; } /* רמה */
-                                .market-table th:nth-child(18), .market-table td:nth-child(18) { width: 8%; } /* שווי */
+                                .market-table th:nth-child(12), .market-table td:nth-child(12) { width: 3%; } /* ⛔ שער נקי */
+                                .market-table th:nth-child(13), .market-table td:nth-child(13) { width: 3%; } /* 🧤 הצלת פנדל */
+                                .market-table th:nth-child(14), .market-table td:nth-child(14) { width: 3%; } /* 🎯 פנדלים */
+                                .market-table th:nth-child(15), .market-table td:nth-child(15) { width: 3%; } /* 🟨 צהובים */
+                                .market-table th:nth-child(16), .market-table td:nth-child(16) { width: 3%; } /* 🟥 אדומים */
+                                .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 4%; } /* נק' */
+                                .market-table th:nth-child(18), .market-table td:nth-child(18) { width: 8%; } /* בעלות */
+                                .market-table th:nth-child(19), .market-table td:nth-child(19) { width: 7%; } /* רמה */
+                                .market-table th:nth-child(20), .market-table td:nth-child(20) { width: 8%; } /* שווי */
                                 
                                 .tier-badge { padding: 3px 4px; border-radius: 6px; font-weight: 900; font-size: 10px; display: inline-block; white-space: nowrap; width: 100%; text-align: center;}
                                 .tier-star { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
@@ -547,7 +548,7 @@
                                 .tier-4 { background: #64748b; color: #f8fafc; }
                                 .tier-5 { background: #475569; color: #f8fafc; }
 
-                                .manager-badge { background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3); padding: 2px 4px; border-radius: 4px; font-size: 10px; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; width: 100%; text-align: center;}
+                                .manager-badge { background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3); padding: 2px 4px; border-radius: 4px; font-size: 9px; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; width: 100%; text-align: center;}
                                 .manager-badge.taken { border-color: var(--brand-green); color: var(--brand-green); background: rgba(124,168,86,0.1); }
                                 
                                 .stat-col { color: #94a3b8; font-weight: bold; }
@@ -564,12 +565,14 @@
                                         <th title="גיל">גיל</th>
                                         <th title="עמדה">עמדה</th>
                                         <th style="text-align: right;">קבוצה</th>
-                                        <th title="הופעות העונה">הופ'</th>
+                                        <th title="הופעות العונה">הופ'</th>
                                         <th title="דקות משחק">דק'</th>
                                         <th title="שערים">⚽</th>
                                         <th title="בישולים">👟</th>
                                         <th title="תיקולים/חטיפות">🛡️</th>
-                                        <th title="פנדלים">🎯</th>
+                                        <th title="שער נקי">⛔</th>
+                                        <th title="הצלות פנדלים">🧤</th>
+                                        <th title="פנדלים שהובקעו">🎯</th>
                                         <th title="כרטיסים צהובים">🟨</th>
                                         <th title="כרטיסים אדומים">🟥</th>
                                         <th title="נקודות פנטזי העונה">נק'</th>
@@ -593,6 +596,8 @@
                                         <td class="stat-col" style="color: #fff;">27</td>
                                         <td class="stat-col">5</td>
                                         <td class="stat-col">12</td>
+                                        <td class="stat-col">0</td>
+                                        <td class="stat-col">0</td>
                                         <td class="stat-col">5</td>
                                         <td class="stat-col" style="color: #fbbf24;">2</td>
                                         <td class="stat-col" style="color: #ef4444;">0</td>
@@ -616,6 +621,8 @@
                                         <td class="stat-col" style="color: #fff;">24</td>
                                         <td class="stat-col">7</td>
                                         <td class="stat-col">15</td>
+                                        <td class="stat-col">0</td>
+                                        <td class="stat-col">0</td>
                                         <td class="stat-col">6</td>
                                         <td class="stat-col" style="color: #fbbf24;">3</td>
                                         <td class="stat-col" style="color: #ef4444;">0</td>
@@ -639,6 +646,8 @@
                                         <td class="stat-col" style="color: #fff;">18</td>
                                         <td class="stat-col">9</td>
                                         <td class="stat-col">22</td>
+                                        <td class="stat-col">12</td>
+                                        <td class="stat-col">0</td>
                                         <td class="stat-col">4</td>
                                         <td class="stat-col" style="color: #fbbf24;">1</td>
                                         <td class="stat-col" style="color: #ef4444;">0</td>
@@ -662,6 +671,8 @@
                                         <td class="stat-col" style="color: #fff;">7</td>
                                         <td class="stat-col">8</td>
                                         <td class="stat-col">31</td>
+                                        <td class="stat-col">13</td>
+                                        <td class="stat-col">0</td>
                                         <td class="stat-col">2</td>
                                         <td class="stat-col" style="color: #fbbf24;">4</td>
                                         <td class="stat-col" style="color: #ef4444;">0</td>
@@ -685,6 +696,8 @@
                                         <td class="stat-col" style="color: #fff;">11</td>
                                         <td class="stat-col">6</td>
                                         <td class="stat-col">14</td>
+                                        <td class="stat-col">0</td>
+                                        <td class="stat-col">0</td>
                                         <td class="stat-col">3</td>
                                         <td class="stat-col" style="color: #fbbf24;">2</td>
                                         <td class="stat-col" style="color: #ef4444;">0</td>
@@ -708,6 +721,8 @@
                                         <td class="stat-col" style="color: #fff;">8</td>
                                         <td class="stat-col">4</td>
                                         <td class="stat-col">45</td>
+                                        <td class="stat-col">6</td>
+                                        <td class="stat-col">0</td>
                                         <td class="stat-col">4</td>
                                         <td class="stat-col" style="color: #fbbf24;">8</td>
                                         <td class="stat-col" style="color: #ef4444;">0</td>
@@ -715,6 +730,31 @@
                                         <td><span class="manager-badge" title="חופשי">חופשי</span></td>
                                         <td><span class="tier-badge tier-3">רמה 3</span></td>
                                         <td class="value-col">11.90M</td>
+                                    </tr>
+                                    
+                                    <tr style="border-top: 2px dashed rgba(255,255,255,0.2);">
+                                        <td class="rank-col">780</td>
+                                        <td style="color:#64748b;">2145</td>
+                                        <td style="text-align: right; font-weight: bold; font-size: 13px;" title="אליסון בקר">אליסון בקר</td>
+                                        <td>31</td>
+                                        <td>שוער</td>
+                                        <td style="text-align: right; display: flex; align-items: center; gap: 4px;" title="ליברפול">
+                                            <img src="https://media.api-sports.io/football/teams/40.png" width="14" height="14" style="flex-shrink:0;"> ליברפול
+                                        </td>
+                                        <td class="stat-col">26</td>
+                                        <td class="stat-col">2340</td>
+                                        <td class="stat-col" style="color: #fff;">0</td>
+                                        <td class="stat-col">0</td>
+                                        <td class="stat-col">0</td>
+                                        <td class="stat-col" style="color: #fff; font-weight:900;">11</td>
+                                        <td class="stat-col" style="color: #fff; font-weight:900;">2</td>
+                                        <td class="stat-col">0</td>
+                                        <td class="stat-col" style="color: #fbbf24;">1</td>
+                                        <td class="stat-col" style="color: #ef4444;">0</td>
+                                        <td style="font-weight: bold; color: #fff;">74</td>
+                                        <td><span class="manager-badge" title="חופשי">חופשי</span></td>
+                                        <td><span class="tier-badge tier-3">רמה 3</span></td>
+                                        <td class="value-col">8.50M</td>
                                     </tr>
                                 </tbody>
                             </table>
