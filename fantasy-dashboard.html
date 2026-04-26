@@ -877,18 +877,22 @@
                     // הגנה: אם אין 'value' נציג 0M
                     const value = p.value ? (p.value / 1000000).toFixed(2) + 'M' : '0M';
 
+                    // ======== כאן קורה קסם התרגום! ========
+                    const translatedName = window.translateName ? window.translateName(p.name) : p.name;
+                    const translatedTeam = window.translateName ? window.translateName(p.team) : p.team;
+
                     tr.innerHTML = `
                         <td class="rank-col">${p.rank || '-'}</td>
                         <td style="color:#64748b;">${p.id || '-'}</td>
-                        <td title="${p.name || ''}">
-                            <div style="overflow: hidden; text-overflow: ellipsis;">${p.name || '-'}</div>
+                        <td title="${translatedName || ''}">
+                            <div style="overflow: hidden; text-overflow: ellipsis;">${translatedName || '-'}</div>
                         </td>
                         <td>${p.age || '-'}</td>
                         <td>${p.pos || '-'}</td>
                         <td>
-                            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="${p.team || ''}">
+                            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="${translatedTeam || ''}">
                                 <img src="${p.team_logo || ''}" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;" onerror="this.style.display='none'">
-                                <span style="overflow: hidden; text-overflow: ellipsis;">${p.team || '-'}</span>
+                                <span style="overflow: hidden; text-overflow: ellipsis;">${translatedTeam || '-'}</span>
                             </div>
                         </td>
                         <td class="stat-col">${p.apps || 0}</td>
