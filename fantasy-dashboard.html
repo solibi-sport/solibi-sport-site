@@ -513,30 +513,30 @@
 
                         <div style="flex: 1; overflow-y: auto; overflow-x: auto; background: #0a1829; border-radius: 12px; border: 1px solid var(--brand-green); box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
     <style>
-                                /* --- עיצוב פרימיום הייטק נקי --- */
-                                .market-table { width: 100%; border-collapse: collapse; color: #e2e8f0; background: #0f172a; font-size: 12px; table-layout: fixed; min-width: 1000px; } 
+                                /* --- עיצוב פרימיום הייטק נקי ומושלם --- */
+                                .market-table { width: 100%; border-collapse: collapse; color: #e2e8f0; background: #112845; font-size: 12px; table-layout: auto; min-width: 1100px; } 
                                 .market-table th { background: #06111e; padding: 12px 4px; text-align: center; font-weight: 700; color: #94a3b8; position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--brand-green); white-space: nowrap; text-transform: uppercase; letter-spacing: 1px; }
-                                .market-table td { padding: 10px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; white-space: nowrap; font-weight: 500; }
-                                .market-table tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+                                .market-table td { padding: 10px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,0.8); font-weight: 500; }
+                                .market-table tr:nth-child(even) { background: rgba(255,255,255,0.03); }
                                 .market-table tr:hover td { background: rgba(124,168,86,0.15); }
                                 
-                                /* חלוקת עמודות - ה-ID הוסר! */
-                                .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 35px; } /* דירוג */
-                                .market-table th:nth-child(2) { width: auto; text-align: right; padding-right: 30px; } 
-                                .market-table td:nth-child(2) { width: auto; text-align: right; padding-right: 10px; font-weight: 700; color: #ffffff;} /* שחקן */
-                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 35px; } /* גיל */
-                                .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 50px; } /* עמדה */
-                                .market-table th:nth-child(5) { width: auto; text-align: right; padding-right: 25px; } 
-                                .market-table td:nth-child(5) { width: auto; text-align: right; padding-right: 5px; color: #94a3b8;} /* קבוצה */
+                                /* חלוקת עמודות שמנצלת 100% מהמקום */
+                                .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 3%; } /* דירוג */
+                                .market-table th:nth-child(2) { width: 16%; text-align: right; padding-right: 20px; } 
+                                .market-table td:nth-child(2) { width: 16%; text-align: right; padding-right: 10px; font-weight: 700; color: #ffffff;} /* שחקן */
+                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 3%; } /* גיל */
+                                .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 5%; } /* עמדה */
+                                .market-table th:nth-child(5) { width: 12%; text-align: right; padding-right: 20px; } 
+                                .market-table td:nth-child(5) { width: 12%; text-align: right; padding-right: 5px; color: #94a3b8;} /* קבוצה */
                                 
-                                /* סטטיסטיקות (עמודות 6 עד 15) */
-                                .market-table th:nth-child(n+6):nth-child(-n+15), .market-table td:nth-child(n+6):nth-child(-n+15) { width: 38px; color: #cbd5e1; } 
+                                /* סטטיסטיקות קטנות */
+                                .market-table th:nth-child(n+6):nth-child(-n+15), .market-table td:nth-child(n+6):nth-child(-n+15) { width: 3.5%; color: #cbd5e1; } 
                                 
-                                /* ריווח נכון בסוף הטבלה */
-                                .market-table th:nth-child(16), .market-table td:nth-child(16) { width: 65px; padding-left: 10px;} /* נקודות עם רווח שמאלה */
-                                .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 85px; } /* בעלות */
-                                .market-table th:nth-child(18), .market-table td:nth-child(18) { width: 65px; } /* רמה */
-                                .market-table th:nth-child(19), .market-table td:nth-child(19) { width: 85px; } /* שווי */
+                                /* ריווח סופי מושלם לצד שמאל */
+                                .market-table th:nth-child(16), .market-table td:nth-child(16) { width: 5%; } /* נקודות */
+                                .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 7%; } /* בעלות */
+                                .market-table th:nth-child(18), .market-table td:nth-child(18) { width: 6%; } /* רמה */
+                                .market-table th:nth-child(19), .market-table td:nth-child(19) { width: 8%; padding-left: 10px;} /* שווי נוגע בקצה */
                                 
                                 /* עיצוב רמות פרימיום */
                                 .tier-badge { padding: 4px 0; border-radius: 4px; font-weight: 700; font-size: 11px; display: block; width: 100%; text-align: center; border: 1px solid transparent; background: transparent;}
@@ -550,7 +550,7 @@
                                 .manager-badge { border: 1px dashed #334155; padding: 3px 0; border-radius: 4px; font-size: 10px; color: #94a3b8; display: block; width: 100%; text-align: center;}
                                 .manager-badge.taken { border: 1px solid rgba(124, 168, 86, 0.5); color: var(--brand-green); background: rgba(124,168,86,0.05); }
                                 
-                                /* סגנון הייטק נקי לנקודות ולשווי (ללא זוהר מוגזם, רק הצללה חדה) */
+                                /* סגנון הייטק נקי לנקודות ולשווי */
                                 .pts-col { font-weight: 700; color: #ffffff; font-family: monospace; font-size: 14px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
                                 .value-col { font-weight: 700; color: #9be05c; font-size: 13px; direction: ltr; text-align: center; font-family: monospace; letter-spacing: 0.5px; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
                             </style>
@@ -822,14 +822,16 @@
             
             let allPlayersData = []; // שומר את כל הנתונים המקוריים
 
-            try {
+           try {
                 if (typeof window.supabase === 'undefined') {
                     throw new Error("ספריית Supabase לא נטענה.");
                 }
 
+                // --- אלו השורות שחזרו! ---
                 const SUPABASE_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
                 const SUPABASE_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
                 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                // -------------------------
 
                 const { data, error } = await supabase
                     .from('master_players')
