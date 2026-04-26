@@ -847,12 +847,12 @@
 
         async function loadMarketPlayers() {
             try {
-                // מושך את 100 השחקנים הראשונים (אפשר לשנות בהמשך כדי לעשות דפדוף)
+                // שינינו ל-2000 כדי למשוך את כל המאגר!
                 const { data, error } = await supabase
                     .from('master_players')
                     .select('*')
                     .order('rank', { ascending: true })
-                    .limit(100);
+                    .limit(2000);
 
                 if (error) throw error;
                 
@@ -898,7 +898,8 @@
                     <td class="stat-col" style="color: #fff;">${p.goals}</td>
                     <td class="stat-col">${p.assists}</td>
                     <td class="stat-col">${p.tackles}</td>
-                    <td class="stat-col">-</td> <td class="stat-col">${p.pen_saves}</td>
+                    <td class="stat-col">-</td> 
+                    <td class="stat-col">${p.pen_saves}</td>
                     <td class="stat-col">${p.pen_scored}</td>
                     <td class="stat-col" style="color: #fbbf24;">${p.yellow}</td>
                     <td class="stat-col" style="color: #ef4444;">${p.red}</td>
@@ -911,10 +912,8 @@
             });
         }
 
-        // הפעלת הטעינה כשהעמוד עולה
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMarketPlayers();
-        });
+        // הפעלה ישירה! פותר את בעיית ה"תקוע בטעינה"
+        loadMarketPlayers();
     </script>
 </body>
 </html>
