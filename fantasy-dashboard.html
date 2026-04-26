@@ -535,12 +535,12 @@
 .market-table th:nth-child(2), .market-table td:nth-child(2) { width: 45px; } /* ID */
 /* שחקן: כותרת בימין עם דחיפה פנימה לאמצע השם, תוכן בימין */
 .market-table th:nth-child(3) { width: auto; text-align: right; padding-right: 30px; } 
-.market-table td:nth-child(3) { width: auto; text-align: right; padding-right: 10px; }                               
+.market-table td:nth-child(3) { width: auto; text-align: right; padding-right: 10px; }                                
 .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 35px; } /* גיל */
 .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 50px; } /* עמדה */
 /* קבוצה: כותרת בימין עם דחיפה פנימה לאמצע הסמל+השם, תוכן בימין */
 .market-table th:nth-child(6) { width: auto; text-align: right; padding-right: 25px; } 
-.market-table td:nth-child(6) { width: auto; text-align: right; padding-right: 5px; }                             
+.market-table td:nth-child(6) { width: auto; text-align: right; padding-right: 5px; }                              
 .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 35px; } /* הופ' */
 .market-table th:nth-child(8), .market-table td:nth-child(8) { width: 45px; } /* דק' */
 .market-table th:nth-child(9), .market-table td:nth-child(9) { width: 35px; } /* ⚽ */
@@ -823,19 +823,23 @@
 
     <script src="translations.js"></script>
     <script src="matchEvents.js"></script>
-    <script type="module">
-        import { supabase } from './api/supabaseClient.js';
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // הנתונים המדויקים שלך
+        const SUPABASE_URL = 'הכנס_את_הקישור_שלך_כאן'; // <-- שים לב, כאן אתה חייב לשים את הקישור שלך (ה-URL)
+        const SUPABASE_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR'; // שמתי לך את המפתח הפומבי פה!
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         console.log("לובי הפנטזי נטען עם תבנית סוליבי בהצלחה!");
 
-        // מנוע שאיבת נתונים מ-Supabase לבורסת השחקנים
         let allMarketPlayers = [];
 
-        // פונקציה שהופכת מספר כמו 49400000 ל- 49.40M
         function formatValue(val) {
             return (val / 1000000).toFixed(2) + 'M';
         }
 
-        // פונקציה שמתאימה את המחלקה העיצובית לפי רמת השחקן
         function getTierClass(tier) {
             if (tier.includes('כוכב על')) return 'tier-star';
             if (tier.includes('1')) return 'tier-1';
@@ -847,7 +851,7 @@
 
         async function loadMarketPlayers() {
             try {
-                // שינינו ל-2000 כדי למשוך את כל המאגר!
+                // שואב את כל 2000 השחקנים!
                 const { data, error } = await supabase
                     .from('master_players')
                     .select('*')
@@ -861,7 +865,7 @@
             } catch (err) {
                 console.error("❌ שגיאה בטעינת השחקנים:", err.message);
                 document.getElementById('market-players-body').innerHTML = `
-                    <tr><td colspan="20" style="text-align:center; color:red; padding: 20px;">שגיאה בטעינת נתונים מ-Supabase</td></tr>
+                    <tr><td colspan="20" style="text-align:center; color:red; padding: 20px;">שגיאה בטעינת נתונים מ-Supabase: ${err.message}</td></tr>
                 `;
             }
         }
@@ -869,14 +873,12 @@
         function renderMarketPlayers(players) {
             const tbody = document.getElementById('market-players-body');
             if (!tbody) return;
-            tbody.innerHTML = ''; // מנקה את הודעת הטעינה
+            tbody.innerHTML = ''; 
 
             players.forEach((p, index) => {
                 const tr = document.createElement('tr');
-                // קו מפריד רק אחרי השחקן הראשון
                 if (index > 0) tr.style.borderTop = "2px dashed rgba(255,255,255,0.05)";
 
-                // בדיקה האם השחקן פנוי או בבעלות
                 const ownerClass = p.owner !== 'חופשי' ? 'manager-badge taken' : 'manager-badge';
 
                 tr.innerHTML = `
@@ -912,7 +914,7 @@
             });
         }
 
-        // הפעלה ישירה! פותר את בעיית ה"תקוע בטעינה"
+        // הפעלה ברגע שהמודול מוכן!
         loadMarketPlayers();
     </script>
 </body>
