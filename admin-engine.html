@@ -25,7 +25,6 @@
     </div>
 
     <script>
-        // פונקציית כתיבה למסך השחור
         function log(msg, type='info') {
             const logDiv = document.getElementById('log');
             const color = type === 'err' ? '#ef4444' : (type === 'success' ? '#10b981' : '#60a5fa');
@@ -39,12 +38,10 @@
             log("🏁 מתחיל תהליך... בודק חיבורים...", 'info');
 
             try {
-                // בדיקה שהספרייה נטענה
                 if (typeof window.supabase === 'undefined') {
                     throw new Error("הספרייה של Supabase לא נטענה. בדוק חיבור לאינטרנט או נסה לרענן.");
                 }
 
-                // הגדרות התחברות
                 const SUPABASE_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
                 const SUPABASE_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
                 const API_FOOTBALL_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
@@ -54,14 +51,35 @@
                 const currentSeason = 2024; 
 
                 const top30Names = ["לאמין ימאל", "ארלינג האלאנד", "קיליאן אמבפה", "ברונו פרננדס", "הארי קיין", "ויניסיוס ג'וניור", "לאוטרו מרטינס", "מייקל אוליסה", "לואיס דיאס", "פדריקו ואלוורדה", "ראפיניה", "מוחמד סלאח", "ג'וד בלינגהאם", "רוברט לבנדובסקי", "דקלן רייס", "וויקטור גיוקרס", "ג'מאל מוסיאלה", "ז'ואאו נבש", "פדרי", "חביצה קווארצחליה", "פיל פודן", "קול פאלמר", "בוקאיו סאקה", "גבריאל מגאלאס", "ויטיניה", "וירג'יל ואן דייק", "אשרף חכימי", "טיבו קורטואה", "ברנרדו סילבה", "רודרי"];
-
                 const premiumClubs = ["Real Madrid", "Bayern München", "AC Milan", "Liverpool", "Barcelona", "Juventus", "Manchester United", "Inter", "Chelsea", "Arsenal", "Borussia Dortmund", "Atletico Madrid", "Manchester City", "Paris Saint Germain", "Napoli", "Roma"];
 
-                log("1. מושך 2,000 שחקנים קבועים מ-Supabase...");
-                const { data: dbPlayers, error: dbErr } = await supabase.from('master_players').select('*').limit(2000);
-                if (dbErr) throw dbErr;
+                log("1. מושך שחקנים מ-Supabase במנות כדי לעקוף את ההגבלה...");
+                
+                // --- התיקון כאן: משיכת נתונים בלולאה עד שאין יותר ---
+                let dbPlayers = [];
+                let keepFetching = true;
+                let from = 0;
+                let to = 999;
+                
+                while (keepFetching) {
+                    const { data, error } = await supabase.from('master_players').select('*').range(from, to);
+                    if (error) throw error;
+                    
+                    if (data && data.length > 0) {
+                        dbPlayers = dbPlayers.concat(data);
+                        from += 1000;
+                        to += 1000;
+                    } else {
+                        keepFetching = false;
+                    }
+                }
+
                 if (!dbPlayers || dbPlayers.length === 0) throw new Error("לא נמצאו שחקנים במסד הנתונים!");
+                
+                // מוודאים שאנחנו משתמשים ב-2000 בלבד במידה ויש יותר
+                dbPlayers = dbPlayers.slice(0, 2000);
                 log(`✓ זוהו ${dbPlayers.length} שחקנים לעדכון.`);
+                // --------------------------------------------------------
 
                 log("2. מתחיל סנכרון מול API-FOOTBALL (מושך נתוני 5 ליגות)...");
                 let apiDataMap = new Map();
@@ -79,7 +97,7 @@
                             apiDataMap.set(item.player.name, item);
                         });
                     }
-                    await new Promise(r => setTimeout(r, 600)); // השהייה כדי לא להיחסם
+                    await new Promise(r => setTimeout(r, 600)); // מניעת חסימת ספאם מה-API
                 }
                 log(`✓ נמשכו נתוני API מעודכנים. מצליב מידע...`);
 
@@ -137,7 +155,7 @@
                     if (error) throw error;
                 }
 
-                log("✅ תהליך הסנכרון והדירוג הושלם בהצלחה!", 'success');
+                log("✅ תהליך הסנכרון והדירוג הושלם בהצלחה מול כל 2000 השחקנים!", 'success');
                 btn.innerText = "התהליך הושלם!";
                 btn.style.background = "#10b981";
 
