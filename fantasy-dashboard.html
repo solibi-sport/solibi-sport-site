@@ -466,24 +466,25 @@
                                 /* Hover מואר לשורה */
                                 .market-table tr:hover td { background-color: rgba(124, 168, 86, 0.2) !important; cursor: pointer; }
                                 
-                                /* חלוקת אחוזים מדויקת וסימטרית ל-100% שטח (19 עמודות בדיוק!) */
-                                .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 5%; overflow: visible; text-overflow: clip; } /* הגדלנו ל-5% וביטלנו את החיתוך */
-                                .market-table th:nth-child(2) { width: 15.5%; text-align: right; padding-right: 25px; } 
-                                .market-table td:nth-child(2) { width: 15.5%; text-align: right; padding-right: 15px; font-weight: 700; color: #ffffff;} /* שחקן */
-                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 3.5%; } /* גיל */
-                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 3.5%; } /* גיל */
-                                .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 5%; } /* עמדה */
-                                .market-table th:nth-child(5) { width: 14%; text-align: right; padding-right: 15px; } 
-                                .market-table td:nth-child(5) { width: 14%; text-align: right; padding-right: 10px; color: #94a3b8;} /* קבוצה */
+                            /* חלוקת אחוזים מדויקת וסימטרית ל-100% שטח (19 עמודות בדיוק!) */
+                                .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 4%; overflow: visible; } /* דירוג */
+                                .market-table th:nth-child(2), .market-table td:nth-child(2) { width: 15%; text-align: right; padding-right: 15px; font-weight: 700; color: #ffffff;} /* שחקן */
                                 
-                                /* סטטיסטיקות קטנות (10 עמודות * 3.4% = 34%) */
-                                .market-table th:nth-child(n+6):nth-child(-n+15), .market-table td:nth-child(n+6):nth-child(-n+15) { width: 3.4%; color: #cbd5e1; } 
+                                /* הצמדת הגיל, העמדה והקבוצה ימינה כדי שיהיו קרובים לשם השחקן! */
+                                .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 4%; text-align: right; padding-right: 5px; } /* גיל */
+                                .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 4.5%; text-align: right; padding-right: 5px; } /* עמדה */
+                                .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 13.5%; text-align: right; padding-right: 5px; color: #94a3b8;} /* קבוצה */
                                 
-                                /* עמודות סיום (23%) */
+                                /* סטטיסטיקות קטנות - ביטול חיתוך מספרים והרחבת דקות המשחק! */
+                                .market-table th:nth-child(6), .market-table td:nth-child(6) { width: 3.5%; color: #cbd5e1; overflow: visible; text-overflow: clip; } /* הופעות */
+                                .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 4.5%; color: #cbd5e1; overflow: visible; text-overflow: clip; font-weight: 900; } /* דקות - עכשיו יש מקום למספר מלא! */
+                                .market-table th:nth-child(n+8):nth-child(-n+15), .market-table td:nth-child(n+8):nth-child(-n+15) { width: 3%; color: #cbd5e1; overflow: visible; text-overflow: clip; } /* שאר הסטטיסטיקות */
+                                
+                                /* עמודות סיום */
                                 .market-table th:nth-child(16), .market-table td:nth-child(16) { width: 5%; } /* נקודות */
-                                .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 5.5%; } /* בעלות */
-                                .market-table th:nth-child(18), .market-table td:nth-child(18) { width: 6.5%; } /* רמה */
-                                .market-table th:nth-child(19), .market-table td:nth-child(19) { width: 6%; } /* שווי */
+                                .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 6%; } /* בעלות */
+                                .market-table th:nth-child(18), .market-table td:nth-child(18) { width: 7.5%; } /* רמה */
+                                .market-table th:nth-child(19), .market-table td:nth-child(19) { width: 8.5%; } /* שווי */
                                 
                                 /* עיצוב רמות פרימיום */
                                 .tier-badge { padding: 5px 0; border-radius: 6px; font-weight: 700; font-size: 11px; display: block; width: 90%; margin: 0 auto; text-align: center; border: 1px solid transparent; background: transparent; letter-spacing: 0.5px;}
