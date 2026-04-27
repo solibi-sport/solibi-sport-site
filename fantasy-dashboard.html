@@ -348,7 +348,7 @@
                         <span class="fm-top-stat-value" id="user-manager-name">אורח</span>
                     </div>
                     <div class="fm-top-stat">
-                        <span class="fm-top-stat-title">תקציב רכש</span>
+                        <span class="fm-top-stat-title">תקציב פנוי</span>
                         <span class="fm-top-stat-value highlight" id="user-budget">₪100,000,000</span>
                     </div>
                     <div class="fm-top-stat">
@@ -466,15 +466,19 @@
                                 /* Hover מואר לשורה */
                                 .market-table tr:hover td { background-color: rgba(124, 168, 86, 0.2) !important; cursor: pointer; }
                                 
-                            /* חלוקת אחוזים מדויקת וסימטרית ל-100% שטח (19 עמודות בדיוק!) */
+                            /* חלוקת אחוזים מדויקת וסימטרית ל-100% שטח */
                                 .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 4%; overflow: visible; } /* דירוג */
-                                .market-table th:nth-child(2), .market-table td:nth-child(2) { width: 11%; text-align: right; padding-right: 15px; font-weight: 700; color: #ffffff;} /* הקטנו כדי למשוך את שאר העמודות ימינה! */
                                 
-                                /* הגיל, העמדה והקבוצה נמשכים ימינה */
+                                /* -- עמודת שחקן: הכותרת ממורכזת, השחקנים צמודים לימין -- */
+                                .market-table th:nth-child(2) { width: 11%; text-align: center; font-weight: 700; color: #ffffff; padding-right: 0px; } 
+                                .market-table td:nth-child(2) { width: 11%; text-align: right; padding-right: 15px; font-weight: 700; color: #ffffff; } 
+                                
                                 .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 4%; text-align: right; padding-right: 0px; } /* גיל */
                                 .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 5%; text-align: right; padding-right: 0px; } /* עמדה */
-                                .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 10%; text-align: right; padding-right: 0px; color: #94a3b8;} /* הקטנו מ-12% ל-10% כדי לשאוב את כל הסטטיסטיקות עוד ימינה! */
                                 
+                                /* -- עמודת קבוצה: הכותרת ממורכזת, הקבוצות צמודות לימין -- */
+                                .market-table th:nth-child(5) { width: 10%; text-align: center; color: #94a3b8; padding-right: 0px; } 
+                                .market-table td:nth-child(5) { width: 10%; text-align: right; padding-right: 0px; color: #94a3b8; }
                                 /* סטטיסטיקות קטנות */
                                 .market-table th:nth-child(6), .market-table td:nth-child(6) { width: 3.5%; color: #cbd5e1; overflow: visible; text-overflow: clip; } /* הופעות */
                                 .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 4.5%; color: #cbd5e1; overflow: visible; text-overflow: clip; font-weight: 900; } /* דקות */
