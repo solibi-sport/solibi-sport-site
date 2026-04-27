@@ -717,14 +717,36 @@
                 const SUPABASE_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
                 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-                const { data, error } = await supabase
-                    .from('master_players')
-                    .select('*')
-                    .order('rank', { ascending: true })
-                    .limit(2000);
+             // --- משיכת נתונים בפעימות כדי לעקוף את הגבלת ה-1000 של Supabase ---
+                let from = 0;
+                let to = 999;
+                let hasMore = true;
 
-                if (error) throw error;
-                if (!data || data.length === 0) {
+                while (hasMore) {
+                    const { data, error } = await supabase
+                        .from('master_players')
+                        .select('*')
+                        .order('rank', { ascending: true })
+                        .range(from, to);
+
+                    if (error) throw error;
+                    
+                    if (data && data.length > 0) {
+                        allPlayersData = allPlayersData.concat(data);
+                        from += 1000;
+                        to += 1000;
+                    } else {
+                        hasMore = false;
+                    }
+                    
+                    // עצירה כשהגענו ל-2000 שחקנים
+                    if (allPlayersData.length >= 2000) {
+                        allPlayersData = allPlayersData.slice(0, 2000);
+                        hasMore = false;
+                    }
+                }
+
+                if (allPlayersData.length === 0) {
                      tbody.innerHTML = `<tr><td colspan="19" style="text-align:center; padding: 20px;">הרשימה ריקה.</td></tr>`;
                      return;
                 }
