@@ -504,6 +504,44 @@
                                 
                                 .pts-col { font-weight: 700; color: #ffffff; font-size: 13px; text-shadow: 0 1px 3px rgba(0,0,0,0.9); letter-spacing: 0.5px; }
                                 .value-col { font-weight: 700; color: var(--brand-green); font-size: 13px; direction: ltr; text-align: center; letter-spacing: 0.5px; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+                                /* =========================================
+                                   שכבת צבע סופית: עיצוב הייטקיסטי כסוף לטבלה
+                                   ========================================= */
+                                
+                                /* כל הכתב בטבלה הופך לכסוף, עבה ויוקרתי */
+                                .market-table th, 
+                                .market-table td, 
+                                .manager-badge {
+                                    color: #e2e8f0 !important;  
+                                    font-weight: 700 !important; 
+                                    letter-spacing: 0.3px !important;
+                                }
+                            
+                                /* החרגה 1: עמודת שווי נשארת בצבע המקורי שלה */
+                                .market-table td.value-col {
+                                    color: #86efac !important;
+                                    font-weight: 900 !important;
+                                }
+                            
+                                /* החרגה 2: "כוכב על" נשאר זהב כמו שביקשת */
+                                .tier-badge.tier-star {
+                                    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%) !important;
+                                    color: #000 !important;
+                                    border: none !important;
+                                }
+                            
+                                /* רמות 1-6 משתנות למראה הייטקיסטי כסוף עם מסגרת עדינה */
+                                .tier-badge:not(.tier-star) {
+                                    background: transparent !important; 
+                                    border: 1px solid #64748b !important; 
+                                    color: #e2e8f0 !important; 
+                                    font-weight: 800 !important;
+                                    box-shadow: none !important;
+                                }
+                            
+                                /* החרגה 3: הכרטיסים נשארים צהובים ואדומים בהתאמה */
+                                .market-table td:nth-child(14) { color: #fbbf24 !important; } 
+                                .market-table td:nth-child(15) { color: #ef4444 !important; }
                             </style>
                             
                             <table class="market-table">
