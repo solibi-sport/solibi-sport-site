@@ -2,24 +2,24 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>מנוע הדירוג המשולב - Total Fantasy</title>
+    <title>מנוע דירוג - Total Fantasy (גרסת 1000)</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; text-align: center; padding: 30px; }
-        .engine-box { background: #1e293b; padding: 30px; border-radius: 15px; border: 2px solid #3b82f6; max-width: 800px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        button { background: #3b82f6; color: white; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 10px; transition: 0.2s; }
+        .engine-box { background: #1e293b; padding: 30px; border-radius: 15px; border: 2px solid #f59e0b; max-width: 800px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        button { background: #f59e0b; color: #000; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 10px; transition: 0.2s; }
         button:hover { transform: scale(1.05); }
-        button:disabled { background: #64748b; cursor: not-allowed; transform: none; }
+        button:disabled { background: #64748b; cursor: not-allowed; }
         #log { margin-top: 20px; text-align: right; background: #000; padding: 15px; border-radius: 8px; height: 350px; overflow-y: auto; font-family: monospace; color: #10b981; font-size: 14px; line-height: 1.5; }
     </style>
 </head>
 <body>
 
     <div class="engine-box">
-        <h1 style="color: #60a5fa;">🚀 מנוע הדירוג והסנכרון (Live API)</h1>
-        <p>עדכון קבוצות, סטטיסטיקות ודירוג 2000 השחקנים מול API-FOOTBALL ו-Supabase</p>
+        <h1 style="color: #fbbf24;">📈 מנוע בורסה V3 (1,000 שחקנים)</h1>
+        <p>מחשב דירוגים, מונע כפילויות שווי, שומר על מכסות הרמות (50/100/250/300/300).</p>
         
-        <button id="runFullEngineBtn" onclick="runFullProcess()">הפעל סנכרון ודירוג (חסכוני בקריאות)</button>
+        <button id="runFullEngineBtn" onclick="runFullProcess()">עדכן שוק שחקנים (סנכרון מלא)</button>
         
         <div id="log">מערכת מוכנה. ממתין לפקודה...<br></div>
     </div>
@@ -35,135 +35,109 @@
         async function runFullProcess() {
             const btn = document.getElementById('runFullEngineBtn');
             btn.disabled = true;
-            log("🏁 מתחיל תהליך... בודק חיבורים...", 'info');
+            log("🏁 מתחיל תהליך סנכרון בורסה V3...", 'info');
 
             try {
-                if (typeof window.supabase === 'undefined') {
-                    throw new Error("הספרייה של Supabase לא נטענה. בדוק חיבור לאינטרנט או נסה לרענן.");
-                }
-
                 const SUPABASE_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
                 const SUPABASE_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
                 const API_FOOTBALL_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
                 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+                // --- 1. משיכת 1000 השחקנים מסופאבייס (קריאה אחת!) ---
+                log("1. מושך את מאגר 1,000 השחקנים הקבועים מסופאבייס...");
+                const { data: dbPlayers, error: dbErr } = await supabase.from('master_players').select('*').limit(1000);
+                if (dbErr) throw dbErr;
+                if (!dbPlayers || dbPlayers.length === 0) throw new Error("לא נמצאו שחקנים!");
+                log(`✓ נמשכו ${dbPlayers.length} שחקנים.`);
+
+                // --- 2. משיכת נתונים מ-API ---
                 const leagueIds = [39, 140, 135, 78, 61]; 
                 const currentSeason = 2024; 
-
-                const top30Names = ["לאמין ימאל", "ארלינג האלאנד", "קיליאן אמבפה", "ברונו פרננדס", "הארי קיין", "ויניסיוס ג'וניור", "לאוטרו מרטינס", "מייקל אוליסה", "לואיס דיאס", "פדריקו ואלוורדה", "ראפיניה", "מוחמד סלאח", "ג'וד בלינגהאם", "רוברט לבנדובסקי", "דקלן רייס", "וויקטור גיוקרס", "ג'מאל מוסיאלה", "ז'ואאו נבש", "פדרי", "חביצה קווארצחליה", "פיל פודן", "קול פאלמר", "בוקאיו סאקה", "גבריאל מגאלאס", "ויטיניה", "וירג'יל ואן דייק", "אשרף חכימי", "טיבו קורטואה", "ברנרדו סילבה", "רודרי"];
-                const premiumClubs = ["Real Madrid", "Bayern München", "AC Milan", "Liverpool", "Barcelona", "Juventus", "Manchester United", "Inter", "Chelsea", "Arsenal", "Borussia Dortmund", "Atletico Madrid", "Manchester City", "Paris Saint Germain", "Napoli", "Roma"];
-
-                log("1. מושך שחקנים מ-Supabase במנות כדי לעקוף את ההגבלה...");
-                
-                // --- התיקון כאן: משיכת נתונים בלולאה עד שאין יותר ---
-                let dbPlayers = [];
-                let keepFetching = true;
-                let from = 0;
-                let to = 999;
-                
-                while (keepFetching) {
-                    const { data, error } = await supabase.from('master_players').select('*').range(from, to);
-                    if (error) throw error;
-                    
-                    if (data && data.length > 0) {
-                        dbPlayers = dbPlayers.concat(data);
-                        from += 1000;
-                        to += 1000;
-                    } else {
-                        keepFetching = false;
-                    }
-                }
-
-                if (!dbPlayers || dbPlayers.length === 0) throw new Error("לא נמצאו שחקנים במסד הנתונים!");
-                
-                // מוודאים שאנחנו משתמשים ב-2000 בלבד במידה ויש יותר
-                dbPlayers = dbPlayers.slice(0, 2000);
-                log(`✓ זוהו ${dbPlayers.length} שחקנים לעדכון.`);
-                // --------------------------------------------------------
-
-                log("2. מתחיל סנכרון מול API-FOOTBALL (מושך נתוני 5 ליגות)...");
+                log("2. מתחיל סנכרון חסכוני מול API-FOOTBALL (5 ליגות)...");
                 let apiDataMap = new Map();
                 for (const lId of leagueIds) {
                     log(`   > מושך נתונים לליגה ID: ${lId}...`);
                     const response = await fetch(`https://v3.football.api-sports.io/players?league=${lId}&season=${currentSeason}`, {
                         headers: { "x-rapidapi-key": API_FOOTBALL_KEY }
                     });
-                    
-                    if (!response.ok) throw new Error(`שגיאת API בליגה ${lId}. קוד: ${response.status}`);
-                    
-                    const result = await response.json();
-                    if (result.response) {
-                        result.response.forEach(item => {
-                            apiDataMap.set(item.player.name, item);
-                        });
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.response) {
+                            result.response.forEach(item => apiDataMap.set(item.player.name, item));
+                        }
                     }
-                    await new Promise(r => setTimeout(r, 600)); // מניעת חסימת ספאם מה-API
+                    await new Promise(r => setTimeout(r, 600)); 
                 }
-                log(`✓ נמשכו נתוני API מעודכנים. מצליב מידע...`);
 
-                log("3. מצליב נתונים ומחשב ציוני כוח (Power Score)...");
+                // --- 3. חישוב Power Score ---
+                log("3. מצליב נתונים ומחשב ניקוד (Power Score)...");
+                // פה נוסיף בעתיד את חישוב "5 משחקים אחרונים", כרגע נשען על סטט' כללית לדירוג
                 dbPlayers.forEach(p => {
                     const freshData = apiDataMap.get(p.name);
                     if (freshData && freshData.statistics && freshData.statistics[0]) {
-                        p.team = freshData.statistics[0].team.name || p.team;
-                        p.team_logo = freshData.statistics[0].team.logo || p.team_logo;
                         p.apps = freshData.statistics[0].games.appearences || 0;
-                        p.mins = freshData.statistics[0].games.minutes || 0;
                         p.goals = freshData.statistics[0].goals.total || 0;
                         p.assists = freshData.statistics[0].goals.assists || 0;
-                        p.tackles = freshData.statistics[0].tackles.total || 0;
                     }
-
-                    let score = 0;
-                    let isTop30 = top30Names.some(n => p.name.includes(n) || n.includes(p.name));
                     
-                    if (!isTop30) {
-                        score = ((p.goals || 0) * 10) + ((p.assists || 0) * 6) + ((p.apps || 0) * 2);
-                        if (p.pos === 'קישור') score += ((p.tackles || 0) * 1.5);
-                        
-                        let minFactor = Math.min(1, (p.mins || 0) / 1300);
-                        score *= minFactor;
+                    // נוסחת דירוג כללית כדי ליצור היררכיה מדויקת
+                    p.powerScore = ((p.goals || 0) * 15) + ((p.assists || 0) * 8) + ((p.apps || 0) * 3) + Math.random(); // פקטור רנדומלי קטנטן למניעת שוויון מוחלט
+                });
 
-                        if (premiumClubs.includes(p.team)) score *= 1.25;
-                        p.powerScore = score;
-                    } else {
-                        p.powerScore = 999999; 
+                // --- 4. מיון וחלוקה לרמות (Zero-Sum Game) ---
+                log("4. ממיין 1 עד 1000 וקובע רמות ושווי שוק ייחודי...");
+                dbPlayers.sort((a, b) => b.powerScore - a.powerScore); // החזק ביותר מקום 1
+
+                dbPlayers.forEach((p, index) => {
+                    let rank = index + 1;
+                    p.rank = rank;
+
+                    // הבטחת שווי ייחודי: יורד במדרגות קבועות לפי המיקום
+                    if (rank <= 50) {
+                        p.tier = 'כוכב על'; // 50 שחקנים
+                        let step = (50000000 - 35000000) / 50; 
+                        p.value = Math.floor(50000000 - ((rank - 1) * step));
+                    } 
+                    else if (rank <= 150) {
+                        p.tier = 'רמה 1'; // 100 שחקנים (51-150)
+                        let step = (34900000 - 19000000) / 100;
+                        p.value = Math.floor(34900000 - ((rank - 51) * step));
+                    }
+                    else if (rank <= 400) {
+                        p.tier = 'רמה 2'; // 250 שחקנים (151-400)
+                        let step = (18900000 - 10000000) / 250;
+                        p.value = Math.floor(18900000 - ((rank - 151) * step));
+                    }
+                    else if (rank <= 700) {
+                        p.tier = 'רמה 3'; // 300 שחקנים (401-700)
+                        let step = (9900000 - 5000000) / 300;
+                        p.value = Math.floor(9900000 - ((rank - 401) * step));
+                    }
+                    else {
+                        p.tier = 'רמה 4'; // 300 שחקנים (701-1000)
+                        let step = (4900000 - 500000) / 300;
+                        p.value = Math.floor(4900000 - ((rank - 701) * step));
                     }
                 });
 
-                log("4. ממיין ומחלק לרמות (Tiers)...");
-                dbPlayers.sort((a, b) => b.powerScore - a.powerScore);
-
-                dbPlayers.forEach((p, i) => {
-                    p.rank = i + 1;
-                    if (p.rank <= 30) { p.tier = 'כוכב על'; p.value = 50000000 - (p.rank * 400000); }
-                    else if (p.rank <= 150) { p.tier = 'רמה 1'; p.value = 34000000 - (p.rank * 100000); }
-                    else if (p.rank <= 500) { p.tier = 'רמה 2'; p.value = 24000000 - (p.rank * 25000); }
-                    else if (p.rank <= 1000) { p.tier = 'רמה 3'; p.value = 14000000 - (p.rank * 12000); }
-                    else if (p.rank <= 1500) { p.tier = 'רמה 4'; p.value = 7500000 - (p.rank * 6000); }
-                    else { p.tier = 'רמה 5+6'; p.value = 4000000 - (p.rank * 5000); }
-                });
-
-                log("5. שולח עדכונים חזרה ל-Supabase...");
+                // --- 5. עדכון חזרה ל-Supabase ---
+                log("5. מעדכן בסיס נתונים...");
                 for (let i = 0; i < dbPlayers.length; i += 100) {
                     const chunk = dbPlayers.slice(i, i + 100).map(p => ({
                         id: p.id, rank: p.rank, value: p.value, tier: p.tier, 
-                        team: p.team, team_logo: p.team_logo, apps: p.apps, mins: p.mins,
-                        goals: p.goals, assists: p.assists, tackles: p.tackles
+                        apps: p.apps, goals: p.goals, assists: p.assists
                     }));
                     const { error } = await supabase.from('master_players').upsert(chunk);
                     if (error) throw error;
                 }
 
-                log("✅ תהליך הסנכרון והדירוג הושלם בהצלחה מול כל 2000 השחקנים!", 'success');
-                btn.innerText = "התהליך הושלם!";
+                log("✅ השוק התעדכן בהצלחה! 1,000 שחקנים מסודרים מחדש.", 'success');
+                btn.innerText = "העדכון השבועי בוצע!";
                 btn.style.background = "#10b981";
 
             } catch (e) {
                 log("❌ שגיאה: " + e.message, 'err');
-                console.error(e);
                 btn.disabled = false;
-                btn.innerText = "נסה שוב";
             }
         }
     </script>
