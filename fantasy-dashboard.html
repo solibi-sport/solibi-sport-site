@@ -867,16 +867,27 @@
                     const tr = document.createElement('tr');
                     const ownerClass = p.owner && p.owner !== 'חופשי' ? 'manager-badge taken' : 'manager-badge';
                     
-                    // משתמש בדירוג הכפוי החסין שלנו מ-1 עד 2000!
-                    const displayRank = p.forcedRank;
-                    let calcTierName = 'רמה 5+6';
-                    let calcTierClass = 'tier-5';
-                    
-                    if (displayRank <= 30) { calcTierName = 'כוכב על'; calcTierClass = 'tier-star'; }
-                    else if (displayRank <= 150) { calcTierName = 'רמה 1'; calcTierClass = 'tier-1'; }
-                    else if (displayRank <= 500) { calcTierName = 'רמה 2'; calcTierClass = 'tier-2'; }
-                    else if (displayRank <= 1000) { calcTierName = 'רמה 3'; calcTierClass = 'tier-3'; }
-                    else if (displayRank <= 1500) { calcTierName = 'רמה 4'; calcTierClass = 'tier-4'; }
+                   // חלוקת הרמות החדשה והמדויקת לפי הפרוטוקול - אפריל 2026
+const displayRank = p.forcedRank;
+let calcTierName = '';
+let calcTierClass = '';
+
+if (displayRank <= 50) { 
+    calcTierName = 'כוכב על'; 
+    calcTierClass = 'tier-star'; 
+} else if (displayRank <= 150) { 
+    calcTierName = 'רמה 1'; 
+    calcTierClass = 'tier-1'; 
+} else if (displayRank <= 400) { 
+    calcTierName = 'רמה 2'; 
+    calcTierClass = 'tier-2'; 
+} else if (displayRank <= 700) { 
+    calcTierName = 'רמה 3'; 
+    calcTierClass = 'tier-3'; 
+} else { 
+    calcTierName = 'רמה 4'; 
+    calcTierClass = 'tier-4'; 
+}
 
                     let apps = p.apps || 0;
                     let mins = p.mins || 0;
