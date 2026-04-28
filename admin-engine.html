@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>מנוע דירוג - Total Fantasy (גרסת ניקוד רשמי V4)</title>
+    <title>מנוע דירוג - Total Fantasy (חסין תקלות V5 - IDs)</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; text-align: center; padding: 30px; }
@@ -16,12 +16,11 @@
 <body>
 
     <div class="engine-box">
-        <h1 style="color: #c4b5fd;">⚙️ מנוע עדכון שבועי V4 (אפריל 2026)</h1>
-        <p>מחשב ניקוד אמיתי לפי תקנון, שומר על 10 הבאנקרים, ומעדכן דירוגי בורסה ל-1000 שחקנים.</p>
+        <h1 style="color: #c4b5fd;">⚙️ מנוע עדכון שבועי V5</h1>
+        <p>נעילת טופ 10 מבוססת תעודות זהות (API ID) לדיוק אבסולוטי. הקוד המלא והמרווח.</p>
         
-        <button id="runFullEngineBtn" onclick="runFullProcess()">הפעל עדכון שבועי (אל תסגור את החלון!)</button>
-        
-        <div id="log">מערכת מוכנה. ממתין לפקודה...<br></div>
+        <button id="runFullEngineBtn" onclick="runFullProcess()">הפעל עדכון שבועי</button>
+        <div id="log">מערכת מוכנה.<br></div>
     </div>
 
     <script>
@@ -47,7 +46,7 @@
         async function runFullProcess() {
             const btn = document.getElementById('runFullEngineBtn');
             btn.disabled = true;
-            log("🏁 מתחיל תהליך סנכרון שבועי V4...", 'info');
+            log("🏁 מתחיל סנכרון שבועי...", 'info');
 
             try {
                 const SUPABASE_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
@@ -56,11 +55,20 @@
                 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
                 const leagueIds = [39, 140, 135, 78, 61]; 
-                const currentSeason = 2025; // עונת 25/26 (אפריל 26)
+                const currentSeason = 2025;
 
-                const lockedTop10 = [
-                    "Lamine Yamal", "E. Haaland", "K. Mbappé", "Bruno Fernandes", "H. Kane", 
-                    "Vinícius Júnior", "Raphinha", "Mohamed Salah", "J. Bellingham", "T. Courtois"
+                // רשימת הברזל (IDs בלבד)
+                const lockedTop10IDs = [
+                    386828, // Lamine Yamal
+                    1100,   // E. Haaland
+                    278,    // K. Mbappé
+                    1485,   // Bruno Fernandes
+                    184,    // H. Kane
+                    762,    // Vinícius Júnior
+                    1496,   // Raphinha
+                    306,    // Mohamed Salah
+                    129718, // Jude Bellingham (האמיתי!)
+                    730     // T. Courtois
                 ];
 
                 const premiumClubs = [
@@ -69,58 +77,55 @@
                     "Borussia Dortmund", "Atletico Madrid", "Manchester City", "Paris Saint Germain", "Napoli", "Roma"
                 ];
 
-                // 1. משיכת השחקנים הקיימים מסופאבייס כדי שנדע את מי לעדכן
-                log("1. מושך את 1,000 שחקני המאגר מסופאבייס...");
+                log("1. מושך נתונים קיימים מסופאבייס...");
                 const { data: dbPlayers, error: dbErr } = await supabase.from('master_players').select('*').limit(1000);
                 if (dbErr) throw dbErr;
-                log(`✓ נמשכו ${dbPlayers.length} שחקנים מהמאגר.`);
 
-                // יצירת מפה של מזהי ה-API שלהם כדי לשלוף רק אותם מהרשת
                 let apiDataMap = new Map();
-
-                log("2. שואב נתוני אמת מ-API-FOOTBALL ל-5 הליגות (זה ייקח כ-2 דקות, נא להמתין)...", "warn");
+                
+                log("2. שואב נתוני אמת מ-API-FOOTBALL...", "warn");
                 for (const lId of leagueIds) {
-                    let currentPage = 1;
+                    let currentPage = 1; 
                     let totalPages = 1;
-
+                    
                     while (currentPage <= totalPages) {
-                        const response = await fetch(`https://v3.football.api-sports.io/players?league=${lId}&season=${currentSeason}&page=${currentPage}`, {
-                            headers: { "x-rapidapi-key": API_FOOTBALL_KEY }
+                        const response = await fetch(`https://v3.football.api-sports.io/players?league=${lId}&season=${currentSeason}&page=${currentPage}`, { 
+                            headers: { "x-rapidapi-key": API_FOOTBALL_KEY } 
                         });
                         
                         if (response.ok) {
                             const result = await response.json();
                             if (result.paging) totalPages = result.paging.total;
                             
+                            // שומרים את השחקן במפה לפי ה-ID שלו
                             result.response.forEach(item => {
-                                apiDataMap.set(item.player.name, item);
+                                apiDataMap.set(item.player.id, item);
                             });
                         }
-                        currentPage++;
-                        await delay(600); // השהייה למניעת חסימה
+                        currentPage++; 
+                        await delay(600);
                     }
-                    log(`✓ ליגה ${lId} נסרקה בהצלחה.`);
                 }
 
-                log("3. מחשב ניקוד רשמי, עמדות, ומחיל את 'בוסט היוקרה'...");
-                
-                let lockedList = [];
+                log("3. מחשב דירוגים ונועל באנקרים לפי תעודת זהות...");
+                let lockedList = []; 
                 let competitivePool = [];
 
                 dbPlayers.forEach(p => {
-                    const freshData = apiDataMap.get(p.name);
-                    let totalPts = p.points || 0; // ברירת מחדל אם אין נתונים חדשים
-                    let apps = p.apps || 0, goals = p.goals || 0, assists = p.assists || 0;
+                    const freshData = apiDataMap.get(p.id);
+                    let totalPts = p.points || 0;
+                    let apps = p.apps || 0;
+                    let goals = p.goals || 0;
+                    let assists = p.assists || 0;
                     
                     if (freshData && freshData.statistics && freshData.statistics[0]) {
                         const stats = freshData.statistics[0];
-                        apps = stats.games.appearences || 0;
-                        goals = stats.goals.total || 0;
+                        apps = stats.games.appearences || 0; 
+                        goals = stats.goals.total || 0; 
                         assists = stats.goals.assists || 0;
-                        
                         const posDetails = getPosInfo(stats.games.position);
                         
-                        // חישוב ניקוד אמת
+                        // חישוב ניקוד מרווח וקריא
                         totalPts = 0;
                         totalPts += (apps * 2);
                         totalPts += (goals * posDetails.goalPts);
@@ -129,66 +134,100 @@
                         totalPts += Math.floor((apps * 0.28) * posDetails.csPts);
                         totalPts += Math.floor((apps * 0.5) * 4);
                         
-                        const avgGoals = apps > 0 ? (goals / apps) : 0;
+                        const avgGoals = apps > 0 ? (goals / apps) : 0; 
                         const avgAssists = apps > 0 ? (assists / apps) : 0;
                         const rating = 6.0 + (avgGoals * 1.5) + (avgAssists * 1.0);
-                        if (rating >= 7.5) totalPts += (apps * 2);
+                        
+                        if (rating >= 7.5) {
+                            totalPts += (apps * 2);
+                        }
                     }
 
-                    p.apps = apps; p.goals = goals; p.assists = assists; p.points = totalPts;
-                    p.powerScore = totalPts; // ציון בסיס
+                    p.apps = apps; 
+                    p.goals = goals; 
+                    p.assists = assists; 
+                    p.points = totalPts; 
+                    p.powerScore = totalPts;
 
-                    // בדיקת באנקרים
-                    let isLocked = lockedTop10.findIndex(n => p.name.includes(n) || n.includes(p.name));
-                    if (isLocked !== -1) {
-                        p.forcedRank = isLocked;
+                    // בדיקה מול מערך ה-IDs החסין
+                    let isLockedIndex = lockedTop10IDs.indexOf(p.id);
+                    
+                    if (isLockedIndex !== -1) {
+                        p.forcedRank = isLockedIndex; 
                         lockedList.push(p);
                     } else {
-                        if (premiumClubs.includes(p.team)) p.powerScore *= 1.25; // בוסט פרימיום
+                        if (premiumClubs.includes(p.team)) {
+                            p.powerScore *= 1.25;
+                        }
                         competitivePool.push(p);
                     }
                 });
 
-                // מיון ומתן בוסט סמוי ל-40 כוכבי העל
+                // מיון התחרותיים ומתן בוסט לטופ 40 שלהם
                 competitivePool.sort((a, b) => b.powerScore - a.powerScore);
-                for(let i=0; i<40; i++) {
-                    if(competitivePool[i]) competitivePool[i].powerScore *= 1.3;
+                for(let i = 0; i < 40; i++) { 
+                    if(competitivePool[i]) {
+                        competitivePool[i].powerScore *= 1.3; 
+                    }
                 }
-
-                log("4. קובע דירוגי בורסה ומקצה לשווי שוק...");
+                
+                // איחוד וסידור סופי
                 lockedList.sort((a, b) => a.forcedRank - b.forcedRank);
                 competitivePool.sort((a, b) => b.powerScore - a.powerScore);
-                
                 let finalRankedList = [...lockedList, ...competitivePool];
 
+                // חלוקה לרמות - מרווח וקריא
                 finalRankedList.forEach((p, index) => {
-                    let rank = index + 1;
+                    let rank = index + 1; 
                     p.rank = rank;
-                    if (rank <= 50) { p.tier = 'כוכב על'; p.value = Math.floor(50000000 - ((rank - 1) * ((50000000 - 35000000) / 50))); }
-                    else if (rank <= 150) { p.tier = 'רמה 1'; p.value = Math.floor(34900000 - ((rank - 51) * ((34900000 - 19000000) / 100))); }
-                    else if (rank <= 400) { p.tier = 'רמה 2'; p.value = Math.floor(18900000 - ((rank - 151) * ((18900000 - 10000000) / 250))); }
-                    else if (rank <= 700) { p.tier = 'רמה 3'; p.value = Math.floor(9900000 - ((rank - 401) * ((9900000 - 5000000) / 300))); }
-                    else { p.tier = 'רמה 4'; p.value = Math.floor(4900000 - ((rank - 701) * ((4900000 - 500000) / 300))); }
+                    
+                    if (rank <= 50) { 
+                        p.tier = 'כוכב על'; 
+                        let step = (50000000 - 35000000) / 50;
+                        p.value = Math.floor(50000000 - ((rank - 1) * step)); 
+                    } else if (rank <= 150) { 
+                        p.tier = 'רמה 1'; 
+                        let step = (34900000 - 19000000) / 100;
+                        p.value = Math.floor(34900000 - ((rank - 51) * step)); 
+                    } else if (rank <= 400) { 
+                        p.tier = 'רמה 2'; 
+                        let step = (18900000 - 10000000) / 250;
+                        p.value = Math.floor(18900000 - ((rank - 151) * step)); 
+                    } else if (rank <= 700) { 
+                        p.tier = 'רמה 3'; 
+                        let step = (9900000 - 5000000) / 300;
+                        p.value = Math.floor(9900000 - ((rank - 401) * step)); 
+                    } else { 
+                        p.tier = 'רמה 4'; 
+                        let step = (4900000 - 500000) / 300;
+                        p.value = Math.floor(4900000 - ((rank - 701) * step)); 
+                    }
                 });
 
-                log("5. משגר את 1000 השחקנים המעודכנים בחזרה ל-Supabase...");
+                log("4. משגר בחזרה לסופאבייס...");
                 for (let i = 0; i < finalRankedList.length; i += 100) {
                     const chunk = finalRankedList.slice(i, i + 100).map(p => ({
-                        id: p.id, rank: p.rank, tier: p.tier, value: p.value, points: p.points,
-                        apps: p.apps, goals: p.goals, assists: p.assists
+                        id: p.id, 
+                        rank: p.rank, 
+                        tier: p.tier, 
+                        value: p.value, 
+                        points: p.points,
+                        apps: p.apps, 
+                        goals: p.goals, 
+                        assists: p.assists
                     }));
+                    
                     const { error } = await supabase.from('master_players').upsert(chunk);
                     if (error) throw error;
                 }
 
-                log("✅ העדכון השבועי עבר בהצלחה! השוק הסתנכרן.", 'success');
-                btn.innerText = "הפעולה הושלמה!";
+                log("✅ העדכון הושלם בהצלחה!", 'success');
+                btn.innerText = "הפעולה הושלמה!"; 
                 btn.style.background = "#10b981";
 
             } catch (e) {
-                log("❌ שגיאה: " + e.message, 'err');
-                console.error(e);
-                btn.disabled = false;
+                log("❌ שגיאה: " + e.message, 'err'); 
+                btn.disabled = false; 
                 btn.innerText = "נסה שוב";
             }
         }
