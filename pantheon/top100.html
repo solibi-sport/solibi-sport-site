@@ -43,7 +43,6 @@
             width: 100%;
         }
 
-        /* התיקון: חלוקת ההדר ל-3 עמודות מדויקות */
         .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
         .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1; }
         .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
@@ -56,7 +55,7 @@
         .logo-wrapper:hover { transform: scale(1.05); }
         .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
 
-      .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); align-items: center; margin: 0; padding: 0; }
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); align-items: center; margin: 0; padding: 0; }
         .header-nav a { text-decoration: none; color: var(--text-light); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
         .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
 
@@ -97,7 +96,7 @@
         .v-item:hover { transform: translateX(-5px); text-shadow: 0 0 5px #fff; border-bottom-color: #fff; }
         .v-item svg { width: 18px; height: 18px; stroke: currentColor; }
 
-        /* === פאנל לייב משמאל (מעוצב ומלא) === */
+        /* === פאנל לייב משמאל === */
         .collapsible-live-panel {
             position: absolute; top: 20px; left: 20px; width: var(--sidebar-width);
             background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(15px);
@@ -116,7 +115,6 @@
         .panel-content::-webkit-scrollbar { width: 4px; }
         .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
 
-        /* עיצוב כרטיסיות המשחקים בתוך הפאנל */
         .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid var(--brand-green); }
         .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
         .live-match-card-light { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl; margin: 0 10px 8px 10px; }
@@ -129,18 +127,17 @@
         .match-score-col .score-num { font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center; }
         .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
 
-        /* === מעטפת התוכן המרכזית (סימטריה) === */
+        /* === מעטפת התוכן המרכזית === */
         .center-wrapper {
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             width: 100%; height: 100%; padding: 0 calc(var(--sidebar-width) + 30px);
             gap: clamp(15px, 3vh, 35px); 
         }
 
-        /* === עיצוב הכותרת המיוחדת והשליטה במיקום === */
         .premium-title-wrapper {
             display: flex; align-items: center; justify-content: center; gap: 15px; 
             width: 100%; max-width: 950px; flex-shrink: 0; 
-            transform: translateY(-40px); /* מנגנון הרמה והורדה של הכותרת! */
+            transform: translateY(-40px); 
         }
         .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--brand-green)); border-radius: 2px; }
         .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
@@ -150,7 +147,7 @@
             font-weight: 900; white-space: nowrap; margin: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        /* === פוטר וטיקר (הקוד המלא והרץ) === */
+        /* === פוטר וטיקר === */
         .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
         .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
@@ -169,8 +166,8 @@
 
     <header class="header">
         <div class="header-right-col">
-            <a href="../index.html" class="logo-wrapper">
-                <img src="../a.png" alt="לוגו" class="actual-logo-img">
+            <a href="/index.html" class="logo-wrapper">
+                <img src="/a.png" alt="לוגו" class="actual-logo-img">
             </a>
         </div>
         
@@ -181,11 +178,11 @@
             </a>
             <nav class="header-nav">
                 <ul>
-                    <li><a href="../index.html">דף הבית</a></li>
-                    <li><a href="../#">ארכיון</a></li>
-                    <li><a href="../#">קרדיטים</a></li>
-                    <li><a href="../#">אודות</a></li>
-                    <li><a href="../#">צור קשר</a></li>
+                    <li><a href="/index.html">דף הבית</a></li>
+                    <li><a href="/#">ארכיון</a></li>
+                    <li><a href="/#">קרדיטים</a></li>
+                    <li><a href="/#">אודות</a></li>
+                    <li><a href="/#">צור קשר</a></li>
                 </ul>
             </nav>
         </div>
@@ -260,7 +257,7 @@
         });
 
         // ==========================================
-        // === מנוע שאיבת נתוני לייב (קוד המלא) ===
+        // === מנוע שאיבת נתוני לייב ===
         // ==========================================
         const LEAGUE_NAMES_MAP = { 383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה", 88: "הולנדית ראשונה", 144: "בלגית ראשונה", 94: "פורטוגלית ראשונה", 203: "טורקית ראשונה", 2: "ליגת האלופות", 3: "הליגה האירופית", 848: "ליגת הקונפרנס", 13: "ליברטדורס", 11: "סודאמריקנה", 1: "מונדיאל" };
         const ORDERED_LEAGUES = [ 383, 384, 39, 140, 135, 78, 61, 40, 41, 42, 141, 136, 79, 62, 88, 144, 94, 203, 179, 119, 113, 106, 218, 107, 345, 332, 271, 286, 373, 283, 172, 197, 318, 333, 235, 362, 343, 71, 72, 128, 268, 239, 265, 253, 262, 307, 301, 98, 292, 169, 288, 233, 200, 188, 2, 3, 848, 5, 4, 13, 11, 9, 17, 6, 1 ];
@@ -319,7 +316,6 @@
                     else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
                     else matchStatus = 'לא התחיל';
 
-                    // קריטי לפתיחת החלון הצף!
                     const safeHomeName = encodeURIComponent(m.teams.home.name);
                     const safeAwayName = encodeURIComponent(m.teams.away.name);
 
@@ -356,14 +352,18 @@
         setInterval(fetchLiveMatches, 60000);
 
         // ==========================================
-        // === שאיבת הטיקר מקובץ חיצוני ===
+        // === שאיבת הטיקר עם הגנה מטעויות שרת ===
         // ==========================================
-        fetch('../ticker.html')
-            .then(res => res.text())
+        fetch('/ticker.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Ticker file not found');
+                return res.text();
+            })
             .then(data => document.getElementById('ticker-placeholder').innerHTML = data)
             .catch(err => console.error('שגיאה בשאיבת הטיקר:', err));
     </script>
-    <script src="../translations.js"></script>
-    <script src="../matchEvents.js"></script>
+    
+    <script src="/translations.js"></script>
+    <script src="/matchEvents.js"></script>
 </body>
 </html>
