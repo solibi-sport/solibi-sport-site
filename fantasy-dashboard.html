@@ -466,16 +466,17 @@
                                 /* Hover מואר לשורה */
                                 .market-table tr:hover td { background-color: rgba(124, 168, 86, 0.2) !important; cursor: pointer; }
                                 
-                            /* חלוקת אחוזים מדויקת וסימטרית ל-20 עמודות שטח */
+                          /* חלוקת אחוזים מדויקת וסימטרית ל-20 עמודות (הוגדל רוחב לקבוצה ושחקן) */
 .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 3.5%; } /* דירוג */
-.market-table th:nth-child(2), .market-table td:nth-child(2) { width: 12%; text-align: right; padding-right: 15px; } /* שחקן */
+.market-table th:nth-child(2), .market-table td:nth-child(2) { width: 14%; text-align: center; } /* שחקן - הורחב ומומרכז */
 .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 3%; } /* גיל */
-.market-table th:nth-child(4), .market-table td:nth-child(4) { width: 5%; color: #94a3b8; } /* מדינה */
+.market-table th:nth-child(4), .market-table td:nth-child(4) { width: 4%; color: #94a3b8; } /* מדינה */
 .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 4.5%; } /* עמדה */
-.market-table th:nth-child(6), .market-table td:nth-child(6) { width: 9%; text-align: right; padding-right: 0px; } /* קבוצה */
+.market-table th:nth-child(6), .market-table td:nth-child(6) { width: 11%; text-align: center; } /* קבוצה - הורחב ומומרכז */
 .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 3.5%; } /* הופעות */
 .market-table th:nth-child(8), .market-table td:nth-child(8) { width: 4.5%; } /* דקות */
-.market-table th:nth-child(n+9):nth-child(-n+16), .market-table td:nth-child(n+9):nth-child(-n+16) { width: 3%; } /* סטטיסטיקות קטנות */
+/* סטטיסטיקות קטנות (כולל כרטיסים שעכשיו מקבלים צבע ישירות מה-JS ולכן מחקנו את החרגת ה-CSS) */
+.market-table th:nth-child(n+9):nth-child(-n+16), .market-table td:nth-child(n+9):nth-child(-n+16) { width: 3%; } 
 .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 4.5%; } /* נקודות */
 .market-table th:nth-child(18), .market-table td:nth-child(18) { width: 8.5%; } /* בעלות */
 .market-table th:nth-child(19), .market-table td:nth-child(19) { width: 9%; } /* רמה */
@@ -590,11 +591,11 @@ select option {
                                 <thead>
                                     <tr>
                                         <th title="דירוג עולמי">#</th>
-                                        <th title="שם השחקן" style="text-align: right;">שחקן</th>
+                                       <th title="שם השחקן">שחקן</th>
                                         <th title="גיל">גיל</th>
                                         <th title="מדינה">מדינה</th>
                                         <th title="עמדה בטקטיקה">עמדה</th>
-                                        <th title="קבוצה מכהנת" style="text-align: right;">קבוצה</th>
+                                        <th title="קבוצה מכהנת">קבוצה</th>
                                         <th title="הופעות העונה">הופ'</th>
                                         <th title="דקות משחק העונה">דק'</th>
                                         <th title="שערים שהובקעו"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/><path d="M12 6a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/><path d="M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg></th>
