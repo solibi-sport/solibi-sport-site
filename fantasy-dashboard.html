@@ -466,25 +466,47 @@
                                 /* Hover מואר לשורה */
                                 .market-table tr:hover td { background-color: rgba(124, 168, 86, 0.2) !important; cursor: pointer; }
                                 
-/* ---- טבלה פלס - הכל ממורכז לחלוטין ובלי חיתוכים ---- */
+/* ---- התיקון הסופי והמוחלט - הכל נכנס בפריים אחד, הכל באמצע פלס ---- */
 .market-table {
-    table-layout: auto !important; 
-    width: 100%;
+    table-layout: fixed !important; /* מכריח את הטבלה להישאר בגבולות המסך ולא לברוח */
+    width: 100% !important;
+    font-size: 11px !important; /* הקטנת פונט כדי ש-20 עמודות ייכנסו יחד */
 }
 
 .market-table th, .market-table td {
-    white-space: nowrap !important; /* מונע חיתוך עם "..." */
-    padding: 10px 12px !important; 
-    text-align: center !important; /* הכל באמצע! שחקנים, קבוצות, כותרות - הכל! */
-    vertical-align: middle;
+    padding: 6px 2px !important; /* צמצום רווחים מיותרים שגוזלים מקום */
+    text-align: center !important; /* הכל מרוכז פלס לאמצע! בלי ימין ובלי שמאל */
+    vertical-align: middle !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* מוסיף 3 נקודות רק אם טקסט ארוך ממש חייב */
 }
 
-/* צבע הירוק של התקציב הפנוי לעמודת השווי */
+/* חלוקת 100% מדויקת ל-20 עמודות - ככה שום עמודה לא נעלמת */
+.market-table th:nth-child(1), .market-table td:nth-child(1) { width: 3%; } /* דירוג */
+.market-table th:nth-child(2), .market-table td:nth-child(2) { width: 14%; font-weight: bold; } /* שחקן */
+.market-table th:nth-child(3), .market-table td:nth-child(3) { width: 3%; } /* גיל */
+.market-table th:nth-child(4), .market-table td:nth-child(4) { width: 7%; color: #94a3b8; } /* מדינה */
+.market-table th:nth-child(5), .market-table td:nth-child(5) { width: 4.5%; } /* עמדה */
+.market-table th:nth-child(6), .market-table td:nth-child(6) { width: 11.5%; } /* קבוצה */
+.market-table th:nth-child(7), .market-table td:nth-child(7) { width: 3%; } /* הופעות */
+.market-table th:nth-child(8), .market-table td:nth-child(8) { width: 4.5%; } /* דקות */
+
+/* 8 סטטיסטיקות קטנות (שערים, בישולים, כרטיסים...) - 3% כל אחת (סה"כ 24%) */
+.market-table th:nth-child(n+9):nth-child(-n+16), .market-table td:nth-child(n+9):nth-child(-n+16) { width: 3%; } 
+
+.market-table th:nth-child(17), .market-table td:nth-child(17) { width: 4.5%; } /* נקודות */
+.market-table th:nth-child(18), .market-table td:nth-child(18) { width: 6%; } /* בעלות */
+.market-table th:nth-child(19), .market-table td:nth-child(19) { width: 7.5%; } /* רמה */
+
+/* שווי (סה"כ נותן 100% בדיוק) */
+.market-table th:nth-child(20), .market-table td:nth-child(20) { width: 7.5%; }
 .market-table td.value-col {
     color: #8dc63f !important;
     font-weight: 900 !important;
     text-shadow: 0 0 10px rgba(141, 198, 63, 0.3) !important;
-}              
+    font-size: 12px !important;
+}
                                 
                                 /* עיצוב רמות פרימיום */
                                 .tier-badge { padding: 5px 0; border-radius: 6px; font-weight: 700; font-size: 11px; display: block; width: 90%; margin: 0 auto; text-align: center; border: 1px solid transparent; background: transparent; letter-spacing: 0.5px;}
@@ -499,25 +521,7 @@
                                 .manager-badge.taken { border: 1px solid rgba(124, 168, 86, 0.6); color: var(--brand-green); background: rgba(124,168,86,0.1); }
                                 
                                 .pts-col { font-weight: 700; color: #ffffff; font-size: 13px; text-shadow: 0 1px 3px rgba(0,0,0,0.9); letter-spacing: 0.5px; }
-                                .value-col { font-weight: 700; color: var(--brand-green); font-size: 13px; direction: ltr; text-align: center; letter-spacing: 0.5px; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
-                                /* =========================================
-                                   שכבת צבע סופית: עיצוב הייטקיסטי כסוף לטבלה
-                                   ========================================= */
                                 
-                                /* כל הכתב בטבלה הופך לכסוף, עבה ויוקרתי */
-                                .market-table th, 
-                                .market-table td, 
-                                .manager-badge {
-                                    color: #e2e8f0 !important;  
-                                    font-weight: 700 !important; 
-                                    letter-spacing: 0.3px !important;
-                                }
-                            
-                                /* החרגה 1: עמודת שווי נשארת בצבע המקורי שלה */
-                                .market-table td.value-col {
-                                    color: #86efac !important;
-                                    font-weight: 900 !important;
-                                }
                             
                                /* =========================================
    עיצוב כפתורי רמות (Tiers) - סגנון כפתור מלא וזוהר
