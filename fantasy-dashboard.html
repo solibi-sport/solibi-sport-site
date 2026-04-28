@@ -455,7 +455,7 @@
                                 <option value="ליגה צרפתית">ליגה צרפתית</option>
                             </select>
                         </div>
-                        <div style="flex: 1; overflow-y: auto; overflow-x: hidden; background: #112845; border-radius: 12px; border: 1px solid var(--brand-green); box-shadow: 0 10px 20px rgba(0,0,0,0.15);">
+                        <div style="flex: 1; overflow-y: auto; overflow-x: hidden; background: #112845; border-radius: 12px; border: 1px solid var(--brand-green); box-shadow: 0 10px 20px rgba(0,0,0,0.15); direction: ltr;">
                             <style>
                                 /* --- עיצוב פרימיום הייטק נקי ומושלם (ללא עמודת ID) --- */
                                 .market-table { width: 100%; border-collapse: collapse; color: #e2e8f0; background: #112845; font-size: 12px; table-layout: fixed; min-width: 100%; } 
@@ -586,8 +586,13 @@
                                 .market-table td:nth-child(14) { color: #fbbf24 !important; } 
                                 .market-table td:nth-child(15) { color: #ef4444 !important; }
                             </style>
-                            
-                            <table class="market-table">
+                            /* תיקון לרשימות הנפתחות (Dropdowns) שלא יהיו לבנות */
+select option {
+    background-color: #112845 !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+                           <table class="market-table" style="direction: rtl;">
                                 <thead>
                                     <tr>
                                         <th title="דירוג עולמי">#</th>
