@@ -523,21 +523,64 @@
                                     font-weight: 900 !important;
                                 }
                             
-                                /* החרגה 2: "כוכב על" נשאר זהב כמו שביקשת */
-                                .tier-badge.tier-star {
-                                    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%) !important;
-                                    color: #000 !important;
-                                    border: none !important;
-                                }
-                            
-                                /* רמות 1-6 משתנות למראה הייטקיסטי כסוף עם מסגרת עדינה */
-                                .tier-badge:not(.tier-star) {
-                                    background: transparent !important; 
-                                    border: 1px solid #64748b !important; 
-                                    color: #e2e8f0 !important; 
-                                    font-weight: 800 !important;
-                                    box-shadow: none !important;
-                                }
+                               /* =========================================
+   עיצוב כפתורי רמות (Tiers) - סגנון כפתור מלא וזוהר
+   ========================================= */
+
+.tier-badge { 
+    padding: 6px 0 !important; 
+    border-radius: 8px !important; 
+    display: block; 
+    width: 90%; 
+    margin: 0 auto; 
+    text-align: center; 
+    letter-spacing: 0.5px;
+}
+
+/* כוכב על: זהב בוהק וקלאסי */
+.tier-badge.tier-star {
+    background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%) !important;
+    color: #000 !important;
+    border: none !important;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.5) !important;
+    font-weight: 900 !important;
+}
+
+/* רמה 1: כסף/פלטינום בוהק */
+.tier-badge.tier-1 {
+    background: linear-gradient(180deg, #e2e8f0 0%, #94a3b8 100%) !important;
+    color: #000 !important;
+    border: none !important;
+    box-shadow: 0 0 12px rgba(148, 163, 184, 0.5) !important;
+    font-weight: 900 !important;
+}
+
+/* רמה 2: ברונזה/נחושת יוקרתית */
+.tier-badge.tier-2 {
+    background: linear-gradient(180deg, #d97706 0%, #92400e 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 0 12px rgba(217, 119, 6, 0.5) !important;
+    font-weight: 900 !important;
+}
+
+/* רמה 3: פלדה/ברזל סולידי */
+.tier-badge.tier-3 {
+    background: linear-gradient(180deg, #64748b 0%, #334155 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 0 8px rgba(100, 116, 139, 0.4) !important;
+    font-weight: 800 !important;
+}
+
+/* רמה 4: בסיסי וכהה (ללא הילה) */
+.tier-badge.tier-4 {
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+    color: #94a3b8 !important;
+    border: 1px solid #334155 !important;
+    box-shadow: none !important;
+    font-weight: 700 !important;
+}
                             
                                 /* החרגה 3: הכרטיסים נשארים צהובים ואדומים בהתאמה */
                                 .market-table td:nth-child(14) { color: #fbbf24 !important; } 
