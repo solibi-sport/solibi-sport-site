@@ -15383,6 +15383,9 @@ const myDictionary = {
     "Álvaro Mouriño": "אלברו מוריניו",
     "Éric Dina Ebimbe": "אריק דינה אבימבה",
     "Ísak Bergmann Jóhannesson": "איסק ברגמן יוהנסון",
+    "Ilyas Ansah": "איליאס אנסה",
+    "Jake O'Brien": "ג'ייק אובראיין",
+    "Nico O'Reilly": "ניקו אוריילי",
         };
 
 
