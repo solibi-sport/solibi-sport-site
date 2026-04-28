@@ -466,21 +466,24 @@
                                 /* Hover מואר לשורה */
                                 .market-table tr:hover td { background-color: rgba(124, 168, 86, 0.2) !important; cursor: pointer; }
                                 
-                          /* חלוקת אחוזים מדויקת וסימטרית ל-20 עמודות (הוגדל רוחב לקבוצה ושחקן) */
+                                 /* חלוקת אחוזים מדויקת - רוחב מותאם לשמות מלאים, קבוצות ומדינות (ללא חיתוך) */
 .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 3.5%; } /* דירוג */
-.market-table th:nth-child(2), .market-table td:nth-child(2) { width: 14%; text-align: center; } /* שחקן - הורחב ומומרכז */
-.market-table th:nth-child(3), .market-table td:nth-child(3) { width: 3%; } /* גיל */
-.market-table th:nth-child(4), .market-table td:nth-child(4) { width: 4%; color: #94a3b8; } /* מדינה */
+.market-table th:nth-child(2), .market-table td:nth-child(2) { width: 17%; text-align: right; padding-right: 15px; } /* שחקן - הורחב מאוד ומוצמד ימינה */
+.market-table th:nth-child(3), .market-table td:nth-child(3) { width: 3.5%; } /* גיל */
+.market-table th:nth-child(4), .market-table td:nth-child(4) { width: 8.5%; text-align: right; padding-right: 5px; color: #94a3b8; } /* מדינה - הורחב ומוצמד ימינה */
 .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 4.5%; } /* עמדה */
-.market-table th:nth-child(6), .market-table td:nth-child(6) { width: 11%; text-align: center; } /* קבוצה - הורחב ומומרכז */
+.market-table th:nth-child(6), .market-table td:nth-child(6) { width: 13%; text-align: right; padding-right: 5px; } /* קבוצה - הורחב ומוצמד ימינה */
 .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 3.5%; } /* הופעות */
-.market-table th:nth-child(8), .market-table td:nth-child(8) { width: 4.5%; } /* דקות */
-/* סטטיסטיקות קטנות (כולל כרטיסים שעכשיו מקבלים צבע ישירות מה-JS ולכן מחקנו את החרגת ה-CSS) */
-.market-table th:nth-child(n+9):nth-child(-n+16), .market-table td:nth-child(n+9):nth-child(-n+16) { width: 3%; } 
+.market-table th:nth-child(8), .market-table td:nth-child(8) { width: 4%; } /* דקות */
+/* סטטיסטיקות קטנות */
+.market-table th:nth-child(n+9):nth-child(-n+16), .market-table td:nth-child(n+9):nth-child(-n+16) { width: 2.8%; } 
 .market-table th:nth-child(17), .market-table td:nth-child(17) { width: 4.5%; } /* נקודות */
-.market-table th:nth-child(18), .market-table td:nth-child(18) { width: 8.5%; } /* בעלות */
+.market-table th:nth-child(18), .market-table td:nth-child(18) { width: 6.6%; } /* בעלות */
 .market-table th:nth-child(19), .market-table td:nth-child(19) { width: 9%; } /* רמה */
-.market-table th:nth-child(20), .market-table td:nth-child(20) { width: 9%; } /* שווי */
+.market-table th:nth-child(20), .market-table td:nth-child(20) { width: 10%; } /* שווי */
+
+/* תיקון צבע השווי לירוק המקורי של סוליבי */
+.market-table td.value-col { color: var(--brand-green) !important; font-weight: 900 !important; }                
                                 
                                 /* עיצוב רמות פרימיום */
                                 .tier-badge { padding: 5px 0; border-radius: 6px; font-weight: 700; font-size: 11px; display: block; width: 90%; margin: 0 auto; text-align: center; border: 1px solid transparent; background: transparent; letter-spacing: 0.5px;}
@@ -989,15 +992,15 @@ if (displayRank <= 50) {
                     tr.innerHTML = `
                         <td class="rank-col" style="font-size: 14px; letter-spacing: 0.5px;">${displayRank}</td>
                         <td title="${translatedName || ''}">
-                            <div style="overflow: hidden; text-overflow: ellipsis;">${translatedName || '-'}</div>
+                            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${translatedName || '-'}</div>
                         </td>
                         <td>${p.age || '-'}</td>
-                        <td>${p.nationality || '-'}</td>
+                        <td style="text-align: right; padding-right: 5px;">${p.nationality || '-'}</td>
                         <td>${p.pos || '-'}</td>
                         <td>
                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="${translatedTeam || ''}">
                                 <img src="${p.team_logo || ''}" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;" onerror="this.style.display='none'">
-                                <span style="overflow: hidden; text-overflow: ellipsis;">${translatedTeam || '-'}</span>
+                                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${translatedTeam || '-'}</span>
                             </div>
                         </td>
                         <td class="stat-col">${formatNumberWithCommas(apps)}</td>
@@ -1008,8 +1011,8 @@ if (displayRank <= 50) {
                         <td class="stat-col">${cleanSheets}</td> 
                         <td class="stat-col">${formatNumberWithCommas(saves)}</td>
                         <td class="stat-col">${formatNumberWithCommas(p.pen_scored)}</td>
-                        <td class="stat-col" style="color: #fbbf24; text-shadow: none;">${formatNumberWithCommas(yellow)}</td>
-                        <td class="stat-col" style="color: #ef4444; text-shadow: none;">${formatNumberWithCommas(red)}</td>
+                        <td class="stat-col" style="color: #fbbf24; font-weight: bold;">${formatNumberWithCommas(yellow)}</td>
+                        <td class="stat-col" style="color: #ef4444; font-weight: bold;">${formatNumberWithCommas(red)}</td>
                         <td class="pts-col">${formatNumberWithCommas(fantasyPts)}</td>
                         <td><span class="${ownerClass}" title="${p.owner || 'חופשי'}">${p.owner || 'חופשי'}</span></td>
                         <td><span class="tier-badge ${calcTierClass}">${calcTierName}</span></td>
