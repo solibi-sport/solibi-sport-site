@@ -989,12 +989,13 @@ if (displayRank <= 50) {
                     const value = p.value ? (p.value / 1000000).toFixed(2) + 'M' : '0.00M';
                     const translatedName = window.translateName ? window.translateName(p.name) : p.name;
                     const translatedTeam = window.translateName ? window.translateName(p.team) : p.team;
+                    const translatedNationality = window.translateName ? window.translateName(p.nationality) : p.nationality;
 
                    tr.innerHTML = `
                         <td class="rank-col" style="font-size: 14px; font-weight: bold;">${displayRank}</td>
                         <td>${translatedName || '-'}</td>
                         <td>${p.age || '-'}</td>
-                        <td style="color: #94a3b8;">${p.nationality || '-'}</td>
+                        <td style="color: #94a3b8;">${translatedNationality || '-'}</td>
                         <td>${p.pos || '-'}</td>
                         <td>
                             <div style="display: flex; align-items: center; justify-content: center; gap: 6px;" title="${translatedTeam || ''}">
