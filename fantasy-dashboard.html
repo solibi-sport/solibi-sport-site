@@ -466,57 +466,25 @@
                                 /* Hover מואר לשורה */
                                 .market-table tr:hover td { background-color: rgba(124, 168, 86, 0.2) !important; cursor: pointer; }
                                 
-/* ---- עיצוב טבלה - חלוקה מנצחת וללא חיתוכים (V9) ---- */
+/* ---- טבלה פלס - הכל ממורכז לחלוטין ובלי חיתוכים ---- */
+.market-table {
+    table-layout: auto !important; 
+    width: 100%;
+}
 
-/* 1. דירוג (#) - קיבל הרחבה וביטול ריפוד כדי שהמספרים לא ייחתכו, דוחף את השחקן שמאלה! */
-.market-table th:nth-child(1) { width: 4.5%; text-align: center; }
-.market-table td:nth-child(1) { width: 4.5%; text-align: center; padding-left: 2px !important; padding-right: 2px !important; overflow: visible !important; text-overflow: clip !important; }
+.market-table th, .market-table td {
+    white-space: nowrap !important; /* מונע חיתוך עם "..." */
+    padding: 10px 12px !important; 
+    text-align: center !important; /* הכל באמצע! שחקנים, קבוצות, כותרות - הכל! */
+    vertical-align: middle;
+}
 
-/* 2. שחקן - כותרת באמצע, שחקנים מיושרים לימין */
-.market-table th:nth-child(2) { width: 14%; text-align: center !important; }
-.market-table td:nth-child(2) { width: 14%; text-align: right; padding-right: 10px; }
-
-/* 3. גיל - נמשך חזק ימינה צמוד לשחקן */
-.market-table th:nth-child(3) { width: 3.5%; text-align: right; padding-right: 15px; }
-.market-table td:nth-child(3) { width: 3.5%; text-align: right; padding-right: 15px; }
-
-/* 4. מדינה - נמשך חזק ימינה, ללא חיתוך הפוך */
-.market-table th:nth-child(4) { width: 7.5%; text-align: right; padding-right: 15px; color: #94a3b8; direction: ltr; }
-.market-table td:nth-child(4) { width: 7.5%; text-align: right; padding-right: 15px; color: #94a3b8; direction: ltr; overflow: visible !important; }
-
-/* 5. עמדה - נמשך חזק ימינה */
-.market-table th:nth-child(5) { width: 4.5%; text-align: right; padding-right: 15px; }
-.market-table td:nth-child(5) { width: 4.5%; text-align: right; padding-right: 15px; }
-
-/* 6. קבוצה - כותרת באמצע, קבוצות לימין */
-.market-table th:nth-child(6) { width: 11.5%; text-align: center !important; }
-.market-table td:nth-child(6) { width: 11.5%; text-align: right; padding-right: 5px; }
-
-/* 7. הופעות */
-.market-table th:nth-child(7), .market-table td:nth-child(7) { width: 3.5%; text-align: center; }
-
-/* 8. דקות - הורחב וקיבל פקודה שאוסרת חיתוך מספרים! רואים הכל! */
-.market-table th:nth-child(8) { width: 4.5%; text-align: center; }
-.market-table td:nth-child(8) { width: 4.5%; text-align: center; padding-left: 2px !important; padding-right: 2px !important; overflow: visible !important; text-overflow: clip !important; }
-
-/* 9-16. סטטיסטיקות קטנות (כולל כרטיסים) */
-.market-table th:nth-child(n+9):nth-child(-n+16), .market-table td:nth-child(n+9):nth-child(-n+16) { width: 2.5%; text-align: center; overflow: visible !important; text-overflow: clip !important; }
-
-/* 17. נקודות */
-.market-table th:nth-child(17), .market-table td:nth-child(17) { width: 4%; text-align: center; }
-
-/* 18. בעלות */
-.market-table th:nth-child(18), .market-table td:nth-child(18) { width: 6.5%; text-align: center; }
-
-/* 19. רמה */
-.market-table th:nth-child(19), .market-table td:nth-child(19) { width: 7.5%; text-align: center; }
-
-/* 20. שווי - ירוק של התקציב הפנוי */
-.market-table th:nth-child(20), .market-table td:nth-child(20) { width: 8.5%; text-align: center; }
-.market-table td.value-col { color: #8dc63f !important; font-weight: 900 !important; text-shadow: 0 0 10px rgba(141, 198, 63, 0.3) !important; }
-
-/* תיקון צבע השווי לירוק המקורי של סוליבי */
-.market-table td.value-col { color: var(--brand-green) !important; font-weight: 900 !important; }                
+/* צבע הירוק של התקציב הפנוי לעמודת השווי */
+.market-table td.value-col {
+    color: #8dc63f !important;
+    font-weight: 900 !important;
+    text-shadow: 0 0 10px rgba(141, 198, 63, 0.3) !important;
+}              
                                 
                                 /* עיצוב רמות פרימיום */
                                 .tier-badge { padding: 5px 0; border-radius: 6px; font-weight: 700; font-size: 11px; display: block; width: 90%; margin: 0 auto; text-align: center; border: 1px solid transparent; background: transparent; letter-spacing: 0.5px;}
@@ -1018,18 +986,16 @@ if (displayRank <= 50) {
                     const translatedName = window.translateName ? window.translateName(p.name) : p.name;
                     const translatedTeam = window.translateName ? window.translateName(p.team) : p.team;
 
-                    tr.innerHTML = `
-                        <td class="rank-col" style="font-size: 14px; letter-spacing: 0.5px;">${displayRank}</td>
-                        <td title="${translatedName || ''}">
-                            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${translatedName || '-'}</div>
-                        </td>
+                   tr.innerHTML = `
+                        <td class="rank-col" style="font-size: 14px; font-weight: bold;">${displayRank}</td>
+                        <td>${translatedName || '-'}</td>
                         <td>${p.age || '-'}</td>
-                        <td style="text-align: right; padding-right: 5px;">${p.nationality || '-'}</td>
+                        <td style="color: #94a3b8;">${p.nationality || '-'}</td>
                         <td>${p.pos || '-'}</td>
                         <td>
-                            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 6px;" title="${translatedTeam || ''}">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 6px;" title="${translatedTeam || ''}">
                                 <img src="${p.team_logo || ''}" style="width: 16px; height: 16px; flex-shrink: 0; object-fit: contain;" onerror="this.style.display='none'">
-                                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${translatedTeam || '-'}</span>
+                                <span>${translatedTeam || '-'}</span>
                             </div>
                         </td>
                         <td class="stat-col">${formatNumberWithCommas(apps)}</td>
@@ -1037,7 +1003,7 @@ if (displayRank <= 50) {
                         <td class="stat-col" style="color: #fff;">${formatNumberWithCommas(goals)}</td>
                         <td class="stat-col">${formatNumberWithCommas(assists)}</td>
                         <td class="stat-col">${formatNumberWithCommas(tackles)}</td>
-                        <td class="stat-col">${cleanSheets}</td> 
+                        <td class="stat-col">${cleanSheets}</td>
                         <td class="stat-col">${formatNumberWithCommas(saves)}</td>
                         <td class="stat-col">${formatNumberWithCommas(p.pen_scored)}</td>
                         <td class="stat-col" style="color: #fbbf24; font-weight: bold;">${formatNumberWithCommas(yellow)}</td>
