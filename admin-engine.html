@@ -1,145 +1,201 @@
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>מנוע דירוג - Total Fantasy (גרסת 1000)</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; text-align: center; padding: 30px; }
-        .engine-box { background: #1e293b; padding: 30px; border-radius: 15px; border: 2px solid #f59e0b; max-width: 800px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        button { background: #f59e0b; color: #000; border: none; padding: 15px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; margin: 10px; transition: 0.2s; }
-        button:hover { transform: scale(1.05); }
-        button:disabled { background: #64748b; cursor: not-allowed; }
-        #log { margin-top: 20px; text-align: right; background: #000; padding: 15px; border-radius: 8px; height: 350px; overflow-y: auto; font-family: monospace; color: #10b981; font-size: 14px; line-height: 1.5; }
-    </style>
-</head>
-<body>
+const axios = require('axios');
+const { createClient } = require('@supabase/supabase-js');
 
-    <div class="engine-box">
-        <h1 style="color: #fbbf24;">📈 מנוע בורסה V3 (1,000 שחקנים)</h1>
-        <p>מחשב דירוגים, מונע כפילויות שווי, שומר על מכסות הרמות (50/100/250/300/300).</p>
-        
-        <button id="runFullEngineBtn" onclick="runFullProcess()">עדכן שוק שחקנים (סנכרון מלא)</button>
-        
-        <div id="log">מערכת מוכנה. ממתין לפקודה...<br></div>
-    </div>
+const SUPABASE_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
+const API_FOOTBALL_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
 
-    <script>
-        function log(msg, type='info') {
-            const logDiv = document.getElementById('log');
-            const color = type === 'err' ? '#ef4444' : (type === 'success' ? '#10b981' : '#60a5fa');
-            logDiv.innerHTML += `<span style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</span><br>`;
-            logDiv.scrollTop = logDiv.scrollHeight;
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const leagueIds = [39, 140, 135, 78, 61]; 
+const currentSeason = 2025;
+
+const top30Names = [
+    "לאמין ימאל", "ארלינג האלאנד", "קיליאן אמבפה", "ברונו פרננדס", "הארי קיין", 
+    "ויניסיוס ג'וניור", "לאוטרו מרטינס", "מייקל אוליסה", "לואיס דיאס", "פדריקו ואלוורדה", 
+    "ראפיניה", "מוחמד סלאח", "ג'וד בלינגהאם", "רוברט לבנדובסקי", "דקלן רייס", 
+    "וויקטור גיוקרס", "ג'מאל מוסיאלה", "ז'ואאו נבש", "פדרי", "חביצה קווארצחליה", 
+    "פיל פודן", "קול פאלמר", "בוקאיו סאקה", "גבריאל מגאלאס", "ויטיניה", 
+    "וירג'יל ואן דייק", "אשרף חכימי", "טיבו קורטואה", "ברנרדו סילבה", "רודרי"
+];
+
+const premiumClubs = [
+    "Real Madrid", "Bayern München", "AC Milan", "Liverpool", "Barcelona", 
+    "Juventus", "Manchester United", "Inter", "Chelsea", "Arsenal", 
+    "Borussia Dortmund", "Atletico Madrid", "Manchester City", "Paris Saint Germain", "Napoli", "Roma"
+];
+
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
+const translatePos = (apiPos) => {
+    switch(apiPos) {
+        case 'Attacker': return 'חלוץ';
+        case 'Midfielder': return 'קישור';
+        case 'Defender': return 'הגנה';
+        case 'Goalkeeper': return 'שוער';
+        default: return 'קישור';
+    }
+};
+
+async function fetchAndPopulate() {
+    console.log("🚀 מתחיל שאיבת נתונים מ-5 הליגות הבכירות...");
+    let allPlayers = [];
+
+    try {
+        for (const lId of leagueIds) {
+            console.log(`\n> מתחיל שאיבה מליגה ID: ${lId}`);
+            let currentPage = 1;
+            let totalPages = 1;
+
+            while (currentPage <= totalPages) {
+                const response = await axios.get(`https://v3.football.api-sports.io/players`, {
+                    headers: { "x-rapidapi-key": API_FOOTBALL_KEY },
+                    params: { league: lId, season: currentSeason, page: currentPage }
+                });
+
+                const data = response.data;
+                if (data.paging) {
+                    totalPages = data.paging.total;
+                    process.stdout.write(`\r  - שואב עמוד ${currentPage} מתוך ${totalPages}...`);
+                }
+
+                data.response.forEach(item => {
+                    const stats = item.statistics[0];
+                    if (stats && stats.games.appearences > 0) { 
+                        allPlayers.push({
+                            api_id: item.player.id,
+                            name: item.player.name,
+                            pos: translatePos(stats.games.position),
+                            team: stats.team.name,
+                            team_logo: stats.team.logo,
+                            apps: stats.games.appearences || 0,
+                            mins: stats.games.minutes || 0,
+                            goals: stats.goals.total || 0,
+                            assists: stats.goals.assists || 0,
+                            tackles: stats.tackles.total || 0,
+                            cs: stats.goals.conceded === 0 && stats.games.position !== 'Attacker' ? 1 : 0 
+                        });
+                    }
+                });
+
+                currentPage++;
+                await delay(600); 
+            }
+            console.log(`\n✓ סוימה ליגה ${lId}. כרגע במאגר הזמני: ${allPlayers.length} שחקנים.`);
         }
 
-        async function runFullProcess() {
-            const btn = document.getElementById('runFullEngineBtn');
-            btn.disabled = true;
-            log("🏁 מתחיל תהליך סנכרון בורסה V3...", 'info');
+        console.log("\n🧠 מחשב דירוגים, מפעיל עונשי דקות, ומסנן את ה-1000 הטובים ביותר...");
+        
+        let top30Exact = [];
+        let others = [];
 
-            try {
-                const SUPABASE_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
-                const SUPABASE_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
-                const API_FOOTBALL_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
-                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-                // --- 1. משיכת 1000 השחקנים מסופאבייס (קריאה אחת!) ---
-                log("1. מושך את מאגר 1,000 השחקנים הקבועים מסופאבייס...");
-                const { data: dbPlayers, error: dbErr } = await supabase.from('master_players').select('*').limit(1000);
-                if (dbErr) throw dbErr;
-                if (!dbPlayers || dbPlayers.length === 0) throw new Error("לא נמצאו שחקנים!");
-                log(`✓ נמשכו ${dbPlayers.length} שחקנים.`);
-
-                // --- 2. משיכת נתונים מ-API ---
-                const leagueIds = [39, 140, 135, 78, 61]; 
-                const currentSeason = 2025;
-                log("2. מתחיל סנכרון חסכוני מול API-FOOTBALL (5 ליגות)...");
-                let apiDataMap = new Map();
-                for (const lId of leagueIds) {
-                    log(`   > מושך נתונים לליגה ID: ${lId}...`);
-                    const response = await fetch(`https://v3.football.api-sports.io/players?league=${lId}&season=${currentSeason}`, {
-                        headers: { "x-rapidapi-key": API_FOOTBALL_KEY }
-                    });
-                    if (response.ok) {
-                        const result = await response.json();
-                        if (result.response) {
-                            result.response.forEach(item => apiDataMap.set(item.player.name, item));
-                        }
-                    }
-                    await new Promise(r => setTimeout(r, 600)); 
+        allPlayers.forEach(p => {
+            let foundIndex = top30Names.findIndex(n => n === p.name);
+            
+            // הגנה מוחלטת לטופ 30 - נעולים למעלה
+            if (foundIndex !== -1) {
+                p.forcedRank = foundIndex;
+                top30Exact.push(p);
+            } else {
+                // ציון בסיס
+                let score = (p.goals * 15) + (p.assists * 8) + (p.apps * 3) + (p.mins / 100);
+                
+                // קנס דקות (Minutes Factor) - אם שיחק פחות מ-800 דקות, הציון נחתך
+                let minFactor = Math.min(1, (p.mins || 0) / 800);
+                
+                // רשת ביטחון לפצועים של קבוצות פרימיום (הקנס שלהם מוגבל למקסימום חצי)
+                if (premiumClubs.includes(p.team)) {
+                    minFactor = Math.max(minFactor, 0.5); 
                 }
+                
+                score *= minFactor;
 
-                // --- 3. חישוב Power Score ---
-                log("3. מצליב נתונים ומחשב ניקוד (Power Score)...");
-                // פה נוסיף בעתיד את חישוב "5 משחקים אחרונים", כרגע נשען על סטט' כללית לדירוג
-                dbPlayers.forEach(p => {
-                    const freshData = apiDataMap.get(p.name);
-                    if (freshData && freshData.statistics && freshData.statistics[0]) {
-                        p.apps = freshData.statistics[0].games.appearences || 0;
-                        p.goals = freshData.statistics[0].goals.total || 0;
-                        p.assists = freshData.statistics[0].goals.assists || 0;
-                    }
-                    
-                    // נוסחת דירוג כללית כדי ליצור היררכיה מדויקת
-                    p.powerScore = ((p.goals || 0) * 15) + ((p.assists || 0) * 8) + ((p.apps || 0) * 3) + Math.random(); // פקטור רנדומלי קטנטן למניעת שוויון מוחלט
-                });
-
-                // --- 4. מיון וחלוקה לרמות (Zero-Sum Game) ---
-                log("4. ממיין 1 עד 1000 וקובע רמות ושווי שוק ייחודי...");
-                dbPlayers.sort((a, b) => b.powerScore - a.powerScore); // החזק ביותר מקום 1
-
-                dbPlayers.forEach((p, index) => {
-                    let rank = index + 1;
-                    p.rank = rank;
-
-                    // הבטחת שווי ייחודי: יורד במדרגות קבועות לפי המיקום
-                    if (rank <= 50) {
-                        p.tier = 'כוכב על'; // 50 שחקנים
-                        let step = (50000000 - 35000000) / 50; 
-                        p.value = Math.floor(50000000 - ((rank - 1) * step));
-                    } 
-                    else if (rank <= 150) {
-                        p.tier = 'רמה 1'; // 100 שחקנים (51-150)
-                        let step = (34900000 - 19000000) / 100;
-                        p.value = Math.floor(34900000 - ((rank - 51) * step));
-                    }
-                    else if (rank <= 400) {
-                        p.tier = 'רמה 2'; // 250 שחקנים (151-400)
-                        let step = (18900000 - 10000000) / 250;
-                        p.value = Math.floor(18900000 - ((rank - 151) * step));
-                    }
-                    else if (rank <= 700) {
-                        p.tier = 'רמה 3'; // 300 שחקנים (401-700)
-                        let step = (9900000 - 5000000) / 300;
-                        p.value = Math.floor(9900000 - ((rank - 401) * step));
-                    }
-                    else {
-                        p.tier = 'רמה 4'; // 300 שחקנים (701-1000)
-                        let step = (4900000 - 500000) / 300;
-                        p.value = Math.floor(4900000 - ((rank - 701) * step));
-                    }
-                });
-
-                // --- 5. עדכון חזרה ל-Supabase ---
-                log("5. מעדכן בסיס נתונים...");
-                for (let i = 0; i < dbPlayers.length; i += 100) {
-                    const chunk = dbPlayers.slice(i, i + 100).map(p => ({
-                        id: p.id, rank: p.rank, value: p.value, tier: p.tier, 
-                        apps: p.apps, goals: p.goals, assists: p.assists
-                    }));
-                    const { error } = await supabase.from('master_players').upsert(chunk);
-                    if (error) throw error;
+                // בוסט לקבוצות הבכירות (הכפלה ב-1.25)
+                if (premiumClubs.includes(p.team)) {
+                    score *= 1.25; 
                 }
+                
+                p.powerScore = score;
+                others.push(p);
+            }
+        });
 
-                log("✅ השוק התעדכן בהצלחה! 1,000 שחקנים מסודרים מחדש.", 'success');
-                btn.innerText = "העדכון השבועי בוצע!";
-                btn.style.background = "#10b981";
-
-            } catch (e) {
-                log("❌ שגיאה: " + e.message, 'err');
-                btn.disabled = false;
+        top30Exact.sort((a, b) => a.forcedRank - b.forcedRank); 
+        others.sort((a, b) => b.powerScore - a.powerScore);     
+        
+        let uniqueList = [];
+        let seenIds = new Set();
+        for (let p of [...top30Exact, ...others]) {
+            if (!seenIds.has(p.api_id)) {
+                seenIds.add(p.api_id);
+                uniqueList.push(p);
             }
         }
-    </script>
-</body>
-</html>
+
+        // החיתוך האכזרי
+        let final1000 = uniqueList.slice(0, 1000);
+        console.log(`🎯 המאגר צומצם ל-1000 שחקני העילית (קבוצות קטנות ששיחקו מעט סוננו החוצה).`);
+
+        console.log("💰 מחלק שווי ורמות לפי פרוטוקול V1...");
+        final1000.forEach((p, index) => {
+            let rank = index + 1;
+            p.rank = rank;
+
+            if (rank <= 50) {
+                p.tier = 'כוכב על'; 
+                let step = (50000000 - 35000000) / 50; 
+                p.value = Math.floor(50000000 - ((rank - 1) * step));
+            } else if (rank <= 150) {
+                p.tier = 'רמה 1'; 
+                let step = (34900000 - 19000000) / 100;
+                p.value = Math.floor(34900000 - ((rank - 51) * step));
+            } else if (rank <= 400) {
+                p.tier = 'רמה 2'; 
+                let step = (18900000 - 10000000) / 250;
+                p.value = Math.floor(18900000 - ((rank - 151) * step));
+            } else if (rank <= 700) {
+                p.tier = 'רמה 3'; 
+                let step = (9900000 - 5000000) / 300;
+                p.value = Math.floor(9900000 - ((rank - 401) * step));
+            } else {
+                p.tier = 'רמה 4'; 
+                let step = (4900000 - 500000) / 300;
+                p.value = Math.floor(4900000 - ((rank - 701) * step));
+            }
+        });
+
+        console.log("⏳ מזריק 1,000 שחקנים למסד הנתונים בסופאבייס (זה ייקח כמה שניות)...");
+        for (let i = 0; i < final1000.length; i += 100) {
+            const chunk = final1000.slice(i, i + 100);
+            
+            const dbChunk = chunk.map(p => ({
+                name: p.name,
+                team: p.team,
+                team_logo: p.team_logo,
+                pos: p.pos,
+                rank: p.rank,
+                tier: p.tier,
+                value: p.value,
+                apps: p.apps,
+                mins: p.mins,
+                goals: p.goals,
+                assists: p.assists,
+                tackles: p.tackles
+            }));
+
+            const { error } = await supabase.from('master_players').insert(dbChunk);
+            if (error) {
+                console.error(`\n❌ שגיאה בהכנסת מנה ${i}:`, error.message);
+            } else {
+                process.stdout.write(`\r  - הוזרקו ${Math.min(i + 100, 1000)} מתוך 1000 שחקנים...`);
+            }
+        }
+
+        console.log("\n✅ תהליך האתחול הושלם בהצלחה! יש לך 1,000 שחקנים מושלמים בסופאבייס.");
+
+    } catch (err) {
+        console.error("\n❌ שגיאה קריטית:", err.message);
+    }
+}
+
+fetchAndPopulate();
