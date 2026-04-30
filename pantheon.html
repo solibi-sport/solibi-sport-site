@@ -28,7 +28,6 @@
             flex-direction: column;
         }
 
-        /* === פקודת הכיווץ האוטומטית למסכי לפטופ === */
         @media (max-width: 1600px) {
             body { zoom: 0.85; }
         }
@@ -71,7 +70,6 @@
         }
         .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; transform: scale(1.05); }
 
-        /* --- שורת חיפוש בדיוק כמו בדף הבית --- */
         .header-search { 
             width: 65%; 
             height: 34px; 
@@ -94,10 +92,9 @@
             width: 100%;
             padding: 20px; 
             gap: 20px; 
-            position: relative; /* חשוב לטובת הפאנל השמאלי המוחלט */
+            position: relative; 
         }
 
-        /* --- סיידבר ימני (תפריט נושאים) --- */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--element-navy-gradient);
@@ -110,102 +107,34 @@
             z-index: 60;
         }
 
-        .sidebar-header {
-            padding: 25px 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .sidebar-category {
-            font-size: 11px; color: var(--brand-green); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px;
-        }
-
+        .sidebar-header { padding: 25px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sidebar-category { font-size: 11px; color: var(--brand-green); font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; }
         .sidebar-title { color: #fff; font-size: 20px; font-weight: 900; }
-
         .sidebar-menu { list-style: none; padding: 10px 0; }
-
         .sidebar-item {
-            padding: 16px 20px;
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            border-right: 4px solid transparent;
-            transition: 0.3s;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            padding: 16px 20px; color: rgba(255,255,255,0.6); text-decoration: none; font-weight: 700; font-size: 14px;
+            border-right: 4px solid transparent; transition: 0.3s; cursor: pointer; display: flex; align-items: center; gap: 12px;
         }
-
         .sidebar-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0;}
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(124, 168, 86, 0.1); color: #ffffff; border-right-color: var(--brand-green); padding-right: 25px; }
 
-        .sidebar-item:hover, .sidebar-item.active {
-            background: rgba(124, 168, 86, 0.1);
-            color: #ffffff;
-            border-right-color: var(--brand-green);
-            padding-right: 25px;
-        }
-
-        /* --- אזור התוכן (הריבוע הלבן) --- */
         .content-area {
-            flex: 1;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 35px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto; 
-            
-            /* הפקודה החשובה: מרחיקה את הקוביה מצד שמאל כדי לתת מקום לפאנל הלייב! */
+            flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: auto; 
             margin-left: calc(var(--sidebar-width) + 20px); 
         }
 
         .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; height: 100%; }
         .tab-content.active { display: flex; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .content-header-title {
-            color: var(--text-dark);
-            font-weight: 900;
-            font-size: 24px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .content-desc {
-            color: #64748b;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f2f5;
-        }
+        .content-header-title { color: var(--text-dark); font-weight: 900; font-size: 24px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .content-desc { color: #64748b; font-size: 15px; line-height: 1.6; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f0f2f5; }
+        .placeholder-box { flex: 1; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: bold; font-size: 16px; }
 
-        .placeholder-box {
-            flex: 1;
-            background: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        /* --- פאנל לייב מתקפל (שמאלי) --- */
+        /* --- פאנל לייב וכרטיסיות המשחקים --- */
         .collapsible-live-panel {
-            position: absolute; /* מיקום מוחלט ביחס ל-main-content */
-            top: 20px; 
-            left: 20px; 
-            width: var(--sidebar-width); /* תמיד יהיה שווה ברוחב לסיידבר הימני לסימטריה מושלמת */
+            position: absolute; top: 20px; left: 20px; width: var(--sidebar-width);
             background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px);
             border: 2px solid var(--brand-green); border-radius: 16px;
             display: flex; flex-direction: column; overflow: hidden; z-index: 100;
@@ -213,21 +142,45 @@
         }
         .collapsible-live-panel.expanded { height: calc(100% - 40px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
         
-        .panel-header-btn { 
-            font-size: 14px; font-weight: 900; color: var(--text-dark); 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 0 20px; height: 44px; flex-shrink: 0; cursor: pointer;
-        }
+        .panel-header-btn { font-size: 14px; font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 44px; flex-shrink: 0; cursor: pointer; }
         .toggle-arrow { transition: transform 0.4s; }
         .collapsible-live-panel.expanded .toggle-arrow { transform: rotate(180deg); }
+        
+        .panel-content { position: relative; flex: 1; padding: 10px 0; overflow-y: auto; }
+        .panel-content::-webkit-scrollbar { width: 4px; }
+        .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        /* עיצוב כרטיסיות הלייב */
+        .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid var(--brand-green); }
+        .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
+
+        .live-match-card-light {
+            background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent;
+            border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
+            text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;
+            margin: 0 10px 8px 10px; cursor: pointer;
+        }
+        .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
+        
+        .match-teams-col { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; flex: 1; min-width: 0; }
+        .team-line { display: flex; align-items: center; gap: 8px; height: 16px; }
+        .team-line img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0;}
+        .team-line span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 105px; }
+
+        .match-score-col { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 40px; flex-shrink: 0; background: #f0f4f8; padding: 4px 8px; border-radius: 6px; position: relative;}
+        .match-score-col .score-num { font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center; }
+        .match-score-col .minute { font-size: 10px; color: var(--brand-green); font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
 
         /* === פוטר / טיקר === */
-        .footer { background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); overflow: hidden; height: 38px; flex-shrink: 0; }
-        /* CSS קריטי לטיקר כדי שיעבוד טוב גם כשהוא נמשך מקובץ חיצוני */
+        .footer { height: 40px; background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); position: relative; z-index: 1000; width: 100%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13.5px; overflow: hidden;}
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        .ticker-item, .ticker-separator { display: inline-flex; align-items: center; justify-content: center; margin: 0; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; direction: rtl; }
+        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; transform: translateY(-1px); }
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
+
+        @keyframes goalAlertPulse { 0% { transform: scale(0.95); background: rgba(122, 153, 102, 0.85); box-shadow: 0 0 5px rgba(122,153,102,0.5); } 100% { transform: scale(1.05); background: rgba(122, 153, 102, 1); box-shadow: 0 0 15px rgba(122,153,102,1); } }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
     </style>
 </head>
@@ -267,81 +220,52 @@
                 <div class="sidebar-title">פנתיאון הכדורגל</div>
             </div>
             <nav class="sidebar-menu">
-                <div class="sidebar-item active" onclick="switchInternalTab('tab-1', this)">
-                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    <span>100 הישראלים הגדולים</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-2', this)">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                    <span>50 הזרים הגדולים</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-3', this)">
-                    <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
-                    <span>נבחרת ישראל: שיאים וציוני דרך</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-4', this)">
-                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    <span>היכל הקבוצות וה-11 הגדולים</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-5', this)">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
-                    <span>ספר השיאים האישיים</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-6', this)">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                    <span>מחוץ לקופסא: מאמנים והנהלה</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-7', this)">
-                    <svg viewBox="0 0 24 24"><path d="M8 21h8m-4-4v4m-7-4h14m-1-10a2 2 0 0 1-2 2h-1.63a7 7 0 0 1-8.74 0H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                    <span>ליגת העל: היסטורית התארים</span>
-                </div>
+                <div class="sidebar-item active" onclick="switchInternalTab('tab-1', this)"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg><span>100 הישראלים הגדולים</span></div>
+                <div class="sidebar-item" onclick="switchInternalTab('tab-2', this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>50 הזרים הגדולים</span></div>
+                <div class="sidebar-item" onclick="switchInternalTab('tab-3', this)"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg><span>נבחרת ישראל: שיאים</span></div>
+                <div class="sidebar-item" onclick="switchInternalTab('tab-4', this)"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>היכל הקבוצות וה-11</span></div>
+                <div class="sidebar-item" onclick="switchInternalTab('tab-5', this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg><span>ספר השיאים האישיים</span></div>
+                <div class="sidebar-item" onclick="switchInternalTab('tab-6', this)"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg><span>מאמנים והנהלה</span></div>
+                <div class="sidebar-item" onclick="switchInternalTab('tab-7', this)"><svg viewBox="0 0 24 24"><path d="M8 21h8m-4-4v4m-7-4h14m-1-10a2 2 0 0 1-2 2h-1.63a7 7 0 0 1-8.74 0H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>היסטורית התארים</span></div>
             </nav>
         </aside>
 
         <section class="content-area">
-            
             <div id="tab-1" class="tab-content active">
                 <h2 class="content-header-title">דירוג סוליבי: 100 הישראלים הגדולים בהיסטוריה</h2>
                 <p class="content-desc">מיהו הכדורגלן הישראלי הגדול מכולם? הדירוג המלא, הסיפורים המרתקים והמחלוקות מאחורי האגדות שעיצבו את פני הכדורגל המקומי.</p>
                 <div class="placeholder-box">כאן תשולב טבלת 100 הישראלים הגדולים...</div>
             </div>
-
             <div id="tab-2" class="tab-content">
                 <h2 class="content-header-title">50 הזרים הגדולים</h2>
                 <p class="content-desc">השחקנים הזרים האיכותיים והמשפיעים ביותר שנחתו בישראל והשאירו חותם על הליגה לאורך השנים.</p>
                 <div class="placeholder-box">כאן תשולב רשימת 50 הזרים...</div>
             </div>
-
             <div id="tab-3" class="tab-content">
                 <h2 class="content-header-title">נבחרת ישראל: שיאים וציוני דרך</h2>
                 <p class="content-desc">ההיסטוריה הלאומית. משחקים בלתי נשכחים, שיאני ההופעות, והכובשים הגדולים במדי התכלת-לבן.</p>
                 <div class="placeholder-box">כאן ישולבו נתוני נבחרת ישראל...</div>
             </div>
-
             <div id="tab-4" class="tab-content">
                 <h2 class="content-header-title">היכל הקבוצות וה-11 הגדולים</h2>
                 <p class="content-desc">שיאי מועדונים, דירוגים, ובחירת הרכבי החלומות וה-11 הגדולים ביותר של כל קבוצה.</p>
                 <div class="placeholder-box">כאן ישולבו הרכבי הקבוצות...</div>
             </div>
-
             <div id="tab-5" class="tab-content">
                 <h2 class="content-header-title">ספר השיאים האישיים</h2>
                 <p class="content-desc">מלך השערים ההיסטורי, שיאני הבישולים, וכל הרצפים וההישגים האישיים יוצאי הדופן.</p>
                 <div class="placeholder-box">כאן ישולבו השיאים האישיים...</div>
             </div>
-
             <div id="tab-6" class="tab-content">
                 <h2 class="content-header-title">מחוץ לקופסא: מאמנים והנהלה</h2>
                 <p class="content-desc">הכדורגל הוא לא רק שחקנים. דירוגים של המאמנים הגדולים, בעלים משפיעים ושופטים.</p>
                 <div class="placeholder-box">כאן ישולבו נתוני המאמנים וההנהלה...</div>
             </div>
-
             <div id="tab-7" class="tab-content">
                 <h2 class="content-header-title">ליגת העל: היסטורית התארים</h2>
                 <p class="content-desc">ארכיון התארים המקיף. כל האלופות והזוכות בגביע המדינה מאז היווסדה של הליגה.</p>
                 <div class="placeholder-box">כאן ישולב ארכיון התארים...</div>
             </div>
-
         </section>
 
         <aside class="collapsible-live-panel" id="livePanel">
@@ -352,8 +276,8 @@
                 </div>
                 <svg class="toggle-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
             </div>
-            <div style="padding: 15px; font-weight: bold; color: #112845; text-align: center;" id="live-content">
-                טוען משחקים... ⚽
+            <div class="panel-content" id="live-content">
+                <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">טוען משחקים... ⚽</div>
             </div>
         </aside>
 
@@ -363,25 +287,19 @@
         <div id="ticker-placeholder"></div>
     </footer>
 
+    <script src="../translations.js"></script>
+    <script src="../matchEvents.js"></script>
+
     <script>
         // ניהול טאבים פנימי
         function switchInternalTab(tabId, element) {
-            // הסרת active מכולם
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
-            
-            // הפעלת הנבחר
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active');
         }
 
-        // אנימציית בלינק לנקודת הלייב
-        const style = document.createElement('style');
-        style.innerHTML = `@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }`;
-        document.head.appendChild(style);
-    </script>
-
-    <script>
+        // טעינת הטיקר החיצוני
         fetch('../ticker.html')
             .then(res => res.text())
             .then(data => {
@@ -389,6 +307,158 @@
                 if(placeholder) placeholder.innerHTML = data;
             })
             .catch(err => console.log('שגיאה בטעינת הטיקר:', err));
+
+
+        // מנוע תוצאות הלייב בדיוק כמו בדף הבית
+        const LEAGUE_NAMES_MAP = {
+            383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה",
+            40: "אנגלית שנייה", 41: "אנגלית שלישית", 42: "אנגלית רביעית", 141: "ספרדית שנייה", 136: "איטלקית שנייה", 79: "גרמנית שנייה", 62: "צרפתית שנייה",
+            88: "הולנדית ראשונה", 144: "בלגית ראשונה", 94: "פורטוגלית ראשונה", 203: "טורקית ראשונה", 179: "סקוטית ראשונה", 119: "דנית ראשונה",
+            113: "שבדית ראשונה", 106: "שווייצרית ראשונה", 218: "אוסטרית ראשונה", 172: "בולגרית ראשונה", 286: "סרבית ראשונה", 271: "הונגרית ראשונה",
+            332: "סלובקית ראשונה", 373: "סלובנית ראשונה", 288: "דרום אפריקאית ראשונה", 362: "גיאורגית ראשונה", 343: "אסטונית ראשונה",
+            345: "אזרבייג'אנית", 71: "ברזילאית ראשונה", 72: "ברזילאית שנייה", 128: "ארגנטינאית ראשונה", 239: "קולומביאנית ראשונה",
+            268: "אורוגוואית ראשונה", 253: "אמריקאית ראשונה", 307: "סעודית ראשונה", 301: "ליגת האמירויות", 2: "ליגת האלופות",
+            3: "הליגה האירופית", 848: "ליגת הקונפרנס", 13: "ליברטדורס", 11: "סודאמריקנה", 1: "מונדיאל",
+            283: "רומנית ראשונה", 197: "יוונית ראשונה", 318: "קפריסאית ראשונה", 333: "אוקראינית ראשונה", 235: "רוסית ראשונה",
+            107: "פולנית ראשונה", 262: "מקסיקנית ראשונה", 98: "יפנית ראשונה", 292: "דרום קוריאנית", 169: "סינית ראשונה",
+            233: "מצרית ראשונה", 200: "מרוקאית ראשונה", 188: "אוסטרלית ראשונה", 5: "ליגת האומות", 4: "יורו", 9: "קופה אמריקה", 17: "אליפות אסיה", 6: "אליפות אפריקה"
+        };
+
+        const ORDERED_LEAGUES = [
+            383, 384, 39, 140, 135, 78, 61,
+            40, 41, 42, 141, 136, 79, 62, 88, 144, 94, 203, 179, 119, 113, 106, 218, 107, 345, 332, 271, 286, 373,
+            283, 172, 197, 318, 333, 235, 362, 343, 71, 72, 128, 268, 239, 265, 253, 262, 307, 301, 98, 292, 169, 288, 233, 200, 188,
+            2, 3, 848, 5, 4, 13, 11, 9, 17, 6, 1
+        ];
+
+        window.matchGoalTracker = window.matchGoalTracker || {};
+        window.allLiveMatches = []; 
+        window.currentLivePage = 0; 
+        window.livePageInterval = null;
+
+        window.translateName = function(name) {
+            if (!name) return name;
+            if (typeof myDictionary !== 'undefined' && myDictionary[name]) { return myDictionary[name]; }
+            return name;
+        };
+
+        async function fetchLiveMatches() {
+            try {
+                const response = await fetch('/api/football');
+                const data = await response.json();
+                window.allLiveMatches = data.response || [];
+
+                window.allLiveMatches.sort((a, b) => {
+                    let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
+                    let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
+                    if (idxA === -1) idxA = 999;
+                    if (idxB === -1) idxB = 999;
+                    return idxA - idxB;
+                });
+
+                window.currentLivePage = 0;
+                renderLivePage();
+
+                if (!window.livePageInterval) {
+                    window.livePageInterval = setInterval(() => {
+                        if (window.allLiveMatches && window.allLiveMatches.length > 6) {
+                            window.currentLivePage++;
+                            if (window.currentLivePage * 6 >= window.allLiveMatches.length) {
+                                window.currentLivePage = 0;
+                            }
+                            renderLivePage();
+                        }
+                    }, 10000);
+                }
+            } catch (error) { console.error("שגיאה במשיכת נתונים בלייב:", error); }
+        }
+
+        function renderLivePage() {
+            const contentDiv = document.getElementById('live-content');
+            if (!window.allLiveMatches || window.allLiveMatches.length === 0) {
+                contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים ⚽</div>';
+                return;
+            }
+
+            const startIndex = window.currentLivePage * 6;
+            const pageMatches = window.allLiveMatches.slice(startIndex, startIndex + 6);
+
+            const grouped = {};
+            pageMatches.forEach(m => {
+                let leagueName = LEAGUE_NAMES_MAP[m.league.id];
+                if (!leagueName) leagueName = window.translateName(m.league.name);
+                if(!grouped[leagueName]) grouped[leagueName] = { logo: m.league.logo, matches: [] };
+                grouped[leagueName].matches.push(m);
+            });
+
+            let allHtml = '';
+            Object.keys(grouped).forEach(leagueName => {
+                const leagueData = grouped[leagueName];
+                let leagueHtml = `
+                    <div class="live-league-header">
+                        <img src="${leagueData.logo}">
+                        <span>${leagueName}</span>
+                    </div>
+                `;
+                let matchesHtml = '';
+                
+                leagueData.matches.forEach(m => {
+                    const homeTeam = window.translateName(m.teams.home.name);
+                    const awayTeam = window.translateName(m.teams.away.name);
+                    const fixId = m.fixture.id;
+                    const currentHome = m.goals.home !== null ? m.goals.home : 0;
+                    const currentAway = m.goals.away !== null ? m.goals.away : 0;
+                    
+                    if (window.matchGoalTracker[fixId]) {
+                        const prev = window.matchGoalTracker[fixId];
+                        if (currentHome > prev.home || currentAway > prev.away) window.matchGoalTracker[fixId].goalTime = Date.now();
+                        window.matchGoalTracker[fixId].home = currentHome;
+                        window.matchGoalTracker[fixId].away = currentAway;
+                    } else {
+                        window.matchGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
+                    }
+
+                    let matchStatus = '';
+                    const shortStatus = m.fixture.status.short;
+                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
+                    else if (shortStatus === 'HT') matchStatus = 'מחצית';
+                    else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
+                    else matchStatus = 'לא התחיל';
+                    
+                    const isGoalRecent = (Date.now() - window.matchGoalTracker[fixId].goalTime) < 15000;
+                    const goalOverlay = isGoalRecent ? `<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #7a9966; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; border-radius: 6px; z-index: 10; animation: goalAlertPulse 0.6s infinite alternate;">שער!</div>` : '';
+
+                    const safeHomeName = encodeURIComponent(m.teams.home.name);
+                    const safeAwayName = encodeURIComponent(m.teams.away.name);
+
+                    matchesHtml += `
+                        <a href="#" onclick="if(typeof openMatchEvents==='function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" class="live-match-card-light">
+                            <div class="match-teams-col">
+                                <div class="team-line"><img src="${m.teams.home.logo}"> <span>${homeTeam}</span></div>
+                                <div class="team-line"><img src="${m.teams.away.logo}"> <span>${awayTeam}</span></div>
+                            </div>
+                            <div class="match-score-col">
+                                ${goalOverlay}
+                                <span class="minute">${matchStatus}</span>
+                                <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
+                                    <span class="score-num">${currentHome}</span>
+                                    <span class="score-num">${currentAway}</span>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                });
+                allHtml += leagueHtml + matchesHtml;
+            });
+
+            contentDiv.innerHTML = allHtml;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchLiveMatches();
+            setInterval(fetchLiveMatches, 60000); 
+        });
+
     </script>
 </body>
 </html>
