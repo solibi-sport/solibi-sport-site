@@ -7,12 +7,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* הירוק של סוליבי ספורט - נשאר בדיוק אותו דבר! */
             --brand-green: #7ca856;
             --brand-green-glow: rgba(124, 168, 86, 0.6);
-            --bg-silver-matte: linear-gradient(145deg, #eef4f9 0%, #c9d4e0 100%);
-            --element-navy-gradient: radial-gradient(circle at top left, #1e4266 0%, #112845 100%);
+            
+            /* הרקע מותאם ב-100% לסוליבי עסקים */
+            --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
+            
+            /* הכחול נייבי מותאם ב-100% לסוליבי עסקים (מוחל על ההדר, הקוביות והפאנלים) */
+            --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
+            
             --text-light: #ffffff;
-            --text-dark: #112845;
+            --text-dark: #062141; /* מותאם לנייבי החדש */
             
             /* רוחב הפאנלים הצידיים - קובע גם את רוחב העמודות בהדר */
             --sidebar-width: clamp(240px, 20vw, 320px); 
@@ -270,7 +276,7 @@
 
         /* === עיצוב פרימיום מיוחד ל"ליגת החלומות" === */
         .fantasy-highlight {
-            background: linear-gradient(135deg, #112845 0%, #1b4332 100%); 
+            background: linear-gradient(135deg, #0a2e57 0%, #1b4332 100%); /* שודרג להשתלב עם הנייבי החדש */
             border: 2px solid var(--brand-green);
             animation: premiumPulse 2.5s infinite alternate; 
             z-index: 3;
@@ -456,10 +462,10 @@
         /* === רספונסיביות === */
         @media (max-width: 1600px) and (min-width: 1201px) {
             .center-wrapper {
-                zoom: 0.85; /* מכווץ את מרכז העמוד (הקוביות והכותרת) לפרופורציה מושלמת במסכי לפטופ */
+                zoom: 0.85; 
             }
             .side-panel {
-                zoom: 0.85; /* מכווץ גם את הפאנלים הצידיים להתאמה מלאה */
+                zoom: 0.85; 
             }
         }
 
@@ -549,7 +555,7 @@
             
             <div class="premium-title-wrapper">
                 <div class="title-line"></div>
-                <h1 class="page-title">סוליבי ספורט - <span></span></h1>
+                <h1 class="page-title">סוליבי ספורט - <span>הלובי הראשי</span></h1>
                 <div class="title-line left"></div>
             </div>
             <div class="cards-grid">
