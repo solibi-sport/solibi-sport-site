@@ -732,17 +732,20 @@
 
             container.innerHTML = allHtml;
 
-            // הפעלת האנימציה האנכית לטיקר אם יש צורך בלופ
             setTimeout(() => {
-                if (container.scrollHeight > wrapper.clientHeight) {
-                    container.innerHTML += container.innerHTML; // משכפל את התוכן ליצירת גלילה רציפה
-                    container.classList.add('live-scrolling');
-                    const duration = (container.scrollHeight / 2) * 0.05; 
-                    container.style.animationDuration = `${duration}s`;
-                } else {
-                    container.classList.remove('live-scrolling');
-                }
-            }, 100);
+    // קודם כל נוודא שאין מחלקת גלילה מהרצה קודמת
+    container.classList.remove('live-scrolling');
+    
+    // נבדוק האם באמת יש צורך בגלילה (כלומר האם יש יותר משחקים מהגובה של הפאנל)
+    // הערך 6 הוא רק דוגמה - אפשר לשנות אותו לפי מספר המשחקים שאתה רוצה שיוצגו לפני שתתחיל הגלילה
+    if (window.allLiveMatches.length > 6) {
+        // רק עכשיו משכפלים!
+        container.innerHTML += container.innerHTML; 
+        container.classList.add('live-scrolling');
+        const duration = (container.scrollHeight / 2) * 0.04; 
+        container.style.animationDuration = `${duration}s`;
+    }
+}, 100);
         }
 
         window.addEventListener('DOMContentLoaded', () => {
