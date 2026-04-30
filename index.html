@@ -454,6 +454,15 @@
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         /* === רספונסיביות === */
+        @media (max-width: 1600px) and (min-width: 1201px) {
+            .center-wrapper {
+                zoom: 0.85; /* מכווץ את מרכז העמוד (הקוביות והכותרת) לפרופורציה מושלמת במסכי לפטופ */
+            }
+            .side-panel {
+                zoom: 0.85; /* מכווץ גם את הפאנלים הצידיים להתאמה מלאה */
+            }
+        }
+
         @media (max-width: 1200px) {
             .center-wrapper { padding: 0; padding-top: 300px; } 
             .panel-left, .panel-right { position: relative; left: auto; right: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto; height: 250px; margin-bottom: 20px;}
