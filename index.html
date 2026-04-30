@@ -48,36 +48,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            /* הפדינג הזה מבטיח שהעמודות יתחילו בדיוק באותו קו אורך של הפאנלים למטה */
             padding: 0 20px; 
             width: 100%;
             flex-shrink: 0;
         }
 
-        /* עמודה ימנית (לוגו) - שווה בדיוק לרוחב הפאנל! ממורכזת באמצע */
-        .header-right-col { 
-            width: var(--sidebar-width); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
+        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
         
         .logo-wrapper {
-            background-color: #ffffff; 
-            padding: 0 28px; 
-            border-radius: 12px;
+            background-color: #ffffff; padding: 0 28px; border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s;
-            height: 52px; 
-            display: flex; align-items: center; justify-content: center;
+            height: 52px; display: flex; align-items: center; justify-content: center;
         }
         .logo-wrapper:hover { transform: scale(1.05); }
-        .actual-logo-img { 
-            height: 38px; 
-            transform: scale(1.7); 
-            display: block; object-fit: contain; 
-        }
+        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
 
-        /* מרכז ההדר - התפריט העליון והאזור האישי */
         .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1;}
         
         .personal-area-btn {
@@ -92,51 +77,25 @@
         .header-nav a { text-decoration: none; color: var(--text-light); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
         .header-nav a:hover { background: #ffffff; color: var(--text-dark); }
 
-        /* עמודה שמאלית (חיפוש) - שווה בדיוק לרוחב פאנל הלייב! */
-        .header-left-col { 
-            width: var(--sidebar-width); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
+        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
         
-        .header-search { 
-            width: 65%; 
-            height: 34px; 
-            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            position: relative;
-        }
-        .header-search input {
-            width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit;
-            box-shadow: none; transition: 0.4s ease;
-        }
+        .header-search { width: 65%; height: 34px; transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+        .header-search input { width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit; box-shadow: none; transition: 0.4s ease; }
         .header-search:focus-within { width: 100%; }
         .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
 
         /* === גוף הדף === */
         .main-content {
-            display: flex;
-            flex: 1; 
-            overflow: hidden;
-            position: relative;
+            display: flex; flex: 1; overflow: hidden; position: relative;
         }
 
         /* === פאנלים צידיים (שקוף זכוכית בדיוק כפי שהיה) === */
         .side-panel {
-            position: absolute;
-            top: 20px; 
-            width: var(--sidebar-width);
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 50;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            height: calc(100% - 40px);
+            position: absolute; top: 20px; width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 16px;
+            display: flex; flex-direction: column; overflow: hidden;
+            z-index: 50; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: calc(100% - 40px);
         }
 
         .panel-left { left: 20px; }
@@ -146,21 +105,18 @@
             font-size: 14px; font-weight: 900; color: var(--text-dark); 
             display: flex; align-items: center; justify-content: center;
             gap: 8px; padding: 0 20px; height: 48px; flex-shrink: 0;
-            border-bottom: 2px solid var(--brand-green); 
-            background: rgba(255,255,255,0.5);
+            border-bottom: 2px solid var(--brand-green); background: rgba(255,255,255,0.5); z-index: 10;
         }
+
+        /* === עיצוב פאנל עדכונים חמים === */
+        #updates-container { position: relative; flex: 1; display: flex; flex-direction: column; padding: 10px 0; overflow: hidden; }
         
-       .panel-content { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px 0; overflow-y: auto; overflow-x: hidden; }
-        .panel-content::-webkit-scrollbar { width: 4px; }
-        .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
-
-        #updates-content { transition: opacity 0.4s ease; }
-
-        /* עדכונים חמים (ימין) - מותאם ל-10 פריטים */
         .updates-item { 
-            margin: 3px 15px; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.9); 
-            padding: 6px 10px; border-radius: 10px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; 
+            margin: 4px 15px; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.9); 
+            padding: 8px 10px; border-radius: 10px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; 
             text-decoration: none; color: var(--text-dark); position: relative; transition: 0.3s; flex: 1; min-height: 0;
+            /* הוספת אנימציית הופעה יוקרתית */
+            animation: flipInX 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
         .updates-item:hover { transform: scale(1.02); background: #fff; border-color: var(--brand-green); }
         .updates-icon { background: #f0f4f8; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; color: var(--brand-green);}
@@ -168,26 +124,50 @@
         .updates-label { font-size: 9px; font-weight: 700; color: var(--brand-green); display: block; margin-bottom: 2px;}
         .updates-title { font-size: clamp(10px, 0.8vw, 12px); font-weight: 700; line-height: 1.2;}
 
-        /* תוצאות לייב (שמאל) - החלוקה החדשה שמייצרת סימטריה */
-        .match-slot {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-height: 0;
+        @keyframes flipInX {
+            0% { opacity: 0; transform: perspective(400px) rotateX(90deg) translateY(-10px); }
+            100% { opacity: 1; transform: perspective(400px) rotateX(0deg) translateY(0); }
         }
 
-        .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin: 0 10px 4px 10px; border-right: 3px solid var(--brand-green); flex-shrink: 0;}
+        /* === עיצוב פאנל תוצאות הלייב החדש (טיקר אנכי) === */
+        #live-container {
+            position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column; padding: 10px 0;
+        }
+        
+        .live-track {
+            display: flex; flex-direction: column; width: 100%;
+        }
+        
+        /* האנימציה שמופעלת רק אם יש הרבה משחקים */
+        .live-track.scrolling {
+            animation: tickerVertical linear infinite;
+        }
+        .live-track:hover {
+            animation-play-state: paused !important; /* עוצר את הגלילה במעבר עכבר/לחיצה */
+        }
+        
+        @keyframes tickerVertical {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); } /* גולל חצי, כי החצי השני זה השכפול */
+        }
+
+        /* החזרנו את כותרות הליגה לעיצוב החיצוני הסטנדרטי והיפה! */
+        .live-league-header { 
+            display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); 
+            padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; 
+            margin: 0 10px 6px 10px; border-right: 3px solid var(--brand-green); flex-shrink: 0;
+        }
         .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
 
         .live-match-card-light {
             background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent;
-            border-radius: 8px; padding: 6px 12px; display: flex; justify-content: space-between; align-items: center;
+            border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
             text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;
-            margin: 0 10px 4px 10px; flex: 1; min-height: 0;
+            margin: 0 10px 8px 10px; flex-shrink: 0; /* ללא מתיחה בכלל! שומר על גודל קבוע וטבעי */
         }
         .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
         
-        .match-teams-col { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; flex: 1; min-width: 0; justify-content: center;}
+        .match-teams-col { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; flex: 1; min-width: 0; }
         .team-line { display: flex; align-items: center; gap: 8px; height: 16px; }
         .team-line img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0;}
         .team-line span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 105px; }
@@ -197,127 +177,54 @@
         .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
-        /* === מרכז העמוד והגריד === */
+/* === מרכז העמוד והגריד === */
         .center-wrapper {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: flex-start; 
-            width: 100%; 
-            height: 100%;
-            padding: 0 calc(var(--sidebar-width) + 40px);
-            padding-top: 30px; 
-            padding-bottom: 30px; /* מרווח תחתון לאחר מחיקת כפתור הפלוס */
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+            width: 100%; height: 100%; padding: 0 calc(var(--sidebar-width) + 40px);
+            padding-top: 30px; padding-bottom: 30px; 
         }
 
-        /* === כותרת הלובי הראשי === */
         .premium-title-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            width: 100%;
-            max-width: 920px;
-            margin-bottom: 0;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            width: 100%; max-width: 920px; margin-bottom: 0; flex-shrink: 0;
             transform: translateY(70px); 
         }
 
         .page-title {
-            color: var(--brand-green); /* המילה סוליבי ספורט בירוק */
-            font-size: clamp(20px, 2.2vw, 26px);
-            font-weight: 900;
-            letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 8px 30px;
-            border-radius: 30px;
-            border: 1px solid rgba(124, 168, 86, 0.3);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin: 0;
-            white-space: nowrap; 
+            color: var(--brand-green); 
+            font-size: clamp(20px, 2.2vw, 26px); font-weight: 900; letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.6); padding: 8px 30px; border-radius: 30px;
+            border: 1px solid rgba(124, 168, 86, 0.3); box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin: 0; white-space: nowrap; 
         }
         
-        .title-line {
-            height: 2px;
-            flex: 1; 
-            background: linear-gradient(90deg, transparent, var(--text-dark)); /* קווים בנייבי */
-            border-radius: 2px;
-        }
+        .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--text-dark)); border-radius: 2px; }
         .title-line.left { background: linear-gradient(270deg, transparent, var(--text-dark)); }
 
-        /* === הגריד === */
         .cards-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            grid-template-rows: repeat(2, 1fr); 
-            gap: min(2vh, 15px); 
-            width: 100%;
-            max-width: min(920px, calc((100vh - 280px) * 2.2));
-            margin-top: auto; 
-            margin-bottom: auto;
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); 
+            gap: min(2vh, 15px); width: 100%; max-width: min(920px, calc((100vh - 280px) * 2.2));
+            margin-top: auto; margin-bottom: auto;
         }
         .square-box {
-            aspect-ratio: 1 / 1.05; 
-            background: var(--element-navy-gradient); border-radius: 12px;
-            display: flex; flex-direction: column; 
-            justify-content: flex-start; 
-            align-items: center; 
-            padding: 16% 5% 5% 5%; 
-            text-align: center; text-decoration: none; transition: 0.4s;
+            aspect-ratio: 1 / 1.05; background: var(--element-navy-gradient); border-radius: 12px;
+            display: flex; flex-direction: column; justify-content: flex-start; align-items: center; 
+            padding: 16% 5% 5% 5%; text-align: center; text-decoration: none; transition: 0.4s;
             border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;
             container-type: inline-size;
         }
         .square-box:hover { transform: translateY(-5px); border-color: var(--brand-green); box-shadow: 0 10px 25px rgba(0,0,0,0.4); z-index: 5; }
-
-        .square-box::before {
-            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: var(--box-bg); background-size: cover; background-position: center;
-            opacity: 0; transition: opacity 0.4s ease; z-index: 1; mix-blend-mode: overlay;
-        }
+        .square-box::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: var(--box-bg); background-size: cover; background-position: center; opacity: 0; transition: opacity 0.4s ease; z-index: 1; mix-blend-mode: overlay; }
         .square-box:hover::before { opacity: 0.5; }
         .square-box > * { position: relative; z-index: 2; }
 
-        /* === עיצוב פרימיום מיוחד ל"ליגת החלומות" === */
-        .fantasy-highlight {
-            background: linear-gradient(135deg, #0a2e57 0%, #1b4332 100%); 
-            border: 2px solid var(--brand-green);
-            animation: premiumPulse 2.5s infinite alternate; 
-            z-index: 3;
-        }
+        .fantasy-highlight { background: linear-gradient(135deg, #0a2e57 0%, #1b4332 100%); border: 2px solid var(--brand-green); animation: premiumPulse 2.5s infinite alternate; z-index: 3; }
+        .fantasy-highlight::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%); transform: rotate(45deg); animation: shimmer 4s infinite; z-index: 1; pointer-events: none; }
+        .fantasy-highlight:hover { transform: translateY(-8px) scale(1.05); border-color: #fff; box-shadow: 0 15px 40px rgba(124, 168, 86, 0.8), inset 0 0 30px rgba(124, 168, 86, 0.4); z-index: 10; animation: none; }
+        .fantasy-highlight .box-title { text-shadow: 0 0 12px rgba(124, 168, 86, 0.8); }
 
-        .fantasy-highlight::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
-            transform: rotate(45deg);
-            animation: shimmer 4s infinite;
-            z-index: 1; 
-            pointer-events: none;
-        }
-
-        .fantasy-highlight:hover {
-            transform: translateY(-8px) scale(1.05); 
-            border-color: #fff;
-            box-shadow: 0 15px 40px rgba(124, 168, 86, 0.8), inset 0 0 30px rgba(124, 168, 86, 0.4);
-            z-index: 10;
-            animation: none; 
-        }
-        
-        .fantasy-highlight .box-title {
-            text-shadow: 0 0 12px rgba(124, 168, 86, 0.8); 
-        }
-
-        @keyframes premiumPulse {
-            0% { box-shadow: 0 0 10px rgba(124, 168, 86, 0.3), inset 0 0 10px rgba(124, 168, 86, 0.1); transform: translateY(0); }
-            100% { box-shadow: 0 0 25px rgba(124, 168, 86, 0.7), inset 0 0 20px rgba(124, 168, 86, 0.4); transform: translateY(-3px); }
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            20% { transform: translateX(100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); } 
-        }
+        @keyframes premiumPulse { 0% { box-shadow: 0 0 10px rgba(124, 168, 86, 0.3), inset 0 0 10px rgba(124, 168, 86, 0.1); transform: translateY(0); } 100% { box-shadow: 0 0 25px rgba(124, 168, 86, 0.7), inset 0 0 20px rgba(124, 168, 86, 0.4); transform: translateY(-3px); } }
+        @keyframes shimmer { 0% { transform: translateX(-100%) rotate(45deg); } 20% { transform: translateX(100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
 
         .box-title { color: #fff; font-size: clamp(10px, 12cqi, 17px); font-weight: 900; margin: 2px 0 15px 0; line-height: 1.1; min-height: 38px; display: flex; align-items: center; justify-content: center; }
         .box-tag { color: var(--brand-green); font-size: clamp(8px, 8.5cqi, 11.5px); font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px;}
@@ -340,21 +247,9 @@
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         /* === רספונסיביות === */
-        @media (max-width: 1600px) and (min-width: 1201px) {
-            .center-wrapper { zoom: 0.85; }
-            .side-panel { zoom: 0.85; }
-        }
-
-        @media (max-width: 1200px) {
-            .center-wrapper { padding: 0; padding-top: 300px; } 
-            .panel-left, .panel-right { position: relative; left: auto; right: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto; height: 250px; margin-bottom: 20px;}
-            .cards-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px;}
-        }
-        @media (max-width: 768px) {
-            .cards-grid { grid-template-columns: 1fr; }
-            .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
-            .header-center-col { flex-direction: column; }
-        }
+        @media (max-width: 1600px) and (min-width: 1201px) { .center-wrapper { zoom: 0.85; } .side-panel { zoom: 0.85; } }
+        @media (max-width: 1200px) { .center-wrapper { padding: 0; padding-top: 300px; } .panel-left, .panel-right { position: relative; left: auto; right: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto; height: 250px; margin-bottom: 20px;} .cards-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px;} }
+        @media (max-width: 768px) { .cards-grid { grid-template-columns: 1fr; } .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; } .header-center-col { flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -397,7 +292,7 @@
                 <span>עידכונים חמים</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             </div>
-            <div class="panel-content" id="updates-content">
+            <div id="updates-container">
                 </div>
         </aside>
 
@@ -406,8 +301,8 @@
                 <span>תוצאות לייב</span>
                 <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
             </div>
-            <div class="panel-content" id="live-content">
-                <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">טוען משחקים... ⚽</div>
+            <div id="live-container">
+                <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;" id="live-loading">טוען משחקים... ⚽</div>
             </div>
         </aside>
 
@@ -427,7 +322,7 @@
                     <div class="box-desc">כל הטבלאות, התוצאות והסטטיסטיקות של השחקנים במקום אחד, מתעדכנים בזמן אמת.</div>
                 </a>
 
-                <a href="pantheon.html" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1170&auto=format&fit=crop')">
+                <a href="pantheon/pantheon.html" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1170&auto=format&fit=crop')">
                     <div class="tech-dots"><span></span><span></span><span></span><span></span></div>
                     <div class="box-tag">פרויקט הדגל</div>
                     <div class="box-title">פנתיאון הכדורגל הישראלי</div>
@@ -491,13 +386,10 @@
    <script src="matchEvents.js"></script>
 
     <script>
-        
         if (!document.getElementById('goal-animations-style')) {
             const style = document.createElement('style');
             style.id = 'goal-animations-style';
-            style.innerHTML = `
-                @keyframes goalAlertPulse { 0% { transform: scale(0.95); background: rgba(122, 153, 102, 0.85); box-shadow: 0 0 5px rgba(122,153,102,0.5); } 100% { transform: scale(1.05); background: rgba(122, 153, 102, 1); box-shadow: 0 0 15px rgba(122,153,102,1); } }
-            `;
+            style.innerHTML = `@keyframes goalAlertPulse { 0% { transform: scale(0.95); background: rgba(122, 153, 102, 0.85); box-shadow: 0 0 5px rgba(122,153,102,0.5); } 100% { transform: scale(1.05); background: rgba(122, 153, 102, 1); box-shadow: 0 0 15px rgba(122,153,102,1); } }`;
             document.head.appendChild(style);
         }
 
@@ -530,8 +422,6 @@
 
         window.matchGoalTracker = window.matchGoalTracker || {};
         window.allLiveMatches = []; 
-        window.currentLivePage = 0; 
-        window.livePageInterval = null;
 
         async function fetchLiveMatches() {
             try {
@@ -547,84 +437,75 @@
                     return idxA - idxB;
                 });
 
-                window.currentLivePage = 0;
-                renderLivePage();
-
-                if (!window.livePageInterval) {
-                    window.livePageInterval = setInterval(() => {
-                        /* מושכים 6 משחקים - הגודל המושלם למסך בלי למתוח */
-                        if (window.allLiveMatches && window.allLiveMatches.length > 6) {
-                            window.currentLivePage++;
-                            if (window.currentLivePage * 6 >= window.allLiveMatches.length) {
-                                window.currentLivePage = 0;
-                            }
-                            renderLivePage();
-                        }
-                    }, 10000);
-                }
+                renderLiveTicker();
                 
             } catch (error) { console.error("שגיאה במשיכת נתונים בלייב:", error); }
         }
 
-        function renderLivePage() {
-            const contentDiv = document.getElementById('live-content');
+        function renderLiveTicker() {
+            const container = document.getElementById('live-container');
+            const loader = document.getElementById('live-loading');
+            if(loader) loader.style.display = 'none';
+
             if (!window.allLiveMatches || window.allLiveMatches.length === 0) {
-                contentDiv.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים בעולם ⚽</div>';
+                container.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים בעולם ⚽</div>';
                 return;
             }
 
-            const startIndex = window.currentLivePage * 6;
-            const pageMatches = window.allLiveMatches.slice(startIndex, startIndex + 6);
-
-            let allHtml = '';
-            let lastLeagueId = null;
-
-            pageMatches.forEach(m => {
+            // לוקח עד 20 משחקים לטיקר כדי לא להעמיס את הדפדפן
+            const matchesToShow = window.allLiveMatches.slice(0, 20);
+            
+            const grouped = {};
+            matchesToShow.forEach(m => {
                 let leagueName = LEAGUE_NAMES_MAP[m.league.id];
                 if (!leagueName) leagueName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
+                if(!grouped[leagueName]) grouped[leagueName] = { logo: m.league.logo, matches: [] };
+                grouped[leagueName].matches.push(m);
+            });
+
+            let allHtml = '';
+
+            Object.keys(grouped).forEach(leagueName => {
+                const leagueData = grouped[leagueName];
                 
-                let isNewLeague = m.league.id !== lastLeagueId;
-                lastLeagueId = m.league.id;
-
-                const homeTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
-                const awayTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
-                const fixId = m.fixture.id;
-                const currentHome = m.goals.home !== null ? m.goals.home : 0;
-                const currentAway = m.goals.away !== null ? m.goals.away : 0;
-                
-                if (window.matchGoalTracker[fixId]) {
-                    const prev = window.matchGoalTracker[fixId];
-                    if (currentHome > prev.home || currentAway > prev.away) window.matchGoalTracker[fixId].goalTime = Date.now();
-                    window.matchGoalTracker[fixId].home = currentHome;
-                    window.matchGoalTracker[fixId].away = currentAway;
-                } else {
-                    window.matchGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
-                }
-
-                let matchStatus = '';
-                const shortStatus = m.fixture.status.short;
-                if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
-                else if (shortStatus === 'HT') matchStatus = 'מחצית';
-                else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
-                else matchStatus = 'לא התחיל';
-                
-                const isGoalRecent = (Date.now() - window.matchGoalTracker[fixId].goalTime) < 15000;
-                const goalOverlay = isGoalRecent ? `<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #7a9966; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; border-radius: 6px; z-index: 10; animation: goalAlertPulse 0.6s infinite alternate;">שער!</div>` : '';
-
-                const safeHomeName = encodeURIComponent(m.teams.home.name);
-                const safeAwayName = encodeURIComponent(m.teams.away.name);
-
-                /* השיטה לסימטריה מוחלטת: המקום לכותרת תמיד קיים, פשוט שקוף אם זו אותה ליגה! */
-                let headerHtml = `
-                    <div class="live-league-header" style="${isNewLeague ? '' : 'visibility: hidden;'}">
-                        <img src="${m.league.logo}">
+                // כותרת הליגה החיצונית שביקשת להשאיר - היא כעת נגללת יחד עם כל התוכן למעלה
+                allHtml += `
+                    <div class="live-league-header">
+                        <img src="${leagueData.logo}">
                         <span>${leagueName}</span>
                     </div>
                 `;
+                
+                leagueData.matches.forEach(m => {
+                    const homeTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
+                    const awayTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
+                    const fixId = m.fixture.id;
+                    const currentHome = m.goals.home !== null ? m.goals.home : 0;
+                    const currentAway = m.goals.away !== null ? m.goals.away : 0;
+                    
+                    if (window.matchGoalTracker[fixId]) {
+                        const prev = window.matchGoalTracker[fixId];
+                        if (currentHome > prev.home || currentAway > prev.away) window.matchGoalTracker[fixId].goalTime = Date.now();
+                        window.matchGoalTracker[fixId].home = currentHome;
+                        window.matchGoalTracker[fixId].away = currentAway;
+                    } else {
+                        window.matchGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
+                    }
 
-                allHtml += `
-                    <div class="match-slot">
-                        ${headerHtml}
+                    let matchStatus = '';
+                    const shortStatus = m.fixture.status.short;
+                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
+                    else if (shortStatus === 'HT') matchStatus = 'מחצית';
+                    else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
+                    else matchStatus = 'לא התחיל';
+                    
+                    const isGoalRecent = (Date.now() - window.matchGoalTracker[fixId].goalTime) < 15000;
+                    const goalOverlay = isGoalRecent ? `<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #7a9966; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; border-radius: 6px; z-index: 10; animation: goalAlertPulse 0.6s infinite alternate;">שער!</div>` : '';
+
+                    const safeHomeName = encodeURIComponent(m.teams.home.name);
+                    const safeAwayName = encodeURIComponent(m.teams.away.name);
+
+                    allHtml += `
                         <a href="#" onclick="if(typeof openMatchEvents==='function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" class="live-match-card-light">
                             <div class="match-teams-col">
                                 <div class="team-line"><img src="${m.teams.home.logo}"> <span>${homeTeam}</span></div>
@@ -639,11 +520,23 @@
                                 </div>
                             </div>
                         </a>
-                    </div>
-                `;
+                    `;
+                });
             });
 
-            contentDiv.innerHTML = allHtml;
+            // יצירת הטיקר הגולל
+            container.innerHTML = `<div class="live-track" id="live-track">${allHtml}</div>`;
+            const track = document.getElementById('live-track');
+            
+            // בדיקה האם יש מספיק משחקים בשביל הפעלת הגלילה. אם יש מעט, הם ישארו סטטיים במקום.
+            if (track.scrollHeight > container.clientHeight) {
+                track.innerHTML += track.innerHTML; // שכפול התוכן כדי ליצור לופ אינסופי וחלק
+                track.classList.add('scrolling');
+                
+                // חישוב מהירות גלילה קבועה ונעימה לעין לפי גובה התוכן (איטי יותר כדי שיוכלו לקרוא)
+                const duration = (track.scrollHeight / 2) * 0.05; 
+                track.style.animationDuration = `${duration}s`;
+            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -651,7 +544,7 @@
             setInterval(fetchLiveMatches, 60000); 
         });
 
-        /* === מנוע העדכונים החמים - 10 פריטים מתחלפים כל 10 שניות === */
+        /* === מנוע העדכונים החמים (10 פריטים מתחלפים כל 10 שניות באפקט תלת מימד יוקרתי) === */
         const updatesBatches = [
             [
                 { label: 'פנטזי ליג', title: 'מקום 1: קבוצת "האריות"', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>' },
@@ -681,22 +574,22 @@
 
         let currentUpdateBatch = 0;
         function renderUpdates() {
-            const container = document.getElementById('updates-content');
+            const container = document.getElementById('updates-container');
             if(!container) return;
+            
             const batch = updatesBatches[currentUpdateBatch];
-            container.style.opacity = 0; 
-            setTimeout(() => {
-                container.innerHTML = batch.map(item => `
-                    <a href="#" class="updates-item">
-                        <div class="updates-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">${item.icon}</svg></div>
-                        <div class="updates-text">
-                            <span class="updates-label">${item.label}</span>
-                            <span class="updates-title">${item.title}</span>
-                        </div>
-                    </a>
-                `).join('');
-                container.style.opacity = 1;
-            }, 300);
+            
+            // מוחקים את התוכן הקודם בצורה נקייה ומייצרים אנימציית מדורגת
+            container.innerHTML = batch.map((item, index) => `
+                <a href="#" class="updates-item" style="animation-delay: ${index * 0.05}s">
+                    <div class="updates-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">${item.icon}</svg></div>
+                    <div class="updates-text">
+                        <span class="updates-label">${item.label}</span>
+                        <span class="updates-title">${item.title}</span>
+                    </div>
+                </a>
+            `).join('');
+            
             currentUpdateBatch = (currentUpdateBatch + 1) % updatesBatches.length;
         }
 
