@@ -1213,6 +1213,17 @@ function renderFormation(formation) {
     document.getElementById('captain-box').innerHTML = 'גרור שחקן מהרכב';
 }
 
+// הפעלה: מאזינים לשינויים בתפריט ומציירים את המגרש בהתחלה
+document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('formation-select');
+    if(select) {
+        // כשמשנים את המערך בתפריט
+        select.addEventListener('change', (e) => renderFormation(e.target.value));
+        // ציור ראשוני ברגע שהדף נטען
+        renderFormation(select.value); 
+    }
+});        
+
 // 3. משחררים את השחקן בתוך המשבצת על המגרש
 function dropPlayer(ev, slotPos) {
     ev.preventDefault();
