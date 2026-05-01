@@ -513,7 +513,7 @@
     <h3 style="font-size: 13px; color: var(--text-dark); font-weight: 900; margin-bottom: 10px; display: flex; justify-content: space-between;">
         <span>📋 סגל שחקנים</span>
     </h3>
-    <div id="bench-list" style="flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; overflow-y: auto; padding-right: 5px; align-content: start;">
+    <div id="bench-list" style="flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; overflow-y: auto; padding-right: 5px; align-content: start;">
         <div class="bench-slot">שוער<br>1</div>
         <div class="bench-slot">שוער<br>2</div>
         
@@ -938,10 +938,10 @@
                         if(p.pos === 'חלוץ' || p.pos === 'התקפה') { borderColor = '#e74c3c'; posName = 'התקפה'; }
 
                         benchList.innerHTML += `
-                            <div style="background: #fff; border: 1px solid #cbd5e1; border-right: 4px solid ${borderColor}; border-radius: 6px; padding: 6px; text-align: center; font-size: 10px; font-weight: bold; color: var(--text-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
-                                <span style="color: #64748b; font-size: 9px; margin-bottom: -2px;">${posName}</span>
-                                <img src="${p.photo || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
-                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 90%;" title="${tName}">${tName}</span>
+                            <div style="background: #fff; border: 1px solid #cbd5e1; border-right: 4px solid ${borderColor}; border-radius: 6px; padding: 4px 2px; text-align: center; font-size: 9.5px; font-weight: bold; color: var(--text-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; cursor: pointer; transition: 0.2s; height: 48px;" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
+                                <span style="color: #64748b; font-size: 8.5px;">${posName}</span>
+                                <img src="${p.photo || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 95%;" title="${tName}">${tName}</span>
                             </div>
                         `;
                     });
