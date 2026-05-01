@@ -265,7 +265,7 @@
 }
 
 .captain-dropzone {
-    border: 1px dashed #cbd5e1;
+    border: 1px solid #cbd5e1;
     padding: 2px 8px;
     border-radius: 4px;
     min-width: 90px;
@@ -274,9 +274,13 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    background: rgba(0,0,0,0.02);
+    background: #fff;
+    color: #000;
+    font-weight: bold;
     transition: 0.3s;
 }
+#tab-squad .content-header-title { font-size: 20px; margin-bottom: 10px; }        
+        
 .captain-dropzone.dragover {
     border-color: #f1c40f;
     background: rgba(241, 196, 15, 0.1);
@@ -655,23 +659,22 @@
             </div>
         </div>
 
-        <div style="background: #f8fafc; border-radius: 12px; padding: 10px 15px; border: 1px solid #e2e8f0;">
-            <h3 style="font-size: 13px; color: var(--text-dark); font-weight: 900; margin-top: 0; margin-bottom: 10px;">
+        <div style="background: #f8fafc; border-radius: 12px; padding: 6px 12px; border: 1px solid #e2e8f0;">
+            <h3 style="font-size: 13px; color: var(--text-dark); font-weight: 900; margin-top: 0; margin-bottom: 6px;">
                 🪑 ספסל מחליפים (9 שחקנים)
             </h3>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
-                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 4px 8px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 8px; height: 40px; width: auto;"><div class="slot-icon" style="font-size: 16px; margin: 0;">👤</div><div class="slot-name" style="font-size: 10px;">מחליף</div></div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
+                <div class="player-slot bench-list-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'מחליף')" style="background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px; height: 34px; width: auto;"><div class="slot-icon" style="font-size: 14px; margin: 0;">👤</div><div class="slot-name" style="font-size: 9px;">מחליף</div></div>
             </div>
         </div>
-    </div>
 
     <div class="squad-area" style="flex: 1; background: #f8fafc; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; border: 1px solid #e2e8f0; height: 100%;">
         <h3 style="font-size: 14px; color: var(--text-dark); font-weight: 900; margin-bottom: 10px; text-align: center; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px;">
@@ -1448,7 +1451,7 @@ window.removePlayer = function(slot, event) {
         slot.style.borderColor = slot.getAttribute('data-empty-border');
         slot.style.background = slot.getAttribute('data-empty-bg');
         if (slot.classList.contains('bench-list-slot')) {
-             slot.style.borderStyle = 'dashed'; 
+             slot.style.borderStyle = 'solid'; 
         }
     }
 
