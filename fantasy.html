@@ -357,6 +357,23 @@
             .fm-layout { width: 100%; overflow: visible; margin: 0;}
             .market-table { min-width: 900px; } 
         }
+
+        /* === עיצוב הודעות והתראות === */
+        .messages-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; padding-left: 5px; margin-top: 10px; height: 100%; }
+        .msg-row { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; display: flex; align-items: center; gap: 15px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .msg-row:hover { border-color: var(--brand-green); transform: translateX(-5px); box-shadow: 4px 4px 15px rgba(0,0,0,0.05); cursor: pointer; }
+        
+        .msg-badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 900; color: #fff; white-space: nowrap; flex-shrink: 0; text-align: center; width: 100px; letter-spacing: 0.5px; }
+        .msg-badge.system { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .msg-badge.alert { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .msg-badge.transfer { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+        .msg-badge.league { background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%); color: #000; }
+        
+        .msg-text { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+        .msg-title { font-size: 14px; font-weight: 900; color: var(--text-dark); }
+        .msg-desc { font-size: 12px; color: #64748b; font-weight: 500; }
+        
+        .msg-time { font-size: 11px; color: #94a3b8; font-weight: bold; white-space: nowrap; margin-right: auto; padding-right: 15px; }
     </style>
 </head>
 
@@ -514,6 +531,70 @@
                 </div>
 
                 <div class="fm-content-area">
+                    <div id="tab-dashboard" class="fm-tab active">
+                        <h2 class="content-header-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                            הודעות והתראות
+                        </h2>
+                        
+                        <div class="messages-list">
+                            
+                            <div class="msg-row">
+                                <div class="msg-badge system">הודעת מערכת</div>
+                                <div class="msg-text">
+                                    <span class="msg-title">ברוך הבא למערכת הפנטזי המקצועית!</span>
+                                    <span class="msg-desc">שמחים לראות אותך איתנו. התחל לבנות את קבוצת החלומות שלך לקראת המחזור הקרוב.</span>
+                                </div>
+                                <div class="msg-time">לפני שעה</div>
+                            </div>
+
+                            <div class="msg-row">
+                                <div class="msg-badge alert">התראה חשובה</div>
+                                <div class="msg-text">
+                                    <span class="msg-title">הסגל שלך אינו חוקי</span>
+                                    <span class="msg-desc">חסרים לך 2 שחקני קישור כדי להשלים סגל של 20 שחקנים. לא תוכל לצבור נקודות עד להשלמת הסגל.</span>
+                                </div>
+                                <div class="msg-time">לפני שעתיים</div>
+                            </div>
+
+                            <div class="msg-row">
+                                <div class="msg-badge transfer">חלון העברות</div>
+                                <div class="msg-text">
+                                    <span class="msg-title">חלון ההעברות נסגר מחר!</span>
+                                    <span class="msg-desc">נותרו 24 שעות בלבד לסגירת חלון ההעברות של המחזור ה-5. ודא שההרכב שלך שמור ומעודכן.</span>
+                                </div>
+                                <div class="msg-time">אתמול, 14:30</div>
+                            </div>
+
+                            <div class="msg-row">
+                                <div class="msg-badge alert">עדכון פציעות</div>
+                                <div class="msg-text">
+                                    <span class="msg-title">קווין דה בריינה מוגדר כבספק</span>
+                                    <span class="msg-desc">הקשר שלך סובל ממתיחה בשריר הירך האחורי ונמצא בספק למשחק הקרוב (סיכוי של 25% לשחק).</span>
+                                </div>
+                                <div class="msg-time">אתמול, 09:15</div>
+                            </div>
+
+                            <div class="msg-row">
+                                <div class="msg-badge league">עדכון ליגה</div>
+                                <div class="msg-text">
+                                    <span class="msg-title">סיכום המחזור ה-4</span>
+                                    <span class="msg-desc">צברת 68 נקודות במחזור האחרון ועלית למקום ה-3 בליגת "החברים של סוליבי". המשך כך!</span>
+                                </div>
+                                <div class="msg-time">יום ראשון, 22:00</div>
+                            </div>
+
+                            <div class="msg-row">
+                                <div class="msg-badge system">עדכון גרסה</div>
+                                <div class="msg-text">
+                                    <span class="msg-title">פיצ'ר חדש: חילופים אוטומטיים</span>
+                                    <span class="msg-desc">כעת ניתן להגדיר סדר עדיפויות לחילופים מהספסל במקרה ששחקן הרכב לא משחק. היכנס להגדרות הקבוצה.</span>
+                                </div>
+                                <div class="msg-time">20/04/2026</div>
+                            </div>
+
+                        </div>
+                    </div>
                     
                     <div id="tab-squad" class="fm-tab">
                         <h2 class="content-header-title">סגל שחקנים (Overview)</h2>
