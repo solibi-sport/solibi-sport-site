@@ -527,6 +527,13 @@
                             <div class="soccer-field">
     <div class="field-lines"></div>
     
+    <div class="captain-control">
+        <span>קפטן:</span>
+        <div id="captain-box" class="captain-dropzone" ondragover="allowDrop(event); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="setCaptainDrop(event); this.classList.remove('dragover');">
+            גרור שחקן מהרכב
+        </div>
+    </div>
+
     <div class="formation-control">
         <span>מערך:</span>
         <select id="formation-select">
@@ -538,7 +545,6 @@
            <option value="5-4-1">5-4-1</option>
            <option value="5-3-2">5-3-2</option>
            <option value="5-2-3">5-2-3</option>
-            
         </select>
     </div>
 
@@ -1151,54 +1157,7 @@
                 });
             }
         });
-       // פונקציה שמציירת את המגרש לפי המערך הנבחר
-function renderFormation(formation) {
-    const pitch = document.getElementById('pitch-players');
-    if (!pitch) return;
-
-    const parts = formation.split('-'); 
-    const defCount = parseInt(parts[0]);
-    const midCount = parseInt(parts[1]);
-    const attCount = parseInt(parts[2]);
-
-    // הפונקציה שמייצרת את השורות
-    const createRow = (count, roleName) => {
-        let html = '<div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">';
-        for(let i = 0; i < count; i++) {
-            html += `<div class="player-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, '${roleName}')"><div class="slot-icon">👤</div><div class="slot-name">${roleName}</div></div>`;
-        }
-        html += '</div>';
-        return html;
-    };
-
-    // השינוי כאן: החלפנו 'חלוץ' ל-'התקפה' ו-'קשר' ל-'קישור'
-    let pitchHTML = createRow(attCount, 'התקפה');
-    pitchHTML += createRow(midCount, 'קישור');
-    pitchHTML += createRow(defCount, 'הגנה');
-
-    // השוער נשאר אותו דבר
-    pitchHTML += `
-        <div style="display: flex; justify-content: center; z-index: 10;">
-            <div class="player-slot" style="border-color: rgba(255,215,0,0.5);" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'שוער')">
-                <div class="captain-badge">C</div>
-                <div class="slot-icon">🧤</div><div class="slot-name">שוער</div>
-            </div>
-        </div>
-    `;
-
-    pitch.innerHTML = pitchHTML;
-}
-// הפעלה: מאזינים לשינויים בתפריט ומציירים בהתחלה
-document.addEventListener('DOMContentLoaded', () => {
-    const select = document.getElementById('formation-select');
-    if(select) {
-        // כשמשנים את המערך בתפריט
-        select.addEventListener('change', (e) => renderFormation(e.target.value));
-        // ציור ראשוני ברגע שהדף נטען
-        renderFormation(select.value); 
-    }
-});
-
+      
         // === פונקציות גרירה והפלה (Drag & Drop) ===
 
 // 1. מתחילים לגרור שחקן מהסגל
@@ -1214,38 +1173,72 @@ function allowDrop(ev) {
     ev.preventDefault();
 }
 
+// פונקציה שמציירת את המגרש לפי המערך הנבחר
+function renderFormation(formation) {
+    const pitch = document.getElementById('pitch-players');
+    if (!pitch) return;
+
+    const parts = formation.split('-'); 
+    const defCount = parseInt(parts[0]);
+    const midCount = parseInt(parts[1]);
+    const attCount = parseInt(parts[2]);
+
+    let slotIdCounter = 1; // נותנים ID לכל משבצת כדי לזהות אותה בגרירה לקפטן
+
+    const createRow = (count, roleName) => {
+        let html = '<div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">';
+        for(let i = 0; i < count; i++) {
+            html += `<div id="pitch-slot-${slotIdCounter++}" class="player-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, '${roleName}')"><div class="slot-icon">👤</div><div class="slot-name">${roleName}</div></div>`;
+        }
+        html += '</div>';
+        return html;
+    };
+
+    let pitchHTML = createRow(attCount, 'התקפה');
+    pitchHTML += createRow(midCount, 'קישור');
+    pitchHTML += createRow(defCount, 'הגנה');
+
+    // השוער (כבר לא מקבל קפטן אוטומטית)
+    pitchHTML += `
+        <div style="display: flex; justify-content: center; z-index: 10;">
+            <div id="pitch-slot-${slotIdCounter++}" class="player-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'שוער')">
+                <div class="slot-icon">🧤</div><div class="slot-name">שוער</div>
+            </div>
+        </div>
+    `;
+
+    pitch.innerHTML = pitchHTML;
+    
+    // איפוס קוביית הקפטן בשינוי מערך
+    document.getElementById('captain-box').innerHTML = 'גרור שחקן מהרכב';
+}
+
 // 3. משחררים את השחקן בתוך המשבצת על המגרש
 function dropPlayer(ev, slotPos) {
     ev.preventDefault();
     
-    // שולפים את נתוני השחקן שנגרר
     const playerPos = ev.dataTransfer.getData("pos");
     const playerName = ev.dataTransfer.getData("name");
     const playerPhoto = ev.dataTransfer.getData("photo");
 
-    // בדיקה 1: האם העמדה של השחקן תואמת לעמדה של המשבצת?
     if (playerPos !== slotPos) {
         alert(`אי אפשר לשים שחקן מעמדת ${playerPos} בעמדת ${slotPos}!`);
         return;
     }
 
-    // מוצאים את המשבצת שעליה שחררנו
     const slot = ev.currentTarget.closest('.player-slot');
 
-    // בדיקה 2: האם השחקן כבר נמצא על הדשא במשבצת אחרת?
     const existingSlots = document.querySelectorAll('#pitch-players .player-slot');
     for (let s of existingSlots) {
-        // בודקים אם יש משבצת (שהיא לא המשבצת הנוכחית) שכבר מכילה את השחקן הזה
         if (s !== slot && s.getAttribute('data-player-name') === playerName) {
             alert(`השחקן ${playerName} כבר נמצא בהרכב!`);
             return;
         }
     }
 
-    // שומרים את שם השחקן על המשבצת כדי שנוכל לזהות אותו להבא
     slot.setAttribute('data-player-name', playerName);
     
-    // מציירים את השחקן בתוך המשבצת
+    // מציירים את השחקן
     let innerHtml = `
         <img src="${playerPhoto}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.5); margin-bottom: 4px; background: rgba(255,255,255,0.8);" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
         <div style="background: #fff; padding: 2px 4px; border-radius: 4px; border: 1px solid #062141; box-shadow: 0 2px 4px rgba(0,0,0,0.3); max-width: 100%;">
@@ -1253,14 +1246,55 @@ function dropPlayer(ev, slotPos) {
         </div>
     `;
 
-    // אם זה שוער, נשמור לו את תג הקפטן
-    if (slotPos === 'שוער') {
-        innerHtml += `<div class="captain-badge">C</div>`;
-    }
-
     slot.innerHTML = innerHtml;
+    
+    // הופכים את המשבצת לניתנת לגרירה כדי שנוכל לגרור אותה לקוביית הקפטן
+    slot.setAttribute('draggable', 'true');
+    slot.ondragstart = function(e) {
+        e.dataTransfer.setData("name", playerName);
+        e.dataTransfer.setData("photo", playerPhoto);
+        e.dataTransfer.setData("sourceSlotId", slot.id); // שומרים את מזהה המשבצת
+    };
+
     slot.style.borderColor = 'var(--brand-green)';
     slot.style.background = 'rgba(124,168,86,0.3)';
+}
+
+// === פונקציה חדשה: מינוי קפטן ===
+function setCaptainDrop(ev) {
+    ev.preventDefault();
+    const playerName = ev.dataTransfer.getData("name");
+    const playerPhoto = ev.dataTransfer.getData("photo");
+    const sourceSlotId = ev.dataTransfer.getData("sourceSlotId");
+
+    // מוודאים שהשחקן נגרר מהדשא ולא מהסגל השמאלי
+    if (!sourceSlotId) {
+        alert("יש לגרור שחקן שכבר הוצב בהרכב על הדשא כדי למנותו לקפטן.");
+        return;
+    }
+
+    // חלון אישור
+    if (confirm(`האם אתה בטוח שברצונך למנות את ${playerName} לקפטן הקבוצה? (קפטן מקבל ניקוד כפול!)`)) {
+        
+        // 1. מסירים את תג הקפטן ממי שהיה קודם
+        document.querySelectorAll('.captain-badge').forEach(badge => badge.remove());
+        document.querySelectorAll('#pitch-players .player-slot').forEach(s => {
+            if (s.getAttribute('data-player-name')) {
+                s.style.borderColor = 'var(--brand-green)'; // מחזירים מסגרת רגילה לירוק
+            }
+        });
+
+        // 2. מוסיפים תג לקפטן החדש
+        const slot = document.getElementById(sourceSlotId);
+        if (slot) {
+            slot.innerHTML += `<div class="captain-badge">C</div>`;
+            slot.style.borderColor = '#f1c40f'; // מסגרת זהב לקפטן
+        }
+
+        // 3. מעדכנים את קוביית הקפטן למעלה
+        const display = document.getElementById('captain-box');
+        display.innerHTML = `<img src="${playerPhoto}" style="width:18px; height:18px; border-radius:50%; object-fit:cover;"> <span style="font-size:11px; font-weight:900;">${playerName}</span>`;
+    }
 }
     </script>
 </body>
