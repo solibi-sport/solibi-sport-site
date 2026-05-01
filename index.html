@@ -39,7 +39,7 @@
             flex-direction: column;
         }
 
-        /* === הדר עליון (מיושר וסימטרי בדיוק כמו בפנתיאון) === */
+       /* === הדר עליון (מיושר וסימטרי בדיוק כמו בפנתיאון) === */
         .header {
             height: 65px;
             background: var(--element-navy-gradient);
@@ -47,19 +47,17 @@
             position: relative;
             z-index: 1000;
             display: flex;
-            justify-content: space-between;
             align-items: center;
             padding: 0 20px; 
             width: 100%;
-            flex-shrink: 0;
         }
 
         .header-right-col { 
-            width: var(--sidebar-width); 
+            flex: 0 0 var(--sidebar-width);
+            max-width: var(--sidebar-width);
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            flex-shrink: 0; 
         }
 
         .header-center-col { 
@@ -68,15 +66,14 @@
             align-items: center; 
             gap: clamp(15px, 2vw, 30px); 
             flex: 1; 
-            min-width: 0; /* מונע מהתפריט המרכזי למעוך את העמודות הצידיות */
         }
 
         .header-left-col { 
-            width: var(--sidebar-width); 
+            flex: 0 0 var(--sidebar-width);
+            max-width: var(--sidebar-width);
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            flex-shrink: 0; 
         }
         
         .logo-wrapper {
@@ -99,11 +96,16 @@
         .header-nav a { text-decoration: none; color: var(--text-light); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
         .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
 
-        .header-search { width: 65%; height: 34px; transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; margin: 0 auto; }
+        .header-search { 
+            width: 65%; 
+            height: 34px; 
+            transition: width 0.4s ease; 
+            position: relative; 
+            margin: 0 auto; 
+        }
         .header-search input { width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit; box-shadow: none; transition: 0.4s ease; }
         .header-search:focus-within { width: 100%; }
         .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
-
         /* === גוף הדף === */
         .main-content {
             display: flex; flex: 1; overflow: hidden; position: relative;
