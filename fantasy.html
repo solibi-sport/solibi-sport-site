@@ -245,6 +245,42 @@
     outline: none;
     font-family: inherit;
 }
+
+        /* === שליטה בקפטן === */
+.captain-control {
+    position: absolute;
+    top: 15px;
+    left: 15px; /* ממקם את זה בצד שמאל */
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--text-dark);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.captain-dropzone {
+    border: 1px dashed #cbd5e1;
+    padding: 2px 8px;
+    border-radius: 4px;
+    min-width: 90px;
+    min-height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: rgba(0,0,0,0.02);
+    transition: 0.3s;
+}
+.captain-dropzone.dragover {
+    border-color: #f1c40f;
+    background: rgba(241, 196, 15, 0.1);
+}
         
         .squad-layout { display: flex; gap: 20px; flex: 1; }
         .squad-layout > .soccer-field { flex: 2.5; }
