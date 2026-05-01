@@ -38,53 +38,54 @@
             body { zoom: 0.85; }
         }
 
-        /* === הדר עליון (הפוך - כסוף) === */
+       /* === הדר עליון (מוקטן ומהודק גלובלית לכל המסכים) === */
         .header {
-            height: 65px;
-            background: var(--bg-silver-matte);
+            height: 52px; /* הוקטן משמעותית מ-65px */
+            background: var(--bg-silver-matte); /* אם השורה שלך כחולה עכשיו, תשנה ל- var(--element-navy-gradient) */
             border-bottom: 2px solid var(--brand-green);
             position: relative;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px; 
-            flex-shrink: 0;
+            padding: 0 15px; 
             width: 100%;
+            min-width: max-content; /* מונע מהרקע להיחתך במסכים קטנים! */
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            flex-shrink: 0;
         }
 
-        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
-        .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1; }
-        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
+        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; flex-shrink: 1; }
+        .header-center-col { display: flex; justify-content: center; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; flex-shrink: 1; }
 
         .logo-wrapper {
-            background: var(--element-navy-gradient); padding: 0 28px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s; height: 52px; 
+            background: var(--element-navy-gradient); padding: 0 20px; border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25); transition: 0.3s; height: 38px; /* הוקטן מ-52px */
             display: flex; align-items: center; justify-content: center; text-decoration: none;
         }
         .logo-wrapper:hover { transform: scale(1.05); }
-        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; filter: brightness(0) invert(1); }
+        .actual-logo-img { height: 26px; transform: scale(1.5); display: block; object-fit: contain; filter: brightness(0) invert(1); }
 
-        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); align-items: center; margin: 0; padding: 0; }
-        .header-nav a { text-decoration: none; color: var(--text-dark); font-weight: 900; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
+        .header-nav ul { list-style: none; display: flex; gap: 10px; align-items: center; margin: 0; padding: 0; }
+        .header-nav a { text-decoration: none; color: var(--text-dark); font-weight: 900; font-size: 12px; padding: 4px 8px; border-radius: 6px; transition: 0.3s; white-space: nowrap; }
         .header-nav a:hover { background: var(--element-navy-gradient); color: #ffffff; }
 
         .personal-area-btn {
             background: transparent; border: 1.5px solid var(--brand-green);
-            color: var(--text-dark); padding: 6px 16px; border-radius: 30px; text-decoration: none;
-            font-weight: 900; font-size: clamp(12px, 1vw, 14px); display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; white-space: nowrap;
+            color: var(--text-dark); padding: 4px 12px; border-radius: 30px; text-decoration: none;
+            font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.3s; white-space: nowrap;
         }
         .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; transform: scale(1.05); }
 
-        .header-search { position: relative; width: 65%; height: 34px; transition: width 0.4s ease; }
+        .header-search { position: relative; width: 75%; height: 30px; transition: width 0.4s ease; margin: 0 auto;}
         .header-search input { 
             width: 100%; height: 100%; border: 1px solid rgba(6, 33, 65, 0.2); background: rgba(255, 255, 255, 0.95); 
-            border-radius: 30px; padding: 0 20px; outline: none; transition: 0.4s; font-family: inherit; font-size: 13px;
+            border-radius: 30px; padding: 0 15px; outline: none; transition: 0.4s; font-family: inherit; font-size: 12px;
             color: var(--text-dark); font-weight: bold;
         }
         .header-search:focus-within { width: 100%; }
-        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; border-color: var(--brand-green);}
+        .header-search input:focus { box-shadow: 0 0 10px var(--brand-green-glow); background: #fff; z-index: 10; border-color: var(--brand-green);}
 
         /* === גוף הדף === */
         /* סידור נכון של הפריסה כדי למנוע דריסה של הלייב פאנל ע"י הטבלה */
