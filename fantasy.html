@@ -476,6 +476,7 @@
             border: 1px solid rgba(124, 168, 86, 0.2);
             position: relative;
             overflow: hidden;
+            min-height: 140px; /* מבטיח שהכרטיסייה לא תימעך לגובה */
         }
 
         /* עיטור רקע לפרופיל */
@@ -485,19 +486,65 @@
             pointer-events: none;
         }
 
-        .profile-avatar-wrap { position: relative; }
-        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--brand-green); object-fit: cover; background: #fff;}
+        .profile-avatar-wrap { 
+            position: relative; 
+            flex-shrink: 0; /* מונע מהתמונה להימעך לאליפסה! */
+            z-index: 2;
+        }
+        .profile-avatar { 
+            width: 90px; 
+            height: 90px; 
+            border-radius: 50%; 
+            border: 3px solid var(--brand-green); 
+            object-fit: cover; 
+            background: #fff; 
+            display: block; 
+        }
         .profile-level-badge {
             position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
             background: var(--brand-green); color: #fff; font-size: 11px; font-weight: 900;
             padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .profile-details { color: #fff; flex: 1; }
-        .manager-name { font-size: 24px; font-weight: 900; margin-bottom: 2px; }
-        .manager-team-name { font-size: 16px; color: var(--brand-green); font-weight: 700; margin-bottom: 12px; }
-        .manager-meta { display: flex; gap: 20px; font-size: 13px; color: #cbd5e1; }
-        .manager-meta span { display: flex; align-items: center; gap: 6px; }
+        .profile-details { 
+            color: #fff; 
+            flex: 1; 
+            min-width: 0; /* שומר שהטקסט לא יפרוץ החוצה */
+            z-index: 2; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+        }
+        .manager-name { 
+            font-size: 24px; 
+            font-weight: 900; 
+            margin: 0 0 4px 0 !important; /* מאפס שוליים דורסים */
+            line-height: 1.2; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        .manager-team-name { 
+            font-size: 16px; 
+            color: var(--brand-green); 
+            font-weight: 700; 
+            margin: 0 0 12px 0 !important; 
+            line-height: 1.2; 
+        }
+        .manager-meta { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 20px; 
+            font-size: 13px; 
+            color: #cbd5e1; 
+            margin: 0 !important; 
+        }
+        .manager-meta span { 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            white-space: nowrap; 
+        }
 
         .profile-stats-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;
@@ -520,7 +567,6 @@
             margin-bottom: 20px;
         }
         .p-section-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-
         /* ארון התארים */
         .trophies-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         .trophy-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
