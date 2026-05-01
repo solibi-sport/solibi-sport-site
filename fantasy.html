@@ -244,17 +244,17 @@
 
         .market-table th:nth-child(1), .market-table td:nth-child(1) { width: 4.5%; } 
         
-        /* עמודת שחקן: כותרת באמצע, טקסט בימין */
+        /* עמודת שחקן: הכל ממורכז */
         .market-table th:nth-child(2) { width: 12.5%; text-align: center !important; font-weight: bold; } 
-        .market-table td:nth-child(2) { width: 12.5%; text-align: right !important; padding-right: 10px !important; font-weight: bold; } 
+        .market-table td:nth-child(2) { width: 12.5%; text-align: center !important; font-weight: bold; } 
         
         .market-table th:nth-child(3), .market-table td:nth-child(3) { width: 3%; } 
-        .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 7%; color: #64748b; text-align: right; } 
+        .market-table th:nth-child(4), .market-table td:nth-child(4) { width: 7%; color: #64748b; text-align: center !important; } 
         .market-table th:nth-child(5), .market-table td:nth-child(5) { width: 4.5%; } 
         
-        /* עמודת קבוצה: כותרת באמצע, טקסט וסמלים בימין */
+        /* עמודת קבוצה: כותרת ממורכזת, ולמטה נסדר את הסמלים בקו ישר */
         .market-table th:nth-child(6) { width: 11.5%; text-align: center !important; } 
-        .market-table td:nth-child(6) { width: 11.5%; text-align: right !important; padding-right: 15px !important; direction: rtl;}
+        .market-table td:nth-child(6) { width: 11.5%; text-align: center !important; direction: rtl;}
         
         .market-table th:nth-child(7), .market-table td:nth-child(7) { width: 3%; } 
         .market-table th:nth-child(8), .market-table td:nth-child(8) { width: 4.5%; } 
@@ -436,11 +436,15 @@
                         <span class="fm-top-stat-title">תקציב פנוי</span>
                         <span class="fm-top-stat-value highlight" id="user-budget">₪100,000,000</span>
                     </div>
-                    <div class="fm-top-stat">
-                        <span class="fm-top-stat-title">סך נקודות</span>
-                        <span class="fm-top-stat-value" id="user-points">0</span>
+                   <div class="fm-top-stat">
+                            <span class="fm-top-stat-title">סך נקודות</span>
+                            <span class="fm-top-stat-value" id="user-points">0</span>
+                        </div>
+                        <div class="fm-top-stat">
+                            <span class="fm-top-stat-title">דירוג ארצי</span>
+                            <span class="fm-top-stat-value" id="user-rank">---</span>
+                        </div>
                     </div>
-                </div>
 
                 <div class="fm-content-area">
                     
@@ -613,6 +617,11 @@
                 if (group !== groupElement) group.classList.remove('open');
             });
             groupElement.classList.toggle('open');
+            
+            // 👈 הקוד שמוסיף את הפס הירוק לנושא הראשי החדש שנבחר
+            document.querySelectorAll('.fm-menu-item').forEach(item => item.classList.remove('active'));
+            const mainItem = groupElement.querySelector('.fm-menu-item');
+            if (mainItem) mainItem.classList.add('active');
         }
 
         function switchFmTab(tabId, element) {
@@ -965,11 +974,11 @@
                         <td style="color: #64748b;">${translatedNationality || '-'}</td>
                         <td style="color: var(--text-dark);">${p.pos || '-'}</td>
                         <td>
-                            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 8px; direction: rtl;" title="${translatedTeam || ''}">
+                            <div style="display: flex; align-items: center; justify-content: flex-start; gap: 8px; direction: rtl; width: 100px; margin: 0 auto;" title="${translatedTeam || ''}">
                                 <div style="width: 22px; display: flex; justify-content: center; flex-shrink: 0;">
                                     <img src="${p.team_logo || ''}" style="max-width: 18px; max-height: 18px; object-fit: contain;" onerror="this.style.display='none'">
                                 </div>
-                                <span style="color: var(--text-dark); text-align: right;">${translatedTeam || '-'}</span>
+                                <span style="color: var(--text-dark); text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${translatedTeam || '-'}</span>
                             </div>
                         </td>
                         <td class="stat-col">${formatNumberWithCommas(apps)}</td>
