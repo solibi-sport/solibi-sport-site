@@ -1234,7 +1234,9 @@ function dropPlayer(ev, slotPos) {
     const playerPos = ev.dataTransfer.getData("pos");
     const playerName = ev.dataTransfer.getData("name");
     const playerPhoto = ev.dataTransfer.getData("photo");
+    const sourceSlotId = ev.dataTransfer.getData("sourceSlotId"); // מזהה המשבצת שממנה גררנו (אם יש)
 
+    // מוודאים התאמת עמדה (למעט ספסל שמקבל הכל)
     if (slotPos !== 'מחליף' && playerPos !== slotPos) {
         alert(`אי אפשר לשים שחקן מעמדת ${playerPos} בעמדת ${slotPos}!`);
         return;
@@ -1242,22 +1244,46 @@ function dropPlayer(ev, slotPos) {
 
     const slot = ev.currentTarget.closest('.player-slot');
 
+    // נותנים ID למשבצת במידה ואין לה (חשוב לספסל המחליפים)
+    if (!slot.id) {
+        slot.id = 'slot-' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // מוודאים שהשחקן לא קיים כבר במשבצת *אחרת* (שהיא לא המשבצת שממנה הוא כרגע נגרר)
     const existingSlots = document.querySelectorAll('.player-slot'); 
     for (let s of existingSlots) {
-        if (s !== slot && s.getAttribute('data-player-name') === playerName) {
+        if (s !== slot && s.id !== sourceSlotId && s.getAttribute('data-player-name') === playerName) {
             alert(`השחקן ${playerName} כבר הוצב בהרכב או בספסל המחליפים!`);
             return;
         }
     }
 
+    // שומרים את ה-HTML המקורי (הריק) של המשבצת כדי שנוכל לשחזר אותה כשנמחק את השחקן
+    if (!slot.hasAttribute('data-empty-html')) {
+        slot.setAttribute('data-empty-html', slot.innerHTML);
+        slot.setAttribute('data-empty-border', slot.style.borderColor || '');
+        slot.setAttribute('data-empty-bg', slot.style.background || '');
+    }
+
+    // אם השחקן נגרר ממשבצת קיימת (למשל מהספסל לדשא) - נרוקן את המשבצת הישנה!
+    if (sourceSlotId && sourceSlotId !== slot.id) {
+        const sourceSlot = document.getElementById(sourceSlotId);
+        if (sourceSlot) {
+            removePlayer(sourceSlot, null); // פונקציית המחיקה החדשה
+        }
+    }
+
     slot.setAttribute('data-player-name', playerName);
     
-    let innerHtml = '';
+    // יצירת כפתור ה-X להסרת השחקן
+    const removeBtnHtml = `<div onclick="removePlayer(this.closest('.player-slot'), event)" style="position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 50; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" title="הסר שחקן מהרכב">✖</div>`;
 
-    // בדיקה: האם זרקנו לדשא או לספסל למטה?
+    let innerHtml = '';
+    let imgSize = slotPos === 'מחליף' ? '30px' : '40px';
+
     if (slot.classList.contains('bench-list-slot')) {
-        // עיצוב לשורות בספסל: תמונה מימין, טקסט משמאל
         innerHtml = `
+            ${removeBtnHtml}
             <img src="${playerPhoto}" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1; flex-shrink: 0;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
             <div style="display: flex; flex-direction: column; flex: 1; overflow: hidden; justify-content: center; text-align: right;">
                 <span style="font-size: 10px; font-weight: 900; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${playerName}</span>
@@ -1265,10 +1291,12 @@ function dropPlayer(ev, slotPos) {
             </div>
         `;
         slot.style.borderStyle = 'solid';
+        slot.style.background = '#f0fdf4';
+        slot.style.borderColor = 'var(--brand-green)';
     } else {
-        // עיצוב קוביות על הדשא: תמונה למעלה, שם למטה
         innerHtml = `
-            <img src="${playerPhoto}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.5); margin-bottom: 4px; background: rgba(255,255,255,0.8);" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+            ${removeBtnHtml}
+            <img src="${playerPhoto}" style="width: ${imgSize}; height: ${imgSize}; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.5); margin-bottom: 4px; background: rgba(255,255,255,0.8);" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
             <div style="background: #fff; padding: 2px 4px; border-radius: 4px; border: 1px solid #062141; box-shadow: 0 2px 4px rgba(0,0,0,0.3); max-width: 100%;">
                 <span style="font-size: 9px; font-weight: bold; color: #062141; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;">${playerName}</span>
             </div>
@@ -1276,11 +1304,13 @@ function dropPlayer(ev, slotPos) {
         if (slotPos === 'שוער') {
             innerHtml += `<div class="captain-badge">C</div>`;
         }
+        slot.style.borderColor = 'var(--brand-green)';
+        slot.style.background = 'rgba(124,168,86,0.3)';
     }
 
     slot.innerHTML = innerHtml;
     
-    // מאפשרים לגרור את השחקן שוב אחרי שהוצב
+    // הופכים את המשבצת לניתנת לגרירה שוב
     slot.setAttribute('draggable', 'true');
     slot.ondragstart = function(e) {
         e.dataTransfer.setData("name", playerName);
@@ -1288,15 +1318,30 @@ function dropPlayer(ev, slotPos) {
         e.dataTransfer.setData("pos", playerPos); 
         e.dataTransfer.setData("sourceSlotId", slot.id); 
     };
-
-    // צובעים בירוק עדין כדי להראות שהמשבצת תפוסה
-    slot.style.borderColor = 'var(--brand-green)';
-    if (!slot.classList.contains('bench-list-slot')) {
-        slot.style.background = 'rgba(124,168,86,0.3)';
-    } else {
-        slot.style.background = '#f0fdf4';
-    }
 }
+
+// === פונקציה חדשה: הסרת שחקן מהמשבצת והחזרתה למצב ריק ===
+window.removePlayer = function(slot, event) {
+    if (event) event.stopPropagation(); // מונע קונפליקטים עם גרירה באותו קליק
+    if (!slot) return;
+
+    // משחזרים את ה-HTML הריק ששמרנו
+    if (slot.hasAttribute('data-empty-html')) {
+        slot.innerHTML = slot.getAttribute('data-empty-html');
+        slot.style.borderColor = slot.getAttribute('data-empty-border');
+        slot.style.background = slot.getAttribute('data-empty-bg');
+        
+        // אם זה ספסל, מחזירים את המסגרת המקווקות
+        if (slot.classList.contains('bench-list-slot')) {
+             slot.style.borderStyle = 'dashed'; 
+        }
+    }
+
+    // מנקים תכונות גרירה של שחקן
+    slot.removeAttribute('data-player-name');
+    slot.removeAttribute('draggable');
+    slot.ondragstart = null;
+};
         
 // === פונקציה חדשה: מינוי קפטן ===
 function setCaptainDrop(ev) {
