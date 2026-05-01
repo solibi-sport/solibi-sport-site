@@ -881,6 +881,72 @@
                 }
 
                 renderTable(allPlayersData); 
+                // --- תחילת בלוק הגרלת 20 שחקנים אוטומטית לסגל ---
+                const tierReqs = { 'star': 2, 't1': 3, 't2': 5, 't3': 5, 't4': 5 };
+                const posReqs = { 'שוער': 2, 'הגנה': 6, 'קישור': 6, 'חלוץ': 6 };
+                const squad = [];
+                const pool = [...allPlayersData]; // לוקחים את הנתונים שכבר נמשכו
+
+                const getTier = (rank) => {
+                    if(rank <= 50) return 'star';
+                    if(rank <= 150) return 't1';
+                    if(rank <= 400) return 't2';
+                    if(rank <= 700) return 't3';
+                    return 't4';
+                };
+
+                // עוברים על החוקים ושולפים שחקנים רנדומליים
+                for (let tier in tierReqs) {
+                    let needed = tierReqs[tier];
+                    for (let i = 0; i < needed; i++) {
+                        let validPlayers = pool.filter(p => {
+                            let pTier = getTier(p.forcedRank);
+                            let pPos = (p.pos === 'התקפה') ? 'חלוץ' : p.pos;
+                            return pTier === tier && posReqs[pPos] > 0;
+                        });
+
+                        if (validPlayers.length > 0) {
+                            let randIdx = Math.floor(Math.random() * validPlayers.length);
+                            let picked = validPlayers[randIdx];
+                            squad.push(picked);
+                            
+                            let pPos = (picked.pos === 'התקפה') ? 'חלוץ' : picked.pos;
+                            posReqs[pPos]--;
+                            pool.splice(pool.findIndex(p => p.id === picked.id), 1);
+                        }
+                    }
+                }
+
+                // מסדרים את הסגל ששלפנו לפי עמדות כדי שיוצג מסודר (שוערים, הגנה, קישור, התקפה)
+                const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'חלוץ': 4, 'התקפה': 4};
+                squad.sort((a, b) => posOrder[a.pos] - posOrder[b.pos]);
+
+                // שותלים את 20 השחקנים בתוך קוביית "סגל שחקנים" בצד שמאל
+                const benchList = document.getElementById('bench-list');
+                if (benchList) {
+                    benchList.innerHTML = ''; 
+                    
+                    squad.forEach(p => {
+                        const tName = window.translateName ? window.translateName(p.name) : p.name;
+                        let borderColor = '#cbd5e1';
+                        let posName = p.pos;
+                        
+                        // צבעים לפי עמדה
+                        if(p.pos === 'שוער') borderColor = '#f1c40f';
+                        if(p.pos === 'הגנה') borderColor = '#2ecc71';
+                        if(p.pos === 'קישור') borderColor = '#3498db';
+                        if(p.pos === 'חלוץ' || p.pos === 'התקפה') { borderColor = '#e74c3c'; posName = 'התקפה'; }
+
+                        benchList.innerHTML += `
+                            <div style="background: #fff; border: 1px solid #cbd5e1; border-right: 4px solid ${borderColor}; border-radius: 6px; padding: 6px; text-align: center; font-size: 10px; font-weight: bold; color: var(--text-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
+                                <span style="color: #64748b; font-size: 9px; margin-bottom: -2px;">${posName}</span>
+                                <img src="${p.photo || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 90%;" title="${tName}">${tName}</span>
+                            </div>
+                        `;
+                    });
+                }
+                // --- סוף בלוק ההגרלה ---
 
                 if(searchInput && posFilter) {
                     searchInput.addEventListener('input', applyFilters);
