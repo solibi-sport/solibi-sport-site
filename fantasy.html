@@ -38,54 +38,53 @@
             body { zoom: 0.85; }
         }
 
-       /* === הדר עליון (מוקטן ומהודק גלובלית לכל המסכים) === */
+        /* === הדר עליון (הפוך - כסוף) === */
         .header {
-            height: 52px; /* הוקטן משמעותית מ-65px */
-            background: var(--bg-silver-matte); /* אם השורה שלך כחולה עכשיו, תשנה ל- var(--element-navy-gradient) */
+            height: 65px;
+            background: var(--bg-silver-matte);
             border-bottom: 2px solid var(--brand-green);
             position: relative;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 15px; 
-            width: 100%;
-            min-width: max-content; /* מונע מהרקע להיחתך במסכים קטנים! */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            padding: 0 20px; 
             flex-shrink: 0;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; flex-shrink: 1; }
-        .header-center-col { display: flex; justify-content: center; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; flex-shrink: 1; }
+        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
+        .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1; }
+        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
 
         .logo-wrapper {
-            background: var(--element-navy-gradient); padding: 0 20px; border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.25); transition: 0.3s; height: 38px; /* הוקטן מ-52px */
+            background: var(--element-navy-gradient); padding: 0 28px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s; height: 52px; 
             display: flex; align-items: center; justify-content: center; text-decoration: none;
         }
         .logo-wrapper:hover { transform: scale(1.05); }
-        .actual-logo-img { height: 26px; transform: scale(1.5); display: block; object-fit: contain; filter: brightness(0) invert(1); }
+        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; filter: brightness(0) invert(1); }
 
-        .header-nav ul { list-style: none; display: flex; gap: 10px; align-items: center; margin: 0; padding: 0; }
-        .header-nav a { text-decoration: none; color: var(--text-dark); font-weight: 900; font-size: 12px; padding: 4px 8px; border-radius: 6px; transition: 0.3s; white-space: nowrap; }
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); align-items: center; margin: 0; padding: 0; }
+        .header-nav a { text-decoration: none; color: var(--text-dark); font-weight: 900; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
         .header-nav a:hover { background: var(--element-navy-gradient); color: #ffffff; }
 
         .personal-area-btn {
             background: transparent; border: 1.5px solid var(--brand-green);
-            color: var(--text-dark); padding: 4px 12px; border-radius: 30px; text-decoration: none;
-            font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.3s; white-space: nowrap;
+            color: var(--text-dark); padding: 6px 16px; border-radius: 30px; text-decoration: none;
+            font-weight: 900; font-size: clamp(12px, 1vw, 14px); display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; white-space: nowrap;
         }
         .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; transform: scale(1.05); }
 
-        .header-search { position: relative; width: 75%; height: 30px; transition: width 0.4s ease; margin: 0 auto;}
+        .header-search { position: relative; width: 65%; height: 34px; transition: width 0.4s ease; }
         .header-search input { 
             width: 100%; height: 100%; border: 1px solid rgba(6, 33, 65, 0.2); background: rgba(255, 255, 255, 0.95); 
-            border-radius: 30px; padding: 0 15px; outline: none; transition: 0.4s; font-family: inherit; font-size: 12px;
+            border-radius: 30px; padding: 0 20px; outline: none; transition: 0.4s; font-family: inherit; font-size: 13px;
             color: var(--text-dark); font-weight: bold;
         }
         .header-search:focus-within { width: 100%; }
-        .header-search input:focus { box-shadow: 0 0 10px var(--brand-green-glow); background: #fff; z-index: 10; border-color: var(--brand-green);}
+        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; border-color: var(--brand-green);}
 
         /* === גוף הדף === */
         /* סידור נכון של הפריסה כדי למנוע דריסה של הלייב פאנל ע"י הטבלה */
@@ -476,7 +475,6 @@
             border: 1px solid rgba(124, 168, 86, 0.2);
             position: relative;
             overflow: hidden;
-            min-height: 140px; /* מבטיח שהכרטיסייה לא תימעך לגובה */
         }
 
         /* עיטור רקע לפרופיל */
@@ -486,65 +484,19 @@
             pointer-events: none;
         }
 
-        .profile-avatar-wrap { 
-            position: relative; 
-            flex-shrink: 0; /* מונע מהתמונה להימעך לאליפסה! */
-            z-index: 2;
-        }
-        .profile-avatar { 
-            width: 90px; 
-            height: 90px; 
-            border-radius: 50%; 
-            border: 3px solid var(--brand-green); 
-            object-fit: cover; 
-            background: #fff; 
-            display: block; 
-        }
+        .profile-avatar-wrap { position: relative; }
+        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--brand-green); object-fit: cover; background: #fff;}
         .profile-level-badge {
             position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
             background: var(--brand-green); color: #fff; font-size: 11px; font-weight: 900;
             padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .profile-details { 
-            color: #fff; 
-            flex: 1; 
-            min-width: 0; /* שומר שהטקסט לא יפרוץ החוצה */
-            z-index: 2; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-        }
-        .manager-name { 
-            font-size: 24px; 
-            font-weight: 900; 
-            margin: 0 0 4px 0 !important; /* מאפס שוליים דורסים */
-            line-height: 1.2; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-        }
-        .manager-team-name { 
-            font-size: 16px; 
-            color: var(--brand-green); 
-            font-weight: 700; 
-            margin: 0 0 12px 0 !important; 
-            line-height: 1.2; 
-        }
-        .manager-meta { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 20px; 
-            font-size: 13px; 
-            color: #cbd5e1; 
-            margin: 0 !important; 
-        }
-        .manager-meta span { 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            white-space: nowrap; 
-        }
+        .profile-details { color: #fff; flex: 1; }
+        .manager-name { font-size: 24px; font-weight: 900; margin-bottom: 2px; }
+        .manager-team-name { font-size: 16px; color: var(--brand-green); font-weight: 700; margin-bottom: 12px; }
+        .manager-meta { display: flex; gap: 20px; font-size: 13px; color: #cbd5e1; }
+        .manager-meta span { display: flex; align-items: center; gap: 6px; }
 
         .profile-stats-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;
@@ -567,6 +519,7 @@
             margin-bottom: 20px;
         }
         .p-section-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+
         /* ארון התארים */
         .trophies-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         .trophy-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
