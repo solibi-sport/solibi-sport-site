@@ -38,7 +38,7 @@
             flex-direction: column;
         }
 
-        /* === הדר עליון === */
+        /* === הדר עליון (מיושר וסימטרי כמו בפנתיאון) === */
         .header {
             height: 65px;
             background: var(--element-navy-gradient);
@@ -53,7 +53,29 @@
             flex-shrink: 0;
         }
 
-        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
+        .header-right-col { 
+            width: var(--sidebar-width); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-shrink: 0; 
+        }
+
+        .header-center-col { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: clamp(15px, 2vw, 30px); 
+            flex: 1; 
+        }
+
+        .header-left-col { 
+            width: var(--sidebar-width); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-shrink: 0; 
+        }
         
         .logo-wrapper {
             background-color: #ffffff; padding: 0 28px; border-radius: 12px;
@@ -63,8 +85,7 @@
         .logo-wrapper:hover { transform: scale(1.05); }
         .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
 
-        .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1;}
-        
+       
         .personal-area-btn {
             background: transparent; border: 1.5px solid var(--brand-green);
             color: #ffffff; padding: 6px 16px; border-radius: 30px; text-decoration: none;
@@ -77,8 +98,6 @@
         .header-nav a { text-decoration: none; color: var(--text-light); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
         .header-nav a:hover { background: #ffffff; color: var(--text-dark); }
 
-        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
-        
         .header-search { width: 65%; height: 34px; transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
         .header-search input { width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit; box-shadow: none; transition: 0.4s ease; }
         .header-search:focus-within { width: 100%; }
