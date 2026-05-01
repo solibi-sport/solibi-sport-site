@@ -944,8 +944,9 @@
                         const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
 
                         // מכיוון שהאתר מוגדר כ-RTL (ימין לשמאל), האלמנט הראשון בקוד יופיע הכי ימינה.
+                        // הוספנו draggable ו-data attributes
                         benchList.innerHTML += `
-                            <div style="background: #fff; border: 1px solid #cbd5e1; border-right: 4px solid ${borderColor}; border-radius: 6px; padding: 4px 8px; display: flex; align-items: center; justify-content: flex-start; gap: 10px; cursor: pointer; transition: 0.2s; height: 48px;" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
+                            <div draggable="true" ondragstart="dragStart(event)" data-name="${tName}" data-photo="${playerImage}" data-pos="${posName}" style="background: #fff; border: 1px solid #cbd5e1; border-right: 4px solid ${borderColor}; border-radius: 6px; padding: 4px 8px; display: flex; align-items: center; justify-content: flex-start; gap: 10px; cursor: grab; transition: 0.2s; height: 48px;" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
                                 
                                 <img src="${playerImage}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
                                 
@@ -1114,46 +1115,42 @@
                 });
             }
         });
-        // פונקציה שמציירת את המגרש לפי המערך הנבחר
+       // פונקציה שמציירת את המגרש לפי המערך הנבחר
 function renderFormation(formation) {
     const pitch = document.getElementById('pitch-players');
     if (!pitch) return;
 
-    // חיתוך המחרוזת (למשל "4-3-3" הופך למערך של מספרים)
     const parts = formation.split('-'); 
     const defCount = parseInt(parts[0]);
     const midCount = parseInt(parts[1]);
     const attCount = parseInt(parts[2]);
 
-    // פונקציית עזר ליצירת שורת שחקנים
+    // הוספנו פה את אירועי הגרירה למשבצות (ondragover ו-ondrop)
     const createRow = (count, roleName) => {
-        let html = '<div style="display: flex; justify-content: center; gap: 20px;">';
+        let html = '<div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">';
         for(let i = 0; i < count; i++) {
-            html += `<div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">${roleName}</div></div>`;
+            html += `<div class="player-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, '${roleName}')"><div class="slot-icon">👤</div><div class="slot-name">${roleName}</div></div>`;
         }
         html += '</div>';
         return html;
     };
 
-    // בונים את ה-HTML מלמעלה למטה: חלוצים -> קשרים -> הגנה
     let pitchHTML = createRow(attCount, 'חלוץ');
     pitchHTML += createRow(midCount, 'קשר');
     pitchHTML += createRow(defCount, 'הגנה');
 
-    // השוער נשאר קבוע למטה עם סרט הקפטן (כמו בעיצוב המקורי שלך)
+    // השוער
     pitchHTML += `
-        <div style="display: flex; justify-content: center;">
-            <div class="player-slot" style="border-color: rgba(255,215,0,0.5);">
+        <div style="display: flex; justify-content: center; z-index: 10;">
+            <div class="player-slot" style="border-color: rgba(255,215,0,0.5);" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'שוער')">
                 <div class="captain-badge">C</div>
                 <div class="slot-icon">🧤</div><div class="slot-name">שוער</div>
             </div>
         </div>
     `;
 
-    // דחיפת ה-HTML לתוך המגרש
     pitch.innerHTML = pitchHTML;
 }
-
 // הפעלה: מאזינים לשינויים בתפריט ומציירים בהתחלה
 document.addEventListener('DOMContentLoaded', () => {
     const select = document.getElementById('formation-select');
@@ -1164,6 +1161,57 @@ document.addEventListener('DOMContentLoaded', () => {
         renderFormation(select.value); 
     }
 });
+
+        // === פונקציות גרירה והפלה (Drag & Drop) ===
+
+// 1. מתחילים לגרור שחקן מהסגל
+function dragStart(ev) {
+    // שומרים את הנתונים של השחקן שנגרר בזיכרון הזמני
+    ev.dataTransfer.setData("name", ev.currentTarget.getAttribute("data-name"));
+    ev.dataTransfer.setData("photo", ev.currentTarget.getAttribute("data-photo"));
+    ev.dataTransfer.setData("pos", ev.currentTarget.getAttribute("data-pos"));
+}
+
+// 2. מאפשרים לזרוק אותו על הדשא
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+// 3. משחררים את השחקן בתוך המשבצת על המגרש
+function dropPlayer(ev, slotPos) {
+    ev.preventDefault();
+    
+    // שולפים את נתוני השחקן שנגרר
+    const playerPos = ev.dataTransfer.getData("pos");
+    const playerName = ev.dataTransfer.getData("name");
+    const playerPhoto = ev.dataTransfer.getData("photo");
+
+    // בדיקה: האם העמדה של השחקן תואמת לעמדה של המשבצת?
+    if (playerPos !== slotPos) {
+        alert(`אי אפשר לשים ${playerPos} בעמדת ${slotPos}!`);
+        return;
+    }
+
+    // מוצאים את המשבצת שעליה שחררנו
+    const slot = ev.currentTarget.closest('.player-slot');
+    
+    // מציירים את השחקן בתוך המשבצת (תמונה למעלה, שם למטה, בלי טקסט עמדה)
+    let innerHtml = `
+        <img src="${playerPhoto}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.5); margin-bottom: 4px; background: rgba(255,255,255,0.8);" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+        <div style="background: #fff; padding: 2px 4px; border-radius: 4px; border: 1px solid #062141; box-shadow: 0 2px 4px rgba(0,0,0,0.3); max-width: 100%;">
+            <span style="font-size: 9px; font-weight: bold; color: #062141; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center;">${playerName}</span>
+        </div>
+    `;
+
+    // אם זה שוער, נשמור לו את תג הקפטן כמו שהיה בעיצוב שלך
+    if (slotPos === 'שוער') {
+        innerHtml += `<div class="captain-badge">C</div>`;
+    }
+
+    slot.innerHTML = innerHtml;
+    slot.style.borderColor = 'var(--brand-green)';
+    slot.style.background = 'rgba(124,168,86,0.3)';
+}
     </script>
 </body>
 </html>
