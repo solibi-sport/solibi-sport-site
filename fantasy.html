@@ -294,87 +294,40 @@
             .fm-layout { width: 100%; overflow: visible; margin: 0;}
             .market-table { min-width: 900px; } 
         }
-        /* פריסה מודרנית לטקטיקה (מגרש בימין, סגל בשמאל) */
-        .squad-layout-modern {
-            display: flex; flex-direction: row; gap: 20px; height: 100%;
+        /* === עיצוב פאנל הסגל והספסל (חצוי) === */
+        .roster-panel {
+            background: #f8fafc; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; 
+            border: 1px solid #e2e8f0; flex: 1; gap: 15px;
         }
-
-        .pitch-container {
-            flex: 2.5; display: flex; flex-direction: column; gap: 15px;
-        }
-
-        /* מגרש כדורגל עם בחירת מערך בתוכו */
-        .formation-control {
-            position: absolute; top: 15px; right: 15px; z-index: 20;
-            background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 8px; backdrop-filter: blur(5px); display: flex; align-items: center; gap: 10px;
-        }
-        .formation-control select {
-            padding: 5px 15px; border-radius: 6px; border: 1px solid #fff; background: #fff; font-weight: bold; cursor: pointer;
-        }
-
-        /* ספסל אופקי מתחת למגרש */
-        .bench-area-horizontal {
-            background: #f8fafc; border-radius: 12px; padding: 15px; border: 1px solid #e2e8f0;
-        }
-        .bench-title { font-size: 14px; color: var(--text-dark); margin-bottom: 10px; font-weight: 900; }
-        .bench-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; min-height: 80px;
-        }
-
-        /* סיידבר שמאל - רשימת שחקנים */
-        .roster-sidebar {
-            flex: 1; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; overflow: hidden;
+        .roster-half {
+            flex: 1; display: flex; flex-direction: column; background: #ffffff; border-radius: 8px; border: 1px solid #cbd5e1; overflow: hidden;
         }
         .roster-title {
-            font-size: 14px; color: #fff; font-weight: 900; padding: 15px; background: var(--brand-green); margin: 0; text-align: center;
+            font-size: 12px; color: var(--text-dark); font-weight: 900; padding: 10px; background: #e2e8f0; margin: 0; text-align: center; border-bottom: 1px solid #cbd5e1;
         }
         .roster-list {
-            flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px;
+            flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 150px;
         }
         .save-roster-btn {
-            background: var(--brand-green); color: white; font-weight: 900; padding: 15px; border: none; cursor: pointer; transition: 0.3s; font-size: 15px; margin: 10px; border-radius: 8px;
+            width: 100%; background: var(--brand-green); color: white; font-weight: 900; padding: 12px; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; font-size: 14px; margin-top: auto;
         }
         .save-roster-btn:hover { background: #5a803d; transform: translateY(-2px); }
 
-        /* ========================================================
-           הטריק: עיצוב דינמי של השחקן לפי המיקום שלו!
-           ======================================================== */
+        /* === עיצוב שחקנים נגררים === */
+        .draggable-player {
+            background: var(--element-navy-gradient); color: #fff; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: grab; text-align: center; border: 1px solid var(--brand-green);
+        }
+        .draggable-player:active { cursor: grabbing; opacity: 0.8; }
         
-        /* 1. כשהשחקן בסגל משמאל או בספסל - הוא כרטיס מלבני */
-        .roster-list .draggable-player, .bench-grid .draggable-player {
-            display: flex; align-items: center; justify-content: flex-start; gap: 15px;
-            background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px;
-            cursor: grab; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; direction: ltr;
-        }
-        .roster-list .draggable-player:hover, .bench-grid .draggable-player:hover { border-color: var(--brand-green); transform: translateX(-5px); }
-        .draggable-player .player-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #e2e8f0; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .draggable-player .player-details { display: flex; flex-direction: column; align-items: flex-start; }
-        .draggable-player .p-name { font-size: 14px; font-weight: bold; color: var(--text-dark); }
-        .draggable-player .p-pos { font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; margin-top: 4px; color: #fff; }
+        /* === אזורי זריקה (Drop Zones) === */
+        .drop-zone { min-height: 50px; transition: background 0.3s; }
+        .drop-zone.dragover { background: rgba(124, 168, 86, 0.2); border: 2px dashed var(--brand-green); border-radius: 8px; }
         
-        .pos-att { background: #e74c3c; } /* חלוץ אדום */
-        .pos-mid { background: #3498db; } /* קשר כחול */
-        .pos-def { background: #2ecc71; } /* הגנה ירוק */
-        .pos-gk { background: #f1c40f; color: #000 !important; } /* שוער צהוב */
-
-        /* 2. כשהשחקן במגרש (על הדשא) - הוא הופך לעיגול קטן עם שם למטה! */
-        .soccer-field .draggable-player {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: transparent; border: none; padding: 0; box-shadow: none; cursor: grab;
-        }
-        .soccer-field .draggable-player .player-img {
-            width: 45px; height: 45px; border: 3px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.4); margin-bottom: 5px;
-        }
-        .soccer-field .draggable-player .player-details {
-            background: #fff; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--element-navy-gradient);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
-        }
-        .soccer-field .draggable-player .p-name { font-size: 11px; text-align: center; }
-        .soccer-field .draggable-player .p-pos { display: none; /* מסתירים את תגית העמדה על המגרש */ }
-
-        /* אזורי זריקה */
-        .drop-zone { min-height: 80px; transition: 0.3s; }
-        .player-slot.dragover { transform: scale(1.1); border: 2px dashed #f1c40f; background: rgba(255,255,255,0.2); }display: flex; align-items: center; justify-content: center; font-size: 9px; padding: 2px; border: none; background: transparent; }
+        /* התאמת העמדות במגרש לגרירה */
+        .pitch-row { display: flex; justify-content: center; gap: 15px; z-index: 10; width: 100%; }
+        .player-slot { position: relative; }
+        .player-slot.dragover { transform: scale(1.1); border-color: #f1c40f; box-shadow: 0 0 15px rgba(241, 196, 15, 0.6); }
+        .player-slot .draggable-player { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; padding: 2px; border: none; background: transparent; }
     </style>
 </head>
 
@@ -536,57 +489,44 @@
                     </div>
 
                     <div id="tab-tactics" class="fm-tab">
-                        <div class="squad-layout-modern">
-                            
-                            <div class="pitch-container">
-                                <div class="soccer-field" id="dynamic-pitch">
-                                    <div class="formation-control">
-                                        <span style="color: #fff; font-weight: bold; font-size: 13px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">בחר מערך:</span>
-                                        <select id="formation-selector">
-                                            <option value="4-3-3">4-3-3</option>
-                                            <option value="4-4-2">4-4-2</option>
-                                            <option value="3-5-2">3-5-2</option>
-                                            <option value="5-3-2">5-3-2</option>
-                                        </select>
-                                    </div>
-                                    <div class="field-lines"></div>
-                                    </div>
-
-                                <div class="bench-area-horizontal">
-                                    <h3 class="bench-title">📋 מחליפים</h3>
-                                    <div id="bench-list" class="drop-zone bench-grid">
-                                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px;">
+                            <h2 style="font-size: 20px; color: var(--text-dark); font-weight: 900; margin: 0; display: flex; align-items: center; gap: 8px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path></svg>
+                                בחירת הרכב וטקטיקה
+                            </h2>
+                            <select id="formation-selector" style="padding: 8px 15px; border-radius: 8px; border: 1px solid var(--brand-green); background: var(--bg-silver-matte); color: var(--text-dark); font-weight: 900; font-family: inherit; outline: none; cursor: pointer;">
+                                <option value="4-3-3">מערך 4-3-3</option>
+                                <option value="4-4-2">מערך 4-4-2</option>
+                                <option value="3-5-2">מערך 3-5-2</option>
+                                <option value="5-3-2">מערך 5-3-2</option>
+                            </select>
+                        </div>
+                        
+                        <div class="squad-layout">
+                            <div class="soccer-field" id="dynamic-pitch">
+                                <div class="field-lines"></div>
                                 </div>
-                            </div>
 
-                            <div class="roster-sidebar">
-                                <h3 class="roster-title">👕 סגל שחקנים פנוי</h3>
-                                <div class="roster-list drop-zone" id="squad-list">
-                                    <div class="draggable-player" draggable="true" data-pos="חלוץ">
-                                        <img src="https://media.api-sports.io/football/players/1100.png" class="player-img" alt="האלנד" onerror="this.src='placeholder.png'">
-                                        <div class="player-details">
-                                            <span class="p-name">Haaland</span>
-                                            <span class="p-pos pos-att">חלוץ</span>
-                                        </div>
-                                    </div>
-                                    <div class="draggable-player" draggable="true" data-pos="קשר">
-                                        <img src="https://media.api-sports.io/football/players/629.png" class="player-img" alt="דה בראונה">
-                                        <div class="player-details">
-                                            <span class="p-name">De Bruyne</span>
-                                            <span class="p-pos pos-mid">קשר</span>
-                                        </div>
-                                    </div>
-                                    <div class="draggable-player" draggable="true" data-pos="הגנה">
-                                        <img src="https://media.api-sports.io/football/players/290.png" class="player-img" alt="ואן דייק">
-                                        <div class="player-details">
-                                            <span class="p-name">V. Dijk</span>
-                                            <span class="p-pos pos-def">הגנה</span>
-                                        </div>
+                            <div class="roster-panel">
+                                <div class="roster-half">
+                                    <h3 class="roster-title">👕 סגל שחקנים פנוי</h3>
+                                    <div class="roster-list drop-zone" id="squad-list">
+                                        <div class="draggable-player" draggable="true" data-pos="חלוץ" id="p1">ארלינג האלנד (חלוץ)</div>
+                                        <div class="draggable-player" draggable="true" data-pos="קשר" id="p2">קווין דה בראונה (קשר)</div>
+                                        <div class="draggable-player" draggable="true" data-pos="הגנה" id="p3">וירג'יל ואן דייק (הגנה)</div>
+                                        <div class="draggable-player" draggable="true" data-pos="שוער" id="p4">אליסון (שוער)</div>
+                                        <div class="draggable-player" draggable="true" data-pos="חלוץ" id="p5">קיליאן אמבפה (חלוץ)</div>
                                     </div>
                                 </div>
+                                
+                                <div class="roster-half">
+                                    <h3 class="roster-title">🛋️ ספסל מחליפים</h3>
+                                    <div class="roster-list drop-zone" id="bench-list">
+                                        </div>
+                                </div>
+
                                 <button class="save-roster-btn">שמור הרכב פותח</button>
                             </div>
-
                         </div>
                     </div>
 
@@ -1108,11 +1048,10 @@
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const pitch = document.getElementById('dynamic-pitch');
-            const benchList = document.getElementById('bench-list');
             const formationSelector = document.getElementById('formation-selector');
             let draggedItem = null;
 
-            // מבנה המערכים
+            // מבנה המערכים (שוער, הגנה, קישור, התקפה)
             const formations = {
                 '4-3-3': ['שוער', ['הגנה','הגנה','הגנה','הגנה'], ['קשר','קשר','קשר'], ['חלוץ','חלוץ','חלוץ']],
                 '4-4-2': ['שוער', ['הגנה','הגנה','הגנה','הגנה'], ['קשר','קשר','קשר','קשר'], ['חלוץ','חלוץ']],
@@ -1122,22 +1061,10 @@
 
             // רנדור המגרש
             function renderPitch(formationKey) {
-                // שומרים את הכפתור בתוך המגרש שלא יימחק
-                const formationHtml = document.querySelector('.formation-control').outerHTML;
-                pitch.innerHTML = formationHtml + '<div class="field-lines"></div>'; 
-                
-                // חיבור מחדש של האירוע ל-select החדש
-                document.getElementById('formation-selector').value = formationKey;
-                document.getElementById('formation-selector').addEventListener('change', (e) => {
-                    document.querySelectorAll('.soccer-field .draggable-player').forEach(p => {
-                        document.getElementById('squad-list').appendChild(p);
-                    });
-                    renderPitch(e.target.value);
-                });
-
+                pitch.innerHTML = '<div class="field-lines"></div>'; // איפוס המגרש
                 const layout = formations[formationKey];
                 
-                // ציור שורות (מהתקפה להגנה)
+                // הפיכת המערך כדי שההתקפה תהיה למעלה והשוער למטה
                 [layout[3], layout[2], layout[1], layout[0]].forEach(row => {
                     const rowDiv = document.createElement('div');
                     rowDiv.className = 'pitch-row';
@@ -1146,9 +1073,8 @@
                     positions.forEach(pos => {
                         const slot = document.createElement('div');
                         slot.className = 'player-slot drop-zone';
-                        slot.dataset.allowedPos = pos;
+                        slot.dataset.allowedPos = pos; // 👈 מגדיר איזו עמדה מותרת כאן!
                         
-                        // קוביות ריקות על המגרש
                         slot.innerHTML = `
                             <div class="slot-icon">👤</div>
                             <div class="slot-name">${pos}</div>
@@ -1158,17 +1084,6 @@
                     pitch.appendChild(rowDiv);
                 });
                 
-                // רנדור 4 סלוטים ריקים לספסל
-                benchList.innerHTML = '';
-                const benchPositions = ['שוער', 'הגנה', 'קשר', 'חלוץ']; // לפי התמונה 4 מחליפים
-                benchPositions.forEach(pos => {
-                    const bSlot = document.createElement('div');
-                    bSlot.className = 'bench-slot drop-zone';
-                    bSlot.dataset.allowedPos = pos;
-                    bSlot.innerHTML = `${pos}<br>מחליף`;
-                    benchList.appendChild(bSlot);
-                });
-
                 initDragAndDrop();
             }
 
@@ -1184,40 +1099,57 @@
                     });
                     draggable.addEventListener('dragend', function() {
                         setTimeout(() => {
-                            draggedItem.style.display = 'flex'; // מחזיר תצוגה
+                            draggedItem.style.display = 'block';
                             draggedItem = null;
                         }, 0);
                     });
                 });
 
                 dropZones.forEach(zone => {
-                    zone.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
-                    zone.addEventListener('dragleave', function() { this.classList.remove('dragover'); });
+                    zone.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        this.classList.add('dragover');
+                    });
+                    
+                    zone.addEventListener('dragleave', function() {
+                        this.classList.remove('dragover');
+                    });
+
                     zone.addEventListener('drop', function(e) {
                         e.preventDefault();
                         this.classList.remove('dragover');
                         
                         if (draggedItem) {
+                            // 👈 בדיקת חוקיות עמדה!
                             const allowedPos = this.dataset.allowedPos;
                             const playerPos = draggedItem.dataset.pos;
                             
-                            // אם זה הולך חזרה לסגל או לעמדה תואמת
+                            // מותר לזרוק חזרה לרשימות (אין להן allowedPos), או לעמדה תואמת במגרש
                             if (!allowedPos || allowedPos === playerPos) {
-                                // מרוקן סלוט אם כבר תפוס
-                                if ((this.classList.contains('player-slot') || this.classList.contains('bench-slot')) && this.querySelector('.draggable-player')) {
+                                // אם זה סלוט במגרש ויש בו כבר שחקן, זרוק את הקיים חזרה לסגל
+                                if (this.classList.contains('player-slot') && this.querySelector('.draggable-player')) {
                                     document.getElementById('squad-list').appendChild(this.querySelector('.draggable-player'));
                                 }
                                 this.appendChild(draggedItem);
                             } else {
-                                alert(`לא ניתן להציב שחקן ${playerPos} בעמדת ${allowedPos}`);
+                                alert(`אי אפשר לשים ${playerPos} בעמדת ${allowedPos}!`);
                             }
                         }
                     });
                 });
             }
 
-            // הפעלה ראשונית של המגרש
-            if(pitch) renderPitch('4-3-3');
+            // האזנה לשינוי מערך
+            formationSelector.addEventListener('change', (e) => {
+                // העברת כל השחקנים שעל המגרש חזרה לסגל לפני שינוי מערך
+                document.querySelectorAll('.soccer-field .draggable-player').forEach(p => {
+                    document.getElementById('squad-list').appendChild(p);
+                });
+                renderPitch(e.target.value);
+            });
+
+            // רינדור ראשוני
+            renderPitch('4-3-3');
         });
     </script>
 </body>
