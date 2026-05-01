@@ -1125,7 +1125,7 @@ function renderFormation(formation) {
     const midCount = parseInt(parts[1]);
     const attCount = parseInt(parts[2]);
 
-    // הוספנו פה את אירועי הגרירה למשבצות (ondragover ו-ondrop)
+    // הפונקציה שמייצרת את השורות
     const createRow = (count, roleName) => {
         let html = '<div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">';
         for(let i = 0; i < count; i++) {
@@ -1135,11 +1135,12 @@ function renderFormation(formation) {
         return html;
     };
 
-    let pitchHTML = createRow(attCount, 'חלוץ');
-    pitchHTML += createRow(midCount, 'קשר');
+    // השינוי כאן: החלפנו 'חלוץ' ל-'התקפה' ו-'קשר' ל-'קישור'
+    let pitchHTML = createRow(attCount, 'התקפה');
+    pitchHTML += createRow(midCount, 'קישור');
     pitchHTML += createRow(defCount, 'הגנה');
 
-    // השוער
+    // השוער נשאר אותו דבר
     pitchHTML += `
         <div style="display: flex; justify-content: center; z-index: 10;">
             <div class="player-slot" style="border-color: rgba(255,215,0,0.5);" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'שוער')">
