@@ -393,9 +393,23 @@
             opacity: 1;
         }
 
-        /* === רספונסיביות למסכי לפטופ (עד 1440px) === */
+       /* === רספונסיביות למסכי לפטופ (עד 1440px) === */
         @media (max-width: 1440px) {
-            /* סרגל עליון - הקטנת פונטים ורווחים כדי שלא יישבר */
+            /* --- תיקון השורה הכחולה (ההדר העליון) --- */
+            .header {
+                height: 55px; /* מקטין את הגובה המוגזם של השורה הכחולה */
+                padding: 0 10px;
+                min-width: 100%; /* שומר שהרקע הכחול לא ייחתך אם יש גלילה */
+            }
+            .header-center-col { gap: 10px !important; }
+            .header-nav ul { gap: 10px !important; }
+            .header-nav a { font-size: 12px !important; padding: 4px 8px !important; }
+            .personal-area-btn { font-size: 11px !important; padding: 5px 12px !important; }
+            .logo-wrapper { height: 42px !important; padding: 0 15px !important; }
+            .actual-logo-img { height: 30px !important; }
+            .header-search { width: 85% !important; }
+
+            /* --- סרגל עליון כסוף --- */
             .fm-top-bar {
                 padding: 10px;
                 gap: 10px;
@@ -403,28 +417,18 @@
             .fm-top-stat-title { font-size: 11px; }
             .fm-top-stat-value { font-size: 14px; }
 
-            /* אזור התוכן הראשי - צמצום שוליים כדי לתת יותר מקום לתוכן */
-            .main-content {
-                gap: 15px;
-            }
-            .fm-content-area {
-                padding: 15px;
-            }
+            /* --- אזור התוכן הראשי --- */
+            .main-content { gap: 15px; }
+            .fm-content-area { padding: 15px; }
 
-            /* הקטנת שורות ההודעות והתראות */
-            .msg-row {
-                padding: 10px;
-                gap: 10px;
-            }
+            /* --- הודעות והתראות --- */
+            .msg-row { padding: 10px; gap: 10px; }
             .msg-title { font-size: 13px; }
             .msg-desc { font-size: 11px; }
             .msg-badge { width: 90px; font-size: 10px; padding: 4px 6px; }
 
-            /* הקטנת הכותרת הראשית בטאבים */
-            .content-header-title {
-                font-size: 20px;
-                margin-bottom: 12px;
-            }
+            /* --- כותרות בטאבים --- */
+            .content-header-title { font-size: 20px; margin-bottom: 12px; }
         }
 
         /* === רספונסיביות למסכים קטנים במיוחד (1100px ומטה) === */
