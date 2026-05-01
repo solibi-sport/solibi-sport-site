@@ -28,12 +28,59 @@ body {
     min-height: 100vh;
 }
 
+/* אזור התוכן המרכזי יתמתח אוטומטית וידחוף את הפוטר למטה */
 .main-content {
     flex: 1; 
 }
 
+/* הפוטר יישאר תמיד דבוק לתחתית */
 .footer {
     margin-top: auto; 
     width: 100%;
+}
+
+/* === רספונסיביות גלובלית לכל האתר (לפטופים עד 1440px) === */
+@media (max-width: 1440px) {
+    /* הקטנת פונטים כללית כדי למנוע צפיפות */
+    html {
+        font-size: 14px;
+    }
+
+    /* כיווץ אזור התוכן הראשי */
+    .main-content, .fm-content-area, .content-wrapper {
+        padding: 10px !important;
+        gap: 10px !important;
+    }
+
+    /* התאמת תפריטי צד (Sidebar) */
+    .sidebar, .fm-sidebar, aside {
+        min-width: 200px !important;
+        max-width: 220px !important;
+    }
+
+    /* כיווץ כותרות */
+    h1, .content-header-title {
+        font-size: 20px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* התאמה לסמלים ותמונות שעלולים לחרוג */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* כיווץ אלמנטים ספציפיים (כמו כרטיסיות, שחקנים בפנטזי, הודעות) */
+    .msg-row, .card, .player-slot {
+        transform: scale(0.95);
+        transform-origin: right top;
+    }
+}
+
+/* === התאמה למסכים קטנים מאוד (טאבלטים/מסכים צרים) === */
+@media (max-width: 1100px) {
+    .squad-layout, .main-layout {
+        flex-direction: column !important; /* הופך את הטורים לשורות כדי שלא ימחצו */
+    }
 }
 </style>
