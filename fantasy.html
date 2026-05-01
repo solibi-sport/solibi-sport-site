@@ -926,22 +926,35 @@
                 if (benchList) {
                     benchList.innerHTML = ''; 
                     
-                    squad.forEach(p => {
+                   squad.forEach(p => {
                         const tName = window.translateName ? window.translateName(p.name) : p.name;
                         let borderColor = '#cbd5e1';
                         let posName = p.pos;
                         
-                        // צבעים לפי עמדה
+                        // הגדרת צבעים ושמות עמדה
                         if(p.pos === 'שוער') borderColor = '#f1c40f';
                         if(p.pos === 'הגנה') borderColor = '#2ecc71';
                         if(p.pos === 'קישור') borderColor = '#3498db';
-                        if(p.pos === 'חלוץ' || p.pos === 'התקפה') { borderColor = '#e74c3c'; posName = 'התקפה'; }
+                        if(p.pos === 'חלוץ' || p.pos === 'התקפה') {
+                            borderColor = '#e74c3c';
+                            posName = 'התקפה';
+                        }
 
+                        // משיכת התמונה ישירות מה-API כדי לא לבזבז בקשות
+                        const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+
+                        // מכיוון שהאתר מוגדר כ-RTL (ימין לשמאל), האלמנט הראשון בקוד יופיע הכי ימינה.
                         benchList.innerHTML += `
-                            <div style="background: #fff; border: 1px solid #cbd5e1; border-right: 4px solid ${borderColor}; border-radius: 6px; padding: 4px 2px; text-align: center; font-size: 9.5px; font-weight: bold; color: var(--text-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; cursor: pointer; transition: 0.2s; height: 48px;" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
-                                <span style="color: #64748b; font-size: 8.5px;">${posName}</span>
-                                <img src="${p.photo || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
-                                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 95%;" title="${tName}">${tName}</span>
+                            <div style="background: #fff; border: 1px solid #cbd5e1; border-right: 4px solid ${borderColor}; border-radius: 6px; padding: 4px 8px; display: flex; align-items: center; justify-content: flex-start; gap: 10px; cursor: pointer; transition: 0.2s; height: 48px;" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
+                                
+                                <img src="${playerImage}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                                
+                                <div style="display: flex; align-items: center; gap: 6px; flex: 1; overflow: hidden; white-space: nowrap;">
+                                    <span style="font-size: 11px; font-weight: 900; color: var(--text-dark); text-overflow: ellipsis; overflow: hidden;" title="${tName}">${tName}</span>
+                                    <span style="color: #94a3b8; font-size: 10px;">|</span>
+                                    <span style="color: #64748b; font-size: 10px; font-weight: bold; flex-shrink: 0;">${posName}</span>
+                                </div>
+                                
                             </div>
                         `;
                     });
