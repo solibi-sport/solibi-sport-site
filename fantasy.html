@@ -392,7 +392,58 @@
             visibility: visible;
             opacity: 1;
         }
-        
+
+        /* === רספונסיביות למסכי לפטופ (עד 1440px) === */
+        @media (max-width: 1440px) {
+            /* סרגל עליון - הקטנת פונטים ורווחים כדי שלא יישבר */
+            .fm-top-bar {
+                padding: 10px;
+                gap: 10px;
+            }
+            .fm-top-stat-title { font-size: 11px; }
+            .fm-top-stat-value { font-size: 14px; }
+
+            /* אזור התוכן הראשי - צמצום שוליים כדי לתת יותר מקום לתוכן */
+            .main-content {
+                gap: 15px;
+            }
+            .fm-content-area {
+                padding: 15px;
+            }
+
+            /* הקטנת שורות ההודעות והתראות */
+            .msg-row {
+                padding: 10px;
+                gap: 10px;
+            }
+            .msg-title { font-size: 13px; }
+            .msg-desc { font-size: 11px; }
+            .msg-badge { width: 90px; font-size: 10px; padding: 4px 6px; }
+
+            /* הקטנת הכותרת הראשית בטאבים */
+            .content-header-title {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+        }
+
+        /* === רספונסיביות למסכים קטנים במיוחד (1100px ומטה) === */
+        @media (max-width: 1100px) {
+            /* אם המסך ממש קטן, הסרגל העליון נשבר ל-2 שורות יפות במקום להימעך */
+            .fm-top-bar {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .fm-top-stat {
+                min-width: 30%;
+                margin-bottom: 5px;
+            }
+            
+            /* תפריט הצד הופך לצר יותר */
+            .fm-sidebar {
+                min-width: 200px;
+            }
+        }
     </style>
 </head>
 
