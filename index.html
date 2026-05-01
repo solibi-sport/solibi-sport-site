@@ -39,7 +39,7 @@
             flex-direction: column;
         }
 
-       /* === הדר עליון (מיושר וסימטרי בדיוק כמו בפנתיאון) === */
+/* === הדר עליון (מיושר וסימטרי בהתחייבות מוחלטת) === */
         .header {
             height: 65px;
             background: var(--element-navy-gradient);
@@ -47,14 +47,17 @@
             position: relative;
             z-index: 1000;
             display: flex;
+            justify-content: center; /* ממרכז את התפריט האמצעי */
             align-items: center;
-            padding: 0 20px; 
             width: 100%;
         }
 
+        /* נועל את הלוגו בדיוק באותן קואורדינטות של הסיידבר הימני */
         .header-right-col { 
-            flex: 0 0 var(--sidebar-width);
-            max-width: var(--sidebar-width);
+            position: absolute;
+            right: 20px; 
+            width: var(--sidebar-width); 
+            height: 100%;
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -65,12 +68,14 @@
             justify-content: center; 
             align-items: center; 
             gap: clamp(15px, 2vw, 30px); 
-            flex: 1; 
         }
 
+        /* נועל את שורת החיפוש בדיוק באותן קואורדינטות של הסיידבר השמאלי */
         .header-left-col { 
-            flex: 0 0 var(--sidebar-width);
-            max-width: var(--sidebar-width);
+            position: absolute;
+            left: 20px; 
+            width: var(--sidebar-width); 
+            height: 100%;
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -97,15 +102,17 @@
         .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
 
         .header-search { 
-            width: 65%; 
+            width: 65%; /* יושבת בול באמצע כי ההורה ממורכז */
             height: 34px; 
             transition: width 0.4s ease; 
             position: relative; 
-            margin: 0 auto; 
         }
         .header-search input { width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit; box-shadow: none; transition: 0.4s ease; }
-        .header-search:focus-within { width: 100%; }
+        
+        /* מתרחבת בלחיצה בדיוק לגבולות הקופסה שלה, שהיא בגודל הסיידבר */
+        .header-search:focus-within { width: 100%; } 
         .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
+        
         /* === גוף הדף === */
         .main-content {
             display: flex; flex: 1; overflow: hidden; position: relative;
