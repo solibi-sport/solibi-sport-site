@@ -1187,16 +1187,29 @@ function dropPlayer(ev, slotPos) {
     const playerName = ev.dataTransfer.getData("name");
     const playerPhoto = ev.dataTransfer.getData("photo");
 
-    // בדיקה: האם העמדה של השחקן תואמת לעמדה של המשבצת?
+    // בדיקה 1: האם העמדה של השחקן תואמת לעמדה של המשבצת?
     if (playerPos !== slotPos) {
-        alert(`אי אפשר לשים ${playerPos} בעמדת ${slotPos}!`);
+        alert(`אי אפשר לשים שחקן מעמדת ${playerPos} בעמדת ${slotPos}!`);
         return;
     }
 
     // מוצאים את המשבצת שעליה שחררנו
     const slot = ev.currentTarget.closest('.player-slot');
+
+    // בדיקה 2: האם השחקן כבר נמצא על הדשא במשבצת אחרת?
+    const existingSlots = document.querySelectorAll('#pitch-players .player-slot');
+    for (let s of existingSlots) {
+        // בודקים אם יש משבצת (שהיא לא המשבצת הנוכחית) שכבר מכילה את השחקן הזה
+        if (s !== slot && s.getAttribute('data-player-name') === playerName) {
+            alert(`השחקן ${playerName} כבר נמצא בהרכב!`);
+            return;
+        }
+    }
+
+    // שומרים את שם השחקן על המשבצת כדי שנוכל לזהות אותו להבא
+    slot.setAttribute('data-player-name', playerName);
     
-    // מציירים את השחקן בתוך המשבצת (תמונה למעלה, שם למטה, בלי טקסט עמדה)
+    // מציירים את השחקן בתוך המשבצת
     let innerHtml = `
         <img src="${playerPhoto}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.5); margin-bottom: 4px; background: rgba(255,255,255,0.8);" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
         <div style="background: #fff; padding: 2px 4px; border-radius: 4px; border: 1px solid #062141; box-shadow: 0 2px 4px rgba(0,0,0,0.3); max-width: 100%;">
@@ -1204,7 +1217,7 @@ function dropPlayer(ev, slotPos) {
         </div>
     `;
 
-    // אם זה שוער, נשמור לו את תג הקפטן כמו שהיה בעיצוב שלך
+    // אם זה שוער, נשמור לו את תג הקפטן
     if (slotPos === 'שוער') {
         innerHtml += `<div class="captain-badge">C</div>`;
     }
