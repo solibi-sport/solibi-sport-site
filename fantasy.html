@@ -218,7 +218,34 @@
         .field-lines { position: absolute; inset: 15px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; pointer-events: none; }
         .field-lines::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255,255,255,0.15); transform: translateY(-50%); }
         .field-lines::after { content: ''; position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px rgba(124,168,86,0.3), inset 0 0 15px rgba(124,168,86,0.3); }
+/* === שליטה במערך === */
+.formation-control {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--text-dark);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
 
+.formation-control select {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    font-family: inherit;
+}
+        
         .squad-layout { display: flex; gap: 20px; flex: 1; }
         .squad-layout > .soccer-field { flex: 2.5; }
         .squad-layout > .bench-area { flex: 1; }
@@ -462,32 +489,21 @@
                         
                         <div class="squad-layout">
                             <div class="soccer-field">
-                                <div class="field-lines"></div>
-                                
-                                <div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
-                                </div>
-                                <div style="display: flex; justify-content: center; gap: 15px; z-index: 10;">
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
-                                </div>
-                                <div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
-                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
-                                </div>
-                                <div style="display: flex; justify-content: center; z-index: 10;">
-                                    <div class="player-slot" style="border-color: rgba(255,215,0,0.5);">
-                                        <div class="captain-badge">C</div>
-                                        <div class="slot-icon">🧤</div><div class="slot-name">שוער</div>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="field-lines"></div>
+    
+    <div class="formation-control">
+        <span>מערך:</span>
+        <select id="formation-select">
+            <option value="4-3-3">4-3-3</option>
+            <option value="4-4-2">4-4-2</option>
+            <option value="3-5-2">3-5-2</option>
+            <option value="5-3-2">5-3-2</option>
+        </select>
+    </div>
 
+    <div id="pitch-players" style="display: flex; flex-direction: column; justify-content: space-around; height: 100%; position: relative; z-index: 10; padding-top: 30px;">
+    </div>
+</div>
                             <div class="bench-area" style="background: #f8fafc; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; border: 1px solid #e2e8f0;">
                                 <h3 style="font-size: 13px; color: var(--text-dark); font-weight: 900; margin-bottom: 10px; display: flex; justify-content: space-between;">
                                     <span>📋 מחליפים</span>
@@ -1000,6 +1016,56 @@
                 });
             }
         });
+        // פונקציה שמציירת את המגרש לפי המערך הנבחר
+function renderFormation(formation) {
+    const pitch = document.getElementById('pitch-players');
+    if (!pitch) return;
+
+    // חיתוך המחרוזת (למשל "4-3-3" הופך למערך של מספרים)
+    const parts = formation.split('-'); 
+    const defCount = parseInt(parts[0]);
+    const midCount = parseInt(parts[1]);
+    const attCount = parseInt(parts[2]);
+
+    // פונקציית עזר ליצירת שורת שחקנים
+    const createRow = (count, roleName) => {
+        let html = '<div style="display: flex; justify-content: center; gap: 20px;">';
+        for(let i = 0; i < count; i++) {
+            html += `<div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">${roleName}</div></div>`;
+        }
+        html += '</div>';
+        return html;
+    };
+
+    // בונים את ה-HTML מלמעלה למטה: חלוצים -> קשרים -> הגנה
+    let pitchHTML = createRow(attCount, 'חלוץ');
+    pitchHTML += createRow(midCount, 'קשר');
+    pitchHTML += createRow(defCount, 'הגנה');
+
+    // השוער נשאר קבוע למטה עם סרט הקפטן (כמו בעיצוב המקורי שלך)
+    pitchHTML += `
+        <div style="display: flex; justify-content: center;">
+            <div class="player-slot" style="border-color: rgba(255,215,0,0.5);">
+                <div class="captain-badge">C</div>
+                <div class="slot-icon">🧤</div><div class="slot-name">שוער</div>
+            </div>
+        </div>
+    `;
+
+    // דחיפת ה-HTML לתוך המגרש
+    pitch.innerHTML = pitchHTML;
+}
+
+// הפעלה: מאזינים לשינויים בתפריט ומציירים בהתחלה
+document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('formation-select');
+    if(select) {
+        // כשמשנים את המערך בתפריט
+        select.addEventListener('change', (e) => renderFormation(e.target.value));
+        // ציור ראשוני ברגע שהדף נטען
+        renderFormation(select.value); 
+    }
+});
     </script>
 </body>
 </html>
