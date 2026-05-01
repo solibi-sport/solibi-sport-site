@@ -455,6 +455,97 @@
         .main-content {
             flex: 1; /* השורה הזו היא הקסם - היא מותחת את אזור התוכן ודוחפת את הטיקר למטה! */
         }
+/* =========================================
+           עיצוב דף פרופיל מנג'ר
+           ========================================= */
+        
+        .profile-header-card {
+            background: var(--element-navy-gradient);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 1px solid rgba(124, 168, 86, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* עיטור רקע לפרופיל */
+        .profile-header-card::after {
+            content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 30%;
+            background: linear-gradient(90deg, rgba(124, 168, 86, 0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .profile-avatar-wrap { position: relative; }
+        .profile-avatar { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--brand-green); object-fit: cover; background: #fff;}
+        .profile-level-badge {
+            position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            background: var(--brand-green); color: #fff; font-size: 11px; font-weight: 900;
+            padding: 4px 12px; border-radius: 20px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .profile-details { color: #fff; flex: 1; }
+        .manager-name { font-size: 24px; font-weight: 900; margin-bottom: 2px; }
+        .manager-team-name { font-size: 16px; color: var(--brand-green); font-weight: 700; margin-bottom: 12px; }
+        .manager-meta { display: flex; gap: 20px; font-size: 13px; color: #cbd5e1; }
+        .manager-meta span { display: flex; align-items: center; gap: 6px; }
+
+        .profile-stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;
+        }
+        .p-stat-box {
+            background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px;
+            padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .p-stat-title { font-size: 12px; color: #64748b; font-weight: 700; margin-bottom: 8px; }
+        .p-stat-value { font-size: 22px; color: var(--text-dark); font-weight: 900; margin-bottom: 5px; }
+        .p-stat-trend { font-size: 11px; font-weight: bold; }
+        .trend-up { color: var(--brand-green); }
+        .trend-down { color: #ef4444; }
+
+        .profile-split-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+        .profile-section-card {
+            background: #fff; border-radius: 12px; padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .p-section-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+
+        /* ארון התארים */
+        .trophies-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .trophy-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+        .trophy-icon { font-size: 32px; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; background: #f8fafc; border: 2px solid transparent; }
+        .trophy-icon.gold { border-color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
+        .trophy-icon.silver { border-color: #94a3b8; background: rgba(148, 163, 184, 0.1); }
+        .trophy-icon.bronze { border-color: #b45309; background: rgba(180, 83, 9, 0.1); }
+        .trophy-icon.green { border-color: var(--brand-green); background: rgba(124, 168, 86, 0.1); }
+        .trophy-name { font-size: 11px; font-weight: 700; color: #475569; }
+
+        /* אנליטיקה */
+        .analytics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .a-item { display: flex; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px; }
+        .a-label { font-size: 13px; color: #64748b; font-weight: 600; }
+        .a-val { font-size: 13px; font-weight: 900; color: var(--text-dark); }
+
+        /* רשימת ליגות */
+        .p-leagues-list { display: flex; flex-direction: column; gap: 10px; }
+        .p-league-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.2s; }
+        .p-league-row:hover { border-color: var(--brand-green); background: rgba(124, 168, 86, 0.02); }
+        .p-league-info { display: flex; flex-direction: column; gap: 4px; }
+        .p-league-name { font-size: 13px; font-weight: 900; color: var(--text-dark); }
+        .p-league-rank { font-size: 11px; color: #64748b; font-weight: 600; }
+        
+        @media (max-width: 1200px) {
+            .profile-split-layout { grid-template-columns: 1fr; }
+            .profile-stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .trophies-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        
     </style>
 </head>
 
@@ -501,7 +592,7 @@
         </div>
         <div class="fm-submenu">
             <div class="fm-sub-item active" onclick="event.stopPropagation(); switchFmTab('tab-dashboard', this)">הודעות והתראות</div>
-            <div class="fm-sub-item" onclick="event.stopPropagation()">פרופיל המנג'ר</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-profile', this)">פרופיל המנג'ר</div>
         </div>
     </div>
 
@@ -676,6 +767,126 @@
 
                         </div>
                     </div>
+<div id="tab-profile" class="tab-content" style="display: none;">
+                <div class="content-header-title" style="margin-bottom: 20px;">פרופיל מנג'ר</div>
+                
+                <div class="profile-header-card">
+                    <div class="profile-avatar-wrap">
+                        <img src="https://ui-avatars.com/api/?name=ישראל+ישראלי&background=7ca856&color=fff&size=150" alt="Avatar" class="profile-avatar">
+                        <div class="profile-level-badge">רמה 42</div>
+                    </div>
+                    <div class="profile-details">
+                        <h2 class="manager-name">ישראל ישראלי</h2>
+                        <div class="manager-team-name">האריות של סוליבי</div>
+                        <div class="manager-meta">
+                            <span>🛡️ אוהד: מכבי תל אביב</span>
+                            <span>📅 מנג'ר מאז: אוגוסט 2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-stats-grid">
+                    <div class="p-stat-box">
+                        <div class="p-stat-title">דירוג עולמי</div>
+                        <div class="p-stat-value">1,432</div>
+                        <div class="p-stat-trend trend-up">▲ עליה של 54 מקומות</div>
+                    </div>
+                    <div class="p-stat-box">
+                        <div class="p-stat-title">סך נקודות</div>
+                        <div class="p-stat-value">1,845</div>
+                        <div class="p-stat-trend" style="color:#64748b;">ממוצע: 61 למחזור</div>
+                    </div>
+                    <div class="p-stat-box">
+                        <div class="p-stat-title">שווי קבוצה</div>
+                        <div class="p-stat-value">₪103.5M</div>
+                        <div class="p-stat-trend trend-up">▲ רווח ₪3.5M</div>
+                    </div>
+                    <div class="p-stat-box">
+                        <div class="p-stat-title">שיא במחזור בודד</div>
+                        <div class="p-stat-value">98 נק'</div>
+                        <div class="p-stat-trend" style="color:#64748b;">מחזור 12</div>
+                    </div>
+                </div>
+
+                <div class="profile-split-layout">
+                    
+                    <div class="profile-main-col">
+                        <div class="profile-section-card">
+                            <h3 class="p-section-title">ארון התארים</h3>
+                            <div class="trophies-container">
+                                <div class="trophy-item">
+                                    <div class="trophy-icon gold">🏆</div>
+                                    <div class="trophy-name">אלוף חודש מרץ</div>
+                                </div>
+                                <div class="trophy-item">
+                                    <div class="trophy-icon silver">🥈</div>
+                                    <div class="trophy-name">טופ 1% עולמי</div>
+                                </div>
+                                <div class="trophy-item">
+                                    <div class="trophy-icon bronze">💯</div>
+                                    <div class="trophy-name">מועדון ה-100 נק'</div>
+                                </div>
+                                <div class="trophy-item">
+                                    <div class="trophy-icon green">🎯</div>
+                                    <div class="trophy-name">קפטן מושלם (x5)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-section-card">
+                            <h3 class="p-section-title">אנליטיקת מנג'ר</h3>
+                            <div class="analytics-grid">
+                                <div class="a-item">
+                                    <span class="a-label">מערך מועדף</span>
+                                    <span class="a-val">3-4-3</span>
+                                </div>
+                                <div class="a-item">
+                                    <span class="a-label">קפטן נפוץ</span>
+                                    <span class="a-val">ערן זהבי (8 מחזורים)</span>
+                                </div>
+                                <div class="a-item">
+                                    <span class="a-label">סה"כ העברות שבוצעו</span>
+                                    <span class="a-val">24</span>
+                                </div>
+                                <div class="a-item">
+                                    <span class="a-label">נקודות שירדו על קנסות (Hits)</span>
+                                    <span class="a-val" style="color:#ef4444;">-16 נק'</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-side-col">
+                        <div class="profile-section-card" style="height: 100%;">
+                            <h3 class="p-section-title">הליגות שלי</h3>
+                            <div class="p-leagues-list">
+                                <div class="p-league-row">
+                                    <div class="p-league-info">
+                                        <span class="p-league-name">ליגת החברים</span>
+                                        <span class="p-league-rank">מקום 2 מתוך 15</span>
+                                    </div>
+                                    <div class="p-league-trend trend-up">▲</div>
+                                </div>
+                                <div class="p-league-row">
+                                    <div class="p-league-info">
+                                        <span class="p-league-name">אוהדי מכבי תל אביב</span>
+                                        <span class="p-league-rank">מקום 342 מתוך 10,240</span>
+                                    </div>
+                                    <div class="p-league-trend trend-down">▼</div>
+                                </div>
+                                <div class="p-league-row">
+                                    <div class="p-league-info">
+                                        <span class="p-league-name">הליגה הכללית (ישראל)</span>
+                                        <span class="p-league-rank">מקום 1,432</span>
+                                    </div>
+                                    <div class="p-league-trend trend-up">▲</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
                     
                     <div id="tab-squad" class="fm-tab">
                         <h2 class="content-header-title">סגל שחקנים (Overview)</h2>
