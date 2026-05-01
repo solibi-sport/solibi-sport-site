@@ -7,22 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* צבעי מותג */
+            /* הירוק של סוליבי ספורט */
             --brand-green: #7ca856;
             --brand-green-glow: rgba(124, 168, 86, 0.6);
             
-            /* רקע וצבעי יסוד - הפוכים לפנטזי */
+            /* הרקע והנייבי המעודכנים - שימוש הפוך! */
             --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
             --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
             
-            /* צבעי אלמנטים */
-            --card-bg: #f5f5f5; 
-            --bg-deep-navy: #062141; 
+            --card-bg: #f5f5f5; /* קוביות כסופות */
+            --bg-gray: #062141; /* רקע נייבי */
             --text-light: #ffffff;
-            --text-dark: #062141; 
+            --text-dark: #062141; /* טקסט כהה על רקע בהיר */
             --white: #ffffff;
             
-            /* רוחבים - סימטריה מוחלטת */
             --sidebar-width: clamp(240px, 20vw, 300px); 
         }
 
@@ -30,7 +28,7 @@
 
         html, body {
             font-family: 'Rubik', sans-serif; 
-            background: var(--element-navy-gradient); /* הרקע הכללי הוא נייבי עמוק */
+            background: var(--element-navy-gradient); /* הרקע הוא הנייבי העמוק */
             height: 100vh; width: 100%;
             overflow: hidden; 
             display: flex; flex-direction: column;
@@ -40,12 +38,20 @@
             body { zoom: 0.85; }
         }
 
-        /* === הדר עליון (כסוף) === */
+        /* === הדר עליון (הפוך - כסוף) === */
         .header {
-            height: 65px; background: var(--bg-silver-matte);
-            border-bottom: 2px solid var(--brand-green); position: relative; z-index: 1000;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0 20px; flex-shrink: 0; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            height: 65px;
+            background: var(--bg-silver-matte);
+            border-bottom: 2px solid var(--brand-green);
+            position: relative;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px; 
+            flex-shrink: 0;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
@@ -80,14 +86,56 @@
         .header-search:focus-within { width: 100%; }
         .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; border-color: var(--brand-green);}
 
-        /* === גוף הדף הראשי === */
-        /* כאן מסדרים שהקוביה המרכזית תהיה בין שני הפאנלים (שמאל וימין) */
+        /* === גוף הדף === */
+        /* סידור נכון של הפריסה כדי למנוע דריסה של הלייב פאנל ע"י הטבלה */
         .main-content { 
-            display: flex; flex: 1; overflow: hidden; position: relative; width: 100%; height: 100%;
-            padding: 2.5vh 20px; gap: 20px;
+            display: flex; flex: 1; overflow: hidden; position: relative; 
+            padding: 20px; gap: 20px;
+            /* מקום ששמור לפאנל השמאלי (אבסולוטי) כדי שהאמצע יהיה סימטרי בדיוק */
+            padding-left: calc(var(--sidebar-width) + 40px);
         }
 
-        /* === סיידבר ימני (פנטזי) נפרד === */
+        /* === פאנל לייב משמאל (אבסולוטי) === */
+        .collapsible-live-panel {
+            position: absolute; top: 20px; left: 20px; width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px);
+            border: 2px solid var(--brand-green); border-radius: 16px;
+            display: flex; flex-direction: column; overflow: hidden; z-index: 50;
+            height: 48px; transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .collapsible-live-panel.expanded { height: calc(100% - 40px); background: rgba(255, 255, 255, 0.95); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        .panel-header { font-size: 14px; font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 44px; flex-shrink: 0; cursor: pointer; transition: 0.3s; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .panel-header:hover { background: rgba(0,0,0,0.05); }
+        .header-title-group { display: flex; align-items: center; gap: 8px; }
+        .toggle-arrow { transition: transform 0.4s ease; color: var(--text-dark); width: 20px; height: 20px;}
+        .collapsible-live-panel.expanded .toggle-arrow { transform: rotate(180deg); }
+        
+        .panel-content { position: relative; flex: 1; padding: 10px 0 0 0; overflow: hidden; opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column;}
+        .collapsible-live-panel.expanded .panel-content { opacity: 1; overflow-y: auto; }
+        .panel-content::-webkit-scrollbar { width: 4px; }
+        .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        #live-scroll-wrapper { position: relative; flex: 1; width: 100%; overflow: hidden; }
+        #live-content-inner { position: absolute; top: 0; left: 0; width: 100%; display: flex; flex-direction: column; padding-bottom: 15px; }
+
+        .live-scrolling { animation: tickerVertical linear infinite; }
+        #live-scroll-wrapper:hover #live-content-inner.live-scrolling, #live-scroll-wrapper:active #live-content-inner.live-scrolling { animation-play-state: paused !important; }
+
+        @keyframes tickerVertical { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+
+        .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin: 0 10px 4px 10px; border-right: 3px solid var(--brand-green); flex-shrink: 0;}
+        .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
+        .live-match-card-light { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl; margin: 0 10px 8px 10px; flex-shrink: 0; }
+        .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
+        .match-teams-col { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; flex: 1; min-width: 0; }
+        .team-line { display: flex; align-items: center; gap: 8px; height: 16px; }
+        .team-line img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0;}
+        .team-line span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 105px; }
+        .match-score-col { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 40px; flex-shrink: 0; background: #f0f4f8; padding: 4px 8px; border-radius: 6px; position: relative;}
+        .match-score-col .score-num { font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center; }
+        .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
+
+        /* === סיידבר פנימי בתוך הקונטיינר (פנטזי) - יושב בצד ימין בעמודה נפרדת === */
         .fm-sidebar {
             width: var(--sidebar-width); height: 100%; flex-shrink: 0;
             background: var(--bg-silver-matte);
@@ -97,13 +145,13 @@
         }
 
         .fm-menu-item {
-            display: flex; align-items: center; gap: 15px; padding: 16px 25px;
+            display: flex; align-items: center; gap: 15px; padding: 18px 25px;
             color: rgba(6, 33, 65, 0.7); text-decoration: none; font-weight: 900; font-size: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid rgba(6, 33, 65, 0.05); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer; position: relative;
         }
 
-        .fm-menu-item:hover { color: var(--text-dark); background: rgba(0,0,0,0.02); }
+        .fm-menu-item:hover { color: var(--text-dark); background: rgba(0,0,0,0.02); padding-right: 30px; }
         .fm-menu-item.active {
             color: var(--text-dark); background: linear-gradient(90deg, rgba(124,168,86,0.15) 0%, transparent 100%);
             border-right: 4px solid var(--brand-green);
@@ -112,8 +160,8 @@
         .fm-menu-item.active svg { stroke: var(--brand-green); }
 
         .fm-nav-group { position: relative; }
-        .fm-submenu { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(0, 0, 0, 0.02); border-right: 3px solid transparent; }
-        .fm-nav-group.open .fm-submenu { max-height: 400px; border-right-color: var(--brand-green); }
+        .fm-submenu { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(0, 0, 0, 0.03); border-right: 3px solid transparent; }
+        .fm-nav-group.open .fm-submenu { max-height: 300px; border-right-color: var(--brand-green); }
         .fm-sub-item { display: block; padding: 12px 35px 12px 20px; color: rgba(6, 33, 65, 0.7); font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; position: relative; }
         .fm-sub-item::before { content: ''; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: 4px; height: 4px; border-radius: 50%; background: rgba(6, 33, 65, 0.3); transition: 0.2s; }
         .fm-sub-item:hover, .fm-sub-item.active { color: var(--text-dark); background: rgba(0,0,0,0.02); padding-right: 40px; }
@@ -121,20 +169,25 @@
         .dropdown-arrow { margin-right: auto; width: 16px !important; height: 16px !important; transition: transform 0.3s; opacity: 0.7; }
         .fm-nav-group.open .dropdown-arrow { transform: rotate(180deg); opacity: 1; stroke: var(--brand-green); }
 
-        /* === הקוביה הלבנה המרכזית === */
+        /* === מעטפת התוכן המרכזית (הקוביה הלבנה) === */
+        /* min-width: 0 מונע מהטבלה לפרוץ את גבולות המסך ולדרוס את הפאנל משמאל */
         .content-container {
-            flex: 1; height: 100%; display: flex; flex-direction: column; gap: 15px; 
-            max-width: 1400px; margin: 0 auto;
+            flex: 1; 
+            min-width: 0; 
+            height: 100%;
             background: #ffffff; 
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             padding: 20px; 
+            display: flex;
+            flex-direction: column;
             overflow: hidden; 
             box-shadow: 0 15px 50px rgba(0,0,0,0.4);
-            transition: all 0.4s ease-in-out;
         }
 
-        /* סרגל עליון (כסוף עם טקסט נייבי) */
+        .fm-layout { display: flex; flex-direction: column; flex: 1; height: 100%; gap: 15px; overflow: hidden; min-width: 0; }
+
+        /* סרגל עליון - הפוך (כסוף עם טקסט נייבי) */
         .fm-top-bar {
             background: var(--bg-silver-matte);
             border: 1px solid rgba(124, 168, 86, 0.2); border-radius: 12px;
@@ -148,18 +201,19 @@
 
         .fm-content-area {
             flex: 1; background: #ffffff; border-radius: 12px; padding: 10px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.03); overflow-y: auto; display: flex; flex-direction: column;
-            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.03); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.05); min-width: 0;
         }
 
         .fm-tab { display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); height: 100%; flex-direction: column;}
         .fm-tab.active { display: flex; }
         @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
+        /* עיצוב כללי לתוכן הלבן */
         h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;}
         p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
 
-        /* === מגרש === */
+        /* === מגרש (בחירת הרכב) === */
         .soccer-field { background: linear-gradient(180deg, #1e5b34 0%, #113a20 100%); position: relative; border: 1px solid rgba(124,168,86,0.5); border-radius: 12px; min-height: 400px; display: flex; flex-direction: column; justify-content: space-around; box-shadow: inset 0 0 50px rgba(0,0,0,0.4), 0 10px 25px rgba(0,0,0,0.15); overflow: hidden; padding: 15px 0; }
         .field-lines { position: absolute; inset: 15px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; pointer-events: none; }
         .field-lines::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255,255,255,0.15); transform: translateY(-50%); }
@@ -180,8 +234,8 @@
         .bench-slot { background: #f0f4f8; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 8px; text-align: center; font-size: 11px; color: var(--text-dark); font-weight: bold; transition: 0.2s; cursor: pointer; }
         .bench-slot:hover { background: #e2e8f0; border-color: var(--brand-green); color: var(--brand-green);}
 
-        /* === עיצוב טבלת ה-2000 שחקנים (סקאוטינג) === */
-        .market-table-container { flex: 1; overflow-y: auto; overflow-x: hidden; border-radius: 8px; border: 1px solid #e2e8f0; direction: ltr; margin-top: 10px;}
+        /* עיצוב טבלת ה-2000 שחקנים (סקאוטינג) */
+        .market-table-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid #e2e8f0; direction: ltr; margin-top: 10px; max-width: 100%;}
         .market-table { width: 100%; border-collapse: collapse; color: var(--text-dark); background: #ffffff; font-size: 11px; table-layout: fixed; min-width: 100%; } 
         .market-table th { background: #f8fafc; padding: 10px 2px; text-align: center; font-weight: 700; color: #64748b; position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--brand-green); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px; }
         .market-table td { padding: 8px 2px; text-align: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; white-space: nowrap; font-weight: 600; overflow: hidden; text-overflow: ellipsis; vertical-align: middle;}
@@ -215,49 +269,6 @@
         .manager-badge { border: 1px dashed #cbd5e1; padding: 3px 0; border-radius: 4px; font-size: 9px; color: #64748b; display: block; width: 90%; margin: 0 auto; text-align: center; font-weight: bold;}
         .manager-badge.taken { border: 1px solid var(--brand-green); color: var(--brand-green); background: rgba(124,168,86,0.1); }
 
-        /* === פאנל לייב משמאל === */
-        /* הוא נפרד, נפתח לצד הקוביה המרכזית ומסתיר אותה כשנפתח - או יושב לצידה */
-        .collapsible-live-panel {
-            width: var(--sidebar-width); height: 100%; flex-shrink: 0;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px);
-            border: 2px solid var(--brand-green); border-radius: 16px;
-            display: flex; flex-direction: column; overflow: hidden; z-index: 50;
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            /* ברירת מחדל: סגור (גובה מינימלי) - ממוקם אבסולוטית כדי לא לשבור את הסימטריה */
-            position: absolute; top: 2.5vh; left: 20px; height: 48px;
-        }
-        .collapsible-live-panel.expanded { height: calc(95vh - 65px); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
-        .panel-header { font-size: 14px; font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 44px; flex-shrink: 0; cursor: pointer; transition: 0.3s; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .panel-header:hover { background: rgba(0,0,0,0.05); }
-        .header-title-group { display: flex; align-items: center; gap: 8px; }
-        .toggle-arrow { transition: transform 0.4s ease; color: var(--text-dark); width: 20px; height: 20px;}
-        .collapsible-live-panel.expanded .toggle-arrow { transform: rotate(180deg); }
-        
-        .panel-content { position: relative; flex: 1; padding: 10px 0 0 0; overflow: hidden; opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column;}
-        .collapsible-live-panel.expanded .panel-content { opacity: 1; overflow-y: auto; }
-        .panel-content::-webkit-scrollbar { width: 4px; }
-        .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
-
-        #live-scroll-wrapper { position: relative; flex: 1; width: 100%; overflow: hidden; }
-        #live-content-inner { position: absolute; top: 0; left: 0; width: 100%; display: flex; flex-direction: column; padding-bottom: 15px; }
-
-        .live-scrolling { animation: tickerVertical linear infinite; }
-        #live-scroll-wrapper:hover #live-content-inner.live-scrolling, #live-scroll-wrapper:active #live-content-inner.live-scrolling { animation-play-state: paused !important; }
-
-        @keyframes tickerVertical { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
-
-        .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin: 0 10px 4px 10px; border-right: 3px solid var(--brand-green); flex-shrink: 0;}
-        .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
-        .live-match-card-light { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl; margin: 0 10px 8px 10px; flex-shrink: 0; }
-        .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
-        .match-teams-col { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; flex: 1; min-width: 0; }
-        .team-line { display: flex; align-items: center; gap: 8px; height: 16px; }
-        .team-line img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0;}
-        .team-line span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 105px; }
-        .match-score-col { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 40px; flex-shrink: 0; background: #f0f4f8; padding: 4px 8px; border-radius: 6px; position: relative;}
-        .match-score-col .score-num { font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center; }
-        .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
-
         /* פוטר וטיקר (הפוך - רקע כסוף ומלל נייבי) */
         .footer { background: var(--bg-silver-matte); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
@@ -268,15 +279,16 @@
 
         @media (max-width: 1200px) {
             html, body { overflow: auto; height: auto; }
-            .main-content { flex-direction: column; height: auto; overflow: visible;}
-            .collapsible-live-panel { position: relative; margin: 0 auto 20px; width: 100%; max-width: 600px; left: auto; top: auto; }
-            .content-container { flex-direction: column; max-height: none; aspect-ratio: auto; border-radius: 12px;}
+            .main-content { flex-direction: column; padding: 20px; height: auto; overflow: visible;}
+            .collapsible-live-panel { position: relative; margin: 0 auto 20px; width: 100%; left: auto; top: auto; }
+            .content-container { flex-direction: column; max-height: none; border-radius: 12px;}
             .fm-sidebar { width: 100%; height: auto; margin-bottom: 20px; border-radius: 12px; flex-shrink: 0;}
             .fm-layout { width: 100%; overflow: visible; margin: 0;}
             .market-table { min-width: 900px; } 
         }
     </style>
 </head>
+
 <body>
 
     <header class="header">
@@ -307,24 +319,7 @@
 
     <main class="main-content">
         
-        <aside class="collapsible-live-panel" id="livePanel">
-            <div class="panel-header" id="live-panel-header">
-                <div class="header-title-group">
-                    <span>תוצאות לייב</span>
-                    <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
-                </div>
-                <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-            <div class="panel-content">
-                <div id="live-scroll-wrapper">
-                    <div id="live-content-inner">
-                        <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: var(--text-dark);" id="live-loading">טוען משחקים... ⚽</div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <div class="fm-sidebar">
+        <nav class="fm-sidebar">
             <div style="text-align: center; margin-bottom: 10px; padding: 0 20px 10px; border-bottom: 1px solid rgba(6, 33, 65, 0.05);">
                 <div style="font-size: 20px; color: var(--text-dark); font-weight: 900;">פנטזי ליג</div>
             </div>
@@ -391,144 +386,163 @@
                     <div class="fm-sub-item" onclick="event.stopPropagation()">השחקנים החמים</div>
                 </div>
             </div>
-        </div>
+        </nav>
 
-        <div class="fm-layout">
-            
-            <div class="fm-top-bar">
-                <div class="fm-top-stat">
-                    <span class="fm-top-stat-title">קבוצה</span>
-                    <span class="fm-top-stat-value" id="user-team-name">מכבי סוליבי</span>
-                </div>
-                <div class="fm-top-stat">
-                    <span class="fm-top-stat-title">מנג'ר</span>
-                    <span class="fm-top-stat-value" id="user-manager-name">אורח</span>
-                </div>
-                <div class="fm-top-stat">
-                    <span class="fm-top-stat-title">תקציב פנוי</span>
-                    <span class="fm-top-stat-value highlight" id="user-budget">₪100,000,000</span>
-                </div>
-                <div class="fm-top-stat">
-                    <span class="fm-top-stat-title">סך נקודות</span>
-                    <span class="fm-top-stat-value" id="user-points">0</span>
-                </div>
-            </div>
-
-            <div class="fm-content-area">
+        <div class="content-container">
+            <div class="fm-layout">
                 
-                <div id="tab-squad" class="fm-tab">
-                    <h2 class="content-header-title">הקבוצה שלי (Overview)</h2>
-                    <p class="content-desc">סקירה כללית של סגל הפנטזי שלך. עקוב אחרי ניקוד שחקנים בלייב, מצב פציעות, שווי הקבוצה ודירוג בליגות השונות.</p>
-                    <div class="placeholder-box" style="margin-top:20px; flex:1; background:#f8fafc; border:2px dashed #cbd5e1; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#94a3b8;">כאן יופיע המסך הראשי של הקבוצה שלך...</div>
+                <div class="fm-top-bar">
+                    <div class="fm-top-stat">
+                        <span class="fm-top-stat-title">קבוצה</span>
+                        <span class="fm-top-stat-value" id="user-team-name">מכבי סוליבי</span>
+                    </div>
+                    <div class="fm-top-stat">
+                        <span class="fm-top-stat-title">מנג'ר</span>
+                        <span class="fm-top-stat-value" id="user-manager-name">אורח</span>
+                    </div>
+                    <div class="fm-top-stat">
+                        <span class="fm-top-stat-title">תקציב פנוי</span>
+                        <span class="fm-top-stat-value highlight" id="user-budget">₪100,000,000</span>
+                    </div>
+                    <div class="fm-top-stat">
+                        <span class="fm-top-stat-title">סך נקודות</span>
+                        <span class="fm-top-stat-value" id="user-points">0</span>
+                    </div>
                 </div>
 
-                <div id="tab-tactics" class="fm-tab active">
-                    <h2 class="content-header-title" style="gap: 8px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path></svg>
-                        בחירת הרכב וטקטיקה (4-3-3)
-                    </h2>
+                <div class="fm-content-area">
                     
-                    <div class="squad-layout">
-                        <div class="soccer-field">
-                            <div class="field-lines"></div>
-                            
-                            <div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
-                            </div>
-                            <div style="display: flex; justify-content: center; gap: 15px; z-index: 10;">
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
-                            </div>
-                            <div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
-                                <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
-                            </div>
-                            <div style="display: flex; justify-content: center; z-index: 10;">
-                                <div class="player-slot" style="border-color: rgba(255,215,0,0.5);">
-                                    <div class="captain-badge">C</div>
-                                    <div class="slot-icon">🧤</div><div class="slot-name">שוער</div>
+                    <div id="tab-squad" class="fm-tab">
+                        <h2 class="content-header-title">סגל שחקנים (Overview)</h2>
+                        <p class="content-desc">סקירה כללית של סגל הפנטזי שלך. עקוב אחרי ניקוד שחקנים בלייב, מצב פציעות, שווי הקבוצה ודירוג בליגות השונות.</p>
+                        <div class="placeholder-box" style="margin-top:20px; flex:1; background:#f8fafc; border:2px dashed #cbd5e1; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#94a3b8;">כאן יופיע המסך הראשי של הקבוצה שלך...</div>
+                    </div>
+
+                    <div id="tab-tactics" class="fm-tab active">
+                        <h2 class="content-header-title" style="gap: 8px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path></svg>
+                            בחירת הרכב וטקטיקה (4-3-3)
+                        </h2>
+                        
+                        <div class="squad-layout">
+                            <div class="soccer-field">
+                                <div class="field-lines"></div>
+                                
+                                <div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">חלוץ</div></div>
+                                </div>
+                                <div style="display: flex; justify-content: center; gap: 15px; z-index: 10;">
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">קשר</div></div>
+                                </div>
+                                <div style="display: flex; justify-content: center; gap: 20px; z-index: 10;">
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
+                                    <div class="player-slot"><div class="slot-icon">👤</div><div class="slot-name">הגנה</div></div>
+                                </div>
+                                <div style="display: flex; justify-content: center; z-index: 10;">
+                                    <div class="player-slot" style="border-color: rgba(255,215,0,0.5);">
+                                        <div class="captain-badge">C</div>
+                                        <div class="slot-icon">🧤</div><div class="slot-name">שוער</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="bench-area" style="background: #f8fafc; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; border: 1px solid #e2e8f0;">
-                            <h3 style="font-size: 13px; color: var(--text-dark); font-weight: 900; margin-bottom: 10px; display: flex; justify-content: space-between;">
-                                <span>📋 מחליפים</span>
-                            </h3>
-                            <div id="bench-list" style="flex: 1; display: grid; grid-template-columns: 1fr; gap: 8px; overflow-y: auto; padding-right: 5px;">
-                                <div class="bench-slot">שוער מחליף</div>
-                                <div class="bench-slot">הגנה מחליף</div>
-                                <div class="bench-slot">קישור מחליף</div>
-                                <div class="bench-slot">התקפה מחליף</div>
+                            <div class="bench-area" style="background: #f8fafc; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; border: 1px solid #e2e8f0;">
+                                <h3 style="font-size: 13px; color: var(--text-dark); font-weight: 900; margin-bottom: 10px; display: flex; justify-content: space-between;">
+                                    <span>📋 מחליפים</span>
+                                </h3>
+                                <div id="bench-list" style="flex: 1; display: grid; grid-template-columns: 1fr; gap: 8px; overflow-y: auto; padding-right: 5px;">
+                                    <div class="bench-slot">שוער מחליף</div>
+                                    <div class="bench-slot">הגנה מחליף</div>
+                                    <div class="bench-slot">קישור מחליף</div>
+                                    <div class="bench-slot">התקפה מחליף</div>
+                                </div>
+                                <button style="width: 100%; margin-top: 15px; background: var(--brand-green); color: white; font-weight: 900; padding: 10px; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; font-size: 13px;">
+                                    שמור הרכב פותח
+                                </button>
                             </div>
-                            <button style="width: 100%; margin-top: 15px; background: var(--brand-green); color: white; font-weight: 900; padding: 10px; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s; font-size: 13px;">
-                                שמור הרכב פותח
-                            </button>
                         </div>
                     </div>
+
+                    <div id="tab-market" class="fm-tab">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px;">
+                            <h2 style="font-size: 20px; color: var(--text-dark); font-weight: 900; margin: 0;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                מאגר שחקנים מורחב
+                            </h2>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <input type="text" id="filter-search" placeholder="חפש שחקן/קבוצה..." style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-family: inherit; outline: none; background: #f8fafc; font-size: 12px; color: var(--text-dark); font-weight: bold;">
+                            <select id="filter-pos" style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; color: var(--text-dark); font-family: inherit; font-weight: bold; outline: none; cursor: pointer; font-size: 12px;">
+                                <option value="כל העמדות">כל העמדות</option>
+                                <option value="שוער">שוערים</option>
+                                <option value="הגנה">הגנה</option>
+                                <option value="קישור">קישור</option>
+                                <option value="חלוץ">התקפה</option>
+                            </select>
+                        </div>
+                        
+                        <div class="market-table-container">
+                            <table class="market-table" style="direction: rtl;">
+                                <thead>
+                                    <tr>
+                                        <th title="דירוג">#</th>
+                                        <th title="שם השחקן">שחקן</th>
+                                        <th title="גיל">גיל</th>
+                                        <th title="מדינה">מדינה</th>
+                                        <th title="עמדה בטקטיקה">עמדה</th>
+                                        <th title="קבוצה">קבוצה</th>
+                                        <th title="הופעות">הופ'</th>
+                                        <th title="דקות משחק">דק'</th>
+                                        <th title="שערים שהובקעו">שע'</th>
+                                        <th title="בישולים">ביש'</th>
+                                        <th title="תיקולים מוצלחים">תיק'</th>
+                                        <th title="שערים נקיים">ש.נ</th>
+                                        <th title="הצלות פנדלים">ה.פ</th>
+                                        <th title="פנדלים שהובקעו">ש.פ</th>
+                                        <th title="כרטיסים צהובים">צהוב</th>
+                                        <th title="כרטיסים אדומים">אדום</th>
+                                        <th title="נקודות פנטזי">נק'</th>
+                                        <th>בעלות</th>
+                                        <th>רמה</th>
+                                        <th>שווי (₪)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="market-players-body">
+                                    <tr>
+                                        <td colspan="20" style="text-align: center; padding: 30px; font-size: 14px; color: var(--brand-green);">טוען את המאגר...</td>
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </div>
+                    </div>
+
                 </div>
-
-                <div id="tab-market" class="fm-tab">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px;">
-                        <h2 style="font-size: 20px; color: var(--text-dark); font-weight: 900; margin: 0;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                            סקאוטינג - מאגר שחקנים
-                        </h2>
-                    </div>
-
-                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="text" id="filter-search" placeholder="חפש שחקן/קבוצה..." style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-family: inherit; outline: none; background: #f8fafc; font-size: 12px; color: var(--text-dark); font-weight: bold;">
-                        <select id="filter-pos" style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; color: var(--text-dark); font-family: inherit; font-weight: bold; outline: none; cursor: pointer; font-size: 12px;">
-                            <option value="כל העמדות">כל העמדות</option>
-                            <option value="שוער">שוערים</option>
-                            <option value="הגנה">הגנה</option>
-                            <option value="קישור">קישור</option>
-                            <option value="חלוץ">התקפה</option>
-                        </select>
-                    </div>
-                    
-                    <div class="market-table-container">
-                        <table class="market-table" style="direction: rtl;">
-                            <thead>
-                                <tr>
-                                    <th title="דירוג">#</th>
-                                    <th title="שם השחקן">שחקן</th>
-                                    <th title="גיל">גיל</th>
-                                    <th title="מדינה">מדינה</th>
-                                    <th title="עמדה בטקטיקה">עמדה</th>
-                                    <th title="קבוצה">קבוצה</th>
-                                    <th title="הופעות">הופ'</th>
-                                    <th title="דקות משחק">דק'</th>
-                                    <th title="שערים שהובקעו">שע'</th>
-                                    <th title="בישולים">ביש'</th>
-                                    <th title="תיקולים מוצלחים">תיק'</th>
-                                    <th title="שערים נקיים">ש.נ</th>
-                                    <th title="הצלות פנדלים">ה.פ</th>
-                                    <th title="פנדלים שהובקעו">ש.פ</th>
-                                    <th title="כרטיסים צהובים">צהוב</th>
-                                    <th title="כרטיסים אדומים">אדום</th>
-                                    <th title="נקודות פנטזי">נק'</th>
-                                    <th>בעלות</th>
-                                    <th>רמה</th>
-                                    <th>שווי (₪)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="market-players-body">
-                                <tr>
-                                    <td colspan="20" style="text-align: center; padding: 30px; font-size: 14px; color: var(--brand-green);">טוען את המאגר...</td>
-                                </tr>
-                            </tbody>
-                        </table> 
-                    </div>
-                </div>
-
             </div>
-        </div>          
+
+        </div> <aside class="collapsible-live-panel" id="livePanel">
+            <div class="panel-header" id="live-panel-header">
+                <div class="header-title-group">
+                    <span>תוצאות לייב</span>
+                    <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
+                </div>
+                <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="panel-content">
+                <div id="live-scroll-wrapper">
+                    <div id="live-content-inner">
+                        <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: var(--text-dark);" id="live-loading">טוען משחקים... ⚽</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
     </main>
 
     <footer class="footer">
