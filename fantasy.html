@@ -540,7 +540,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
            עיצוב טבלת הסגל והפופ-אפ (Overview)
            ========================================= */
         .squad-widgets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-        .sq-widget { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .sq-widget { background: var(--bg-silver-matte); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .sq-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; flex-shrink: 0; }
         .sq-icon.fire { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
         .sq-icon.alert { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
@@ -549,9 +549,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .sq-w-title { font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 2px; }
         .sq-w-val { font-size: 14px; color: var(--text-dark); font-weight: 900; }
 
-        .squad-table-wrap { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); overflow: hidden; display: flex; flex-direction: column; flex: 1; min-height: 400px; }
+        .squad-table-wrap { background: var(--bg-silver-matte); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; flex: 1; min-height: 400px; }
         .squad-table { width: 100%; border-collapse: collapse; text-align: right; font-size: 12px; }
-        .squad-table th { background: #f8fafc; padding: 10px 15px; color: #64748b; font-weight: 700; border-bottom: 2px solid var(--brand-green); white-space: nowrap; position: sticky; top: 0; z-index: 10;}
+        .squad-table th { background: var(--bg-silver-matte); padding: 10px 15px; color: #64748b; font-weight: 700; border-bottom: 2px solid var(--brand-green); white-space: nowrap; position: sticky; top: 0; z-index: 10;}
         .squad-table td { padding: 8px 15px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; cursor: pointer; transition: 0.2s; font-weight: 600;}
         .squad-table tr:hover td { background: rgba(124, 168, 86, 0.05); }
         
@@ -960,7 +960,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             </div>
                     
                     <div id="tab-squad" class="fm-tab">
-                        <h2 class="content-header-title">סגל שחקנים (Overview)</h2>
+                       <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            סגל שחקנים
+                        </h2>
                         
                         <div class="squad-widgets">
                             <div class="sq-widget">
