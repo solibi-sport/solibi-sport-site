@@ -820,6 +820,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             white-space: nowrap !important; 
             padding: 4px 10px !important;
         }
+
+        /* ביטול ההדגשה מעמודת הנקודות בטבלת הליגה (למעט שורת המנג'ר עצמו) */
+        #tab-league .squad-table tbody tr:not(.row-user) td:nth-child(9) {
+            font-weight: 600 !important; /* החזרה למשקל הרגיל של שאר עמודות הטבלה */
+        }
         
     </style>
         
