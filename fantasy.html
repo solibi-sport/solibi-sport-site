@@ -641,6 +641,37 @@
         @media (max-width: 1200px) {
             .squad-widgets { grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px;}
         }
+
+/* =========================================
+           עיצוב דף טבלת הליגה (חלוקה חכמה)
+           ========================================= */
+        .league-layout-split { display: grid; grid-template-columns: 2.3fr 1fr; gap: 20px; align-items: flex-start; margin-top: 10px; }
+        .league-table-column { background: #fff; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .league-widgets-column { display: flex; flex-direction: column; gap: 12px; }
+
+        /* צביעת שורות מיוחדות */
+        .row-gold { background-color: rgba(255, 215, 0, 0.1) !important; border-right: 4px solid #fbbf24 !important; }
+        .row-last { background-color: #f8fafc !important; color: #64748b; border-right: 4px solid #94a3b8 !important; }
+        .row-user { background-color: rgba(124, 168, 86, 0.08) !important; border: 1px solid var(--brand-green) !important; box-shadow: 0 0 10px rgba(124,168,86,0.1); }
+
+        /* מדדי כושר (Form) - מרובע ומקצועי יותר */
+        .form-container { display: flex; gap: 4px; justify-content: center; }
+        .form-dot { width: 16px; height: 16px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 900; color: #fff; font-family: sans-serif; }
+        .f-w { background: #2ecc71; } /* ניצחון */
+        .f-d { background: #94a3b8; } /* תיקו */
+        .f-l { background: #ef4444; } /* הפסד */
+
+        /* קוביות סטטוס ליגה (צד שמאל) - הוקטנו משמעותית */
+        .league-stat-card { background: #fff; border-radius: 10px; padding: 12px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 10px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 12px; }
+        .l-stat-icon { width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .l-stat-info { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+        .l-stat-label { font-size: 10px; color: #64748b; font-weight: 700; margin-bottom: 2px;}
+        .l-stat-value { font-size: 14px; font-weight: 900; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .l-stat-sub { font-size: 10px; color: var(--brand-green); font-weight: bold; margin-top: 2px; }
+
+        @media (max-width: 1200px) {
+            .league-layout-split { grid-template-columns: 1fr; }
+        }
         
     </style>
 </head>
@@ -711,7 +742,7 @@
             <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
         <div class="fm-submenu">
-            <div class="fm-sub-item" onclick="event.stopPropagation()">טבלת הליגה</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-league', this)">טבלת הליגה</div>
             <div class="fm-sub-item" onclick="event.stopPropagation()">לוח משחקים</div>
             <div class="fm-sub-item" onclick="event.stopPropagation()">סטטיסטיקות</div>
             <div class="fm-sub-item" onclick="event.stopPropagation()">שיאים</div>
@@ -1223,7 +1254,119 @@
     </div>
 </div>
                     </div>
+</button>
+                            </div>
+                        </div>
+                    </div>
 
+                    ```
+3. שים את העכבר **אחרי ה-`</div>` השלישי** (וממש לפני שמתחיל `<div id="tab-market"`), ותדביק שם את הקוד הבא:
+
+```html
+                    <div id="tab-league" class="fm-tab">
+                        <h2 class="content-header-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                            טבלת ליגת "החברים של סוליבי"
+                        </h2>
+
+                        <div class="league-layout-split">
+                            <div class="league-table-column">
+                                <table class="squad-table" style="font-size: 12px; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:50px; text-align:center;">מיקום</th>
+                                            <th>שם הקבוצה</th>
+                                            <th style="text-align:center;">משחקים</th>
+                                            <th style="text-align:center;">נ'</th>
+                                            <th style="text-align:center;">ת'</th>
+                                            <th style="text-align:center;">ה'</th>
+                                            <th style="text-align:center;">שערים</th>
+                                            <th style="text-align:center;">ר.נקייה</th>
+                                            <th style="text-align:center;">נקודות</th>
+                                            <th style="text-align:center;">מגמה</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="row-gold">
+                                            <td style="text-align:center; font-weight:900;">1</td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://ui-avatars.com/api/?name=S+F&background=fbbf24&color=fff" style="width:24px; height:24px; border-radius:50%;"> <strong>הכרישים של מוטי</strong></div></td>
+                                            <td style="text-align:center;">24</td><td style="text-align:center;">18</td><td style="text-align:center;">2</td><td style="text-align:center;">4</td><td style="text-align:center;">52</td><td style="text-align:center;">12</td><td style="text-align:center; font-weight:900; font-size:13px; color:var(--text-dark);">1,450</td>
+                                            <td><div class="form-container"><div class="form-dot f-w">W</div><div class="form-dot f-w">W</div><div class="form-dot f-w">W</div><div class="form-dot f-d">D</div><div class="form-dot f-w">W</div></div></td>
+                                        </tr>
+                                        <tr class="row-user">
+                                            <td style="text-align:center; font-weight:900;">2</td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://ui-avatars.com/api/?name=M+S&background=7ca856&color=fff" style="width:24px; height:24px; border-radius:50%;"> <strong>מכבי סוליבי (אתה)</strong></div></td>
+                                            <td style="text-align:center;">24</td><td style="text-align:center;">16</td><td style="text-align:center;">4</td><td style="text-align:center;">4</td><td style="text-align:center;">48</td><td style="text-align:center;">10</td><td style="text-align:center; font-weight:900; font-size:13px; color:var(--text-dark);">1,432</td>
+                                            <td><div class="form-container"><div class="form-dot f-w">W</div><div class="form-dot f-l">L</div><div class="form-dot f-w">W</div><div class="form-dot f-w">W</div><div class="form-dot f-d">D</div></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; font-weight:900;">3</td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://ui-avatars.com/api/?name=G+G&background=3498db&color=fff" style="width:24px; height:24px; border-radius:50%;"> <span>גלקטיקוס</span></div></td>
+                                            <td style="text-align:center;">24</td><td style="text-align:center;">15</td><td style="text-align:center;">5</td><td style="text-align:center;">4</td><td style="text-align:center;">44</td><td style="text-align:center;">11</td><td style="text-align:center; font-weight:900; color:var(--text-dark);">1,390</td>
+                                            <td><div class="form-container"><div class="form-dot f-w">W</div><div class="form-dot f-d">D</div><div class="form-dot f-w">W</div><div class="form-dot f-l">L</div><div class="form-dot f-w">W</div></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; font-weight:900;">4</td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://ui-avatars.com/api/?name=A+V&background=9b59b6&color=fff" style="width:24px; height:24px; border-radius:50%;"> <span>אריות וולפסון</span></div></td>
+                                            <td style="text-align:center;">24</td><td style="text-align:center;">14</td><td style="text-align:center;">3</td><td style="text-align:center;">7</td><td style="text-align:center;">40</td><td style="text-align:center;">8</td><td style="text-align:center; font-weight:900; color:var(--text-dark);">1,280</td>
+                                            <td><div class="form-container"><div class="form-dot f-l">L</div><div class="form-dot f-w">W</div><div class="form-dot f-w">W</div><div class="form-dot f-d">D</div><div class="form-dot f-l">L</div></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; font-weight:900;">5</td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://ui-avatars.com/api/?name=B+R&background=e67e22&color=fff" style="width:24px; height:24px; border-radius:50%;"> <span>בני יהודה אימפריה</span></div></td>
+                                            <td style="text-align:center;">24</td><td style="text-align:center;">12</td><td style="text-align:center;">6</td><td style="text-align:center;">6</td><td style="text-align:center;">35</td><td style="text-align:center;">9</td><td style="text-align:center; font-weight:900; color:var(--text-dark);">1,150</td>
+                                            <td><div class="form-container"><div class="form-dot f-w">W</div><div class="form-dot f-d">D</div><div class="form-dot f-l">L</div><div class="form-dot f-d">D</div><div class="form-dot f-w">W</div></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; font-weight:900;">6</td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://ui-avatars.com/api/?name=F+C&background=1abc9c&color=fff" style="width:24px; height:24px; border-radius:50%;"> <span>פ.צ. שווארמה</span></div></td>
+                                            <td style="text-align:center;">24</td><td style="text-align:center;">10</td><td style="text-align:center;">5</td><td style="text-align:center;">9</td><td style="text-align:center;">30</td><td style="text-align:center;">6</td><td style="text-align:center; font-weight:900; color:var(--text-dark);">980</td>
+                                            <td><div class="form-container"><div class="form-dot f-l">L</div><div class="form-dot f-l">L</div><div class="form-dot f-w">W</div><div class="form-dot f-l">L</div><div class="form-dot f-d">D</div></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; font-weight:900;">7</td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://ui-avatars.com/api/?name=R+B&background=e74c3c&color=fff" style="width:24px; height:24px; border-radius:50%;"> <span>רד בול פתח תקווה</span></div></td>
+                                            <td style="text-align:center;">24</td><td style="text-align:center;">6</td><td style="text-align:center;">8</td><td style="text-align:center;">10</td><td style="text-align:center;">22</td><td style="text-align:center;">4</td><td style="text-align:center; font-weight:900; color:var(--text-dark);">750</td>
+                                            <td><div class="form-container"><div class="form-dot f-d">D</div><div class="form-dot f-d">D</div><div class="form-dot f-l">L</div><div class="form-dot f-l">L</div><div class="form-dot f-w">W</div></div></td>
+                                        </tr>
+                                        <tr class="row-last">
+                                            <td style="text-align:center; font-weight:900;">8</td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://ui-avatars.com/api/?name=H+A&background=94a3b8&color=fff" style="width:24px; height:24px; border-radius:50%;"> <span>הפועל עגלות</span></div></td>
+                                            <td style="text-align:center;">24</td><td style="text-align:center;">3</td><td style="text-align:center;">2</td><td style="text-align:center;">19</td><td style="text-align:center;">12</td><td style="text-align:center;">2</td><td style="text-align:center; font-weight:900;">410</td>
+                                            <td><div class="form-container"><div class="form-dot f-l">L</div><div class="form-dot f-l">L</div><div class="form-dot f-d">D</div><div class="form-dot f-l">L</div><div class="form-dot f-l">L</div></div></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="league-widgets-column">
+                                <div class="league-stat-card">
+                                    <div class="l-stat-icon" style="background: rgba(251, 191, 36, 0.1); color: #fbbf24;">👑</div>
+                                    <div class="l-stat-info">
+                                        <span class="l-stat-label">מנג'ר החודש</span>
+                                        <span class="l-stat-value">ישראל ישראלי</span>
+                                        <span class="l-stat-sub">342 נק' באפריל</span>
+                                    </div>
+                                </div>
+                                <div class="league-stat-card">
+                                    <div class="l-stat-icon" style="background: rgba(124, 168, 86, 0.1); color: var(--brand-green);">📊</div>
+                                    <div class="l-stat-info">
+                                        <span class="l-stat-label">ממוצע ליגה (מחזור אחרון)</span>
+                                        <span class="l-stat-value">58.4 נק'</span>
+                                        <span class="l-stat-sub">אתה מעל הממוצע! (+12)</span>
+                                    </div>
+                                </div>
+                                <div class="league-stat-card">
+                                    <div class="l-stat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">⚽</div>
+                                    <div class="l-stat-info">
+                                        <span class="l-stat-label">שיאן המחזור</span>
+                                        <span class="l-stat-value">הכרישים של מוטי</span>
+                                        <span class="l-stat-sub">94 נקודות השבוע</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="tab-market" class="fm-tab">
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px;">
                             <h2 style="font-size: 20px; color: var(--text-dark); font-weight: 900; margin: 0;">
