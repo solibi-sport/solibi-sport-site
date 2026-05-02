@@ -462,18 +462,18 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
            ========================================= */
         
         .profile-header-card {
-            background: var(--element-navy-gradient);
-            border-radius: 12px; /* טיפה יותר עדין */
-            padding: 15px 20px; /* הקטנו דרמטית את הריווח הפנימי */
+            background: var(--bg-silver-matte); /* שונה לכסוף */
+            border-radius: 12px;
+            padding: 15px 20px;
             display: flex;
             align-items: center;
             gap: 20px;
-            margin-bottom: 15px; /* פחות רווח מהסטטיסטיקות שמתחת */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 1px solid rgba(124, 168, 86, 0.2);
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
             position: relative;
             overflow: hidden;
-            min-height: 90px; /* הורדנו את הגובה המינימלי משמעותית */
+            min-height: 90px;
         }
 
         /* עיטור רקע לפרופיל */
@@ -483,72 +483,18 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             pointer-events: none;
         }
 
-        .profile-avatar-wrap { 
-            position: relative; 
-            flex-shrink: 0; 
-            z-index: 2;
-        }
-        .profile-avatar { 
-            width: 65px; /* התמונה קטנה יותר ויחסית לדף */
-            height: 65px; 
-            border-radius: 50%; 
-            border: 3px solid var(--brand-green); 
-            object-fit: cover; 
-            background: #fff; 
-            display: block; 
-        }
-        .profile-level-badge {
-            position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-            background: var(--brand-green); color: #fff; font-size: 10px; font-weight: 900;
-            padding: 3px 10px; border-radius: 20px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+        .profile-avatar-wrap { position: relative; flex-shrink: 0; z-index: 2; }
+        .profile-avatar { width: 65px; height: 65px; border-radius: 50%; border: 3px solid var(--brand-green); object-fit: cover; background: #fff; display: block; }
+        .profile-level-badge { position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); background: var(--brand-green); color: #fff; font-size: 10px; font-weight: 900; padding: 3px 10px; border-radius: 20px; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-        .profile-details { 
-            color: #fff; 
-            flex: 1; 
-            min-width: 0; 
-            z-index: 2; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-        }
-        .manager-name { 
-            font-size: 20px; /* הוקטן קצת */
-            font-weight: 900; 
-            margin: 0 0 2px 0 !important; 
-            line-height: 1.2; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-        }
-        .manager-team-name { 
-            font-size: 14px; /* הוקטן קצת */
-            color: var(--brand-green); 
-            font-weight: 700; 
-            margin: 0 0 6px 0 !important; 
-            line-height: 1.2; 
-        }
-        .manager-meta { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 15px; 
-            font-size: 12px; 
-            color: #cbd5e1; 
-            margin: 0 !important; 
-        }
-        .manager-meta span { 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-            white-space: nowrap; 
-        }
-        .profile-stats-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;
-        }
-        .p-stat-box {
-            background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px;
-            padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
+        .profile-details { color: var(--text-dark); flex: 1; min-width: 0; z-index: 2; display: flex; flex-direction: column; justify-content: center; } /* טקסט שחור/נייבי על כסוף */
+        .manager-name { font-size: 20px; font-weight: 900; margin: 0 0 2px 0 !important; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .manager-team-name { font-size: 14px; color: var(--brand-green); font-weight: 700; margin: 0 0 6px 0 !important; line-height: 1.2; }
+        .manager-meta { display: flex; flex-wrap: wrap; gap: 15px; font-size: 12px; color: #64748b; margin: 0 !important; } /* טקסט משני באפור כהה */
+        .manager-meta span { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+        
+        .profile-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .p-stat-box { background: var(--bg-silver-matte); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); } /* שונה לכסוף */
         .p-stat-title { font-size: 12px; color: #64748b; font-weight: 700; margin-bottom: 8px; }
         .p-stat-value { font-size: 22px; color: var(--text-dark); font-weight: 900; margin-bottom: 5px; }
         .p-stat-trend { font-size: 11px; font-weight: bold; }
@@ -557,33 +503,29 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
         .profile-split-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
 
-        .profile-section-card {
-            background: #fff; border-radius: 12px; padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        .p-section-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+        .profile-section-card { background: var(--bg-silver-matte); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; } /* שונה לכסוף */
+        .p-section-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 15px; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 10px; }
 
         /* ארון התארים */
         .trophies-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         .trophy-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
-        .trophy-icon { font-size: 32px; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; background: #f8fafc; border: 2px solid transparent; }
-        .trophy-icon.gold { border-color: #fbbf24; background: rgba(251, 191, 36, 0.1); }
-        .trophy-icon.silver { border-color: #94a3b8; background: rgba(148, 163, 184, 0.1); }
-        .trophy-icon.bronze { border-color: #b45309; background: rgba(180, 83, 9, 0.1); }
-        .trophy-icon.green { border-color: var(--brand-green); background: rgba(124, 168, 86, 0.1); }
+        .trophy-icon { font-size: 32px; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; background: #fff; border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.02);} /* רקע לבן שייבלט על הכסוף */
+        .trophy-icon.gold { border-color: #fbbf24; background: #fff; }
+        .trophy-icon.silver { border-color: #94a3b8; background: #fff; }
+        .trophy-icon.bronze { border-color: #b45309; background: #fff; }
+        .trophy-icon.green { border-color: var(--brand-green); background: #fff; }
         .trophy-name { font-size: 11px; font-weight: 700; color: #475569; }
 
         /* אנליטיקה */
         .analytics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .a-item { display: flex; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px; }
+        .a-item { display: flex; justify-content: space-between; padding: 12px; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); } /* רקע לבן */
         .a-label { font-size: 13px; color: #64748b; font-weight: 600; }
         .a-val { font-size: 13px; font-weight: 900; color: var(--text-dark); }
 
         /* רשימת ליגות */
         .p-leagues-list { display: flex; flex-direction: column; gap: 10px; }
-        .p-league-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.2s; }
-        .p-league-row:hover { border-color: var(--brand-green); background: rgba(124, 168, 86, 0.02); }
+        .p-league-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid transparent; background: #ffffff; border-radius: 8px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); } /* רקע לבן */
+        .p-league-row:hover { border-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.1); }
         .p-league-info { display: flex; flex-direction: column; gap: 4px; }
         .p-league-name { font-size: 13px; font-weight: 900; color: var(--text-dark); }
         .p-league-rank { font-size: 11px; color: #64748b; font-weight: 600; }
@@ -894,7 +836,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
 <div id="tab-profile" class="fm-tab">
-                <h2 class="content-header-title">
+                <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     פרופיל מנג'ר
                 </h2>
