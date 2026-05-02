@@ -647,10 +647,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             margin: 0 auto !important; 
             justify-content: flex-start !important; 
         }
-/* איטום הסדקים הלבנים בין כותרות הטבלה (פתרון לבאג רינדור של הדפדפן) */
+/* תיקון טבלת סקאוטינג - העלמת קווים לבנים בכותרות */
         .market-table th {
-            box-shadow: -1px 0 0 #062141, 1px 0 0 #062141 !important;
-        }      
+            border-left: none !important;
+            border-right: none !important;
+            box-shadow: -1px 0 0 var(--element-navy-gradient), 1px 0 0 var(--element-navy-gradient) !important;
+        }
     </style>
         
 </head>
