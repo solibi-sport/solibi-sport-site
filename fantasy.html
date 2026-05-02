@@ -700,6 +700,17 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             color: #062141 !important; /* טקסט בלו נייבי חזק וקריא */
             font-weight: bold !important;
         }
+
+        /* הגדלת הפונט במאגר השחקנים (כותרות ותאים), למעט עמודות: מיקום(1), נקודות(17), רמה(19) ושווי(20) */
+        .market-table th:not(:nth-child(1)):not(:nth-child(17)):not(:nth-child(19)):not(:nth-child(20)),
+        .market-table td:not(:nth-child(1)):not(:nth-child(17)):not(:nth-child(19)):not(:nth-child(20)) {
+            font-size: 12.5px !important; /* הגדלה עדינה מ-11px ל-12.5px */
+        }
+        
+        /* הגדלה קטנה ופרופורציונלית גם לתגית ה"בעלות" כדי שלא תיראה קטנה מדי פתאום */
+        .manager-badge {
+            font-size: 10.5px !important;
+        }
         
     </style>
         
