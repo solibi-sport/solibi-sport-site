@@ -591,9 +591,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .league-table-column { background: #fff; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .league-widgets-column { display: flex; flex-direction: column; gap: 12px; }
 
-        /* צביעת שורות מיוחדות */
-        .row-gold { background-color: rgba(255, 215, 0, 0.1) !important; border-right: 4px solid #fbbf24 !important; }
-        .row-last { background-color: #f8fafc !important; color: #64748b; border-right: 4px solid #94a3b8 !important; }
+      /* צביעת שורות מיוחדות - ללא פסי צד */
+        .row-gold { background-color: rgba(255, 215, 0, 0.1) !important; border-right: none !important; }
+        .row-last { background-color: #f8fafc !important; color: #64748b; border-right: none !important; }
        /* שורת המשתמש: ללא מסגרת, ללא רקע, רק טקסט ומספרים מודגשים מאוד */
         .row-user { background-color: transparent !important; outline: none !important; border: none !important; }
         .row-user td, .row-user td * { font-weight: 900 !important; }
@@ -677,6 +677,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             border: 2px solid #062141 !important; /* מסגרת נייבי בעובי 2 פיקסלים */
             box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important; /* צל עדין ש"מרים" את הטבלה */
         }
+
+        /* תיקון הפס הלבן מימין לכותרת "מיקום" בטבלת הליגה */
+        #tab-league .squad-table thead { background-color: #062141 !important; }
+        #tab-league .squad-table th:first-child { box-shadow: 2px 0 0 #062141 !important; }
         
     </style>
         
