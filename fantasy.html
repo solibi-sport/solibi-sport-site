@@ -766,6 +766,13 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             .m-score-box { padding: 4px 10px; font-size: 16px; }
         }
 
+        /* עיצוב למשחקים עתידיים ואזור גלילה בלוח המשחקים */
+        .match-result-card.m-future { border-right-color: #f59e0b; } /* פס צהוב למשחק שעוד לא שוחק */
+        .m-score-box.future-score { color: #94a3b8; font-weight: 500; }
+        .fixtures-scroll-area { max-height: 380px; overflow-y: auto; padding-left: 5px; padding-right: 5px; display: flex; flex-direction: column; gap: 12px; }
+        .fixtures-scroll-area::-webkit-scrollbar { width: 4px; }
+        .fixtures-scroll-area::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 10px; }
+
     </style>
         
 </head>
@@ -1480,10 +1487,40 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     <div class="up-timer">נעילת חילופים: יום שבת, 14:30</div>
                                 </div>
 
-                                <div class="profile-section-card" style="padding: 15px;">
-                                    <h3 class="p-section-title" style="margin-bottom: 15px; font-size: 14px; text-align: right; background: transparent; color: var(--text-dark); box-shadow: none; border-bottom: 2px solid var(--brand-green); border-radius: 0; padding: 0 0 5px 0;">תוצאות קודמות</h3>
+                                <div class="profile-section-card" style="padding: 15px; flex: 1; display: flex; flex-direction: column;">
+                                    <h3 class="p-section-title" style="margin-bottom: 15px; font-size: 14px; text-align: right; background: transparent; color: var(--text-dark); box-shadow: none; border-bottom: 2px solid var(--brand-green); border-radius: 0; padding: 0 0 5px 0;">לוח משחקים מלא</h3>
                                     
-                                    <div class="past-matches-list">
+                                    <div class="fixtures-scroll-area">
+                                        <div class="match-result-card m-future">
+                                            <div class="m-round">מחזור 7</div>
+                                            <div class="m-teams-score">
+                                                <span class="m-team-name">מכבי סוליבי</span>
+                                                <div class="m-score-box future-score"> - : - </div>
+                                                <span class="m-team-name" style="color: #64748b;">הפועל עגלות</span>
+                                            </div>
+                                            <div class="m-mvp-badge" style="visibility: hidden;"></div>
+                                        </div>
+
+                                        <div class="match-result-card m-future">
+                                            <div class="m-round">מחזור 6</div>
+                                            <div class="m-teams-score">
+                                                <span class="m-team-name" style="color: #64748b;">רד בול פתח תקווה</span>
+                                                <div class="m-score-box future-score"> - : - </div>
+                                                <span class="m-team-name">מכבי סוליבי</span>
+                                            </div>
+                                            <div class="m-mvp-badge" style="visibility: hidden;"></div>
+                                        </div>
+
+                                        <div class="match-result-card m-future" style="background: rgba(124,168,86,0.05); border: 1px solid var(--brand-green);">
+                                            <div class="m-round" style="color: var(--brand-green);">מחזור 5 (קרוב)</div>
+                                            <div class="m-teams-score">
+                                                <span class="m-team-name">מכבי סוליבי</span>
+                                                <div class="m-score-box future-score"> - : - </div>
+                                                <span class="m-team-name" style="color: #64748b;">אריות וולפסון</span>
+                                            </div>
+                                            <div class="m-mvp-badge" style="visibility: hidden;"></div>
+                                        </div>
+
                                         <div class="match-result-card m-win">
                                             <div class="m-round">מחזור 4</div>
                                             <div class="m-teams-score">
@@ -1534,6 +1571,24 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                                 <div class="m-mvp-info">
                                                     <span class="m-mvp-title">MVP משחק</span>
                                                     <span class="m-mvp-name">צ'. שרי (10 נק')</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="match-result-card m-draw">
+                                            <div class="m-round">מחזור 1</div>
+                                            <div class="m-teams-score">
+                                                <span class="m-team-name" style="color: #64748b;">פ.צ. שווארמה</span>
+                                                <div class="m-score-box">
+                                                    <span>50</span> <span>-</span> <span>50</span>
+                                                </div>
+                                                <span class="m-team-name">מכבי סוליבי</span>
+                                            </div>
+                                            <div class="m-mvp-badge">
+                                                <img src="https://media.api-sports.io/football/players/73179.png" onerror="this.style.display='none'">
+                                                <div class="m-mvp-info">
+                                                    <span class="m-mvp-title">MVP משחק</span>
+                                                    <span class="m-mvp-name">ר. משפתי (6 נק')</span>
                                                 </div>
                                             </div>
                                         </div>
