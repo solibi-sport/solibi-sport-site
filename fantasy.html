@@ -302,8 +302,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         /* עיצוב טבלת ה-2000 שחקנים (סקאוטינג) */
         .market-table-container { flex: 1; overflow-y: auto; overflow-x: auto; border-radius: 8px; border: 1px solid #e2e8f0; direction: ltr; margin-top: 10px; max-width: 100%;}
         .market-table { width: 100%; border-collapse: collapse; color: var(--text-dark); background: #ffffff; font-size: 11px; table-layout: fixed; min-width: 100%; } 
-        .market-table th { background: #f8fafc; padding: 10px 2px; text-align: center; font-weight: 700; color: #64748b; position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--brand-green); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px; }
-        .market-table td { padding: 8px 2px; text-align: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; white-space: nowrap; font-weight: 600; overflow: hidden; text-overflow: ellipsis; vertical-align: middle;}
+.market-table th { background: var(--element-navy-gradient); padding: 10px 2px; text-align: center; font-weight: 700; color: #ffffff; position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--brand-green); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px; }        .market-table td { padding: 8px 2px; text-align: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; white-space: nowrap; font-weight: 600; overflow: hidden; text-overflow: ellipsis; vertical-align: middle;}
         .market-table tr:nth-child(even) { background: #f8fafc; }
         .market-table tr:hover td { background-color: rgba(124, 168, 86, 0.1) !important; cursor: pointer; }
 
@@ -1331,16 +1330,13 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     </div>
 
                     <div id="tab-market" class="fm-tab">
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px;">
-                            <h2 style="font-size: 20px; color: var(--text-dark); font-weight: 900; margin: 0;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                                מאגר שחקנים מורחב
-                            </h2>
-                        </div>
+                       <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            מאגר שחקנים מורחב
+                        </h2>
                         <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                             <input type="text" id="filter-search" placeholder="חפש שחקן/קבוצה..." style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid #cbd5e1; font-family: inherit; outline: none; background: #f8fafc; font-size: 12px; color: var(--text-dark); font-weight: bold;">
-                            <select id="filter-pos" style="padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; color: var(--text-dark); font-family: inherit; font-weight: bold; outline: none; cursor: pointer; font-size: 12px;">
-                                <option value="כל העמדות">כל העמדות</option>
+<select id="filter-pos" style="padding: 8px 15px; border-radius: 6px; border: none; background: var(--element-navy-gradient); color: #fff; font-family: inherit; font-weight: bold; outline: none; cursor: pointer; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">                                <option value="כל העמדות">כל העמדות</option>
                                 <option value="שוער">שוערים</option>
                                 <option value="הגנה">הגנה</option>
                                 <option value="קישור">קישור</option>
