@@ -610,9 +610,25 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         @media (max-width: 1200px) {
             .league-layout-split { grid-template-columns: 1fr; }
         }
+/* --- תיקוני טבלת ליגה: מתיחה למטה ורוחב עמודות קשיח --- */
+        
+        /* 1. מתיחת הקונטיינר והטבלה עד למטה */
+        .league-layout-split { align-items: stretch !important; }
+        .league-table-column { display: flex; flex-direction: column; height: 100%; }
+        #tab-league .squad-table { height: 100% !important; }
+        
+        /* 2. סידור רוחב עמודות בכוח (God Mode) */
+        #tab-league .squad-table th:nth-child(2), 
+        #tab-league .squad-table td:nth-child(2) { width: 32% !important; } /* הגדלה משמעותית של שם הקבוצה */
+        
+        #tab-league .squad-table th:nth-child(4), 
+        #tab-league .squad-table td:nth-child(4),
+        #tab-league .squad-table th:nth-child(5), 
+        #tab-league .squad-table td:nth-child(5),
+        #tab-league .squad-table th:nth-child(6), 
+        #tab-league .squad-table td:nth-child(6) { width: 4% !important; } /* כיווץ דרמטי של נ/ת/ה */
     </style>
         
-    </style>
 </head>
 
 <body>
