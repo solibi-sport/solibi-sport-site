@@ -825,6 +825,26 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         #tab-league .squad-table tbody tr:not(.row-user) td:nth-child(9) {
             font-weight: 600 !important; /* החזרה למשקל הרגיל של שאר עמודות הטבלה */
         }
+
+        /* --- תיקוני עיצוב: סיידבר ולוח משחקים אישי --- */
+        
+        /* 1. החזרת הקו הימני לירוק בתפריט הראשי */
+        .fm-menu-item.active { border-right-color: var(--brand-green) !important; }
+        .fm-nav-group.open .fm-submenu { border-right-color: transparent !important; } /* הסרת הקו מהתת-תפריט */
+        
+        /* 2. הדגשה לתת-קטגוריה פעילה או בריחוף (רקע טיפה יותר כהה) */
+        .fm-sub-item:hover, .fm-sub-item.active { 
+            background: rgba(0,0,0,0.06) !important; 
+        }
+
+        /* 3. תיקון חיתוך כרטיסיות משחקים עתידיים בלוח האישי */
+        .fixtures-scroll-area {
+            padding-right: 10px !important; /* הוספת מרווח מימין כדי שהכרטיסייה לא תיחתך */
+            padding-left: 10px !important;  /* הוספת מרווח משמאל לסימטריה */
+        }
+        .match-result-card.m-future {
+            margin-right: 5px; /* מניעת הסתרת הקו הכתום */
+        }
         
     </style>
         
