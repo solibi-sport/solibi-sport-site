@@ -1895,7 +1895,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         <td class="rank-col" style="font-size: 14px; font-weight: bold;">${displayRank}</td>
                         <td style="color: var(--text-dark);">${translatedName || '-'}</td>
                         <td>${p.age || '-'}</td>
-                        <td style="color: #64748b;">${translatedNationality || '-'}</td>
+                        <td style="font-weight: 600; color: var(--text-dark);">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+        <img src="https://media.api-sports.io/flags/${(p.nationality || '').toLowerCase().replace(/ /g, '-')}.svg" style="width: 18px; height: 13px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.15);" onerror="this.style.display='none'">
+        <span>${translatedNationality || '-'}</span>
+    </div>
+</td>
                         <td style="color: var(--text-dark);">${p.pos || '-'}</td>
                         <td>
                             <div style="display: flex; align-items: center; justify-content: flex-start; gap: 8px; direction: rtl; width: 100px; margin: 0 auto;" title="${translatedTeam || ''}">
