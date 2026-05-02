@@ -595,6 +595,52 @@
             .profile-stats-grid { grid-template-columns: repeat(2, 1fr); }
             .trophies-container { grid-template-columns: repeat(2, 1fr); }
         }
+
+/* =========================================
+           עיצוב טבלת הסגל והפופ-אפ (Overview)
+           ========================================= */
+        .squad-widgets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .sq-widget { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .sq-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; flex-shrink: 0; }
+        .sq-icon.fire { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .sq-icon.alert { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .sq-icon.money { background: rgba(124, 168, 86, 0.1); color: var(--brand-green); }
+        .sq-w-text { display: flex; flex-direction: column; }
+        .sq-w-title { font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 2px; }
+        .sq-w-val { font-size: 14px; color: var(--text-dark); font-weight: 900; }
+
+        .squad-table-wrap { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); overflow: hidden; display: flex; flex-direction: column; flex: 1; min-height: 400px; }
+        .squad-table { width: 100%; border-collapse: collapse; text-align: right; font-size: 12px; }
+        .squad-table th { background: #f8fafc; padding: 10px 15px; color: #64748b; font-weight: 700; border-bottom: 2px solid var(--brand-green); white-space: nowrap; position: sticky; top: 0; z-index: 10;}
+        .squad-table td { padding: 8px 15px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; cursor: pointer; transition: 0.2s; font-weight: 600;}
+        .squad-table tr:hover td { background: rgba(124, 168, 86, 0.05); }
+        
+        /* מודאל כרטיס שחקן קופץ */
+        .player-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 33, 65, 0.8); backdrop-filter: blur(5px); z-index: 9999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; direction: rtl; }
+        .player-modal-overlay.active { display: flex; opacity: 1; }
+        .player-modal { background: #fff; width: 90%; max-width: 400px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform: translateY(20px); transition: transform 0.3s; }
+        .player-modal-overlay.active .player-modal { transform: translateY(0); }
+        .pm-header { background: var(--element-navy-gradient); padding: 20px; position: relative; color: #fff; display: flex; gap: 15px; align-items: center; }
+        .pm-close { position: absolute; top: 15px; left: 15px; color: #fff; cursor: pointer; opacity: 0.7; transition: 0.2s; }
+        .pm-close:hover { opacity: 1; transform: scale(1.1); }
+        .pm-photo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--brand-green); object-fit: cover; background: #fff; }
+        .pm-info h3 { font-size: 18px; font-weight: 900; margin: 0 0 5px 0; }
+        .pm-meta { display: flex; gap: 10px; font-size: 12px; color: #cbd5e1; align-items: center; }
+        .pm-body { padding: 20px; }
+        .pm-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .pm-stat { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; text-align: center; }
+        .pm-stat-lbl { font-size: 10px; color: #64748b; font-weight: bold; display: block; margin-bottom: 4px; }
+        .pm-stat-val { font-size: 16px; font-weight: 900; color: var(--text-dark); }
+        .pm-actions { display: flex; gap: 10px; }
+        .pm-btn { flex: 1; padding: 10px; text-align: center; border-radius: 8px; font-weight: 900; font-size: 13px; cursor: pointer; transition: 0.2s; text-decoration: none; border: none; }
+        .pm-btn-primary { background: var(--brand-green); color: #fff; }
+        .pm-btn-primary:hover { background: #688e47; }
+        .pm-btn-secondary { background: #f1f5f9; color: var(--text-dark); border: 1px solid #cbd5e1;}
+        .pm-btn-secondary:hover { background: #e2e8f0; }
+        
+        @media (max-width: 1200px) {
+            .squad-widgets { grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px;}
+        }
         
     </style>
 </head>
@@ -941,12 +987,174 @@
                 </div>
             </div>
                     
-                    <div id="tab-squad" class="fm-tab">
+                    <<div id="tab-squad" class="fm-tab">
                         <h2 class="content-header-title">סגל שחקנים (Overview)</h2>
-                        <p class="content-desc">סקירה כללית של סגל הפנטזי שלך. עקוב אחרי ניקוד שחקנים בלייב, מצב פציעות, שווי הקבוצה ודירוג בליגות השונות.</p>
-                        <div class="placeholder-box" style="margin-top:20px; flex:1; background:#f8fafc; border:2px dashed #cbd5e1; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#94a3b8;">כאן יופיע המסך הראשי של הקבוצה שלך...</div>
-                    </div>
+                        
+                        <div class="squad-widgets">
+                            <div class="sq-widget">
+                                <div class="sq-icon fire">🔥</div>
+                                <div class="sq-w-text">
+                                    <span class="sq-w-title">השחקן הלוהט</span>
+                                    <span class="sq-w-val">ערן זהבי (14 נק')</span>
+                                </div>
+                            </div>
+                            <div class="sq-widget">
+                                <div class="sq-icon alert">⚠️</div>
+                                <div class="sq-w-text">
+                                    <span class="sq-w-title">סטטוס סגל</span>
+                                    <span class="sq-w-val">1 פצוע, 1 מושעה</span>
+                                </div>
+                            </div>
+                            <div class="sq-widget">
+                                <div class="sq-icon money">💰</div>
+                                <div class="sq-w-text">
+                                    <span class="sq-w-title">שינוי שווי הקבוצה</span>
+                                    <span class="sq-w-val" style="color:var(--brand-green);">+₪1.2M השבוע</span>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="squad-table-wrap">
+                            <div style="overflow-y: auto; flex: 1; max-height: calc(100vh - 350px);">
+                                <table class="squad-table">
+                                    <thead>
+                                        <tr>
+                                            <th>סטטוס</th>
+                                            <th>עמדה</th>
+                                            <th>שחקן</th>
+                                            <th style="text-align:center;">כושר</th>
+                                            <th>משחק קרוב</th>
+                                            <th style="text-align:center;">נק' העונה</th>
+                                            <th>שווי</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr onclick="openPlayerModal('רועי משפתי', 'https://media.api-sports.io/football/players/73179.png', 'שוער', 'מכבי תל אביב', 55, 0, 0)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#f59e0b;">שוער</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73179.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ר+מ&background=f1c40f&color=fff'"><span style="font-weight:900; color: var(--text-dark);">רועי משפתי</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 6.2</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי חיפה (ח)</span></td><td style="text-align:center; font-weight:900;">55</td><td style="color:var(--brand-green);">₪5.5M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('עבדוליי סק', 'https://media.api-sports.io/football/players/145892.png', 'הגנה', 'מכבי חיפה', 78, 2, 1)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#2ecc71;">הגנה</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/145892.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ע+ס&background=2ecc71&color=fff'"><span style="font-weight:900; color: var(--text-dark);">עבדוליי סק</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 7.1</td><td><span style="background:#f0fdf4; color:var(--brand-green); padding:3px 6px; border-radius:4px; font-size:10px;">הפועל פ"ת (ב)</span></td><td style="text-align:center; font-weight:900;">78</td><td style="color:var(--brand-green);">₪7.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('אנריק סבוריט', 'https://media.api-sports.io/football/players/73177.png', 'הגנה', 'מכבי תל אביב', 82, 1, 3)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#2ecc71;">הגנה</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73177.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=א+ס&background=2ecc71&color=fff'"><span style="font-weight:900; color: var(--text-dark);">אנריק סבוריט</span></div></td>
+                                            <td style="text-align:center; color:#94a3b8;">➖ 5.5</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי חיפה (ח)</span></td><td style="text-align:center; font-weight:900;">82</td><td style="color:var(--brand-green);">₪6.8M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('מיגל ויטור', 'https://media.api-sports.io/football/players/73216.png', 'הגנה', 'הפועל באר שבע', 65, 3, 0)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#2ecc71;">הגנה</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73216.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=מ+ו&background=2ecc71&color=fff'"><span style="font-weight:900; color: var(--text-dark);">מיגל ויטור</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 6.8</td><td><span style="background:#f0fdf4; color:var(--brand-green); padding:3px 6px; border-radius:4px; font-size:10px;">בני ריינה (ב)</span></td><td style="text-align:center; font-weight:900;">65</td><td style="color:var(--brand-green);">₪6.5M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('שון גולדברג', 'https://media.api-sports.io/football/players/73176.png', 'הגנה', 'מכבי חיפה', 70, 0, 2)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#2ecc71;">הגנה</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73176.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ש+ג&background=2ecc71&color=fff'"><span style="font-weight:900; color: var(--text-dark);">שון גולדברג</span></div></td>
+                                            <td style="text-align:center; color:#94a3b8;">➖ 5.0</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי תל אביב (ב)</span></td><td style="text-align:center; font-weight:900;">70</td><td style="color:var(--brand-green);">₪6.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('צ\'רון שרי', 'https://media.api-sports.io/football/players/73195.png', 'קישור', 'מכבי חיפה', 110, 6, 8)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#3498db;">קישור</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73195.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=צ+ש&background=3498db&color=fff'"><span style="font-weight:900; color: var(--text-dark);">צ'רון שרי</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 8.2</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי תל אביב (ב)</span></td><td style="text-align:center; font-weight:900;">110</td><td style="color:var(--brand-green);">₪12.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('דור פרץ', 'https://media.api-sports.io/football/players/73229.png', 'קישור', 'מכבי תל אביב', 105, 8, 3)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#3498db;">קישור</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73229.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ד+פ&background=3498db&color=fff'"><span style="font-weight:900; color: var(--text-dark);">דור פרץ</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 7.9</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי חיפה (ח)</span></td><td style="text-align:center; font-weight:900;">105</td><td style="color:var(--brand-green);">₪10.5M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('ליאור רפאלוב', 'https://media.api-sports.io/football/players/73230.png', 'קישור', 'מכבי חיפה', 92, 5, 5)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#3498db;">קישור</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73230.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ל+ר&background=3498db&color=fff'"><span style="font-weight:900; color: var(--text-dark);">ליאור רפאלוב</span></div></td>
+                                            <td style="text-align:center; color:#94a3b8;">➖ 6.0</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי תל אביב (ב)</span></td><td style="text-align:center; font-weight:900;">92</td><td style="color:var(--brand-green);">₪9.5M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('ערן זהבי', 'https://media.api-sports.io/football/players/73156.png', 'חלוץ', 'מכבי תל אביב', 145, 16, 4)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#e74c3c;">חלוץ</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73156.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ע+ז&background=e74c3c&color=fff'"><span style="font-weight:900; color: var(--text-dark);">ערן זהבי (C)</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 9.2</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי חיפה (ח)</span></td><td style="text-align:center; font-weight:900;">145</td><td style="color:var(--brand-green);">₪15.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('פרנצדי פיירו', 'https://media.api-sports.io/football/players/73199.png', 'חלוץ', 'מכבי חיפה', 130, 14, 2)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#e74c3c;">חלוץ</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73199.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=פ+פ&background=e74c3c&color=fff'"><span style="font-weight:900; color: var(--text-dark);">פרנצדי פיירו</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 8.5</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי תל אביב (ב)</span></td><td style="text-align:center; font-weight:900;">130</td><td style="color:var(--brand-green);">₪13.5M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('דין דוד', 'https://media.api-sports.io/football/players/73197.png', 'חלוץ', 'מכבי חיפה', 115, 11, 4)">
+                                            <td><span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span></td>
+                                            <td><span style="color:#e74c3c;">חלוץ</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73197.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ד+ד&background=e74c3c&color=fff'"><span style="font-weight:900; color: var(--text-dark);">דין דוד</span></div></td>
+                                            <td style="text-align:center; color:#ef4444;">▼ 4.5</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי תל אביב (ב)</span></td><td style="text-align:center; font-weight:900;">115</td><td style="color:var(--brand-green);">₪11.0M</td>
+                                        </tr>
+
+                                        <tr onclick="openPlayerModal('גד עמוס', 'https://media.api-sports.io/football/players/73255.png', 'שוער', 'מכבי בני ריינה', 45, 0, 0)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#f59e0b;">שוער</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73255.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ג+ע&background=f1c40f&color=fff'"><span style="font-weight:900; color: var(--text-dark);">גד עמוס</span></div></td>
+                                            <td style="text-align:center; color:#94a3b8;">➖ 5.0</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">הפועל ב"ש (ח)</span></td><td style="text-align:center; font-weight:900;">45</td><td style="color:var(--brand-green);">₪4.5M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('פייר קורנו', 'https://media.api-sports.io/football/players/73180.png', 'הגנה', 'מכבי חיפה', 60, 0, 4)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#2ecc71;">הגנה</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><div style="position:relative;"><img src="https://media.api-sports.io/football/players/73180.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=פ+ק&background=2ecc71&color=fff'"><div style="position:absolute; bottom:-2px; right:-2px; background:#ef4444; border-radius:50%; width:12px; height:12px; border:2px solid #fff;" title="פצוע"></div></div><span style="font-weight:900; color: var(--text-dark);">פייר קורנו</span></div></td>
+                                            <td style="text-align:center; color:#ef4444;">▼ 0.0</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי תל אביב (ב)</span></td><td style="text-align:center; font-weight:900;">60</td><td style="color:var(--brand-green);">₪6.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('פליסיו מילסון', 'https://media.api-sports.io/football/players/145895.png', 'קישור', 'מכבי תל אביב', 102, 6, 7)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#3498db;">קישור</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><div style="position:relative;"><img src="https://media.api-sports.io/football/players/145895.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=פ+מ&background=3498db&color=fff'"><div style="position:absolute; bottom:-2px; right:-2px; background:#f59e0b; border-radius:50%; width:12px; height:12px; border:2px solid #fff;" title="מושעה"></div></div><span style="font-weight:900; color: var(--text-dark);">פליסיו מילסון</span></div></td>
+                                            <td style="text-align:center; color:#ef4444;">▼ 0.0</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי חיפה (ח)</span></td><td style="text-align:center; font-weight:900;">102</td><td style="color:var(--brand-green);">₪9.5M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('גבי קניקובסקי', 'https://media.api-sports.io/football/players/73233.png', 'קישור', 'מכבי תל אביב', 85, 4, 6)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#3498db;">קישור</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73233.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ג+ק&background=3498db&color=fff'"><span style="font-weight:900; color: var(--text-dark);">גבי קניקובסקי</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 6.5</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי חיפה (ח)</span></td><td style="text-align:center; font-weight:900;">85</td><td style="color:var(--brand-green);">₪8.5M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('דן ביטון', 'https://media.api-sports.io/football/players/73235.png', 'קישור', 'מכבי תל אביב', 68, 3, 5)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#3498db;">קישור</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73235.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ד+ב&background=3498db&color=fff'"><span style="font-weight:900; color: var(--text-dark);">דן ביטון</span></div></td>
+                                            <td style="text-align:center; color:#94a3b8;">➖ 4.8</td><td><span style="background:#fef2f2; color:#ef4444; padding:3px 6px; border-radius:4px; font-size:10px;">מכבי חיפה (ח)</span></td><td style="text-align:center; font-weight:900;">68</td><td style="color:var(--brand-green);">₪7.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('איאד אבו עביד', 'https://media.api-sports.io/football/players/73215.png', 'הגנה', 'הפועל באר שבע', 45, 1, 0)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#2ecc71;">הגנה</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73215.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=א+ע&background=2ecc71&color=fff'"><span style="font-weight:900; color: var(--text-dark);">איאד אבו עביד</span></div></td>
+                                            <td style="text-align:center; color:#94a3b8;">➖ 4.0</td><td><span style="background:#f0fdf4; color:var(--brand-green); padding:3px 6px; border-radius:4px; font-size:10px;">בני ריינה (ב)</span></td><td style="text-align:center; font-weight:900;">45</td><td style="color:var(--brand-green);">₪5.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('רועי גורדנה', 'https://media.api-sports.io/football/players/73220.png', 'קישור', 'הפועל באר שבע', 52, 2, 2)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#3498db;">קישור</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73220.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=ר+ג&background=3498db&color=fff'"><span style="font-weight:900; color: var(--text-dark);">רועי גורדנה</span></div></td>
+                                            <td style="text-align:center; color:#94a3b8;">➖ 5.2</td><td><span style="background:#f0fdf4; color:var(--brand-green); padding:3px 6px; border-radius:4px; font-size:10px;">בני ריינה (ב)</span></td><td style="text-align:center; font-weight:900;">52</td><td style="color:var(--brand-green);">₪6.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('ירדן שועה', 'https://media.api-sports.io/football/players/73270.png', 'חלוץ', 'בית״ר ירושלים', 108, 10, 8)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#e74c3c;">חלוץ</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73270.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=י+ש&background=e74c3c&color=fff'"><span style="font-weight:900; color: var(--text-dark);">ירדן שועה</span></div></td>
+                                            <td style="text-align:center; color:var(--brand-green);">▲ 7.5</td><td><span style="background:#fffbeb; color:#f59e0b; padding:3px 6px; border-radius:4px; font-size:10px;">הפועל ת"א (ח)</span></td><td style="text-align:center; font-weight:900;">108</td><td style="color:var(--brand-green);">₪10.0M</td>
+                                        </tr>
+                                        <tr onclick="openPlayerModal('אלון תורג\'מן', 'https://media.api-sports.io/football/players/73280.png', 'חלוץ', 'הפועל באר שבע', 62, 5, 1)">
+                                            <td><span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span></td>
+                                            <td><span style="color:#e74c3c;">חלוץ</span></td>
+                                            <td><div style="display:flex; align-items:center; gap:8px;"><img src="https://media.api-sports.io/football/players/73280.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=א+ת&background=e74c3c&color=fff'"><span style="font-weight:900; color: var(--text-dark);">אלון תורג'מן</span></div></td>
+                                            <td style="text-align:center; color:#94a3b8;">➖ 4.5</td><td><span style="background:#f0fdf4; color:var(--brand-green); padding:3px 6px; border-radius:4px; font-size:10px;">בני ריינה (ב)</span></td><td style="text-align:center; font-weight:900;">62</td><td style="color:var(--brand-green);">₪7.5M</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     <div id="tab-tactics" class="fm-tab">
                         <h2 class="content-header-title" style="gap: 8px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path></svg>
@@ -1095,6 +1303,35 @@
     <footer class="footer">
         <div id="ticker-placeholder"></div>
     </footer>
+    <div id="playerModal" class="player-modal-overlay" onclick="closePlayerModal(event)">
+        <div class="player-modal" onclick="event.stopPropagation()">
+            <div class="pm-header">
+                <svg class="pm-close" onclick="closePlayerModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <img src="" id="pm-img" class="pm-photo">
+                <div class="pm-info">
+                    <h3 id="pm-name">שם השחקן</h3>
+                    <div class="pm-meta">
+                        <span id="pm-team">קבוצה</span> | 
+                        <span id="pm-pos" style="font-weight:bold;">עמדה</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pm-body">
+                <div style="font-size: 12px; font-weight:bold; color:#64748b; margin-bottom:10px;">סטטיסטיקות עונה</div>
+                <div class="pm-stats-grid">
+                    <div class="pm-stat"><span class="pm-stat-lbl">נקודות</span><span class="pm-stat-val" id="pm-pts">0</span></div>
+                    <div class="pm-stat"><span class="pm-stat-lbl">שערים</span><span class="pm-stat-val" id="pm-gls">0</span></div>
+                    <div class="pm-stat"><span class="pm-stat-lbl">בישולים</span><span class="pm-stat-val" id="pm-ast">0</span></div>
+                    <div class="pm-stat"><span class="pm-stat-lbl">כושר</span><span class="pm-stat-val" style="color:var(--brand-green);">8.5</span></div>
+                </div>
+                
+                <div class="pm-actions">
+                    <button class="pm-btn pm-btn-primary" onclick="closePlayerModal(); switchFmTab('tab-tactics')">נהל בהרכב</button>
+                    <button class="pm-btn pm-btn-secondary" onclick="closePlayerModal()">סגור</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="../translations.js"></script>
     <script src="../matchEvents.js"></script>
@@ -1826,6 +2063,24 @@ function setCaptainDrop(ev) {
         display.innerHTML = `<img src="${playerPhoto}" style="width:18px; height:18px; border-radius:50%; object-fit:cover;"> <span style="font-size:11px; font-weight:900;">${playerName}</span>`;
     }
 }
+
+        // פתיחה וסגירה של פופ-אפ שחקן
+        function openPlayerModal(name, photo, pos, team, pts, gls, ast) {
+            document.getElementById('pm-name').innerText = name;
+            document.getElementById('pm-img').src = photo;
+            document.getElementById('pm-pos').innerText = pos;
+            document.getElementById('pm-team').innerText = team;
+            document.getElementById('pm-pts').innerText = pts;
+            document.getElementById('pm-gls').innerText = gls;
+            document.getElementById('pm-ast').innerText = ast;
+            
+            document.getElementById('playerModal').classList.add('active');
+        }
+
+        function closePlayerModal(e) {
+            if (e && e.target !== document.getElementById('playerModal')) return;
+            document.getElementById('playerModal').classList.remove('active');
+        }
     </script>
 </body>
 </html>
