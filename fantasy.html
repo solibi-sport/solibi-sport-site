@@ -3582,6 +3582,142 @@ function setCaptainDrop(ev) {
         document.addEventListener('DOMContentLoaded', () => {
             initDailyBonus();
         });
+
+        // ==========================================
+        // מנוע גלגל המזל
+        // ==========================================
+        const WHEEL_COOLDOWN_MS = 4 * 60 * 60 * 1000; // 4 hours
+        let wheelTimerInterval;
+        let isSpinning = false;
+
+        function initFortuneWheel() {
+            checkWheelTimer();
+        }
+
+        function checkWheelTimer() {
+            const lastSpin = localStorage.getItem('solibi_last_spin');
+            const btn = document.getElementById('fw-spin-btn');
+            const display = document.getElementById('fw-timer-display');
+            if(!btn || !display) return;
+
+            clearInterval(wheelTimerInterval);
+
+            if (lastSpin) {
+                const timePassed = new Date().getTime() - parseInt(lastSpin);
+                if (timePassed < WHEEL_COOLDOWN_MS) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    startWheelCountdown(WHEEL_COOLDOWN_MS - timePassed);
+                    return;
+                }
+            }
+
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            display.innerText = "מוכן לסיבוב!";
+            display.style.color = "#2ecc71";
+        }
+
+        function startWheelCountdown(timeLeft) {
+            const display = document.getElementById('fw-timer-display');
+            display.style.color = "#fbbf24";
+            
+            wheelTimerInterval = setInterval(() => {
+                timeLeft -= 1000;
+                if (timeLeft <= 0) {
+                    clearInterval(wheelTimerInterval);
+                    checkWheelTimer();
+                    return;
+                }
+                
+                let hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+                let minutes = Math.floor((timeLeft / 1000 / 60) % 60);
+                let seconds = Math.floor((timeLeft / 1000) % 60);
+                
+                display.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function spinFortuneWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            
+            const btn = document.getElementById('fw-spin-btn');
+            const wheel = document.getElementById('fw-spinner');
+            btn.disabled = true;
+            
+            // 1. הגרלת התוצאה (אחוזים)
+            let rand = Math.random() * 100;
+            let amount = 0;
+            let isWin = true;
+            let targetSlice = 0; // 0-7 (0 is top right green, 1 is red, etc.)
+
+            /* הגלגל מתחיל מ-12 למעלה (0 מעלות). 8 חתיכות של 45 מעלות.
+               0: 0-45 (ירוק)
+               1: 45-90 (אדום)
+               2: 90-135 (זהב - 750K)
+               3: 135-180 (אדום)
+               4: 180-225 (ירוק)
+               5: 225-270 (סגול - 1M)
+               6: 270-315 (אדום)
+               7: 315-360 (ירוק)
+            */
+
+            if (rand <= 2) { // 2% 1M Jackpot
+                amount = 1000000;
+                targetSlice = 5; 
+            } else if (rand <= 7) { // 5% 750K
+                amount = 750000;
+                targetSlice = 2;
+            } else if (rand <= 55) { // 48% Win 50k-300k
+                amount = Math.floor(Math.random() * 26) * 10000 + 50000;
+                targetSlice = [0, 4, 7][Math.floor(Math.random() * 3)]; // אחת מחתיכות הירוק
+            } else { // 45% Lose 50k-300k
+                isWin = false;
+                amount = Math.floor(Math.random() * 26) * 10000 + 50000;
+                targetSlice = [1, 3, 6][Math.floor(Math.random() * 3)]; // אחת מחתיכות האדום
+            }
+
+            // 2. חישוב זוויות (נוסיף 5 סיבובים מלאים לאפקט)
+            const extraSpins = 5 * 360;
+            // כדי שהחתיכה תיעצר בדיוק למעלה, צריך לסובב למינוס הזווית שלה
+            const sliceAngle = (targetSlice * 45) + 22.5; // אמצע החתיכה
+            const finalRotation = extraSpins + (360 - sliceAngle);
+            
+            // 3. סיבוב
+            wheel.style.transform = `rotate(${finalRotation}deg)`;
+            
+            // 4. המתנה לסיום האנימציה (5 שניות)
+            setTimeout(() => {
+                isSpinning = false;
+                let message = isWin ? `מזל טוב! זכית ב-₪${formatNumberWithCommas(amount)} לתקציב הרכש!` : `אופס... נקנסת ב-₪${formatNumberWithCommas(amount)}. יותר מזל בסיבוב הבא.`;
+                
+                if(amount === 1000000) message = "🎉 ג'קפוט מטורף!!! זכית במיליון שקלים!! 🎉";
+                if(amount === 750000) message = "⭐ זכייה ענקית!! 750,000 שקלים יתווספו לקופה שלך!";
+
+                alert(message);
+                
+                // איפוס גלגל ויזואלי (בלי אנימציה)
+                wheel.style.transition = 'none';
+                wheel.style.transform = `rotate(${360 - sliceAngle}deg)`;
+                setTimeout(() => { wheel.style.transition = 'transform 5s cubic-bezier(0.175, 0.885, 0.1, 1)'; }, 50);
+                
+                // שמירת זמן והפעלת טיימר
+                localStorage.setItem('solibi_last_spin', new Date().getTime().toString());
+                checkWheelTimer();
+
+            }, 5000);
+        }
+
+        // כלי פיתוח: איפוס הטיימר
+        function resetWheelTimer() {
+            localStorage.removeItem('solibi_last_spin');
+            checkWheelTimer();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initFortuneWheel();
+        });
         
     </script>
 </body>
