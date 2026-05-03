@@ -845,6 +845,43 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .match-result-card.m-future {
             margin-right: 5px; /* מניעת הסתרת הקו הכתום */
         }
+
+        /* תיקון חיתוך כרטיסיות משחקים עתידיים בלוח האישי */
+        .fixtures-scroll-area { padding-right: 10px !important; padding-left: 10px !important; }
+        .match-result-card.m-future { margin-right: 5px; }
+
+        /* =========================================
+           עיצוב דף סטטיסטיקות קבוצה (אישי)
+           ========================================= */
+        .stats-grid-layout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        
+        .stat-category-card { background: #fff; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.03); overflow: hidden; display: flex; flex-direction: column;}
+        
+        .s-card-header { background: var(--element-navy-gradient); color: #fff; padding: 12px 15px; font-size: 14px; font-weight: 900; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--brand-green);}
+        
+        .s-card-list { display: flex; flex-direction: column; flex: 1;}
+        
+        .s-list-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; border-bottom: 1px solid rgba(0,0,0,0.04); transition: 0.2s; cursor: pointer; }
+        .s-list-row:hover { background: rgba(124,168,86,0.05); }
+        .s-list-row:last-child { border-bottom: none; }
+        
+        .s-rank { font-size: 14px; font-weight: 900; width: 20px; color: #94a3b8; text-align: center; flex-shrink: 0;}
+        .s-list-row:first-child .s-rank { color: #fbbf24; font-size: 16px; } /* זהב למקום ראשון */
+        .s-list-row:nth-child(2) .s-rank { color: #94a3b8; } /* כסף */
+        .s-list-row:nth-child(3) .s-rank { color: #b45309; } /* ארד */
+        
+        .s-player-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; padding-right: 10px;}
+        .s-player-info img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0; flex-shrink: 0;}
+        .s-player-text { display: flex; flex-direction: column; overflow: hidden; }
+        .s-p-name { font-size: 12px; font-weight: 900; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .s-p-team { font-size: 10px; color: #64748b; font-weight: bold; }
+        
+        .s-value { font-size: 16px; font-weight: 900; color: var(--brand-green); flex-shrink: 0; text-align: left; min-width: 30px;}
+        .s-value.negative { color: #ef4444; }
+        .s-value.neutral { color: #062141; font-size: 14px;}
+        
+        @media (max-width: 1200px) { .stats-grid-layout { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .stats-grid-layout { grid-template-columns: 1fr; } }
         
     </style>
         
@@ -1713,6 +1750,218 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-statistics" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+                            סטטיסטיקות קבוצה אישיות
+                        </h2>
+
+                        <div class="stats-grid-layout">
+                            
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>⭐</span> המצטיינים שלי (סה"כ נק')</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row" onclick="openPlayerModal('ערן זהבי', 'https://media.api-sports.io/football/players/73156.png', 'חלוץ', 'מכבי תל אביב', 145, 16, 4)">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73156.png">
+                                            <div class="s-player-text"><span class="s-p-name">ערן זהבי</span><span class="s-p-team">מכבי תל אביב</span></div>
+                                        </div>
+                                        <div class="s-value">145</div>
+                                    </div>
+                                    <div class="s-list-row" onclick="openPlayerModal('פרנצדי פיירו', 'https://media.api-sports.io/football/players/73199.png', 'חלוץ', 'מכבי חיפה', 130, 14, 2)">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73199.png">
+                                            <div class="s-player-text"><span class="s-p-name">פרנצדי פיירו</span><span class="s-p-team">מכבי חיפה</span></div>
+                                        </div>
+                                        <div class="s-value">130</div>
+                                    </div>
+                                    <div class="s-list-row" onclick="openPlayerModal('צ\'רון שרי', 'https://media.api-sports.io/football/players/73195.png', 'קישור', 'מכבי חיפה', 110, 6, 8)">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73195.png">
+                                            <div class="s-player-text"><span class="s-p-name">צ'רון שרי</span><span class="s-p-team">מכבי חיפה</span></div>
+                                        </div>
+                                        <div class="s-value">110</div>
+                                    </div>
+                                    <div class="s-list-row" onclick="openPlayerModal('דור פרץ', 'https://media.api-sports.io/football/players/73229.png', 'קישור', 'מכבי תל אביב', 105, 8, 3)">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73229.png">
+                                            <div class="s-player-text"><span class="s-p-name">דור פרץ</span><span class="s-p-team">מכבי תל אביב</span></div>
+                                        </div>
+                                        <div class="s-value">105</div>
+                                    </div>
+                                    <div class="s-list-row" onclick="openPlayerModal('ליאור רפאלוב', 'https://media.api-sports.io/football/players/73230.png', 'קישור', 'מכבי חיפה', 92, 5, 5)">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73230.png">
+                                            <div class="s-player-text"><span class="s-p-name">ליאור רפאלוב</span><span class="s-p-team">מכבי חיפה</span></div>
+                                        </div>
+                                        <div class="s-value">92</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>⚽</span> הסקוררים שלי</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73156.png"><div class="s-player-text"><span class="s-p-name">ערן זהבי</span><span class="s-p-team">מכבי תל אביב</span></div></div>
+                                        <div class="s-value neutral">16</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73199.png"><div class="s-player-text"><span class="s-p-name">פרנצדי פיירו</span><span class="s-p-team">מכבי חיפה</span></div></div>
+                                        <div class="s-value neutral">14</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73197.png"><div class="s-player-text"><span class="s-p-name">דין דוד</span><span class="s-p-team">מכבי חיפה</span></div></div>
+                                        <div class="s-value neutral">11</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73229.png"><div class="s-player-text"><span class="s-p-name">דור פרץ</span><span class="s-p-team">מכבי תל אביב</span></div></div>
+                                        <div class="s-value neutral">8</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73195.png"><div class="s-player-text"><span class="s-p-name">צ'רון שרי</span><span class="s-p-team">מכבי חיפה</span></div></div>
+                                        <div class="s-value neutral">6</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>🎯</span> המבשלים שלי</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73195.png"><div class="s-player-text"><span class="s-p-name">צ'רון שרי</span><span class="s-p-team">מכבי חיפה</span></div></div>
+                                        <div class="s-value neutral">8</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/145895.png"><div class="s-player-text"><span class="s-p-name">פליסיו מילסון</span><span class="s-p-team">מכבי תל אביב</span></div></div>
+                                        <div class="s-value neutral">7</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73233.png"><div class="s-player-text"><span class="s-p-name">גבי קניקובסקי</span><span class="s-p-team">מכבי תל אביב</span></div></div>
+                                        <div class="s-value neutral">6</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73230.png"><div class="s-player-text"><span class="s-p-name">ליאור רפאלוב</span><span class="s-p-team">מכבי חיפה</span></div></div>
+                                        <div class="s-value neutral">5</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73156.png"><div class="s-player-text"><span class="s-p-name">ערן זהבי</span><span class="s-p-team">מכבי תל אביב</span></div></div>
+                                        <div class="s-value neutral">4</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>👑</span> קפטן מושלם (נק' מסרט הקפטן)</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73156.png"><div class="s-player-text"><span class="s-p-name">ערן זהבי</span><span class="s-p-team">6 פעמים קפטן</span></div></div>
+                                        <div class="s-value">84</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73195.png"><div class="s-player-text"><span class="s-p-name">צ'רון שרי</span><span class="s-p-team">3 פעמים קפטן</span></div></div>
+                                        <div class="s-value">36</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73199.png"><div class="s-player-text"><span class="s-p-name">פרנצדי פיירו</span><span class="s-p-team">פעמיים קפטן</span></div></div>
+                                        <div class="s-value">22</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73229.png"><div class="s-player-text"><span class="s-p-name">דור פרץ</span><span class="s-p-team">פעם אחת קפטן</span></div></div>
+                                        <div class="s-value">14</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/145892.png"><div class="s-player-text"><span class="s-p-name">עבדוליי סק</span><span class="s-p-team">פעם אחת קפטן</span></div></div>
+                                        <div class="s-value">8</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>🪑</span> פספוסי ספסל (נק' שנשארו בחוץ)</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73270.png"><div class="s-player-text"><span class="s-p-name">ירדן שועה</span><span class="s-p-team">ישב בספסל פעמיים</span></div></div>
+                                        <div class="s-value neutral">18</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73255.png"><div class="s-player-text"><span class="s-p-name">גד עמוס</span><span class="s-p-team">שמר על רשת נקייה</span></div></div>
+                                        <div class="s-value neutral">10</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73220.png"><div class="s-player-text"><span class="s-p-name">רועי גורדנה</span><span class="s-p-team">ישב בספסל 3 פעמים</span></div></div>
+                                        <div class="s-value neutral">8</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73233.png"><div class="s-player-text"><span class="s-p-name">גבי קניקובסקי</span><span class="s-p-team">ישב בספסל פעם אחת</span></div></div>
+                                        <div class="s-value neutral">6</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73280.png"><div class="s-player-text"><span class="s-p-name">אלון תורג'מן</span><span class="s-p-team">ישב בספסל 4 פעמים</span></div></div>
+                                        <div class="s-value neutral">5</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>💀</span> החוליות החלשות (סה"כ מינוסים)</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73180.png"><div class="s-player-text"><span class="s-p-name">פייר קורנו</span><span class="s-p-team">2 אדומים</span></div></div>
+                                        <div class="s-value negative">-9</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73215.png"><div class="s-player-text"><span class="s-p-name">איאד אבו עביד</span><span class="s-p-team">אדום ו-4 צהובים</span></div></div>
+                                        <div class="s-value negative">-7</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73220.png"><div class="s-player-text"><span class="s-p-name">רועי גורדנה</span><span class="s-p-team">החטאת פנדל וצהוב</span></div></div>
+                                        <div class="s-value negative">-4</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/145895.png"><div class="s-player-text"><span class="s-p-name">פליסיו מילסון</span><span class="s-p-team">4 צהובים</span></div></div>
+                                        <div class="s-value negative">-4</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73229.png"><div class="s-player-text"><span class="s-p-name">דור פרץ</span><span class="s-p-team">3 צהובים</span></div></div>
+                                        <div class="s-value negative">-3</div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     
