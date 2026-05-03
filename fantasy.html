@@ -2295,50 +2295,40 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
 <div id="tab-hot-players" class="fm-tab">
-    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-        רדאר סקאוטינג - השחקנים החמים
-    </h2>
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            רדאר סקאוטינג - השחקנים החמים
+                        </h2>
 
-    <div class="stats-grid-layout">
-        
-        <div class="stat-category-card">
-            <div class="s-card-header"><span>🔥</span> בכושר שיא (ממוצע 3 משחקים אחרונים)</div>
-            <div class="s-card-list" id="hot-on-fire"></div>
-        </div>
+                        <div class="stats-grid-layout">
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>🔥</span> בכושר שיא (ממוצע 3 משחקים אחרונים)</div>
+                                <div class="s-card-list" id="hot-on-fire"></div>
+                            </div>
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>💎</span> מציאות מתחת לרדאר (פחות מ-5% בעלות)</div>
+                                <div class="s-card-list" id="hot-gems"></div>
+                            </div>
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>📈</span> פוטנציאל השקעה (זינוק בערך השוק)</div>
+                                <div class="s-card-list" id="hot-rising"></div>
+                            </div>
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>📅</span> לוח משחקים נוח (מומלץ לקנות)</div>
+                                <div class="s-card-list" id="hot-fixtures"></div>
+                            </div>
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>🛒</span> הכי נרכשים השבוע בליגה</div>
+                                <div class="s-card-list" id="hot-transfers"></div>
+                            </div>
+                            <div class="stat-category-card">
+                                <div class="s-card-header" style="border-bottom-color: #ef4444;"><span>📉</span> מתקררים (אזהרת מכירה)</div>
+                                <div class="s-card-list" id="hot-cold"></div>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="stat-category-card">
-            <div class="s-card-header"><span>💎</span> מציאות מתחת לרדאר (פחות מ-5% בעלות)</div>
-            <div class="s-card-list" id="hot-gems"></div>
-        </div>
-
-        <div class="stat-category-card">
-            <div class="s-card-header"><span>📈</span> פוטנציאל השקעה (זינוק בערך השוק)</div>
-            <div class="s-card-list" id="hot-rising"></div>
-        </div>
-
-        <div class="stat-category-card">
-            <div class="s-card-header"><span>📅</span> לוח משחקים נוח (מומלץ לקנות)</div>
-            <div class="s-card-list" id="hot-fixtures"></div>
-        </div>
-
-        <div class="stat-category-card">
-            <div class="s-card-header"><span>🛒</span> הכי נרכשים השבוע בליגה</div>
-            <div class="s-card-list" id="hot-transfers"></div>
-        </div>
-
-        <div class="stat-category-card">
-            <div class="s-card-header" style="border-bottom-color: #ef4444;"><span>📉</span> מתקררים (אזהרת מכירה)</div>
-            <div class="s-card-list" id="hot-cold"></div>
-        </div>
-
-    </div>
-</div>
-                </div>
-            </div>
-        </div>
-
-<div id="tab-daily-bonus" class="fm-tab">
+                    <div id="tab-daily-bonus" class="fm-tab">
                         <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                             בונוס התחברות יומי
@@ -2358,6 +2348,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             <button onclick="simulateNextDay()" style="position: absolute; bottom: 10px; right: 10px; background: #e2e8f0; border: none; padding: 5px 10px; font-size: 10px; border-radius: 4px; cursor: pointer; color: #64748b; font-weight: bold; z-index: 10;">[כלי פיתוח] דמה מחר</button>
                         </div>
                     </div>
+
+                </div> </div> </div> ```
+
+תדביק את זה בשורה 2297, ואז אל תשכח את הצעד האחרון בהחלט – לגלול **עד הסוף למטה למטה**, וממש מעל ה- `</script>` האחרון להדביק את קוד ה-JavaScript של שני הטאבים (גם של השחקנים החמים וגם של הבונוס היומי שנתתי לך ב-2 ההודעות הקודמות). 
+
+הכל יישב פיקס!
         
             <aside class="collapsible-live-panel" id="livePanel">
             <div class="panel-header" id="live-panel-header">
