@@ -2377,6 +2377,32 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             <button onclick="simulateNextDay()" style="position: absolute; bottom: 10px; right: 10px; background: #e2e8f0; border: none; padding: 5px 10px; font-size: 10px; border-radius: 4px; cursor: pointer; color: #64748b; font-weight: bold; z-index: 10;">[כלי פיתוח] דמה מחר</button>
                         </div>
                     </div>
+                    <div id="tab-fortune-wheel" class="fm-tab">
+                        <div class="wheel-wrapper">
+                            <div class="wheel-title">גלגל המזל הפרימיום 🎰</div>
+                            <div class="wheel-subtitle">סיבוב חינם כל 4 שעות! האם תזכה במיליון או תחטוף קנס?</div>
+                            
+                            <div class="wheel-container">
+                                <div class="wheel-pointer"></div>
+                                <div class="fortune-wheel" id="fw-spinner"></div>
+                                <button class="wheel-center-btn" id="fw-spin-btn" onclick="spinFortuneWheel()">סובב!</button>
+                            </div>
+                            
+                            <div class="wheel-status-box" id="fw-status-box">
+                                <div style="font-size: 14px; color: #cbd5e1;">זמן נותר לסיבוב הבא:</div>
+                                <div class="wheel-timer" id="fw-timer-display">מוכן לסיבוב!</div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 15px; margin-top: 20px; z-index: 2; font-size: 11px; color: rgba(255,255,255,0.6); font-weight: bold;">
+                                <div><span style="display:inline-block; width:10px; height:10px; background:#9b59b6; border-radius:50%; margin-left:4px;"></span>מיליון ש"ח</div>
+                                <div><span style="display:inline-block; width:10px; height:10px; background:#fbbf24; border-radius:50%; margin-left:4px;"></span>₪750K</div>
+                                <div><span style="display:inline-block; width:10px; height:10px; background:#2ecc71; border-radius:50%; margin-left:4px;"></span>זכייה רגילה</div>
+                                <div><span style="display:inline-block; width:10px; height:10px; background:#e74c3c; border-radius:50%; margin-left:4px;"></span>קנס</div>
+                            </div>
+
+                            <button onclick="resetWheelTimer()" style="position: absolute; bottom: 10px; left: 10px; background: rgba(255,255,255,0.1); border: none; padding: 5px 10px; font-size: 10px; border-radius: 4px; cursor: pointer; color: #fff; z-index: 10;">[כלי פיתוח] אפס טיימר</button>
+                        </div>
+                    </div>
 
                 </div> </div> </div> ```
         
