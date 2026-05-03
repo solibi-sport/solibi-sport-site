@@ -1015,7 +1015,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         </div>
         <div class="fm-submenu">
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-market', this)">מאגר השחקנים</div>
-            <div class="fm-sub-item" onclick="event.stopPropagation()">השחקנים החמים</div>
+           <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-hot-players', this)">השחקנים החמים</div>
         </div>
     </div>
 
@@ -2257,7 +2257,46 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             </table> 
                         </div>
                     </div>
+<div id="tab-hot-players" class="fm-tab">
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        רדאר סקאוטינג - השחקנים החמים
+    </h2>
 
+    <div class="stats-grid-layout">
+        
+        <div class="stat-category-card">
+            <div class="s-card-header"><span>🔥</span> בכושר שיא (ממוצע 3 משחקים אחרונים)</div>
+            <div class="s-card-list" id="hot-on-fire"></div>
+        </div>
+
+        <div class="stat-category-card">
+            <div class="s-card-header"><span>💎</span> מציאות מתחת לרדאר (פחות מ-5% בעלות)</div>
+            <div class="s-card-list" id="hot-gems"></div>
+        </div>
+
+        <div class="stat-category-card">
+            <div class="s-card-header"><span>📈</span> פוטנציאל השקעה (זינוק בערך השוק)</div>
+            <div class="s-card-list" id="hot-rising"></div>
+        </div>
+
+        <div class="stat-category-card">
+            <div class="s-card-header"><span>📅</span> לוח משחקים נוח (מומלץ לקנות)</div>
+            <div class="s-card-list" id="hot-fixtures"></div>
+        </div>
+
+        <div class="stat-category-card">
+            <div class="s-card-header"><span>🛒</span> הכי נרכשים השבוע בליגה</div>
+            <div class="s-card-list" id="hot-transfers"></div>
+        </div>
+
+        <div class="stat-category-card">
+            <div class="s-card-header" style="border-bottom-color: #ef4444;"><span>📉</span> מתקררים (אזהרת מכירה)</div>
+            <div class="s-card-list" id="hot-cold"></div>
+        </div>
+
+    </div>
+</div>
                 </div>
             </div>
         </div>
@@ -3238,6 +3277,96 @@ function setCaptainDrop(ev) {
                 renderLeagueStats();
                 renderLeagueRecords();
             }
+        });
+
+        // ==========================================
+        // מנוע דף סקאוטינג - השחקנים החמים
+        // ==========================================
+        
+        const hotPlayersDB = {
+            onFire: [
+                {n:"קול פאלמר", t:"מנצ'סטר סיטי", i:"73195", v:"12.5 נק'", color:"var(--brand-green)"},
+                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:"11.0 נק'", color:"var(--brand-green)"},
+                {n:"ויניסיוס ג'וניור", t:"ריאל מדריד", i:"145895", v:"9.8 נק'", color:"var(--brand-green)"},
+                {n:"מוחמד סלאח", t:"ליברפול", i:"73230", v:"9.5 נק'", color:"var(--text-dark)"},
+                {n:"הארי קיין", t:"באיירן מינכן", i:"73199", v:"9.2 נק'", color:"var(--text-dark)"}
+            ],
+            gems: [
+                {n:"אוסקר גלוך", t:"זלצבורג", i:"145899", v:"0.8% בעלות", color:"#fbbf24"},
+                {n:"ענאן חלאילי", t:"סן ז'ילואז", i:"145892", v:"1.2% בעלות", color:"#fbbf24"},
+                {n:"רוי רביבו", t:"מכבי תל אביב", i:"145898", v:"2.5% בעלות", color:"#fbbf24"},
+                {n:"גבי קניקובסקי", t:"מכבי תל אביב", i:"73233", v:"3.1% בעלות", color:"var(--text-dark)"},
+                {n:"גיא מלמד", t:"הפועל חיפה", i:"73200", v:"4.0% בעלות", color:"var(--text-dark)"}
+            ],
+            rising: [
+                {n:"לאמין ימאל", t:"ברצלונה", i:"73270", v:"▲ ₪0.5M", color:"var(--brand-green)"},
+                {n:"דור תורג'מן", t:"מכבי תל אביב", i:"73240", v:"▲ ₪0.3M", color:"var(--brand-green)"},
+                {n:"דין דוד", t:"מכבי חיפה", i:"73197", v:"▲ ₪0.3M", color:"var(--brand-green)"},
+                {n:"ג'וד בלינגהאם", t:"ריאל מדריד", i:"73229", v:"▲ ₪0.2M", color:"var(--text-dark)"},
+                {n:"פיל פודן", t:"מנצ'סטר סיטי", i:"73235", v:"▲ ₪0.2M", color:"var(--text-dark)"}
+            ],
+            fixtures: [
+                {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:"3 קרובים קלים", color:"var(--brand-green)"},
+                {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:"3 קרובים קלים", color:"var(--brand-green)"},
+                {n:"בוקאיו סאקה", t:"ארסנל", i:"73177", v:"לוח ירוק", color:"var(--text-dark)"},
+                {n:"מנור סולומון", t:"לידס", i:"73215", v:"לוח ירוק", color:"var(--text-dark)"},
+                {n:"איאד אבו עביד", t:"הפועל ב״ש", i:"73218", v:"לוח סביר", color:"var(--text-dark)"}
+            ],
+            transfers: [
+                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:"2,450 קניות", color:"#3498db"},
+                {n:"קיליאן אמבפה", t:"ריאל מדריד", i:"73216", v:"1,890 קניות", color:"#3498db"},
+                {n:"ארלינג האלנד", t:"מנצ'סטר סיטי", i:"73176", v:"1,500 קניות", color:"#3498db"},
+                {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:"950 קניות", color:"var(--text-dark)"},
+                {n:"פליסיו מילסון", t:"מכבי תל אביב", i:"145895", v:"820 קניות", color:"var(--text-dark)"}
+            ],
+            cold: [
+                {n:"קווין דה בריינה", t:"מנצ'סטר סיטי", i:"73220", v:"▼ ₪0.4M", color:"#ef4444"},
+                {n:"רוברט לבנדובסקי", t:"ברצלונה", i:"73255", v:"▼ ₪0.3M", color:"#ef4444"},
+                {n:"מרכוס רשפורד", t:"ליברפול", i:"73180", v:"0 נק' ברצף", color:"#ef4444"},
+                {n:"שגיב יחזקאל", t:"הפועל ב״ש", i:"73223", v:"פצוע", color:"var(--text-dark)"},
+                {n:"עלי מוחמד", t:"מכבי חיפה", i:"73191", v:"ללא בישול/שער", color:"var(--text-dark)"}
+            ]
+        };
+
+        function renderHotPlayers() {
+            const categories = [
+                { id: 'hot-on-fire', data: hotPlayersDB.onFire },
+                { id: 'hot-gems', data: hotPlayersDB.gems },
+                { id: 'hot-rising', data: hotPlayersDB.rising },
+                { id: 'hot-fixtures', data: hotPlayersDB.fixtures },
+                { id: 'hot-transfers', data: hotPlayersDB.transfers },
+                { id: 'hot-cold', data: hotPlayersDB.cold }
+            ];
+
+            categories.forEach(cat => {
+                const container = document.getElementById(cat.id);
+                if (!container) return;
+                container.innerHTML = '';
+                
+                cat.data.forEach((p, idx) => {
+                    let imgHtml = `<img src="https://media.api-sports.io/football/players/${p.i}.png" onerror="this.src='https://ui-avatars.com/api/?name=${p.n}&background=e2e8f0&color=000'">`;
+                    let rankClass = idx === 0 ? 'color: #fbbf24; font-size: 16px;' : (idx === 1 ? 'color: #94a3b8;' : (idx === 2 ? 'color: #b45309;' : ''));
+                    
+                    container.innerHTML += `
+                        <div class="s-list-row" onclick="openPlayerModal('${p.n}', 'https://media.api-sports.io/football/players/${p.i}.png', 'עמדה', '${p.t}', 0, 0, 0)">
+                            <div class="s-rank" style="${rankClass}">${idx + 1}</div>
+                            <div class="s-player-info">
+                                ${imgHtml}
+                                <div class="s-player-text">
+                                    <span class="s-p-name">${p.n}</span>
+                                    <span class="s-p-team">${p.t}</span>
+                                </div>
+                            </div>
+                            <div class="s-value" style="color: ${p.color}; font-size: 13px;">${p.v}</div>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        // טעינה אוטומטית כשהדף עולה
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHotPlayers();
         });
         
     </script>
