@@ -1011,11 +1011,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .fixtures-scroll-area { padding-right: 10px !important; padding-left: 10px !important; }
         .match-result-card.m-future { margin-right: 5px; }
 
-/* --- יישור סימטרי של עמודות הליגה (מתיחה ודחיפה לתחתית) --- */
-.league-layout-split { align-items: stretch !important; }
-.league-table-column { height: 100% !important; justify-content: space-between !important; }
-.league-fixtures-board { margin-top: auto !important; }
-
         
     </style>
         
@@ -1691,7 +1686,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             <div class="league-widgets-column" style="gap: 20px;">
                                 
                                 <div class="stat-category-card" style="max-height: 420px;">
-                                   <div class="s-card-header" style="justify-content: space-between; padding: 10px 15px;">
+                                    <div class="s-card-header" style="justify-content: space-between; padding: 10px 15px;">
                                         <div style="display: flex; align-items: center; gap: 8px;"><span>📊</span> מובילי הליגה</div>
                                         <select id="l-stats-select" onchange="renderLeagueStats()" style="padding: 4px; border-radius: 4px; border: none; font-size: 11px; font-weight: bold; cursor: pointer; outline: none; background: #fff; color: var(--text-dark);">
                                             <option value="goals">הכובשים הבכירים</option>
@@ -1705,7 +1700,8 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                 </div>
 
                                 <div class="stat-category-card" style="max-height: 420px;">
-                                   <div class="s-card-header" style="justify-content: space-between; padding: 10px 15px;">
+                                    <div class="s-card-header" style="justify-content: space-between; padding: 10px 15px; background: linear-gradient(145deg, #0a2e57 0%, #1e5799 100%); border-bottom: 2px solid #fbbf24;">
+                                        <div style="display: flex; align-items: center; gap: 8px;"><span>🏆</span> שיאי הליגה</div>
                                         <select id="l-records-select" onchange="renderLeagueRecords()" style="padding: 4px; border-radius: 4px; border: none; font-size: 11px; font-weight: bold; cursor: pointer; outline: none; background: #fff; color: var(--text-dark);">
                                             <option value="teamPts">שיא נק' קבוצתי למחזור</option>
                                             <option value="teamGoals">שיא שערים לקבוצה</option>
