@@ -916,6 +916,43 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         #tab-league .squad-table {
             border: none !important; 
         }
+
+        /* =========================================
+           עיצוב דף בונוס התחברות יומי
+           ========================================= */
+        .daily-bonus-wrapper { background: var(--bg-silver-matte); border-radius: 20px; padding: 40px 20px; text-align: center; border: 2px solid var(--element-navy-gradient); box-shadow: 0 10px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 450px;}
+        .db-title { font-size: 28px; font-weight: 900; color: var(--text-dark); margin-bottom: 10px; z-index: 2;}
+        .db-subtitle { font-size: 16px; color: #64748b; font-weight: 600; margin-bottom: 30px; z-index: 2;}
+        .db-streak-info { background: #fff; padding: 8px 20px; border-radius: 30px; font-weight: 900; color: var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: inline-block; margin-bottom: 30px; border: 1px solid rgba(124,168,86,0.3); z-index: 2;}
+        
+        .db-cards-row { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; width: 100%; max-width: 900px; z-index: 2; margin-bottom: 40px; direction: rtl;}
+        
+        .db-card { flex: 1; min-width: 90px; background: #fff; border: 2px solid #cbd5e1; border-radius: 16px; padding: 20px 5px; position: relative; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0.6; display: flex; flex-direction: column; align-items: center;}
+        
+        /* מצב קובייה: כבר נאסף בעבר */
+        .db-card.claimed { border-color: var(--brand-green); background: rgba(124,168,86,0.1); opacity: 1; transform: scale(0.95); }
+        .db-card.claimed .db-icon { filter: grayscale(0); }
+        
+        /* מצב קובייה: מוכן לאיסוף היום */
+        .db-card.ready { border-color: #fbbf24; background: rgba(251,191,36,0.15); opacity: 1; transform: scale(1.1); box-shadow: 0 10px 25px rgba(251,191,36,0.4); z-index: 10; animation: dbPulse 2s infinite; }
+        
+        /* מצב קובייה: יום 7 מיוחד */
+        .db-card.day-7 { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #fbbf24; min-width: 110px;}
+        .db-card.day-7.locked { opacity: 0.8; border-color: #cbd5e1; background: #fff;}
+        
+        .db-day-lbl { font-size: 13px; font-weight: 900; color: #64748b; margin-bottom: 8px; }
+        .db-icon { font-size: 32px; margin-bottom: 8px; transition: 0.3s; filter: grayscale(1); }
+        .db-card.ready .db-icon, .db-card.day-7 .db-icon { filter: grayscale(0); }
+        .db-amount { font-size: 18px; font-weight: 900; color: var(--text-dark); }
+        .db-card.ready .db-amount, .db-card.day-7 .db-amount { color: #d97706; }
+        
+        .db-claim-btn { background: linear-gradient(145deg, #fbbf24, #f59e0b); border: none; padding: 18px 50px; font-size: 22px; font-weight: 900; color: #fff; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 25px rgba(245,158,11,0.5); z-index: 2; outline: none;}
+        .db-claim-btn:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(245,158,11,0.7); }
+        .db-claim-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; transform: none; color: #94a3b8; }
+        
+        @keyframes dbPulse { 0% { box-shadow: 0 0 0 0 rgba(251,191,36,0.6); } 70% { box-shadow: 0 0 0 15px rgba(251,191,36,0); } 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); } }
+        
+        @media (max-width: 768px) { .db-card { min-width: calc(33% - 10px); } }
         
     </style>
         
@@ -1026,7 +1063,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
         <div class="fm-submenu">
-            <div class="fm-sub-item" onclick="event.stopPropagation()">בונוס התחברות יומי</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-daily-bonus', this)">בונוס התחברות יומי</div>
             <div class="fm-sub-item" onclick="event.stopPropagation()">גלגל המזל</div>
         </div>
     </div>
@@ -2300,7 +2337,28 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 </div>
             </div>
         </div>
-                    
+
+<div id="tab-daily-bonus" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                            בונוס התחברות יומי
+                        </h2>
+
+                        <div class="daily-bonus-wrapper">
+                            <div class="db-title">ברוך שובך, מנג'ר! 💼</div>
+                            <div class="db-subtitle">התחבר כל יום כדי לאסוף תקציב לרכש. שים לב - פספוס של יום אחד מאפס את הרצף!</div>
+                            
+                            <div class="db-streak-info">רצף התחברות נוכחי: <span id="db-streak-count">0</span> ימים 🔥</div>
+                            
+                            <div class="db-cards-row" id="db-cards-container">
+                                </div>
+                            
+                            <button id="db-claim-btn" class="db-claim-btn" onclick="claimDailyBonus()">אסוף בונוס</button>
+
+                            <button onclick="simulateNextDay()" style="position: absolute; bottom: 10px; right: 10px; background: #e2e8f0; border: none; padding: 5px 10px; font-size: 10px; border-radius: 4px; cursor: pointer; color: #64748b; font-weight: bold; z-index: 10;">[כלי פיתוח] דמה מחר</button>
+                        </div>
+                    </div>
+        
             <aside class="collapsible-live-panel" id="livePanel">
             <div class="panel-header" id="live-panel-header">
                 <div class="header-title-group">
@@ -3367,6 +3425,141 @@ function setCaptainDrop(ev) {
         // טעינה אוטומטית כשהדף עולה
         document.addEventListener('DOMContentLoaded', () => {
             renderHotPlayers();
+        });
+
+        // ==========================================
+        // מנוע בונוס התחברות יומי
+        // ==========================================
+        
+        const dbRewardsList = [50000, 100000, 200000, 350000, 500000, 750000, 1000000];
+        let dbState = {
+            streak: 0,
+            lastClaimTime: null
+        };
+
+        // פונקציית עיצוב למספרים הגדולים (50K, 1M)
+        function formatBonusAmount(amount) {
+            if (amount >= 1000000) return (amount / 1000000).toFixed(1).replace('.0', '') + 'M';
+            if (amount >= 1000) return (amount / 1000) + 'K';
+            return amount;
+        }
+
+        // טעינת הסטטוס מהזיכרון של הדפדפן
+        function initDailyBonus() {
+            const savedState = localStorage.getItem('solibi_daily_bonus');
+            if (savedState) {
+                dbState = JSON.parse(savedState);
+            }
+            checkStreakReset();
+            renderDailyBonus();
+        }
+
+        // בדיקה האם המשתמש פספס יום
+        function checkStreakReset() {
+            if (!dbState.lastClaimTime) return;
+            
+            const lastClaimDate = new Date(dbState.lastClaimTime);
+            lastClaimDate.setHours(0,0,0,0);
+            
+            const todayDate = new Date();
+            todayDate.setHours(0,0,0,0);
+            
+            // חישוב ההבדל בימים
+            const daysApart = (todayDate - lastClaimDate) / (1000 * 60 * 60 * 24);
+            
+            // אם עבר יותר מיום אחד (זאת אומרת שהוא לא התחבר אתמול)
+            if (daysApart > 1) {
+                dbState.streak = 0;
+                saveDbState();
+            }
+        }
+
+        // ציור הקוביות על המסך
+        function renderDailyBonus() {
+            const container = document.getElementById('db-cards-container');
+            const btn = document.getElementById('db-claim-btn');
+            const streakDisplay = document.getElementById('db-streak-count');
+            if (!container) return;
+
+            // בדיקה האם מותר לאסוף היום
+            let canClaimToday = true;
+            if (dbState.lastClaimTime) {
+                const lastClaim = new Date(dbState.lastClaimTime);
+                const today = new Date();
+                if (lastClaim.toDateString() === today.toDateString()) {
+                    canClaimToday = false; // כבר אסף היום!
+                }
+            }
+
+            let html = '';
+            for (let i = 0; i < 7; i++) {
+                let statusClass = 'locked';
+                let icon = '🎁';
+                
+                if (i === 6) statusClass += ' day-7'; // יום 7 מיוחד
+                
+                if (i < dbState.streak) {
+                    statusClass = 'claimed';
+                    icon = '✅';
+                } else if (i === dbState.streak && canClaimToday) {
+                    statusClass = 'ready';
+                    icon = i === 6 ? '👑' : '✨';
+                }
+
+                html += `
+                    <div class="db-card ${statusClass}">
+                        <div class="db-day-lbl">יום ${i + 1}</div>
+                        <div class="db-icon">${icon}</div>
+                        <div class="db-amount">₪${formatBonusAmount(dbRewardsList[i])}</div>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+            streakDisplay.innerText = dbState.streak;
+
+            if (canClaimToday) {
+                btn.disabled = false;
+                btn.innerText = `אסוף ₪${formatBonusAmount(dbRewardsList[dbState.streak])} לתקציב`;
+            } else {
+                btn.disabled = true;
+                btn.innerText = "חזור מחר לבונוס הבא!";
+            }
+        }
+
+        // איסוף הבונוס
+        function claimDailyBonus() {
+            const reward = dbRewardsList[dbState.streak];
+            alert(`איזה יופי! התקציב שלך גדל ב-₪${formatNumberWithCommas(reward)}.`);
+            
+            dbState.streak++;
+            // אם סיים שבוע שלם, מאפסים לו את הרצף כדי שיתחיל מחדש
+            if (dbState.streak >= 7) {
+                dbState.streak = 0;
+            }
+            
+            dbState.lastClaimTime = new Date().getTime();
+            saveDbState();
+            renderDailyBonus();
+        }
+
+        function saveDbState() {
+            localStorage.setItem('solibi_daily_bonus', JSON.stringify(dbState));
+        }
+
+        // פונקציית צ'יט שמעבירה את הזמן 24 שעות קדימה כדי שתוכל לבדוק את זה
+        function simulateNextDay() {
+            if(dbState.lastClaimTime) {
+                dbState.lastClaimTime -= (1000 * 60 * 60 * 24); // מוריד 24 שעות
+                saveDbState();
+                checkStreakReset();
+                renderDailyBonus();
+            }
+        }
+
+        // הפעלת המנוע כשהדף עולה
+        document.addEventListener('DOMContentLoaded', () => {
+            initDailyBonus();
         });
         
     </script>
