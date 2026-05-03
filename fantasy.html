@@ -882,6 +882,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         
         @media (max-width: 1200px) { .stats-grid-layout { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { .stats-grid-layout { grid-template-columns: 1fr; } }
+
+        /* תיקון חיתוך כרטיסיות משחקים עתידיים בלוח האישי */
+        .fixtures-scroll-area { padding-right: 10px !important; padding-left: 10px !important; }
+        .match-result-card.m-future { margin-right: 5px; }
         
     </style>
         
@@ -956,7 +960,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-league', this)">טבלת הליגה</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-fixtures', this)">לוח משחקים</div>
            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-statistics', this)">סטטיסטיקות</div>
-            <div class="fm-sub-item" onclick="event.stopPropagation()">שיאים</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-records', this)">שיאים</div>
         </div>
     </div>
 
@@ -1958,6 +1962,218 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                         <div class="s-rank">5</div>
                                         <div class="s-player-info"><img src="https://media.api-sports.io/football/players/73229.png"><div class="s-player-text"><span class="s-p-name">דור פרץ</span><span class="s-p-team">3 צהובים</span></div></div>
                                         <div class="s-value negative">-3</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="tab-records" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M12 15l-3 3 1.5-6-4.5-4h6l2-6 2 6h6l-4.5 4 1.5 6-3-3z"></path></svg>
+                            ספר השיאים של המועדון
+                        </h2>
+
+                        <div class="stats-grid-layout">
+                            
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>💯</span> שיא נקודות למחזור</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+12&background=062141&color=7ca856&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 12</span><span class="s-p-team">מול הפועל עגלות</span></div></div>
+                                        <div class="s-value">98</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+4&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 4</span><span class="s-p-team">מול בני יהודה אימפריה</span></div></div>
+                                        <div class="s-value neutral">86</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+2&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 2</span><span class="s-p-team">מול גלקטיקוס</span></div></div>
+                                        <div class="s-value neutral">75</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+8&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 8</span><span class="s-p-team">מול רד בול פ"ת</span></div></div>
+                                        <div class="s-value neutral">72</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+1&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 1</span><span class="s-p-team">מול פ.צ שווארמה</span></div></div>
+                                        <div class="s-value neutral">50</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>⚽</span> שיא שערים קבוצתי</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+12&background=062141&color=7ca856&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 12</span><span class="s-p-team">התקפה קטלנית</span></div></div>
+                                        <div class="s-value">5</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+4&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 4</span><span class="s-p-team">התקפה מצוינת</span></div></div>
+                                        <div class="s-value neutral">4</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+2&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 2</span><span class="s-p-team">התקפה טובה</span></div></div>
+                                        <div class="s-value neutral">3</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+9&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 9</span><span class="s-p-team">משחק פתוח</span></div></div>
+                                        <div class="s-value neutral">3</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+8&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 8</span><span class="s-p-team">משחק זהיר</span></div></div>
+                                        <div class="s-value neutral">2</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>🎯</span> שיא בישולים קבוצתי</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+12&background=062141&color=7ca856&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 12</span><span class="s-p-team">תצוגת מסירות</span></div></div>
+                                        <div class="s-value">6</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+4&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 4</span><span class="s-p-team">שיתוף פעולה</span></div></div>
+                                        <div class="s-value neutral">5</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+9&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 9</span><span class="s-p-team">שיתוף פעולה</span></div></div>
+                                        <div class="s-value neutral">4</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+2&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 2</span><span class="s-p-team">בישולים יפים</span></div></div>
+                                        <div class="s-value neutral">3</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+8&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 8</span><span class="s-p-team">כדורגל אישי</span></div></div>
+                                        <div class="s-value neutral">2</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>🧱</span> רשתות נקיות למחזור (שחקני הגנה)</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+4&background=062141&color=7ca856&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 4</span><span class="s-p-team">הגנה מושלמת</span></div></div>
+                                        <div class="s-value">3</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+12&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 12</span><span class="s-p-team">משחק יציב</span></div></div>
+                                        <div class="s-value neutral">2</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+1&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 1</span><span class="s-p-team">משחק יציב</span></div></div>
+                                        <div class="s-value neutral">2</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+2&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 2</span><span class="s-p-team">ספגו שער אחד</span></div></div>
+                                        <div class="s-value neutral">1</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=מ+8&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">מחזור 8</span><span class="s-p-team">ספגו שער אחד</span></div></div>
+                                        <div class="s-value neutral">1</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>🌟</span> תצוגות יחיד (נק' במשחק בודד)</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row" onclick="openPlayerModal('ערן זהבי', 'https://media.api-sports.io/football/players/73156.png', 'חלוץ', 'מכבי תל אביב', 145, 16, 4)">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73156.png">
+                                            <div class="s-player-text"><span class="s-p-name">ערן זהבי</span><span class="s-p-team">מחזור 12</span></div>
+                                        </div>
+                                        <div class="s-value">24</div>
+                                    </div>
+                                    <div class="s-list-row" onclick="openPlayerModal('צ\'רון שרי', 'https://media.api-sports.io/football/players/73195.png', 'קישור', 'מכבי חיפה', 110, 6, 8)">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73195.png">
+                                            <div class="s-player-text"><span class="s-p-name">צ'רון שרי</span><span class="s-p-team">מחזור 4</span></div>
+                                        </div>
+                                        <div class="s-value neutral">18</div>
+                                    </div>
+                                    <div class="s-list-row" onclick="openPlayerModal('פרנצדי פיירו', 'https://media.api-sports.io/football/players/73199.png', 'חלוץ', 'מכבי חיפה', 130, 14, 2)">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73199.png">
+                                            <div class="s-player-text"><span class="s-p-name">פרנצדי פיירו</span><span class="s-p-team">מחזור 2</span></div>
+                                        </div>
+                                        <div class="s-value neutral">16</div>
+                                    </div>
+                                    <div class="s-list-row" onclick="openPlayerModal('דור פרץ', 'https://media.api-sports.io/football/players/73229.png', 'קישור', 'מכבי תל אביב', 105, 8, 3)">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73229.png">
+                                            <div class="s-player-text"><span class="s-p-name">דור פרץ</span><span class="s-p-team">מחזור 9</span></div>
+                                        </div>
+                                        <div class="s-value neutral">14</div>
+                                    </div>
+                                    <div class="s-list-row" onclick="openPlayerModal('ירדן שועה', 'https://media.api-sports.io/football/players/73270.png', 'חלוץ', 'בית״ר ירושלים', 108, 10, 8)">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info">
+                                            <img src="https://media.api-sports.io/football/players/73270.png">
+                                            <div class="s-player-text"><span class="s-p-name">ירדן שועה</span><span class="s-p-team">מחזור 8</span></div>
+                                        </div>
+                                        <div class="s-value neutral">12</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="stat-category-card">
+                                <div class="s-card-header"><span>🔥</span> שיאים מיוחדים (מועדון)</div>
+                                <div class="s-card-list">
+                                    <div class="s-list-row">
+                                        <div class="s-rank">1</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=ש&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">הניצחון הגדול ביותר</span><span class="s-p-team">מחזור 1</span></div></div>
+                                        <div class="s-value">25+</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">2</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=ש&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">רצף ניצחונות (פעיל)</span><span class="s-p-team">ממחזור 9 עד 12</span></div></div>
+                                        <div class="s-value neutral">4</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">3</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=ש&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">ללא הפסדים</span><span class="s-p-team">ממחזור 8 עד 12</span></div></div>
+                                        <div class="s-value neutral">5</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">4</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=ש&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">שיא נק' על הספסל</span><span class="s-p-team">מחזור 3 (כואב!)</span></div></div>
+                                        <div class="s-value negative">18</div>
+                                    </div>
+                                    <div class="s-list-row">
+                                        <div class="s-rank">5</div>
+                                        <div class="s-player-info"><img src="https://ui-avatars.com/api/?name=ש&background=062141&color=fff&bold=true"><div class="s-player-text"><span class="s-p-name">שיא חילופים למחזור</span><span class="s-p-team">מחזור 4</span></div></div>
+                                        <div class="s-value neutral">4</div>
                                     </div>
                                 </div>
                             </div>
