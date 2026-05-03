@@ -1011,23 +1011,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .fixtures-scroll-area { padding-right: 10px !important; padding-left: 10px !important; }
         .match-result-card.m-future { margin-right: 5px; }
 
-        /* הגדרת גובה זהה (חצי-חצי) ל-2 הקוביות משמאל לטבלת הליגה */
-        #tab-league .league-widgets-column {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: 100%; /* תופס את כל הגובה האפשרי */
-        }
-        #tab-league .league-widgets-column .stat-category-card {
-            flex: 1; /* אומר לכל קובייה לתפוס 50% מהגובה הפנוי */
-            display: flex;
-            flex-direction: column;
-            min-height: 250px; /* מבטיח מינימום גובה כדי שהטבלה לא תימעך */
-        }
-        #tab-league .league-widgets-column .s-card-list {
-            flex: 1;
-            overflow-y: auto; /* מאפשר גלילה רק בתוך הרשימה אם צריך */
-        }
         
     </style>
         
@@ -3313,10 +3296,11 @@ function setCaptainDrop(ev) {
             ]
         };
 
-        // פונקציות הזרקת הנתונים
+        // פונקציות הזרקת הנתונים (מוגבל ל-5 תוצאות!)
         function renderLeagueStats() {
             const type = document.getElementById('l-stats-select').value;
-            const data = leagueStatsDB[type];
+            // הוספנו slice(0, 5) כדי לקחת רק את 5 הראשונים
+            const data = leagueStatsDB[type].slice(0, 5); 
             const container = document.getElementById('l-stats-body');
             container.innerHTML = '';
             
@@ -3328,7 +3312,8 @@ function setCaptainDrop(ev) {
 
         function renderLeagueRecords() {
             const type = document.getElementById('l-records-select').value;
-            const data = leagueRecordsDB[type];
+            // הוספנו slice(0, 5) כדי לקחת רק את 5 הראשונים
+            const data = leagueRecordsDB[type].slice(0, 5); 
             const container = document.getElementById('l-records-body');
             container.innerHTML = '';
             
