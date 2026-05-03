@@ -898,6 +898,19 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         /* העמודה השמאלית - הקוביות מתחלקות חצי-חצי עם מסגרת נייבי */
         #tab-league .stat-category-card { border: 2px solid #062141 !important; box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important; flex: 1; margin: 0; display: flex; flex-direction: column; overflow: hidden; background: #fff; border-radius: 12px;}
         #tab-league .s-card-list { flex: 1; overflow-y: auto; }
+
+/* --- מתיחת שורות טבלת הליגה למניעת שטח אפור ריק בתחתית --- */
+        #tab-league .squad-table-wrap {
+            flex: 1 !important;
+            height: 100% !important; 
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        
+        #tab-league .squad-table {
+            height: 100% !important; /* מכריח את הטבלה לפרוס את השורות שלה על כל הגובה הפנוי */
+            flex: 1 !important;
+        }
         
     </style>
         
