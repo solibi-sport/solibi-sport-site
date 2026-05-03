@@ -1006,6 +1006,28 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 renderLeagueRecords();
             }
         });
+
+                                                               /* תיקון חיתוך כרטיסיות משחקים עתידיים בלוח האישי */
+        .fixtures-scroll-area { padding-right: 10px !important; padding-left: 10px !important; }
+        .match-result-card.m-future { margin-right: 5px; }
+
+        /* הגדרת גובה זהה (חצי-חצי) ל-2 הקוביות משמאל לטבלת הליגה */
+        #tab-league .league-widgets-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%; /* תופס את כל הגובה האפשרי */
+        }
+        #tab-league .league-widgets-column .stat-category-card {
+            flex: 1; /* אומר לכל קובייה לתפוס 50% מהגובה הפנוי */
+            display: flex;
+            flex-direction: column;
+            min-height: 250px; /* מבטיח מינימום גובה כדי שהטבלה לא תימעך */
+        }
+        #tab-league .league-widgets-column .s-card-list {
+            flex: 1;
+            overflow-y: auto; /* מאפשר גלילה רק בתוך הרשימה אם צריך */
+        }
         
     </style>
         
@@ -3229,6 +3251,126 @@ function setCaptainDrop(ev) {
 
         document.addEventListener('DOMContentLoaded', () => {
             if(document.getElementById('lf-matches-container')) changeLeagueRound(0); 
+        });
+
+        // ==========================================
+        // מנוע סטטיסטיקות ושיאים (טבלת הליגה)
+        // ==========================================
+        
+        // מאגר נתונים מדומה (ל-10 מקומות ראשונים בכל קטגוריה)
+        const leagueStatsDB = {
+            goals: [
+                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:16}, {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:14},
+                {n:"דין דוד", t:"מכבי חיפה", i:"73197", v:11}, {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:10},
+                {n:"דור פרץ", t:"מכבי תל אביב", i:"73229", v:8}, {n:"גיא מלמד", t:"הפועל חיפה", i:"73200", v:7},
+                {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:6}, {n:"ענאן חלאילי", t:"מכבי חיפה", i:"145899", v:6},
+                {n:"פליסיו מילסון", t:"מכבי תל אביב", i:"145895", v:5}, {n:"דן ביטון", t:"מכבי תל אביב", i:"73235", v:5}
+            ],
+            assists: [
+                {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:8}, {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:8},
+                {n:"פליסיו מילסון", t:"מכבי תל אביב", i:"145895", v:7}, {n:"גבי קניקובסקי", t:"מכבי תל אביב", i:"73233", v:6},
+                {n:"ליאור רפאלוב", t:"מכבי חיפה", i:"73230", v:5}, {n:"שגיב יחזקאל", t:"הפועל ב״ש", i:"73221", v:5},
+                {n:"דור תורג'מן", t:"מכבי תל אביב", i:"73240", v:4}, {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:4},
+                {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:3}, {n:"מוחמד אבו פאני", t:"הפועל ב״ש", i:"73223", v:3}
+            ],
+            tackles: [
+                {n:"עבדוליי סק", t:"מכבי חיפה", i:"145892", v:42}, {n:"מיגל ויטור", t:"הפועל ב״ש", i:"73216", v:38},
+                {n:"אנריק סבוריט", t:"מכבי תל אביב", i:"73177", v:35}, {n:"שון גולדברג", t:"מכבי חיפה", i:"73176", v:31},
+                {n:"איאד אבו עביד", t:"הפועל ב״ש", i:"73215", v:28}, {n:"רוי רביבו", t:"מכבי תל אביב", i:"145898", v:25},
+                {n:"מריאנו בריירו", t:"הפועל ב״ש", i:"73218", v:24}, {n:"עלי מוחמד", t:"מכבי חיפה", i:"73191", v:23},
+                {n:"דור פרץ", t:"מכבי תל אביב", i:"73229", v:21}, {n:"דניאל סונדגרן", t:"מכבי חיפה", i:"145893", v:20}
+            ],
+            points: [
+                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:145}, {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:130},
+                {n:"דין דוד", t:"מכבי חיפה", i:"73197", v:115}, {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:110},
+                {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:108}, {n:"דור פרץ", t:"מכבי תל אביב", i:"73229", v:105},
+                {n:"פליסיו מילסון", t:"מכבי תל אביב", i:"145895", v:102}, {n:"ליאור רפאלוב", t:"מכבי חיפה", i:"73230", v:92},
+                {n:"גבי קניקובסקי", t:"מכבי תל אביב", i:"73233", v:85}, {n:"עבדוליי סק", t:"מכבי חיפה", i:"145892", v:78}
+            ]
+        };
+
+        const leagueRecordsDB = {
+            teamPts: [
+                {n:"הכרישים של מוטי", t:"מחזור 8", i:"S+F/fbbf24", v:105, isTeam:true}, {n:"מכבי סוליבי", t:"מחזור 12", i:"M+S/7ca856", v:98, isTeam:true},
+                {n:"גלקטיקוס", t:"מחזור 2", i:"G+G/3498db", v:92, isTeam:true}, {n:"אריות וולפסון", t:"מחזור 9", i:"A+V/9b59b6", v:88, isTeam:true},
+                {n:"הכרישים של מוטי", t:"מחזור 1", i:"S+F/fbbf24", v:85, isTeam:true}, {n:"בני יהודה אימפריה", t:"מחזור 5", i:"B+R/e67e22", v:81, isTeam:true},
+                {n:"מכבי סוליבי", t:"מחזור 4", i:"M+S/7ca856", v:75, isTeam:true}, {n:"פ.צ. שווארמה", t:"מחזור 3", i:"F+C/1abc9c", v:70, isTeam:true},
+                {n:"רד בול פתח תקווה", t:"מחזור 7", i:"R+B/e74c3c", v:68, isTeam:true}, {n:"גלקטיקוס", t:"מחזור 11", i:"G+G/3498db", v:65, isTeam:true}
+            ],
+            playerPts: [
+                {n:"ערן זהבי", t:"מחזור 12 (מכבי ת\"א)", i:"73156", v:24}, {n:"צ'רון שרי", t:"מחזור 4 (מכבי חיפה)", i:"73195", v:18},
+                {n:"פרנצדי פיירו", t:"מחזור 2 (מכבי חיפה)", i:"73199", v:16}, {n:"דור פרץ", t:"מחזור 9 (מכבי ת\"א)", i:"73229", v:14},
+                {n:"ירדן שועה", t:"מחזור 8 (בית\"ר)", i:"73270", v:12}, {n:"דין דוד", t:"מחזור 5 (מכבי חיפה)", i:"73197", v:12},
+                {n:"פליסיו מילסון", t:"מחזור 7 (מכבי ת\"א)", i:"145895", v:11}, {n:"גבי קניקובסקי", t:"מחזור 11 (מכבי ת\"א)", i:"73233", v:10},
+                {n:"עבדוליי סק", t:"מחזור 3 (מכבי חיפה)", i:"145892", v:9}, {n:"ליאור רפאלוב", t:"מחזור 1 (מכבי חיפה)", i:"73230", v:8}
+            ],
+            teamGoals: [
+                {n:"הכרישים של מוטי", t:"מחזור 8", i:"S+F/fbbf24", v:6, isTeam:true}, {n:"מכבי סוליבי", t:"מחזור 12", i:"M+S/7ca856", v:5, isTeam:true},
+                {n:"אריות וולפסון", t:"מחזור 9", i:"A+V/9b59b6", v:4, isTeam:true}, {n:"גלקטיקוס", t:"מחזור 2", i:"G+G/3498db", v:4, isTeam:true},
+                {n:"מכבי סוליבי", t:"מחזור 4", i:"M+S/7ca856", v:3, isTeam:true}, {n:"בני יהודה אימפריה", t:"מחזור 5", i:"B+R/e67e22", v:3, isTeam:true},
+                {n:"פ.צ. שווארמה", t:"מחזור 3", i:"F+C/1abc9c", v:2, isTeam:true}, {n:"הכרישים של מוטי", t:"מחזור 1", i:"S+F/fbbf24", v:2, isTeam:true},
+                {n:"רד בול פתח תקווה", t:"מחזור 7", i:"R+B/e74c3c", v:2, isTeam:true}, {n:"הפועל עגלות", t:"מחזור 6", i:"H+A/94a3b8", v:1, isTeam:true}
+            ]
+        };
+
+        // פונקציות הזרקת הנתונים
+        function renderLeagueStats() {
+            const type = document.getElementById('l-stats-select').value;
+            const data = leagueStatsDB[type];
+            const container = document.getElementById('l-stats-body');
+            container.innerHTML = '';
+            
+            data.forEach((p, idx) => {
+                let imgHtml = `<img src="https://media.api-sports.io/football/players/${p.i}.png" onerror="this.src='https://ui-avatars.com/api/?name=${p.n}&background=e2e8f0&color=000'">`;
+                container.innerHTML += buildRowHTML(idx, imgHtml, p.n, p.t, p.v);
+            });
+        }
+
+        function renderLeagueRecords() {
+            const type = document.getElementById('l-records-select').value;
+            const data = leagueRecordsDB[type];
+            const container = document.getElementById('l-records-body');
+            container.innerHTML = '';
+            
+            data.forEach((p, idx) => {
+                let imgHtml = '';
+                if(p.isTeam) {
+                    let params = p.i.split('/');
+                    imgHtml = `<img src="https://ui-avatars.com/api/?name=${params[0]}&background=${params[1]}&color=fff&bold=true">`;
+                } else {
+                    imgHtml = `<img src="https://media.api-sports.io/football/players/${p.i}.png" onerror="this.src='https://ui-avatars.com/api/?name=${p.n}&background=e2e8f0&color=000'">`;
+                }
+                container.innerHTML += buildRowHTML(idx, imgHtml, p.n, p.t, p.v);
+            });
+        }
+
+        function buildRowHTML(idx, imgHtml, name, team, val) {
+            let rankClass = '';
+            if (idx === 0) rankClass = 'color: #fbbf24; font-size: 16px;';
+            else if (idx === 1) rankClass = 'color: #94a3b8;';
+            else if (idx === 2) rankClass = 'color: #b45309;';
+            
+            return `
+                <div class="s-list-row">
+                    <div class="s-rank" style="${rankClass}">${idx + 1}</div>
+                    <div class="s-player-info">
+                        ${imgHtml}
+                        <div class="s-player-text">
+                            <span class="s-p-name">${name}</span>
+                            <span class="s-p-team">${team}</span>
+                        </div>
+                    </div>
+                    <div class="s-value neutral">${val}</div>
+                </div>
+            `;
+        }
+
+        // טעינה ראשונית מיד כשהדף עולה
+        document.addEventListener('DOMContentLoaded', () => {
+            if(document.getElementById('l-stats-body')) {
+                renderLeagueStats();
+                renderLeagueRecords();
+            }
         });
         
     </script>
