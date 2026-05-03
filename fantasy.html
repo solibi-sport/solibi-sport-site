@@ -1004,8 +1004,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             height: 360px;
             margin: 20px auto 40px;
             z-index: 2;
+            flex-shrink: 0; /* השורה הזו מונעת מהגלגל להימעך לאליפסה! */
         }
-
+      
         /* מסגרת מוזהבת מסיבית */
         .fortune-wheel {
             width: 100%;
@@ -1134,15 +1135,15 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 0 10px 20px rgba(0,0,0,0.3);
             margin-top: 20px;
         }
-        .wheel-timer {
+       .wheel-timer {
             font-size: 28px;
             font-weight: 900;
-            color: #f97316; /* כתום-ענבר */
+            color: var(--brand-green); /* שינוי לירוק של האתר */
             margin-top: 5px;
             font-variant-numeric: tabular-nums;
-            font-family: 'Courier New', Courier, monospace; /* פונט דיגיטלי */
+            font-family: 'Courier New', Courier, monospace;
             letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(249,115,22,0.4);
+            text-shadow: 0 0 5px rgba(124, 168, 86, 0.4); /* צל ירוק עדין */
         }
 
         /* מקרא צבעים - דיסקיות */
