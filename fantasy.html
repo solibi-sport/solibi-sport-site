@@ -2577,6 +2577,24 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             <div class="wheel-status-box" id="fw-status-box">
                                 <div style="font-size: 15px; font-weight: bold; color: #64748b;">זמן נותר לסיבוב הבא:</div>
                                 <div class="wheel-timer" id="fw-timer-display">מוכן לסיבוב!</div>
+                                <div style="display: flex; gap: 20px; margin-top: 30px; z-index: 2; font-size: 13px; color: #fff; font-weight: bold; flex-wrap: wrap; justify-content: center; background: rgba(0,0,0,0.2); padding: 15px 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="display:inline-block; width:16px; height:16px; border-radius:50%; background:#9b59b6; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);"></span>
+                                    זכייה במיליון ש"ח
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="display:inline-block; width:16px; height:16px; border-radius:50%; background:#fbbf24; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);"></span>
+                                    זכייה 750 אלף ₪
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="display:inline-block; width:16px; height:16px; border-radius:50%; background:#2ecc71; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);"></span>
+                                    זכייה 50-300 אלף ₪
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="display:inline-block; width:16px; height:16px; border-radius:50%; background:#e74c3c; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);"></span>
+                                    קנס 50-300 אלף ₪
+                                </div>
+                            </div>
                             </div>
                             
                             <div style="display: flex; gap: 20px; margin-top: 30px; z-index: 2; font-size: 13px; color: #fff; font-weight: bold; flex-wrap: wrap; justify-content: center; background: rgba(0,0,0,0.2); padding: 15px 25px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
@@ -3873,40 +3891,36 @@ function setCaptainDrop(ev) {
             let rand = Math.random() * 100;
             let amount = 0;
             let isWin = true;
-            let targetSlice = 0; // 0-7 (0 top green, 1 red, etc.)
+            let targetSlice = 0; // 0-7
 
-            /* הגלגל מחולק ל-8 חתיכות של 45 מעלות.
-               אמצע החתיכה הראשונה (0) הוא ב-22.5 מעלות.
-               0: 0-45 (ירוק)
-               1: 45-90 (אדום)
-               2: 90-135 (זהב - 750K)
-               3: 135-180 (אדום)
-               4: 180-225 (ירוק)
-               5: 225-270 (סגול - 1M)
-               6: 270-315 (אדום)
-               7: 315-360 (ירוק)
+            /* מיפוי מדוייק של החתיכות לפי העיצוב (מ-0 עד 7):
+               0 = ירוק (זכייה)
+               1 = ירוק (זכייה)
+               2 = אדום (קנס)
+               3 = צהוב (750K)
+               4 = אדום (קנס)
+               5 = ירוק (זכייה)
+               6 = סגול (1M)
+               7 = אדום (קנס)
             */
 
-            if (rand <= 2) { // 2% 1M Jackpot
+            if (rand <= 2) { // 2% מיליון
                 amount = 1000000;
-                targetSlice = 5; 
+                targetSlice = 6; // חתיכה מס' 6 היא סגולה
             } else if (rand <= 7) { // 5% 750K
                 amount = 750000;
-                targetSlice = 2;
-            } else if (rand <= 55) { // 48% Win 50k-300k
+                targetSlice = 3; // חתיכה מס' 3 היא צהובה
+            } else if (rand <= 55) { // 48% זכייה רגילה (50k-300k)
                 amount = Math.floor(Math.random() * 26) * 10000 + 50000;
-                targetSlice = [0, 4, 7][Math.floor(Math.random() * 3)]; // ירוק
-            } else { // 45% Lose 50k-300k
+                targetSlice = [0, 1, 5][Math.floor(Math.random() * 3)]; // חתיכות ירוקות
+            } else { // 45% קנס (50k-300k)
                 isWin = false;
                 amount = Math.floor(Math.random() * 26) * 10000 + 50000;
-                targetSlice = [1, 3, 6][Math.floor(Math.random() * 3)]; // אדום
+                targetSlice = [2, 4, 7][Math.floor(Math.random() * 3)]; // חתיכות אדומות
             }
 
-            // 2. חישוב זוויות - מתוקן
-            const extraSpins = 6 * 360; // 6 סיבובים לאפקט
-            
-            // בגלל ה-conic-gradient החדש, הזווית המדויקת של מרכז כל חתיכה היא (targetSlice * 45) מעלות.
-            // אין צורך להוסיף 22.5 מעלות כמו קודם. המרכז הוא פשוט הכפולות של 45.
+            // 2. חישוב זווית מדויק
+            const extraSpins = 6 * 360; 
             const sliceAngle = targetSlice * 45; 
             const finalRotation = extraSpins + (360 - sliceAngle);
             
@@ -3918,7 +3932,7 @@ function setCaptainDrop(ev) {
             setTimeout(() => {
                 isSpinning = false;
                 
-                // וודא שהגלגל נשאר בדיוק בזווית הזו
+                // וודא שהגלגל נשאר בדיוק בזווית
                 wheel.style.transition = 'none';
                 wheel.style.transform = `rotate(${360 - sliceAngle}deg)`;
                 
