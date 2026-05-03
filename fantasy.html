@@ -920,37 +920,70 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         /* =========================================
            עיצוב דף בונוס התחברות יומי
            ========================================= */
-        .daily-bonus-wrapper { background: var(--bg-silver-matte); border-radius: 20px; padding: 40px 20px; text-align: center; border: 2px solid var(--element-navy-gradient); box-shadow: 0 10px 40px rgba(0,0,0,0.1); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 450px;}
-        .db-title { font-size: 28px; font-weight: 900; color: var(--text-dark); margin-bottom: 10px; z-index: 2;}
-        .db-subtitle { font-size: 16px; color: #64748b; font-weight: 600; margin-bottom: 30px; z-index: 2;}
-        .db-streak-info { background: #fff; padding: 8px 20px; border-radius: 30px; font-weight: 900; color: var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: inline-block; margin-bottom: 30px; border: 1px solid rgba(124,168,86,0.3); z-index: 2;}
+        /* =========================================
+           עיצוב דף בונוס התחברות יומי (פרימיום כהה וירוק)
+           ========================================= */
+        .daily-bonus-wrapper { 
+            background: radial-gradient(circle at center, #1e293b 0%, #111827 100%);
+            border-radius: 20px; 
+            padding: 50px 20px; 
+            text-align: center; 
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4); 
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 550px;
+        }
+        /* הילה ירוקה עדיפה ברקע */
+        .daily-bonus-wrapper::before { 
+            content:''; position:absolute; top:0; left:0; width:100%; height:100%; 
+            background: radial-gradient(circle, rgba(124,168,86,0.05) 0%, transparent 70%); 
+            pointer-events: none;
+        }
+        
+        .db-title { font-size: 32px; font-weight: 900; color: #fff; margin-bottom: 10px; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+        .db-subtitle { font-size: 16px; color: #cbd5e1; margin-bottom: 30px; z-index: 2;}
+        
+        .db-streak-info { background: rgba(0,0,0,0.3); padding: 8px 25px; border-radius: 30px; font-weight: 900; color: #fff; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); display: inline-block; margin-bottom: 40px; border: 1px solid rgba(124,168,86,0.4); z-index: 2;}
+        .db-streak-info span { color: var(--brand-green); font-size: 18px; }
         
         .db-cards-row { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; width: 100%; max-width: 900px; z-index: 2; margin-bottom: 40px; direction: rtl;}
         
-        .db-card { flex: 1; min-width: 90px; background: #fff; border: 2px solid #cbd5e1; border-radius: 16px; padding: 20px 5px; position: relative; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0.6; display: flex; flex-direction: column; align-items: center;}
+        .db-card { flex: 1; min-width: 90px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px 5px; position: relative; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0.7; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); backdrop-filter: blur(5px);}
         
-        /* מצב קובייה: כבר נאסף בעבר */
-        .db-card.claimed { border-color: var(--brand-green); background: rgba(124,168,86,0.1); opacity: 1; transform: scale(0.95); }
-        .db-card.claimed .db-icon { filter: grayscale(0); }
+        /* מצב קובייה: כבר נאסף בעבר (ויזואל עמום) */
+        .db-card.claimed { border-color: rgba(124,168,86,0.5); background: rgba(124,168,86,0.1); opacity: 1; transform: scale(0.95); }
+        .db-card.claimed .db-icon { filter: grayscale(0); opacity: 1; }
+        .db-card.claimed .db-amount { color: #fff; opacity: 0.4; text-decoration: line-through;}
         
-        /* מצב קובייה: מוכן לאיסוף היום */
-        .db-card.ready { border-color: #fbbf24; background: rgba(251,191,36,0.15); opacity: 1; transform: scale(1.1); box-shadow: 0 10px 25px rgba(251,191,36,0.4); z-index: 10; animation: dbPulse 2s infinite; }
+        /* מצב קובייה: מוכן לאיסוף היום - מודגש בירוק! */
+        .db-card.ready { border-color: var(--brand-green); background: rgba(124,168,86,0.15); opacity: 1; transform: scale(1.1); box-shadow: 0 10px 25px rgba(124,168,86,0.4); z-index: 10; animation: dbPulseGreen 2s infinite; }
         
-        /* מצב קובייה: יום 7 מיוחד */
-        .db-card.day-7 { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-color: #fbbf24; min-width: 110px;}
-        .db-card.day-7.locked { opacity: 0.8; border-color: #cbd5e1; background: #fff;}
+        /* מצב קובייה: יום 7 מיוחד (תישאר מוזהבת אבל תתאים לרקע הכהה) */
+        .db-card.day-7 { background: linear-gradient(135deg, rgba(251,191,36,0.1) 0%, rgba(217,119,6,0.1) 100%); border-color: rgba(251,191,36,0.5); min-width: 110px;}
+        .db-card.day-7.ready { border-color: #fbbf24; background: rgba(251,191,36,0.2); box-shadow: 0 10px 25px rgba(251,191,36,0.4); animation: dbPulseGold 2s infinite; }
+        .db-card.day-7.locked { opacity: 0.7; border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);}
         
-        .db-day-lbl { font-size: 13px; font-weight: 900; color: #64748b; margin-bottom: 8px; }
-        .db-icon { font-size: 32px; margin-bottom: 8px; transition: 0.3s; filter: grayscale(1); }
-        .db-card.ready .db-icon, .db-card.day-7 .db-icon { filter: grayscale(0); }
-        .db-amount { font-size: 18px; font-weight: 900; color: var(--text-dark); }
-        .db-card.ready .db-amount, .db-card.day-7 .db-amount { color: #d97706; }
+        .db-day-lbl { font-size: 13px; font-weight: 900; color: #94a3b8; margin-bottom: 8px; }
+        .db-icon { font-size: 32px; margin-bottom: 8px; transition: 0.3s; filter: grayscale(1); opacity: 0.6;}
+        .db-card.ready .db-icon, .db-card.day-7 .db-icon { filter: grayscale(0); opacity: 1; }
+        .db-amount { font-size: 18px; font-weight: 900; color: #cbd5e1; transition: 0.3s; }
         
-        .db-claim-btn { background: linear-gradient(145deg, #fbbf24, #f59e0b); border: none; padding: 18px 50px; font-size: 22px; font-weight: 900; color: #fff; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 25px rgba(245,158,11,0.5); z-index: 2; outline: none;}
-        .db-claim-btn:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(245,158,11,0.7); }
-        .db-claim-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; transform: none; color: #94a3b8; }
+        /* צבע הטקסט בירוק ביום הפעיל */
+        .db-card.ready .db-amount { color: var(--brand-green); text-shadow: 0 0 10px rgba(124,168,86,0.5); }
+        .db-card.day-7.ready .db-amount { color: #fbbf24; text-shadow: 0 0 10px rgba(251,191,36,0.5); }
         
-        @keyframes dbPulse { 0% { box-shadow: 0 0 0 0 rgba(251,191,36,0.6); } 70% { box-shadow: 0 0 0 15px rgba(251,191,36,0); } 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); } }
+        /* כפתור איסוף - ירוק פרימיום */
+        .db-claim-btn { background: linear-gradient(145deg, #7ca856, #5d823e); border: 2px solid #8fc964; padding: 18px 50px; font-size: 22px; font-weight: 900; color: #fff; border-radius: 50px; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 25px rgba(124,168,86,0.5); z-index: 2; outline: none; text-shadow: 0 2px 4px rgba(0,0,0,0.3);}
+        .db-claim-btn:hover:not(:disabled) { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(124,168,86,0.7); border-color: #a4e575;}
+        .db-claim-btn:disabled { background: #334155; border-color: #475569; box-shadow: none; cursor: not-allowed; transform: none; color: #94a3b8; text-shadow: none;}
+        
+        /* פעימות - ירוק במקום כתום */
+        @keyframes dbPulseGreen { 0% { box-shadow: 0 0 0 0 rgba(124,168,86,0.6); } 70% { box-shadow: 0 0 0 15px rgba(124,168,86,0); } 100% { box-shadow: 0 0 0 0 rgba(124,168,86,0); } }
+        @keyframes dbPulseGold { 0% { box-shadow: 0 0 0 0 rgba(251,191,36,0.6); } 70% { box-shadow: 0 0 0 15px rgba(251,191,36,0); } 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); } }
         
         @media (max-width: 768px) { .db-card { min-width: calc(33% - 10px); } }
 
