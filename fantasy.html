@@ -776,18 +776,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 /* =========================================
            שדרוג טבלת הליגה + לוח משחקים תחתון
            ========================================= */
-        /* --- יישור סימטרי ומסגרות בלוח הליגה --- */
-        .league-layout-split { align-items: stretch !important; } 
-        
-        /* העמודה הימנית - דוחפת את הלוח למטה */
-        .league-table-column { height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; background: transparent !important; border: none !important; box-shadow: none !important; gap: 20px !important; }
-        .squad-table-wrap { flex: 1; border: 2px solid #062141 !important; box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important; }
-        .league-fixtures-board { border: 2px solid #062141 !important; box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important; margin-top: auto !important; }
-        
-        /* העמודה השמאלית - הקוביות מתחלקות חצי-חצי עם מסגרת נייבי */
-        .league-widgets-column { height: 100%; display: flex; flex-direction: column; gap: 20px; }
-        #tab-league .stat-category-card { border: 2px solid #062141 !important; box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important; flex: 1; margin: 0; display: flex; flex-direction: column; overflow: hidden; background: #fff; border-radius: 12px;}
-        #tab-league .s-card-list { flex: 1; overflow-y: auto; } column !important; gap: 20px !important; }
+        /* שבירת המתיחה של העמודה והחזרתה לגודל טבעי */
+        .league-layout-split { align-items: flex-start !important; }
+        .league-table-column { border: none !important; box-shadow: none !important; background: transparent !important; display: flex !important; flex-direction: column !important; gap: 20px !important; }
         
         /* הקטנת הטבלה למעלה, שים לב לגופן שהוקטן חזרה */
         #tab-league .squad-table { 
@@ -1568,35 +1559,32 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             </div>
                             
                             <div class="league-widgets-column">
-                                
-                                <div class="stat-category-card">
-                                    <div class="s-card-header" style="background: var(--element-navy-gradient); color: #fff; padding: 10px 15px; font-size: 14px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--brand-green);">
-                                        <div style="display: flex; align-items: center; gap: 8px;"><span>📊</span> מובילי הליגה</div>
-                                        <select id="l-stats-select" onchange="renderLeagueStats()" style="padding: 4px; border-radius: 4px; border: none; font-size: 11px; font-weight: bold; cursor: pointer; outline: none; background: #fff; color: var(--text-dark);">
-                                            <option value="goals">הכובשים הבכירים</option>
-                                            <option value="assists">מבשלי השערים</option>
-                                            <option value="tackles">המתקלים הטובים</option>
-                                            <option value="points">ניקוד פנטזי</option>
-                                        </select>
+                                <div class="league-stat-card">
+                                    <div class="l-stat-icon" style="background: rgba(251, 191, 36, 0.1); color: #fbbf24;">👑</div>
+                                    <div class="l-stat-info">
+                                        <span class="l-stat-label">מנג'ר החודש</span>
+                                        <span class="l-stat-value">ישראל ישראלי</span>
+                                        <span class="l-stat-sub">342 נק' באפריל</span>
                                     </div>
-                                    <div class="s-card-list" id="l-stats-body">
-                                        </div>
                                 </div>
-
-                                <div class="stat-category-card">
-                                    <div class="s-card-header" style="background: var(--element-navy-gradient); color: #fff; padding: 10px 15px; font-size: 14px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #fbbf24;">
-                                        <div style="display: flex; align-items: center; gap: 8px;"><span>🏆</span> שיאי הליגה</div>
-                                        <select id="l-records-select" onchange="renderLeagueRecords()" style="padding: 4px; border-radius: 4px; border: none; font-size: 11px; font-weight: bold; cursor: pointer; outline: none; background: #fff; color: var(--text-dark);">
-                                            <option value="teamPts">שיא נק' קבוצתי למחזור</option>
-                                            <option value="teamGoals">שיא שערים לקבוצה</option>
-                                            <option value="playerPts">שיא נק' אישי לשחקן</option>
-                                        </select>
+                                <div class="league-stat-card">
+                                    <div class="l-stat-icon" style="background: rgba(124, 168, 86, 0.1); color: var(--brand-green);">📊</div>
+                                    <div class="l-stat-info">
+                                        <span class="l-stat-label">ממוצע ליגה (מחזור אחרון)</span>
+                                        <span class="l-stat-value">58.4 נק'</span>
+                                        <span class="l-stat-sub">אתה מעל הממוצע! (+12)</span>
                                     </div>
-                                    <div class="s-card-list" id="l-records-body">
-                                        </div>
                                 </div>
-
+                                <div class="league-stat-card">
+                                    <div class="l-stat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">⚽</div>
+                                    <div class="l-stat-info">
+                                        <span class="l-stat-label">שיאן המחזור</span>
+                                        <span class="l-stat-value">הכרישים של מוטי</span>
+                                        <span class="l-stat-sub">94 נקודות השבוע</span>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
                     </div>
 
 <div id="tab-fixtures" class="fm-tab">
@@ -3120,19 +3108,6 @@ function setCaptainDrop(ev) {
         document.addEventListener('DOMContentLoaded', () => {
             if(document.getElementById('lf-matches-container')) changeLeagueRound(0); 
         });
-
-        // ==========================================
-        // מנוע סטטיסטיקות ושיאים (טבלת הליגה) - 5 תוצאות!
-        // ==========================================
-        
-        const leagueStatsDB = {
-            goals: [
-                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:16}, {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:14},
-                {n:"דין דוד", t:"מכבי חיפה", i:"73197", v:11}, {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:10},
-                {n:"דור פרץ", t:"מכבי תל אביב", i:"73229", v:8}, {n:"גיא מלמד", t:"הפועל חיפה", i:"73200", v:7}
-            ],
-            assists: [
-                {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:8}, {n:"ירדן שועה", t:"בית״ר י
         
     </script>
 </body>
