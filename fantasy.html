@@ -3290,10 +3290,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             }
         }
 
-// ==========================================
+        // ==========================================
         // פונקציית המודאל החדשה (ניזונה ממאגר Supabase ישירות!)
         // ==========================================
-        window.openPlayerModalById = function(playerId, isMySquad) {
+        function openPlayerModalById(playerId, isMySquad) {
             const p = window.allPlayersMap[playerId];
             if (!p) { alert('שחקן לא נמצא במערכת.'); return; }
 
@@ -3322,6 +3322,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             document.getElementById('pm-val-ast').innerText = p.assists;
             document.getElementById('pm-value').innerText = '₪' + formatPlayerValue(p.value);
             
+            // אם isMySquad הוא true, השחקן שייך לקבוצה שלך, אחרת נבדוק במסד הנתונים או נגדיר כחופשי
             const actualOwner = isMySquad ? 'מכבי סוליבי' : (p.owner || 'חופשי');
             document.getElementById('pm-owner').innerText = actualOwner;
             
@@ -3350,30 +3351,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             if(firstTabBtn) switchPlayerTab('pm-tab-overview', firstTabBtn);
 
             document.getElementById('playerModal').classList.add('active');
-        };
-
-        // --- חיבור גאוני למקומות הישנים והקבועים (שחקנים חמים, MVP במשחקים וכו') ---
-        window.openPlayerModal = function(name) {
-            let foundPlayerId = null;
-            // רץ על מאגר 2000 השחקנים שלנו כדי למצוא את השחקן המדובר
-            for (let id in window.allPlayersMap) {
-                let p = window.allPlayersMap[id];
-                let tName = window.translateName ? window.translateName(p.name) : p.name;
-                if (tName === name || p.name === name) {
-                    foundPlayerId = p.id;
-                    break;
-                }
-            }
-            
-            if (foundPlayerId) {
-                // מצאנו! פותח את כרטיס הפרימיום החדש שניזון מהדאטאבייס
-                window.openPlayerModalById(foundPlayerId, false);
-            } else {
-                alert('השחקן ' + name + ' לא נמצא כרגע במאגר המעודכן.');
-            }
-        };
-
-        }); // סגירת בלוק הטעינה (DOMContentLoaded)
+        }
 // מערכת החלפת מחזורים בטבלת הליגה
         let currentDisplayedRound = 10;
         
