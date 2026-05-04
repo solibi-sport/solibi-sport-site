@@ -3491,34 +3491,48 @@ function setCaptainDrop(ev) {
     }
 }
 
-        // פתיחה וסגירה של פופ-אפ שחקן מורחב
+        // פתיחה וסגירה של פופ-אפ שחקן מורחב עם סמל רמה דינמי
         function openPlayerModal(name, photo, pos, team, pts, gls, ast, value, apps, mins, tkl, cs, psv, pgl, yel, red, tierName, country, age, owner, rating) {
             document.getElementById('pm-name').innerText = name || '-';
             document.getElementById('pm-img').src = photo || '';
             document.getElementById('pm-pos').innerText = pos || '-';
             document.getElementById('pm-team').innerText = team || '-';
             
-            // נתונים בסיסיים שהועברו
+            // מילון המרה בין שם הרמה לקובץ התמונה שהעלית
+            const tierImages = {
+                'כוכב על': 'image_496063.png',
+                'רמה 1': 'image_495dbc.png',
+                'רמה 2': 'image_495da1.png',
+                'רמה 3': 'image_495d9b.png',
+                'רמה 4': 'image_495d7f.png'
+            };
+
+            // עדכון סמל הרמה
+            const tierImg = document.getElementById('pm-tier-img');
+            const tierText = document.getElementById('pm-tier-text');
+            const currentTier = tierName || ('רמה ' + (Math.floor(Math.random() * 4) + 1));
+            
+            if (tierImg) tierImg.src = tierImages[currentTier] || 'image_495d7f.png';
+            if (tierText) tierText.innerText = currentTier; // התיקון הקריטי: מעדכן רק אם קיים טקסט!
+
+            // עדכון שאר הנתונים
             document.getElementById('pm-val-pts').innerText = formatNumberWithCommas(pts || 0);
             document.getElementById('pm-val-gls').innerText = gls || 0;
             document.getElementById('pm-val-ast').innerText = ast || 0;
-            
-            // נתוני השלמה (אם הקריאה המקורית לא העבירה אותם, נמלא נתונים הגיוניים להדגמה)
             document.getElementById('pm-value').innerText = value || ('₪' + (Math.floor(Math.random() * 10) + 5) + '.50M');
-            document.getElementById('pm-tier-text').innerText = tierName || ('רמה ' + (Math.floor(Math.random() * 4) + 1));
             document.getElementById('pm-country').innerText = country || 'בינלאומי';
             document.getElementById('pm-age').innerText = age || (Math.floor(Math.random() * 12) + 20);
             document.getElementById('pm-owner').innerText = owner || 'חופשי';
             
-            document.getElementById('pm-val-apps').innerText = apps || (Math.floor(Math.random() * 30) + 10);
-            document.getElementById('pm-val-mins').innerText = formatNumberWithCommas(mins || (Math.floor(Math.random() * 2000) + 900));
-            document.getElementById('pm-val-tkl').innerText = tkl || (Math.floor(Math.random() * 40));
-            document.getElementById('pm-val-cs').innerText = cs || (pos === 'הגנה' || pos === 'שוער' ? Math.floor(Math.random() * 10) : 0);
+            document.getElementById('pm-val-apps').innerText = apps || 0;
+            document.getElementById('pm-val-mins').innerText = formatNumberWithCommas(mins || 0);
+            document.getElementById('pm-val-tkl').innerText = tkl || 0;
+            document.getElementById('pm-val-cs').innerText = cs || 0;
             document.getElementById('pm-val-psv').innerText = psv || 0;
-            document.getElementById('pm-val-pgl').innerText = pgl || Math.floor(Math.random() * 2);
-            document.getElementById('pm-val-yel').innerText = yel || Math.floor(Math.random() * 6);
+            document.getElementById('pm-val-pgl').innerText = pgl || 0;
+            document.getElementById('pm-val-yel').innerText = yel || 0;
             document.getElementById('pm-val-red').innerText = red || 0;
-            document.getElementById('pm-val-rating').innerText = rating || (Math.random() * (8.5 - 6.0) + 6.0).toFixed(1);
+            document.getElementById('pm-val-rating').innerText = rating || '7.0';
 
             document.getElementById('playerModal').classList.add('active');
         }
