@@ -557,43 +557,28 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 .squad-table th { background: var(--element-navy-gradient); padding: 10px 5px; color: #ffffff; font-weight: 700; border-bottom: 2px solid var(--brand-green); white-space: nowrap; position: sticky; top: 0; z-index: 10; text-align: center; }        .squad-table tbody { background: #ffffff; }
         .squad-table td { padding: 8px 5px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; cursor: pointer; transition: 0.2s; font-weight: 600; text-align: center;}
         .squad-table tr:hover td { background: rgba(124, 168, 86, 0.05); }
-        /* === מודאל כרטיס שחקן קופץ מורחב פרימיום === */
+        /* מודאל כרטיס שחקן קופץ */
         .player-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 33, 65, 0.8); backdrop-filter: blur(5px); z-index: 9999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; direction: rtl; }
         .player-modal-overlay.active { display: flex; opacity: 1; }
-        
-        .player-modal { background: #f8fafc; width: 95%; max-width: 480px; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.4); transform: translateY(20px); transition: transform 0.3s; display: flex; flex-direction: column; }
+        .player-modal { background: #fff; width: 90%; max-width: 400px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); transform: translateY(20px); transition: transform 0.3s; }
         .player-modal-overlay.active .player-modal { transform: translateY(0); }
-        
-        .pm-header { background: var(--element-navy-gradient); padding: 30px 20px 20px 20px; position: relative; color: #fff; width: 100%; }
-        .pm-close { position: absolute; top: 15px; left: 15px; color: #fff; cursor: pointer; opacity: 0.7; transition: 0.2s; z-index: 10; }
+        .pm-header { background: var(--element-navy-gradient); padding: 20px; position: relative; color: #fff; display: flex; gap: 15px; align-items: center; }
+        .pm-close { position: absolute; top: 15px; left: 15px; color: #fff; cursor: pointer; opacity: 0.7; transition: 0.2s; }
         .pm-close:hover { opacity: 1; transform: scale(1.1); }
-        
-        .pm-header-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-left: 30px; gap: 10px; }
-        .pm-header-main { display: flex; align-items: center; gap: 15px; }
-        
-        .pm-photo-large { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--brand-green); box-shadow: 0 0 15px rgba(124,168,86,0.4); object-fit: cover; background: #fff; flex-shrink: 0; }
-        
-        .pm-info-text { display: flex; flex-direction: column; gap: 4px; text-align: right; }
-        .pm-info-text h3 { font-size: 22px; font-weight: 900; margin: 0; }
-        .pm-sub-info { font-size: 12px; color: #cbd5e1; font-weight: 500; }
-        .pm-market-value { font-size: 15px; font-weight: 900; color: #fff; margin-top: 6px; display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 8px; width: max-content; border: 1px solid rgba(255,255,255,0.1); }
-        
-        .pm-tier-badge { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fbbf24; text-shadow: 0 2px 4px rgba(0,0,0,0.5); flex-shrink: 0; }
-        
-        .pm-body { padding: 20px; width: 100%; background: #f8fafc; }
-        .pm-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .pm-stat-box { background: #fff; border: 1px solid #cbd5e1; padding: 12px 5px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: transform 0.2s; }
-        .pm-stat-box:hover { transform: translateY(-3px); border-color: var(--brand-green); }
-        .pm-s-val { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
-        .pm-s-lbl { font-size: 10.5px; color: #64748b; font-weight: bold; }
-        .pm-s-icon { position: absolute; top: 8px; right: 8px; font-size: 14px; opacity: 0.6; filter: grayscale(100%); }
-        
+        .pm-photo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--brand-green); object-fit: cover; background: #fff; }
+        .pm-info h3 { font-size: 18px; font-weight: 900; margin: 0 0 5px 0; }
+        .pm-meta { display: flex; gap: 10px; font-size: 12px; color: #cbd5e1; align-items: center; }
+        .pm-body { padding: 20px; }
+        .pm-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .pm-stat { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; text-align: center; }
+        .pm-stat-lbl { font-size: 10px; color: #64748b; font-weight: bold; display: block; margin-bottom: 4px; }
+        .pm-stat-val { font-size: 16px; font-weight: 900; color: var(--text-dark); }
         .pm-actions { display: flex; gap: 10px; }
-        .pm-btn { flex: 1; padding: 12px; text-align: center; border-radius: 10px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; border: none; outline: none; }
-        .pm-btn-primary { background: var(--brand-green); color: #fff; box-shadow: 0 4px 15px rgba(124,168,86,0.3); }
-        .pm-btn-primary:hover { background: #688e47; transform: translateY(-2px); }
-        .pm-btn-secondary { background: #fff; color: var(--text-dark); border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .pm-btn-secondary:hover { background: #f1f5f9; transform: translateY(-2px); }
+        .pm-btn { flex: 1; padding: 10px; text-align: center; border-radius: 8px; font-weight: 900; font-size: 13px; cursor: pointer; transition: 0.2s; text-decoration: none; border: none; }
+        .pm-btn-primary { background: var(--brand-green); color: #fff; }
+        .pm-btn-primary:hover { background: #688e47; }
+        .pm-btn-secondary { background: #f1f5f9; color: var(--text-dark); border: 1px solid #cbd5e1;}
+        .pm-btn-secondary:hover { background: #e2e8f0; }
         
         @media (max-width: 1200px) {
             .squad-widgets { grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px;}
@@ -1007,9 +992,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
            עיצוב דף גלגל המזל פרימיום 🎰
            ========================================= */
         .wheel-wrapper {
-            background: #062141 !important; /* 👈 הבלו-נייבי של האתר */
+            background: radial-gradient(circle at center, #1e293b 0%, #111827 100%); /* רקע כחול עמוק */
             border-radius: 20px;
-            padding: 20px 20px 50px 20px; /* קצת פחות ריווח למעלה כי הכותרת בחוץ */
+            padding: 50px 20px;
             text-align: center;
             box-shadow: 0 15px 50px rgba(0,0,0,0.4);
             position: relative;
@@ -1017,7 +1002,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 550px;
+            min-height: 600px;
             color: #fff;
         }
 
@@ -2612,14 +2597,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
                     <div id="tab-fortune-wheel" class="fm-tab">
-    
-    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>
-        גלגל המזל
-    </h2>
-
-    <div class="wheel-wrapper">
-        <div class="wheel-subtitle" style="margin-top: 10px;">סיבוב חינם כל 4 שעות! האם תזכה במיליון או תחטוף קנס?</div>
+                        <div class="wheel-wrapper">
+                            <div class="wheel-title">גלגל המזל</div>
+                            <div class="wheel-subtitle">סיבוב חינם כל 4 שעות! האם תזכה במיליון או תחטוף קנס?</div>
                             
                             <div style="position: relative; width: 100%; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; min-height: 380px;">
                                 
@@ -2684,58 +2664,34 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
     </footer>
     <div id="playerModal" class="player-modal-overlay" onclick="closePlayerModal(event)">
         <div class="player-modal" onclick="event.stopPropagation()">
-            
             <div class="pm-header">
                 <svg class="pm-close" onclick="closePlayerModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                
-                <div class="pm-header-content">
-                    <div class="pm-header-main">
-                        <img src="" id="pm-img" class="pm-photo-large">
-                        <div class="pm-info-text">
-                            <h3 id="pm-name">שם השחקן</h3>
-                            <div class="pm-sub-info"><span id="pm-team">קבוצה</span> | <span id="pm-pos">עמדה</span></div>
-                            <div class="pm-sub-info">מדינה: <span id="pm-country">ישראל</span> 🌍 | גיל: <span id="pm-age">25</span></div>
-                            <div class="pm-sub-info">קבוצת פנטזי: <span id="pm-owner" style="color: #fff; font-weight: bold;">חופשי</span></div>
-                            <div class="pm-market-value">
-                                <span style="opacity: 0.8;">💰 שווי שוק:</span> <span id="pm-value">₪10.50M</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="pm-tier-badge">
-                        <span style="font-size: 26px;">🛡️</span>
-                        <span id="pm-tier-text" style="font-size: 11px; font-weight: 900; margin-top: 2px;">רמה 1</span>
+                <img src="" id="pm-img" class="pm-photo">
+                <div class="pm-info">
+                    <h3 id="pm-name">שם השחקן</h3>
+                    <div class="pm-meta">
+                        <span id="pm-team">קבוצה</span> | 
+                        <span id="pm-pos" style="font-weight:bold;">עמדה</span>
                     </div>
                 </div>
             </div>
-            
             <div class="pm-body">
+                <div style="font-size: 12px; font-weight:bold; color:#64748b; margin-bottom:10px;">סטטיסטיקות עונה</div>
                 <div class="pm-stats-grid">
-                    <div class="pm-stat-box"><div class="pm-s-icon">💎</div><div class="pm-s-val" id="pm-val-pts">0</div><div class="pm-s-lbl">נקודות עונה</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">👟</div><div class="pm-s-val" id="pm-val-apps">0</div><div class="pm-s-lbl">הופעות</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">⏱️</div><div class="pm-s-val" id="pm-val-mins">0</div><div class="pm-s-lbl">דקות משחק</div></div>
-                    
-                    <div class="pm-stat-box"><div class="pm-s-icon">⚽</div><div class="pm-s-val" id="pm-val-gls">0</div><div class="pm-s-lbl">שערים</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🎯</div><div class="pm-s-val" id="pm-val-ast">0</div><div class="pm-s-lbl">בישולים</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🥾</div><div class="pm-s-val" id="pm-val-tkl">0</div><div class="pm-s-lbl">תיקולים</div></div>
-                    
-                    <div class="pm-stat-box"><div class="pm-s-icon">🛡️</div><div class="pm-s-val" id="pm-val-cs">0</div><div class="pm-s-lbl">שער נקי</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🥅</div><div class="pm-s-val" id="pm-val-pgl">0</div><div class="pm-s-lbl">שער בפנדל</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🧤</div><div class="pm-s-val" id="pm-val-psv">0</div><div class="pm-s-lbl">הדיפת פנדל</div></div>
-                    
-                    <div class="pm-stat-box"><div class="pm-s-icon">🟨</div><div class="pm-s-val" id="pm-val-yel">0</div><div class="pm-s-lbl">צהובים</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🟥</div><div class="pm-s-val" id="pm-val-red">0</div><div class="pm-s-lbl">אדומים</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">⭐</div><div class="pm-s-val" id="pm-val-rating">7.5</div><div class="pm-s-lbl">ציון ממוצע</div></div>
+                    <div class="pm-stat"><span class="pm-stat-lbl">נקודות</span><span class="pm-stat-val" id="pm-pts">0</span></div>
+                    <div class="pm-stat"><span class="pm-stat-lbl">שערים</span><span class="pm-stat-val" id="pm-gls">0</span></div>
+                    <div class="pm-stat"><span class="pm-stat-lbl">בישולים</span><span class="pm-stat-val" id="pm-ast">0</span></div>
+                    <div class="pm-stat"><span class="pm-stat-lbl">כושר</span><span class="pm-stat-val" style="color:var(--brand-green);">8.5</span></div>
                 </div>
                 
                 <div class="pm-actions">
                     <button class="pm-btn pm-btn-primary" onclick="closePlayerModal(); switchFmTab('tab-tactics')">נהל בהרכב</button>
-                    <button class="pm-btn pm-btn-secondary" onclick="closePlayerModal()">סגור כרטיס</button>
+                    <button class="pm-btn pm-btn-secondary" onclick="closePlayerModal()">סגור</button>
                 </div>
             </div>
-            
         </div>
     </div>
+
     <script src="../translations.js"></script>
     <script src="../matchEvents.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -3482,35 +3438,16 @@ function setCaptainDrop(ev) {
     }
 }
 
-        // פתיחה וסגירה של פופ-אפ שחקן מורחב
-        function openPlayerModal(name, photo, pos, team, pts, gls, ast, value, apps, mins, tkl, cs, psv, pgl, yel, red, tierName, country, age, owner, rating) {
-            document.getElementById('pm-name').innerText = name || '-';
-            document.getElementById('pm-img').src = photo || '';
-            document.getElementById('pm-pos').innerText = pos || '-';
-            document.getElementById('pm-team').innerText = team || '-';
+        // פתיחה וסגירה של פופ-אפ שחקן
+        function openPlayerModal(name, photo, pos, team, pts, gls, ast) {
+            document.getElementById('pm-name').innerText = name;
+            document.getElementById('pm-img').src = photo;
+            document.getElementById('pm-pos').innerText = pos;
+            document.getElementById('pm-team').innerText = team;
+            document.getElementById('pm-pts').innerText = pts;
+            document.getElementById('pm-gls').innerText = gls;
+            document.getElementById('pm-ast').innerText = ast;
             
-            // נתונים בסיסיים שהועברו
-            document.getElementById('pm-val-pts').innerText = formatNumberWithCommas(pts || 0);
-            document.getElementById('pm-val-gls').innerText = gls || 0;
-            document.getElementById('pm-val-ast').innerText = ast || 0;
-            
-            // נתוני השלמה (אם הקריאה המקורית לא העבירה אותם, נמלא נתונים הגיוניים להדגמה)
-            document.getElementById('pm-value').innerText = value || ('₪' + (Math.floor(Math.random() * 10) + 5) + '.50M');
-            document.getElementById('pm-tier-text').innerText = tierName || ('רמה ' + (Math.floor(Math.random() * 4) + 1));
-            document.getElementById('pm-country').innerText = country || 'בינלאומי';
-            document.getElementById('pm-age').innerText = age || (Math.floor(Math.random() * 12) + 20);
-            document.getElementById('pm-owner').innerText = owner || 'חופשי';
-            
-            document.getElementById('pm-val-apps').innerText = apps || (Math.floor(Math.random() * 30) + 10);
-            document.getElementById('pm-val-mins').innerText = formatNumberWithCommas(mins || (Math.floor(Math.random() * 2000) + 900));
-            document.getElementById('pm-val-tkl').innerText = tkl || (Math.floor(Math.random() * 40));
-            document.getElementById('pm-val-cs').innerText = cs || (pos === 'הגנה' || pos === 'שוער' ? Math.floor(Math.random() * 10) : 0);
-            document.getElementById('pm-val-psv').innerText = psv || 0;
-            document.getElementById('pm-val-pgl').innerText = pgl || Math.floor(Math.random() * 2);
-            document.getElementById('pm-val-yel').innerText = yel || Math.floor(Math.random() * 6);
-            document.getElementById('pm-val-red').innerText = red || 0;
-            document.getElementById('pm-val-rating').innerText = rating || (Math.random() * (8.5 - 6.0) + 6.0).toFixed(1);
-
             document.getElementById('playerModal').classList.add('active');
         }
 
@@ -3518,6 +3455,7 @@ function setCaptainDrop(ev) {
             if (e && e.target !== document.getElementById('playerModal')) return;
             document.getElementById('playerModal').classList.remove('active');
         }
+
 // מערכת החלפת מחזורים בטבלת הליגה
         let currentDisplayedRound = 10;
         
