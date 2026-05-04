@@ -568,7 +568,8 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .pm-close { position: absolute; top: 15px; left: 15px; color: #fff; cursor: pointer; opacity: 0.7; transition: 0.2s; z-index: 10; }
         .pm-close:hover { opacity: 1; transform: scale(1.1); }
         
-        .pm-header-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-left: 30px; gap: 10px; }
+        /* הזזנו את המגן פנימה (ימינה) על ידי שינוי ריווח */
+        .pm-header-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-left: 45px; gap: 10px; }
         .pm-header-main { display: flex; align-items: center; gap: 15px; }
         
         .pm-photo-large { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--brand-green); box-shadow: 0 0 15px rgba(124,168,86,0.4); object-fit: cover; background: #fff; flex-shrink: 0; }
@@ -578,15 +579,23 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .pm-sub-info { font-size: 12px; color: #cbd5e1; font-weight: 500; }
         .pm-market-value { font-size: 15px; font-weight: 900; color: #fff; margin-top: 6px; display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 8px; width: max-content; border: 1px solid rgba(255,255,255,0.1); }
         
-        .pm-tier-badge { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fbbf24; text-shadow: 0 2px 4px rgba(0,0,0,0.5); flex-shrink: 0; }
+        /* מיקום המגן שמאלה מהטקסט */
+        .pm-tier-badge { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fbbf24; text-shadow: 0 2px 4px rgba(0,0,0,0.5); flex-shrink: 0; margin-left: 15px; }
         
         .pm-body { padding: 20px; width: 100%; background: #f8fafc; }
         .pm-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .pm-stat-box { background: #fff; border: 1px solid #cbd5e1; padding: 12px 5px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: transform 0.2s; }
         .pm-stat-box:hover { transform: translateY(-3px); border-color: var(--brand-green); }
+        
+        /* 👈 העיצוב החדש והמיוחד לקוביית הנקודות */
+        .pm-stat-highlight { background: rgba(124, 168, 86, 0.12) !important; border-color: var(--brand-green) !important; box-shadow: 0 4px 12px rgba(124, 168, 86, 0.15); }
+        .pm-stat-highlight .pm-s-val { color: var(--brand-green); font-size: 22px; }
+
         .pm-s-val { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
         .pm-s-lbl { font-size: 10.5px; color: #64748b; font-weight: bold; }
-        .pm-s-icon { position: absolute; top: 8px; right: 8px; font-size: 14px; opacity: 0.6; filter: grayscale(100%); }
+        
+        /* 👈 הסרנו את הפילטר האפור מהאייקונים כדי שיהיו צבעוניים! */
+        .pm-s-icon { position: absolute; top: 8px; right: 8px; font-size: 14px; opacity: 0.95; }
         
         .pm-actions { display: flex; gap: 10px; }
         .pm-btn { flex: 1; padding: 12px; text-align: center; border-radius: 10px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; border: none; outline: none; }
@@ -2697,7 +2706,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             <div class="pm-sub-info">מדינה: <span id="pm-country">ישראל</span> 🌍 | גיל: <span id="pm-age">25</span></div>
                             <div class="pm-sub-info">קבוצת פנטזי: <span id="pm-owner" style="color: #fff; font-weight: bold;">חופשי</span></div>
                             <div class="pm-market-value">
-                                <span style="opacity: 0.8;">💰 שווי שוק:</span> <span id="pm-value">₪10.50M</span>
+                                <span style="opacity: 0.8;">💵 שווי שוק:</span> <span id="pm-value">₪10.50M</span>
                             </div>
                         </div>
                     </div>
@@ -2711,7 +2720,8 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             
             <div class="pm-body">
                 <div class="pm-stats-grid">
-                    <div class="pm-stat-box"><div class="pm-s-icon">💎</div><div class="pm-s-val" id="pm-val-pts">0</div><div class="pm-s-lbl">נקודות עונה</div></div>
+                    <div class="pm-stat-box pm-stat-highlight"><div class="pm-s-icon">💎</div><div class="pm-s-val" id="pm-val-pts">0</div><div class="pm-s-lbl">נקודות עונה</div></div>
+                    
                     <div class="pm-stat-box"><div class="pm-s-icon">👟</div><div class="pm-s-val" id="pm-val-apps">0</div><div class="pm-s-lbl">הופעות</div></div>
                     <div class="pm-stat-box"><div class="pm-s-icon">⏱️</div><div class="pm-s-val" id="pm-val-mins">0</div><div class="pm-s-lbl">דקות משחק</div></div>
                     
