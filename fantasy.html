@@ -557,13 +557,20 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 .squad-table th { background: var(--element-navy-gradient); padding: 10px 5px; color: #ffffff; font-weight: 700; border-bottom: 2px solid var(--brand-green); white-space: nowrap; position: sticky; top: 0; z-index: 10; text-align: center; }        .squad-table tbody { background: #ffffff; }
         .squad-table td { padding: 8px 5px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; cursor: pointer; transition: 0.2s; font-weight: 600; text-align: center;}
         .squad-table tr:hover td { background: rgba(124, 168, 86, 0.05); }
-        /* מודאל כרטיס שחקן קופץ מורחב פרימיום */
+        /* === מודאל כרטיס שחקן קופץ מורחב פרימיום === */
         .player-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 33, 65, 0.8); backdrop-filter: blur(5px); z-index: 9999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; direction: rtl; }
         .player-modal-overlay.active { display: flex; opacity: 1; }
-        .player-modal { background: #f8fafc; width: 95%; max-width: 480px; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.4); transform: translateY(20px); transition: transform 0.3s; }
+        
+        .player-modal { background: #f8fafc; width: 95%; max-width: 480px; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.4); transform: translateY(20px); transition: transform 0.3s; display: flex; flex-direction: column; }
         .player-modal-overlay.active .player-modal { transform: translateY(0); }
         
-.pm-header-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-left: 30px; }
+        .pm-header { background: var(--element-navy-gradient); padding: 30px 20px 20px 20px; position: relative; color: #fff; width: 100%; }
+        .pm-close { position: absolute; top: 15px; left: 15px; color: #fff; cursor: pointer; opacity: 0.7; transition: 0.2s; z-index: 10; }
+        .pm-close:hover { opacity: 1; transform: scale(1.1); }
+        
+        .pm-header-content { display: flex; align-items: center; justify-content: space-between; width: 100%; padding-left: 30px; gap: 10px; }
+        .pm-header-main { display: flex; align-items: center; gap: 15px; }
+        
         .pm-photo-large { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--brand-green); box-shadow: 0 0 15px rgba(124,168,86,0.4); object-fit: cover; background: #fff; flex-shrink: 0; }
         
         .pm-info-text { display: flex; flex-direction: column; gap: 4px; text-align: right; }
@@ -571,15 +578,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .pm-sub-info { font-size: 12px; color: #cbd5e1; font-weight: 500; }
         .pm-market-value { font-size: 15px; font-weight: 900; color: #fff; margin-top: 6px; display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 8px; width: max-content; border: 1px solid rgba(255,255,255,0.1); }
         
-        .pm-tier-badge { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fbbf24; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }        
-        .pm-info-text { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-        .pm-info-text h3 { font-size: 22px; font-weight: 900; margin: 0; }
-        .pm-sub-info { font-size: 12px; color: #cbd5e1; font-weight: 500; }
-        .pm-market-value { font-size: 15px; font-weight: 900; color: #fff; margin-top: 6px; display: flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.2); padding: 4px 10px; border-radius: 8px; width: max-content; border: 1px solid rgba(255,255,255,0.1); }
+        .pm-tier-badge { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fbbf24; text-shadow: 0 2px 4px rgba(0,0,0,0.5); flex-shrink: 0; }
         
-        .pm-body { padding: 20px; }
+        .pm-body { padding: 20px; width: 100%; background: #f8fafc; }
         .pm-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .pm-stat-box { background: #fff; border: 1px solid #cbd5e1; padding: 12px 5px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: transform 0.2s;}
+        .pm-stat-box { background: #fff; border: 1px solid #cbd5e1; padding: 12px 5px; border-radius: 12px; text-align: center; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: transform 0.2s; }
         .pm-stat-box:hover { transform: translateY(-3px); border-color: var(--brand-green); }
         .pm-s-val { font-size: 18px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
         .pm-s-lbl { font-size: 10.5px; color: #64748b; font-weight: bold; }
@@ -589,7 +592,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .pm-btn { flex: 1; padding: 12px; text-align: center; border-radius: 10px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; border: none; outline: none; }
         .pm-btn-primary { background: var(--brand-green); color: #fff; box-shadow: 0 4px 15px rgba(124,168,86,0.3); }
         .pm-btn-primary:hover { background: #688e47; transform: translateY(-2px); }
-        .pm-btn-secondary { background: #fff; color: var(--text-dark); border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+        .pm-btn-secondary { background: #fff; color: var(--text-dark); border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .pm-btn-secondary:hover { background: #f1f5f9; transform: translateY(-2px); }
         
         @media (max-width: 1200px) {
@@ -2681,10 +2684,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
     </footer>
     <div id="playerModal" class="player-modal-overlay" onclick="closePlayerModal(event)">
         <div class="player-modal" onclick="event.stopPropagation()">
+            
             <div class="pm-header">
                 <svg class="pm-close" onclick="closePlayerModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                
                 <div class="pm-header-content">
-                    <div style="display: flex; align-items: center; gap: 18px;">
+                    <div class="pm-header-main">
                         <img src="" id="pm-img" class="pm-photo-large">
                         <div class="pm-info-text">
                             <h3 id="pm-name">שם השחקן</h3>
@@ -2703,7 +2708,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     </div>
                 </div>
             </div>
-            </div>
+            
             <div class="pm-body">
                 <div class="pm-stats-grid">
                     <div class="pm-stat-box"><div class="pm-s-icon">💎</div><div class="pm-s-val" id="pm-val-pts">0</div><div class="pm-s-lbl">נקודות עונה</div></div>
@@ -2728,6 +2733,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     <button class="pm-btn pm-btn-secondary" onclick="closePlayerModal()">סגור כרטיס</button>
                 </div>
             </div>
+            
         </div>
     </div>
     <script src="../translations.js"></script>
