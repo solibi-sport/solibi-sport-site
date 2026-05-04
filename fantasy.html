@@ -603,6 +603,16 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .pm-btn-primary:hover { background: #688e47; transform: translateY(-2px); }
         .pm-btn-secondary { background: #fff; color: var(--text-dark); border: 1px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .pm-btn-secondary:hover { background: #f1f5f9; transform: translateY(-2px); }
+
+        /* === ניווט כרטיסיות בתוך המודאל === */
+        .pm-tabs-nav { display: flex; width: 100%; background: rgba(0,0,0,0.15); border-bottom: 1px solid #cbd5e1; }
+        .pm-tab-btn { flex: 1; background: none; border: none; color: #cbd5e1; padding: 12px 2px; font-family: inherit; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.2s; border-bottom: 3px solid transparent; white-space: nowrap; outline: none; }
+        .pm-tab-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .pm-tab-btn.active { color: var(--brand-green); border-bottom-color: var(--brand-green); background: rgba(124, 168, 86, 0.05); }
+        
+        .pm-tab-pane { display: none; animation: pmFadeIn 0.3s ease; }
+        .pm-tab-pane.active { display: block; }
+        @keyframes pmFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
         @media (max-width: 1200px) {
             .squad-widgets { grid-template-columns: 1fr; gap: 10px; margin-bottom: 15px;}
@@ -2694,10 +2704,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
     <div id="playerModal" class="player-modal-overlay" onclick="closePlayerModal(event)">
         <div class="player-modal" onclick="event.stopPropagation()">
             
-            <div class="pm-header">
+            <div class="pm-header" style="padding-bottom: 0;">
                 <svg class="pm-close" onclick="closePlayerModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 
-                <div class="pm-header-content">
+                <div class="pm-header-content" style="padding-bottom: 20px;">
                     <div class="pm-header-main">
                         <img src="" id="pm-img" class="pm-photo-large">
                         <div class="pm-info-text">
@@ -2713,38 +2723,62 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     
                     <div class="pm-tier-badge">
                         <img src="" id="pm-tier-img" class="pm-tier-img" alt="רמה">
-                        </div>
+                    </div>
+                </div>
+
+                <div class="pm-tabs-nav">
+                    <button class="pm-tab-btn active" onclick="switchPlayerTab('pm-tab-overview', this)">מבט כללי</button>
+                    <button class="pm-tab-btn" onclick="switchPlayerTab('pm-tab-analysis', this)">ניתוח נתונים</button>
+                    <button class="pm-tab-btn" onclick="switchPlayerTab('pm-tab-matches', this)">משחקים אחרונים</button>
+                    <button class="pm-tab-btn" onclick="switchPlayerTab('pm-tab-offers', this)">הצעות</button>
+                    <button class="pm-tab-btn" onclick="switchPlayerTab('pm-tab-compare', this)">השוואה</button>
                 </div>
             </div>
             
             <div class="pm-body">
-                <div class="pm-stats-grid">
-                    <div class="pm-stat-box pm-stat-highlight"><div class="pm-s-icon">💎</div><div class="pm-s-val" id="pm-val-pts">0</div><div class="pm-s-lbl">נקודות עונה</div></div>
-                    
-                    <div class="pm-stat-box"><div class="pm-s-icon">👟</div><div class="pm-s-val" id="pm-val-apps">0</div><div class="pm-s-lbl">הופעות</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">⏱️</div><div class="pm-s-val" id="pm-val-mins">0</div><div class="pm-s-lbl">דקות משחק</div></div>
-                    
-                    <div class="pm-stat-box"><div class="pm-s-icon">⚽</div><div class="pm-s-val" id="pm-val-gls">0</div><div class="pm-s-lbl">שערים</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🎯</div><div class="pm-s-val" id="pm-val-ast">0</div><div class="pm-s-lbl">בישולים</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🥾</div><div class="pm-s-val" id="pm-val-tkl">0</div><div class="pm-s-lbl">תיקולים</div></div>
-                    
-                    <div class="pm-stat-box"><div class="pm-s-icon">🛡️</div><div class="pm-s-val" id="pm-val-cs">0</div><div class="pm-s-lbl">שער נקי</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🥅</div><div class="pm-s-val" id="pm-val-pgl">0</div><div class="pm-s-lbl">שער בפנדל</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🧤</div><div class="pm-s-val" id="pm-val-psv">0</div><div class="pm-s-lbl">הדיפת פנדל</div></div>
-                    
-                    <div class="pm-stat-box"><div class="pm-s-icon">🟨</div><div class="pm-s-val" id="pm-val-yel">0</div><div class="pm-s-lbl">צהובים</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">🟥</div><div class="pm-s-val" id="pm-val-red">0</div><div class="pm-s-lbl">אדומים</div></div>
-                    <div class="pm-stat-box"><div class="pm-s-icon">⭐</div><div class="pm-s-val" id="pm-val-rating">7.5</div><div class="pm-s-lbl">ציון ממוצע</div></div>
+                
+                <div id="pm-tab-overview" class="pm-tab-pane active">
+                    <div class="pm-stats-grid">
+                        <div class="pm-stat-box pm-stat-highlight"><div class="pm-s-icon">💎</div><div class="pm-s-val" id="pm-val-pts">0</div><div class="pm-s-lbl">נקודות עונה</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">👟</div><div class="pm-s-val" id="pm-val-apps">0</div><div class="pm-s-lbl">הופעות</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">⏱️</div><div class="pm-s-val" id="pm-val-mins">0</div><div class="pm-s-lbl">דקות משחק</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">⚽</div><div class="pm-s-val" id="pm-val-gls">0</div><div class="pm-s-lbl">שערים</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">🎯</div><div class="pm-s-val" id="pm-val-ast">0</div><div class="pm-s-lbl">בישולים</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">🥾</div><div class="pm-s-val" id="pm-val-tkl">0</div><div class="pm-s-lbl">תיקולים</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">🛡️</div><div class="pm-s-val" id="pm-val-cs">0</div><div class="pm-s-lbl">שער נקי</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">🥅</div><div class="pm-s-val" id="pm-val-pgl">0</div><div class="pm-s-lbl">שער בפנדל</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">🧤</div><div class="pm-s-val" id="pm-val-psv">0</div><div class="pm-s-lbl">הדיפת פנדל</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">🟨</div><div class="pm-s-val" id="pm-val-yel">0</div><div class="pm-s-lbl">צהובים</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">🟥</div><div class="pm-s-val" id="pm-val-red">0</div><div class="pm-s-lbl">אדומים</div></div>
+                        <div class="pm-stat-box"><div class="pm-s-icon">⭐</div><div class="pm-s-val" id="pm-val-rating">7.5</div><div class="pm-s-lbl">ציון ממוצע</div></div>
+                    </div>
+                </div>
+
+                <div id="pm-tab-analysis" class="pm-tab-pane">
+                    <div style="text-align: center; padding: 30px; color: #94a3b8; font-weight: bold;">מערכת הניתוח המתקדמת בבנייה 📊</div>
+                </div>
+
+                <div id="pm-tab-matches" class="pm-tab-pane">
+                    <div style="text-align: center; padding: 30px; color: #94a3b8; font-weight: bold;">היסטוריית המשחקים האחרונים בבנייה 📅</div>
+                </div>
+
+                <div id="pm-tab-offers" class="pm-tab-pane">
+                    <div style="text-align: center; padding: 30px; color: #94a3b8; font-weight: bold;">ממשק המשא ומתן (כסף / טריידים) בבנייה 🤝</div>
+                </div>
+
+                <div id="pm-tab-compare" class="pm-tab-pane">
+                    <div style="text-align: center; padding: 30px; color: #94a3b8; font-weight: bold;">מנוע השוואת השחקנים בבנייה 🔍</div>
                 </div>
                 
                 <div class="pm-actions">
-                    <button class="pm-btn pm-btn-primary" onclick="closePlayerModal(); switchFmTab('tab-tactics')">נהל בהרכב</button>
+                    <button id="pm-action-main-btn" class="pm-btn pm-btn-primary" onclick="handleDynamicPlayerAction()">נהל בהרכב</button>
                     <button class="pm-btn pm-btn-secondary" onclick="closePlayerModal()">סגור כרטיס</button>
                 </div>
             </div>
             
         </div>
     </div>
+    
     <script src="../translations.js"></script>
     <script src="../matchEvents.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -3498,32 +3532,38 @@ function setCaptainDrop(ev) {
             document.getElementById('pm-pos').innerText = pos || '-';
             document.getElementById('pm-team').innerText = team || '-';
             
-            // מילון המרה בין שם הרמה לקובץ התמונה שהעלית
             const tierImages = {
-                'כוכב על': 'image_496063.png',
-                'רמה 1': 'image_495dbc.png',
-                'רמה 2': 'image_495da1.png',
-                'רמה 3': 'image_495d9b.png',
-                'רמה 4': 'image_495d7f.png'
+                'כוכב על': 'image_496063.png', 'רמה 1': 'image_495dbc.png',
+                'רמה 2': 'image_495da1.png', 'רמה 3': 'image_495d9b.png', 'רמה 4': 'image_495d7f.png'
             };
 
-            // עדכון סמל הרמה
             const tierImg = document.getElementById('pm-tier-img');
-            const tierText = document.getElementById('pm-tier-text');
             const currentTier = tierName || ('רמה ' + (Math.floor(Math.random() * 4) + 1));
-            
             if (tierImg) tierImg.src = tierImages[currentTier] || 'image_495d7f.png';
-            if (tierText) tierText.innerText = currentTier; // התיקון הקריטי: מעדכן רק אם קיים טקסט!
 
-            // עדכון שאר הנתונים
             document.getElementById('pm-val-pts').innerText = formatNumberWithCommas(pts || 0);
             document.getElementById('pm-val-gls').innerText = gls || 0;
             document.getElementById('pm-val-ast').innerText = ast || 0;
             document.getElementById('pm-value').innerText = value || ('₪' + (Math.floor(Math.random() * 10) + 5) + '.50M');
             document.getElementById('pm-country').innerText = country || 'בינלאומי';
             document.getElementById('pm-age').innerText = age || (Math.floor(Math.random() * 12) + 20);
-            document.getElementById('pm-owner').innerText = owner || 'חופשי';
             
+            // 👈 כאן אנחנו קובעים מי הבעלים (צריך להתאים את 'מכבי סוליבי' לשם הקבוצה האמיתי של המשתמש שלך בהמשך)
+            const actualOwner = owner || 'חופשי';
+            document.getElementById('pm-owner').innerText = actualOwner;
+            
+            // 👈 עדכון הכפתור החכם לפי הבעלות!
+            const mainActionBtn = document.getElementById('pm-action-main-btn');
+            if (actualOwner === 'מכבי סוליבי') { // השחקן שלך
+                mainActionBtn.innerText = 'נהל בהרכב';
+                mainActionBtn.style.background = 'var(--brand-green)';
+                mainActionBtn.setAttribute('data-action', 'manage');
+            } else { // שחקן חופשי או של קבוצה אחרת
+                mainActionBtn.innerText = 'הוסף לרשימת מעקב 👁️';
+                mainActionBtn.style.background = '#3498db'; // צבע שונה קצת כדי לבדל פעולה
+                mainActionBtn.setAttribute('data-action', 'watchlist');
+            }
+
             document.getElementById('pm-val-apps').innerText = apps || 0;
             document.getElementById('pm-val-mins').innerText = formatNumberWithCommas(mins || 0);
             document.getElementById('pm-val-tkl').innerText = tkl || 0;
@@ -3534,7 +3574,35 @@ function setCaptainDrop(ev) {
             document.getElementById('pm-val-red').innerText = red || 0;
             document.getElementById('pm-val-rating').innerText = rating || '7.0';
 
+            // איפוס חזרה לטאב "מבט כללי" בכל פעם שפותחים את החלון
+            const firstTabBtn = document.querySelector('.pm-tab-btn');
+            if(firstTabBtn) switchPlayerTab('pm-tab-overview', firstTabBtn);
+
             document.getElementById('playerModal').classList.add('active');
+        }
+
+        // 👈 פונקציה שמחליפה בין הטאבים בתוך כרטיס השחקן
+        function switchPlayerTab(tabId, btnElement) {
+            document.querySelectorAll('.pm-tab-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.pm-tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // 👈 הפונקציה של הכפתור החכם (קובעת מה לעשות כשלוחצים)
+        function handleDynamicPlayerAction() {
+            const btn = document.getElementById('pm-action-main-btn');
+            const action = btn.getAttribute('data-action');
+            
+            if (action === 'manage') {
+                closePlayerModal();
+                switchFmTab('tab-tactics'); // מחזיר למגרש
+            } else if (action === 'watchlist') {
+                const playerName = document.getElementById('pm-name').innerText;
+                alert(`${playerName} נוסף לרשימת המעקב שלך! תוכל לצפות בו באזור הסקאוטינג.`);
+                closePlayerModal();
+            }
         }
 
         function closePlayerModal(e) {
