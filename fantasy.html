@@ -3133,17 +3133,19 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             }
         });
 
-        // === פונקציות Drag & Drop המעודכנות ===
-        function dragStart(ev) {
+       }); // 👈 תיקון קריטי: סגירת בלוק ה-Supabase שכלא את שאר הקוד!
+
+        // === פונקציות Drag & Drop המעודכנות (גלובליות) ===
+        window.dragStart = function(ev) {
             ev.dataTransfer.setData("id", ev.currentTarget.getAttribute("data-id"));
             ev.dataTransfer.setData("name", ev.currentTarget.getAttribute("data-name"));
             ev.dataTransfer.setData("photo", ev.currentTarget.getAttribute("data-photo"));
             ev.dataTransfer.setData("pos", ev.currentTarget.getAttribute("data-pos"));
-        }
+        };
 
-        function allowDrop(ev) { ev.preventDefault(); }
+        window.allowDrop = function(ev) { ev.preventDefault(); };
 
-        function renderFormation(formation) {
+        window.renderFormation = function(formation) {
             const pitch = document.getElementById('pitch-players');
             if (!pitch) return;
             const parts = formation.split('-'); 
@@ -3165,17 +3167,17 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     </div>
                 </div>`;
             document.getElementById('captain-box').innerHTML = 'גרור שחקן הרכב';
-        }
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
             const select = document.getElementById('formation-select');
             if(select) {
-                select.addEventListener('change', (e) => renderFormation(e.target.value));
-                renderFormation(select.value); 
+                select.addEventListener('change', (e) => window.renderFormation(e.target.value));
+                window.renderFormation(select.value); 
             }
         });        
 
-        function placePlayerInSlot(slot, playerId, playerName, playerPhoto, playerPos, slotPos) {
+        window.placePlayerInSlot = function(slot, playerId, playerName, playerPhoto, playerPos, slotPos) {
             if (!slot.hasAttribute('data-empty-html')) {
                 slot.setAttribute('data-empty-html', slot.innerHTML);
                 slot.setAttribute('data-empty-border', slot.style.borderColor || '');
@@ -3186,7 +3188,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             slot.setAttribute('data-player-photo', playerPhoto);
             slot.setAttribute('data-player-pos', playerPos);
             
-            const removeBtnHtml = `<div onclick="removePlayer(this.closest('.player-slot'), event)" class="remove-player-btn" style="position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 50; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" title="הסר מהרכב">✖</div>`;
+            const removeBtnHtml = `<div onclick="window.removePlayer(this.closest('.player-slot'), event)" class="remove-player-btn" style="position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 50; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.3);" title="הסר מהרכב">✖</div>`;
             
             if (slot.classList.contains('bench-list-slot')) {
                 slot.innerHTML = `${removeBtnHtml}<img src="${playerPhoto}" style="width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1; flex-shrink: 0;"><div style="display: flex; flex-direction: column; flex: 1; overflow: hidden; justify-content: center; text-align: right;"><span style="font-size: 10px; font-weight: 900; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${playerName}</span><span style="font-size: 8px; color: #64748b; font-weight: bold;">${playerPos}</span></div>`;
@@ -3198,7 +3200,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             }
             
             slot.setAttribute('draggable', 'true');
-            slot.onclick = (e) => { if(!e.target.classList.contains('remove-player-btn')) openPlayerModalById(playerId, true); };
+            slot.onclick = (e) => { if(!e.target.classList.contains('remove-player-btn')) window.openPlayerModalById(playerId, true); };
             slot.ondragstart = function(e) {
                 e.dataTransfer.setData("id", playerId);
                 e.dataTransfer.setData("name", playerName);
@@ -3207,9 +3209,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 e.dataTransfer.setData("sourceSlotId", slot.id); 
                 e.dataTransfer.setData("sourceSlotPos", slotPos); 
             };
-        }
+        };
 
-        function dropPlayer(ev, slotPos) {
+        window.dropPlayer = function(ev, slotPos) {
             ev.preventDefault();
             const playerId = ev.dataTransfer.getData("id");
             const playerPos = ev.dataTransfer.getData("pos");
@@ -3242,15 +3244,15 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     if (sourceSlotPos && sourceSlotPos !== 'מחליף' && targetPlayerPos !== sourceSlotPos) {
                          alert(`חילוף לא חוקי: אי אפשר להעביר את ${targetPlayerName} (${targetPlayerPos}) לעמדת ${sourceSlotPos}!`); return;
                     }
-                    placePlayerInSlot(sourceSlot, targetPlayerId, targetPlayerName, targetPlayerPhoto, targetPlayerPos, sourceSlotPos);
+                    window.placePlayerInSlot(sourceSlot, targetPlayerId, targetPlayerName, targetPlayerPhoto, targetPlayerPos, sourceSlotPos);
                 }
             } else if (sourceSlotId) {
                 const sourceSlot = document.getElementById(sourceSlotId);
-                if (sourceSlot) removePlayer(sourceSlot, null);
+                if (sourceSlot) window.removePlayer(sourceSlot, null);
             }
 
-            placePlayerInSlot(slot, playerId, playerName, playerPhoto, playerPos, slotPos);
-        }
+            window.placePlayerInSlot(slot, playerId, playerName, playerPhoto, playerPos, slotPos);
+        };
 
         window.removePlayer = function(slot, event) {
             if (event) event.stopPropagation(); 
@@ -3270,7 +3272,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             slot.ondragstart = null;
         };
 
-        function setCaptainDrop(ev) {
+        window.setCaptainDrop = function(ev) {
             ev.preventDefault();
             const playerName = ev.dataTransfer.getData("name");
             const playerPhoto = ev.dataTransfer.getData("photo");
@@ -3288,12 +3290,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 }
                 document.getElementById('captain-box').innerHTML = `<img src="${playerPhoto}" style="width:18px; height:18px; border-radius:50%; object-fit:cover;"> <span style="font-size:11px; font-weight:900;">${playerName}</span>`;
             }
-        }
+        };
 
         // ==========================================
         // פונקציית המודאל החדשה (ניזונה ממאגר Supabase ישירות!)
         // ==========================================
-        function openPlayerModalById(playerId, isMySquad) {
+        window.openPlayerModalById = function(playerId, isMySquad) {
             const p = window.allPlayersMap[playerId];
             if (!p) { alert('שחקן לא נמצא במערכת.'); return; }
 
@@ -3322,7 +3324,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             document.getElementById('pm-val-ast').innerText = p.assists;
             document.getElementById('pm-value').innerText = '₪' + formatPlayerValue(p.value);
             
-            // אם isMySquad הוא true, השחקן שייך לקבוצה שלך, אחרת נבדוק במסד הנתונים או נגדיר כחופשי
             const actualOwner = isMySquad ? 'מכבי סוליבי' : (p.owner || 'חופשי');
             document.getElementById('pm-owner').innerText = actualOwner;
             
@@ -3348,10 +3349,52 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             document.getElementById('pm-val-rating').innerText = p.avgRating;
 
             const firstTabBtn = document.querySelector('.pm-tab-btn');
-            if(firstTabBtn) switchPlayerTab('pm-tab-overview', firstTabBtn);
+            if(firstTabBtn) window.switchPlayerTab('pm-tab-overview', firstTabBtn);
 
             document.getElementById('playerModal').classList.add('active');
-        }
+        };
+
+        window.openPlayerModal = function(name) {
+            let foundPlayerId = null;
+            for (let id in window.allPlayersMap) {
+                let p = window.allPlayersMap[id];
+                let tName = window.translateName ? window.translateName(p.name) : p.name;
+                if (tName === name || p.name === name) {
+                    foundPlayerId = p.id;
+                    break;
+                }
+            }
+            if (foundPlayerId) {
+                window.openPlayerModalById(foundPlayerId, false);
+            } else {
+                alert('השחקן ' + name + ' לא נמצא כרגע במאגר המעודכן.');
+            }
+        };
+
+        window.switchPlayerTab = function(tabId, btnElement) {
+            document.querySelectorAll('.pm-tab-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.pm-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        };
+
+        window.handleDynamicPlayerAction = function() {
+            const btn = document.getElementById('pm-action-main-btn');
+            const action = btn.getAttribute('data-action');
+            if (action === 'manage') {
+                window.closePlayerModal();
+                switchFmTab('tab-tactics'); 
+            } else if (action === 'watchlist') {
+                const playerName = document.getElementById('pm-name').innerText;
+                alert(`${playerName} נוסף לרשימת המעקב שלך!`);
+                window.closePlayerModal();
+            }
+        };
+
+        window.closePlayerModal = function(e) {
+            if (e && e.target !== document.getElementById('playerModal')) return;
+            document.getElementById('playerModal').classList.remove('active');
+        };
 // מערכת החלפת מחזורים בטבלת הליגה
         let currentDisplayedRound = 10;
         
