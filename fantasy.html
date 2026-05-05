@@ -2579,12 +2579,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 <svg class="pm-close" onclick="closePlayerModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 
                 <div class="pm-header-content">
-                    <div class="pm-header-main">
+                    <div class="pm-header-main" style="min-width: 0; flex: 1; padding-left: 5px;">
                         <img src="" id="pm-img" class="pm-photo-large">
-                        <div class="pm-info-text">
+                        <div class="pm-info-text" style="min-width: 0;">
                             <h3 id="pm-name">שם השחקן</h3>
                             <div class="pm-sub-info"><span id="pm-team">קבוצה</span> | <span id="pm-pos">עמדה</span></div>
-                            <div class="pm-sub-info">מדינה: <span id="pm-country">ישראל</span> 🌍 | גיל: <span id="pm-age">25</span></div>
+                            <div class="pm-sub-info" style="white-space: nowrap;">מדינה: <span id="pm-country" style="display:inline-flex; align-items:center; gap:4px;">ישראל</span> | תאריך לידה: <span id="pm-age">25</span></div>
                             <div class="pm-sub-info">קבוצת פנטזי: <span id="pm-owner" style="color: #fff; font-weight: bold;">חופשי</span></div>
                             <div class="pm-market-value">
                                 <span style="opacity: 0.8;">💰 שווי שוק:</span> <span id="pm-value">₪10.50M</span>
@@ -2592,9 +2592,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
                     
-                    <div class="pm-tier-badge" style="width: 85px;">
-    <span id="pm-tier-css-badge" class="tier-badge" style="font-size: 13px; padding: 6px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">רמה</span>
-</div>
+                    <div class="pm-tier-badge" style="flex-shrink: 0; min-width: 75px;">
+                        <span id="pm-tier-css-badge" class="tier-badge" style="font-size: 13px; padding: 6px 12px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); white-space: nowrap;">רמה</span>
+                    </div>
                 </div>
 
                 <div class="pm-tabs-nav">
@@ -2682,11 +2682,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             // ----------------------------------------------------
             const tierBadge = document.getElementById('pm-tier-css-badge');
             if (tierBadge) {
-                // מקבל את העיצוב מהטבלה (זהב, כסף וכו') ועושה אותו קצת יותר גדול לחלון
                 tierBadge.className = `tier-badge ${p.calcTierClass}`;
-                tierBadge.style.fontSize = '14px';
-                tierBadge.style.padding = '8px 15px';
-                tierBadge.style.borderRadius = '8px';
                 tierBadge.innerText = p.calcTierName;
             }
 
