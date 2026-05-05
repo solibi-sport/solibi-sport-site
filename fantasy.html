@@ -2652,6 +2652,118 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
+
+        // ==========================================
+        // מודאל כרטיס שחקן (הקוד שהיה חסר בשחזור)
+        // ==========================================
+        window.openPlayerModalById = function(playerId, isMySquad) {
+            const p = window.allPlayersMap[playerId];
+            if (!p) { alert('שחקן לא נמצא במערכת.'); return; }
+
+            const tName = window.translateName ? window.translateName(p.name) : p.name;
+            const tTeam = window.translateName ? window.translateName(p.team) : p.team;
+            const engNat = p.nationality || 'il';
+            const tNat = window.translateName ? window.translateName(engNat) : engNat;
+            const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+
+            document.getElementById('pm-name').innerText = tName || '-';
+            document.getElementById('pm-img').src = playerImage;
+            document.getElementById('pm-pos').innerText = p.displayPos || '-';
+            document.getElementById('pm-team').innerText = tTeam || '-';
+            
+            // תצוגת הדגל המקורי במקום כדור הארץ
+            const natCode = engNat.toLowerCase().replace(/ /g, '-');
+            document.getElementById('pm-country').innerHTML = `<img src="https://media.api-sports.io/flags/${natCode}.svg" style="width: 18px; height: 13px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" onerror="this.style.display='none'"> <span>${tNat || 'בינלאומי'}</span>`;
+            
+            document.getElementById('pm-age').innerText = p.birthDate + ` (${p.age || 25})`;
+            
+            const tierImages = {
+                'כוכב על': 'image_496063.png', 'רמה 1': 'image_495dbc.png',
+                'רמה 2': 'image_495da1.png', 'רמה 3': 'image_495d9b.png', 'רמה 4': 'image_495d7f.png'
+            };
+
+            const tierImg = document.getElementById('pm-tier-img');
+            if (tierImg) tierImg.src = tierImages[p.calcTierName] || 'image_495d7f.png';
+
+            document.getElementById('pm-val-pts').innerText = window.formatNumberWithCommas ? window.formatNumberWithCommas(p.fantasyPts) : p.fantasyPts;
+            document.getElementById('pm-val-gls').innerText = p.goals;
+            document.getElementById('pm-val-ast').innerText = p.assists;
+            document.getElementById('pm-value').innerText = '₪' + (window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value);
+            
+            const actualOwner = isMySquad ? 'מכבי סוליבי' : (p.owner || 'חופשי');
+            document.getElementById('pm-owner').innerText = actualOwner;
+            
+            const mainActionBtn = document.getElementById('pm-action-main-btn');
+            if (actualOwner === 'מכבי סוליבי') {
+                mainActionBtn.innerText = 'נהל בהרכב';
+                mainActionBtn.style.background = 'var(--brand-green)';
+                mainActionBtn.setAttribute('data-action', 'manage');
+            } else { 
+                mainActionBtn.innerText = 'הוסף לרשימת מעקב 👁️';
+                mainActionBtn.style.background = '#3498db'; 
+                mainActionBtn.setAttribute('data-action', 'watchlist');
+            }
+
+            document.getElementById('pm-val-apps').innerText = p.apps;
+            document.getElementById('pm-val-mins').innerText = window.formatNumberWithCommas ? window.formatNumberWithCommas(p.mins) : p.mins;
+            document.getElementById('pm-val-tkl').innerText = p.tackles;
+            document.getElementById('pm-val-cs').innerText = p.cleanSheets;
+            document.getElementById('pm-val-psv').innerText = p.saves;
+            document.getElementById('pm-val-pgl').innerText = p.pen_scored;
+            document.getElementById('pm-val-yel').innerText = p.yellow;
+            document.getElementById('pm-val-red').innerText = p.red;
+            document.getElementById('pm-val-rating').innerText = p.avgRating;
+
+            const firstTabBtn = document.querySelector('.pm-tab-btn');
+            if(firstTabBtn) window.switchPlayerTab('pm-tab-overview', firstTabBtn);
+
+            document.getElementById('playerModal').classList.add('active');
+        };
+
+        window.openPlayerModal = function(name, photo, pos, team, pts, gls, ast, value, apps, mins, tkl, cs, psv, pgl, yel, red, tierName, country, age, owner, rating) {
+            let foundPlayerId = null;
+            for (let id in window.allPlayersMap) {
+                let p = window.allPlayersMap[id];
+                if ((window.translateName && window.translateName(p.name) === name) || p.name === name) {
+                    foundPlayerId = p.id;
+                    break;
+                }
+            }
+            if (foundPlayerId) {
+                window.openPlayerModalById(foundPlayerId, false);
+                return;
+            }
+            document.getElementById('pm-name').innerText = name || '-';
+            if(document.getElementById('pm-img')) document.getElementById('pm-img').src = photo || '';
+            document.getElementById('pm-pos').innerText = pos || '-';
+            document.getElementById('pm-team').innerText = team || '-';
+            document.getElementById('playerModal').classList.add('active');
+        };
+
+        window.switchPlayerTab = function(tabId, btnElement) {
+            document.querySelectorAll('.pm-tab-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.pm-tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        };
+
+        window.handleDynamicPlayerAction = function() {
+            const btn = document.getElementById('pm-action-main-btn');
+            const action = btn.getAttribute('data-action');
+            if (action === 'manage') {
+                window.closePlayerModal();
+                if(typeof switchFmTab === 'function') switchFmTab('tab-tactics'); 
+            } else if (action === 'watchlist') {
+                alert('השחקן נוסף לרשימת המעקב שלך!');
+                window.closePlayerModal();
+            }
+        };
+
+        window.closePlayerModal = function(e) {
+            if (e && e.target !== document.getElementById('playerModal')) return;
+            document.getElementById('playerModal').classList.remove('active');
+        };
+        
         // ניהול טאבים (UI) ופתיחה/סגירה של הלייב פאנל
         document.addEventListener('DOMContentLoaded', () => {
             const liveHeader = document.getElementById('live-panel-header');
