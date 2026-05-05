@@ -2656,7 +2656,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         // ==========================================
         // מודאל כרטיס שחקן (הקוד שהיה חסר בשחזור)
         // ==========================================
-        window.openPlayerModalById = function(playerId, isMySquad) {
+       window.openPlayerModalById = function(playerId, isMySquad) {
             const p = window.allPlayersMap[playerId];
             if (!p) { alert('שחקן לא נמצא במערכת.'); return; }
 
@@ -2677,13 +2677,18 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             
             document.getElementById('pm-age').innerText = p.birthDate + ` (${p.age || 25})`;
             
-            const tierImages = {
-                'כוכב על': 'image_496063.png', 'רמה 1': 'image_495dbc.png',
-                'רמה 2': 'image_495da1.png', 'רמה 3': 'image_495d9b.png', 'רמה 4': 'image_495d7f.png'
-            };
-
-            const tierImg = document.getElementById('pm-tier-img');
-            if (tierImg) tierImg.src = tierImages[p.calcTierName] || 'image_495d7f.png';
+            // ----------------------------------------------------
+            // התיקון של הרמה - הזרקת העיצוב (CSS) והטקסט הנכון!
+            // ----------------------------------------------------
+            const tierBadge = document.getElementById('pm-tier-css-badge');
+            if (tierBadge) {
+                // מקבל את העיצוב מהטבלה (זהב, כסף וכו') ועושה אותו קצת יותר גדול לחלון
+                tierBadge.className = `tier-badge ${p.calcTierClass}`;
+                tierBadge.style.fontSize = '14px';
+                tierBadge.style.padding = '8px 15px';
+                tierBadge.style.borderRadius = '8px';
+                tierBadge.innerText = p.calcTierName;
+            }
 
             document.getElementById('pm-val-pts').innerText = window.formatNumberWithCommas ? window.formatNumberWithCommas(p.fantasyPts) : p.fantasyPts;
             document.getElementById('pm-val-gls').innerText = p.goals;
@@ -2733,10 +2738,19 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 window.openPlayerModalById(foundPlayerId, false);
                 return;
             }
+            
             document.getElementById('pm-name').innerText = name || '-';
             if(document.getElementById('pm-img')) document.getElementById('pm-img').src = photo || '';
             document.getElementById('pm-pos').innerText = pos || '-';
             document.getElementById('pm-team').innerText = team || '-';
+            
+            // גיבוי לרמה גם אם לוחצים על שחקן מוקאפ ישן
+            const tierBadge = document.getElementById('pm-tier-css-badge');
+            if (tierBadge) {
+                tierBadge.className = 'tier-badge tier-star'; 
+                tierBadge.innerText = 'כוכב על';
+            }
+            
             document.getElementById('playerModal').classList.add('active');
         };
 
