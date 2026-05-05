@@ -15299,7 +15299,7 @@ const myDictionary = {
     "Mamadou Sangaré": "ממאדו סנגארה",
     "Marc Kempf": "מארק קמפף",
     "Marnon-Thomas Busch": "מרנון בוש",
-    "Masour Dembélé": "מוסור דמבלה",
+    "Masour Dembélé": "עוסמאן דמבלה",
     "Mathis Cherki": "מאטיס שרקי",
     "Matthew Cash": "מת'יו קאש",
     "Matías Soulé": "מתיאס סולה",
