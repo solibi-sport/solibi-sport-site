@@ -2592,9 +2592,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
                     
-                    <div class="pm-tier-badge">
-                        <img src="" id="pm-tier-img" class="pm-tier-img" alt="רמה">
-                    </div>
+                    <div class="pm-tier-badge" style="width: 85px;">
+    <span id="pm-tier-css-badge" class="tier-badge" style="font-size: 13px; padding: 6px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">רמה</span>
+</div>
                 </div>
 
                 <div class="pm-tabs-nav">
@@ -3421,10 +3421,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             document.getElementById('pm-country').innerText = tNat || 'בינלאומי';
             document.getElementById('pm-age').innerText = p.birthDate + ` (${p.age || 25})`;
             
-            const tierImages = {
-                'כוכב על': 'image_496063.png', 'רמה 1': 'image_495dbc.png',
-                'רמה 2': 'image_495da1.png', 'רמה 3': 'image_495d9b.png', 'רמה 4': 'image_495d7f.png'
-            };
+            const tierBadge = document.getElementById('pm-tier-css-badge');
+            if (tierBadge) {
+                tierBadge.className = `tier-badge ${p.calcTierClass}`;
+                tierBadge.innerText = p.calcTierName;
+            }
 
             const tierImg = document.getElementById('pm-tier-img');
             if (tierImg) tierImg.src = tierImages[p.calcTierName] || 'image_495d7f.png';
@@ -3983,9 +3984,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             checkWheelTimer();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            if(initFortuneWheel) initFortuneWheel();
-        });
+       document.addEventListener('DOMContentLoaded', () => {
+    if(initFortuneWheel) initFortuneWheel();
+    renderHotPlayers();
+});
         
     </script>
 </body>
