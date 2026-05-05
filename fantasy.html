@@ -1246,6 +1246,44 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             border-radius:50%;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3);
         }
+
+        /* =========================================
+           תיקוני פריסה חסינים: כיווץ ללפטופים והצמדת טיקר לתחתית
+           ========================================= */
+        
+        /* 1. מתיחת המסך והצמדת הטיקר למטה */
+        html, body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* מונע גלילה כפולה וחותך מה שגולש */
+        }
+
+        .main-content {
+            flex: 1; /* הקסם שדוחף הכל למטה */
+            display: flex;
+            min-height: 0; /* קריטי כדי שתוכן פנימי יוכל להיגלל ולא יפרוץ את המסך */
+        }
+        
+        .footer {
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        /* 2. כיווץ זום חכם למסכים רגילים ולפטופים */
+        @media (max-width: 1600px) {
+            body { zoom: 0.85; }
+        }
+
+        @media (max-width: 1440px) {
+            body { zoom: 0.80; }
+        }
+        
+        @media (max-width: 1200px) {
+            body { zoom: 0.75; }
+        }
         
     </style>
         
@@ -3509,43 +3547,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 if (livePanel?.classList.contains('expanded') && !livePanel.contains(e.target)) livePanel.classList.remove('expanded');
             });
         });
-/* =========================================
-           תיקוני פריסה חסינים: כיווץ ללפטופים והצמדת טיקר לתחתית
-           ========================================= */
-        
-        /* 1. מתיחת המסך והצמדת הטיקר למטה */
-        html, body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* מונע גלילה כפולה וחותך מה שגולש */
-        }
 
-        .main-content {
-            flex: 1; /* הקסם שדוחף הכל למטה */
-            display: flex;
-            min-height: 0; /* קריטי כדי שתוכן פנימי יוכל להיגלל ולא יפרוץ את המסך */
-        }
-        
-        .footer {
-            margin-top: auto;
-            flex-shrink: 0;
-        }
-
-        /* 2. כיווץ זום חכם למסכים רגילים ולפטופים */
-        @media (max-width: 1600px) {
-            body { zoom: 0.85; }
-        }
-
-        @media (max-width: 1440px) {
-            body { zoom: 0.80; }
-        }
-        
-        @media (max-width: 1200px) {
-            body { zoom: 0.75; }
-        }
         
     </script>
 </body>
