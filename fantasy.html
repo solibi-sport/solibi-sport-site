@@ -2578,13 +2578,13 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             <div class="pm-header">
                 <svg class="pm-close" onclick="closePlayerModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 
-                <div class="pm-header-content">
+               <div class="pm-header-content">
                     <div class="pm-header-main">
                         <img src="" id="pm-img" class="pm-photo-large">
                         <div class="pm-info-text">
                             <h3 id="pm-name">שם השחקן</h3>
                             <div class="pm-sub-info"><span id="pm-team">קבוצה</span> | <span id="pm-pos">עמדה</span></div>
-                            <div class="pm-sub-info">מדינה: <span id="pm-country">ישראל</span> 🌍 | גיל: <span id="pm-age">25</span></div>
+                            <div class="pm-sub-info">מדינה: <span id="pm-country" style="display:inline-flex; align-items:center; gap:4px;">ישראל</span> | תאריך לידה: <span id="pm-age">25</span></div>
                             <div class="pm-sub-info">קבוצת פנטזי: <span id="pm-owner" style="color: #fff; font-weight: bold;">חופשי</span></div>
                             <div class="pm-market-value">
                                 <span style="opacity: 0.8;">💰 שווי שוק:</span> <span id="pm-value">₪10.50M</span>
@@ -2592,11 +2592,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
                     
-                    <div class="pm-tier-badge">
-                        <img src="" id="pm-tier-img" class="pm-tier-img" alt="רמה">
+                    <div class="pm-tier-badge" style="width: 85px;">
+                        <span id="pm-tier-css-badge" class="tier-badge" style="font-size: 13px; padding: 6px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">רמה</span>
                     </div>
                 </div>
-
                 <div class="pm-tabs-nav">
                     <button class="pm-tab-btn active" onclick="switchPlayerTab('pm-tab-overview', this)">מבט כללי</button>
                     <button class="pm-tab-btn" onclick="switchPlayerTab('pm-tab-analysis', this)">ניתוח נתונים</button>
@@ -2652,7 +2651,8 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // ==========================================
+
+    // ==========================================
         // משתנים גלובליים, תפריט (UI) וטאבים
         // ==========================================
         window.allPlayersMap = {};
@@ -2708,7 +2708,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         };
 
         // ==========================================
-        // מודאל כרטיס שחקן (Premium)
+        // מודאל כרטיס שחקן (Premium) - כולל דגלים וסמלי CSS!
         // ==========================================
         window.openPlayerModalById = function(playerId, isMySquad) {
             const p = window.allPlayersMap[playerId];
@@ -2716,23 +2716,27 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
             const tName = window.translateName(p.name);
             const tTeam = window.translateName(p.team);
-            const tNat = window.translateName(p.nationality);
+            const engNat = p.nationality || 'il'; // שומרים את האנגלית בשביל התמונה
+            const tNat = window.translateName(engNat);
             const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
 
             document.getElementById('pm-name').innerText = tName || '-';
             document.getElementById('pm-img').src = playerImage;
             document.getElementById('pm-pos').innerText = p.displayPos || '-';
             document.getElementById('pm-team').innerText = tTeam || '-';
-            document.getElementById('pm-country').innerText = tNat || 'בינלאומי';
+            
+            // הזרקת דגל המדינה
+            const natCode = engNat.toLowerCase().replace(/ /g, '-');
+            document.getElementById('pm-country').innerHTML = `<img src="https://media.api-sports.io/flags/${natCode}.svg" style="width: 18px; height: 13px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.2);" onerror="this.style.display='none'"> <span>${tNat || 'בינלאומי'}</span>`;
+            
             document.getElementById('pm-age').innerText = p.birthDate + ` (${p.age || 25})`;
             
-            const tierImages = {
-                'כוכב על': 'image_496063.png', 'רמה 1': 'image_495dbc.png',
-                'רמה 2': 'image_495da1.png', 'רמה 3': 'image_495d9b.png', 'רמה 4': 'image_495d7f.png'
-            };
-
-            const tierImg = document.getElementById('pm-tier-img');
-            if (tierImg) tierImg.src = tierImages[p.calcTierName] || 'image_495d7f.png';
+            // הזרקת עיצוב הרמה באמצעות קלאס CSS במקום תמונה!
+            const tierBadge = document.getElementById('pm-tier-css-badge');
+            if (tierBadge) {
+                tierBadge.className = `tier-badge ${p.calcTierClass}`;
+                tierBadge.innerText = p.calcTierName;
+            }
 
             document.getElementById('pm-val-pts').innerText = window.formatNumberWithCommas(p.fantasyPts);
             document.getElementById('pm-val-gls').innerText = p.goals;
@@ -2783,7 +2787,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 window.openPlayerModalById(foundPlayerId, false);
                 return;
             }
-            // מוקאפ ישן
+            // מוקאפ ישן גיבוי אחרון
             document.getElementById('pm-name').innerText = name || '-';
             document.getElementById('pm-img').src = photo || '';
             document.getElementById('pm-pos').innerText = pos || '-';
@@ -3028,7 +3032,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 const ownerClass = p.owner && p.owner !== 'חופשי' ? 'manager-badge taken' : 'manager-badge';
                 const tName = window.translateName(p.name);
                 const tTeam = window.translateName(p.team);
-                const tNat = window.translateName(p.nationality);
+                const engNat = p.nationality || 'il';
+                const tNat = window.translateName(engNat);
+                const natCode = engNat.toLowerCase().replace(/ /g, '-');
 
                 tr.innerHTML = `
                     <td class="rank-col" style="font-size: 14px; font-weight: bold;">${p.forcedRank}</td>
@@ -3036,7 +3042,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     <td>${p.age || '-'}</td>
                     <td style="font-weight: 600; color: var(--text-dark);">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-                            <img src="https://media.api-sports.io/flags/${(p.nationality || '').toLowerCase().replace(/ /g, '-')}.svg" style="width: 18px; height: 13px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.15);" onerror="this.style.display='none'">
+                            <img src="https://media.api-sports.io/flags/${natCode}.svg" style="width: 18px; height: 13px; object-fit: cover; border-radius: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.15);" onerror="this.style.display='none'">
                             <span>${tNat || '-'}</span>
                         </div>
                     </td>
@@ -3202,7 +3208,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         });
 
         // ==========================================
-        // לייב טיקר
+        // לייב טיקר - עם קליק תקין!
         // ==========================================
         window.fetchLiveMatches = async function() {
             try {
@@ -3257,9 +3263,15 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     
                     const isGoal = (Date.now() - window.matchGoalTracker[fixId].goalTime) < 15000;
                     const goalOv = isGoal ? `<div style="position: absolute; inset:0; background: #7a9966; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; border-radius: 6px; z-index: 10; animation: goalAlertPulse 0.6s infinite alternate;">שער!</div>` : '';
+                    
+                    const safeHomeName = encodeURIComponent(m.teams.home.name);
+                    const safeAwayName = encodeURIComponent(m.teams.away.name);
+
+                    // התיקון לקליק על הלייב טיקר: אם חסר הקובץ matchEvents.js, לפחות זה יקפיץ חלון אלגנטי ויגיד איזה משחק נלחץ
+                    const clickLogic = `if(typeof window.openMatchEvents === 'function'){ window.openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); } else { alert('פתיחת חלון משחק: ${hTeam} נגד ${aTeam}\\n(קובץ אירועי משחק חסר)'); } return false;`;
 
                     allHtml += `
-                        <a href="#" class="live-match-card-light">
+                        <a href="#" onclick="${clickLogic}" class="live-match-card-light">
                             <div class="match-teams-col">
                                 <div class="team-line"><img src="${m.teams.home.logo}"> <span>${hTeam}</span></div>
                                 <div class="team-line"><img src="${m.teams.away.logo}"> <span>${aTeam}</span></div>
@@ -3358,14 +3370,54 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         };
 
         // ==========================================
+        // מנוע סקאוטינג - שחקנים חמים (עם קליק לחלון פרימיום!)
+        // ==========================================
+        const hotPlayersDB = {
+            onFire: [ {n:"קול פאלמר", t:"מנצ'סטר סיטי", i:"73195", v:"12.5 נק'", color:"var(--brand-green)"}, {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:"11.0 נק'", color:"var(--brand-green)"}, {n:"ויניסיוס ג'וניור", t:"ריאל מדריד", i:"145895", v:"9.8 נק'", color:"var(--brand-green)"}, {n:"מוחמד סלאח", t:"ליברפול", i:"73230", v:"9.5 נק'", color:"var(--text-dark)"}, {n:"הארי קיין", t:"באיירן מינכן", i:"73199", v:"9.2 נק'", color:"var(--text-dark)"} ],
+            gems: [ {n:"אוסקר גלוך", t:"זלצבורג", i:"145899", v:"0.8% בעלות", color:"#fbbf24"}, {n:"ענאן חלאילי", t:"סן ז'ילואז", i:"145892", v:"1.2% בעלות", color:"#fbbf24"}, {n:"רוי רביבו", t:"מכבי תל אביב", i:"145898", v:"2.5% בעלות", color:"#fbbf24"}, {n:"גבי קניקובסקי", t:"מכבי תל אביב", i:"73233", v:"3.1% בעלות", color:"var(--text-dark)"}, {n:"גיא מלמד", t:"הפועל חיפה", i:"73200", v:"4.0% בעלות", color:"var(--text-dark)"} ],
+            rising: [ {n:"לאמין ימאל", t:"ברצלונה", i:"73270", v:"▲ ₪0.5M", color:"var(--brand-green)"}, {n:"דור תורג'מן", t:"מכבי תל אביב", i:"73240", v:"▲ ₪0.3M", color:"var(--brand-green)"}, {n:"דין דוד", t:"מכבי חיפה", i:"73197", v:"▲ ₪0.3M", color:"var(--brand-green)"}, {n:"ג'וד בלינגהאם", t:"ריאל מדריד", i:"73229", v:"▲ ₪0.2M", color:"var(--text-dark)"}, {n:"פיל פודן", t:"מנצ'סטר סיטי", i:"73235", v:"▲ ₪0.2M", color:"var(--text-dark)"} ],
+            fixtures: [ {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:"3 קרובים קלים", color:"var(--brand-green)"}, {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:"3 קרובים קלים", color:"var(--brand-green)"}, {n:"בוקאיו סאקה", t:"ארסנל", i:"73177", v:"לוח ירוק", color:"var(--text-dark)"}, {n:"מנור סולומון", t:"לידס", i:"73215", v:"לוח ירוק", color:"var(--text-dark)"}, {n:"איאד אבו עביד", t:"הפועל ב״ש", i:"73218", v:"לוח סביר", color:"var(--text-dark)"} ],
+            transfers: [ {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:"2,450 קניות", color:"#3498db"}, {n:"קיליאן אמבפה", t:"ריאל מדריד", i:"73216", v:"1,890 קניות", color:"#3498db"}, {n:"ארלינג האלנד", t:"מנצ'סטר סיטי", i:"73176", v:"1,500 קניות", color:"#3498db"}, {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:"950 קניות", color:"var(--text-dark)"}, {n:"פליסיו מילסון", t:"מכבי תל אביב", i:"145895", v:"820 קניות", color:"var(--text-dark)"} ],
+            cold: [ {n:"קווין דה בריינה", t:"מנצ'סטר סיטי", i:"73220", v:"▼ ₪0.4M", color:"#ef4444"}, {n:"רוברט לבנדובסקי", t:"ברצלונה", i:"73255", v:"▼ ₪0.3M", color:"#ef4444"}, {n:"מרכוס רשפורד", t:"ליברפול", i:"73180", v:"0 נק' ברצף", color:"#ef4444"}, {n:"שגיב יחזקאל", t:"הפועל ב״ש", i:"73223", v:"פצוע", color:"var(--text-dark)"}, {n:"עלי מוחמד", t:"מכבי חיפה", i:"73191", v:"ללא בישול/שער", color:"var(--text-dark)"} ]
+        };
+
+        window.renderHotPlayers = function() {
+            const categories = [
+                { id: 'hot-on-fire', data: hotPlayersDB.onFire }, { id: 'hot-gems', data: hotPlayersDB.gems },
+                { id: 'hot-rising', data: hotPlayersDB.rising }, { id: 'hot-fixtures', data: hotPlayersDB.fixtures },
+                { id: 'hot-transfers', data: hotPlayersDB.transfers }, { id: 'hot-cold', data: hotPlayersDB.cold }
+            ];
+
+            categories.forEach(cat => {
+                const container = document.getElementById(cat.id);
+                if (!container) return;
+                container.innerHTML = '';
+                
+                cat.data.forEach((p, idx) => {
+                    let imgHtml = `<img src="https://media.api-sports.io/football/players/${p.i}.png" onerror="this.src='https://ui-avatars.com/api/?name=${p.n}&background=e2e8f0&color=000'">`;
+                    let rankClass = idx === 0 ? 'color: #fbbf24; font-size: 16px;' : (idx === 1 ? 'color: #94a3b8;' : (idx === 2 ? 'color: #b45309;' : ''));
+                    
+                    container.innerHTML += `
+                        <div class="s-list-row" onclick="window.openPlayerModal('${p.n}', 'https://media.api-sports.io/football/players/${p.i}.png', 'עמדה', '${p.t}', 0, 0, 0)">
+                            <div class="s-rank" style="${rankClass}">${idx + 1}</div>
+                            <div class="s-player-info">
+                                ${imgHtml}
+                                <div class="s-player-text">
+                                    <span class="s-p-name">${p.n}</span>
+                                    <span class="s-p-team">${p.t}</span>
+                                </div>
+                            </div>
+                            <div class="s-value" style="color: ${p.color}; font-size: 13px;">${p.v}</div>
+                        </div>
+                    `;
+                });
+            });
+        };
+
+        // ==========================================
         // מנוע בונוס התחברות יומי
         // ==========================================
         const dbRewardsList = [50000, 100000, 200000, 350000, 500000, 750000, 1000000];
-        window.formatBonusAmount = function(amount) {
-            if (amount >= 1000000) return (amount / 1000000).toFixed(1).replace('.0', '') + 'M';
-            if (amount >= 1000) return (amount / 1000) + 'K';
-            return amount;
-        };
 
         window.initDailyBonus = function() {
             const savedState = localStorage.getItem('solibi_daily_bonus');
@@ -3488,7 +3540,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
         window.resetWheelTimer = function() { localStorage.removeItem('solibi_last_spin'); window.checkWheelTimer(); };
 
+        // ==========================================
         // הפעלה מרוכזת של הכל בטעינת העמוד
+        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             window.fetchLiveMatches();
             setInterval(window.fetchLiveMatches, 60000);
@@ -3498,6 +3552,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             
             window.initDailyBonus();
             window.initFortuneWheel();
+            window.renderHotPlayers(); 
 
             // פתיחה וסגירת לייב פאנל
             const liveHeader = document.getElementById('live-panel-header');
