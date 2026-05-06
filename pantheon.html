@@ -247,156 +247,67 @@ html, body {
         /* =========================================
            עיצוב היכל הקבוצות (מגרש אינטראקטיבי)
            ========================================= */
-        .hof-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            width: 100%;
-        }
+        .hof-container { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
 
         .hof-controls {
             display: flex;
-            justify-content: flex-end; /* שם את הרשימה בצד ימין */
+            justify-content: flex-start; /* בצד ימין (בגלל שזה RTL) */
             width: 100%;
             max-width: 800px;
-            padding: 0 20px;
+            padding: 0;
         }
 
         .hof-team-select {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 2px solid var(--element-navy-gradient);
-            background: var(--bg-silver-matte);
-            color: var(--text-dark);
-            font-size: 16px;
-            font-weight: 900;
-            cursor: pointer;
-            outline: none;
-            font-family: inherit;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 10px 20px; border-radius: 8px; border: 2px solid var(--element-navy-gradient);
+            background: #fff; color: var(--text-dark); font-size: 16px; font-weight: 900;
+            cursor: pointer; outline: none; font-family: inherit; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .hof-pitch {
-            position: relative;
-            width: 100%;
-            max-width: 800px; /* מגרש רחב יחסית */
-            height: 600px; /* מגרש ארוך */
+            position: relative; width: 100%; max-width: 800px; height: 600px;
             background: linear-gradient(180deg, #184f2c 0%, #2a7344 100%);
-            border: 3px solid #fff;
-            border-radius: 12px;
+            border: 3px solid #fff; border-radius: 12px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 0 50px rgba(0,0,0,0.3);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        /* קווי המגרש */
-        .hof-pitch::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: rgba(255,255,255,0.4);
-            transform: translateY(-50%);
-        }
-        .hof-pitch::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 120px;
-            height: 120px;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
+        .hof-pitch::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(255,255,255,0.4); transform: translateY(-50%); }
+        .hof-pitch::after { content: ''; position: absolute; top: 50%; left: 50%; width: 120px; height: 120px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); }
         .hof-penalty-area-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 250px; height: 100px; border: 2px solid rgba(255,255,255,0.4); border-top: none; }
         .hof-penalty-area-bottom { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 250px; height: 100px; border: 2px solid rgba(255,255,255,0.4); border-bottom: none; }
 
-        /* אזורי השחקנים על המגרש */
         .hof-formation-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            padding: 20px 0;
-            z-index: 10;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-around; padding: 20px 0; z-index: 10;
         }
 
-        .hof-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px; /* מרווח ברירת מחדל בין שחקנים בשורה */
-            width: 100%;
-        }
+        .hof-row { display: flex; justify-content: center; align-items: center; gap: 15px; width: 100%; }
 
-        /* שחקן על המגרש */
-        .hof-player {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 75px;
-            transition: transform 0.3s ease;
-        }
-        .hof-player:hover { transform: scale(1.1); }
+        .hof-player { display: flex; flex-direction: column; align-items: center; width: 85px; transition: transform 0.3s ease; }
+        .hof-player:hover { transform: scale(1.15) translateY(-5px); z-index: 20;}
         
         .hof-player-shirt {
-            width: 45px;
-            height: 45px;
-            background: var(--bg-silver-matte);
-            border: 2px solid var(--element-navy-gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            margin-bottom: 5px;
-            position: relative;
+            width: 45px; height: 45px; border: 2px solid #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); margin-bottom: 5px; position: relative;
         }
-        /* אייקון חולצה כללי */
-        .hof-player-shirt::after {
-            content: '👕';
-            position: absolute;
-        }
+        .hof-player-shirt::after { content: '👕'; position: absolute; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
 
         .hof-player-name {
-            background: rgba(255,255,255,0.9);
-            color: var(--text-dark);
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 900;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            white-space: nowrap;
-            max-width: 90px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            background: rgba(255,255,255,0.9); color: #000; padding: 3px 6px; border-radius: 4px;
+            font-size: 11px; font-weight: 900; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            white-space: nowrap; max-width: 95px; overflow: hidden; text-overflow: ellipsis;
         }
 
-        /* התאמות מיוחדות למערך 4-4-2 ההתקפי שביקשת */
-        .hof-row.midfield-4-4-2-att {
-            justify-content: space-around; /* מרווח גדול יותר בין שחקני הקישור */
-            padding: 0 10%; /* מקרב קצת את הקיצוניים לאמצע */
-        }
-        /* הסטת שחקני הכנף למעלה (השחקן הראשון והאחרון בשורת הקישור) */
-        .hof-row.midfield-4-4-2-att .hof-player:first-child,
-        .hof-row.midfield-4-4-2-att .hof-player:last-child {
-            transform: translateY(-25px); /* מזיז אותם למעלה לכיוון ההתקפה */
-        }
-        .hof-row.midfield-4-4-2-att .hof-player:hover {
-             transform: scale(1.1) translateY(-25px); /* שומר על האפקט כמרחפים */
-        }
+        /* 4-4-2: שחקני כנף עולים למעלה */
+        .hof-row.midfield-4-4-2 .hof-player:first-child,
+        .hof-row.midfield-4-4-2 .hof-player:last-child { transform: translateY(-25px); }
+        .hof-row.midfield-4-4-2 .hof-player:hover { transform: scale(1.15) translateY(-30px); }
+
+        /* 4-3-3: חלוץ מרכזי עולה למעלה, קיצוניים בצדדים */
+        .hof-row.attack-4-3-3 { gap: 40px; }
+        .hof-row.attack-4-3-3 .hof-player:nth-child(2) { transform: translateY(-15px); } /* החלוץ האמצעי */
+        .hof-row.attack-4-3-3 .hof-player:nth-child(2):hover { transform: scale(1.15) translateY(-20px); }
 
     </style>
 </head>
@@ -2363,7 +2274,7 @@ html, body {
                 <p class="content-desc">ההיסטוריה הלאומית. משחקים בלתי נשכחים, שיאני ההופעות, והכובשים הגדולים במדי התכלת-לבן.</p>
                 <div class="placeholder-box">כאן ישולבו נתוני נבחרת ישראל...</div>
             </div>
-            <div id="tab-4" class="tab-content">
+           <div id="tab-4" class="tab-content">
                 <h2 class="content-header-title">היכל הקבוצות וה-11 הגדולים</h2>
                 <p class="content-desc">שיאי מועדונים, דירוגים, ובחירת הרכבי החלומות וה-11 הגדולים ביותר של כל קבוצה.</p>
                 
@@ -2373,9 +2284,10 @@ html, body {
                             <option value="" disabled selected>בחר קבוצה...</option>
                             <option value="maccabi_tlv">מכבי תל אביב</option>
                             <option value="hapoel_tlv">הפועל תל אביב</option>
-                            <option value="beitar_jerusalem">בית"ר ירושלים</option>
+                            <option value="maccabi_haifa">מכבי חיפה</option>
                             <option value="hapoel_beer_sheva">הפועל באר שבע</option>
                             <option value="maccabi_netanya">מכבי נתניה</option>
+                            <option value="beitar_jerusalem">בית"ר ירושלים</option>
                             <option value="hapoel_haifa">הפועל חיפה</option>
                             <option value="maccabi_petah_tikva">מכבי פתח תקווה</option>
                             <option value="hapoel_petah_tikva">הפועל פתח תקווה</option>
@@ -2393,7 +2305,7 @@ html, body {
                         
                         <div class="hof-formation-layer" id="hof-pitch-layer">
                             <div style="display:flex; justify-content:center; align-items:center; height:100%; color:rgba(255,255,255,0.7); font-size:24px; font-weight:900;">
-                                בחר קבוצה כדי להציג את ה-11 הגדולים שלה
+                                בחר קבוצה מהרשימה כדי להציג את ה-11
                             </div>
                         </div>
                     </div>
@@ -2619,62 +2531,109 @@ html, body {
             setInterval(fetchLiveMatches, 60000); 
         });
 
-        // ==========================================
-        // מנוע היכל הקבוצות (11 הגדולים)
+       // ==========================================
+        // מנוע היכל הקבוצות - 11 הגדולים
         // ==========================================
 
         const hofTeamsData = {
             "maccabi_tlv": {
-                formation: "4-4-2", // מערך בסיס
-                players: [
-                    { name: "שורה אובארוב", pos: "gk" },
-                    { name: "אלי דסה", pos: "def" },
-                    { name: "טל בן חיים", pos: "def" },
-                    { name: "גדי ברומר", pos: "def" },
-                    { name: "אנריק סבוריט", pos: "def" },
-                    { name: "ניר קלינגר", pos: "mid" },
-                    { name: "טל בנין", pos: "mid" },
-                    { name: "איציק זוהר", pos: "mid" },
-                    { name: "אבי נמני", pos: "mid" },
-                    { name: "אלי דריקס", pos: "att" },
-                    { name: "ערן זהבי", pos: "att" }
-                ]
+                formation: "4-4-2", colors: ["#fbbf24", "#1e3a8a"], // צהוב-כחול
+                gk: ["שורה אובארוב"],
+                def: ["אלי דסה", "טל בן חיים", "גדי ברומר", "אנריק סבוריט"],
+                mid: ["ניר קלינגר", "טל בנין", "איציק זוהר", "אבי נמני"],
+                att: ["אלי דריקס", "ערן זהבי"]
             },
             "hapoel_tlv": {
-                formation: "4-4-2",
-                players: [
-                    { name: "אבי רן ז\"ל", pos: "gk" }, // לפי התמונה ששלחת, אבי רן בהפועל ת"א (נראה לי טעות, אבל העתקתי כפי שביקשת)
-                    { name: "אלון חרזי", pos: "def" },
-                    { name: "אריק בנאדו", pos: "def" },
-                    { name: "עבדולאי סק", pos: "def" },
-                    { name: "אדורם קייסי", pos: "def" },
-                    { name: "ריימונדאס ז'וטאוטאס", pos: "mid" },
-                    { name: "אייל ברקוביץ'", pos: "mid" },
-                    { name: "ראובן עטר", pos: "mid" },
-                    { name: "ג'ובאני רוסו", pos: "mid" },
-                    { name: "איגביני יעקובו", pos: "att" },
-                    { name: "יניב קטן", pos: "att" }
-                ]
+                formation: "4-4-2", colors: ["#dc2626", "#ffffff"], // אדום-לבן
+                gk: ["שביט אלימלך"],
+                def: ["פליקס חלפון", "שמעון גרשון", "דגלאס דה סילבה", "יגאל אנטבי"],
+                mid: ["יוסי אבוקסיס", "וואליד באדיר", "שלום תקווה", "גילי ורמוט"],
+                att: ["פיני בלילי", "ערן זהבי"]
             },
-            // שים לב: הכנסתי דוגמה לשתי קבוצות ראשונות לפי הטבלה שלך.
-            // כדי לא להעמיס קוד עצום, תוכל להשלים את שאר הקבוצות באותה תבנית בדיוק לפי הנתונים שלך באקסל!
+            "maccabi_haifa": {
+                formation: "4-3-3", colors: ["#16a34a", "#ffffff"], // ירוק-לבן
+                gk: ["אבי רן ז\"ל"],
+                def: ["אלון חרזי", "אריק בנאדו", "עבדולאי סק", "אדורם קייסי"],
+                mid: ["ריימונדאס ז'וטאוטאס", "אייל ברקוביץ'", "ראובן עטר"],
+                att: ["ג'ובאני רוסו", "איגביני יעקובו", "יניב קטן"] // ימין, אמצע, שמאל
+            },
+            "hapoel_beer_sheva": {
+                formation: "4-3-3", colors: ["#dc2626", "#ffffff"], // אדום-לבן
+                gk: ["אסי רחמים"],
+                def: ["אביתר אילוז", "מיגל ויטור", "שיר צדק", "אופיר דוידזאדה"],
+                mid: ["ג'ון אוגו", "סתיו אלימלך", "אובידיו הובאן"],
+                att: ["מאור מליקסון", "אליניב ברדה", "טוני וואקמה"]
+            },
             "beitar_jerusalem": {
-                formation: "4-3-3",
-                players: [
-                    { name: "איציק קורנפיין", pos: "gk" },
-                    { name: "שמוליק לוי", pos: "def" },
-                    { name: "אהוד כחילה", pos: "def" },
-                    { name: "יגאל אנטבי", pos: "def" },
-                    { name: "יוסי אבוקסיס", pos: "mid" },
-                    { name: "שלום תקווה", pos: "mid" },
-                    { name: "גילי ורמוט", pos: "mid" },
-                    { name: "פיני בלילי", pos: "att" },
-                    { name: "ערן זהבי", pos: "att" },
-                    { name: "יניב קטן", pos: "att" }, // דוגמאות
-                    { name: "איגביני יעקובו", pos: "att" }
-                ]
+                formation: "4-3-3", colors: ["#fbbf24", "#000000"], // צהוב-שחור
+                gk: ["איציק קורנפיין"],
+                def: ["שמוליק לוי", "סרגיי טרטיאק", "אהוד כחילה", "דוד אמסלם"],
+                mid: ["דרק בואטנג", "יוסי אבוקסיס", "עידן טל"],
+                att: ["אורי מלמיליאן", "סטפן שאלוי", "אלי אוחנה"]
+            },
+            "maccabi_netanya": {
+                formation: "4-3-3", colors: ["#fbbf24", "#000000"], // צהוב-שחור
+                gk: ["לירן שטראובר"],
+                def: ["קלמי סבן", "לואיס מרין", "אבי סטרול", "דדי בן דיין"],
+                mid: ["דוד פיזנטי", "אלמוג כהן", "עלי מוחמד"],
+                att: ["ערן לוי", "איתי שכטר", "דיא סבע"]
+            },
+            "hapoel_haifa": {
+                formation: "4-4-2", colors: ["#dc2626", "#000000"], // אדום-שחור
+                gk: ["דודו אוואט"],
+                def: ["עופר טלקר", "רן בן שמעון", "גבריאל תמאש", "נג'ואן גרייב"],
+                mid: ["דימיטרי אוליאנוב", "גוראן מילנקו", "ג'ובאני רוסו", "חנן ממן"],
+                att: ["אמיר תורג'מן", "עדן בן בסט"]
+            },
+            "maccabi_petah_tikva": {
+                formation: "4-4-2", colors: ["#38bdf8", "#ffffff"], // תכלת-לבן
+                gk: ["גולן מלול"],
+                def: ["איסמעיל עאמר", "מוראד מגמאדוב", "תומר בן יוסף", "קובי גנון"],
+                mid: ["גל אלברמן", "עידן טל", "טל בן חיים", "סלים טועמה"],
+                att: ["עומר גולן", "עומר דמארי"]
+            },
+            "hapoel_petah_tikva": {
+                formation: "4-4-2", colors: ["#2563eb", "#ffffff"], // כחול-לבן
+                gk: ["רפי כהן"],
+                def: ["אלי אברבנל", "בני קוזושווילי", "אבי יחיאל", "אדורם קייסי"],
+                mid: ["אלון חזן", "וואליד באדיר", "מיכאל זנדברג", "מנור חסן"],
+                att: ["מוטי קקון", "ניר לוין"]
+            },
+            "bnei_yehuda": {
+                formation: "4-4-2", colors: ["#f97316", "#000000"], // כתום-שחור
+                gk: ["דלה איינוגבה"],
+                def: ["איציק עזוז", "דן מורי", "אביב חדד", "שוקי נגר"],
+                mid: ["פדרו גלבאן", "אסי בלדוט", "אלירן עטר", "משה סיני"],
+                att: ["ניקולאי קודריצקי", "אלון מזרחי"]
+            },
+            "hapoel_kfar_saba": {
+                formation: "4-4-2", colors: ["#16a34a", "#ffffff"], // ירוק-לבן
+                gk: ["אוהד לויטה"],
+                def: ["אייל משומר", "דגלאס דה סילבה", "לירון זרקו", "עמנואל פאפו"],
+                mid: ["אביחי ידין", "גיאורגי דרסיליה", "ג'יזרמו ישראלביץ'", "בן לוז"],
+                att: ["סמואל יבואה", "יניב אברג'יל"]
+            },
+            "bnei_sakhnin": {
+                formation: "4-4-2", colors: ["#dc2626", "#ffffff"], // אדום-לבן
+                gk: ["מחמוד קנדיל"],
+                def: ["עלי עותמאן", "אברהם פאס", "יא יא פטי", "מהראן אבו ריא"],
+                mid: ["עבאס סואן", "חאלד חלאיילה", "אחמד קאסום", "מאור בוזגלו"],
+                att: ["ליאור אסולין ז\"ל", "גבריאל לימה"]
+            },
+            "ms_ashdod": {
+                formation: "4-4-2", colors: ["#dc2626", "#fbbf24"], // צהוב-אדום (בגלל שהעיר מעורבת)
+                gk: ["אופיר מרציאנו"],
+                def: ["טום בן זקן", "טימותי אוואני", "חאתם עבד אלחמיד", "אדיר טובול"],
+                mid: ["משה אוחיון", "ניר ביטון", "דוד רביבו", "יניב עזרן"],
+                att: ["דימיטר מקרייב", "שי הולצמן"]
+            },
+            "ironi_kiryat_shmona": {
+                formation: "4-4-2", colors: ["#2563eb", "#ffffff"], // כחול-לבן
+                gk: ["דני עמוס"],
+                def: ["אלעד גבאי", "איתן טיבי", "שיר צדק", "דושאן מטוביץ'"],
+                mid: ["סאלח חסארמה", "אדריאן רוצ'ט", "רועי קהת", "דוד סולארי"],
+                att: ["שמעון אבוחצירא", "וויאם עמאשה"]
             }
-            // הוסף כאן את שאר הקבוצות לפי המפתח (hapoel_beer_sheva, maccabi_netanya וכו')
         };
 
         function renderHOFTeam() {
@@ -2683,26 +2642,19 @@ html, body {
             if (!teamId || !hofTeamsData[teamId]) return;
 
             const teamData = hofTeamsData[teamId];
-            const formation = teamData.formation;
-            const parts = formation.split('-');
-            const defCount = parseInt(parts[0]);
-            const midCount = parseInt(parts[1]);
-            const attCount = parseInt(parts[2]);
+            
+            // יצירת מדים בצבעי הקבוצה
+            const c1 = teamData.colors[0];
+            const c2 = teamData.colors[1];
+            const shirtStyle = `background: linear-gradient(135deg, ${c1} 50%, ${c2} 50%);`;
 
-            // מיון שחקנים לפי עמדות
-            const goalkeepers = teamData.players.filter(p => p.pos === 'gk');
-            const defenders = teamData.players.filter(p => p.pos === 'def');
-            const midfielders = teamData.players.filter(p => p.pos === 'mid');
-            const attackers = teamData.players.filter(p => p.pos === 'att');
-
-            // פונקציית עזר לבניית שורה
-            const createRowHTML = (playersArray, rowClass = '') => {
+            const createRowHTML = (namesArray, rowClass = '') => {
                 let html = `<div class="hof-row ${rowClass}">`;
-                playersArray.forEach(p => {
+                namesArray.forEach(name => {
                     html += `
                         <div class="hof-player">
-                            <div class="hof-player-shirt"></div>
-                            <div class="hof-player-name">${p.name}</div>
+                            <div class="hof-player-shirt" style="${shirtStyle}"></div>
+                            <div class="hof-player-name">${name}</div>
                         </div>
                     `;
                 });
@@ -2713,22 +2665,24 @@ html, body {
             let pitchHTML = '';
 
             // שורת ההתקפה
-            pitchHTML += createRowHTML(attackers.slice(0, attCount));
+            let attClass = teamData.formation === '4-3-3' ? 'attack-4-3-3' : '';
+            pitchHTML += createRowHTML(teamData.att, attClass);
             
-            // שורת הקישור (נבדוק אם זה ה-4-4-2 ההתקפי שביקשת)
-            let midClass = '';
-            if (formation === '4-4-2') {
-                midClass = 'midfield-4-4-2-att'; // מוסיף את המחלקה המיוחדת שעשינו ב-CSS
-            }
-            pitchHTML += createRowHTML(midfielders.slice(0, midCount), midClass);
+            // שורת הקישור (התקפי ב- 4-4-2)
+            let midClass = teamData.formation === '4-4-2' ? 'midfield-4-4-2' : ''; 
+            pitchHTML += createRowHTML(teamData.mid, midClass);
             
-            // שורת ההגנה
-            pitchHTML += createRowHTML(defenders.slice(0, defCount));
-            
-            // שוער
-            pitchHTML += createRowHTML(goalkeepers.slice(0, 1));
+            // שורת ההגנה והשוער
+            pitchHTML += createRowHTML(teamData.def);
+            pitchHTML += createRowHTML(teamData.gk);
 
-            pitch.innerHTML = pitchHTML;
+            // הפעלת אנימציה קטנה של הופעה
+            pitch.style.opacity = '0';
+            setTimeout(() => {
+                pitch.innerHTML = pitchHTML;
+                pitch.style.transition = 'opacity 0.4s ease';
+                pitch.style.opacity = '1';
+            }, 50);
         }
 
     </script>
