@@ -1329,6 +1329,89 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         @media (max-width: 768px) {
             .boosts-container { grid-template-columns: repeat(2, 1fr); }
         }
+
+/* =========================================
+           עיצוב דף חבילות והפתעות (Gacha)
+           ========================================= */
+        .packs-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 10px;
+        }
+
+        .pack-card {
+            background: linear-gradient(180deg, var(--bg-gray) 0%, #031021 100%);
+            border: 2px solid rgba(255,255,255,0.1); border-radius: 16px;
+            padding: 25px 15px; text-align: center; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s;
+            display: flex; flex-direction: column; align-items: center; cursor: pointer;
+            overflow: hidden;
+        }
+        .pack-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(124,168,86,0.3); border-color: var(--brand-green); }
+        
+        .pack-card.pack-silver { border-color: #cbd5e1; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
+        .pack-card.pack-gold { border-color: #fbbf24; background: linear-gradient(180deg, #452a0a 0%, #1f1202 100%); }
+        .pack-card.pack-diamond { border-color: #a855f7; background: linear-gradient(180deg, #2e1065 0%, #170832 100%); box-shadow: 0 0 20px rgba(168,85,247,0.4);}
+        
+        .pack-icon { margin-bottom: 15px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5)); transition: 0.3s; }
+        .pack-card:hover .pack-icon { transform: scale(1.1); }
+        
+        .pack-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .pack-desc { font-size: 12px; color: #94a3b8; margin-bottom: 20px; font-weight: bold; line-height: 1.4;}
+        .pack-chances { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; width: 100%; text-align: right; font-size: 11px; color: #cbd5e1; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);}
+        .pack-chances span { display: block; margin-bottom: 3px; }
+        .pack-chances span strong { color: #fff; }
+
+        .pack-btn {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; font-weight: 900; font-size: 16px; padding: 12px; width: 100%; border-radius: 8px; transition: 0.2s;
+        }
+        .pack-card:hover .pack-btn { background: var(--brand-green); border-color: var(--brand-green); }
+        .pack-card.pack-gold:hover .pack-btn { background: #fbbf24; color: #000; border-color: #fbbf24;}
+        .pack-card.pack-diamond:hover .pack-btn { background: #a855f7; border-color: #a855f7;}
+
+        /* אנימציית פתיחת חבילה */
+        .pack-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 16, 33, 0.95); z-index: 9999; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.5s;
+        }
+        .pack-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .pack-box {
+            width: 150px; height: 150px; filter: drop-shadow(0 0 20px rgba(124,168,86,0.8));
+            transition: 0.3s; transform: scale(1);
+        }
+        .pack-box.shaking { animation: packShake 0.5s ease-in-out infinite; }
+        .pack-box.opening { transform: scale(1.5); filter: brightness(2) drop-shadow(0 0 50px #fff); opacity: 0; }
+        
+        .pack-flash {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 10px; height: 10px; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 100px 100px #fff; opacity: 0; z-index: 2; pointer-events: none;
+        }
+        .pack-flash.explode { animation: flashExplode 1s ease-out forwards; }
+        
+        .rewards-container { display: flex; gap: 20px; z-index: 3; opacity: 0; transform: translateY(50px); transition: 0.5s; }
+        .rewards-container.show { opacity: 1; transform: translateY(0); }
+        
+        .reward-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a); border: 2px solid #fbbf24;
+            border-radius: 12px; padding: 30px 20px; text-align: center; width: 220px;
+            box-shadow: 0 10px 40px rgba(251,191,36,0.3); animation: floatCard 3s infinite ease-in-out;
+        }
+        .reward-icon { font-size: 60px; margin-bottom: 15px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));}
+        .reward-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 5px; }
+        .reward-desc { font-size: 13px; color: #cbd5e1; }
+        
+        .close-pack-btn { margin-top: 40px; background: var(--brand-green); color: #fff; border: none; padding: 12px 30px; font-size: 18px; font-weight: 900; border-radius: 30px; cursor: pointer; opacity: 0; transition: 0.5s; }
+        .close-pack-btn.show { opacity: 1; }
+
+        @keyframes packShake { 0% { transform: rotate(-5deg) scale(1.1); } 50% { transform: rotate(5deg) scale(1.1); } 100% { transform: rotate(-5deg) scale(1.1); } }
+        @keyframes flashExplode { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(50); } }
+        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        @media (max-width: 1200px) { .packs-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .packs-grid { grid-template-columns: 1fr; } .rewards-container { flex-direction: column; } }
         
     </style>
         
@@ -1452,7 +1535,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         </div>
         <div class="fm-submenu">
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-boosts', this)">בוסטים</div>
-            <div class="fm-sub-item" onclick="event.stopPropagation()">אופציה 2</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-packages', this)">חבילות והפתעות</div>
         </div>
     </div>
 </nav>
@@ -2691,6 +2774,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
 
                     </div>
+
+
+                    
                     </div> </div> </div> 
 
             <aside class="collapsible-live-panel" id="livePanel">
