@@ -464,7 +464,7 @@ html, body {
 /* =========================================
            עיצוב מודל שחקן (חלון צף)
            ========================================= */
-        .hof-player { cursor: pointer; } /* עושה שהשחקנים על המגרש יהיו לחיצים */
+        .hof-player { cursor: pointer; }
 
         .hof-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -478,21 +478,24 @@ html, body {
             width: 90%; max-width: 480px; background: #f8fafc;
             border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             transform: translateY(20px); transition: 0.3s ease; direction: rtl;
+            position: relative; /* חובה למיקום האיקס הסוגר */
         }
         .hof-modal-overlay.active .hof-modal-content { transform: translateY(0); }
+
+        /* סוגר איקס (כמו בפנטזי) */
+        .hof-modal-close {
+            position: absolute; top: 15px; left: 15px; background: none; border: none;
+            color: #cbd5e1; font-size: 28px; cursor: pointer; transition: 0.2s;
+            z-index: 100;
+        }
+        .hof-modal-close:hover { color: #fff; transform: scale(1.1); }
 
         /* חלק עליון כהה */
         .hof-modal-header {
             background: var(--element-navy-gradient); padding: 30px 20px 20px;
-            color: #fff; position: relative; display: flex; align-items: center; gap: 20px;
+            color: #fff; display: flex; align-items: center; gap: 20px;
         }
         
-        .hof-modal-close {
-            position: absolute; top: 15px; left: 15px; background: none; border: none;
-            color: #cbd5e1; font-size: 28px; cursor: pointer; transition: 0.2s;
-        }
-        .hof-modal-close:hover { color: #fff; transform: scale(1.1); }
-
         .hof-modal-avatar {
             width: 100px; height: 100px; border-radius: 50%;
             background: #cbd5e1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>') no-repeat center center / 80%;
@@ -505,7 +508,7 @@ html, body {
         .hof-modal-meta { font-size: 13px; color: #cbd5e1; margin-bottom: 3px; }
         .hof-modal-meta span { color: var(--brand-green); font-weight: 700; }
         
-        /* אזור הטאבים בחלון */
+        /* טאבים */
         .hof-modal-tabs-wrap { background: #0f172a; padding: 0 20px; display: flex; gap: 10px; }
         .hof-modal-tab-btn {
             background: none; border: none; color: #94a3b8; font-weight: 700; font-size: 14px;
@@ -514,25 +517,28 @@ html, body {
         }
         .hof-modal-tab-btn.active { color: #fff; border-bottom-color: var(--brand-green); }
 
-        /* גוף החלון */
+        /* גוף המודל */
         .hof-modal-body { padding: 25px 20px; background: #f8fafc; min-height: 250px; }
         .hof-tab-panel { display: none; animation: fadeIn 0.3s; }
         .hof-tab-panel.active { display: block; }
 
-        /* קופסאות נתונים (מבט כללי) */
+        /* קופסאות נתונים - תיקון סדר: כותרת מעל המספר */
         .hof-stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .hof-stat-card {
             background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
             padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            position: relative; overflow: hidden;
+            position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .hof-stat-card.highlight { background: rgba(124, 168, 86, 0.1); border-color: rgba(124, 168, 86, 0.3); }
-        .hof-stat-val { font-size: 24px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 2px;}
+        
+        .hof-stat-lbl { font-size: 12px; color: #64748b; font-weight: 700; order: 1; margin-bottom: 2px;}
+        .hof-stat-val { font-size: 24px; font-weight: 900; color: var(--element-navy-gradient); order: 2; }
         .hof-stat-card.highlight .hof-stat-val { color: var(--brand-green); font-size: 28px; }
-        .hof-stat-lbl { font-size: 12px; color: #64748b; font-weight: 700; }
+
+        /* אייקונים כמו בפנטזי + סמל תארים מיוחד */
         .hof-stat-icon { position: absolute; top: 10px; left: 10px; font-size: 16px; opacity: 0.3; }
 
-        /* טבלת עונות (פוטבול מנג'ר סטייל) */
+        /* טבלת עונות (מנג'ר סטייל) */
         .hof-seasons-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; }
         .hof-seasons-table th { background: #e2e8f0; color: #475569; padding: 10px 5px; font-weight: 700; }
         .hof-seasons-table td { padding: 12px 5px; border-bottom: 1px solid #e2e8f0; font-weight: 500; color: #0f172a; }
@@ -2739,49 +2745,7 @@ html, body {
             }
         };
 
-        function renderHOFTeam() {
-            const teamId = document.getElementById('hof-team-selector').value;
-            const pitch = document.getElementById('hof-pitch-layer');
-            if (!teamId || !hofTeamsData[teamId]) return;
-
-            const teamData = hofTeamsData[teamId];
-            
-            // יצירת סגנון חולצה: פסים אנכיים של צבעי הקבוצה
-            const c1 = teamData.colors[0];
-            const c2 = teamData.colors[1];
-            const shirtStyle = `background: linear-gradient(90deg, ${c1} 0%, ${c1} 33%, ${c2} 33%, ${c2} 66%, ${c1} 66%, ${c1} 100%);`;
-
-            const createRowHTML = (namesArray, rowClass = '') => {
-                let html = `<div class="hof-row ${rowClass}">`;
-                namesArray.forEach(name => {
-                    // לשוער נשים צבע שונה (אפור/שחור) כדי שיבלוט
-                    const isGK = namesArray.length === 1 && teamData.gk.includes(name);
-                    const finalStyle = isGK ? `background: #333;` : shirtStyle;
-                    
-                    html += `
-                        <div class="hof-player" onclick="openHofModal('${name}', '${teamId}')">
-    <div class="hof-player-shirt" style="${finalStyle}"></div>
-    <div class="hof-player-name">${name}</div>
-</div>
-                    `;
-                });
-                html += `</div>`;
-                return html;
-            };
-
-            // ... שאר הפונקציה (חישוב המערך והזרקה ל-HTML) נשארת אותו דבר
-            let pitchHTML = '';
-            let attClass = teamData.formation === '4-3-3' ? 'attack-4-3-3' : '';
-            pitchHTML += createRowHTML(teamData.att, attClass);
-            let midClass = teamData.formation === '4-4-2' ? 'midfield-4-4-2' : ''; 
-            pitchHTML += createRowHTML(teamData.mid, midClass);
-            pitchHTML += createRowHTML(teamData.def);
-            pitchHTML += createRowHTML(teamData.gk);
-
-            pitch.innerHTML = pitchHTML;
-        }
-
-// ==========================================
+        // ==========================================
         // פונקציות לחלון הצף של שחקן (היכל התהילה)
         // ==========================================
         
@@ -2795,8 +2759,8 @@ html, body {
         };
 
         function openHofModal(playerName, teamId) {
-            // כרגע הנתונים הם דמו (תוכל להוסיף אותם לאובייקט hofTeamsData בעתיד)
-            // יצרתי לך פה מנגנון חכם ששם נתונים אקראיים יפים כדי שתראה איך זה עובד!
+            // הנתונים כרגע הם דמו (תוכל להוסיף אותם לאובייקט hofTeamsData בעתיד)
+            // יצרתי פה נתונים דמו יפים של איציק זוהר כדי שתראה איך הכל עובד!
             
             document.getElementById('hof-modal-name').innerText = playerName;
             document.getElementById('hof-modal-team').innerText = hofTeamNamesHebrew[teamId] || teamId;
@@ -2810,20 +2774,30 @@ html, body {
             if(teamData.att.includes(playerName)) posName = "חלוץ";
             document.getElementById('hof-modal-pos').innerText = posName;
 
-            // נתונים דמו (כדי להמחיש לך את העיצוב עד שתזין נתוני אמת)
-            const demoApps = Math.floor(Math.random() * 200) + 50;
-            const demoGoals = posName === 'שוער' ? 0 : Math.floor(Math.random() * 60);
-            const demoAssists = posName === 'שוער' ? 0 : Math.floor(Math.random() * 40);
-            
-            document.getElementById('hof-modal-years').innerText = "199" + Math.floor(Math.random()*9) + " - 200" + Math.floor(Math.random()*9);
-            document.getElementById('hof-stat-apps').innerText = demoApps;
-            document.getElementById('hof-stat-goals').innerText = demoGoals;
-            document.getElementById('hof-stat-assists').innerText = demoAssists;
-            document.getElementById('hof-stat-titles').innerText = "2 אליפויות, גביע המדינה";
+            // נתונים דמו של איציק זוהר
+            if(playerName === "איציק זוהר") {
+                document.getElementById('hof-modal-years').innerText = "1997 - 2002";
+                document.getElementById('hof-stat-apps').innerText = "83";
+                document.getElementById('hof-stat-goals').innerText = "22";
+                document.getElementById('hof-stat-assists').innerText = "30";
+                document.getElementById('hof-stat-titles').innerText = "2 אליפויות, גביע המדינה";
+            } else {
+                // נתונים אקראיים יפים לשאר השחקנים
+                const demoApps = Math.floor(Math.random() * 200) + 50;
+                const demoGoals = posName === 'שוער' ? 0 : Math.floor(Math.random() * 60);
+                const demoAssists = posName === 'שוער' ? 0 : Math.floor(Math.random() * 40);
+                
+                document.getElementById('hof-modal-years').innerText = "199" + Math.floor(Math.random()*9) + " - 200" + Math.floor(Math.random()*9);
+                document.getElementById('hof-stat-apps').innerText = demoApps;
+                document.getElementById('hof-stat-goals').innerText = demoGoals;
+                document.getElementById('hof-stat-assists').innerText = demoAssists;
+                document.getElementById('hof-stat-titles').innerText = "אליפות, גביע המדינה";
+            }
 
-            // יצירת טבלת עונות דמו
+            // יצירת טבלת עונות - תיקון: סידור יורד מהעונה החדשה לישנה
             let seasonsHtml = '';
-            for(let year = 1998; year <= 2005; year++) {
+            // מתחילים מהעונה החדשה ביותר ויורדים
+            for(let year = 2005; year >= 1998; year--) {
                 seasonsHtml += `
                     <tr>
                         <td>${year}/${year+1}</td>
@@ -2835,7 +2809,7 @@ html, body {
             }
             document.getElementById('hof-seasons-tbody').innerHTML = seasonsHtml;
 
-            // פתיחת החלון
+            // פתיחת המודל
             document.getElementById('hof-modal').classList.add('active');
         }
 
@@ -2852,6 +2826,51 @@ html, body {
             document.querySelectorAll('.hof-tab-panel').forEach(panel => panel.classList.remove('active'));
             document.getElementById('hof-tab-' + tabId).classList.add('active');
         }
+
+        function renderHOFTeam() {
+            const teamId = document.getElementById('hof-team-selector').value;
+            const pitch = document.getElementById('hof-pitch-layer');
+            if (!teamId || !hofTeamsData[teamId]) return;
+
+            const teamData = hofTeamsData[teamId];
+            
+            // יצירת חולצה לפי צבעי הקבוצה
+            const c1 = teamData.colors[0];
+            const c2 = teamData.colors[1];
+            const shirtStyle = `background: linear-gradient(135deg, ${c1} 50%, ${c2} 50%);`;
+
+            const createRowHTML = (namesArray, rowClass = '') => {
+                let html = `<div class="hof-row ${rowClass}">`;
+                namesArray.forEach(name => {
+                    // תיקון: הוספת onclick ו-onKeyUp כדי להפוך את השחקן ללחיץ!
+                    html += `
+                        <div class="hof-player" onclick="openHofModal('${name}', '${teamId}')" onKeyUp="if(event.keyCode==13) openHofModal('${name}', '${teamId}')" tabindex="0">
+                            <div class="hof-player-shirt" style="${shirtStyle}"></div>
+                            <div class="hof-player-name">${name}</div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                return html;
+            };
+
+            // ... שאר הפונקציה (חישוב המערך והזרקה ל-HTML) נשארת אותו דבר
+            let pitchHTML = '';
+            let attClass = teamData.formation === '4-3-3' ? 'attack-4-3-3' : '';
+            pitchHTML += createRowHTML(teamData.att, attClass);
+            let midClass = teamData.formation === '4-4-2' ? 'midfield-4-4-2' : ''; 
+            pitchHTML += createRowHTML(teamData.mid, midClass);
+            pitchHTML += createRowHTML(teamData.def);
+            pitchHTML += createRowHTML(teamData.gk);
+
+            // הפעלת אנימציה של הופעה
+            pitch.style.opacity = '0';
+            setTimeout(() => {
+                pitch.innerHTML = pitchHTML;
+                pitch.style.transition = 'opacity 0.4s ease';
+                pitch.style.opacity = '1';
+            }, 50);
+        }
         
 </script>
 <div id="hof-modal" class="hof-modal-overlay">
@@ -2861,10 +2880,10 @@ html, body {
             <div class="hof-modal-header">
                 <div class="hof-modal-avatar" id="hof-modal-img"></div>
                 <div class="hof-modal-info">
-                    <div class="hof-modal-name" id="hof-modal-name">שם השחקן</div>
-                    <div class="hof-modal-meta">עמדה: <span id="hof-modal-pos">קשר התקפי</span></div>
+                    <div class="hof-modal-name" id="hof-modal-name">איציק זוהר</div>
+                    <div class="hof-modal-meta">عמדה: <span id="hof-modal-pos">קשר התקפי</span></div>
                     <div class="hof-modal-meta">קבוצה: <span id="hof-modal-team">מכבי תל אביב</span></div>
-                    <div class="hof-modal-meta">שנים במועדון: <span id="hof-modal-years">1990-2000</span></div>
+                    <div class="hof-modal-meta">שנים במועדון: <span id="hof-modal-years">1997 - 2002</span></div>
                 </div>
             </div>
 
@@ -2878,23 +2897,23 @@ html, body {
                     <div class="hof-stats-grid">
                         <div class="hof-stat-card highlight" style="grid-column: span 2;">
                             <div class="hof-stat-icon">⭐</div>
-                            <div class="hof-stat-val" id="hof-stat-apps">0</div>
                             <div class="hof-stat-lbl">הופעות במועדון</div>
+                            <div class="hof-stat-val" id="hof-stat-apps">83</div>
                         </div>
                         <div class="hof-stat-card">
                             <div class="hof-stat-icon">⚽</div>
-                            <div class="hof-stat-val" id="hof-stat-goals">0</div>
                             <div class="hof-stat-lbl">שערים</div>
+                            <div class="hof-stat-val" id="hof-stat-goals">22</div>
                         </div>
                         <div class="hof-stat-card">
                             <div class="hof-stat-icon">👟</div>
-                            <div class="hof-stat-val" id="hof-stat-assists">0</div>
                             <div class="hof-stat-lbl">בישולים</div>
+                            <div class="hof-stat-val" id="hof-stat-assists">30</div>
                         </div>
                         <div class="hof-stat-card" style="grid-column: span 2;">
                             <div class="hof-stat-icon">🏆</div>
-                            <div class="hof-stat-val" id="hof-stat-titles" style="font-size:18px;">-</div>
                             <div class="hof-stat-lbl">תארים במועדון</div>
+                            <div class="hof-stat-val" id="hof-stat-titles" style="font-size:18px;">2 אליפויות, גביע המדינה</div>
                         </div>
                     </div>
                 </div>
