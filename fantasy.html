@@ -1248,106 +1248,105 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         }
 
         /* =========================================
-           עיצוב חנות בוסטים
+           עיצוב חנות בוסטים - תצוגת שורות אופקית
            ========================================= */
         .boosts-container {
             display: flex;
-            justify-content: center;
-            align-items: stretch;
-            gap: 20px;
-            padding: 10px 0;
+            flex-direction: column; /* מסדר את הקוביות בשורות אחת מתחת לשנייה */
+            gap: 15px;
+            padding: 10px 0 20px 0;
             height: 100%;
+            overflow-y: auto; /* גלילה פנימית אם המסך קטן */
+            padding-left: 10px;
         }
         
-        .boosts-col {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex: 1;
-        }
-        
-        .boosts-col.center {
-            flex: 1.2; /* הקובייה האמצעית רחבה יותר */
-            justify-content: center;
-        }
+        .boosts-container::-webkit-scrollbar { width: 6px; }
+        .boosts-container::-webkit-scrollbar-thumb { background: rgba(124,168,86,0.3); border-radius: 10px; }
 
         .boost-card {
             background: var(--element-navy-gradient);
             border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 25px 15px;
-            text-align: center;
+            padding: 15px 25px;
             position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* מסדר ימין (טקסט) ושמאל (כפתור) */
             align-items: center;
             justify-content: space-between;
-            flex: 1;
+            gap: 20px;
             overflow: hidden;
+            flex-shrink: 0;
         }
-        
+
         /* הילה פנימית לקוביות */
         .boost-card::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(124,168,86,0.1) 0%, transparent 60%);
+            background: radial-gradient(circle, rgba(124,168,86,0.05) 0%, transparent 60%);
             pointer-events: none; z-index: 1;
         }
 
         .boost-card:hover {
-            transform: translateY(-5px);
+            transform: translateX(-5px); /* האפקט זז הצידה ולא למעלה */
             border-color: var(--brand-green);
-            box-shadow: 0 15px 35px rgba(124, 168, 86, 0.25);
+            box-shadow: 5px 10px 20px rgba(124, 168, 86, 0.2);
         }
 
         .boost-card.premium {
-            border: 2px solid #fbbf24; /* מסגרת זהב */
+            border: 2px solid #fbbf24;
             background: linear-gradient(145deg, #0a2e57 0%, #1a3020 100%);
-            padding: 40px 20px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3), inset 0 0 20px rgba(251, 191, 36, 0.1);
-            animation: floatPremium 4s ease-in-out infinite;
-        }
-        
-        @keyframes floatPremium {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); box-shadow: 0 25px 40px rgba(0,0,0,0.3), inset 0 0 30px rgba(251, 191, 36, 0.2); }
+            padding: 20px 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3), inset 0 0 15px rgba(251, 191, 36, 0.1);
         }
 
-        .boost-card.premium:hover { border-color: #f59e0b; animation: none; transform: scale(1.02); }
+        .boost-card.premium:hover { border-color: #f59e0b; transform: translateX(-5px) scale(1.01); }
 
-        .b-tag {
-            background: var(--brand-green); color: #fff; padding: 4px 15px; border-radius: 20px;
-            font-size: 11px; font-weight: 900; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); z-index: 2;
+        /* צד ימין - מידע ואייקון */
+        .b-card-right { display: flex; align-items: center; gap: 20px; flex: 1; z-index: 2; }
+
+        .b-icon {
+            width: 70px; height: 70px; background: rgba(255,255,255,0.05); border-radius: 12px;
+            display: flex; justify-content: center; align-items: center; flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.1);
         }
+        .boost-card.premium .b-icon { width: 85px; height: 85px; background: rgba(251, 191, 36, 0.05); border-color: rgba(251, 191, 36, 0.2); }
+
+        .b-info { display: flex; flex-direction: column; align-items: flex-start; text-align: right; }
+        .b-header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
+
+        .b-tag { background: var(--brand-green); color: #fff; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .boost-card.premium .b-tag { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #000; }
 
-        .b-title { color: #fff; font-size: 22px; font-weight: 900; margin-bottom: 10px; z-index: 2; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .boost-card.premium .b-title { font-size: 28px; }
+        .b-title { color: #fff; font-size: 20px; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .boost-card.premium .b-title { font-size: 24px; color: #fbbf24; }
 
-        .b-icon { font-size: 50px; margin-bottom: 15px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); z-index: 2; line-height: 1;}
-        .boost-card.premium .b-icon { font-size: 70px; filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.6)); }
+        .b-desc { color: #cbd5e1; font-size: 13px; line-height: 1.4; max-width: 90%;}
+        .boost-card.premium .b-desc { font-size: 14px; color: #f8fafc; }
 
-        .b-desc { color: #cbd5e1; font-size: 13px; margin-bottom: 25px; line-height: 1.5; z-index: 2; padding: 0 10px;}
-        .boost-card.premium .b-desc { font-size: 15px; color: #f8fafc; }
+        /* צד שמאל - כפתור רכישה */
+        .b-card-left { flex-shrink: 0; z-index: 2; }
 
         .b-price-btn {
             background: linear-gradient(145deg, #7ca856, #5d823e); border: 2px solid #8fc964;
-            padding: 12px 20px; font-size: 18px; font-weight: 900; color: #fff; border-radius: 30px;
-            cursor: pointer; transition: 0.3s; width: 85%; box-shadow: 0 4px 15px rgba(124,168,86,0.4); z-index: 2;
+            padding: 10px 25px; font-size: 18px; font-weight: 900; color: #fff; border-radius: 30px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(124,168,86,0.4); min-width: 160px;
         }
         .b-price-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(124,168,86,0.6); }
         
         .boost-card.premium .b-price-btn {
-            font-size: 22px; padding: 15px 20px; width: 95%;
+            font-size: 20px; padding: 12px 30px; min-width: 180px;
             background: linear-gradient(145deg, #fbbf24, #d97706); border-color: #fcd34d; color: #000;
             box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4);
         }
         .boost-card.premium .b-price-btn:hover { box-shadow: 0 8px 25px rgba(251, 191, 36, 0.6); }
 
-        @media (max-width: 1200px) {
-            .boosts-container { flex-direction: column; height: auto; }
-            .boosts-col { width: 100%; }
+        @media (max-width: 768px) {
+            .boost-card { flex-direction: column; text-align: center; gap: 15px;}
+            .b-card-right { flex-direction: column; text-align: center; }
+            .b-info { align-items: center; text-align: center; }
+            .b-desc { max-width: 100%; }
+            .b-card-left, .b-price-btn { width: 100%; }
         }
         
     </style>
@@ -2652,7 +2651,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
 
-                    <div id="tab-boosts" class="fm-tab">
+                   <div id="tab-boosts" class="fm-tab">
                         <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
                             חנות בוסטים: שדרוגים טקטיים
@@ -2660,87 +2659,84 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
                         <div class="boosts-container">
                             
-                            <div class="boosts-col">
-                                <div class="boost-card">
-                                    <div class="b-tag">מנהיגות על</div>
-                                    <div class="b-title">סופר קפטן</div>
+                            <div class="boost-card">
+                                <div class="b-card-right">
                                     <div class="b-icon">
-                                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="rgba(124,168,86,0.15)" stroke="var(--brand-green)" stroke-width="2"></path>
-                                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#fff" stroke="none"></polygon>
-                                        </svg>
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="rgba(124,168,86,0.15)" stroke="var(--brand-green)" stroke-width="2"></path><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#fff" stroke="none"></polygon></svg>
                                     </div>
-                                    <div class="b-desc">הכפלת נקודות הקפטן פי 4 למחזור הנוכחי. שובר שוויון עוצמתי.</div>
+                                    <div class="b-info">
+                                        <div class="b-header-row"><div class="b-tag">מנהיגות על</div><div class="b-title">סופר קפטן</div></div>
+                                        <div class="b-desc">הכפלת נקודות הקפטן פי 4 למחזור הנוכחי. שובר שוויון עוצמתי נגד יריבות צמודות.</div>
+                                    </div>
+                                </div>
+                                <div class="b-card-left">
                                     <button class="b-price-btn" onclick="buyBoost('super_captain', 5000000)">5,000,000 ₪</button>
                                 </div>
-                                <div class="boost-card">
-                                    <div class="b-tag">הגנת בטון</div>
-                                    <div class="b-title">להחנות את האוטובוס</div>
-                                   <div class="b-icon">
-                                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="rgba(255,255,255,0.05)"></rect>
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="var(--brand-green)" stroke-width="2"></path>
-                                            <line x1="3" y1="15" x2="21" y2="15"></line>
-                                            <line x1="8" y1="11" x2="8" y2="22"></line>
-                                            <line x1="16" y1="11" x2="16" y2="22"></line>
-                                            <path d="M12 7v4" stroke="#fff" stroke-width="2"></path>
-                                        </svg>
+                            </div>
+
+                            <div class="boost-card">
+                                <div class="b-card-right">
+                                    <div class="b-icon">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="rgba(255,255,255,0.05)"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="var(--brand-green)" stroke-width="2"></path><line x1="3" y1="15" x2="21" y2="15"></line><line x1="8" y1="11" x2="8" y2="22"></line><line x1="16" y1="11" x2="16" y2="22"></line><path d="M12 7v4" stroke="#fff" stroke-width="2"></path></svg>
                                     </div>
-                                    <div class="b-desc">בונוס רשת נקייה אוטומטי לכל שחקני ההגנה והשוער במחזור הנוכחי.</div>
+                                    <div class="b-info">
+                                        <div class="b-header-row"><div class="b-tag">הגנת בטון</div><div class="b-title">להחנות את האוטובוס</div></div>
+                                        <div class="b-desc">בונוס רשת נקייה אוטומטי לכל שחקני ההגנה והשוער במחזור הנוכחי, ללא תלות בתוצאה במציאות.</div>
+                                    </div>
+                                </div>
+                                <div class="b-card-left">
                                     <button class="b-price-btn" onclick="buyBoost('park_bus', 6000000)">6,000,000 ₪</button>
                                 </div>
                             </div>
                             
-                            <div class="boosts-col center">
-                                <div class="boost-card premium">
-                                    <div class="b-tag">עומק סגל</div>
-                                    <div class="b-title">ספסל פעיל</div>
+                            <div class="boost-card premium">
+                                <div class="b-card-right">
                                     <div class="b-icon">
-                                        <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 15px rgba(251,191,36,0.5));">
-                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="9" cy="7" r="4" fill="rgba(251,191,36,0.15)"></circle>
-                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                            <polyline points="12 4 12 10 15 7" stroke="#fff" stroke-width="2"></polyline>
-                                            <polyline points="8 4 8 10 5 7" stroke="#fff" stroke-width="2"></polyline>
-                                        </svg>
+                                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 5px rgba(251,191,36,0.5));"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4" fill="rgba(251,191,36,0.15)"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path><polyline points="12 4 12 10 15 7" stroke="#fff" stroke-width="2"></polyline><polyline points="8 4 8 10 5 7" stroke="#fff" stroke-width="2"></polyline></svg>
                                     </div>
-                                    <div class="b-desc">מטורף! כל 9 שחקני הספסל שלך מקבלים נקודות ומצטרפים לניקוד הקבוצתי הכולל במחזור הקרוב.</div>
+                                    <div class="b-info">
+                                        <div class="b-header-row"><div class="b-tag">עומק סגל פרימיום</div><div class="b-title">ספסל פעיל</div></div>
+                                        <div class="b-desc">הנשק הסודי שלך! כל 9 שחקני הספסל מקבלים נקודות ומצטרפים לניקוד הקבוצתי הכולל במחזור הקרוב.</div>
+                                    </div>
+                                </div>
+                                <div class="b-card-left">
                                     <button class="b-price-btn" onclick="buyBoost('bench_boost', 10000000)">10,000,000 ₪</button>
                                 </div>
                             </div>
                             
-                            <div class="boosts-col">
-                                <div class="boost-card">
-                                    <div class="b-tag">מגנה טקטית</div>
-                                    <div class="b-title">חסינות מלאה</div>
+                            <div class="boost-card">
+                                <div class="b-card-right">
                                     <div class="b-icon">
-                                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="2"></circle>
-                                            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" stroke="#ef4444" stroke-width="2"></line>
-                                            <rect x="9" y="9" width="6" height="6" rx="1" fill="#fff" stroke="none" transform="rotate(45 12 12)"></rect>
-                                        </svg>
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="2"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07" stroke="#ef4444" stroke-width="2"></line><rect x="9" y="9" width="6" height="6" rx="1" fill="#fff" stroke="none" transform="rotate(45 12 12)"></rect></svg>
                                     </div>
-                                    <div class="b-desc">ביטול כל הנקודות השליליות הנצברות במחזור הקרוב (כרטיסים, עצמי וכו').</div>
+                                    <div class="b-info">
+                                        <div class="b-header-row"><div class="b-tag">מגנה טקטית</div><div class="b-title">חסינות מלאה</div></div>
+                                        <div class="b-desc">ביטול כל הנקודות השליליות הנצברות במחזור הקרוב (כרטיסים צהובים, אדומים, ושערים עצמיים).</div>
+                                    </div>
+                                </div>
+                                <div class="b-card-left">
                                     <button class="b-price-btn" onclick="buyBoost('immunity', 5000000)">5,000,000 ₪</button>
                                 </div>
-                                <div class="boost-card">
-                                    <div class="b-tag">התקפה קטלנית</div>
-                                    <div class="b-title">יום חג לחלוצים</div>
+                            </div>
+
+                            <div class="boost-card">
+                                <div class="b-card-right">
                                     <div class="b-icon">
-                                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" fill="rgba(124,168,86,0.2)" stroke="var(--brand-green)" stroke-width="2"></path>
-                                            <circle cx="12" cy="16" r="3" fill="#fff" stroke="none"></circle>
-                                            <circle cx="12" cy="16" r="7" stroke="#fff" stroke-dasharray="2 3" stroke-width="2"></circle>
-                                        </svg>
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" fill="rgba(124,168,86,0.2)" stroke="var(--brand-green)" stroke-width="2"></path><circle cx="12" cy="16" r="3" fill="#fff" stroke="none"></circle><circle cx="12" cy="16" r="7" stroke="#fff" stroke-dasharray="2 3" stroke-width="2"></circle></svg>
                                     </div>
-                                    <div class="b-desc">נקודות כפולות לכל שער שמובקע על ידי שחקני ההתקפה והקישור שלך.</div>
+                                    <div class="b-info">
+                                        <div class="b-header-row"><div class="b-tag">התקפה קטלנית</div><div class="b-title">יום חג לחלוצים</div></div>
+                                        <div class="b-desc">נקודות כפולות לכל שער שמובקע על ידי שחקני ההתקפה והקישור של הקבוצה שלך.</div>
+                                    </div>
+                                </div>
+                                <div class="b-card-left">
                                     <button class="b-price-btn" onclick="buyBoost('goal_fest', 6000000)">6,000,000 ₪</button>
                                 </div>
                             </div>
 
                         </div>
                     </div>
+                   
                     </div> </div> </div>
             <aside class="collapsible-live-panel" id="livePanel">
             <div class="panel-header" id="live-panel-header">
