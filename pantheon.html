@@ -251,10 +251,20 @@ html, body {
 
         .hof-controls {
             display: flex;
-            justify-content: flex-start; /* בצד ימין (בגלל שזה RTL) */
+            justify-content: space-between; /* מפצל אותם: רשימה מימין, סמל משמאל */
+            align-items: center;
             width: 100%;
             max-width: 800px;
             padding: 0;
+            min-height: 60px; /* שומר על גובה קבוע כדי שהמגרש לא יקפוץ */
+        }
+
+        .hof-team-logo {
+            height: 55px; /* גודל הסמל */
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); /* הצללה יפה שנותנת עומק */
+            transition: all 0.3s ease;
         }
 
         .hof-team-select {
@@ -2406,6 +2416,8 @@ html, body {
                             <option value="ms_ashdod">מ.ס אשדוד</option>
                             <option value="ironi_kiryat_shmona">עירוני קריית שמונה</option>
                         </select>
+                        
+                        <img id="hof-team-logo" class="hof-team-logo" src="" alt="סמל קבוצה" style="display: none;">
                     </div>
 
                     <div class="hof-pitch">
@@ -2827,12 +2839,39 @@ html, body {
             document.getElementById('hof-tab-' + tabId).classList.add('active');
         }
 
+        // מילון סמלי קבוצות (שואב ישירות מה-API המקורי)
+        const hofTeamLogos = {
+            "maccabi_tlv": "https://media.api-sports.io/football/teams/163.png",
+            "hapoel_tlv": "https://media.api-sports.io/football/teams/166.png",
+            "maccabi_haifa": "https://media.api-sports.io/football/teams/164.png",
+            "hapoel_beer_sheva": "https://media.api-sports.io/football/teams/168.png",
+            "beitar_jerusalem": "https://media.api-sports.io/football/teams/162.png",
+            "maccabi_netanya": "https://media.api-sports.io/football/teams/171.png",
+            "hapoel_haifa": "https://media.api-sports.io/football/teams/169.png",
+            "maccabi_petah_tikva": "https://media.api-sports.io/football/teams/172.png",
+            "hapoel_petah_tikva": "https://media.api-sports.io/football/teams/175.png",
+            "bnei_yehuda": "https://media.api-sports.io/football/teams/174.png",
+            "hapoel_kfar_saba": "https://media.api-sports.io/football/teams/173.png",
+            "bnei_sakhnin": "https://media.api-sports.io/football/teams/170.png",
+            "ms_ashdod": "https://media.api-sports.io/football/teams/167.png",
+            "ironi_kiryat_shmona": "https://media.api-sports.io/football/teams/165.png"
+        };
+
         function renderHOFTeam() {
             const teamId = document.getElementById('hof-team-selector').value;
             const pitch = document.getElementById('hof-pitch-layer');
             if (!teamId || !hofTeamsData[teamId]) return;
 
             const teamData = hofTeamsData[teamId];
+
+            // הצגת הסמל של הקבוצה מצד שמאל
+            const logoImg = document.getElementById('hof-team-logo');
+            if (hofTeamLogos[teamId]) {
+                logoImg.src = hofTeamLogos[teamId];
+                logoImg.style.display = 'block';
+            } else {
+                logoImg.style.display = 'none';
+            }
             
             // יצירת חולצה לפי צבעי הקבוצה
             const c1 = teamData.colors[0];
