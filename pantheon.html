@@ -2839,23 +2839,25 @@ html, body {
             document.getElementById('hof-tab-' + tabId).classList.add('active');
         }
 
-        // מילון סמלי קבוצות מתוקן (תמונות PNG איכותיות משרתי כדורגל ייעודיים ללא חסימות)
+        // מילון סמלי קבוצות - לוקח תמונות ישירות מתיקיית logos אצלך בפרויקט
         const hofTeamLogos = {
-            "maccabi_tlv": "https://images.fotmob.com/image_resources/logo/teamlogo/9811.png",
-            "hapoel_tlv": "https://images.fotmob.com/image_resources/logo/teamlogo/9812.png",
-            "maccabi_haifa": "https://images.fotmob.com/image_resources/logo/teamlogo/9810.png",
-            "hapoel_beer_sheva": "https://images.fotmob.com/image_resources/logo/teamlogo/9809.png",
-            "beitar_jerusalem": "https://images.fotmob.com/image_resources/logo/teamlogo/9808.png",
-            "maccabi_netanya": "https://images.fotmob.com/image_resources/logo/teamlogo/9814.png",
-            "hapoel_haifa": "https://images.fotmob.com/image_resources/logo/teamlogo/9816.png",
-            "maccabi_petah_tikva": "https://images.fotmob.com/image_resources/logo/teamlogo/9805.png",
-            "hapoel_petah_tikva": "https://images.fotmob.com/image_resources/logo/teamlogo/9804.png",
-            "bnei_yehuda": "https://images.fotmob.com/image_resources/logo/teamlogo/9806.png",
-            "hapoel_kfar_saba": "https://images.fotmob.com/image_resources/logo/teamlogo/9813.png",
-            "bnei_sakhnin": "https://images.fotmob.com/image_resources/logo/teamlogo/10226.png",
-            "ms_ashdod": "https://images.fotmob.com/image_resources/logo/teamlogo/9807.png",
-            "ironi_kiryat_shmona": "https://images.fotmob.com/image_resources/logo/teamlogo/10225.png"
+            "maccabi_tlv": "logos/maccabi_tlv.png",
+            "hapoel_tlv": "logos/hapoel_tlv.png",
+            "maccabi_haifa": "logos/maccabi_haifa.png",
+            "hapoel_beer_sheva": "logos/hapoel_beer_sheva.png",
+            "beitar_jerusalem": "logos/beitar_jerusalem.png",
+            "maccabi_netanya": "logos/maccabi_netanya.png",
+            "hapoel_haifa": "logos/hapoel_haifa.png",
+            "maccabi_petah_tikva": "logos/maccabi_petah_tikva.png",
+            "hapoel_petah_tikva": "logos/hapoel_petah_tikva.png",
+            "bnei_yehuda": "logos/bnei_yehuda.png",
+            "hapoel_kfar_saba": "logos/hapoel_kfar_saba.png",
+            "bnei_sakhnin": "logos/bnei_sakhnin.png",
+            "ms_ashdod": "logos/ms_ashdod.png",
+            "ironi_kiryat_shmona": "logos/ironi_kiryat_shmona.png"
         };
+
+    
         function renderHOFTeam() {
             const teamId = document.getElementById('hof-team-selector').value;
             const pitch = document.getElementById('hof-pitch-layer');
@@ -2868,6 +2870,11 @@ html, body {
             if (hofTeamLogos[teamId]) {
                 logoImg.src = hofTeamLogos[teamId];
                 logoImg.style.display = 'block';
+                
+                // מונע תמונה שבורה - אם לא שמת תמונה בתיקייה, זה פשוט יסתיר אותה בינתיים
+                logoImg.onerror = function() {
+                    this.style.display = 'none';
+                };
             } else {
                 logoImg.style.display = 'none';
             }
