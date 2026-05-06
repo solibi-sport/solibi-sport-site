@@ -2775,8 +2775,74 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
                     </div>
 
+<div id="tab-packages" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                            מחלקת חבילות והפתעות
+                        </h2>
 
-                    
+                        <div class="packs-grid">
+                            
+                            <div class="pack-card" onclick="openGachaPack('bronze', 2000000)">
+                                <div class="pack-icon">
+                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="1"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(205, 127, 50, 0.2)" stroke-width="2"></path></svg>
+                                </div>
+                                <div class="pack-title" style="color: #cd7f32;">ארגז בסיסי</div>
+                                <div class="pack-desc">חבילת פתיחה למנג'ר המתחיל. סיכוי נמוך להפתעות גדולות.</div>
+                                <div class="pack-chances">
+                                    <span><strong>80%</strong> - החזר כספי חלקי (1M)</span>
+                                    <span><strong>15%</strong> - קלף חילוף חינם</span>
+                                    <span><strong>5%</strong> - בוסט רגיל אקראי</span>
+                                </div>
+                                <button class="pack-btn">פתח ב-₪2.0M</button>
+                            </div>
+
+                            <div class="pack-card pack-silver" onclick="openGachaPack('silver', 5000000)">
+                                <div class="pack-icon">
+                                    <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(203, 213, 225, 0.2)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="1"></polyline></svg>
+                                </div>
+                                <div class="pack-title" style="color: #e2e8f0;">מארז מקצוען</div>
+                                <div class="pack-desc">הסיכויים עולים! יותר כסף, יותר חילופים והזדמנות לבוסטים.</div>
+                                <div class="pack-chances">
+                                    <span><strong>60%</strong> - כסף מזומן (2M-4M)</span>
+                                    <span><strong>25%</strong> - 2 קלפי חילוף חינם</span>
+                                    <span><strong>15%</strong> - בוסט אסטרטגי יקר</span>
+                                </div>
+                                <button class="pack-btn">פתח ב-₪5.0M</button>
+                            </div>
+
+                            <div class="pack-card pack-gold" onclick="openGachaPack('gold', 12000000)">
+                                <div class="pack-icon">
+                                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" style="filter: drop-shadow(0 0 10px rgba(251,191,36,0.6));"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(251, 191, 36, 0.3)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="2"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                </div>
+                                <div class="pack-title" style="color: #fbbf24;">כספת עילית</div>
+                                <div class="pack-desc">מובטח: לפחות בוסט אחד או פריט קוסמטיקה למועדון!</div>
+                                <div class="pack-chances">
+                                    <span><strong>40%</strong> - בוסט פרימיום (ספסל פעיל)</span>
+                                    <span><strong>40%</strong> - כסף מזומן מטורף (15M)</span>
+                                    <span><strong>20%</strong> - פריט קוסמטי (VIP)</span>
+                                </div>
+                                <button class="pack-btn">פתח ב-₪12.0M</button>
+                            </div>
+
+                            <div class="pack-card pack-diamond" onclick="openGachaPack('diamond', 25000000)">
+                                <div class="pack-icon">
+                                    <svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="#d8b4fe" stroke-width="2" style="filter: drop-shadow(0 0 15px rgba(216,180,254,0.8));"><polygon points="12 2 2 7 12 12 22 7 12 2" fill="rgba(216,180,254,0.3)"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                </div>
+                                <div class="pack-title" style="color: #d8b4fe;">תיבת טיטניום</div>
+                                <div class="pack-desc">למנג'רים עשירים בלבד. פרסים מחריבי-כלכלה מובטחים.</div>
+                                <div class="pack-chances">
+                                    <span><strong>100% מובטח:</strong></span>
+                                    <span>פריט קוסמטיקה (מסגרת זהב)</span>
+                                    <span>+ בוסט "ספסל פעיל"</span>
+                                    <span>+ החזר 5M למערכת</span>
+                                </div>
+                                <button class="pack-btn">פתח ב-₪25.0M</button>
+                            </div>
+
+                        </div>
+                    </div>
+                  
                     </div> </div> </div> 
 
             <aside class="collapsible-live-panel" id="livePanel">
@@ -4291,7 +4357,85 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 // כאן בעתיד נוסיף את קריאת ה-API שמורידה מהסופאבייס את התקציב
             }
         };
+
+     // ==========================================
+        // מנוע פתיחת חבילות (Gacha)
+        // ==========================================
+        window.openGachaPack = function(tier, price) {
+            const formattedPrice = window.formatNumberWithCommas ? window.formatNumberWithCommas(price) : price;
+            if(!confirm(`האם אתה בטוח שברצונך לרכוש את החבילה ב-₪${formattedPrice}?`)) return;
+
+            // 1. אתחול אנימציה
+            const overlay = document.getElementById('pack-overlay');
+            const box = document.getElementById('pack-box');
+            const flash = document.getElementById('pack-flash');
+            const rewardsCont = document.getElementById('rewards-container');
+            const closeBtn = document.getElementById('close-pack-btn');
+
+            // איפוס מצבים
+            rewardsCont.innerHTML = '';
+            rewardsCont.classList.remove('show');
+            closeBtn.classList.remove('show');
+            box.classList.remove('opening');
+            flash.classList.remove('explode');
+            
+            // הצגת המסך השחור והקופסה הרועדת
+            overlay.classList.add('active');
+            box.classList.add('shaking');
+
+            // 2. הגרלת הפרס לפי הדרגה
+            let rewardHtml = '';
+            
+            if(tier === 'bronze') {
+                box.style.stroke = "#cd7f32";
+                rewardHtml = `<div class="reward-card"><div class="reward-icon">🎟️</div><div class="reward-title">חילוף חינם</div><div class="reward-desc">קיבלת קלף לחילוף נוסף בחינם למחזור הקרוב!</div></div>`;
+            } else if (tier === 'silver') {
+                box.style.stroke = "#cbd5e1";
+                rewardHtml = `<div class="reward-card"><div class="reward-icon">💵</div><div class="reward-title">4,000,000 ₪</div><div class="reward-desc">מכה יפה! הכסף נוסף ישירות לתקציב שלך.</div></div>`;
+            } else if (tier === 'gold') {
+                box.style.stroke = "#fbbf24";
+                rewardHtml = `<div class="reward-card" style="border-color: var(--brand-green);"><div class="reward-icon">🚌</div><div class="reward-title">בוסט: הגנת בטון</div><div class="reward-desc">זכית בבוסט רשת נקייה לחוליית ההגנה!</div></div>`;
+            } else if (tier === 'diamond') {
+                box.style.stroke = "#a855f7";
+                rewardHtml = `
+                    <div class="reward-card" style="border-color: #a855f7;"><div class="reward-icon">🪑</div><div class="reward-title">בוסט: ספסל פעיל</div><div class="reward-desc">סופר-בוסט! הספסל שלך ייצר נקודות.</div></div>
+                    <div class="reward-card" style="border-color: #fbbf24;"><div class="reward-icon">👑</div><div class="reward-title">מסגרת זהב VIP</div><div class="reward-desc">המועדון שלך קיבל מסגרת יוקרתית בטבלת הליגה!</div></div>
+                `;
+            }
+
+            // 3. תזמון הפיצוץ והצגת הפרסים
+            setTimeout(() => {
+                box.classList.remove('shaking');
+                box.classList.add('opening'); // הקופסה נעלמת
+                flash.classList.add('explode'); // פלאש לבן
+                
+                setTimeout(() => {
+                    rewardsCont.innerHTML = rewardHtml;
+                    rewardsCont.classList.add('show'); // הפרסים קופצים
+                    closeBtn.classList.add('show');
+                }, 500); // חצי שנייה אחרי הפלאש
+                
+            }, 1800); // הקופסה רועדת במשך 1.8 שניות
+        };
+
+        window.closeGachaPack = function() {
+            document.getElementById('pack-overlay').classList.remove('active');
+        };
         
     </script>
+
+    <div class="pack-overlay" id="pack-overlay">
+        <div class="pack-flash" id="pack-flash"></div>
+        <svg class="pack-box" id="pack-box" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="1.5">
+            <path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(124,168,86,0.5)" stroke-width="2"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
+        </svg>
+        
+        <div class="rewards-container" id="rewards-container">
+            </div>
+        
+        <button class="close-pack-btn" id="close-pack-btn" onclick="closeGachaPack()">המשך במשחק</button>
+    </div>
+
 </body>
 </html>
