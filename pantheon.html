@@ -2842,9 +2842,11 @@ html, body {
             const createRowHTML = (namesArray, rowClass = '') => {
                 let html = `<div class="hof-row ${rowClass}">`;
                 namesArray.forEach(name => {
-                    // תיקון: הוספת onclick ו-onKeyUp כדי להפוך את השחקן ללחיץ!
+                    // התיקון: אנחנו "מנקים" את הגרשיים והמירכאות כדי שלא ישברו את הקוד
+                    const safeName = name.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                    
                     html += `
-                        <div class="hof-player" onclick="openHofModal('${name}', '${teamId}')" onKeyUp="if(event.keyCode==13) openHofModal('${name}', '${teamId}')" tabindex="0">
+                        <div class="hof-player" onclick="openHofModal('${safeName}', '${teamId}')" onKeyUp="if(event.keyCode==13) openHofModal('${safeName}', '${teamId}')" tabindex="0">
                             <div class="hof-player-shirt" style="${shirtStyle}"></div>
                             <div class="hof-player-name">${name}</div>
                         </div>
