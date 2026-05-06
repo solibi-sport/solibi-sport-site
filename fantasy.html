@@ -1331,44 +1331,65 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         }
 
 /* =========================================
-           עיצוב דף חבילות והפתעות (Gacha)
+           עיצוב דף חבילות והפתעות (Gacha) - עיצוב נייבי עם ברק והילה
            ========================================= */
         .packs-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 10px;
         }
 
         .pack-card {
-            background: linear-gradient(180deg, var(--bg-gray) 0%, #031021 100%);
-            border: 2px solid rgba(255,255,255,0.1); border-radius: 16px;
+            background: var(--element-navy-gradient); /* צבע האתר המקורי */
+            border: 2px solid rgba(255,255,255,0.1); 
+            border-radius: 16px;
             padding: 25px 15px; text-align: center; position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex; flex-direction: column; align-items: center; cursor: pointer;
-            overflow: hidden;
+            overflow: hidden; /* חובה בשביל הברק שלא ייצא מהמסגרת */
         }
-        .pack-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(124,168,86,0.3); border-color: var(--brand-green); }
         
-        .pack-card.pack-silver { border-color: #cbd5e1; background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
-        .pack-card.pack-gold { border-color: #fbbf24; background: linear-gradient(180deg, #452a0a 0%, #1f1202 100%); }
-        .pack-card.pack-diamond { border-color: #a855f7; background: linear-gradient(180deg, #2e1065 0%, #170832 100%); box-shadow: 0 0 20px rgba(168,85,247,0.4);}
-        
-        .pack-icon { margin-bottom: 15px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5)); transition: 0.3s; }
+        /* הטוויסט: הילה פנימית וצבע מסגרת לפי רמה */
+        .pack-card.pack-bronze { border-color: rgba(205, 127, 50, 0.3); box-shadow: inset 0 0 40px rgba(205, 127, 50, 0.05), 0 10px 30px rgba(0,0,0,0.3); }
+        .pack-card.pack-silver { border-color: rgba(203, 213, 225, 0.3); box-shadow: inset 0 0 40px rgba(203, 213, 225, 0.05), 0 10px 30px rgba(0,0,0,0.3); }
+        .pack-card.pack-gold { border-color: rgba(251, 191, 36, 0.4); box-shadow: inset 0 0 50px rgba(251, 191, 36, 0.1), 0 10px 30px rgba(0,0,0,0.3); }
+        .pack-card.pack-diamond { border-color: rgba(168, 85, 247, 0.5); box-shadow: inset 0 0 60px rgba(168, 85, 247, 0.15), 0 10px 30px rgba(0,0,0,0.3); }
+
+        /* אפקט ריחוף - ההילה מתחזקת */
+        .pack-card.pack-bronze:hover { border-color: #cd7f32; transform: translateY(-10px); box-shadow: inset 0 0 80px rgba(205, 127, 50, 0.2), 0 15px 40px rgba(205, 127, 50, 0.3); }
+        .pack-card.pack-silver:hover { border-color: #cbd5e1; transform: translateY(-10px); box-shadow: inset 0 0 80px rgba(203, 213, 225, 0.2), 0 15px 40px rgba(203, 213, 225, 0.3); }
+        .pack-card.pack-gold:hover { border-color: #fbbf24; transform: translateY(-10px); box-shadow: inset 0 0 100px rgba(251, 191, 36, 0.3), 0 15px 40px rgba(251, 191, 36, 0.4); }
+        .pack-card.pack-diamond:hover { border-color: #a855f7; transform: translateY(-10px); box-shadow: inset 0 0 120px rgba(168, 85, 247, 0.4), 0 15px 40px rgba(168, 85, 247, 0.5); }
+
+        /* אנימציית הברק שעובר על הקלף */
+        .pack-card::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); animation: cardShine 5s infinite; z-index: 1; pointer-events: none;
+        }
+
+        .pack-icon { margin-bottom: 15px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.5)); transition: 0.3s; z-index: 2; position: relative;}
         .pack-card:hover .pack-icon { transform: scale(1.1); }
         
-        .pack-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .pack-desc { font-size: 12px; color: #94a3b8; margin-bottom: 20px; font-weight: bold; line-height: 1.4;}
-        .pack-chances { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; width: 100%; text-align: right; font-size: 11px; color: #cbd5e1; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);}
+        .pack-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); z-index: 2; position: relative;}
+        .pack-desc { font-size: 12px; color: #cbd5e1; margin-bottom: 20px; font-weight: bold; line-height: 1.4; z-index: 2; position: relative;}
+        .pack-chances { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; width: 100%; text-align: right; font-size: 11px; color: #cbd5e1; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05); z-index: 2; position: relative;}
         .pack-chances span { display: block; margin-bottom: 3px; }
         .pack-chances span strong { color: #fff; }
 
         .pack-btn {
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            color: #fff; font-weight: 900; font-size: 16px; padding: 12px; width: 100%; border-radius: 8px; transition: 0.2s;
+            color: #fff; font-weight: 900; font-size: 16px; padding: 12px; width: 100%; border-radius: 8px; transition: 0.3s; z-index: 2; position: relative;
         }
-        .pack-card:hover .pack-btn { background: var(--brand-green); border-color: var(--brand-green); }
-        .pack-card.pack-gold:hover .pack-btn { background: #fbbf24; color: #000; border-color: #fbbf24;}
-        .pack-card.pack-diamond:hover .pack-btn { background: #a855f7; border-color: #a855f7;}
+        
+        /* צבע כפתורים בהוקר (ריחוף) לפי רמה */
+        .pack-card.pack-bronze:hover .pack-btn { background: #cd7f32; border-color: #cd7f32; color: #fff; box-shadow: 0 0 15px rgba(205, 127, 50, 0.5);}
+        .pack-card.pack-silver:hover .pack-btn { background: #cbd5e1; border-color: #cbd5e1; color: #000; box-shadow: 0 0 15px rgba(203, 213, 225, 0.5);}
+        .pack-card.pack-gold:hover .pack-btn { background: #fbbf24; border-color: #fbbf24; color: #000; box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);}
+        .pack-card.pack-diamond:hover .pack-btn { background: #a855f7; border-color: #a855f7; color: #fff; box-shadow: 0 0 25px rgba(168, 85, 247, 0.7);}
 
-        /* אנימציית פתיחת חבילה */
+        /* אנימציות */
+        @keyframes cardShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        
+        /* -- מכאן והלאה זה הפופאפ השחור (השארתי אותו ללא שינוי) -- */
         .pack-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(3, 16, 33, 0.95); z-index: 9999; display: flex;
@@ -1377,10 +1398,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         }
         .pack-overlay.active { opacity: 1; pointer-events: all; }
         
-        .pack-box {
-            width: 150px; height: 150px; filter: drop-shadow(0 0 20px rgba(124,168,86,0.8));
-            transition: 0.3s; transform: scale(1);
-        }
+        .pack-box { width: 150px; height: 150px; filter: drop-shadow(0 0 20px rgba(124,168,86,0.8)); transition: 0.3s; transform: scale(1); }
         .pack-box.shaking { animation: packShake 0.5s ease-in-out infinite; }
         .pack-box.opening { transform: scale(1.5); filter: brightness(2) drop-shadow(0 0 50px #fff); opacity: 0; }
         
@@ -2783,7 +2801,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
                         <div class="packs-grid">
                             
-                            <div class="pack-card" onclick="openGachaPack('bronze', 2000000)">
+                            <div class="pack-card pack-bronze" onclick="openGachaPack('bronze', 2000000)">
                                 <div class="pack-icon">
                                     <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="1"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(205, 127, 50, 0.2)" stroke-width="2"></path></svg>
                                 </div>
