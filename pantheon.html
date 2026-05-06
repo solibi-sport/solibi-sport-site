@@ -23,7 +23,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html, body {
+html, body {
             font-family: 'Rubik', sans-serif;
             background: var(--bg-silver-matte);
             width: 100%;
@@ -33,9 +33,30 @@
             flex-direction: column;
         }
 
+        /* === מתיחת המסך והצמדת הטיקר לתחתית === */
+        .main-content {
+            display: flex;
+            flex: 1; /* זה הקסם שדוחף את הטיקר למטה! */
+            overflow: hidden;
+            width: 100%;
+            padding: 20px; 
+            gap: 20px; 
+            position: relative; 
+        }
+
+        /* === רספונסיביות חכמה - זום למסכים שונים === */
         @media (max-width: 1600px) {
             body { zoom: 0.85; }
         }
+        @media (max-width: 1440px) {
+            body { zoom: 0.75; }
+            .content-header-title { font-size: 20px; }
+            .sidebar-item { padding: 12px 15px; font-size: 13px; }
+        }
+        @media (max-width: 1200px) {
+            body { zoom: 0.65; }
+        }
+        
 
         /* === הדר עליון === */
         .header {
@@ -88,17 +109,6 @@
         }
         .header-search:focus-within { width: 100%; }
         .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
-
-        /* === מבנה הדף המרכזי === */
-        .main-content {
-            display: flex;
-            flex: 1; 
-            overflow: hidden;
-            width: 100%;
-            padding: 20px; 
-            gap: 20px; 
-            position: relative; 
-        }
 
         .sidebar {
             width: var(--sidebar-width);
@@ -285,14 +295,14 @@
             <div id="tab-1" class="tab-content active">
                 <h2 class="content-header-title">דירוג סוליבי: 100 הישראלים הגדולים בהיסטוריה</h2>
                 <p class="content-desc">מיהו הכדורגלן הישראלי הגדול מכולם? הדירוג המלא, הסיפורים המרתקים והמחלוקות מאחורי האגדות שעיצבו את פני הכדורגל המקומי.</p>
-               <style>
-/* עיצוב ספציפי לטבלאות פנתיאון */
+              <style>
+/* עיצוב ספציפי לטבלאות פנתיאון - מראה פרימיום */
 .pantheon-table-wrapper {
     overflow-x: auto;
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08); /* צל עמוק יותר ויוקרתי */
+    border: 2px solid var(--element-navy-gradient); /* מסגרת נייבי שעוטפת הכל */
     margin-top: 15px;
 }
 
@@ -304,72 +314,62 @@
     white-space: nowrap;
 }
 
+/* עיצוב הכותרות */
 .pantheon-table th {
     background: var(--element-navy-gradient);
     color: #ffffff;
     font-weight: 700;
-    padding: 12px 10px;
+    padding: 14px 10px;
     position: sticky;
     top: 0;
     z-index: 10;
-    border-left: 1px solid rgba(255,255,255,0.1);
+    border-left: 1px solid rgba(255,255,255,0.15); /* קווי הפרדה עדינים בכותרת */
+    border-bottom: 3px solid var(--brand-green); /* פס ירוק אלגנטי מתחת לכותרת */
+}
+.pantheon-table th:last-child { border-left: none; }
+
+/* שורות מתחלפות (זברה) להקלה על הקריאה */
+.pantheon-table tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+.pantheon-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
 }
 
-.pantheon-table th:last-child {
-    border-left: none;
-}
-
+/* קווים מפרידים בין שורה לשורה ובין עמודה לעמודה */
 .pantheon-table tbody tr {
-    border-bottom: 1px solid #f1f5f9;
-    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #cbd5e1;
+    transition: all 0.2s ease;
 }
-
-.pantheon-table tbody tr:hover {
-    background-color: rgba(124, 168, 86, 0.05);
-}
-
 .pantheon-table td {
-    padding: 10px;
+    padding: 12px 10px;
     color: var(--text-dark);
+    border-left: 1px solid #e2e8f0; /* קווי אורך שיוצרים מראה של "אקסל" יוקרתי */
+    vertical-align: middle;
+}
+.pantheon-table td:last-child { border-left: none; }
+
+/* אפקט ריחוף על שורה (Hover) */
+.pantheon-table tbody tr:hover {
+    background-color: rgba(124, 168, 86, 0.1) !important;
+    box-shadow: inset 0 0 10px rgba(124, 168, 86, 0.05);
 }
 
+/* טיפוגרפיה פנימית */
 .pantheon-rank {
     font-weight: 900;
     color: var(--brand-green);
-    font-size: 15px;
+    font-size: 16px;
     text-align: center;
+    background: rgba(124,168,86,0.05); /* היילייט עדין לעמודת המיקום */
 }
 
-.pantheon-name {
-    font-weight: 900;
-    color: var(--text-dark);
-}
+.pantheon-name { font-weight: 900; color: var(--text-dark); font-size: 14px; }
 
-.pantheon-table .desc-col {
-    white-space: normal;
-    min-width: 250px;
-    font-size: 12px;
-    color: #64748b;
-    line-height: 1.4;
-}
-
-.pantheon-table .teams-col {
-    white-space: normal;
-    min-width: 200px;
-    font-size: 12px;
-}
-
-.pantheon-table .achievements-col {
-    white-space: normal;
-    min-width: 200px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.stat-num {
-    font-weight: 700;
-    text-align: center;
-}
+.pantheon-table .desc-col { white-space: normal; min-width: 250px; font-size: 12px; color: #475569; line-height: 1.5; }
+.pantheon-table .teams-col { white-space: normal; min-width: 200px; font-size: 12px; font-weight: 600; }
+.pantheon-table .achievements-col { white-space: normal; min-width: 200px; font-size: 12px; font-weight: 500; }
+.stat-num { font-weight: 900; text-align: center; color: var(--element-navy-gradient); }
 </style>
 
 <div class="pantheon-table-wrapper">
