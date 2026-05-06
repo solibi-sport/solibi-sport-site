@@ -286,12 +286,37 @@ html, body {
         .hof-player { display: flex; flex-direction: column; align-items: center; width: 85px; transition: transform 0.3s ease; }
         .hof-player:hover { transform: scale(1.15) translateY(-5px); z-index: 20;}
         
+        /* עיצוב חולצת השחקן - צורה מיוחדת */
         .hof-player-shirt {
-            width: 45px; height: 45px; border: 2px solid #fff; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5); margin-bottom: 5px; position: relative;
+            width: 50px;
+            height: 55px;
+            position: relative;
+            /* גזירת הצורה של החולצה */
+            clip-path: polygon(25% 0%, 75% 0%, 100% 20%, 85% 35%, 75% 25%, 75% 100%, 25% 100%, 25% 25%, 15% 35%, 0% 20%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            margin-bottom: 8px;
+            transition: 0.3s;
+            border: none;
         }
-        .hof-player-shirt::after { content: '👕'; position: absolute; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
+
+        /* הוספת "צווארון" עדין */
+        .hof-player-shirt::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 8px;
+            background: rgba(0,0,0,0.2);
+            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+            z-index: 2;
+        }
+
+        /* הצללה קלה מתחת לחולצה */
+        .hof-player {
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+        }
 
         .hof-player-name {
             background: rgba(255,255,255,0.9); color: #000; padding: 3px 6px; border-radius: 4px;
@@ -2643,17 +2668,21 @@ html, body {
 
             const teamData = hofTeamsData[teamId];
             
-            // יצירת מדים בצבעי הקבוצה
+            // יצירת סגנון חולצה: פסים אנכיים של צבעי הקבוצה
             const c1 = teamData.colors[0];
             const c2 = teamData.colors[1];
-            const shirtStyle = `background: linear-gradient(135deg, ${c1} 50%, ${c2} 50%);`;
+            const shirtStyle = `background: linear-gradient(90deg, ${c1} 0%, ${c1} 33%, ${c2} 33%, ${c2} 66%, ${c1} 66%, ${c1} 100%);`;
 
             const createRowHTML = (namesArray, rowClass = '') => {
                 let html = `<div class="hof-row ${rowClass}">`;
                 namesArray.forEach(name => {
+                    // לשוער נשים צבע שונה (אפור/שחור) כדי שיבלוט
+                    const isGK = namesArray.length === 1 && teamData.gk.includes(name);
+                    const finalStyle = isGK ? `background: #333;` : shirtStyle;
+                    
                     html += `
                         <div class="hof-player">
-                            <div class="hof-player-shirt" style="${shirtStyle}"></div>
+                            <div class="hof-player-shirt" style="${finalStyle}"></div>
                             <div class="hof-player-name">${name}</div>
                         </div>
                     `;
@@ -2662,29 +2691,17 @@ html, body {
                 return html;
             };
 
+            // ... שאר הפונקציה (חישוב המערך והזרקה ל-HTML) נשארת אותו דבר
             let pitchHTML = '';
-
-            // שורת ההתקפה
             let attClass = teamData.formation === '4-3-3' ? 'attack-4-3-3' : '';
             pitchHTML += createRowHTML(teamData.att, attClass);
-            
-            // שורת הקישור (התקפי ב- 4-4-2)
             let midClass = teamData.formation === '4-4-2' ? 'midfield-4-4-2' : ''; 
             pitchHTML += createRowHTML(teamData.mid, midClass);
-            
-            // שורת ההגנה והשוער
             pitchHTML += createRowHTML(teamData.def);
             pitchHTML += createRowHTML(teamData.gk);
 
-            // הפעלת אנימציה קטנה של הופעה
-            pitch.style.opacity = '0';
-            setTimeout(() => {
-                pitch.innerHTML = pitchHTML;
-                pitch.style.transition = 'opacity 0.4s ease';
-                pitch.style.opacity = '1';
-            }, 50);
+            pitch.innerHTML = pitchHTML;
         }
-
     </script>
 </body>
 </html>
