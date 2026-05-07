@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - פנטזי ליג</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="header-style.css">
+    
     <style>
         :root {
             /* הירוק של סוליבי ספורט */
@@ -3475,7 +3477,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         fetch('../ticker.html').then(res => res.text()).then(data => { document.getElementById('ticker-placeholder').innerHTML = data; }).catch(e => console.log(e));
 
         // טעינת ההדר החיצוני
-fetch('../header.html')
+fetch('header.html')
     .then(response => response.text())
     .then(data => {
         const placeholder = document.getElementById('header-placeholder');
