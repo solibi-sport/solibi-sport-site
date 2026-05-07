@@ -255,6 +255,22 @@
             font-size: 18px;
             font-weight: 700;
         }
+
+        /* --- עיצוב כפתור חנות סוליבי (עגלת קניות) --- */
+        .header-nav a.store-nav-link {
+            transition: 0.3s;
+        }
+        .header-nav a.store-nav-link svg {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .header-nav a.store-nav-link:hover {
+            background: rgba(124, 168, 86, 0.1); 
+            color: var(--brand-green) !important;
+            border-radius: 8px;
+        }
+        .header-nav a.store-nav-link:hover svg {
+            transform: translateX(-4px) scale(1.1); /* מסיע את העגלה שמאלה */
+        }
         
     </style>
 </head>
