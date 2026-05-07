@@ -318,6 +318,50 @@
         .full-results-grid.list-view .grid-card-item img { width: 40px !important; height: 55px !important; margin: 0; border-radius: 4px; }
         .full-results-grid.list-view .grid-card-item .card-price-tag { font-size: 16px !important; text-align: left; min-width: 70px; margin-top: 0 !important; }
 
+/* === עיצוב שומר המקום לסרטון ההדרכה === */
+        .intro-video-placeholder {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 16px;
+            border: 2px dashed #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            box-shadow: inset 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .play-btn-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(124, 168, 86, 0.2); 
+            border: 3px solid var(--brand-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: not-allowed;
+        }
+
+        .play-triangle {
+            width: 0; 
+            height: 0; 
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 24px solid var(--brand-green);
+            margin-left: 8px;
+        }
+
+        .video-text {
+            color: #94a3b8;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
     </style>
 </head>
 <body>
@@ -355,10 +399,15 @@
                 <div class="sidebar-category">Solibi Sport</div>
                 <div class="sidebar-title">בורסת הקלפים</div>
             </div>
-            <nav class="sidebar-menu">
+           <nav class="sidebar-menu">
                 
+                <div class="sidebar-item active" onclick="switchInternalTab('tab-intro', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span>סקירה כללית</span>
+                </div>
+
                 <div class="sidebar-divider">כלים ואנליטיקה</div>
-                <div class="sidebar-item active" onclick="switchInternalTab('tab-1', this)">
+                <div class="sidebar-item" onclick="switchInternalTab('tab-1', this)">
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     <span>מנוע חיפוש ואנליטיקה</span>
                 </div>
@@ -401,7 +450,21 @@
 
         <section class="content-area">
             
-            <div id="tab-1" class="tab-content active">
+            <div id="tab-intro" class="tab-content active">
+                <h2 class="content-header-title">סקירה כללית: בורסת הקלפים</h2>
+                <p class="content-desc" style="font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+                    ברוכים הבאים לבורסת הקלפים וההשקעות של סוליבי ספורט. כאן תוכלו לחפש כרטיסים, לעקוב אחר מגמות שוק ומחירים בזמן אמת, לנהל את שווי האוסף האישי שלכם, לאתר הזדמנויות השקעה ("רוקיז"), ולבצע החלפות בטוחות עם אספנים אחרים בקהילה.
+                </p>
+                
+                <div class="intro-video-placeholder">
+                    <div class="play-btn-circle">
+                        <div class="play-triangle"></div>
+                    </div>
+                    <div class="video-text">סרטון הדרכה יעלה בקרוב...</div>
+                </div>
+            </div>
+
+            <div id="tab-1" class="tab-content">
                 <h2 class="content-header-title">מנוע חיפוש ואנליטיקת שוק משולבת</h2>
                 <p class="content-desc">הלב של בורסת הקלפים. חפש שחקנים וקבל במסך אחד: מחירי שוק בזמן אמת, מכירות אחרונות, וגרפים של מגמות שוק.</p>
                 
