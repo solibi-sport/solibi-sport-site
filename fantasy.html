@@ -2834,6 +2834,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                 <div class="ss-body">
                                     <img src="" class="ss-player-img" id="ss-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
                                     <div class="ss-player-name" id="ss-name">טוען שחקן...</div>
+                                    
                                     <div class="ss-player-meta">
                                         <span id="ss-team">-</span> | <span id="ss-pos">-</span>
                                         <div id="ss-tier-container" style="margin-top: 10px; display: flex; justify-content: center;"></div>
@@ -4788,9 +4789,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             checkSurpriseSaleSelect(); // בודק האם לנעול את הכפתור בעת הטעינה
         }
 
-        // שולף שחקן אמיתי ואקראי מהמאגר, ומחשב לו הנחה
+        // שולף שחקן אמיתי ואקראי מהמאגר, ומחשב לו הנחה + הזרקת דרגה
         function loadRandomSurprisePlayer() {
-            // מסנן רק שחקנים שלא נמצאים בקבוצה שלי (מוגדרים כחופשיים או של קבוצות אחרות)
+            // מסנן רק שחקנים שלא נמצאים בקבוצה שלי 
             const freeAgents = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' && p.value > 0);
             if(freeAgents.length === 0) return;
             
@@ -4802,16 +4803,21 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             const tTeam = window.translateName ? window.translateName(currentSurprisePlayer.team) : currentSurprisePlayer.team;
             const playerImage = currentSurprisePlayer.photo || `https://media.api-sports.io/football/players/${currentSurprisePlayer.id}.png`;
             
-            // מחשב הנחת "פלאש סייל" רנדומלית בין 20% ל-40% הנחה!
-            // משמע - המחיר החדש יהיה בין 60% ל-80% מהמחיר המקורי
+            // חישוב הנחה (20%-40%)
             const discountPercent = 0.2 + (Math.random() * 0.2); 
             currentSurprisePrice = Math.floor(currentSurprisePlayer.value * (1 - discountPercent));
             
-            // מזריק למסך
+            // הזרקת נתונים למסך
             document.getElementById('ss-name').innerText = tName;
             document.getElementById('ss-img').src = playerImage;
             document.getElementById('ss-team').innerText = tTeam;
             document.getElementById('ss-pos').innerText = currentSurprisePlayer.displayPos;
+            
+            // הזרקת הדרגה המעוצבת (הקוד שבונה את המלבן הצבעוני)
+            const tierContainer = document.getElementById('ss-tier-container');
+            if (tierContainer) {
+                tierContainer.innerHTML = `<span class="tier-badge ${currentSurprisePlayer.calcTierClass}" style="width: 100px; padding: 4px 0; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: #fff;">${currentSurprisePlayer.calcTierName}</span>`;
+            }
             
             const oldValStr = window.formatPlayerValue ? window.formatPlayerValue(currentSurprisePlayer.value) : currentSurprisePlayer.value;
             const newValStr = window.formatPlayerValue ? window.formatPlayerValue(currentSurprisePrice) : currentSurprisePrice;
@@ -4819,20 +4825,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             document.getElementById('ss-old-price').innerText = `שווי שוק: ₪${oldValStr}`;
             document.getElementById('ss-new-price').innerText = `₪${newValStr} בלבד!`;
         }
-
-        // פונקציה שנקראת כל פעם שמשנים את הבחירה בסלקט
-        window.checkSurpriseSaleSelect = function() {
-            const select = document.getElementById('ss-player-to-release');
-            const btn = document.getElementById('ss-submit-btn');
-            
-            if(select.value) {
-                btn.disabled = false;
-                btn.innerText = "הצע!";
-            } else {
-                btn.disabled = true;
-                btn.innerText = "הצע (יש לבחור שחקן תחילה)";
-            }
-        };
 
         function startSurpriseTimer(hours, minutes, seconds) {
             clearInterval(surpriseSaleTimerInterval);
