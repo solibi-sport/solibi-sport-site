@@ -1590,10 +1590,27 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .ss-player-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--brand-green); box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-bottom: 10px; object-fit: cover; background: #fff; }
         .ss-player-name { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; text-align: center;}
 
+        /* שורת קבוצה | תפקיד | רמה - בצבע לבן ומודגש */
+        .ss-player-meta-row {
+            display: flex; align-items: center; justify-content: center; gap: 8px; 
+            margin-bottom: 5px; flex-wrap: nowrap; white-space: nowrap;
+        }
+        .ss-player-meta-row span {
+            color: #fff; /* צבע לבן בוהק */
+            font-size: 15px;
+            font-weight: 900; /* מודגש מאוד */
+        }
+        .ss-player-meta-row .separator {
+            color: #64748b; /* הקו המפריד יישאר באפור אלגנטי */
+        }
+
+        /* קופסת המחירים - הוקטנה ברוחב וקיבלה ריחוק מלמעלה */
         .ss-prices {
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            background: rgba(0,0,0,0.4); padding: 10px 20px; border-radius: 12px; width: 100%;
-            margin-bottom: 15px; border: 1px dashed rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.4); padding: 10px 15px; border-radius: 12px; 
+            width: 85%; /* הוקטן מ-100% כדי שלא יתפרס על כל הרוחב */
+            margin: 15px auto 15px auto; /* 15 פיקסלים רווח מלמעלה כדי להרחיק משורת הרמה! */
+            border: 1px dashed rgba(255,255,255,0.2);
         }
 
         .ss-old-price { font-size: 14px; color: #94a3b8; text-decoration: line-through; font-weight: bold;}
@@ -2823,12 +2840,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     <img src="" class="ss-player-img" id="ss-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
                                     <div class="ss-player-name" id="ss-name">טוען שחקן...</div>
                                     
-                                    <div class="ss-player-meta" style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                                    <div class="ss-player-meta-row">
                                         <span id="ss-team">-</span> 
-                                        <span style="color: #64748b;">|</span> 
+                                        <span class="separator">|</span> 
                                         <span id="ss-pos">-</span> 
-                                        <span style="color: #64748b;">|</span> 
-                                        <div id="ss-tier-container"></div>
+                                        <span class="separator">|</span> 
+                                        <div id="ss-tier-container" style="display: flex; align-items: center;"></div>
                                     </div>
                                     
                                     <div class="ss-prices">
