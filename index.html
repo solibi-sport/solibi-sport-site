@@ -363,41 +363,29 @@
         @media (max-width: 1600px) and (min-width: 1201px) { .center-wrapper { zoom: 0.85; } .side-panel { zoom: 0.85; } }
         @media (max-width: 1200px) { .center-wrapper { padding: 0; padding-top: 300px; } .panel-left, .panel-right { position: relative; left: auto; right: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto; height: 250px; margin-bottom: 20px;} .cards-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px;} }
         @media (max-width: 768px) { .cards-grid { grid-template-columns: 1fr; } .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; } .header-center-col { flex-direction: column; } }
+
+/* --- עיצוב כפתור חנות סוליבי (עגלת קניות) --- */
+        .header-nav a.store-nav-link {
+            transition: 0.3s;
+        }
+        .header-nav a.store-nav-link svg {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .header-nav a.store-nav-link:hover {
+            background: rgba(124, 168, 86, 0.1); 
+            color: var(--brand-green) !important;
+            border-radius: 8px;
+        }
+        .header-nav a.store-nav-link:hover svg {
+            transform: translateX(-4px) scale(1.1); /* מסיע את העגלה שמאלה */
+        }
+        
     </style>
 </head>
 <body>
 
-    <header class="header">
-        
-        <div class="header-right-col">
-            <a href="index.html" class="logo-wrapper">
-                <img src="a.png" alt="לוגו" class="actual-logo-img" onerror="this.src='https://via.placeholder.com/150x60?text=LOGO'">
-            </a>
-        </div>
-        
-        <div class="header-center-col">
-            <a href="#" class="personal-area-btn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span>לאזור האישי</span>
-            </a>
-            <nav class="header-nav">
-                <ul>
-                    <li><a href="../index.html">דף הבית</a></li>
-                    <li><a href="#">קרדיטים</a></li>
-                    <li><a href="#">אודות</a></li>
-                    <li><a href="#">צור קשר</a></li>
-                    <li><a href="#">חנות סוליבי</a></li>
-                </ul>
-            </nav>
-        </div>
-
-        <div class="header-left-col">
-            <div class="header-search">
-                <input type="text" placeholder="חיפוש...">
-            </div>
-        </div>
-    </header>
-
+   <div id="header-placeholder"></div>
+    
     <main class="main-content">
         
         <aside class="side-panel panel-right">
@@ -718,6 +706,16 @@
             document.getElementById('ticker-placeholder').innerHTML = data;
         })
         .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
+
+// טעינת השורה העליונה (הדר)
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('header-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+    
 </script>
     
 </body>
