@@ -118,13 +118,17 @@
             display: flex; flex: 1; overflow: hidden; position: relative;
         }
 
-        /* === פאנלים צידיים (שקוף זכוכית בדיוק כפי שהיה) === */
+        /* === פאנלים צידיים משודרגים === */
         .side-panel {
             position: absolute; top: 20px; width: var(--sidebar-width);
-            background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 16px;
+            background: rgba(255, 255, 255, 0.4); /* שקוף ויוקרתי כמו האמצע */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px; /* עגלנו יותר שיתאים לאמצע */
             display: flex; flex-direction: column; overflow: hidden;
-            z-index: 50; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: calc(100% - 40px);
+            z-index: 50; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05); /* צל עמוק ורך */
+            height: calc(100% - 40px);
         }
 
         .panel-left { left: 20px; }
@@ -220,7 +224,7 @@
         /* === כותרת סוליבי ספורט היי-טקית === */
         .premium-title-wrapper {
             display: flex; align-items: center; justify-content: center;
-            width: 100%; max-width: 920px; margin-bottom: 30px; flex-shrink: 0;
+            width: 100%; max-width: 920px; margin-bottom: 35px; flex-shrink: 0;
             position: relative; z-index: 20;
         }
 
