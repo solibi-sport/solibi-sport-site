@@ -2814,16 +2814,16 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 <div id="tab-surprise-sale" class="fm-tab">
                         <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                            מכירה בהפתעה 
+                            מכירה בהפתעה (Lightning Deal)
                         </h2>
                         
                         <p style="text-align: center; color: #64748b; font-weight: bold; margin-bottom: 20px;">
-                            הזדמנות נדירה לרכוש שחקן חופשי במחיר מציאה! פועל על בסיס "כל הקודם זוכה". <br>כדי לבצע רכישה, עליך לשחרר שחקן אחד מהסגל הקיים שלך כדי לשמור על מגבלת ה-20 שחקנים.
+                            הזדמנות נדירה לרכוש שחקן חופשי במחיר שחיטה! פועל על בסיס "כל הקודם זוכה". <br>כדי לבצע רכישה, עליך לשחרר שחקן אחד מהסגל הקיים שלך כדי לשמור על מגבלת ה-20 שחקנים.
                         </p>
 
                         <div class="ss-container">
                             
-                            <div class="ss-card" id="ss-active-card">
+                            <div class="ss-card" id="ss-active-card" style="height: auto; padding-bottom: 10px;">
                                 <div class="ss-badge">מבצע אש!</div>
                                 
                                 <div class="ss-header">
@@ -2835,9 +2835,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     <img src="" class="ss-player-img" id="ss-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
                                     <div class="ss-player-name" id="ss-name">טוען שחקן...</div>
                                     
-                                    <div class="ss-player-meta">
-                                        <span id="ss-team">-</span> | <span id="ss-pos">-</span>
-                                        <div id="ss-tier-container" style="margin-top: 10px; display: flex; justify-content: center;"></div>
+                                    <div class="ss-player-meta" style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                                        <span id="ss-team">-</span> 
+                                        <span style="color: #64748b;">|</span> 
+                                        <span id="ss-pos">-</span> 
+                                        <span style="color: #64748b;">|</span> 
+                                        <div id="ss-tier-container"></div>
                                     </div>
                                     
                                     <div class="ss-prices">
@@ -4766,12 +4769,12 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         };
 
                 // ==========================================
-        // מנוע מכירה בהפתעה (Flash Sale) - שחקנים דינמיים
+        // מנוע מכירה בהפתעה (Flash Sale) - מתוקן סופית
         // ==========================================
         
         let surpriseSaleTimerInterval;
-        let currentSurprisePlayer = null; // ישמור את השחקן שהוגרל
-        let currentSurprisePrice = 0; // ישמור את המחיר המעודכן אחרי הנחה
+        let currentSurprisePlayer = null; 
+        let currentSurprisePrice = 0; 
 
         function loadSquadIntoSurpriseSelect() {
             const select = document.getElementById('ss-player-to-release');
@@ -4786,16 +4789,13 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 select.innerHTML += `<option value="${p.id}">${tName} (${p.displayPos}) - שווי: ₪${valueStr}</option>`;
             });
             
-            checkSurpriseSaleSelect(); // בודק האם לנעול את הכפתור בעת הטעינה
+            checkSurpriseSaleSelect();
         }
 
-        // שולף שחקן אמיתי ואקראי מהמאגר, ומחשב לו הנחה + הזרקת דרגה
         function loadRandomSurprisePlayer() {
-            // מסנן רק שחקנים שלא נמצאים בקבוצה שלי 
             const freeAgents = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' && p.value > 0);
             if(freeAgents.length === 0) return;
             
-            // בוחר שחקן אקראי
             const randIdx = Math.floor(Math.random() * freeAgents.length);
             currentSurprisePlayer = freeAgents[randIdx];
             
@@ -4803,20 +4803,18 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             const tTeam = window.translateName ? window.translateName(currentSurprisePlayer.team) : currentSurprisePlayer.team;
             const playerImage = currentSurprisePlayer.photo || `https://media.api-sports.io/football/players/${currentSurprisePlayer.id}.png`;
             
-            // חישוב הנחה (20%-40%)
-            const discountPercent = 0.2 + (Math.random() * 0.2); 
+            const discountPercent = 0.2 + (Math.random() * 0.2); // 20% עד 40% הנחה
             currentSurprisePrice = Math.floor(currentSurprisePlayer.value * (1 - discountPercent));
             
-            // הזרקת נתונים למסך
             document.getElementById('ss-name').innerText = tName;
             document.getElementById('ss-img').src = playerImage;
             document.getElementById('ss-team').innerText = tTeam;
             document.getElementById('ss-pos').innerText = currentSurprisePlayer.displayPos;
             
-            // הזרקת הדרגה המעוצבת (הקוד שבונה את המלבן הצבעוני)
+            // הזרקת הרמה - בשורה אחת ליד העמדה והקבוצה
             const tierContainer = document.getElementById('ss-tier-container');
             if (tierContainer) {
-                tierContainer.innerHTML = `<span class="tier-badge ${currentSurprisePlayer.calcTierClass}" style="width: 100px; padding: 4px 0; font-size: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: #fff;">${currentSurprisePlayer.calcTierName}</span>`;
+                tierContainer.innerHTML = `<span class="tier-badge ${currentSurprisePlayer.calcTierClass}" style="width: auto; padding: 3px 10px; font-size: 11px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); color: #fff; display: inline-block;">${currentSurprisePlayer.calcTierName}</span>`;
             }
             
             const oldValStr = window.formatPlayerValue ? window.formatPlayerValue(currentSurprisePlayer.value) : currentSurprisePlayer.value;
@@ -4825,6 +4823,19 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             document.getElementById('ss-old-price').innerText = `שווי שוק: ₪${oldValStr}`;
             document.getElementById('ss-new-price').innerText = `₪${newValStr} בלבד!`;
         }
+
+        window.checkSurpriseSaleSelect = function() {
+            const select = document.getElementById('ss-player-to-release');
+            const btn = document.getElementById('ss-submit-btn');
+            
+            if(select.value) {
+                btn.disabled = false;
+                btn.innerText = "הצע!";
+            } else {
+                btn.disabled = true;
+                btn.innerText = "הצע (יש לבחור שחקן תחילה)";
+            }
+        };
 
         function startSurpriseTimer(hours, minutes, seconds) {
             clearInterval(surpriseSaleTimerInterval);
@@ -4850,7 +4861,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         window.executeSurpriseBuy = function() {
             const select = document.getElementById('ss-player-to-release');
             if(!select.value || !currentSurprisePlayer) {
-                alert('שגיאה!');
+                alert('שגיאה! עליך לבחור שחקן להחלפה.');
                 return;
             }
             
@@ -4872,7 +4883,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 card.classList.remove('hidden');
                 empty.classList.remove('active');
                 
-                // בכל פעם שמדליקים את המכירה - מגרילים שחקן חדש ומחיר חדש!
                 loadRandomSurprisePlayer();
                 loadSquadIntoSurpriseSelect(); 
                 startSurpriseTimer(0, 15, 0); 
@@ -4883,7 +4893,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             }
         };
 
-        // הפעלה אוטומטית בהתחלה (מחכים 2.5 שניות כדי שהסופאבייס יסיים להטעין את השחקנים)
+        // טעינה ראשונית אחרי שהשחקנים נמשכו מ-Supabase
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 loadRandomSurprisePlayer();
