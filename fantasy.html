@@ -3474,6 +3474,15 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         // טעינת הטיקר החיצוני
         fetch('../ticker.html').then(res => res.text()).then(data => { document.getElementById('ticker-placeholder').innerHTML = data; }).catch(e => console.log(e));
 
+        // טעינת ההדר החיצוני
+fetch('../header.html')
+    .then(response => response.text())
+    .then(data => {
+        const placeholder = document.getElementById('header-placeholder');
+        if(placeholder) placeholder.innerHTML = data;
+    })
+    .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+
         // ==========================================
         //  מנוע לייב פאנל (טיקר) 
         // ==========================================
