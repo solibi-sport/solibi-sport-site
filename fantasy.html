@@ -1250,6 +1250,52 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
        /* =========================================
            חנות בוסטים - קוביות אלגנטיות וקומפקטיות
            ========================================= */
+
+/* עיצוב התגיות מעל האייקונים (השחור המכוער שהיה) -> הופך לתגיות פרימיום */
+        .b-tag {
+            background: linear-gradient(135deg, var(--brand-green) 0%, #5d823e 100%);
+            color: #fff;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(124, 168, 86, 0.4);
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .boost-card.premium .b-tag { 
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); 
+            color: #000; 
+            box-shadow: 0 4px 10px rgba(251, 191, 36, 0.5);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        /* שדרוג הכותרות הראשיות (סופר קפטן וכו') עם אפקט הצללה וזוהר */
+        .b-title { 
+            color: #fff; 
+            font-size: 20px; 
+            font-weight: 900; 
+            margin-bottom: 8px; 
+            text-shadow: 0 3px 6px rgba(0,0,0,0.6); /* עומק 3D */
+            transition: 0.3s;
+        }
+        
+        .boost-card:hover .b-title {
+            text-shadow: 0 0 12px rgba(255,255,255,0.5); /* ברק לבן כשעוברים עם העכבר */
+        }
+
+        .boost-card.premium .b-title { 
+            color: #fbbf24; 
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8), 0 0 10px rgba(251, 191, 36, 0.4); 
+        }
+        
+        .boost-card.premium:hover .b-title {
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8), 0 0 20px rgba(251, 191, 36, 0.8); /* ברק זהב חזק בריחוף */
+        }
+        
         .boosts-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr); /* 4 קוביות בשורה במקום 3 */
