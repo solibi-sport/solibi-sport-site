@@ -2797,7 +2797,60 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
                         </div>
                     </div>
-                    
+
+<div id="tab-surprise-sale" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            מכירה בהפתעה (Lightning Deal)
+                        </h2>
+                        
+                        <p style="text-align: center; color: #64748b; font-weight: bold; margin-bottom: 20px;">
+                            הזדמנות נדירה לרכוש שחקן חופשי במחיר שחיטה! פועל על בסיס "כל הקודם זוכה". <br>כדי לבצע רכישה, עליך לשחרר שחקן אחד מהסגל הקיים שלך כדי לשמור על מגבלת ה-20 שחקנים.
+                        </p>
+
+                        <div class="ss-container">
+                            
+                            <div class="ss-card" id="ss-active-card">
+                                <div class="ss-badge">מבצע אש!</div>
+                                
+                                <div class="ss-header">
+                                    <div style="color: #cbd5e1; font-size: 14px; font-weight: bold;">הזמן אוזל:</div>
+                                    <div class="ss-timer" id="ss-timer">04:15:22</div>
+                                </div>
+                                
+                                <div class="ss-body">
+                                    <img src="https://media.api-sports.io/football/players/145899.png" class="ss-player-img" id="ss-img" onerror="this.src='https://ui-avatars.com/api/?name=O+G&background=e2e8f0&color=000'">
+                                    <div class="ss-player-name" id="ss-name">אוסקר גלוך</div>
+                                    <div class="ss-player-meta">
+                                        <span id="ss-team">רד בול זלצבורג</span> | <span id="ss-pos">קישור</span>
+                                    </div>
+                                    
+                                    <div class="ss-prices">
+                                        <span class="ss-old-price" id="ss-old-price">שווי שוק: ₪25.0M</span>
+                                        <span class="ss-new-price" id="ss-new-price">₪12.5M בלבד!</span>
+                                    </div>
+
+                                    <div class="ss-swap-box">
+                                        <label class="ss-swap-label">מי עוזב את הסגל כדי לפנות לו מקום?</label>
+                                        <select class="ss-select" id="ss-player-to-release">
+                                            <option value="">-- בחר שחקן לשחרור (חובה) --</option>
+                                            </select>
+                                    </div>
+
+                                    <button class="ss-buy-btn" onclick="executeSurpriseBuy()">חטוף אותו עכשיו!</button>
+                                </div>
+                            </div>
+
+                            <div class="ss-empty-state" id="ss-empty-state">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5" style="margin-bottom: 20px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                <h3 style="font-size: 22px; color: var(--text-dark); margin-bottom: 10px;">אין מכירה בהפתעה כרגע...</h3>
+                                <p style="font-size: 15px;">המכירות צצות בזמנים אקראיים לחלוטין ונחטפות מהר. <br>כדאי לחזור לבדוק כאן בהמשך היום!</p>
+                                <button onclick="devToggleSurpriseSale()" style="margin-top: 20px; background: #e2e8f0; border: none; padding: 8px 15px; font-size: 11px; border-radius: 4px; cursor: pointer; color: #64748b; font-weight: bold;">[כלי פיתוח] הפעל/כבה מכירה</button>
+                            </div>
+
+                        </div>
+                    </div>
+                   
                     <div id="tab-market" class="fm-tab">
                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
@@ -4694,6 +4747,94 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         window.closeGachaPack = function() {
             document.getElementById('pack-overlay').classList.remove('active');
         };
+
+                // ==========================================
+        // מנוע מכירה בהפתעה (Flash Sale)
+        // ==========================================
+        
+        let surpriseSaleTimerInterval;
+
+        // פונקציה לטעינת רשימת הסגל של המשתמש לתוך התפריט הנפתח
+        function loadSquadIntoSurpriseSelect() {
+            const select = document.getElementById('ss-player-to-release');
+            if(!select) return;
+            
+            // מנקה את הרשימה (משאיר רק את הדיפולט)
+            select.innerHTML = '<option value="">-- בחר שחקן לשחרור מהסגל שלך (חובה) --</option>';
+            
+            // לוקח את השחקנים של המשתמש (כרגע מוגדר 'מכבי סוליבי')
+            const mySquadPlayers = Object.values(window.allPlayersMap).filter(p => p.owner === 'מכבי סוליבי');
+            
+            mySquadPlayers.forEach(p => {
+                const tName = window.translateName ? window.translateName(p.name) : p.name;
+                const valueStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+                select.innerHTML += `<option value="${p.id}">${tName} (${p.displayPos}) - שווי: ₪${valueStr}</option>`;
+            });
+        }
+
+        // הפעלת הטיימר
+        function startSurpriseTimer(hours, minutes, seconds) {
+            clearInterval(surpriseSaleTimerInterval);
+            let totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+            const timerDisplay = document.getElementById('ss-timer');
+            
+            surpriseSaleTimerInterval = setInterval(() => {
+                totalSeconds--;
+                if(totalSeconds <= 0) {
+                    clearInterval(surpriseSaleTimerInterval);
+                    devToggleSurpriseSale(); // מסתיים הזמן -> סוגר את המכירה
+                    return;
+                }
+                
+                let h = Math.floor(totalSeconds / 3600);
+                let m = Math.floor((totalSeconds % 3600) / 60);
+                let s = totalSeconds % 60;
+                
+                if(timerDisplay) {
+                    timerDisplay.innerText = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        // ביצוע הרכישה בפועל
+        window.executeSurpriseBuy = function() {
+            const select = document.getElementById('ss-player-to-release');
+            if(!select.value) {
+                alert('שגיאה! עליך לבחור שחקן מהסגל שלך כדי לפנות מקום לשחקן החדש.');
+                return;
+            }
+            
+            const selectedText = select.options[select.selectedIndex].text;
+            if(confirm(`האם אתה בטוח שברצונך לשחרר את השחקן שבחרת ולרכוש את אוסקר גלוך ב-₪12.5M? פעולה זו סופית!`)) {
+                alert('מזל טוב! היית מהיר מספיק וחטפת את השחקן. הסגל שלך עודכן בהצלחה.');
+                devToggleSurpriseSale(); // מסיר את המכירה אחרי שמישהו קנה
+            }
+        };
+
+        // כלי פיתוח להפעלה/כיבוי של המכירה
+        window.devToggleSurpriseSale = function() {
+            const card = document.getElementById('ss-active-card');
+            const empty = document.getElementById('ss-empty-state');
+            
+            if(card.classList.contains('hidden')) {
+                card.classList.remove('hidden');
+                empty.classList.remove('active');
+                startSurpriseTimer(0, 15, 0); // מפעיל טיימר ל-15 דקות
+                loadSquadIntoSurpriseSelect(); // טוען את הסגל מחדש
+            } else {
+                card.classList.add('hidden');
+                empty.classList.add('active');
+                clearInterval(surpriseSaleTimerInterval);
+            }
+        };
+
+        // בעליית הדף - מחכים קצת לטעינת הנתונים ואז מפעילים מכירה לדוגמה
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                loadSquadIntoSurpriseSelect();
+                startSurpriseTimer(4, 15, 22); 
+            }, 1500); 
+        });
         
     </script>
 
