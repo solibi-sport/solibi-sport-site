@@ -1537,6 +1537,90 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             font-size: 18px;
             font-weight: 700;
         }
+
+        /* =========================================
+           מרכז העברות - מכירה בהפתעה (Flash Sale)
+           ========================================= */
+        .ss-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; min-height: 500px;
+        }
+
+        .ss-card {
+            background: linear-gradient(145deg, #1e1b4b 0%, #0f172a 100%);
+            border: 2px solid #e11d48;
+            border-radius: 20px;
+            width: 100%; max-width: 500px;
+            box-shadow: 0 0 30px rgba(225, 29, 72, 0.3), inset 0 0 20px rgba(225, 29, 72, 0.1);
+            position: relative; overflow: hidden;
+            animation: ssPulse 2s infinite alternate;
+        }
+
+        @keyframes ssPulse {
+            from { box-shadow: 0 0 20px rgba(225, 29, 72, 0.3); border-color: #be123c; }
+            to { box-shadow: 0 0 40px rgba(225, 29, 72, 0.6); border-color: #fb7185; }
+        }
+
+        .ss-badge {
+            background: #e11d48; color: #fff; font-weight: 900; font-size: 14px;
+            padding: 8px 20px; position: absolute; top: 15px; right: -30px;
+            transform: rotate(45deg); width: 150px; text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); letter-spacing: 1px; z-index: 10;
+        }
+
+        .ss-header {
+            text-align: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .ss-timer {
+            font-family: 'Courier New', Courier, monospace; font-size: 28px; font-weight: 900;
+            color: #fbbf24; text-shadow: 0 0 10px rgba(251,191,36,0.5); margin-top: 5px;
+        }
+
+        .ss-body { padding: 25px; display: flex; flex-direction: column; align-items: center; }
+
+        .ss-player-img {
+            width: 120px; height: 120px; border-radius: 50%; border: 4px solid #fff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5); margin-bottom: 15px; object-fit: cover; background: #e2e8f0;
+        }
+
+        .ss-player-name { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 5px; text-align: center;}
+        .ss-player-meta { font-size: 14px; color: #cbd5e1; font-weight: bold; margin-bottom: 20px; text-align: center;}
+
+        .ss-prices {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            background: rgba(0,0,0,0.4); padding: 15px 30px; border-radius: 12px; width: 100%;
+            margin-bottom: 25px; border: 1px dashed rgba(255,255,255,0.2);
+        }
+
+        .ss-old-price { font-size: 16px; color: #94a3b8; text-decoration: line-through; font-weight: bold;}
+        .ss-new-price { font-size: 28px; color: #2ecc71; font-weight: 900; text-shadow: 0 0 15px rgba(46,204,113,0.4);}
+
+        .ss-swap-box {
+            width: 100%; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 20px;
+        }
+        .ss-swap-label { display: block; color: #fff; font-size: 13px; font-weight: bold; margin-bottom: 10px;}
+        
+        .ss-select {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #64748b;
+            background: #f8fafc; color: #0f172a; font-family: inherit; font-weight: 900; font-size: 14px; outline: none; cursor: pointer;
+        }
+
+        .ss-buy-btn {
+            width: 100%; background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: #fff; font-weight: 900; font-size: 20px; padding: 15px; border: none; border-radius: 30px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(46,204,113,0.3);
+        }
+        .ss-buy-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(46,204,113,0.5); }
+        .ss-buy-btn:active { transform: translateY(0); }
+
+        /* מצב "אין מכירה כרגע" */
+        .ss-empty-state {
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #94a3b8; padding: 50px 20px;
+        }
+        .ss-empty-state.active { display: flex; }
+        .ss-card.hidden { display: none; }
         
     </style>
         
@@ -1617,7 +1701,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         </div>
     </div>
 
-    <div class="fm-nav-group" onclick="toggleNavGroup(this)">
+   <div class="fm-nav-group" onclick="toggleNavGroup(this)">
         <div class="fm-menu-item">
             <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
             <span>מרכז העברות</span>
@@ -1626,7 +1710,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         <div class="fm-submenu">
             <div class="fm-sub-item" onclick="event.stopPropagation()">העברות בין קבוצות</div>
             <div class="fm-sub-item" onclick="event.stopPropagation()">מכירות פומביות</div>
-            <div class="fm-sub-item" onclick="event.stopPropagation()">מכירה בהפתעה</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-surprise-sale', this)">מכירה בהפתעה</div>
         </div>
     </div>
 
