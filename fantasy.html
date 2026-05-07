@@ -2814,11 +2814,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 <div id="tab-surprise-sale" class="fm-tab">
                         <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                            מכירה בהפתעה (Lightning Deal)
+                            מכירה בהפתעה 
                         </h2>
                         
                         <p style="text-align: center; color: #64748b; font-weight: bold; margin-bottom: 20px;">
-                            הזדמנות נדירה לרכוש שחקן חופשי במחיר שחיטה! פועל על בסיס "כל הקודם זוכה". <br>כדי לבצע רכישה, עליך לשחרר שחקן אחד מהסגל הקיים שלך כדי לשמור על מגבלת ה-20 שחקנים.
+                            הזדמנות נדירה לרכוש שחקן חופשי במחיר מציאה! פועל על בסיס "כל הקודם זוכה". <br>כדי לבצע רכישה, עליך לשחרר שחקן אחד מהסגל הקיים שלך כדי לשמור על מגבלת ה-20 שחקנים.
                         </p>
 
                         <div class="ss-container">
@@ -2836,6 +2836,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     <div class="ss-player-name" id="ss-name">טוען שחקן...</div>
                                     <div class="ss-player-meta">
                                         <span id="ss-team">-</span> | <span id="ss-pos">-</span>
+                                        <div id="ss-tier-container" style="margin-top: 10px; display: flex; justify-content: center;"></div>
                                     </div>
                                     
                                     <div class="ss-prices">
@@ -2850,7 +2851,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                         </select>
                                     </div>
 
-                                    <button class="ss-buy-btn" id="ss-submit-btn" onclick="executeSurpriseBuy()" disabled>בחר שחקן להחלפה...</button>
+                                    <button class="ss-buy-btn" id="ss-submit-btn" onclick="executeSurpriseBuy()" disabled>
+                                        הצע (יש לבחור שחקן תחילה)
+                                    </button>
                                 </div>
                             </div>
 
@@ -4799,9 +4802,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             const tTeam = window.translateName ? window.translateName(currentSurprisePlayer.team) : currentSurprisePlayer.team;
             const playerImage = currentSurprisePlayer.photo || `https://media.api-sports.io/football/players/${currentSurprisePlayer.id}.png`;
             
-            // מחשב הנחת "פלאש סייל" רנדומלית בין 40% ל-60% הנחה
-            const discountPercent = 0.4 + (Math.random() * 0.2); 
-            currentSurprisePrice = Math.floor(currentSurprisePlayer.value * discountPercent);
+            // מחשב הנחת "פלאש סייל" רנדומלית בין 20% ל-40% הנחה!
+            // משמע - המחיר החדש יהיה בין 60% ל-80% מהמחיר המקורי
+            const discountPercent = 0.2 + (Math.random() * 0.2); 
+            currentSurprisePrice = Math.floor(currentSurprisePlayer.value * (1 - discountPercent));
             
             // מזריק למסך
             document.getElementById('ss-name').innerText = tName;
@@ -4823,10 +4827,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             
             if(select.value) {
                 btn.disabled = false;
-                btn.innerText = "הצע הצעה ורכוש!";
+                btn.innerText = "הצע!";
             } else {
                 btn.disabled = true;
-                btn.innerText = "בחר שחקן להחלפה...";
+                btn.innerText = "הצע (יש לבחור שחקן תחילה)";
             }
         };
 
