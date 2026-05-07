@@ -208,6 +208,54 @@
         @keyframes goalAlertPulse { 0% { transform: scale(0.95); background: rgba(122, 153, 102, 0.85); box-shadow: 0 0 5px rgba(122,153,102,0.5); } 100% { transform: scale(1.05); background: rgba(122, 153, 102, 1); box-shadow: 0 0 15px rgba(122,153,102,1); } }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
 
+/* === עיצוב שומר המקום לסרטון ההדרכה === */
+        .intro-video-placeholder {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 16px;
+            border: 2px dashed #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            
+            /* שתי השורות האלו דואגות למרכוז מוחלט באמצע הלבן */
+            margin: 20px auto 0 auto; 
+            align-self: center; 
+            
+            box-shadow: inset 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .play-btn-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(124, 168, 86, 0.2); 
+            border: 3px solid var(--brand-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: not-allowed;
+        }
+
+        .play-triangle {
+            width: 0; 
+            height: 0; 
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 24px solid var(--brand-green);
+            margin-left: 8px;
+        }
+
+        .video-text {
+            color: #94a3b8;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
     </style>
 </head>
 <body>
@@ -245,7 +293,13 @@
                 <div class="sidebar-title">המגרש הווירטואלי</div>
             </div>
             <nav class="sidebar-menu">
-                <div class="sidebar-item active" onclick="switchInternalTab('tab-1', this)">
+                
+                <div class="sidebar-item active" onclick="switchInternalTab('tab-intro', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span>סקירה כללית</span>
+                </div>
+
+                <div class="sidebar-item" onclick="switchInternalTab('tab-1', this)">
                     <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect><path d="M12 12h.01"></path><path d="M17 12h.01"></path><path d="M7 12h.01"></path></svg>
                     <span>EA FC - מדריכים</span>
                 </div>
@@ -277,7 +331,22 @@
         </aside>
 
         <section class="content-area">
-            <div id="tab-1" class="tab-content active">
+            
+            <div id="tab-intro" class="tab-content active">
+                <h2 class="content-header-title">סקירה כללית: עולם הגיימינג</h2>
+                <p class="content-desc" style="font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+                    ברוכים הבאים למגרש הווירטואלי של סוליבי ספורט. כאן תמצאו את כל המדריכים, הטקטיקות והעדכונים החמים ביותר למשחקי הספורט המובילים (EA FC, Football Manager), לצד סיקורי חומרה, חדשות eSports וקהילת גיימרים תוססת.
+                </p>
+                
+                <div class="intro-video-placeholder">
+                    <div class="play-btn-circle">
+                        <div class="play-triangle"></div>
+                    </div>
+                    <div class="video-text">סרטון הדרכה יעלה בקרוב...</div>
+                </div>
+            </div>
+
+            <div id="tab-1" class="tab-content">
                 <h2 class="content-header-title">EA FC - המדריך המלא</h2>
                 <p class="content-desc">המדריכים המובילים למשחק. טקטיקות מנצחות, בניית קבוצה באולטימייט טים, טיפים למשחקיות ועדכונים מהירים מהדשא הווירטואלי.</p>
                 <div class="placeholder-box">כאן ישולבו מדריכי EA FC...</div>
