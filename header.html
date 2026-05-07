@@ -1,3 +1,97 @@
+<style>
+    /* =========================================
+       עיצוב השורה העליונה (Header) - גלובלי
+       ========================================= */
+
+    .header {
+        height: 65px;
+        background: var(--element-navy-gradient);
+        border-bottom: 2px solid var(--brand-green);
+        position: relative;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between; 
+        align-items: center;
+        padding: 0 20px;
+        flex-shrink: 0;
+        width: 100%;
+    }
+
+    .header-right-col, .header-left-col {
+        width: clamp(240px, 20vw, 320px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .header-center-col {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(15px, 2vw, 30px);
+        flex: 1;
+    }
+
+    .logo-wrapper {
+        background-color: #ffffff; padding: 0 28px; border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s;
+        height: 52px; display: flex; align-items: center; justify-content: center; text-decoration: none;
+    }
+    .logo-wrapper:hover { transform: scale(1.05); }
+    .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
+
+    .personal-area-btn {
+        background: transparent; border: 1.5px solid var(--brand-green);
+        color: #ffffff; padding: 6px 16px; border-radius: 30px; text-decoration: none;
+        font-weight: 700; font-size: clamp(12px, 1vw, 14px); transition: 0.3s;
+        display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
+    }
+    .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; border-color: var(--brand-green); transform: scale(1.05); }
+
+    .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); align-items: center; margin: 0; padding: 0; }
+    .header-nav a { text-decoration: none; color: #ffffff; font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
+    .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
+
+    /* --- עיצוב כפתור חנות סוליבי (עגלת קניות) - עם אפקט הילה זוהרת --- */
+    .header-nav a.store-nav-link { 
+        transition: all 0.3s ease; 
+    }
+    .header-nav a.store-nav-link svg { 
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    }
+
+    /* אפקט "הילה זוהרת" בהובר */
+    .header-nav a.store-nav-link:hover { 
+        background: rgba(124, 168, 86, 0.25) !important; 
+        color: var(--brand-green) !important; 
+        border-radius: 8px;
+        box-shadow: 0 0 12px rgba(124, 168, 86, 0.5); /* ההילה הירוקה */
+    }
+
+    /* העגלה "נוסעת" שמאלה בהובר */
+    .header-nav a.store-nav-link:hover svg { 
+        transform: translateX(-4px) scale(1.1); 
+    }
+
+    /* ---------------------------------------------------- */
+
+    .header-search { width: 65%; height: 34px; transition: width 0.4s ease; position: relative; }
+    .header-search input { width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit; box-shadow: none; transition: 0.4s ease; }
+    .header-search:focus-within { width: 100%; }
+    .header-search input:focus { box-shadow: 0 0 15px rgba(124, 168, 86, 0.6); background: #fff; z-index: 10; }
+
+    /* --- רספונסיביות (התאמה למסכים קטנים) להדר --- */
+    @media (max-width: 1100px) {
+        .header { height: auto; padding: 15px 0; flex-direction: column; gap: 15px; }
+        .header-right-col, .header-center-col, .header-left-col { width: 100%; justify-content: center; position: static; }
+        .header-search { display: none; }
+    }
+    @media (max-width: 768px) {
+        .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .header-nav a { font-size: 14px; padding: 5px 8px; }
+    }
+</style>
+
 <header class="header">
     <div class="header-right-col">
         <a href="index.html" class="logo-wrapper">
@@ -14,13 +108,9 @@
         <nav class="header-nav">
             <ul>
                 <li><a href="index.html">דף הבית</a></li>
-                
                 <li><a href="#">קרדיטים</a></li>
-                
                 <li><a href="#">אודות</a></li>
-                
                 <li><a href="#">צור קשר</a></li>
-
                 <li>
                     <a href="store.html" class="store-nav-link" style="color: #7ca856; display: flex; align-items: center; gap: 6px;">
                         חנות סוליבי
