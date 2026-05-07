@@ -1433,6 +1433,51 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
         @media (max-width: 1200px) { .packs-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { .packs-grid { grid-template-columns: 1fr; } .rewards-container { flex-direction: column; } }
+
+/* === עיצוב שומר המקום לסרטון ההדרכה === */
+        .intro-video-placeholder {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 16px;
+            border: 2px dashed #334155;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px auto 0 auto; 
+            align-self: center; 
+            box-shadow: inset 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .play-btn-circle {
+            width: 80px;
+            height: 80px;
+            background: rgba(124, 168, 86, 0.2); 
+            border: 3px solid var(--brand-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: not-allowed;
+        }
+
+        .play-triangle {
+            width: 0; 
+            height: 0; 
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 24px solid var(--brand-green);
+            margin-left: 8px;
+        }
+
+        .video-text {
+            color: #94a3b8;
+            font-size: 18px;
+            font-weight: 700;
+        }
         
     </style>
         
@@ -1480,7 +1525,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
         <div class="fm-submenu">
-            <div class="fm-sub-item active" onclick="event.stopPropagation(); switchFmTab('tab-dashboard', this)">הודעות והתראות</div>
+            <div class="fm-sub-item active" onclick="event.stopPropagation(); switchFmTab('tab-intro', this)">סקירה כללית</div>
+            
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-dashboard', this)">הודעות והתראות</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-profile', this)">פרופיל המנג'ר</div>
         </div>
     </div>
@@ -1591,8 +1638,29 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     </div>
                 </div>
 
-                <div class="fm-content-area">
-                    <div id="tab-dashboard" class="fm-tab active">
+               <div class="fm-content-area">
+                    
+                    <div id="tab-intro" class="fm-tab active">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            סקירה כללית: פנטזי ליג
+                        </h2>
+                        
+                        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; flex: 1;">
+                            <p class="content-desc" style="font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+                                ברוכים הבאים לפנטזי ליג של סוליבי ספורט. כאן תוכלו לבנות את קבוצת החלומות שלכם, לנהל תקציב רכש, לבצע חילופים טקטיים, להתחרות בליגות מול חברים, לאסוף בונוסים יומיים ולשדרג את הקבוצה דרך חנות הבוסטים וגלגל המזל.
+                            </p>
+                            
+                            <div class="intro-video-placeholder">
+                                <div class="play-btn-circle">
+                                    <div class="play-triangle"></div>
+                                </div>
+                                <div class="video-text">סרטון הדרכה יעלה בקרוב...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-dashboard" class="fm-tab">
                         <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                             הודעות והתראות
