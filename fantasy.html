@@ -38,22 +38,53 @@
             body { zoom: 0.85; }
         }
 
-        /* === התאמת השורה העליונה לפנטזי (Overrides) === */
-        .header { background: var(--bg-silver-matte) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important; }
-        
-        .logo-wrapper { background: var(--element-navy-gradient) !important; }
-        .actual-logo-img { filter: brightness(0) invert(1) !important; }
-        
-        .header-nav a { color: var(--text-dark) !important; font-weight: 900 !important; }
-        .header-nav a:hover { background: var(--element-navy-gradient) !important; color: #ffffff !important; }
-        
-        .personal-area-btn { color: var(--text-dark) !important; border: 1.5px solid var(--brand-green) !important; }
-        
-        .header-search input { border: 1px solid rgba(6, 33, 65, 0.2) !important; color: var(--text-dark) !important; }
-        
-        /* סידור עגלת הקניות של חנות סוליבי שתתאים לרקע הבהיר */
-        .header-nav a.store-nav-link { color: var(--brand-green) !important; }
-        .header-nav a.store-nav-link:hover { background: rgba(124, 168, 86, 0.15) !important; }
+        /* === הדר עליון (הפוך - כסוף) === */
+        .header {
+            height: 65px;
+            background: var(--bg-silver-matte);
+            border-bottom: 2px solid var(--brand-green);
+            position: relative;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px; 
+            flex-shrink: 0;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .header-right-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
+        .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1; }
+        .header-left-col { width: var(--sidebar-width); display: flex; justify-content: center; align-items: center; }
+
+        .logo-wrapper {
+            background: var(--element-navy-gradient); padding: 0 28px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s; height: 52px; 
+            display: flex; align-items: center; justify-content: center; text-decoration: none;
+        }
+        .logo-wrapper:hover { transform: scale(1.05); }
+        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; filter: brightness(0) invert(1); }
+
+        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); align-items: center; margin: 0; padding: 0; }
+        .header-nav a { text-decoration: none; color: var(--text-dark); font-weight: 900; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
+        .header-nav a:hover { background: var(--element-navy-gradient); color: #ffffff; }
+
+        .personal-area-btn {
+            background: transparent; border: 1.5px solid var(--brand-green);
+            color: var(--text-dark); padding: 6px 16px; border-radius: 30px; text-decoration: none;
+            font-weight: 900; font-size: clamp(12px, 1vw, 14px); display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; white-space: nowrap;
+        }
+        .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; transform: scale(1.05); }
+
+        .header-search { position: relative; width: 65%; height: 34px; transition: width 0.4s ease; }
+        .header-search input { 
+            width: 100%; height: 100%; border: 1px solid rgba(6, 33, 65, 0.2); background: rgba(255, 255, 255, 0.95); 
+            border-radius: 30px; padding: 0 20px; outline: none; transition: 0.4s; font-family: inherit; font-size: 13px;
+            color: var(--text-dark); font-weight: bold;
+        }
+        .header-search:focus-within { width: 100%; }
+        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; border-color: var(--brand-green);}
 
         /* === גוף הדף === */
         /* סידור נכון של הפריסה כדי למנוע דריסה של הלייב פאנל ע"י הטבלה */
@@ -1615,7 +1646,31 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
 <body>
 
-    <div id="header-placeholder"></div>
+    <header class="header">
+        <div class="header-right-col">
+            <a href="index.html" class="logo-wrapper"><img src="a.png" alt="Solibi Sport" class="actual-logo-img"></a>
+        </div>
+        
+        <div class="header-center-col">
+            <a href="#" class="personal-area-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>לאזור האישי</span>
+            </a>
+            <nav class="header-nav">
+                <ul>
+                    <li><a href="../index.html">דף הבית</a></li>
+                    <li><a href="#">קרדיטים</a></li>
+                    <li><a href="#">אודות</a></li>
+                    <li><a href="#">צור קשר</a></li>
+                    <li><a href="#">חנות סוליבי</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="header-left-col">
+            <div class="header-search"><input type="text" placeholder="חיפוש..."></div>
+        </div>
+    </header>
 
     <main class="main-content">
         
