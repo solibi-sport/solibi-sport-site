@@ -1547,16 +1547,17 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         }
 
         .ss-card {
-            background: var(--element-navy-gradient); /* צבע בלו-נייבי של האתר */
+            background: var(--element-navy-gradient); 
             border: 2px solid #e11d48;
             border-radius: 20px;
             width: 100%; max-width: 500px;
             box-shadow: 0 0 30px rgba(225, 29, 72, 0.3), inset 0 0 20px rgba(225, 29, 72, 0.1);
             position: relative; overflow: hidden;
             animation: ssPulse 2s infinite alternate;
+            height: fit-content !important; /* מכריח את הקלף להתרחב לפי התוכן */
+            max-height: none !important; /* מבטל כל הגבלת גובה שאולי קיימת */
         }
 
-        /* אפקט הברק שחולף על הכרטיס */
         .ss-card::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
@@ -1567,61 +1568,48 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             from { box-shadow: 0 0 20px rgba(225, 29, 72, 0.3); border-color: #be123c; }
             to { box-shadow: 0 0 40px rgba(225, 29, 72, 0.6); border-color: #fb7185; }
         }
-        
         @keyframes ssShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
         .ss-badge {
             background: #e11d48; color: #fff; font-weight: 900; font-size: 14px;
-            padding: 8px 20px; position: absolute; top: 15px; right: -30px;
+            padding: 6px 20px; position: absolute; top: 15px; right: -30px;
             transform: rotate(45deg); width: 150px; text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5); letter-spacing: 1px; z-index: 10;
         }
 
-        .ss-header {
-            text-align: center; padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 2;
-        }
-        
-        .ss-timer {
-            font-family: 'Courier New', Courier, monospace; font-size: 28px; font-weight: 900;
-            color: #fbbf24; text-shadow: 0 0 10px rgba(251,191,36,0.5); margin-top: 5px;
-        }
+        /* צמצום רווחים דרסטי */
+        .ss-header { text-align: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 2; }
+        .ss-timer { font-family: 'Courier New', Courier, monospace; font-size: 24px; font-weight: 900; color: #fbbf24; text-shadow: 0 0 10px rgba(251,191,36,0.5); margin-top: 2px; }
 
-        .ss-body { padding: 25px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2;}
-
-        .ss-player-img {
-            width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--brand-green);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); margin-bottom: 15px; object-fit: cover; background: #fff;
+        .ss-body { 
+            padding: 15px; 
+            display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2;
         }
 
-        .ss-player-name { font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 5px; text-align: center;}
-        .ss-player-meta { font-size: 14px; color: #cbd5e1; font-weight: bold; margin-bottom: 20px; text-align: center;}
+        /* הקטנת תמונת השחקן מ-120 ל-90 */
+        .ss-player-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--brand-green); box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-bottom: 10px; object-fit: cover; background: #fff; }
+        .ss-player-name { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 5px; text-align: center;}
 
         .ss-prices {
-            display: flex; align-items: center; justify-content: center; gap: 15px;
-            background: rgba(0,0,0,0.4); padding: 15px 30px; border-radius: 12px; width: 100%;
-            margin-bottom: 25px; border: 1px dashed rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: rgba(0,0,0,0.4); padding: 10px 20px; border-radius: 12px; width: 100%;
+            margin-bottom: 15px; border: 1px dashed rgba(255,255,255,0.2);
         }
 
-        .ss-old-price { font-size: 16px; color: #94a3b8; text-decoration: line-through; font-weight: bold;}
-        .ss-new-price { font-size: 28px; color: var(--brand-green); font-weight: 900; text-shadow: 0 0 15px rgba(124, 168, 86, 0.4);}
+        .ss-old-price { font-size: 14px; color: #94a3b8; text-decoration: line-through; font-weight: bold;}
+        .ss-new-price { font-size: 24px; color: var(--brand-green); font-weight: 900; text-shadow: 0 0 10px rgba(124, 168, 86, 0.4);}
 
-        .ss-swap-box {
-            width: 100%; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 20px;
-        }
-        .ss-swap-label { display: block; color: #fff; font-size: 13px; font-weight: bold; margin-bottom: 10px;}
-        
-        .ss-select {
-            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #64748b;
-            background: #f8fafc; color: #0f172a; font-family: inherit; font-weight: 900; font-size: 14px; outline: none; cursor: pointer;
-        }
+        .ss-swap-box { width: 100%; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 12px; margin-bottom: 15px; }
+        .ss-swap-label { display: block; color: #fff; font-size: 12px; font-weight: bold; margin-bottom: 8px;}
+        .ss-select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #64748b; background: #f8fafc; color: #0f172a; font-family: inherit; font-weight: 900; font-size: 13px; outline: none; cursor: pointer; }
 
         .ss-buy-btn {
             width: 100%; background: linear-gradient(145deg, #7ca856, #5d823e);
-            color: #fff; font-weight: 900; font-size: 20px; padding: 15px; border: 2px solid #8fc964; border-radius: 30px;
-            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(124,168,86,0.3);
+            color: #fff; font-weight: 900; font-size: 18px; padding: 12px; border: 2px solid #8fc964; border-radius: 30px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 8px 15px rgba(124,168,86,0.3); margin-top: 5px;
         }
         .ss-buy-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(124,168,86,0.5); }
-        .ss-buy-btn:active:not(:disabled) { transform: translateY(0); }
+        .ss-buy-btn:disabled { background: #334155; border-color: #475569; color: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none;}
         
         /* כפתור מנוטרל כשלא נבחר שחקן לשחרור */
         .ss-buy-btn:disabled {
