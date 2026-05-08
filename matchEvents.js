@@ -502,31 +502,40 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     let playerName = event.player?.name ? (typeof window.translateName === 'function' ? window.translateName(event.player.name) : event.player.name) : '';
                     let assistName = event.assist?.name ? (typeof window.translateName === 'function' ? window.translateName(event.assist.name) : event.assist.name) : null;
                     
-                    let icon = '📌', mainText = '', subText = '', isGoalCancelled = false;
+                   let icon = '', mainText = '', subText = '', isGoalCancelled = false;
+
+                    // הגדרות SVG לאייקונים החדשים
+                    const iconGoal = '⚽';
+                    const iconYellow = '🟨';
+                    const iconRed = '🟥';
+                    const iconSub = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M5 10l-3 3 3 3" stroke="#ef4444"/><path d="M2 13h10" stroke="#ef4444"/><path d="M19 14l3-3-3-3" stroke="#10b981"/><path d="M22 11H12" stroke="#10b981"/></svg>`;
+                    const iconVar = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>`;
+                    const iconMissedPen = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+                    const iconWhistle = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="12" cy="12" r="8"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`;
 
                     if (typeStr === 'goal') {
-                        if (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel')) { icon = '❌'; mainText = `שער! ${playerName}`; isGoalCancelled = true; } 
-                        else if (detailStr.includes('missed penalty')) { icon = '❌'; mainText = `החמצת פנדל! ${playerName}`; } 
-                        else if (detailStr.includes('penalty')) { icon = '⚽'; mainText = `שער! ${playerName} (פ')`; if (assistName) subText = `בישול: ${assistName}`; } 
-                        else if (detailStr.includes('own goal')) { icon = '⚽'; mainText = `שער עצמי! ${playerName}`; } 
-                        else { icon = '⚽'; mainText = `שער! ${playerName}`; if (assistName) subText = `בישול: ${assistName}`; }
+                        if (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel')) { icon = iconMissedPen; mainText = `שער נפסל! ${playerName}`; isGoalCancelled = true; } 
+                        else if (detailStr.includes('missed penalty')) { icon = iconMissedPen; mainText = `החמצת פנדל! ${playerName}`; } 
+                        else if (detailStr.includes('penalty')) { icon = iconGoal; mainText = `שער! ${playerName} (פ')`; if (assistName) subText = `בישול: ${assistName}`; } 
+                        else if (detailStr.includes('own goal')) { icon = iconGoal; mainText = `שער עצמי! ${playerName}`; } 
+                        else { icon = iconGoal; mainText = `שער! ${playerName}`; if (assistName) subText = `בישול: ${assistName}`; }
                     } 
                     else if (typeStr === 'var') {
-                        icon = '📺'; mainText = 'החלטת VAR'; if (playerName) mainText += ` (${playerName})`;
+                        icon = iconVar; mainText = 'החלטת VAR'; if (playerName) mainText += ` (${playerName})`;
                         if (detailStr.includes('cancel') || commentsStr.includes('cancel')) subText = '❌ שער נפסל';
                         else if (detailStr.includes('penalty')) subText = 'בדיקת פנדל';
                         else if (detailStr.includes('card')) subText = 'בדיקת כרטיס';
                         else subText = event.detail || 'בדיקה';
                     } 
                     else if (typeStr === 'card') {
-                        if (detailStr.includes('yellow') && !detailStr.includes('second')) { icon = '🟨'; mainText = playerName; subText = 'כרטיס צהוב'; } 
-                        else if (detailStr.includes('red') || detailStr.includes('second yellow')) { icon = '🟥'; mainText = playerName; subText = 'כרטיס אדום'; } 
-                        else { icon = '🟨'; mainText = playerName; subText = event.detail; }
+                        if (detailStr.includes('yellow') && !detailStr.includes('second')) { icon = iconYellow; mainText = playerName; subText = 'כרטיס צהוב'; } 
+                        else if (detailStr.includes('red') || detailStr.includes('second yellow')) { icon = iconRed; mainText = playerName; subText = 'כרטיס אדום'; } 
+                        else { icon = iconYellow; mainText = playerName; subText = event.detail; }
                     } 
                     else if (typeStr === 'subst') {
-                        icon = '🔄'; mainText = `${assistName} (נכנס)`; subText = `${playerName} (יצא)`;
+                        icon = iconSub; mainText = `${assistName} (נכנס)`; subText = `${playerName} (יצא)`;
                     } 
-                    else { icon = '🔔'; mainText = event.type + (playerName ? ` - ${playerName}` : ''); subText = event.detail || ''; }
+                    else { icon = iconWhistle; mainText = event.type + (playerName ? ` - ${playerName}` : ''); subText = event.detail || ''; }
 
                     const isHome = event.team.id === homeId;
                     let textClass = isGoalCancelled ? 'event-text var-cancelled' : 'event-text';
