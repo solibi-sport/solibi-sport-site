@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי ספורט - צור קשר</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="header-style.css">
+    
+    <style>
+        :root {
+            --brand-green: #7ca856;
+            --brand-green-glow: rgba(124, 168, 86, 0.6);
+            --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
+            --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
+            --text-dark: #062141;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            font-family: 'Rubik', sans-serif;
+            background: var(--bg-silver-matte);
+            width: 100%;
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* ממרכז הכל באמצע המסך */
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* --- כותרת פרימיום --- */
+        .premium-title-wrapper { 
+            display: flex; align-items: center; justify-content: center; 
+            margin-bottom: 30px; 
+        }
+        .page-title {
+            background: #ffffff; 
+            padding: 12px 50px; 
+            border-radius: 40px;
+            font-size: clamp(22px, 2.5vw, 32px); 
+            font-weight: 900; 
+            color: var(--text-dark);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            text-align: center;
+        }
+        .page-title span { color: var(--brand-green); }
+
+        /* --- ענן התוכן המרכזי --- */
+        .contact-cloud {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-subtitle {
+            font-size: 16px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        /* --- גריד קוביות הקשר --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .contact-card {
+            background: var(--element-navy-gradient);
+            border-radius: 16px;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--brand-green);
+            box-shadow: 0 15px 30px rgba(124, 168, 86, 0.2);
+        }
+
+        .contact-icon {
+            width: 45px; height: 45px;
+            color: var(--brand-green);
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+        .contact-card:hover .contact-icon { transform: scale(1.15); color: #fff; }
+
+        .contact-method { font-size: 18px; font-weight: 900; margin-bottom: 5px; }
+        .contact-detail { font-size: 14px; font-weight: 500; color: #cbd5e1; direction: ltr; }
+
+        /* קו הפרדה אלגנטי */
+        .divider {
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(6, 33, 65, 0.1), transparent);
+            margin: 0 0 30px 0;
+        }
+
+        /* --- רשתות חברתיות ואתר נוסף --- */
+        .social-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-dark);
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .social-btn:hover { background: var(--brand-green); color: #ffffff; transform: translateY(-3px); }
+        .social-btn svg { width: 22px; height: 22px; }
+
+        .business-link-card {
+            background: rgba(124, 168, 86, 0.1);
+            border: 1px solid var(--brand-green);
+            padding: 12px 25px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 900;
+            transition: 0.3s;
+        }
+        .business-link-card:hover { background: var(--brand-green); color: #ffffff; transform: scale(1.02); }
+
+        /* פוטר וטיקר */
+        .footer { background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); height: 40px; overflow: hidden; flex-shrink: 0; width: 100%; }
+
+        @media (max-width: 900px) {
+            .contact-grid { grid-template-columns: repeat(2, 1fr); }
+            .social-section { flex-direction: column; justify-content: center; }
+        }
+        @media (max-width: 600px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            html, body { overflow-y: auto; height: auto; } 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        
+        <div class="premium-title-wrapper">
+            <h1 class="page-title">יצירת <span>קשר</span></h1>
+        </div>
+
+        <div class="contact-cloud">
+            <div class="contact-subtitle">
+                יש לך שאלה? הצעה לשיתוף פעולה? או סתם בא לך לדבר על כדורגל?<br>
+                הצוות שלנו זמין עבורך במגוון ערוצים. בחר את הדרך הנוחה לך.
+            </div>
+
+            <div class="contact-grid">
+                
+                <a href="tel:0501234567" class="contact-card">
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <div class="contact-method">טלפון</div>
+                    <div class="contact-detail">050-1234567</div>
+                </a>
+
+                <a href="https://wa.me/972501234567" target="_blank" class="contact-card">
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    <div class="contact-method">WhatsApp</div>
+                    <div class="contact-detail">לחץ לשליחת הודעה</div>
+                </a>
+
+                <a href="mailto:info@solibi.co.il" class="contact-card">
+                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <div class="contact-method">דואר אלקטרוני</div>
+                    <div class="contact-detail">info@solibi.co.il</div>
+                </a>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="social-section">
+                
+                <div class="social-links">
+                    <a href="#" target="_blank" class="social-btn" title="פייסבוק">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    </a>
+                    <a href="#" target="_blank" class="social-btn" title="יוטיוב">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.54 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.54-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>
+                    </a>
+                    <a href="#" target="_blank" class="social-btn" title="טיקטוק">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                    </a>
+                </div>
+
+                <a href="https://business.solibi.co.il" target="_blank" class="business-link-card">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                    <div>
+                        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 2px;">בעל עסק? גלה את</div>
+                        <div style="font-size: 15px;">סוליבי עסקים</div>
+                    </div>
+                </a>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div id="ticker-placeholder"></div>
+    </footer>
+
+    <script>
+        // טעינת ההדר
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('header-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+
+        // טעינת הטיקר
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('ticker-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
+    </script>
+</body>
+</html>
