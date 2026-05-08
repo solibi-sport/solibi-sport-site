@@ -13,7 +13,7 @@
             --brand-green: #7ca856;
             --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
             --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-            --text-dark: #062141; /* בלו נייבי */
+            --text-dark: #062141;
             --text-gray: #475569;
         }
 
@@ -21,10 +21,10 @@
 
         html, body {
             font-family: 'Rubik', sans-serif;
-            background: var(--brand-silver-matte, var(--bg-silver-matte));
+            background: var(--bg-silver-matte);
             width: 100%;
             height: 100vh; 
-            overflow: hidden; 
+            overflow: hidden; /* חוסם גלילה חיצונית */
             display: flex;
             flex-direction: column;
         }
@@ -35,7 +35,7 @@
             flex-direction: column;
             align-items: center;
             padding: 0 20px 40px 20px;
-            overflow: hidden; /* מבטל את הגלילה הכללית של הדף */
+            overflow: hidden; /* חוסם גלילה ברמת התוכן הראשי */
         }
 
         /* --- כותרת פרימיום מעודכנת --- */
@@ -44,63 +44,59 @@
             margin-top: 50px; 
             margin-bottom: 35px; 
             width: 100%;
-            flex-shrink: 0; /* מבטיח שהכותרת תמיד תישאר בגודל המלא שלה ולא תתכווץ */
+            flex-shrink: 0; /* שומר על הכותרת יציבה ולא מתכווצת */
         }
-        
         .page-title {
             background: #ffffff; 
             padding: 12px 60px; 
             border-radius: 40px;
             font-size: clamp(20px, 2.5vw, 30px); 
             font-weight: 900; 
-            color: var(--text-dark); /* ברירת מחדל בלו נייבי */
+            color: var(--text-dark);
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
             text-align: center;
         }
         
-        /* צביעת הכותרת לפי הבקשה */
         .title-navy { color: var(--text-dark); }
         .title-green { color: var(--brand-green); }
 
-       /* --- ענן התוכן המרכזי (כעת נגלל בפנים מימין) --- */
-        .credits-container {
+        /* --- מעטפת הגלילה (שולטת על פס הגלילה מימין) --- */
+        .credits-scroll-wrapper {
             width: 100%;
             max-width: 900px;
+            flex: 0 1 auto; /* גודל דינמי עד הפעלת גלילה */
+            min-height: 0;
+            overflow-y: auto; 
+            direction: ltr; /* טריק: מעביר את פס הגלילה לצד ימין */
+            
+            /* עיצוב המלבן הלבן */
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(15px);
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.9);
             box-shadow: 0 15px 40px rgba(0,0,0,0.04);
-            flex: 0 1 auto;
-            min-height: 0;
-            overflow-y: auto; 
-            direction: ltr; /* טריק: מעביר את פס הגלילה לצד ימין */
+
+            /* תמיכה בפס גלילה לפיירפוקס */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(124, 168, 86, 0.5) rgba(0,0,0,0.02);
         }
 
-        .credits-content {
+        /* עיצוב פס הגלילה (כרום, ספארי, אדג') */
+        .credits-scroll-wrapper::-webkit-scrollbar { width: 8px; }
+        .credits-scroll-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); border-radius: 10px; margin: 20px 0; }
+        .credits-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.4); border-radius: 10px; }
+        .credits-scroll-wrapper::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+
+        /* --- התוכן הפנימי (מחזיר את העברית למצב תקין) --- */
+        .credits-inner-content {
+            direction: rtl; /* מחזיר לעברית */
+            text-align: right;
             padding: 45px;
             display: flex;
             flex-direction: column;
             gap: 35px;
-            direction: rtl; /* מחזיר את כל התוכן הפנימי לעברית (מימין לשמאל) */
         }
 
-        /* עיצוב פס הגלילה בתוך הקוביה */
-        .credits-container::-webkit-scrollbar {
-            width: 8px; /* פס דק ואלגנטי */
-        }
-        .credits-container::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.02); 
-            border-radius: 10px; 
-            margin: 20px 0; /* מרחיק את הפס מהפינות המעוגלות */
-        }
-        .credits-container::-webkit-scrollbar-thumb {
-            background: rgba(124, 168, 86, 0.4); /* ירוק שקוף */
-            border-radius: 10px;
-        }
-        .credits-container::-webkit-scrollbar-thumb:hover {
-            background: var(--brand-green); /* ירוק זוהר במעבר עכבר */
-        }
         .credits-intro {
             font-size: 16px;
             line-height: 1.6;
@@ -176,7 +172,7 @@
             border-bottom-color: var(--brand-green);
         }
 
-        /* === פוטר וטיקר מתוקן וקבוע === */
+        /* === פוטר וטיקר קבוע === */
         .footer { 
             background: var(--element-navy-gradient); 
             padding: 8px 0; 
@@ -200,7 +196,7 @@
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 768px) {
-            .credits-container { padding: 25px 15px; }
+            .credits-inner-content { padding: 25px 15px; }
             .credit-item { flex-direction: column; align-items: flex-start; gap: 5px; }
             .premium-title-wrapper { margin-top: 30px; }
             html, body { overflow-y: auto; height: auto; }
@@ -221,68 +217,68 @@
             </h1>
         </div>
 
-        <div class="credits-container">
-            
-            <p class="credits-intro">
-                בסוליבי ספורט אנו מחויבים לשמירה על זכויות יוצרים ומתן קרדיט ראוי ליוצרים ולספקים המאפשרים לנו להציג תוכן איכותי. 
-                דף זה מרכז את המקורות והרישיונות של המדיה והנתונים המוצגים באתר.
-            </p>
+        <div class="credits-scroll-wrapper">
+            <div class="credits-inner-content">
+                
+                <p class="credits-intro">
+                    בסוליבי ספורט אנו מחויבים לשמירה על זכויות יוצרים ומתן קרדיט ראוי ליוצרים ולספקים המאפשרים לנו להציג תוכן איכותי. 
+                    דף זה מרכז את המקורות והרישיונות של המדיה והנתונים המוצגים באתר.
+                </p>
 
-            <div class="credit-category">
-                <h2 class="category-title">צילום ומדיה ויזואלית</h2>
-                <ul class="credit-list">
-                    <li class="credit-item">
-                        <div>
-                            <div class="source-name">Wikimedia Commons</div>
-                            <div class="usage-description">תמונות שחקנים, אצטדיונים וסמלי קבוצות (רישיון CC BY-SA).</div>
-                        </div>
-                        <a href="https://commons.wikimedia.org" target="_blank" class="source-link">לאתר המקור</a>
-                    </li>
-                    <li class="credit-item">
-                        <div>
-                            <div class="source-name">Unsplash / Pexels</div>
-                            <div class="usage-description">תמונות אווירה וצילומי ספורט כלליים לשימוש חופשי.</div>
-                        </div>
-                        <a href="https://unsplash.com" target="_blank" class="source-link">לאתר המקור</a>
-                    </li>
-                </ul>
-            </div>
+                <div class="credit-category">
+                    <h2 class="category-title">צילום ומדיה ויזואלית</h2>
+                    <ul class="credit-list">
+                        <li class="credit-item">
+                            <div>
+                                <div class="source-name">Wikimedia Commons</div>
+                                <div class="usage-description">תמונות שחקנים, אצטדיונים וסמלי קבוצות (רישיון CC BY-SA).</div>
+                            </div>
+                            <a href="https://commons.wikimedia.org" target="_blank" class="source-link">לאתר המקור</a>
+                        </li>
+                        <li class="credit-item">
+                            <div>
+                                <div class="source-name">Unsplash / Pexels</div>
+                                <div class="usage-description">תמונות אווירה וצילומי ספורט כלליים לשימוש חופשי.</div>
+                            </div>
+                            <a href="https://unsplash.com" target="_blank" class="source-link">לאתר המקור</a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="credit-category">
-                <h2 class="category-title">נתונים וסטטיסטיקה</h2>
-                <ul class="credit-list">
-                    <li class="credit-item">
-                        <div>
-                            <div class="source-name">API-Sports</div>
-                            <div class="usage-description">נתוני כדורגל בזמן אמת, תוצאות לייב וסטטיסטיקות שחקנים.</div>
-                        </div>
-                        <a href="https://www.api-football.com" target="_blank" class="source-link">לאתר המקור</a>
-                    </li>
-                </ul>
-            </div>
+                <div class="credit-category">
+                    <h2 class="category-title">נתונים וסטטיסטיקה</h2>
+                    <ul class="credit-list">
+                        <li class="credit-item">
+                            <div>
+                                <div class="source-name">API-Sports</div>
+                                <div class="usage-description">נתוני כדורגל בזמן אמת, תוצאות לייב וסטטיסטיקות שחקנים.</div>
+                            </div>
+                            <a href="https://www.api-football.com" target="_blank" class="source-link">לאתר המקור</a>
+                        </li>
+                    </ul>
+                </div>
 
-            <div class="credit-category">
-                <h2 class="category-title">טכנולוגיה ועיצוב</h2>
-                <ul class="credit-list">
-                    <li class="credit-item">
-                        <div>
-                            <div class="source-name">Lucide & Feather Icons</div>
-                            <div class="usage-description">אייקונים וסמלים גרפיים לניווט במערכת.</div>
-                        </div>
-                        <a href="https://lucide.dev" target="_blank" class="source-link">לאתר המקור</a>
-                    </li>
-                    <li class="credit-item">
-                        <div>
-                            <div class="source-name">Google Fonts (Rubik)</div>
-                            <div class="usage-description">גופני האתר תחת רישיון Open Font.</div>
-                        </div>
-                        <a href="https://fonts.google.com" target="_blank" class="source-link">לאתר המקור</a>
-                    </li>
-                </ul>
-            </div>
+                <div class="credit-category">
+                    <h2 class="category-title">טכנולוגיה ועיצוב</h2>
+                    <ul class="credit-list">
+                        <li class="credit-item">
+                            <div>
+                                <div class="source-name">Lucide & Feather Icons</div>
+                                <div class="usage-description">אייקונים וסמלים גרפיים לניווט במערכת.</div>
+                            </div>
+                            <a href="https://lucide.dev" target="_blank" class="source-link">לאתר המקור</a>
+                        </li>
+                        <li class="credit-item">
+                            <div>
+                                <div class="source-name">Google Fonts (Rubik)</div>
+                                <div class="usage-description">גופני האתר תחת רישיון Open Font.</div>
+                            </div>
+                            <a href="https://fonts.google.com" target="_blank" class="source-link">לאתר המקור</a>
+                        </li>
+                    </ul>
+                </div>
 
-        </div>
-    </main>
+            </div> </div> </main>
 
     <footer class="footer">
         <div id="ticker-placeholder"></div>
