@@ -13,7 +13,7 @@
             --brand-green: #7ca856;
             --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
             --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-            --text-dark: #062141;
+            --text-dark: #062141; /* בלו נייבי */
             --text-gray: #475569;
         }
 
@@ -21,7 +21,7 @@
 
         html, body {
             font-family: 'Rubik', sans-serif;
-            background: var(--bg-silver-matte);
+            background: var(--brand-silver-matte, var(--bg-silver-matte));
             width: 100%;
             height: 100vh; 
             overflow: hidden; 
@@ -34,26 +34,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 0 20px 40px 20px; /* הורדנו את הפדינג העליון כדי לשלוט בו דרך המרווח של הכותרת */
             overflow-y: auto;
         }
 
-        /* --- כותרת פרימיום --- */
+        /* --- כותרת פרימיום מעודכנת --- */
         .premium-title-wrapper { 
             display: flex; align-items: center; justify-content: center; 
-            margin-bottom: 40px; width: 100%;
+            margin-top: 50px; /* מרווח מהשורה העליונה */
+            margin-bottom: 35px; /* מרווח ממלבן הקרדיטים */
+            width: 100%;
         }
         .page-title {
             background: #ffffff; 
-            padding: 12px 50px; 
+            padding: 12px 60px; 
             border-radius: 40px;
             font-size: clamp(20px, 2.5vw, 30px); 
             font-weight: 900; 
-            color: var(--text-dark);
+            color: var(--text-dark); /* ברירת מחדל בלו נייבי */
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
             text-align: center;
         }
-        .page-title span { color: var(--brand-green); }
+        
+        /* צביעת הכותרת לפי הבקשה */
+        .title-navy { color: var(--text-dark); }
+        .title-green { color: var(--brand-green); }
 
         /* --- ענן התוכן המרכזי --- */
         .credits-container {
@@ -145,7 +150,7 @@
             border-bottom-color: var(--brand-green);
         }
 
-        /* === פוטר וטיקר מתוקן === */
+        /* === פוטר וטיקר מתוקן וקבוע === */
         .footer { 
             background: var(--element-navy-gradient); 
             padding: 8px 0; 
@@ -171,6 +176,7 @@
         @media (max-width: 768px) {
             .credits-container { padding: 25px 15px; }
             .credit-item { flex-direction: column; align-items: flex-start; gap: 5px; }
+            .premium-title-wrapper { margin-top: 30px; }
             html, body { overflow-y: auto; height: auto; }
         }
     </style>
@@ -182,7 +188,11 @@
     <main class="main-content">
         
         <div class="premium-title-wrapper">
-            <h1 class="page-title">קרדיטים וזכויות <span>יוצרים</span></h1>
+            <h1 class="page-title">
+                <span class="title-navy">קרדיטים</span> 
+                <span class="title-green">וזכויות</span> 
+                <span class="title-navy">יוצרים</span>
+            </h1>
         </div>
 
         <div class="credits-container">
@@ -198,14 +208,14 @@
                     <li class="credit-item">
                         <div>
                             <div class="source-name">Wikimedia Commons</div>
-                            <div class="usage-description">תמונות שחקנים, אצטדיונים וסמלי קבוצות היסטוריים (רישיון CC BY-SA).</div>
+                            <div class="usage-description">תמונות שחקנים, אצטדיונים וסמלי קבוצות (רישיון CC BY-SA).</div>
                         </div>
                         <a href="https://commons.wikimedia.org" target="_blank" class="source-link">לאתר המקור</a>
                     </li>
                     <li class="credit-item">
                         <div>
                             <div class="source-name">Unsplash / Pexels</div>
-                            <div class="usage-description">תמונות אווירה, רקעים וצילומי ספורט כלליים לשימוש חופשי.</div>
+                            <div class="usage-description">תמונות אווירה וצילומי ספורט כלליים לשימוש חופשי.</div>
                         </div>
                         <a href="https://unsplash.com" target="_blank" class="source-link">לאתר המקור</a>
                     </li>
@@ -218,7 +228,7 @@
                     <li class="credit-item">
                         <div>
                             <div class="source-name">API-Sports</div>
-                            <div class="usage-description">נתוני כדורגל בזמן אמת, תוצאות לייב, הרכבים וסטטיסטיקות שחקנים.</div>
+                            <div class="usage-description">נתוני כדורגל בזמן אמת, תוצאות לייב וסטטיסטיקות שחקנים.</div>
                         </div>
                         <a href="https://www.api-football.com" target="_blank" class="source-link">לאתר המקור</a>
                     </li>
@@ -238,7 +248,7 @@
                     <li class="credit-item">
                         <div>
                             <div class="source-name">Google Fonts (Rubik)</div>
-                            <div class="usage-description">גופני האתר לשימוש תחת רישיון Open Font.</div>
+                            <div class="usage-description">גופני האתר תחת רישיון Open Font.</div>
                         </div>
                         <a href="https://fonts.google.com" target="_blank" class="source-link">לאתר המקור</a>
                     </li>
