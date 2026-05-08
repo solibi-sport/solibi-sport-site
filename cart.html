@@ -167,7 +167,6 @@
              
              if (newQuantity > 0) {
                  quantitySpan.innerText = newQuantity;
-                 // TODO: כאן צריך להוסיף לוגיקה לעדכון הכמות ב-localStorage והמחיר הכולל
              } else if (newQuantity === 0) {
                  // אם הכמות יורדת ל-0, נסיר את המוצר מהעגלה
                  removeFromCart();
@@ -182,13 +181,12 @@
             }
         }
 
-       function goToCheckout() {
-            // שולפים את המספר ישירות מהזיכרון
+        // התיקון הקריטי: לא משתמשים בפונקציה חיצונית, אלא בודקים את הזיכרון ישירות
+        function goToCheckout() {
             const count = parseInt(localStorage.getItem('solibiCartCount')) || 0;
             
             if (count > 0) {
-                // הוספנו ./ כדי להבטיח שגיטהאב מזהה את הנתיב באותה תיקייה
-                window.location.href = './checkout.html';
+                window.location.href = 'checkout.html';
             } else {
                 alert("העגלה שלך ריקה. אנא הוסף מוצרים לפני המעבר לתשלום.");
             }
