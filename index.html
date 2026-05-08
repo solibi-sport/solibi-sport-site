@@ -151,12 +151,29 @@
             /* הוספת אנימציית הופעה יוקרתית */
             animation: flipInX 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
+       .updates-item { 
+            /* הקטנו פדינג ומרווחים כדי ש-10 ייכנסו בצורה יוקרתית ולא צפופה מדי */
+            margin: 3px 15px; 
+            padding: 5px 10px; 
+            gap: 10px; 
+            background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.9); 
+            border-radius: 10px; display: flex; align-items: center; justify-content: flex-start; 
+            text-decoration: none; color: var(--text-dark); position: relative; transition: 0.3s; flex: 1; min-height: 0;
+            /* האנימציה שמופעלת כשנוצרות שורות חדשות */
+            animation: flipInX 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
         .updates-item:hover { transform: scale(1.02); background: #fff; border-color: var(--brand-green); }
-        .updates-icon { background: #f0f4f8; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; color: var(--brand-green);}
+        
+        .updates-icon { 
+            background: #f0f4f8; 
+            width: 26px; height: 26px; /* הוקטן קצת מ-30px */
+            border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; color: var(--brand-green);
+        }
+        .updates-icon svg { width: 14px; height: 14px; } /* הוקטן בהתאמה */
+        
         .updates-text { text-align: right; display: flex; flex-direction: column; justify-content: center;} 
         .updates-label { font-size: 9px; font-weight: 700; color: var(--brand-green); display: block; margin-bottom: 2px;}
         .updates-title { font-size: clamp(10px, 0.8vw, 12px); font-weight: 700; line-height: 1.2;}
-
         @keyframes flipInX {
             0% { opacity: 0; transform: perspective(400px) rotateX(90deg) translateY(-10px); }
             100% { opacity: 1; transform: perspective(400px) rotateX(0deg) translateY(0); }
@@ -394,58 +411,7 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
             </div>
             <div id="updates-container">
-    
-                <div class="updates-item" onclick="scrollToCube('cube-fantasy')" style="cursor: pointer;">
-                    <div class="updates-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    </div>
-                    <div class="updates-text">
-                        <span class="updates-label">פנטזי</span>
-                        <span class="updates-title">ליגת סוליבי: עדכוני הרכבים למחזור הקרוב</span>
-                    </div>
                 </div>
-            
-                <div class="updates-item" onclick="scrollToCube('cube-store')" style="cursor: pointer;">
-                    <div class="updates-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </div>
-                    <div class="updates-text">
-                        <span class="updates-label">אספנות</span>
-                        <span class="updates-title">בורסת הקלפים: מארזים חדשים נחתו בחנות</span>
-                    </div>
-                </div>
-            
-                <div class="updates-item" onclick="scrollToCube('cube-live')" style="cursor: pointer;">
-                    <div class="updates-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    </div>
-                    <div class="updates-text">
-                        <span class="updates-label">עדכונים לייב</span>
-                        <span class="updates-title">צפו בתוצאות, טבלאות וסטטיסטיקות בזמן אמת</span>
-                    </div>
-                </div>
-            
-                <div class="updates-item" onclick="scrollToCube('cube-pantheon')" style="cursor: pointer;">
-                    <div class="updates-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2.5"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-                    </div>
-                    <div class="updates-text">
-                        <span class="updates-label">פרויקט הדגל</span>
-                        <span class="updates-title">פנתיאון הכדורגל: דירוג 100 הגדולים עודכן</span>
-                    </div>
-                </div>
-            
-                <div class="updates-item" onclick="scrollToCube('cube-community')" style="cursor: pointer;">
-                    <div class="updates-icon">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    </div>
-                    <div class="updates-text">
-                        <span class="updates-label">קהילה</span>
-                        <span class="updates-title">דיוני האוהדים לקראת משחקי העונה</span>
-                    </div>
-                </div>
-            
-            </div>
         </aside>
 
         <aside class="side-panel panel-left">
@@ -715,26 +681,63 @@
 </script>
 
     <script>
-        function scrollToCube(cubeId) {
-            const cube = document.getElementById(cubeId);
-            if (cube) {
-                // גלילה חלקה לקוביה
-                cube.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                
-                // אפקט "הבהוב" ירוק
-                const originalBoxShadow = cube.style.boxShadow;
-                const originalTransition = cube.style.transition;
-                
-                cube.style.transition = 'box-shadow 0.4s ease';
-                cube.style.boxShadow = '0 0 40px rgba(124, 168, 86, 0.9)';
-                
-                // כיבוי האפקט אחרי שנייה וחצי
-                setTimeout(() => {
-                    cube.style.boxShadow = originalBoxShadow;
-                    setTimeout(() => cube.style.transition = originalTransition, 400);
-                }, 1500);
-            }
+        // שתי נגלות של 10 פריטים כל אחת, עם קישורים ישירים לדפים!
+        const updatesBatches = [
+            [
+                { link: 'fantasy.html', tag: 'פנטזי', title: 'ליגת סוליבי: עדכוני הרכבים למחזור', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>' },
+                { link: 'cards.html', tag: 'אספנות', title: 'בורסת הקלפים: מארזים חדשים נחתו', icon: '<circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>' },
+                { link: 'tables.html', tag: 'עדכונים לייב', title: 'צפו בתוצאות, טבלאות וסטטיסטיקות', icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>' },
+                { link: 'pantheon.html', tag: 'פרויקט הדגל', title: 'פנתיאון הכדורגל: דירוג 100 הגדולים', icon: '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>' },
+                { link: 'community.html', tag: 'קהילה', title: 'דיוני האוהדים לקראת משחקי העונה', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' },
+                { link: 'scouting.html', tag: 'סקאוטינג', title: 'ניתוח אנליטי: הכישרון הבא נחשף', icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>' },
+                { link: 'gaming.html', tag: 'גיימינג', title: 'מדריך טקטיקה מנצחת ל-EA FC', icon: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="17" cy="12" r="1"/><circle cx="7" cy="12" r="1"/><path d="M12 12h.01"/>' },
+                { link: 'activity.html', tag: 'פנאי', title: 'חידון טריוויה: בואו לזכות בפרסים', icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
+                { link: 'store.html', tag: 'חנות סוליבי', title: 'מבצע מיוחד: 10% הנחה על הכל', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/>' },
+                { link: 'fantasy.html', tag: 'טיפים', title: 'מי יהיה ה-MVP של המחזור?', icon: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>' }
+            ],
+            [
+                { link: 'fantasy.html', tag: 'פנטזי', title: 'קפטן המחזור: מי יביא הכי הרבה נקודות?', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>' },
+                { link: 'cards.html', tag: 'אספנות', title: 'קלף נדיר במיוחד הוצע למכירה בבורסה', icon: '<circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>' },
+                { link: 'tables.html', tag: 'עדכונים לייב', title: 'דרמה בדקות הסיום: עדכון תוצאות חי', icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>' },
+                { link: 'pantheon.html', tag: 'פרויקט הדגל', title: 'השחקן ששבר את כל השיאים נכנס לפנתיאון', icon: '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>' },
+                { link: 'community.html', tag: 'קהילה', title: 'סקר אוהדים: מי תיקח אליפות העונה?', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' },
+                { link: 'scouting.html', tag: 'סקאוטינג', title: 'דו"ח סקאוט מקיף על פריצת העונה בצרפת', icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>' },
+                { link: 'gaming.html', tag: 'גיימינג', title: 'המערך שמשגע את שחקני הרשת בפיפ"א', icon: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="17" cy="12" r="1"/><circle cx="7" cy="12" r="1"/><path d="M12 12h.01"/>' },
+                { link: 'activity.html', tag: 'פנאי', title: 'הצבעת השבוע: בחרו את שער המחזור!', icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
+                { link: 'store.html', tag: 'חנות סוליבי', title: 'חולצות רטרו אקסקלוסיביות חזרו למלאי', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/>' },
+                { link: 'tables.html', tag: 'סיכום מחזור', title: 'כל מה שקרה הערב: הטבלה המעודכנת', icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>' }
+            ]
+        ];
+
+        let currentUpdateBatch = 0;
+        
+        function renderUpdates() {
+            const container = document.getElementById('updates-container');
+            if(!container) return;
+
+            const batch = updatesBatches[currentUpdateBatch];
+
+            // שים לב: אנחנו משתמשים בתגית <a> במקום <div> כדי שזו תהיה לחיצה שמעבירה דף!
+            container.innerHTML = batch.map((item, index) => `
+                <a href="${item.link}" class="updates-item" style="animation-delay: ${index * 0.05}s">
+                    <div class="updates-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">${item.icon}</svg>
+                    </div>
+                    <div class="updates-text">
+                        <span class="updates-label">${item.tag}</span>
+                        <span class="updates-title">${item.title}</span>
+                    </div>
+                </a>
+            `).join('');
+
+            currentUpdateBatch = (currentUpdateBatch + 1) % updatesBatches.length;
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderUpdates();
+            // מתחלף כל 10 שניות (10000 אלפיות שנייה)
+            setInterval(renderUpdates, 10000); 
+        });
     </script>
     
 <script src="search.js"></script>
