@@ -153,7 +153,28 @@
         }
 
         /* פוטר */
-        .footer { background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); height: 40px; overflow: hidden; flex-shrink: 0; width: 100%; }
+       /* === פוטר וטיקר === */
+        .footer { 
+            background: var(--element-navy-gradient); 
+            padding: 8px 0; 
+            border-top: 2px solid var(--brand-green); 
+            overflow: hidden; 
+            white-space: nowrap; 
+            width: 100%; 
+            direction: ltr; 
+            flex-shrink: 0; 
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+        
+        #ticker-placeholder { width: 100%; }
+        
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 900px) {
             .values-grid { grid-template-columns: 1fr; }
@@ -177,10 +198,10 @@
             <div class="about-section">
                 <h2 class="section-title">הסיפור שלנו</h2>
                 <div class="section-text">
-                    הכל התחיל מאהבה טהורה ועמוקה למשחק. לא רק ל-90 הדקות שעל הדשא, אלא לכל היקום העשיר שמקיף את עולם הכדורגל. ממעקב הדוק אחר טבלאות הליגה וניתוח סטטיסטיקות שחקנים, דרך איסוף קלפים וצפייה אדוקה במשחקים, ועד לשעות הארוכות שהושקעו במשחקי ניהול כמו פוטבול מנג'ר ופיפ"א. האהבה הזו תמיד תורגמה גם להשתתפות בליגות פנטזי, לפתרון חידוני טריוויה, ולחיפוש מתמיד אחר הידע הבא. עבורנו, כדורגל הוא לא רק תחביב – הוא דרך חיים.
+                    הכל התחיל מאהבה טהורה ועמוקה לספורט בכלל, ולכדורגל בפרט. לא רק ל-90 הדקות שעל הדשא, אלא לכל היקום העשיר שמקיף את עולם הספורט והכדורגל. ממעקב הדוק אחר טבלאות הליגה וניתוח סטטיסטיקות שחקנים, דרך איסוף קלפים וצפייה אדוקה במשחקים, ועד לשעות הארוכות שהושקעו במשחקי ניהול כמו פוטבול מנג'ר ופיפ"א. האהבה הזו תמיד תורגמה גם להשתתפות בליגות פנטזי, לפתרון חידוני טריוויה, ולחיפוש מתמיד אחר הידע הבא. עבורנו, ספורט – והכדורגל בראשו – הוא לא רק תחביב, הוא דרך חיים.
                 </div>
             </div>
-
+            
             <div class="about-section">
                 <h2 class="section-title">החזון: הכל במקום אחד</h2>
                 <div class="section-text">
