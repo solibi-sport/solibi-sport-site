@@ -390,9 +390,102 @@
     </footer>
 
     <script>
-        fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
+        // טעינת הדר והפעלת עגלת הקניות
+        fetch('header.html').then(res => res.text()).then(data => {
+            document.getElementById('header-placeholder').innerHTML = data;
+            initCartBadge(); // מפעיל את העגלה רק אחרי שההדר נטען בהצלחה!
+        });
+        
+        // טעינת הטיקר
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
+        // ==========================================
+        //         מערכת עגלת קניות חכמה
+        // ==========================================
+        function initCartBadge() {
+            const storeLink = document.querySelector('.store-nav-link');
+            if (!storeLink) return;
+
+            // מגדיר את הכפתור בהדר כדי שנוכל למקם את המספר עליו
+            storeLink.style.position = 'relative'; 
+
+            // יצירת עיגול המספר (הבועה האדומה)
+            let badge = document.createElement('span');
+            badge.id = 'cart-badge';
+            badge.style.cssText = `
+                position: absolute; top: -8px; left: -10px; 
+                background-color: #ff3b30; color: white;
+                font-size: 11px; font-weight: 900; font-family: 'Rubik', sans-serif;
+                border-radius: 50%; width: 18px; height: 18px;
+                display: flex; align-items: center; justify-content: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+                opacity: 0; transform: scale(0.5); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                pointer-events: none;
+            `;
+            storeLink.appendChild(badge);
+
+            // עדכון התצוגה לפי מה ששמור בזיכרון של הגולש
+            updateCartDisplay();
+            
+            // חיבור כל כפתורי "הוסף לעגלה" לאקשן
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    addToCart();
+                    
+                    // אפקט חזותי לכפתור שלחצנו עליו
+                    const originalHtml = this.innerHTML;
+                    this.innerHTML = '✔ נוסף בהצלחה';
+                    this.style.backgroundColor = 'var(--brand-green)';
+                    this.style.color = '#ffffff';
+                    
+                    // מחזיר את הכפתור למצב רגיל אחרי שנייה וחצי
+                    setTimeout(() => {
+                        this.innerHTML = originalHtml;
+                        this.style.backgroundColor = '';
+                        this.style.color = '';
+                    }, 1500);
+                });
+            });
+        }
+
+        // שולף את המספר השמור
+        function getCartCount() {
+            return parseInt(localStorage.getItem('solibiCartCount')) || 0;
+        }
+
+        // מעדכן את המספר בבועה האדומה
+        function updateCartDisplay() {
+            const badge = document.getElementById('cart-badge');
+            if (!badge) return;
+            
+            const count = getCartCount();
+            if (count > 0) {
+                badge.innerText = count;
+                badge.style.opacity = '1';
+                badge.style.transform = 'scale(1)';
+            } else {
+                badge.style.opacity = '0';
+                badge.style.transform = 'scale(0.5)';
+            }
+        }
+
+        // פעולת ההוספה
+        function addToCart() {
+            let count = getCartCount();
+            count++;
+            localStorage.setItem('solibiCartCount', count); // שומר בזיכרון הדפדפן
+            updateCartDisplay();
+            
+            // אנימציית קפיצה (Zoom פנימה והחוצה) למספר שבעגלה למעלה
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                badge.style.transform = 'scale(1.4)';
+                setTimeout(() => badge.style.transform = 'scale(1)', 200);
+            }
+        }
+        // ==========================================
+
+        // פונקציית שינוי תצוגה (קרוסלה/רשת/רשימה)
         function setView(viewType) {
             const container = document.getElementById('productContainer');
             const arrowR = document.getElementById('arrowRight');
@@ -415,6 +508,7 @@
             }
         }
 
+        // פונקציית סינון קטגוריות
         function filterStore(category, element) {
             document.querySelectorAll('.cat-pill').forEach(pill => pill.classList.remove('active'));
             element.classList.add('active');
@@ -435,6 +529,7 @@
             document.getElementById('productContainer').scrollLeft = 0;
         }
 
+        // פונקציית גלילה ימינה-שמאלה לקרוסלה
         function scrollCarousel(direction) {
             const carousel = document.getElementById('productContainer');
             const scrollAmount = 300; 
