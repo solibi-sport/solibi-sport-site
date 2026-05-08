@@ -780,24 +780,33 @@ function updateLiveStandings() {
                     const teamId = teamStats.team.id;
                     
                     const match = liveMatches.find(m => {
+                        // חובה: הקבוצה חייבת לשחק במשחק הזה
                         if (m.teams.home.id !== teamId && m.teams.away.id !== teamId) return false;
+                        
                         let matchRoundStr = (m.league.round || "").toLowerCase();
-                    let isPlayoffMatch = matchRoundStr.includes("championship") || matchRoundStr.includes("relegation") || matchRoundStr.includes("play") || matchRoundStr.includes("conference");
-                    let isRegularMatch = matchRoundStr.includes("regular");
+                        let isPlayoffMatch = matchRoundStr.includes("championship") || matchRoundStr.includes("relegation") || matchRoundStr.includes("play") || matchRoundStr.includes("conference");
+                        let isRegularMatch = matchRoundStr.includes("regular");
+                        
+                        // זיהוי משחקי נוקאאוט של מפעלים אירופיים וליגות גביע
+                        let isKnockoutMatch = matchRoundStr.includes("knockout") || matchRoundStr.includes("16") || matchRoundStr.includes("quarter") || matchRoundStr.includes("semi") || matchRoundStr.includes("final");
 
-                    // חסימה גורפת: אם זה משחק פלייאוף (בישראל, סקוטלנד, בלגיה וכו') - אל תעדכן את הטבלה הכללית או העונה הסדירה!
-                    if (isPlayoffMatch && (gName === "עונה סדירה" || gName === "טבלה כללית")) {
-                        return false; 
-                    }
-                    
-                    // ואם זה משחק ליגה רגיל שמשוחק - אל תעדכן את הפלייאוף בטעות
-                    if (gName.includes("פלייאוף") && isRegularMatch) {
-                        return false;
-                    }
+                        // חסימה: לא לעדכן את "שלב הליגה" או "טבלה כללית" במשחקי נוקאאוט! (קריטי לליגת האלופות)
+                        if (isKnockoutMatch && (gName === "שלב הליגה" || gName === "טבלה כללית" || gName === "עונה סדירה")) {
+                            return false;
+                        }
 
-                    return true;
-                });
+                        // חסימה גורפת: אם זה משחק פלייאוף - אל תעדכן את הטבלה הכללית או העונה הסדירה!
+                        if (isPlayoffMatch && (gName === "עונה סדירה" || gName === "טבלה כללית")) {
+                            return false; 
+                        }
+                        
+                        // ואם זה משחק ליגה רגיל שמשוחק - אל תעדכן את הפלייאוף בטעות
+                        if (gName.includes("פלייאוף") && isRegularMatch) {
+                            return false;
+                        }
 
+                        return true;
+                    });
                     if (match) {
                         const isHome = match.teams.home.id === teamId;
                         const goalsFor = isHome ? (match.goals.home || 0) : (match.goals.away || 0);
