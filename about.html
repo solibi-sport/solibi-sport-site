@@ -134,14 +134,23 @@
             font-weight: 700;
         }
 
-        /* --- קוביות הערכים למטה --- */
+       /* --- קוביות הערכים למטה --- */
         .values-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            margin-top: 10px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(6, 33, 65, 0.1);
+            
+            /* העיצוב הבלו-נייבי החדש */
+            background: var(--element-navy-gradient);
+            border-top: 3px solid var(--brand-green);
+            
+            /* מותח את האזור מקצה לקצה על ידי קיזוז הפדינג של ההורה */
+            margin: 20px -45px -45px -45px; 
+            padding: 45px 45px 50px 45px;
+            
+            /* מעגל את הפינות התחתונות שיתאימו לקופסה הלבנה */
+            border-bottom-left-radius: 23px;
+            border-bottom-right-radius: 23px;
         }
 
         .value-card {
@@ -203,7 +212,12 @@
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 900px) {
-            .values-grid { grid-template-columns: 1fr; }
+            .values-grid { 
+                grid-template-columns: 1fr; 
+                /* מותח את הבלו-נייבי גם במסכים קטנים */
+                margin: 20px -20px -30px -20px; 
+                padding: 40px 20px 40px 20px;
+            }
             .about-inner-content { padding: 30px 20px; }
             html, body { overflow-y: auto; height: auto; } 
         }
