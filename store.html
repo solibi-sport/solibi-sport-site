@@ -74,7 +74,7 @@
         .store-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.4); border-radius: 10px; }
         .store-scroll-wrapper::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
 
-       /* התוכן הפנימי - נשאר תמיד למעלה */
+       /* התוכן הפנימי - מסודר בטור */
         .store-inner-content {
             direction: rtl; text-align: right; padding: 25px 40px;
             display: flex; flex-direction: column; gap: 20px; flex: 1;
@@ -89,23 +89,51 @@
             width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             flex-shrink: 0;
         }
+        
+        .hero-title { font-size: 22px; font-weight: 900; margin-bottom: 5px; }
+        .hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 400; }
 
-        /* ... דלג על עיצוב הכפתורים שממשיך פה כרגיל ... */
-
-        /* מעטפת קרוסלה */
-        .carousel-wrapper {
-            position: relative; width: 100%; display: flex; align-items: flex-start; padding: 0 60px; 
+        /* סרגל ניווט (מתוקן) */
+        .store-controls-bar {
+            display: flex; justify-content: space-between; align-items: center; 
+            flex-wrap: wrap; gap: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 15px;
             flex-shrink: 0;
+            width: 100%;
         }
-        
-        /* המרכוז חל אך ורק על מעטפת הקרוסלה ודוחף רק אותה לאמצע! */
-        .carousel-wrapper.centered-view {
-            align-items: center;
-            margin: auto 0; 
+
+        .category-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+        .cat-pill {
+            background: #ffffff; border: 1px solid rgba(0,0,0,0.05); padding: 8px 16px;
+            border-radius: 30px; cursor: pointer; font-weight: 700; color: var(--text-gray); 
+            transition: 0.3s; font-size: 13px;
         }
-        
+        .cat-pill.active, .cat-pill:hover { 
+            background: var(--brand-green); color: #fff; border-color: var(--brand-green); 
+            transform: translateY(-2px); box-shadow: 0 5px 15px rgba(124, 168, 86, 0.2);
+        }
+
+        .view-toggles { display: flex; gap: 5px; background: #fff; padding: 4px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); }
+        .view-btn { 
+            background: transparent; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer;
+            color: var(--text-gray); transition: 0.2s; display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 12px;
+        }
+        .view-btn.active { background: rgba(124, 168, 86, 0.1); color: var(--brand-green); }
+
+        /* --- מעטפת הקרוסלה (הקסם קורה פה) --- */
+        .carousel-wrapper {
+            position: relative; width: 100%; display: flex; padding: 0 60px; 
+        }
+
+        /* כשהקרוסלה פעילה - היא מתפרסת על כל הגובה הפנוי וממרכזת את התוכן */
         .carousel-wrapper.centered-view {
-            align-items: center;
+            flex: 1;
+            align-items: center; 
+        }
+
+        /* כשזה רשת או רשימה - זה מתחיל מלמעלה מיד אחרי הכפתורים */
+        .carousel-wrapper:not(.centered-view) {
+            align-items: flex-start;
+            margin-top: 10px;
         }
 
         .nav-arrow {
@@ -114,7 +142,6 @@
             cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: absolute;
             transition: 0.3s; font-size: 18px; font-weight: bold; z-index: 10;
         }
-        
         .nav-arrow:hover { background: var(--brand-green); color: #fff; border-color: var(--brand-green); transform: scale(1.1); }
         .arrow-right { right: 0; } 
         .arrow-left { left: 0; }
@@ -447,27 +474,31 @@
             }
         }
 
+        // --- החזרת כפתורי התצוגה ---
         function setView(viewType) {
             const container = document.getElementById('productContainer');
             const arrowR = document.getElementById('arrowRight');
             const arrowL = document.getElementById('arrowLeft');
             const wrapper = document.getElementById('carouselWrapper');
 
+            // עדכון כפתורים פעילים
             document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.btn-' + viewType).classList.add('active');
 
+            // החלפת תצוגת הגריד הפנימית
             container.className = 'product-grid view-' + viewType;
 
+            // ניהול החצים והמרכוז האנכי
             if (viewType === 'carousel') {
                 arrowR.style.display = 'flex';
                 arrowL.style.display = 'flex';
                 wrapper.style.padding = '0 60px'; 
-                wrapper.classList.add('centered-view'); // ממקם את הקרוסלה באמצע
+                wrapper.classList.add('centered-view'); // ממרכז רק בקרוסלה
             } else {
                 arrowR.style.display = 'none';
                 arrowL.style.display = 'none';
                 wrapper.style.padding = '0'; 
-                wrapper.classList.remove('centered-view'); // מחזיר הכל למעלה ברשת/רשימה
+                wrapper.classList.remove('centered-view'); // מצמיד למעלה ברשת/רשימה
             }
         }
 
