@@ -170,13 +170,28 @@
         }
         .business-link-card:hover { background: var(--brand-green); color: #ffffff; transform: scale(1.02); }
 
-        /* פוטר - ללא הגבלת גובה כדי שהטיקר החיצוני ישלוט */
+        /* === פוטר וטיקר === */
         .footer { 
             background: var(--element-navy-gradient); 
+            padding: 8px 0; 
             border-top: 2px solid var(--brand-green); 
-            flex-shrink: 0; 
+            overflow: hidden; 
+            white-space: nowrap; 
             width: 100%; 
+            direction: ltr; 
+            flex-shrink: 0; 
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            height: 40px;
         }
+        
+        #ticker-placeholder { width: 100%; }
+        
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 900px) {
             .contact-grid { grid-template-columns: repeat(2, 1fr); }
