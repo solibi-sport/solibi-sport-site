@@ -233,11 +233,11 @@
         }
         #ticker-placeholder { width: 100%; display: flex; align-items: center; }
         
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: 14px; display: inline-block; margin: 0 15px; vertical-align: middle; }
+        /* הוספנו את ה-direction כדי למנוע התנגשות עם שאר הדפים! */
+        .ticker-wrap { display: inline-flex; white-space: nowrap; animation: ticker 30s linear infinite; direction: ltr; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: 14px; display: inline-block; margin: 0 15px; vertical-align: middle; direction: rtl; }
         .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 15px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
-
         @media (max-width: 900px) {
             .carousel-wrapper { padding: 0; margin-top: 20px;}
             .nav-arrow { display: none; }
