@@ -457,26 +457,34 @@
                 let hasMultipleGroups = standings.length > 1;
 
                 if (hasMultipleGroups) {
-                    let teamMap = new Map();
+                        let teamMap = new Map();
+                        
+                        // בדיקה חכמה: האם הליגה הזו כבר נכנסה לשלבי פלייאוף?
+                        let hasPlayoffs = standings.some(g => translateGroupName(g[0].group).includes("פלייאוף"));
 
-                    standings.forEach(group => {
-                        let isRegular = translateGroupName(group[0].group) === "עונה סדירה";
+                        standings.forEach(group => {
+                            let gName = translateGroupName(group[0].group);
+                            let isPlayoffGroup = gName.includes("פלייאוף");
 
-                        group.forEach(item => {
-                            const teamId = item.team.id;
+                            // השינוי הקריטי: אם יש פלייאוף בליגה, אנחנו לא ממזגים את הנקודות שלו לטבלה הכללית!
+                            // ככה הטבלה הכללית קופאת לנצח על נתוני העונה הסדירה המקוריים.
+                            if (hasPlayoffs && isPlayoffGroup) return;
 
-                            if (!teamMap.has(teamId)) {
-                                teamMap.set(teamId, JSON.parse(JSON.stringify(item)));
-                            } else {
-                                let existing = teamMap.get(teamId);
-                                if (item.all.played > existing.all.played || (item.all.played === existing.all.played && item.points > existing.points)) {
+                            group.forEach(item => {
+                                const teamId = item.team.id;
+
+                                if (!teamMap.has(teamId)) {
                                     teamMap.set(teamId, JSON.parse(JSON.stringify(item)));
+                                } else {
+                                    let existing = teamMap.get(teamId);
+                                    if (item.all.played > existing.all.played || (item.all.played === existing.all.played && item.points > existing.points)) {
+                                        teamMap.set(teamId, JSON.parse(JSON.stringify(item)));
+                                    }
                                 }
-                            }
+                            });
                         });
-                    });
 
-                    let combined = Array.from(teamMap.values());
+                        let combined = Array.from(teamMap.values());
 
                     if (parseInt(LEAGUE_ID) !== 144) {
                         if (combined.length > 0) {
@@ -773,23 +781,22 @@ function updateLiveStandings() {
                     
                     const match = liveMatches.find(m => {
                         if (m.teams.home.id !== teamId && m.teams.away.id !== teamId) return false;
-                        
                         let matchRoundStr = (m.league.round || "").toLowerCase();
-                        let isPlayoffMatch = matchRoundStr.includes("championship") || matchRoundStr.includes("relegation") || matchRoundStr.includes("play") || matchRoundStr.includes("conference");
-                        let isRegularMatch = matchRoundStr.includes("regular");
+                    let isPlayoffMatch = matchRoundStr.includes("championship") || matchRoundStr.includes("relegation") || matchRoundStr.includes("play") || matchRoundStr.includes("conference");
+                    let isRegularMatch = matchRoundStr.includes("regular");
 
-                        let isKizuzLeague = parseInt(LEAGUE_ID) === 144; 
-                        
-                        if (isKizuzLeague && (gName === "עונה סדירה" || gName === "טבלה כללית") && isPlayoffMatch) {
-                            return false; 
-                        }
-                        
-                        if (gName.includes("פלייאוף") && isRegularMatch) {
-                            return false;
-                        }
+                    // חסימה גורפת: אם זה משחק פלייאוף (בישראל, סקוטלנד, בלגיה וכו') - אל תעדכן את הטבלה הכללית או העונה הסדירה!
+                    if (isPlayoffMatch && (gName === "עונה סדירה" || gName === "טבלה כללית")) {
+                        return false; 
+                    }
+                    
+                    // ואם זה משחק ליגה רגיל שמשוחק - אל תעדכן את הפלייאוף בטעות
+                    if (gName.includes("פלייאוף") && isRegularMatch) {
+                        return false;
+                    }
 
-                        return true;
-                    });
+                    return true;
+                });
 
                     if (match) {
                         const isHome = match.teams.home.id === teamId;
