@@ -303,26 +303,25 @@
             margin-top: clamp(2px, 4cqi, 5px);
         }
 
-       /* תמונת הדגל הגדולה שמופיעה ברקע */
-        .league-cube::before {
+       .league-cube::before {
             content: ""; 
             position: absolute; 
             top: 0; left: 0; right: 0; bottom: 0;
             background-image: var(--bg-image); 
             background-size: cover; 
             background-position: center;
-            opacity: 0.32; /* חיזקנו מ-0.08 ל-0.15 - עכשיו יראו את זה הרבה יותר ברור */
-            transition: opacity 0.4s ease, transform 0.6s ease; 
+            opacity: 0.6; /* הוקפץ משמעותית כדי להתגבר על הרקע הכהה */
+            transition: opacity 0.4s ease, transform 0.6s ease;
             z-index: 1; 
             mix-blend-mode: overlay; 
             pointer-events: none;
         }
 
         .league-cube:hover::before { 
-            opacity: 0.4; /* חיזקנו מ-0.35 כדי שעדיין יהיה הבדל יפה בלחיצה */
+            opacity: 0.9; /* בריחוף זה כמעט בוהק לגמרי */
             transform: scale(1.15); 
         }
-
+        
         .league-cube.svg-bg::before { 
             background-size: 60%; 
             background-repeat: no-repeat; 
