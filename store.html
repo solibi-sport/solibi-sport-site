@@ -118,9 +118,9 @@
 
         /* מעטפת קרוסלה ממוקרזת */
        /* מעטפת קרוסלה + חצים לחלוטין מחוץ למוצרים */
+        /* מעטפת קרוסלה + חצים לחלוטין מחוץ למוצרים */
         .carousel-wrapper {
             position: relative; width: 100%; display: flex; align-items: flex-start; padding: 0 60px; 
-            /* מחקנו מפה את margin: auto 0 כדי שהרשת והרשימה יתחילו מלמעלה! */
         }
         .nav-arrow {
             background: #ffffff; border: 1px solid rgba(0,0,0,0.1); color: var(--text-dark);
@@ -475,6 +475,7 @@
             const arrowR = document.getElementById('arrowRight');
             const arrowL = document.getElementById('arrowLeft');
             const wrapper = document.getElementById('carouselWrapper');
+            const innerContent = document.querySelector('.store-inner-content'); // הוספנו בחירה של התוכן הפנימי
 
             document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector('.btn-' + viewType).classList.add('active');
@@ -485,14 +486,14 @@
                 arrowR.style.display = 'flex';
                 arrowL.style.display = 'flex';
                 wrapper.style.padding = '0 60px'; 
-                wrapper.style.margin = 'auto 0'; /* דוחף לאמצע רק במצב קרוסלה! */
                 wrapper.style.alignItems = 'center';
+                innerContent.style.justifyContent = 'center'; /* דוחף הכל לאמצע רק בקרוסלה */
             } else {
                 arrowR.style.display = 'none';
                 arrowL.style.display = 'none';
                 wrapper.style.padding = '0'; 
-                wrapper.style.margin = '0'; /* מצמיד למעלה במצב רשת ורשימה! */
                 wrapper.style.alignItems = 'flex-start';
+                innerContent.style.justifyContent = 'flex-start'; /* מצמיד למעלה ברשת ורשימה */
             }
         }
 
