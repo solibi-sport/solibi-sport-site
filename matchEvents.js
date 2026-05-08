@@ -508,6 +508,10 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     const iconGoal = '⚽';
                     const iconYellow = '🟨';
                     const iconRed = '🟥';
+                    
+                    // כדורגל אדום ופרימיום לשער עצמי
+                    const iconOwnGoal = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="12" cy="12" r="10"/><polygon points="12 6 16 10 14.5 15 9.5 15 8 10"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="22" y1="12" x2="16" y2="10"/><line x1="2" y1="12" x2="8" y2="10"/><line x1="6" y1="20" x2="9.5" y2="15"/><line x1="18" y1="20" x2="14.5" y2="15"/></svg>`;
+                    
                     const iconSub = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M5 10l-3 3 3 3" stroke="#ef4444"/><path d="M2 13h10" stroke="#ef4444"/><path d="M19 14l3-3-3-3" stroke="#10b981"/><path d="M22 11H12" stroke="#10b981"/></svg>`;
                     const iconVar = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>`;
                     const iconMissedPen = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
@@ -517,7 +521,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         if (detailStr.includes('cancel') || detailStr.includes('disallow') || commentsStr.includes('cancel')) { icon = iconMissedPen; mainText = `שער נפסל! ${playerName}`; isGoalCancelled = true; } 
                         else if (detailStr.includes('missed penalty')) { icon = iconMissedPen; mainText = `החמצת פנדל! ${playerName}`; } 
                         else if (detailStr.includes('penalty')) { icon = iconGoal; mainText = `שער! ${playerName} (פ')`; if (assistName) subText = `בישול: ${assistName}`; } 
-                        else if (detailStr.includes('own goal')) { icon = iconGoal; mainText = `שער עצמי! ${playerName}`; } 
+                        else if (detailStr.includes('own goal')) { icon = iconOwnGoal; mainText = `שער עצמי! ${playerName}`; } 
                         else { icon = iconGoal; mainText = `שער! ${playerName}`; if (assistName) subText = `בישול: ${assistName}`; }
                     } 
                     else if (typeStr === 'var') {
