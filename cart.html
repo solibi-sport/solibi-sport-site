@@ -66,7 +66,18 @@
 
         .empty-cart-msg { text-align: center; padding: 50px; display: none; }
 
-        .footer { background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); width: 100%; height: 40px; display: flex; align-items: center; }
+        /* --- טיקר תחתון (מתוקן) --- */
+        .footer { 
+            background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); 
+            width: 100%; height: 45px; flex-shrink: 0; 
+            display: flex; align-items: center; overflow: hidden;
+        }
+        #ticker-placeholder { width: 100%; display: flex; align-items: center; }
+        
+        .ticker-wrap { display: inline-flex; white-space: nowrap; animation: ticker 30s linear infinite; direction: ltr !important; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: 14px; display: inline-block; margin: 0 15px; vertical-align: middle; direction: rtl !important; }
+        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 15px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 800px) {
             .cart-window { flex-direction: column; overflow-y: auto; }
@@ -81,7 +92,7 @@
 
     <main class="main-content">
         <div class="premium-title-wrapper">
-            <h1 class="page-title">סל הקניות שלי</h1>
+            <h1 class="page-title">סל <span style="color: var(--brand-green);">הקניות</span> שלי</h1>
         </div>
 
         <div class="cart-window">
@@ -114,8 +125,6 @@
 
         // פונקציה להצגת המוצרים מהזיכרון
         function renderCart() {
-            // כרגע אנחנו משתמשים במספר פיקטיבי מהשלב הקודם, 
-            // אבל בעתיד נשלוף מ-localStorage את רשימת המוצרים המלאה.
             const list = document.getElementById('cart-items-list');
             const count = parseInt(localStorage.getItem('solibiCartCount')) || 0;
 
@@ -134,9 +143,9 @@
                             <div class="item-price">99 ₪</div>
                         </div>
                         <div class="quantity-controls">
-                            <button class="q-btn">-</button>
+                            <button class="q-btn" onclick="updateItemQuantity(this, -1)">-</button>
                             <span>1</span>
-                            <button class="q-btn">+</button>
+                            <button class="q-btn" onclick="updateItemQuantity(this, 1)">+</button>
                         </div>
                         <div class="remove-item" onclick="removeFromCart()">✕</div>
                     </div>
@@ -148,6 +157,21 @@
         function updateSummary(count) {
             document.getElementById('items-count').innerText = count;
             document.getElementById('total-price').innerText = (count * 99) + ' ₪';
+        }
+
+        // פונקציה ראשונית לעדכון כמות פריט בודד
+        function updateItemQuantity(btn, change) {
+             const quantitySpan = btn.parentElement.querySelector('span');
+             let currentQuantity = parseInt(quantitySpan.innerText);
+             let newQuantity = currentQuantity + change;
+             
+             if (newQuantity > 0) {
+                 quantitySpan.innerText = newQuantity;
+                 // TODO: כאן צריך להוסיף לוגיקה לעדכון הכמות ב-localStorage והמחיר הכולל
+             } else if (newQuantity === 0) {
+                 // אם הכמות יורדת ל-0, נסיר את המוצר מהעגלה
+                 removeFromCart();
+             }
         }
 
         function removeFromCart() {
@@ -164,5 +188,7 @@
 
         window.onload = renderCart;
     </script>
+
+    <script src="search.js"></script>
 </body>
 </html>
