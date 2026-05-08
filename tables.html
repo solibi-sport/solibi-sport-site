@@ -303,36 +303,36 @@
             margin-top: clamp(2px, 4cqi, 5px);
         }
 
-       .league-cube::before {
+        /* תמונת הדגל הגדולה שמופיעה ברקע */
+        .league-cube::before {
             content: ""; 
             position: absolute; 
             top: 0; left: 0; right: 0; bottom: 0;
             background-image: var(--bg-image); 
             background-size: cover; 
             background-position: center;
-            opacity: 0.70; /* הוקפץ משמעותית כדי להתגבר על הרקע הכהה */
-            transition: opacity 0.4s ease, transform 0.6s ease;
+            opacity: 0.36; /* תמיד רואים את הדגל חלש ברקע */
+            transition: opacity 0.4s ease, transform 0.6s ease; /* הוספנו אנימציית זום חלקה */
             z-index: 1; 
-           mix-blend-mode: overlay;
+            mix-blend-mode: overlay; /* משלב את הצבעים בתוך הנייבי כדי לא להרוס את הטקסט */
             pointer-events: none;
         }
 
         .league-cube:hover::before { 
-            opacity: 0.9; /* בריחוף זה כמעט בוהק לגמרי */
-            transform: scale(1.15); 
+            opacity: 0.70; /* הדגל מתחזק במעבר עכבר */
+            transform: scale(1.15); /* זום פנימי איטי ויוקרתי */
         }
-        
+
         .league-cube.svg-bg::before { 
             background-size: 60%; 
             background-repeat: no-repeat; 
             mix-blend-mode: normal; 
-            opacity: 0.08; /* חיזקנו גם את סמלי היבשות */
+            opacity: 0.04; /* חלש מאוד לסמלי היבשות */
         }
         
         .league-cube.svg-bg:hover::before { 
-            opacity: 0.2; 
+            opacity: 0.15; 
         }
-        
         /* מנגנון סינון קוביות דרך JS */
         .league-cube.hidden { display: none; }
 
