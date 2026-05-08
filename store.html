@@ -29,20 +29,28 @@
             flex-direction: column;
         }
 
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* הוספתי 30px מלמעלה כדי להוריד את הכותרת, ו-40px מלמטה כדי להקטין את גובה הקוביה */
-            padding: 30px 20px 40px 20px; 
-            overflow: hidden; 
+/* תצוגה 3: רשימה (שורות נמוכות) */
+        .product-grid.view-list { display: flex; flex-direction: column; }
+        .product-grid.view-list .product-card {
+            flex-direction: row; text-align: right; align-items: center; padding: 10px 20px; 
         }
-
-        .premium-title-wrapper { 
-            display: flex; align-items: center; justify-content: center; 
-            margin-top: 20px; margin-bottom: 15px; width: 100%; flex-shrink: 0; 
+        .product-grid.view-list .product-img { order: 1; width: 50px; height: 50px; margin-bottom: 0; margin-left: 20px; flex-shrink: 0; }
+        .product-grid.view-list .product-img svg { width: 25px; height: 25px; }
+        
+        /* flex-grow: 0 מונע מהטקסט להתרחב, וככה התגית נצמדת אליו */
+        .product-grid.view-list .product-info { order: 2; flex-grow: 0; display: flex; flex-direction: column; justify-content: center; text-align: right; }
+        .product-grid.view-list .product-title { font-size: 14px; margin-bottom: 3px; }
+        .product-grid.view-list .product-desc { font-size: 11px; margin-bottom: 0; display: inline-block; }
+        
+        .product-grid.view-list .product-badge { 
+            order: 3; position: static; width: auto; border-radius: 6px; padding: 4px 10px; 
+            margin-right: 15px; margin-left: 0; 
         }
+        
+        .product-grid.view-list .price-and-btn { order: 4; flex-direction: row; padding-top: 0; border-top: none; gap: 20px; align-items: center; margin-right: auto; margin-top: 0;}
+        .product-grid.view-list .price-row { margin-bottom: 0; }
+        .product-grid.view-list .add-to-cart-btn { width: auto; padding: 8px 15px; font-size: 12px; margin-top: 0; }
+        
         .page-title {
             background: #ffffff; padding: 8px 45px; border-radius: 40px;
             font-size: clamp(20px, 2.5vw, 26px); font-weight: 900; 
@@ -74,11 +82,6 @@
         .store-scroll-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); border-radius: 10px; margin: 20px 0; }
         .store-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.4); border-radius: 10px; }
         .store-scroll-wrapper::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
-
-        .store-inner-content {
-            direction: rtl; text-align: right; padding: 25px 40px;
-            display: flex; flex-direction: column; gap: 20px; flex: 1;
-        }
 
         /* באנר עליון מונמך */
         .store-hero {
@@ -393,23 +396,18 @@
         // טעינת הדר והפעלת עגלת הקניות
         fetch('header.html').then(res => res.text()).then(data => {
             document.getElementById('header-placeholder').innerHTML = data;
-            initCartBadge(); // מפעיל את העגלה רק אחרי שההדר נטען בהצלחה!
+            initCartBadge(); 
         });
         
-        // טעינת הטיקר
+        // טעינת הטיקר לחיים
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
-        // ==========================================
-        //         מערכת עגלת קניות חכמה
-        // ==========================================
         function initCartBadge() {
-            const storeLink = document.querySelector('.store-nav-link');
+            const storeLink = document.querySelector('.cart-icon-link') || document.querySelector('.store-nav-link');
             if (!storeLink) return;
 
-            // מגדיר את הכפתור בהדר כדי שנוכל למקם את המספר עליו
             storeLink.style.position = 'relative'; 
 
-            // יצירת עיגול המספר (הבועה האדומה)
             let badge = document.createElement('span');
             badge.id = 'cart-badge';
             badge.style.cssText = `
@@ -424,21 +422,15 @@
             `;
             storeLink.appendChild(badge);
 
-            // עדכון התצוגה לפי מה ששמור בזיכרון של הגולש
             updateCartDisplay();
             
-            // חיבור כל כפתורי "הוסף לעגלה" לאקשן
             document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     addToCart();
-                    
-                    // אפקט חזותי לכפתור שלחצנו עליו
                     const originalHtml = this.innerHTML;
                     this.innerHTML = '✔ נוסף בהצלחה';
                     this.style.backgroundColor = 'var(--brand-green)';
                     this.style.color = '#ffffff';
-                    
-                    // מחזיר את הכפתור למצב רגיל אחרי שנייה וחצי
                     setTimeout(() => {
                         this.innerHTML = originalHtml;
                         this.style.backgroundColor = '';
@@ -448,16 +440,11 @@
             });
         }
 
-        // שולף את המספר השמור
-        function getCartCount() {
-            return parseInt(localStorage.getItem('solibiCartCount')) || 0;
-        }
+        function getCartCount() { return parseInt(localStorage.getItem('solibiCartCount')) || 0; }
 
-        // מעדכן את המספר בבועה האדומה
         function updateCartDisplay() {
             const badge = document.getElementById('cart-badge');
             if (!badge) return;
-            
             const count = getCartCount();
             if (count > 0) {
                 badge.innerText = count;
@@ -469,23 +456,19 @@
             }
         }
 
-        // פעולת ההוספה
         function addToCart() {
             let count = getCartCount();
             count++;
-            localStorage.setItem('solibiCartCount', count); // שומר בזיכרון הדפדפן
+            localStorage.setItem('solibiCartCount', count); 
             updateCartDisplay();
-            
-            // אנימציית קפיצה (Zoom פנימה והחוצה) למספר שבעגלה למעלה
             const badge = document.getElementById('cart-badge');
             if (badge) {
                 badge.style.transform = 'scale(1.4)';
                 setTimeout(() => badge.style.transform = 'scale(1)', 200);
             }
         }
-        // ==========================================
 
-        // פונקציית שינוי תצוגה (קרוסלה/רשת/רשימה)
+        // --- החזרת כפתורי התצוגה ---
         function setView(viewType) {
             const container = document.getElementById('productContainer');
             const arrowR = document.getElementById('arrowRight');
@@ -508,7 +491,7 @@
             }
         }
 
-        // פונקציית סינון קטגוריות
+        // --- החזרת סינון הקטגוריות ---
         function filterStore(category, element) {
             document.querySelectorAll('.cat-pill').forEach(pill => pill.classList.remove('active'));
             element.classList.add('active');
@@ -529,16 +512,12 @@
             document.getElementById('productContainer').scrollLeft = 0;
         }
 
-        // פונקציית גלילה ימינה-שמאלה לקרוסלה
+        // --- החזרת גלילת הקרוסלה ---
         function scrollCarousel(direction) {
             const carousel = document.getElementById('productContainer');
             const scrollAmount = 300; 
-            
-            if (direction === 'left') {
-                carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            } else {
-                carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            }
+            if (direction === 'left') carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            else carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     </script>
     
