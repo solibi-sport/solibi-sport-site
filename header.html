@@ -80,29 +80,6 @@
     .header-search:focus-within { width: 100%; }
     .header-search input:focus { box-shadow: 0 0 15px rgba(124, 168, 86, 0.6); background: #fff; z-index: 10; }
 
-    /* --- עיצוב הרשימה הנפתחת (Live Search) --- */
-    .search-wrapper { position: relative; width: 100%; height: 100%; }
-    .search-dropdown {
-        position: absolute; top: 45px; left: 0; width: 100%; min-width: 250px;
-        background: #ffffff; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-        display: none; flex-direction: column; overflow: hidden; z-index: 2000;
-        border: 1px solid rgba(0,0,0,0.1); direction: rtl;
-    }
-    .search-dropdown.active { display: flex; }
-    
-    .search-result-item {
-        padding: 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.05); text-decoration: none;
-        transition: 0.2s; display: flex; flex-direction: column; gap: 5px; text-align: right;
-    }
-    .search-result-item:last-child { border-bottom: none; }
-    .search-result-item:hover { background: rgba(124, 168, 86, 0.08); padding-right: 25px; }
-    
-    .search-result-title { font-weight: 900; font-size: 14px; color: #062141; transition: 0.2s;}
-    .search-result-item:hover .search-result-title { color: #7ca856; }
-    .search-result-desc { font-size: 11px; color: #64748b; line-height: 1.3; }
-    
-    .no-search-results { padding: 15px 20px; font-size: 13px; color: #64748b; text-align: center; }
-
     /* --- רספונסיביות (התאמה למסכים קטנים) להדר --- */
     @media (max-width: 1100px) {
         .header { height: auto; padding: 15px 0; flex-direction: column; gap: 15px; }
@@ -150,72 +127,7 @@
 
     <div class="header-left-col">
         <div class="header-search">
-            <div class="search-wrapper">
-                <input type="text" id="globalSearchInput" placeholder="חיפוש באתר..." autocomplete="off" oninput="window.runLiveSearch(this.value)" onfocus="window.runLiveSearch(this.value)">
-                <div id="searchDropdown" class="search-dropdown"></div>
-            </div>
+            <input type="text" placeholder="חיפוש...">
         </div>
     </div>
 </header>
-<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" onload="window.setupSearchData()" style="display:none;">
-
-<script>
-window.setupSearchData = function() {
-    // מונע טעינה כפולה
-    if(window.searchInitialized) return;
-    window.searchInitialized = true;
-
-    // מסד הנתונים של האתר - כאן אתה מוסיף דפים!
-    window.sitePagesData = [
-        { title: "דף הבית", url: "index.html", desc: "העמוד הראשי של סוליבי ספורט", keywords: "ראשי בית כדורגל ספורט" },
-        { title: "חנות סוליבי (עגלת קניות)", url: "store.html", desc: "החנות הרשמית לציוד ספורט ואוהדים", keywords: "חנות קניות עגלה מוצרים קלפים" },
-        { title: "אודות סוליבי ספורט", url: "about.html", desc: "החזון והקהילה שלנו", keywords: "אודות עלינו חזון קהילה סיפור" },
-        { title: "יצירת קשר", url: "contact.html", desc: "פנה אלינו בכל שאלה", keywords: "קשר טלפון אימייל הודעה שירות" },
-        { title: "קרדיטים וזכויות יוצרים", url: "credits.html", desc: "רשימת המקורות באתר", keywords: "קרדיטים זכויות יוצרים" },
-        { title: "ליגת הפנטזי", url: "fantasy.html", desc: "ניהול קבוצת פנטזי ותחרויות", keywords: "פנטזי ליגה קבוצה הרכב מנג'ר" },
-        { title: "בורסת השחקנים", url: "bourse.html", desc: "מעקב אחר מחירי שחקנים חי", keywords: "בורסה שוק ערך שחקנים העברות מחיר" }
-    ];
-
-    // הפונקציה שמחפשת ומציגה תוצאות
-    window.runLiveSearch = function(query) {
-        const dropdown = document.getElementById('searchDropdown');
-        if (!dropdown) return;
-        
-        if (!query || query.trim() === '') {
-            dropdown.classList.remove('active');
-            return;
-        }
-
-        const lowerQuery = query.toLowerCase().trim();
-        const results = window.sitePagesData.filter(page => 
-            page.title.toLowerCase().includes(lowerQuery) || 
-            page.keywords.toLowerCase().includes(lowerQuery)
-        );
-
-        dropdown.innerHTML = '';
-        
-        if (results.length === 0) {
-            dropdown.innerHTML = '<div class="no-search-results">לא נמצאו תוצאות...</div>';
-        } else {
-            results.forEach(res => {
-                dropdown.innerHTML += `
-                    <a href="${res.url}" class="search-result-item">
-                        <span class="search-result-title">${res.title}</span>
-                        <span class="search-result-desc">${res.desc}</span>
-                    </a>
-                `;
-            });
-        }
-        dropdown.classList.add('active');
-    };
-
-    // סוגר את הרשימה אם לוחצים מחוץ לשורת החיפוש
-    document.addEventListener('click', function(e) {
-        const searchWrapper = document.querySelector('.search-wrapper');
-        const dropdown = document.getElementById('searchDropdown');
-        if (searchWrapper && !searchWrapper.contains(e.target) && dropdown) {
-            dropdown.classList.remove('active');
-        }
-    });
-};
-</script>
