@@ -187,7 +187,8 @@
             const count = parseInt(localStorage.getItem('solibiCartCount')) || 0;
             
             if (count > 0) {
-                window.location.href = 'checkout.html';
+                // הוספנו ./ כדי להבטיח שגיטהאב מזהה את הנתיב באותה תיקייה
+                window.location.href = './checkout.html';
             } else {
                 alert("העגלה שלך ריקה. אנא הוסף מוצרים לפני המעבר לתשלום.");
             }
