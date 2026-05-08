@@ -143,23 +143,27 @@
         .product-grid.view-list .product-card {
             flex-direction: row; text-align: right; align-items: center; padding: 10px 20px; 
         }
-        /* סידור מחדש: 1. תמונה | 2. תגית | 3. טקסט | 4. מחיר וכפתור */
+        /* סידור מחדש: 1. תמונה | 2. טקסט | 3. תגית (משמאל לטקסט) | 4. מחיר וכפתור */
         .product-grid.view-list .product-img { order: 1; width: 50px; height: 50px; margin-bottom: 0; margin-left: 20px; flex-shrink: 0; }
         .product-grid.view-list .product-img svg { width: 25px; height: 25px; }
         
+        .product-grid.view-list .product-info { order: 2; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; text-align: right; }
+        .product-grid.view-list .product-title { font-size: 14px; margin-bottom: 3px; }
+        .product-grid.view-list .product-desc { font-size: 11px; margin-bottom: 0; display: inline-block; }
+        
         .product-grid.view-list .product-badge { 
-            order: 2; /* ממקם את התגית בדיוק איפה שסימנת - בין התמונה לטקסט */
+            order: 3; /* ממקם את התגית בדיוק משמאל לטקסט */
             position: static; 
             width: auto; 
             border-radius: 6px; 
             padding: 4px 10px; 
-            margin-right: 0;
-            margin-left: 15px; /* מרווח קטן מהכותרת */
+            margin-right: 15px; 
+            margin-left: 15px; /* שומר על מרווח נקי מאזור המחיר */
         }
         
-        .product-grid.view-list .product-info { order: 3; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; text-align: right; }
-        .product-grid.view-list .product-title { font-size: 14px; margin-bottom: 3px; }
-        .product-grid.view-list .product-desc { font-size: 11px; margin-bottom: 0; display: inline-block; }
+        .product-grid.view-list .price-and-btn { order: 4; flex-direction: row; padding-top: 0; border-top: none; gap: 20px; align-items: center; margin-right: auto; margin-top: 0;}
+        .product-grid.view-list .price-row { margin-bottom: 0; }
+        .product-grid.view-list .add-to-cart-btn { width: auto; padding: 8px 15px; font-size: 12px; margin-top: 0; }
         
         .product-grid.view-list .price-and-btn { order: 4; flex-direction: row; padding-top: 0; border-top: none; gap: 20px; align-items: center; margin-right: auto; margin-top: 0;}
         .product-grid.view-list .price-row { margin-bottom: 0; }
