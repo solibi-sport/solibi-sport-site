@@ -80,6 +80,32 @@
     .header-search:focus-within { width: 100%; }
     .header-search input:focus { box-shadow: 0 0 15px rgba(124, 168, 86, 0.6); background: #fff; z-index: 10; }
 
+    /* --- עיצוב הרשימה הנפתחת (Live Search) --- */
+    .search-wrapper { position: relative; width: 100%; height: 100%; }
+
+    .search-dropdown {
+        position: absolute; top: 45px; left: 0; width: 100%; min-width: 250px;
+        background: #ffffff; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+        display: none; flex-direction: column; overflow: hidden; z-index: 2000;
+        border: 1px solid rgba(0,0,0,0.1); direction: rtl;
+    }
+
+    .search-dropdown.active { display: flex; }
+
+    .search-result-item {
+        padding: 12px 20px; border-bottom: 1px solid rgba(0,0,0,0.05); text-decoration: none !important;
+        transition: 0.2s; display: flex; flex-direction: column; gap: 5px; text-align: right;
+    }
+
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover { background: rgba(124, 168, 86, 0.08); padding-right: 25px; }
+
+    .search-result-title { font-weight: 900; font-size: 14px; color: #062141; transition: 0.2s;}
+    .search-result-item:hover .search-result-title { color: #7ca856; }
+    .search-result-desc { font-size: 11px; color: #64748b; line-height: 1.3; }
+
+    .no-search-results { padding: 15px 20px; font-size: 13px; color: #64748b; text-align: center; }
+
     /* --- רספונסיביות (התאמה למסכים קטנים) להדר --- */
     @media (max-width: 1100px) {
         .header { height: auto; padding: 15px 0; flex-direction: column; gap: 15px; }
@@ -109,7 +135,7 @@
             <ul>
                 <li><a href="index.html">דף הבית</a></li>
                 <li><a href="credits.html">קרדיטים</a></li>
-               <li><a href="about.html">אודות</a></li>
+                <li><a href="about.html">אודות</a></li>
                 <li><a href="contact.html">צור קשר</a></li>
                 <li>
                     <a href="store.html" class="store-nav-link" style="color: #7ca856; display: flex; align-items: center; gap: 6px;">
