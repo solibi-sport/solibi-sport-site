@@ -143,22 +143,23 @@
         .product-grid.view-list .product-card {
             flex-direction: row; text-align: right; align-items: center; padding: 10px 20px; 
         }
-        /* סידור מחדש: 1. תמונה | 2. טקסט | 3. תגית (משמאל לטקסט) | 4. מחיר וכפתור */
+        /* סידור מחדש: 1. תמונה | 2. טקסט | 3. תגית (צמודה משמאל לטקסט) | 4. מחיר וכפתור */
         .product-grid.view-list .product-img { order: 1; width: 50px; height: 50px; margin-bottom: 0; margin-left: 20px; flex-shrink: 0; }
         .product-grid.view-list .product-img svg { width: 25px; height: 25px; }
         
-        .product-grid.view-list .product-info { order: 2; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; text-align: right; }
+        /* ביטלנו את ההתרחבות כדי שהתגית תישאר צמודה */
+        .product-grid.view-list .product-info { order: 2; flex-grow: 0; display: flex; flex-direction: column; justify-content: center; text-align: right; }
         .product-grid.view-list .product-title { font-size: 14px; margin-bottom: 3px; }
         .product-grid.view-list .product-desc { font-size: 11px; margin-bottom: 0; display: inline-block; }
         
         .product-grid.view-list .product-badge { 
-            order: 3; /* ממקם את התגית בדיוק משמאל לטקסט */
+            order: 3; /* יושב מיד אחרי הטקסט */
             position: static; 
             width: auto; 
             border-radius: 6px; 
             padding: 4px 10px; 
-            margin-right: 15px; 
-            margin-left: 15px; /* שומר על מרווח נקי מאזור המחיר */
+            margin-right: 15px; /* מרווח קטן מהכותרת */
+            margin-left: 0; 
         }
         
         .product-grid.view-list .price-and-btn { order: 4; flex-direction: row; padding-top: 0; border-top: none; gap: 20px; align-items: center; margin-right: auto; margin-top: 0;}
