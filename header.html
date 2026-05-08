@@ -127,7 +127,10 @@
 
     <div class="header-left-col">
         <div class="header-search">
-            <input type="text" placeholder="חיפוש...">
+            <div class="search-wrapper">
+                <input type="text" id="globalSearchInput" placeholder="חיפוש באתר..." autocomplete="off" oninput="window.runLiveSearch(this.value)" onfocus="window.runLiveSearch(this.value)">
+                <div id="searchDropdown" class="search-dropdown"></div>
+            </div>
         </div>
     </div>
 </header>
