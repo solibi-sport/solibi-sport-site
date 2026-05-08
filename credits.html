@@ -62,8 +62,7 @@
         .title-navy { color: var(--text-dark); }
         .title-green { color: var(--brand-green); }
 
-        /* --- ענן התוכן המרכזי --- */
-        /* --- ענן התוכן המרכזי (כעת נגלל בפנים) --- */
+       /* --- ענן התוכן המרכזי (כעת נגלל בפנים מימין) --- */
         .credits-container {
             width: 100%;
             max-width: 900px;
@@ -71,25 +70,29 @@
             backdrop-filter: blur(15px);
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.9);
-            padding: 45px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+            flex: 0 1 auto;
+            min-height: 0;
+            overflow-y: auto; 
+            direction: ltr; /* טריק: מעביר את פס הגלילה לצד ימין */
+        }
+
+        .credits-content {
+            padding: 45px;
             display: flex;
             flex-direction: column;
             gap: 35px;
-            /* הגדרות הגלילה הפנימית: */
-            flex: 0 1 auto; /* הקוביה תגדל עד גבול המסך ואז תפעיל גלילה */
-            min-height: 0;
-            overflow-y: auto; 
+            direction: rtl; /* מחזיר את כל התוכן הפנימי לעברית (מימין לשמאל) */
         }
 
-        /* עיצוב פס הגלילה בתוך הקוביה (פרימיום ומופרד מהטקסט) */
+        /* עיצוב פס הגלילה בתוך הקוביה */
         .credits-container::-webkit-scrollbar {
             width: 8px; /* פס דק ואלגנטי */
         }
         .credits-container::-webkit-scrollbar-track {
             background: rgba(0,0,0,0.02); 
             border-radius: 10px; 
-            margin: 20px 0; /* מרחיק את הפס מהקצוות העליונים והתחתונים של הקוביה */
+            margin: 20px 0; /* מרחיק את הפס מהפינות המעוגלות */
         }
         .credits-container::-webkit-scrollbar-thumb {
             background: rgba(124, 168, 86, 0.4); /* ירוק שקוף */
