@@ -182,8 +182,14 @@
             }
         }
 
-        function goToCheckout() {
-            alert('מעבר לעמוד תשלום מאובטח...');
+       function goToCheckout() {
+            // אם יש פריטים בעגלה, עוברים לדף התשלום
+            const count = getCartCount();
+            if (count > 0) {
+                window.location.href = 'checkout.html';
+            } else {
+                alert("העגלה שלך ריקה. אנא הוסף מוצרים לפני המעבר לתשלום.");
+            }
         }
 
         window.onload = renderCart;
