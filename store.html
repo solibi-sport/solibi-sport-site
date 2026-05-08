@@ -225,19 +225,39 @@
         .trust-item { display: flex; align-items: center; gap: 6px; color: var(--text-gray); font-size: 12px; font-weight: 700; }
         .trust-item svg { color: var(--brand-green); width: 18px; height: 18px; }
 
-        /* --- טיקר תחתון --- */
-        .footer { 
-            background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); 
-            width: 100%; height: 45px; flex-shrink: 0; 
-            display: flex; align-items: center; overflow: hidden;
-        }
-        #ticker-placeholder { width: 100%; display: flex; align-items: center; }
+/* --- טיקר תחתון --- */
+.footer { 
+    background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); 
+    width: 100%; height: 45px; flex-shrink: 0; 
+    display: flex; align-items: center; overflow: hidden;
+}
+#ticker-placeholder { width: 100%; display: flex; align-items: center; }
+
+/* תיקון כיוון הטיקר ספציפית לחנות */
+.ticker-wrap { 
+    display: inline-flex; /* השתנה מ-inline-block */
+    white-space: nowrap; 
+    animation: ticker 30s linear infinite; 
+    direction: ltr !important; /* מכריח את האנימציה לרוץ משמאל לימין */
+}
+.ticker-item { 
+    color: #ffffff !important; 
+    font-weight: 700; 
+    font-size: 14px; 
+    display: inline-block; 
+    margin: 0 15px; 
+    vertical-align: middle; 
+    direction: rtl !important; /* שומר על הטקסט בעברית תקין */
+}
+.ticker-separator { 
+    color: var(--brand-green); font-weight: 900; margin: 0 15px; font-size: 15px; 
+    display: inline-block; vertical-align: middle; transform: translateY(-1px); 
+}
+@keyframes ticker { 
+    0% { transform: translateX(-100%); } 
+    100% { transform: translateX(100vw); } 
+}
         
-        /* הוספנו את ה-direction כדי למנוע התנגשות עם שאר הדפים! */
-        .ticker-wrap { display: inline-flex; white-space: nowrap; animation: ticker 30s linear infinite; direction: ltr; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: 14px; display: inline-block; margin: 0 15px; vertical-align: middle; direction: rtl; }
-        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 15px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
         @media (max-width: 900px) {
             .carousel-wrapper { padding: 0; margin-top: 20px;}
             .nav-arrow { display: none; }
