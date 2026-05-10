@@ -5618,11 +5618,11 @@ window.renderTeamRoster = function() {
     teamSquad.sort((a, b) => tierOrder.indexOf(a.calcTierName) - tierOrder.indexOf(b.calcTierName));
 
     container.innerHTML = '';
-   teamSquad.forEach(p => {
+    teamSquad.forEach(p => {
         const tName = window.translateName ? window.translateName(p.name) : p.name;
         const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
         const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
-        const statusIconsHtml = window.getPlayerStatusIcons(p, true);
+        const statusIconsHtml = window.getPlayerStatusIcons ? window.getPlayerStatusIcons(p, true) : '';
 
         container.innerHTML += `
             <div class="tt-card" style="position: relative;">
@@ -5669,8 +5669,9 @@ window.openTradeModal = function(playerId, teamName) {
     document.getElementById('tb-money-input').value = '';
     updateTradePreview();
 
-    // התיקון לקפיאת המסך!
-    document.getElementById('trade-modal-overlay').classList.add('active');
+    // פתיחת המודאל
+    document.getElementById('trade-modal-overlay').style.display = 'flex';
+    setTimeout(() => { document.getElementById('trade-modal-overlay').classList.add('active'); }, 10);
 };
 
 // עדכון לייב של המאזן בחלון הטרייד
@@ -5729,12 +5730,12 @@ window.updateTradePreview = function() {
 // סגירת החלון
 window.closeTradeModal = function() {
     document.getElementById('trade-modal-overlay').classList.remove('active');
+    setTimeout(() => { document.getElementById('trade-modal-overlay').style.display = 'none'; }, 300);
 };
 
 // שליחת ההצעה
 window.submitTradeOffer = function() {
     const moneyAdded = parseInt(document.getElementById('tb-money-input').value) || 0;
-    
     const userBudgetStr = document.getElementById('user-budget').innerText.replace(/[^\d]/g, '');
     const userBudget = parseInt(userBudgetStr) || 100000000;
 
@@ -5751,15 +5752,43 @@ document.addEventListener('DOMContentLoaded', () => {
     if(typeof initTeamTransfers === 'function') initTeamTransfers();
 });
 
-        // ==========================================
-// מנוע ניהול הצעות (נכנסות ויוצאות)
 // ==========================================
-
-// מערכים לאחסון ההצעות הפעילות 
+// מנוע ניהול הצעות ורשימת מעקב
+// ==========================================
+window.myWatchlist = [];
 let incomingOffers = [];
 let outgoingOffers = [];
 
-        window.myWatchlist = [];
+function initOffersAndWatchlist() {
+    const allPlayers = Object.values(window.allPlayersMap);
+    if(allPlayers.length < 20) {
+        setTimeout(initOffersAndWatchlist, 1000);
+        return;
+    }
+
+    // 1. אתחול רשימת מעקב עם 5 שחקנים אקראיים (לצורך הדגמה)
+    const otherPlayers = allPlayers.filter(p => p.owner !== 'מכבי סוליבי');
+    window.myWatchlist = otherPlayers.slice(0, 5);
+    renderWatchlist();
+
+    // 2. יצירת הצעות דמה עם שחקנים אמיתיים
+    const myPlayers = allPlayers.filter(p => p.owner === 'מכבי סוליבי');
+    if(myPlayers.length > 0 && otherPlayers.length > 0) {
+        incomingOffers = [{
+            id: 101, date: "היום, 14:30", fromTeam: "גלקטיקוס",
+            offerPlayer: otherPlayers[10], offerMoney: 2000000,
+            wantedPlayer: myPlayers[0], wantedMoney: 0
+        }];
+
+        outgoingOffers = [{
+            id: 201, date: "לפני שעה", toTeam: "אריות וולפסון",
+            offerPlayer: myPlayers[1] || myPlayers[0], offerMoney: 500000,
+            wantedPlayer: otherPlayers[5], wantedMoney: 0
+        }];
+    }
+    
+    renderOffersManagement();
+}
 
 window.renderWatchlist = function() {
     const watchlistContainer = document.getElementById('watchlist-body');
@@ -5796,101 +5825,8 @@ window.renderWatchlist = function() {
 
 window.removeFromWatchlist = function(id) {
     window.myWatchlist = window.myWatchlist.filter(p => p.id !== id);
-    window.renderWatchlist();
-};
-
-// --- מנוע ניהול הצעות ורשימת מעקב (מחליף את initOffersManagement הקודם) ---
-window.myWatchlist = []; // מערך ריק שבו יישמרו השחקנים שאתה מוסיף
-let incomingOffers = [];
-let outgoingOffers = [];
-
-function initOffersAndWatchlist() {
-    const allPlayers = Object.values(window.allPlayersMap);
-    // אם המאגר עוד לא נטען, נחכה שנייה
-    if(allPlayers.length < 20) {
-        setTimeout(initOffersAndWatchlist, 1000);
-        return;
-    }
-
-    // 1. אתחול רצוי: הצעות דמה עם שחקנים אמיתיים מהמאגר
-    const otherPlayers = allPlayers.filter(p => p.owner !== 'מכבי סוליבי');
-    const myPlayers = allPlayers.filter(p => p.owner === 'מכבי סוליבי');
-
-    if(myPlayers.length > 0 && otherPlayers.length > 0) {
-        incomingOffers = [{
-            id: 101, date: "היום, 14:30", fromTeam: "גלקטיקוס",
-            offerPlayer: otherPlayers[10], offerMoney: 2000000,
-            wantedPlayer: myPlayers[0], wantedMoney: 0
-        }];
-
-        outgoingOffers = [{
-            id: 201, date: "לפני שעה", toTeam: "אריות וולפסון",
-            offerPlayer: myPlayers[1] || myPlayers[0], offerMoney: 500000,
-            wantedPlayer: otherPlayers[5], wantedMoney: 0
-        }];
-    }
-    
-    // מציירים את הכל על המסך
-    renderOffersManagement();
-    renderWatchlist();
-}
-
-// פונקציה שמציירת את רשימת המעקב
-window.renderWatchlist = function() {
-    const watchlistContainer = document.getElementById('watchlist-body');
-    if (!watchlistContainer) return;
-    
-    if (window.myWatchlist.length === 0) {
-        watchlistContainer.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#64748b; font-weight:bold;">רשימת המעקב ריקה.<br>חפש שחקנים במאגר (סקאוטינג) והוסף אותם לכאן!</td></tr>';
-        return;
-    }
-
-    watchlistContainer.innerHTML = '';
-    window.myWatchlist.forEach(p => {
-        const tName = window.translateName ? window.translateName(p.name) : p.name;
-        const tTeam = window.translateName ? window.translateName(p.team) : p.team;
-        const pImg = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
-        const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
-        
-        watchlistContainer.innerHTML += `
-            <tr onclick="openPlayerModalById(${p.id}, false)" style="cursor: pointer;">
-                <td><div style="display:flex; align-items:center; gap:10px; justify-content:center;">
-                    <img src="${pImg}" style="width:28px; height:28px; border-radius:50%; border: 1px solid #e2e8f0;">
-                    <span style="font-weight:900; color: var(--text-dark);">${tName}</span>
-                </div></td>
-                <td style="font-weight:bold; color: var(--text-dark);">${tTeam}</td>
-                <td style="color: var(--text-dark); font-weight:bold;">${p.displayPos}</td>
-                <td style="color:var(--brand-green); font-weight:900;">₪${valStr}</td>
-                <td>
-                    <button style="background:#ef4444; color:#fff; border:none; border-radius:6px; padding:6px 10px; font-size:10px; cursor:pointer;" onclick="event.stopPropagation(); removeFromWatchlist(${p.id})">הסר ✖</button>
-                </td>
-            </tr>`;
-    });
-};
-
-window.removeFromWatchlist = function(id) {
-    window.myWatchlist = window.myWatchlist.filter(p => p.id !== id);
     renderWatchlist();
 };
-
-function renderOffersManagement() {
-    const incContainer = document.getElementById('incoming-offers-container');
-    const outContainer = document.getElementById('outgoing-offers-container');
-    if(!incContainer || !outContainer) return;
-
-    if(incomingOffers.length === 0) {
-        incContainer.innerHTML = '<div class="offer-empty">אין כרגע הצעות נכנסות.</div>';
-    } else {
-        incContainer.innerHTML = '';
-        incomingOffers.forEach(o => {
-            const offerPName = window.translateName ? window.translateName(o.offerPlayer.name) : o.offerPlayer.name;
-            const wantedPName = window.translateName ? window.translateName(o.wantedPlayer.name) : o.wantedPlayer.name;
-            incContainer.innerHTML += `<div class="offer-card">... (קוד העיצוב של הקלף) ...</div>`;
-            // הערה: תשתמש בקוד העיצוב של הקלף שכבר יש לך ב-renderOffersManagement המקורי
-        });
-    }
-    // ... אותו דבר ל-outgoingOffers ...
-}
 
 function renderOffersManagement() {
     const incContainer = document.getElementById('incoming-offers-container');
@@ -5903,6 +5839,7 @@ function renderOffersManagement() {
     } else {
         incContainer.innerHTML = '';
         incomingOffers.forEach(o => {
+            if(!o.offerPlayer || !o.wantedPlayer) return;
             const offerPName = window.translateName ? window.translateName(o.offerPlayer.name) : o.offerPlayer.name;
             const wantedPName = window.translateName ? window.translateName(o.wantedPlayer.name) : o.wantedPlayer.name;
             
@@ -5948,6 +5885,7 @@ function renderOffersManagement() {
     } else {
         outContainer.innerHTML = '';
         outgoingOffers.forEach(o => {
+            if(!o.offerPlayer || !o.wantedPlayer) return;
             const offerPName = window.translateName ? window.translateName(o.offerPlayer.name) : o.offerPlayer.name;
             const wantedPName = window.translateName ? window.translateName(o.wantedPlayer.name) : o.wantedPlayer.name;
             
@@ -5995,7 +5933,6 @@ window.respondOffer = function(id, action) {
         if(!confirm("האם לדחות את הצעת הטרייד?")) return;
     }
     
-    // מחיקת ההצעה מהמערך ורענון
     incomingOffers = incomingOffers.filter(o => o.id !== id);
     renderOffersManagement();
 };
@@ -6003,16 +5940,14 @@ window.respondOffer = function(id, action) {
 window.cancelOutgoingOffer = function(id) {
     if(!confirm("האם אתה בטוח שברצונך לבטל את ההצעה שהגשת?")) return;
     
-    // מחיקת ההצעה מהמערך ורענון
     outgoingOffers = outgoingOffers.filter(o => o.id !== id);
     renderOffersManagement();
 };
 
-// הפעלת האתחול לאחר טעינת הדף (כדי שיהיו לנו שחקנים במאגר)
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         if(document.getElementById('tab-manage-offers')) {
-          initOffersAndWatchlist();
+            initOffersAndWatchlist();
         }
     }, 2000);
 });
