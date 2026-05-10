@@ -368,7 +368,21 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .manager-badge.taken { border: 1px solid var(--brand-green); color: var(--brand-green); background: rgba(124,168,86,0.1); }
 
         /* פוטר וטיקר (הפוך - רקע כסוף ומלל נייבי) */
-        .footer { background: var(--bg-silver-matte); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
+        .footer { 
+            background: var(--bg-silver-matte); 
+            height: 40px; /* גובה זהה לדף הבית */
+            padding: 0; /* ביטול ניפוח */
+            border-top: 2px solid var(--brand-green); 
+            border-bottom: none; /* ביטול קו כפול */
+            overflow: hidden; 
+            white-space: nowrap; 
+            width: 100%; 
+            direction: ltr; 
+            flex-shrink: 0; 
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
         .ticker-item { color: var(--text-dark) !important; font-weight: 900; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
         .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
