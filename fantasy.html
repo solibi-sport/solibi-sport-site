@@ -5038,29 +5038,36 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 // מנוע מכירות פומביות (Auctions)
 // ==========================================
 
-// מערך המדמה את מצב המכרזים החיים (בעולם אמיתי זה יגיע מה-DB)
+// מערך המדמה את מצב המכרזים החיים
 let activeAuctions = [];
 let auctionTimers = [];
 
-// פונקציה להכנת נתוני המכרזים (5 שחקנים רנדומליים)
+// פונקציה להכנת נתוני המכרזים (5 שחקנים להמחשה)
 function initAuctions() {
-    const freeAgents = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' && p.value > 0);
-    if(freeAgents.length < 5) return;
+    // רשימת שחקנים קבועה להמחשה (שתמיד תעבוד לבדיקות)
+    const demoPlayers = [
+        { id: 991, name: "קיליאן אמבפה", photo: "https://media.api-sports.io/football/players/278.png", displayPos: "חלוץ", calcTierName: "כוכב על", calcTierClass: "tier-star", value: 150000000 },
+        { id: 992, name: "ג'וד בלינגהאם", photo: "https://media.api-sports.io/football/players/11608.png", displayPos: "קישור", calcTierName: "רמה 1", calcTierClass: "tier-1", value: 120000000 },
+        { id: 993, name: "וירג'יל ואן דייק", photo: "https://media.api-sports.io/football/players/290.png", displayPos: "הגנה", calcTierName: "רמה 1", calcTierClass: "tier-1", value: 85000000 },
+        { id: 994, name: "טיבו קורטואה", photo: "https://media.api-sports.io/football/players/738.png", displayPos: "שוער", calcTierName: "רמה 2", calcTierClass: "tier-2", value: 65000000 },
+        { id: 995, name: "לאמין ימאל", photo: "https://media.api-sports.io/football/players/399082.png", displayPos: "קישור", calcTierName: "רמה 3", calcTierClass: "tier-3", value: 45000000 }
+    ];
 
-    // נדמה שליפת 5 שחקנים מרמות שונות לצורך ההדגמה
     activeAuctions = [];
-    for(let i=0; i<5; i++) {
-        let p = freeAgents[Math.floor(Math.random() * freeAgents.length)];
-        let endTime = new Date().getTime() + (Math.random() * 86400000) + 60000; // זמן סיום אקראי (פלוס דקה לפחות)
+    demoPlayers.forEach((p, index) => {
+        // אמבפה יסתיים בעוד 45 שניות כדי שתראה את האפקט האדום! השאר יסתיימו בעוד שעה-שעתיים
+        let timeToAdd = (index === 0) ? 45000 : (Math.random() * 7200000) + 120000; 
+        let endTime = new Date().getTime() + timeToAdd; 
         
         activeAuctions.push({
-            id: i,
+            id: index,
             player: p,
             currentBid: Math.floor(p.value * 0.8), // מתחיל ב-80% משווי השוק
-            highestBidder: 'מנג\'ר אקראי ' + (i+1),
+            highestBidder: 'מנג\'ר אקראי ' + (index + 1),
             endTime: endTime
         });
-    }
+    });
+
     renderAuctions();
 }
 
@@ -5076,15 +5083,19 @@ function renderAuctions() {
     // שליפת הסגל של המשתמש עבור תיבות הבחירה
     const mySquad = Object.values(window.allPlayersMap).filter(p => p.owner === 'מכבי סוליבי');
     let squadOptionsHtml = '<option value="">-- בחר שחקן לשחרור (חובה) --</option>';
-    mySquad.forEach(p => {
-        let tName = window.translateName ? window.translateName(p.name) : p.name;
-        squadOptionsHtml += `<option value="${p.id}">${tName} (${p.displayPos})</option>`;
-    });
+    
+    // אם אין באמת סגל (כי המאגר עדיין נטען), נשים שחקן פיקטיבי לשחרור כדי שתוכל לבדוק
+    if (mySquad.length === 0) {
+        squadOptionsHtml += `<option value="test1">שחקן הרכב פיקטיבי (לבדיקה)</option>`;
+    } else {
+        mySquad.forEach(p => {
+            let tName = window.translateName ? window.translateName(p.name) : p.name;
+            squadOptionsHtml += `<option value="${p.id}">${tName} (${p.displayPos})</option>`;
+        });
+    }
 
     activeAuctions.forEach((auction, index) => {
         const p = auction.player;
-        const tName = window.translateName ? window.translateName(p.name) : p.name;
-        const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
         const valStr = window.formatNumberWithCommas ? window.formatNumberWithCommas(auction.currentBid) : auction.currentBid;
         const minNextBid = auction.currentBid + 100000; // קפיצה מינימלית
         const isMe = auction.highestBidder === 'מכבי סוליבי';
@@ -5093,8 +5104,8 @@ function renderAuctions() {
         const cardHtml = `
             <div class="auction-card">
                 <div class="auc-timer" id="auc-timer-${index}">טוען...</div>
-                <img src="${playerImage}" class="auc-player-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
-                <div class="auc-player-name">${tName}</div>
+                <img src="${p.photo}" class="auc-player-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                <div class="auc-player-name">${p.name}</div>
                 <div class="auc-meta">
                     <span>${p.displayPos}</span> | 
                     <span class="tier-badge ${p.calcTierClass}" style="padding:2px 8px; font-size:10px;">${p.calcTierName}</span>
@@ -5127,7 +5138,7 @@ function startAuctionTimer(index, endTime) {
     
     const timer = setInterval(() => {
         const now = new Date().getTime();
-        const distance = activeAuctions[index].endTime - now; // משתמש בזמן מהאובייקט כדי לתמוך בהארכות זמן
+        const distance = activeAuctions[index].endTime - now; // מתעדכן מהמערך למקרה של הארכה
 
         if (distance <= 0) {
             clearInterval(timer);
@@ -5163,7 +5174,7 @@ window.placeBid = function(index) {
     const releaseSelect = document.getElementById(`auc-release-${index}`);
     const bidAmount = parseInt(inputEl.value);
     
-    // קריאת התקציב של השחקן (הדמיה - בעולם אמיתי ישתנה ממשתנה גלובלי)
+    // קריאת התקציב
     const userBudgetStr = document.getElementById('user-budget').innerText.replace(/[^\d]/g, '');
     const userBudget = parseInt(userBudgetStr) || 100000000;
 
@@ -5185,19 +5196,20 @@ window.placeBid = function(index) {
         return;
     }
 
-    // הכל תקין - מבצעים את ההצעה
+    // מבצעים את ההצעה
     auction.currentBid = bidAmount;
     auction.highestBidder = 'מכבי סוליבי';
     
     // חוק הדקה האחרונה (Anti-Snipe)
     const now = new Date().getTime();
     const timeLeft = auction.endTime - now;
-    if (timeLeft < 60000) { // פחות מדקה
-        auction.endTime += 60000; // מוסיף 60 שניות למכרז הספציפי
+    if (timeLeft < 60000) { 
+        auction.endTime += 60000; // מוסיף דקה
         alert("הצעה התקבלה בדקה האחרונה! זמן המכרז הוארך בדקה נוספת.");
+        document.getElementById(`auc-timer-${index}`).classList.remove('ending-soon');
     }
 
-    // רענון התצוגה למכרז הספציפי
+    // רענון התצוגה
     document.getElementById(`auc-val-${index}`).innerText = `₪${window.formatNumberWithCommas(auction.currentBid)}`;
     const leaderEl = document.getElementById(`auc-leader-${index}`);
     leaderEl.innerText = `מחזיק בהצעה: ${auction.highestBidder}`;
@@ -5208,17 +5220,17 @@ window.placeBid = function(index) {
     btn.innerText = "אתה המוביל!";
     
     inputEl.value = "";
-    inputEl.placeholder = `סכום (מינימום: ${auction.currentBid + 100000})`;
+    inputEl.placeholder = `סכום (מינימום: ${window.formatNumberWithCommas(auction.currentBid + 100000)})`;
     inputEl.min = auction.currentBid + 100000;
 };
 
-// הפעלת האתחול כשהדף עולה (לאחר שהשחקנים מ-Supabase נטענו)
+// הפעלת האתחול כשהדף עולה
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         if(document.getElementById('auctions-container')) {
             initAuctions();
         }
-    }, 3000); // מחכים 3 שניות שהשחקנים יטענו מ-Supabase למילון
+    }, 1500);
 });
         
     </script>
