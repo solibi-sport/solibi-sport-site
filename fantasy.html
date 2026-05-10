@@ -1740,6 +1740,73 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 @media (max-width: 1400px) { .auctions-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 900px) { .auctions-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .auctions-grid { grid-template-columns: 1fr; } }
+
+        /* =========================================
+   מרכז העברות - טריידים בין קבוצות
+   ========================================= */
+.tt-controls {
+    background: var(--bg-silver-matte); padding: 15px 20px; border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+}
+.tt-controls select {
+    padding: 10px 15px; border-radius: 8px; border: 1px solid var(--brand-green);
+    background: #fff; color: var(--text-dark); font-family: inherit; font-weight: 900; font-size: 14px; outline: none; min-width: 250px;
+}
+
+.tt-roster-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;
+}
+
+.tt-card {
+    background: #fff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px;
+    padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    transition: 0.3s; display: flex; flex-direction: column; align-items: center;
+}
+.tt-card:hover { transform: translateY(-3px); border-color: var(--brand-green); box-shadow: 0 8px 20px rgba(124,168,86,0.15); }
+.tt-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #e2e8f0; object-fit: cover; margin-bottom: 10px; }
+.tt-name { font-size: 15px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
+.tt-pos { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 10px; }
+.tt-val { font-size: 14px; font-weight: 900; color: var(--brand-green); margin-bottom: 15px; }
+
+.tt-btn {
+    background: var(--element-navy-gradient); color: #fff; border: none; padding: 8px;
+    width: 100%; border-radius: 6px; font-weight: 900; font-size: 13px; cursor: pointer; transition: 0.2s; margin-top: auto;
+}
+.tt-btn:hover { background: var(--brand-green); transform: scale(1.02); }
+
+/* --- מודאל בניית הטרייד (Trade Builder) --- */
+.trade-builder-modal {
+    background: #f8fafc; width: 95%; max-width: 800px; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4); display: flex; flex-direction: column; position: relative;
+}
+.tb-header { background: var(--element-navy-gradient); color: #fff; padding: 20px; text-align: center; font-size: 20px; font-weight: 900; }
+.tb-body { padding: 25px; display: flex; gap: 20px; align-items: stretch; }
+
+.tb-side {
+    flex: 1; background: #fff; border: 2px solid rgba(0,0,0,0.05); border-radius: 12px;
+    padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.tb-side.receive { border-color: var(--brand-green); background: rgba(124,168,86,0.03); }
+.tb-side.give { border-color: #f59e0b; background: rgba(245,158,11,0.03); }
+
+.tb-side-title { font-size: 16px; font-weight: 900; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px dashed rgba(0,0,0,0.1); width: 100%; }
+.tb-player-preview { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+.tb-player-preview img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #cbd5e1; object-fit: cover; margin-bottom: 10px; }
+.tb-player-preview.empty img { border-style: dashed; opacity: 0.5; filter: grayscale(1); }
+
+.tb-vs { display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 900; color: #cbd5e1; }
+
+.tb-select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: inherit; font-weight: bold; outline: none; margin-bottom: 15px; }
+.tb-money-input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-family: inherit; font-weight: 900; font-size: 16px; text-align: center; outline: none; color: var(--brand-green); }
+
+.tb-footer { padding: 20px; background: #fff; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+.tb-diff-alert { font-size: 13px; font-weight: bold; color: #ef4444; }
+.tb-actions { display: flex; gap: 10px; }
+.tb-submit { background: var(--brand-green); color: #fff; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; transition: 0.2s; }
+.tb-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(124,168,86,0.3); }
+.tb-submit:disabled { background: #cbd5e1; cursor: not-allowed; }
+.tb-cancel { background: #e2e8f0; color: #64748b; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 900; cursor: pointer; }
+.tb-cancel:hover { background: #cbd5e1; color: var(--text-dark); }
         
     </style>
         
@@ -1842,7 +1909,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
         <div class="fm-submenu">
-            <div class="fm-sub-item" onclick="event.stopPropagation()">העברות בין קבוצות</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-team-transfers', this)">העברות בין קבוצות</div>
            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-auctions', this)">מכירות פומביות</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-surprise-sale', this)">מכירה בהפתעה</div>
         </div>
@@ -2992,6 +3059,75 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
 
+<div id="tab-team-transfers" class="fm-tab">
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path></svg>
+        העברות וטריידים בין קבוצות
+    </h2>
+
+    <div class="tt-controls">
+        <span style="font-weight: 900; color: var(--text-dark);">בחר קבוצה לצפייה בסגל:</span>
+        <select id="tt-team-select" onchange="renderTeamRoster()">
+            <option value="">-- בחר קבוצה מהליגה --</option>
+            </select>
+        <span style="font-size: 12px; color: #64748b; margin-right: auto;">* בחר שחקן כדי להציע עליו טרייד למנג'ר.</span>
+    </div>
+
+    <div class="tt-roster-grid" id="tt-roster-container">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #94a3b8; font-weight: bold;">
+            יש לבחור קבוצה מהרשימה כדי לראות את הסגל שלה.
+        </div>
+    </div>
+</div>
+
+<div class="player-modal-overlay" id="trade-modal-overlay" style="z-index: 10000;">
+    <div class="trade-builder-modal">
+        <div class="tb-header">🤝 הצעת טרייד ל<span id="tb-target-team">---</span></div>
+        <div class="tb-body">
+            
+            <div class="tb-side receive">
+                <div class="tb-side-title" style="color: var(--brand-green);">מה אתה מקבל</div>
+                <div class="tb-player-preview">
+                    <img id="tb-receive-img" src="">
+                    <div id="tb-receive-name" style="font-weight: 900; font-size: 18px; color: var(--text-dark);">שם השחקן</div>
+                    <div id="tb-receive-meta" style="font-size: 12px; color: #64748b; margin-top: 4px;">עמדה | רמה</div>
+                    <div id="tb-receive-val" style="font-weight: 900; color: var(--brand-green); margin-top: 8px;">שווי: ₪0</div>
+                </div>
+            </div>
+
+            <div class="tb-vs">↔</div>
+
+            <div class="tb-side give">
+                <div class="tb-side-title" style="color: #f59e0b;">מה אתה נותן בתמורה</div>
+                
+                <select class="tb-select" id="tb-give-select" onchange="updateTradePreview()">
+                    <option value="">-- בחר שחקן מהסגל שלך --</option>
+                </select>
+
+                <div class="tb-player-preview empty" id="tb-give-preview">
+                    <img id="tb-give-img" src="https://ui-avatars.com/api/?name=?&background=e2e8f0&color=94a3b8">
+                    <div id="tb-give-name" style="font-weight: bold; color: #94a3b8;">לא נבחר שחקן</div>
+                    <div id="tb-give-val" style="font-weight: 900; color: #f59e0b; margin-top: 8px; display: none;">שווי: ₪0</div>
+                </div>
+
+                <div style="width: 100%; text-align: right;">
+                    <label style="font-size: 12px; font-weight: bold; color: var(--text-dark); margin-bottom: 5px; display: block;">תוספת תשלום מצידך (₪):</label>
+                    <input type="number" id="tb-money-input" class="tb-money-input" placeholder="0" min="0" step="50000" oninput="updateTradePreview()">
+                    <div style="font-size: 10px; color: #64748b; margin-top: 5px;">* במידה והשחקן שאתה מציע זול יותר, מומלץ להוסיף כסף כדי שהצד השני יסכים.</div>
+                </div>
+            </div>
+
+        </div>
+        <div class="tb-footer">
+            <div class="tb-diff-alert" id="tb-diff-alert">אנא בחר שחקן להחלפה.</div>
+            <div class="tb-actions">
+                <button class="tb-cancel" onclick="closeTradeModal()">ביטול</button>
+                <button class="tb-submit" id="tb-submit-btn" onclick="submitTradeOffer()" disabled>שלח הצעה למנג'ר</button>
+            </div>
+        </div>
+    </div>
+</div>
+                   
 <div id="tab-auctions" class="fm-tab">
     <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M12 2l3 6 6 1-4.5 4.5 1.5 6-6-3.5-6 3.5 1.5-6L3 9l6-1z"></path></svg>
@@ -5278,6 +5414,180 @@ document.addEventListener('DOMContentLoaded', () => {
             initAuctions();
         }
     }, 1500);
+});
+
+        // ==========================================
+// מנוע טריידים והעברות בין קבוצות
+// ==========================================
+
+let tradeTargetPlayer = null;
+
+// טעינת רשימת הקבוצות בליגה
+function initTeamTransfers() {
+    const select = document.getElementById('tt-team-select');
+    if(!select) return;
+    
+    // קבוצות הליגה (מוקאפ לצורך הדגמה, אפשר לשאוב מה-DB בהמשך)
+    const leagueTeams = [
+        "הכרישים של מוטי", "גלקטיקוס", "אריות וולפסון", 
+        "בני יהודה אימפריה", "פ.צ. שווארמה", "רד בול פתח תקווה", "הפועל עגלות"
+    ];
+
+    select.innerHTML = '<option value="">-- בחר קבוצה מהליגה --</option>';
+    leagueTeams.forEach(team => {
+        select.innerHTML += `<option value="${team}">${team}</option>`;
+    });
+}
+
+// רינדור סגל הקבוצה שנבחרה
+window.renderTeamRoster = function() {
+    const teamName = document.getElementById('tt-team-select').value;
+    const container = document.getElementById('tt-roster-container');
+    
+    if(!teamName) {
+        container.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #94a3b8; font-weight: bold;">יש לבחור קבוצה מהרשימה כדי לראות את הסגל שלה.</div>';
+        return;
+    }
+
+    // שולף שחקנים אקראיים כדי לדמות את הסגל של הקבוצה שבחרנו (בעולם אמיתי: נסנן לפי p.owner === teamName)
+    let allPlayersList = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי');
+    let simulatedSquad = allPlayersList.sort(() => 0.5 - Math.random()).slice(0, 15);
+
+    container.innerHTML = '';
+    simulatedSquad.forEach(p => {
+        const tName = window.translateName ? window.translateName(p.name) : p.name;
+        const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+        const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+
+        container.innerHTML += `
+            <div class="tt-card">
+                <img src="${playerImage}" class="tt-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                <div class="tt-name">${tName}</div>
+                <div class="tt-pos">${p.displayPos} | <span style="color:var(--text-dark);">${p.calcTierName}</span></div>
+                <div class="tt-val">₪${valStr}</div>
+                <button class="tt-btn" onclick="openTradeModal(${p.id}, '${teamName}')">הצע טרייד 🤝</button>
+            </div>
+        `;
+    });
+};
+
+// פתיחת חלון בניית הטרייד
+window.openTradeModal = function(playerId, teamName) {
+    tradeTargetPlayer = window.allPlayersMap[playerId];
+    if(!tradeTargetPlayer) return;
+
+    // הגדרת צד "מה אני מקבל"
+    const tName = window.translateName ? window.translateName(tradeTargetPlayer.name) : tradeTargetPlayer.name;
+    const playerImage = tradeTargetPlayer.photo || `https://media.api-sports.io/football/players/${tradeTargetPlayer.id}.png`;
+    const valStr = window.formatPlayerValue ? window.formatPlayerValue(tradeTargetPlayer.value) : tradeTargetPlayer.value;
+
+    document.getElementById('tb-target-team').innerText = teamName;
+    document.getElementById('tb-receive-name').innerText = tName;
+    document.getElementById('tb-receive-img').src = playerImage;
+    document.getElementById('tb-receive-meta').innerText = `${tradeTargetPlayer.displayPos} | ${tradeTargetPlayer.calcTierName}`;
+    document.getElementById('tb-receive-val').innerText = `שווי: ₪${valStr}`;
+
+    // טעינת הסגל שלי לצד "מה אני נותן"
+    const mySquad = Object.values(window.allPlayersMap).filter(p => p.owner === 'מכבי סוליבי');
+    const select = document.getElementById('tb-give-select');
+    select.innerHTML = '<option value="">-- בחר שחקן מהסגל שלך --</option>';
+    
+    // אם הסגל עדיין לא נטען לבדיקות
+    if (mySquad.length === 0) {
+        select.innerHTML += `<option value="test">שחקן הרכב פיקטיבי - ₪20M</option>`;
+    } else {
+        mySquad.forEach(p => {
+            let myName = window.translateName ? window.translateName(p.name) : p.name;
+            let myVal = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+            select.innerHTML += `<option value="${p.id}">${myName} (${p.displayPos}) - ₪${myVal}</option>`;
+        });
+    }
+
+    // איפוס שדות
+    document.getElementById('tb-money-input').value = '';
+    updateTradePreview();
+
+    document.getElementById('trade-modal-overlay').style.display = 'flex';
+};
+
+// עדכון לייב של המאזן בחלון הטרייד
+window.updateTradePreview = function() {
+    const select = document.getElementById('tb-give-select');
+    const preview = document.getElementById('tb-give-preview');
+    const moneyInput = document.getElementById('tb-money-input');
+    const alertBox = document.getElementById('tb-diff-alert');
+    const submitBtn = document.getElementById('tb-submit-btn');
+
+    if(!select.value) {
+        preview.classList.add('empty');
+        document.getElementById('tb-give-img').src = 'https://ui-avatars.com/api/?name=?&background=e2e8f0&color=94a3b8';
+        document.getElementById('tb-give-name').innerText = 'לא נבחר שחקן';
+        document.getElementById('tb-give-val').style.display = 'none';
+        
+        alertBox.innerText = 'אנא בחר שחקן להחלפה (חובה).';
+        alertBox.style.color = '#ef4444';
+        submitBtn.disabled = true;
+        return;
+    }
+
+    // אם נבחר שחקן
+    let myPlayerVal = 20000000; // ערך לבדיקה אם בחרנו בשחקן הפיקטיבי
+    if(select.value !== 'test') {
+        const myPlayer = window.allPlayersMap[select.value];
+        myPlayerVal = myPlayer.value;
+        const myName = window.translateName ? window.translateName(myPlayer.name) : myPlayer.name;
+        document.getElementById('tb-give-img').src = myPlayer.photo || `https://media.api-sports.io/football/players/${myPlayer.id}.png`;
+        document.getElementById('tb-give-name').innerText = myName;
+    } else {
+        document.getElementById('tb-give-img').src = 'https://ui-avatars.com/api/?name=P&background=7ca856&color=fff';
+        document.getElementById('tb-give-name').innerText = 'שחקן פיקטיבי';
+    }
+
+    preview.classList.remove('empty');
+    document.getElementById('tb-give-val').style.display = 'block';
+    document.getElementById('tb-give-val').innerText = `שווי: ₪${window.formatPlayerValue ? window.formatPlayerValue(myPlayerVal) : myPlayerVal}`;
+
+    // חישוב המאזן
+    const moneyAdded = parseInt(moneyInput.value) || 0;
+    const totalGiveValue = myPlayerVal + moneyAdded;
+    const targetValue = tradeTargetPlayer.value;
+    
+    const diff = totalGiveValue - targetValue;
+
+    if (diff < 0) {
+        alertBox.innerText = `ההצעה שלך נמוכה ב-₪${window.formatNumberWithCommas ? window.formatNumberWithCommas(Math.abs(diff)) : Math.abs(diff)} משווי השחקן. המנג'ר עלול לסרב.`;
+        alertBox.style.color = '#f59e0b'; // כתום אזהרה
+    } else {
+        alertBox.innerText = `הצעה הוגנת! חבילת הטרייד שווה או גבוהה משווי השחקן.`;
+        alertBox.style.color = 'var(--brand-green)';
+    }
+
+    submitBtn.disabled = false;
+};
+
+window.closeTradeModal = function() {
+    document.getElementById('trade-modal-overlay').style.display = 'none';
+};
+
+window.submitTradeOffer = function() {
+    const moneyAdded = parseInt(document.getElementById('tb-money-input').value) || 0;
+    
+    // קריאת התקציב (הדמיה)
+    const userBudgetStr = document.getElementById('user-budget').innerText.replace(/[^\d]/g, '');
+    const userBudget = parseInt(userBudgetStr) || 100000000;
+
+    if (moneyAdded > userBudget) {
+        alert("אין לך מספיק תקציב פנוי כדי להוסיף סכום כזה לטרייד!");
+        return;
+    }
+
+    alert('הצעת הטרייד נשלחה בהצלחה למנג\'ר הקבוצה! תקבל התראה ברגע שהוא יגיב.');
+    closeTradeModal();
+};
+
+// הפעלת אתחול רשימת הקבוצות כשהדף עולה
+document.addEventListener('DOMContentLoaded', () => {
+    initTeamTransfers();
 });
         
     </script>
