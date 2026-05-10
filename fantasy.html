@@ -5051,27 +5051,53 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 let activeAuctions = [];
 let auctionTimers = [];
 
-// פונקציה להכנת נתוני המכרזים (5 שחקנים להמחשה)
+// פונקציה להכנת נתוני המכרזים (5 שחקנים אמיתיים - אחד מכל רמה)
 function initAuctions() {
-    // רשימת שחקנים קבועה להמחשה (שתמיד תעבוד לבדיקות)
-    const demoPlayers = [
-        { id: 991, name: "קיליאן אמבפה", photo: "https://media.api-sports.io/football/players/278.png", displayPos: "חלוץ", calcTierName: "כוכב על", calcTierClass: "tier-star", value: 150000000 },
-        { id: 992, name: "ג'וד בלינגהאם", photo: "https://media.api-sports.io/football/players/11608.png", displayPos: "קישור", calcTierName: "רמה 1", calcTierClass: "tier-1", value: 120000000 },
-        { id: 993, name: "וירג'יל ואן דייק", photo: "https://media.api-sports.io/football/players/290.png", displayPos: "הגנה", calcTierName: "רמה 1", calcTierClass: "tier-1", value: 85000000 },
-        { id: 994, name: "טיבו קורטואה", photo: "https://media.api-sports.io/football/players/738.png", displayPos: "שוער", calcTierName: "רמה 2", calcTierClass: "tier-2", value: 65000000 },
-        { id: 995, name: "לאמין ימאל", photo: "https://media.api-sports.io/football/players/399082.png", displayPos: "קישור", calcTierName: "רמה 3", calcTierClass: "tier-3", value: 45000000 }
-    ];
+    // שולפים את כל השחקנים החופשיים (שאינם שלך ויש להם שווי)
+    let freeAgents = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' && p.value > 0);
+    
+    // אם המאגר מ-Supabase עדיין לא סיים להיטען, נמתין חצי שנייה וננסה שוב
+    if(freeAgents.length < 5) {
+        setTimeout(initAuctions, 500);
+        return;
+    }
+
+    const tiersRequired = ['כוכב על', 'רמה 1', 'רמה 2', 'רמה 3', 'רמה 4'];
+    let selectedPlayers = [];
+
+    // עוברים על כל רמה ושולפים שחקן אחד אקראי
+    tiersRequired.forEach(tier => {
+        let playersInTier = freeAgents.filter(p => p.calcTierName === tier);
+        
+        if(playersInTier.length > 0) {
+            let randomPlayer = playersInTier[Math.floor(Math.random() * playersInTier.length)];
+            selectedPlayers.push(randomPlayer);
+            
+            // מסירים את השחקן שנבחר מהמאגר הזמני כדי שלא ייבחר שוב
+            freeAgents = freeAgents.filter(p => p.id !== randomPlayer.id);
+        }
+    });
+
+    // למקרה נדיר מאוד שחסרה רמה מסוימת במאגר (כדי שלא ניתקע עם פחות מ-5 קוביות)
+    while(selectedPlayers.length < 5 && freeAgents.length > 0) {
+        let randomFallback = freeAgents[Math.floor(Math.random() * freeAgents.length)];
+        selectedPlayers.push(randomFallback);
+        freeAgents = freeAgents.filter(p => p.id !== randomFallback.id);
+    }
+
+    // מערבבים את 5 השחקנים שנבחרו כדי שהסדר שלהם בתצוגה יהיה אקראי
+    selectedPlayers = selectedPlayers.sort(() => 0.5 - Math.random());
 
     activeAuctions = [];
-    demoPlayers.forEach((p, index) => {
-        // אמבפה יסתיים בעוד 45 שניות כדי שתראה את האפקט האדום! השאר יסתיימו בעוד שעה-שעתיים
-        let timeToAdd = (index === 0) ? 45000 : (Math.random() * 7200000) + 120000; 
+    selectedPlayers.forEach((p, index) => {
+        // השחקן הראשון (אחרי הערבוב) יסתיים בעוד 45 שניות לבדיקות, השאר בעוד כמה שעות/ימים אקראיים
+        let timeToAdd = (index === 0) ? 45000 : (Math.random() * 86400000) + 3600000; 
         let endTime = new Date().getTime() + timeToAdd; 
         
         activeAuctions.push({
             id: index,
             player: p,
-            currentBid: Math.floor(p.value * 0.8), // מתחיל ב-80% משווי השוק
+            currentBid: Math.floor(p.value * 0.8), // מתחיל ב-80% משווי השוק האמיתי
             highestBidder: 'מנג\'ר אקראי ' + (index + 1),
             endTime: endTime
         });
