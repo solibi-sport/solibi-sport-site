@@ -1686,6 +1686,51 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
     .search-result-desc { font-size: 11px; color: #64748b; line-height: 1.3; }
 
     .no-search-results { padding: 15px 20px; font-size: 13px; color: #64748b; text-align: center; }
+
+        /* =========================================
+   מרכז העברות - מכירות פומביות
+   ========================================= */
+.auctions-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 10px;
+}
+
+.auction-card {
+    background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
+    border-radius: 16px; padding: 20px; color: #fff; position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column;
+    align-items: center; transition: 0.3s;
+}
+
+.auction-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(124,168,86,0.3); }
+
+.auc-timer {
+    background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px;
+    font-family: 'Courier New', monospace; font-size: 18px; font-weight: 900;
+    color: var(--brand-green); margin-bottom: 15px; border: 1px solid rgba(124,168,86,0.3);
+}
+
+.auc-timer.ending-soon { color: #ef4444; border-color: #ef4444; animation: blink 1s infinite; }
+
+.auc-player-img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; object-fit: cover; margin-bottom: 10px; background: #fff; }
+.auc-player-name { font-size: 20px; font-weight: 900; margin-bottom: 5px; text-align: center;}
+.auc-meta { font-size: 13px; color: #cbd5e1; margin-bottom: 15px; display: flex; gap: 8px; align-items: center;}
+
+.auc-current-bid-box {
+    background: #f8fafc; border-radius: 12px; padding: 15px; width: 100%;
+    text-align: center; color: var(--text-dark); margin-bottom: 15px;
+}
+.auc-bid-lbl { font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 5px; }
+.auc-bid-val { font-size: 24px; font-weight: 900; color: var(--brand-green); margin-bottom: 5px;}
+.auc-leader { font-size: 12px; font-weight: bold; background: rgba(6, 33, 65, 0.1); padding: 4px 10px; border-radius: 6px; display: inline-block;}
+.auc-leader.is-me { background: rgba(124,168,86,0.2); color: var(--brand-green); }
+
+.auc-controls { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+.auc-input { padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; text-align: center; font-weight: 900; font-family: inherit; font-size: 16px; outline: none;}
+.auc-select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #64748b; background: rgba(255,255,255,0.1); color: #fff; font-family: inherit; font-size: 12px; outline: none; cursor: pointer; }
+.auc-select option { background: var(--bg-gray); color: #fff; }
+.auc-btn { background: var(--brand-green); color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.2s; }
+.auc-btn:hover:not(:disabled) { background: #688e47; transform: scale(1.02); }
+.auc-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
         
     </style>
         
@@ -1789,7 +1834,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         </div>
         <div class="fm-submenu">
             <div class="fm-sub-item" onclick="event.stopPropagation()">העברות בין קבוצות</div>
-            <div class="fm-sub-item" onclick="event.stopPropagation()">מכירות פומביות</div>
+           <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-auctions', this)">מכירות פומביות</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-surprise-sale', this)">מכירה בהפתעה</div>
         </div>
     </div>
@@ -2937,6 +2982,26 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
                         </div>
                     </div>
+
+<div id="tab-auctions" class="fm-tab">
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M12 2l3 6 6 1-4.5 4.5 1.5 6-6-3.5-6 3.5 1.5-6L3 9l6-1z"></path></svg>
+        מכירות פומביות (שוק חופשי)
+    </h2>
+    
+    <div style="background: var(--bg-silver-matte); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.05); color: var(--text-dark);">
+        <p style="font-weight: bold; margin-bottom: 5px;">📍 חוקי המכרז:</p>
+        <ul style="font-size: 13px; margin-right: 20px; line-height: 1.6;">
+            <li>המכרזים נפתחים ביום שלישי 08:00 ונסגרים בשישי ב-20:00.</li>
+            <li>כדי להציע הצעה, חובה לבחור שחקן שיופרש מהסגל שלך בתמורה.</li>
+            <li>אין אפשרות להציע סכום הגבוה מהתקציב הפנוי שלך.</li>
+            <li><strong>חוק הדקה האחרונה:</strong> כל הצעה שמוגשת בדקה האחרונה, מאריכה את הטיימר בדקה נוספת!</li>
+        </ul>
+    </div>
+
+    <div class="auctions-grid" id="auctions-container">
+        </div>
+</div>
                    
                     <div id="tab-market" class="fm-tab">
                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
@@ -4968,6 +5033,193 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 startSurpriseTimer(4, 15, 22); 
             }, 2500); 
         });
+
+// ==========================================
+// מנוע מכירות פומביות (Auctions)
+// ==========================================
+
+// מערך המדמה את מצב המכרזים החיים (בעולם אמיתי זה יגיע מה-DB)
+let activeAuctions = [];
+let auctionTimers = [];
+
+// פונקציה להכנת נתוני המכרזים (5 שחקנים רנדומליים)
+function initAuctions() {
+    const freeAgents = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' && p.value > 0);
+    if(freeAgents.length < 5) return;
+
+    // נדמה שליפת 5 שחקנים מרמות שונות לצורך ההדגמה
+    activeAuctions = [];
+    for(let i=0; i<5; i++) {
+        let p = freeAgents[Math.floor(Math.random() * freeAgents.length)];
+        let endTime = new Date().getTime() + (Math.random() * 86400000) + 60000; // זמן סיום אקראי (פלוס דקה לפחות)
+        
+        activeAuctions.push({
+            id: i,
+            player: p,
+            currentBid: Math.floor(p.value * 0.8), // מתחיל ב-80% משווי השוק
+            highestBidder: 'מנג\'ר אקראי ' + (i+1),
+            endTime: endTime
+        });
+    }
+    renderAuctions();
+}
+
+function renderAuctions() {
+    const container = document.getElementById('auctions-container');
+    if (!container) return;
+    
+    // ניקוי טיימרים ישנים
+    auctionTimers.forEach(t => clearInterval(t));
+    auctionTimers = [];
+    container.innerHTML = '';
+
+    // שליפת הסגל של המשתמש עבור תיבות הבחירה
+    const mySquad = Object.values(window.allPlayersMap).filter(p => p.owner === 'מכבי סוליבי');
+    let squadOptionsHtml = '<option value="">-- בחר שחקן לשחרור (חובה) --</option>';
+    mySquad.forEach(p => {
+        let tName = window.translateName ? window.translateName(p.name) : p.name;
+        squadOptionsHtml += `<option value="${p.id}">${tName} (${p.displayPos})</option>`;
+    });
+
+    activeAuctions.forEach((auction, index) => {
+        const p = auction.player;
+        const tName = window.translateName ? window.translateName(p.name) : p.name;
+        const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+        const valStr = window.formatNumberWithCommas ? window.formatNumberWithCommas(auction.currentBid) : auction.currentBid;
+        const minNextBid = auction.currentBid + 100000; // קפיצה מינימלית
+        const isMe = auction.highestBidder === 'מכבי סוליבי';
+        const leaderClass = isMe ? 'auc-leader is-me' : 'auc-leader';
+
+        const cardHtml = `
+            <div class="auction-card">
+                <div class="auc-timer" id="auc-timer-${index}">טוען...</div>
+                <img src="${playerImage}" class="auc-player-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                <div class="auc-player-name">${tName}</div>
+                <div class="auc-meta">
+                    <span>${p.displayPos}</span> | 
+                    <span class="tier-badge ${p.calcTierClass}" style="padding:2px 8px; font-size:10px;">${p.calcTierName}</span>
+                </div>
+                
+                <div class="auc-current-bid-box">
+                    <div class="auc-bid-lbl">הצעה מובילה כרגע:</div>
+                    <div class="auc-bid-val" id="auc-val-${index}">₪${valStr}</div>
+                    <div class="${leaderClass}" id="auc-leader-${index}">מחזיק בהצעה: ${auction.highestBidder}</div>
+                </div>
+
+                <div class="auc-controls">
+                    <select class="auc-select" id="auc-release-${index}">
+                        ${squadOptionsHtml}
+                    </select>
+                    <input type="number" class="auc-input" id="auc-input-${index}" placeholder="סכום (מינימום: ${minNextBid})" min="${minNextBid}" step="10000">
+                    <button class="auc-btn" id="auc-btn-${index}" onclick="placeBid(${index})" ${isMe ? 'disabled' : ''}>
+                        ${isMe ? 'אתה המוביל!' : 'הגש הצעה'}
+                    </button>
+                </div>
+            </div>
+        `;
+        container.innerHTML += cardHtml;
+        startAuctionTimer(index, auction.endTime);
+    });
+}
+
+function startAuctionTimer(index, endTime) {
+    const timerEl = document.getElementById(`auc-timer-${index}`);
+    
+    const timer = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = activeAuctions[index].endTime - now; // משתמש בזמן מהאובייקט כדי לתמוך בהארכות זמן
+
+        if (distance <= 0) {
+            clearInterval(timer);
+            timerEl.innerText = "המכרז הסתיים!";
+            timerEl.classList.remove('ending-soon');
+            document.getElementById(`auc-btn-${index}`).disabled = true;
+            document.getElementById(`auc-input-${index}`).disabled = true;
+            document.getElementById(`auc-release-${index}`).disabled = true;
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        if (distance < 60000) {
+            timerEl.classList.add('ending-soon');
+            timerEl.innerText = `${seconds} שניות`;
+        } else if (days > 0) {
+            timerEl.innerText = `${days} ימים, ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        } else {
+            timerEl.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }, 1000);
+    
+    auctionTimers.push(timer);
+}
+
+window.placeBid = function(index) {
+    const auction = activeAuctions[index];
+    const inputEl = document.getElementById(`auc-input-${index}`);
+    const releaseSelect = document.getElementById(`auc-release-${index}`);
+    const bidAmount = parseInt(inputEl.value);
+    
+    // קריאת התקציב של השחקן (הדמיה - בעולם אמיתי ישתנה ממשתנה גלובלי)
+    const userBudgetStr = document.getElementById('user-budget').innerText.replace(/[^\d]/g, '');
+    const userBudget = parseInt(userBudgetStr) || 100000000;
+
+    // וולידציות
+    if (!releaseSelect.value) {
+        alert("חובה לבחור שחקן מהסגל לשחרור במידה ותזכה במכרז!");
+        return;
+    }
+    if (!bidAmount || bidAmount <= auction.currentBid) {
+        alert("סכום ההצעה חייב להיות גבוה מההצעה הנוכחית.");
+        return;
+    }
+    if (bidAmount > userBudget) {
+        alert("אין לך מספיק תקציב פנוי להצעה זו!");
+        return;
+    }
+    if (auction.highestBidder === 'מכבי סוליבי') {
+        alert("אתה כבר מחזיק בהצעה המובילה!");
+        return;
+    }
+
+    // הכל תקין - מבצעים את ההצעה
+    auction.currentBid = bidAmount;
+    auction.highestBidder = 'מכבי סוליבי';
+    
+    // חוק הדקה האחרונה (Anti-Snipe)
+    const now = new Date().getTime();
+    const timeLeft = auction.endTime - now;
+    if (timeLeft < 60000) { // פחות מדקה
+        auction.endTime += 60000; // מוסיף 60 שניות למכרז הספציפי
+        alert("הצעה התקבלה בדקה האחרונה! זמן המכרז הוארך בדקה נוספת.");
+    }
+
+    // רענון התצוגה למכרז הספציפי
+    document.getElementById(`auc-val-${index}`).innerText = `₪${window.formatNumberWithCommas(auction.currentBid)}`;
+    const leaderEl = document.getElementById(`auc-leader-${index}`);
+    leaderEl.innerText = `מחזיק בהצעה: ${auction.highestBidder}`;
+    leaderEl.className = 'auc-leader is-me';
+    
+    const btn = document.getElementById(`auc-btn-${index}`);
+    btn.disabled = true;
+    btn.innerText = "אתה המוביל!";
+    
+    inputEl.value = "";
+    inputEl.placeholder = `סכום (מינימום: ${auction.currentBid + 100000})`;
+    inputEl.min = auction.currentBid + 100000;
+};
+
+// הפעלת האתחול כשהדף עולה (לאחר שהשחקנים מ-Supabase נטענו)
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        if(document.getElementById('auctions-container')) {
+            initAuctions();
+        }
+    }, 3000); // מחכים 3 שניות שהשחקנים יטענו מ-Supabase למילון
+});
         
     </script>
 
