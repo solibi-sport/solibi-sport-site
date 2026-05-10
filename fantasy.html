@@ -3059,29 +3059,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
 
-<div id="tab-watchlist" class="fm-tab">
-    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-        רשימת המעקב שלי
-    </h2>
-    <div class="squad-table-wrap">
-        <table class="squad-table">
-            <thead>
-                <tr>
-                    <th>שחקן</th>
-                    <th>קבוצה</th>
-                    <th>עמדה</th>
-                    <th>שווי</th>
-                    <th>פעולות</th>
-                </tr>
-            </thead>
-            <tbody id="watchlist-body">
-                <tr><td colspan="5" style="text-align:center; padding:20px;">טוען שחקנים למעקב...</td></tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-                   
 <div id="tab-manage-offers" class="fm-tab">
     <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -5765,59 +5742,142 @@ document.addEventListener('DOMContentLoaded', () => {
 let incomingOffers = [];
 let outgoingOffers = [];
 
-// מנוע ניהול הצעות ורשימת מעקב
-let incomingOffers = [];
-let outgoingOffers = [];
-
-function initOffersAndWatchlist() {
+// יצירת הצעות דמה כדי להציג את המערכת (יופעל אחרי ש-Supabase יטען)
+function initOffersManagement() {
+    // מחפשים שחקנים אקראיים כדי לייצר הצעות הגיוניות
     const allPlayers = Object.values(window.allPlayersMap);
-    if(allPlayers.length < 20) {
-        setTimeout(initOffersAndWatchlist, 1000);
+    if(allPlayers.length < 10) {
+        setTimeout(initOffersManagement, 1000);
         return;
     }
 
-    // 1. מילוי רשימת מעקב (5 שחקנים אקראיים שלא שלי)
-    const otherPlayers = allPlayers.filter(p => p.owner !== 'מכבי סוליבי');
-    const watchlistContainer = document.getElementById('watchlist-body');
-    if (watchlistContainer) {
-        watchlistContainer.innerHTML = '';
-        otherPlayers.slice(0, 5).forEach(p => {
-            const tName = window.translateName ? window.translateName(p.name) : p.name;
-            const tTeam = window.translateName ? window.translateName(p.team) : p.team;
-            const pImg = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
-            const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
-            
-            watchlistContainer.innerHTML += `
-                <tr>
-                    <td><div style="display:flex; align-items:center; gap:10px; justify-content:center;">
-                        <img src="${pImg}" style="width:28px; height:28px; border-radius:50%;">
-                        <span style="font-weight:900;">${tName}</span>
-                    </div></td>
-                    <td style="font-weight:bold;">${tTeam}</td>
-                    <td>${p.displayPos}</td>
-                    <td style="color:var(--brand-green); font-weight:900;">₪${valStr}</td>
-                    <td><button class="tt-btn" style="padding:4px 10px; font-size:11px;" onclick="openTradeModal(${p.id}, '${tTeam}')">הצע טרייד</button></td>
-                </tr>`;
-        });
-    }
-
-    // 2. יצירת הצעות דמה עם שחקנים אמיתיים
     const myPlayers = allPlayers.filter(p => p.owner === 'מכבי סוליבי');
-    if(myPlayers.length > 0) {
-        incomingOffers = [{
-            id: 101, date: "היום, 14:30", fromTeam: "גלקטיקוס",
-            offerPlayer: otherPlayers[10], offerMoney: 2000000,
-            wantedPlayer: myPlayers[0], wantedMoney: 0
-        }];
+    const otherPlayers = allPlayers.filter(p => p.owner !== 'מכבי סוליבי');
 
-        outgoingOffers = [{
-            id: 201, date: "לפני שעה", toTeam: "אריות וולפסון",
-            offerPlayer: myPlayers[1] || myPlayers[0], offerMoney: 500000,
-            wantedPlayer: otherPlayers[5], wantedMoney: 0
-        }];
+    if(myPlayers.length > 0 && otherPlayers.length > 0) {
+        // הצעה נכנסת (מישהו רוצה שחקן שלי)
+        incomingOffers = [
+            {
+                id: 101,
+                date: "היום, 14:30",
+                fromTeam: "גלקטיקוס",
+                offerPlayer: otherPlayers[0], // שחקן שהוא מציע לי
+                offerMoney: 1500000,          // כסף שהוא מציע לי
+                wantedPlayer: myPlayers[0],   // השחקן שלי שהוא רוצה
+                wantedMoney: 0
+            }
+        ];
+
+        // הצעה יוצאת (אני הצעתי למישהו - כמו בחלון הטריידים)
+        outgoingOffers = [
+            {
+                id: 201,
+                date: "אתמול, 09:15",
+                toTeam: "הכרישים של מוטי",
+                offerPlayer: myPlayers[1] || myPlayers[0], // השחקן שלי שהצעתי
+                offerMoney: 0,
+                wantedPlayer: otherPlayers[1],             // השחקן שאני רוצה
+                wantedMoney: 0
+            }
+        ];
     }
     
     renderOffersManagement();
+}
+
+function renderOffersManagement() {
+    const incContainer = document.getElementById('incoming-offers-container');
+    const outContainer = document.getElementById('outgoing-offers-container');
+    if(!incContainer || !outContainer) return;
+
+    // רינדור הצעות נכנסות
+    if(incomingOffers.length === 0) {
+        incContainer.innerHTML = '<div class="offer-empty">אין כרגע הצעות נכנסות מקבוצות אחרות.</div>';
+    } else {
+        incContainer.innerHTML = '';
+        incomingOffers.forEach(o => {
+            const offerPName = window.translateName ? window.translateName(o.offerPlayer.name) : o.offerPlayer.name;
+            const wantedPName = window.translateName ? window.translateName(o.wantedPlayer.name) : o.wantedPlayer.name;
+            
+            const oImg = o.offerPlayer.photo || `https://media.api-sports.io/football/players/${o.offerPlayer.id}.png`;
+            const wImg = o.wantedPlayer.photo || `https://media.api-sports.io/football/players/${o.wantedPlayer.id}.png`;
+
+            const oMoneyHtml = o.offerMoney > 0 ? `<div class="offer-side-money">+ ₪${window.formatPlayerValue ? window.formatPlayerValue(o.offerMoney) : o.offerMoney}</div>` : '';
+            const wMoneyHtml = o.wantedMoney > 0 ? `<div class="offer-side-money">+ ₪${window.formatPlayerValue ? window.formatPlayerValue(o.wantedMoney) : o.wantedMoney}</div>` : '';
+
+            incContainer.innerHTML += `
+                <div class="offer-card" id="inc-offer-${o.id}">
+                    <div class="offer-header">
+                        <span>נשלח ב: ${o.date}</span>
+                        <span class="offer-team-name">מאת: ${o.fromTeam}</span>
+                    </div>
+                    <div class="offer-body">
+                        <div class="offer-side">
+                            <span style="font-size:10px; color:#64748b; margin-bottom:5px;">הוא מציע:</span>
+                            <img src="${oImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                            <div class="offer-side-name">${offerPName}</div>
+                            ${oMoneyHtml}
+                        </div>
+                        <div class="offer-vs">↔</div>
+                        <div class="offer-side">
+                            <span style="font-size:10px; color:#64748b; margin-bottom:5px;">תמורת (שלך):</span>
+                            <img src="${wImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                            <div class="offer-side-name">${wantedPName}</div>
+                            ${wMoneyHtml}
+                        </div>
+                    </div>
+                    <div class="offer-actions">
+                        <button class="o-btn o-btn-accept" onclick="respondOffer(${o.id}, 'accept')">אשר טרייד</button>
+                        <button class="o-btn o-btn-reject" onclick="respondOffer(${o.id}, 'reject')">דחה</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // רינדור הצעות יוצאות
+    if(outgoingOffers.length === 0) {
+        outContainer.innerHTML = '<div class="offer-empty">אין כרגע הצעות פתוחות שהגשת. לחץ על העברות בין קבוצות כדי להציע טרייד.</div>';
+    } else {
+        outContainer.innerHTML = '';
+        outgoingOffers.forEach(o => {
+            const offerPName = window.translateName ? window.translateName(o.offerPlayer.name) : o.offerPlayer.name;
+            const wantedPName = window.translateName ? window.translateName(o.wantedPlayer.name) : o.wantedPlayer.name;
+            
+            const oImg = o.offerPlayer.photo || `https://media.api-sports.io/football/players/${o.offerPlayer.id}.png`;
+            const wImg = o.wantedPlayer.photo || `https://media.api-sports.io/football/players/${o.wantedPlayer.id}.png`;
+
+            const oMoneyHtml = o.offerMoney > 0 ? `<div class="offer-side-money">+ ₪${window.formatPlayerValue ? window.formatPlayerValue(o.offerMoney) : o.offerMoney}</div>` : '';
+            const wMoneyHtml = o.wantedMoney > 0 ? `<div class="offer-side-money">+ ₪${window.formatPlayerValue ? window.formatPlayerValue(o.wantedMoney) : o.wantedMoney}</div>` : '';
+
+            outContainer.innerHTML += `
+                <div class="offer-card" id="out-offer-${o.id}">
+                    <div class="offer-header">
+                        <span>נשלח ב: ${o.date}</span>
+                        <span class="offer-team-name">אל: ${o.toTeam}</span>
+                    </div>
+                    <div class="offer-body">
+                        <div class="offer-side">
+                            <span style="font-size:10px; color:#64748b; margin-bottom:5px;">הצעת את:</span>
+                            <img src="${oImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                            <div class="offer-side-name">${offerPName}</div>
+                            ${oMoneyHtml}
+                        </div>
+                        <div class="offer-vs">↔</div>
+                        <div class="offer-side">
+                            <span style="font-size:10px; color:#64748b; margin-bottom:5px;">תמורת:</span>
+                            <img src="${wImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                            <div class="offer-side-name">${wantedPName}</div>
+                            ${wMoneyHtml}
+                        </div>
+                    </div>
+                    <div class="offer-actions">
+                        <button class="o-btn o-btn-cancel" onclick="cancelOutgoingOffer(${o.id})">בטל הצעה</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
 }
 
 window.respondOffer = function(id, action) {
@@ -5845,7 +5905,7 @@ window.cancelOutgoingOffer = function(id) {
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         if(document.getElementById('tab-manage-offers')) {
-initOffersAndWatchlist();
+            initOffersManagement();
         }
     }, 2000);
 });
