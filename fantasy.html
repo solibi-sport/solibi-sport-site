@@ -5052,11 +5052,11 @@ let activeAuctions = [];
 let auctionTimers = [];
 
 // פונקציה להכנת נתוני המכרזים (5 שחקנים אמיתיים - אחד מכל רמה)
+// פונקציה להכנת נתוני המכרזים (5 שחקנים אמיתיים - מסודרים לפי רמות)
 function initAuctions() {
-    // שולפים את כל השחקנים החופשיים (שאינם שלך ויש להם שווי)
     let freeAgents = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' && p.value > 0);
     
-    // אם המאגר מ-Supabase עדיין לא סיים להיטען, נמתין חצי שנייה וננסה שוב
+    // אם המאגר עדיין לא סיים להיטען, נמתין חצי שנייה וננסה שוב
     if(freeAgents.length < 5) {
         setTimeout(initAuctions, 500);
         return;
@@ -5065,39 +5065,38 @@ function initAuctions() {
     const tiersRequired = ['כוכב על', 'רמה 1', 'רמה 2', 'רמה 3', 'רמה 4'];
     let selectedPlayers = [];
 
-    // עוברים על כל רמה ושולפים שחקן אחד אקראי
+    // שולפים שחקן אחד אקראי מכל רמה
     tiersRequired.forEach(tier => {
         let playersInTier = freeAgents.filter(p => p.calcTierName === tier);
-        
         if(playersInTier.length > 0) {
             let randomPlayer = playersInTier[Math.floor(Math.random() * playersInTier.length)];
             selectedPlayers.push(randomPlayer);
-            
-            // מסירים את השחקן שנבחר מהמאגר הזמני כדי שלא ייבחר שוב
             freeAgents = freeAgents.filter(p => p.id !== randomPlayer.id);
         }
     });
 
-    // למקרה נדיר מאוד שחסרה רמה מסוימת במאגר (כדי שלא ניתקע עם פחות מ-5 קוביות)
+    // השלמה למקרה שחסרה רמה במאגר
     while(selectedPlayers.length < 5 && freeAgents.length > 0) {
         let randomFallback = freeAgents[Math.floor(Math.random() * freeAgents.length)];
         selectedPlayers.push(randomFallback);
         freeAgents = freeAgents.filter(p => p.id !== randomFallback.id);
     }
 
-    // מערבבים את 5 השחקנים שנבחרו כדי שהסדר שלהם בתצוגה יהיה אקראי
-    selectedPlayers = selectedPlayers.sort(() => 0.5 - Math.random());
+    // סידור השחקנים בדיוק לפי סדר הרמות (כוכב על ראשון - יופיע הכי ימינה)
+    selectedPlayers.sort((a, b) => {
+        return tiersRequired.indexOf(a.calcTierName) - tiersRequired.indexOf(b.calcTierName);
+    });
 
     activeAuctions = [];
     selectedPlayers.forEach((p, index) => {
-        // השחקן הראשון (אחרי הערבוב) יסתיים בעוד 45 שניות לבדיקות, השאר בעוד כמה שעות/ימים אקראיים
+        // השחקן הראשון יסתיים בעוד 45 שניות לבדיקות, השאר בעוד כמה שעות/ימים אקראיים
         let timeToAdd = (index === 0) ? 45000 : (Math.random() * 86400000) + 3600000; 
         let endTime = new Date().getTime() + timeToAdd; 
         
         activeAuctions.push({
             id: index,
             player: p,
-            currentBid: Math.floor(p.value * 0.8), // מתחיל ב-80% משווי השוק האמיתי
+            currentBid: Math.floor(p.value * 0.8), // מתחיל ב-80% משווי השוק
             highestBidder: 'מנג\'ר אקראי ' + (index + 1),
             endTime: endTime
         });
@@ -5115,11 +5114,10 @@ function renderAuctions() {
     auctionTimers = [];
     container.innerHTML = '';
 
-    // שליפת הסגל של המשתמש עבור תיבות הבחירה
+    // שליפת הסגל של המשתמש עבור תיבת השחרור
     const mySquad = Object.values(window.allPlayersMap).filter(p => p.owner === 'מכבי סוליבי');
     let squadOptionsHtml = '<option value="">-- בחר שחקן לשחרור (חובה) --</option>';
     
-    // אם אין באמת סגל (כי המאגר עדיין נטען), נשים שחקן פיקטיבי לשחרור כדי שתוכל לבדוק
     if (mySquad.length === 0) {
         squadOptionsHtml += `<option value="test1">שחקן הרכב פיקטיבי (לבדיקה)</option>`;
     } else {
@@ -5131,16 +5129,25 @@ function renderAuctions() {
 
     activeAuctions.forEach((auction, index) => {
         const p = auction.player;
+        
+        // משיכת השם בעברית
+        const tName = window.translateName ? window.translateName(p.name) : p.name;
+        
+        // משיכת התמונה האמיתית של השחקן (או ייצור ראשי תיבות בעברית אם אין תמונה)
+        const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+        const initials = tName.substring(0, 2).replace(/\s/g, '');
+
         const valStr = window.formatNumberWithCommas ? window.formatNumberWithCommas(auction.currentBid) : auction.currentBid;
-        const minNextBid = auction.currentBid + 100000; // קפיצה מינימלית
+        const minNextBid = auction.currentBid + 100000;
+        const formattedMinBid = window.formatNumberWithCommas ? window.formatNumberWithCommas(minNextBid) : minNextBid;
         const isMe = auction.highestBidder === 'מכבי סוליבי';
         const leaderClass = isMe ? 'auc-leader is-me' : 'auc-leader';
 
         const cardHtml = `
             <div class="auction-card">
                 <div class="auc-timer" id="auc-timer-${index}">טוען...</div>
-                <img src="${p.photo}" class="auc-player-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
-                <div class="auc-player-name">${p.name}</div>
+                <img src="${playerImage}" class="auc-player-img" onerror="this.src='https://ui-avatars.com/api/?name=${initials}&background=e2e8f0&color=000'">
+                <div class="auc-player-name">${tName}</div>
                 <div class="auc-meta">
                     <span>${p.displayPos}</span> | 
                     <span class="tier-badge ${p.calcTierClass}" style="padding:2px 8px; font-size:10px;">${p.calcTierName}</span>
@@ -5156,7 +5163,7 @@ function renderAuctions() {
                     <select class="auc-select" id="auc-release-${index}">
                         ${squadOptionsHtml}
                     </select>
-                    <input type="number" class="auc-input" id="auc-input-${index}" placeholder="סכום (מינימום: ${minNextBid})" min="${minNextBid}" step="10000">
+                    <input type="number" class="auc-input" id="auc-input-${index}" placeholder="סכום (מינימום: ${formattedMinBid})" min="${minNextBid}" step="10000">
                     <button class="auc-btn" id="auc-btn-${index}" onclick="placeBid(${index})" ${isMe ? 'disabled' : ''}>
                         ${isMe ? 'אתה המוביל!' : 'הגש הצעה'}
                     </button>
@@ -5167,7 +5174,6 @@ function renderAuctions() {
         startAuctionTimer(index, auction.endTime);
     });
 }
-
 function startAuctionTimer(index, endTime) {
     const timerEl = document.getElementById(`auc-timer-${index}`);
     
