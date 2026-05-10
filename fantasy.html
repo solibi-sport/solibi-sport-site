@@ -1857,6 +1857,17 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 .offer-empty { text-align: center; color: #94a3b8; font-weight: bold; padding: 30px 10px; font-size: 14px; }
 
 @media (max-width: 1200px) { .offers-split-layout { grid-template-columns: 1fr; } }
+
+/* =========================================
+   סמלי סטטוס לשחקנים (פציעה / רשימת העברות)
+   ========================================= */
+.p-status-injured, .p-status-sale {
+    width: 20px; height: 20px; border-radius: 50%; display: flex; 
+    align-items: center; justify-content: center; font-size: 11px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); cursor: help; flex-shrink: 0;
+}
+.p-status-injured { background: #ef4444; color: #fff; }
+.p-status-sale { background: #3b82f6; color: #fff; }
         
     </style>
         
@@ -4095,89 +4106,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             window.allPlayersMap[p.id] = p;
         }
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const tbody = document.getElementById('market-players-body');
-            const searchInput = document.getElementById('filter-search');
-            const posFilter = document.getElementById('filter-pos');
-            
-            let allPlayersData = []; 
-
-            try {
-                if (typeof window.supabase === 'undefined') throw new Error("ספריית Supabase לא נטענה.");
-                const SUPABASE_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
-                const SUPABASE_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
-                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-                let from = 0, to = 999, hasMore = true;
-                while (hasMore) {
-                    const { data, error } = await supabase.from('master_players').select('*').order('rank', { ascending: true }).range(from, to);
-                    if (error) throw error;
-                    if (data && data.length > 0) {
-                        allPlayersData = allPlayersData.concat(data);
-                        from += 1000; to += 1000;
-                    } else { hasMore = false; }
-                }
-
-                // ניקוי כפילויות וחיתוך ל-2000
-                const uniqueIds = new Set();
-                const cleanPlayers = [];
-                for (const player of allPlayersData) {
-                    if (!uniqueIds.has(player.id)) {
-                        uniqueIds.add(player.id);
-                        cleanPlayers.push(player);
-                    }
-                }
-                
-                allPlayersData = cleanPlayers.sort((a, b) => a.rank - b.rank).slice(0, 2000); 
-
-                // עיבוד סטטיסטיקות
-                allPlayersData.forEach((player, index) => processPlayerStats(player, index));
-
-                if (allPlayersData.length === 0) {
-                     tbody.innerHTML = `<tr><td colspan="20" style="text-align:center; padding: 30px;">הרשימה ריקה.</td></tr>`;
-                     return;
-                }
-
-                // רינדור מאגר השחקנים הראשי (סקאוטינג)
-                renderTable(allPlayersData); 
-
-                // ==========================================
-                // בניית סגל אישי (20 שחקנים לפי חוקים)
-                // ==========================================
-                const tierReqs = { 'כוכב על': 2, 'רמה 1': 3, 'רמה 2': 5, 'רמה 3': 5, 'רמה 4': 5 };
-                const posReqs = { 'שוער': 2, 'הגנה': 6, 'קישור': 6, 'חלוץ': 6 };
-                const mySquad = [];
-                const pool = [...allPlayersData];
-
-                for (let tier in tierReqs) {
-                    let needed = tierReqs[tier];
-                    for (let i = 0; i < needed; i++) {
-                        // סינון המאגר לפי הרמה והעמדות שעוד נשארו פנויות להגרלה
-                        let validPlayers = pool.filter(p => p.calcTierName === tier && posReqs[p.displayPos] > 0);
-                        
-                        if (validPlayers.length > 0) {
-                            let randIdx = Math.floor(Math.random() * validPlayers.length);
-                            let picked = validPlayers[randIdx];
-                            
-                            mySquad.push(picked);
-                            posReqs[picked.displayPos]--;
-                            pool.splice(pool.findIndex(p => p.id === picked.id), 1);
-                        }
-                    }
-                }
-
-                // סידור הסגל לפי עמדות
-                const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'חלוץ': 4};
-                mySquad.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
-
-                // רינדור טבלת הסגל האישי (טאב סגל שחקנים)
-                const squadTbody = document.getElementById('my-squad-body');
-                const benchList = document.getElementById('bench-list');
-                
-                if (squadTbody) squadTbody.innerHTML = '';
-                if (benchList) benchList.innerHTML = '';
-
-                mySquad.forEach((p, index) => {
+        mySquad.forEach((p, index) => {
                     const isStartingXI = index < 11; // 11 ראשונים להרכב, השאר ספסל (לצורך התצוגה בטבלה)
                     const statusHtml = isStartingXI 
                         ? `<span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span>`
@@ -4194,6 +4123,8 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     if(p.displayPos === 'קישור') posColor = '#3498db';
                     if(p.displayPos === 'חלוץ') posColor = '#e74c3c';
 
+                    const statusIconsHtml = window.getPlayerStatusIcons ? window.getPlayerStatusIcons(p, false) : ''; // <--- יצירת הסמלים לשורה בטבלה
+
                     // 1. הוספה לטבלת הסגל
                     if (squadTbody) {
                         squadTbody.innerHTML += `
@@ -4201,9 +4132,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                 <td>${statusHtml}</td>
                                 <td><span style="color:${posColor}; font-weight:bold;">${p.displayPos}</span></td>
                                 <td>
-                                    <div style="display:flex; align-items:center; justify-content:flex-start; gap:10px; width:130px; margin:0 auto;">
+                                    <div style="display:flex; align-items:center; justify-content:flex-start; gap:8px; width:130px; margin:0 auto;">
                                         <img src="${playerImage}" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border: 1px solid #e2e8f0; flex-shrink:0;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
                                         <span style="font-weight:900; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${tName}</span>
+                                        ${statusIconsHtml}
                                     </div>
                                 </td>
                                 <td style="font-weight: 700; color: var(--text-dark);">${tTeam}</td>
@@ -4214,7 +4146,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             </tr>
                         `;
                     }
-
                     // 2. הוספה לרשימת הספסל (טאב בחירת הרכב)
                     if (benchList) {
                         benchList.innerHTML += `
@@ -5522,6 +5453,28 @@ function initTeamTransfers() {
     });
 }
 
+// פונקציית עזר לייצור סמלי הסטטוס (פצוע / למכירה)
+window.getPlayerStatusIcons = function(p, isCard = false) {
+    // כאן אנחנו מדמים את הסטטוס כדי שתוכל לראות את זה עובד
+    // בעתיד תוכל למשוך את זה מ-Supabase: const isInjured = p.is_injured;
+    const isInjured = (p.id % 12 === 0); 
+    const isForSale = (p.id % 7 === 0 && p.owner && p.owner !== 'חופשי');
+    
+    if (!isInjured && !isForSale) return '';
+
+    // עיצוב שונה בהתאם למיקום (בכרטיסייה זה יושב בפינה, בטבלה זה יושב בשורה)
+    let containerStyle = isCard 
+        ? 'position: absolute; top: 10px; left: 10px; display: flex; flex-direction: column; gap: 5px; z-index: 10;' 
+        : 'display: flex; gap: 4px; align-items: center;';
+
+    let html = `<div style="${containerStyle}">`;
+    if (isInjured) html += `<div class="p-status-injured" title="שחקן פצוע">🏥</div>`;
+    if (isForSale) html += `<div class="p-status-sale" title="מועמד למכירה / טרייד">🏷️</div>`;
+    html += '</div>';
+    
+    return html;
+};
+
 // רינדור סגל הקבוצה שנבחרה
 window.renderTeamRoster = function() {
     const teamName = document.getElementById('tt-team-select').value;
@@ -5581,9 +5534,11 @@ window.renderTeamRoster = function() {
         const tName = window.translateName ? window.translateName(p.name) : p.name;
         const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
         const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+        const statusIconsHtml = window.getPlayerStatusIcons(p, true); // <--- הזרקת הסמלים לקלף!
 
         container.innerHTML += `
-            <div class="tt-card">
+            <div class="tt-card" style="position: relative;">
+                ${statusIconsHtml}
                 <img src="${playerImage}" class="tt-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
                 <div class="tt-name">${tName}</div>
                 <div class="tt-pos">${p.displayPos} | <span style="color:var(--text-dark);">${p.calcTierName}</span></div>
@@ -5593,7 +5548,6 @@ window.renderTeamRoster = function() {
         `;
     });
 };
-
 // פתיחת חלון בניית הטרייד
 window.openTradeModal = function(playerId, teamName) {
     tradeTargetPlayer = window.allPlayersMap[playerId];
