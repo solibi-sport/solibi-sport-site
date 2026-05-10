@@ -3724,6 +3724,8 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
        window.openPlayerModalById = function(playerId, isMySquad) {
             const p = window.allPlayersMap[playerId];
             if (!p) { alert('שחקן לא נמצא במערכת.'); return; }
+            
+            window.currentOpenedPlayerId = playerId; // <--- השורה החדשה שהוספנו
 
             const tName = window.translateName ? window.translateName(p.name) : p.name;
             const tTeam = window.translateName ? window.translateName(p.team) : p.team;
@@ -3825,11 +3827,26 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         window.handleDynamicPlayerAction = function() {
             const btn = document.getElementById('pm-action-main-btn');
             const action = btn.getAttribute('data-action');
+            
             if (action === 'manage') {
                 window.closePlayerModal();
                 if(typeof switchFmTab === 'function') switchFmTab('tab-tactics'); 
             } else if (action === 'watchlist') {
-                alert('השחקן נוסף לרשימת המעקב שלך!');
+                const pid = window.currentOpenedPlayerId;
+                const p = window.allPlayersMap[pid];
+                
+                if (p) {
+                    if (!window.myWatchlist) window.myWatchlist = [];
+                    // בדיקה אם השחקן כבר ברשימה
+                    if (window.myWatchlist.find(wp => wp.id === p.id)) {
+                        alert('השחקן כבר נמצא ברשימת המעקב שלך!');
+                    } else {
+                        window.myWatchlist.push(p);
+                        if (typeof window.renderWatchlist === 'function') window.renderWatchlist();
+                        const tName = window.translateName ? window.translateName(p.name) : p.name;
+                        alert(`השחקן ${tName} נוסף בהצלחה לרשימת המעקב שלך!`);
+                    }
+                }
                 window.closePlayerModal();
             }
         };
@@ -5742,47 +5759,137 @@ document.addEventListener('DOMContentLoaded', () => {
 let incomingOffers = [];
 let outgoingOffers = [];
 
-// יצירת הצעות דמה כדי להציג את המערכת (יופעל אחרי ש-Supabase יטען)
-function initOffersManagement() {
-    // מחפשים שחקנים אקראיים כדי לייצר הצעות הגיוניות
-    const allPlayers = Object.values(window.allPlayersMap);
-    if(allPlayers.length < 10) {
-        setTimeout(initOffersManagement, 1000);
+        window.myWatchlist = [];
+
+window.renderWatchlist = function() {
+    const watchlistContainer = document.getElementById('watchlist-body');
+    if (!watchlistContainer) return;
+    
+    if (!window.myWatchlist || window.myWatchlist.length === 0) {
+        watchlistContainer.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#64748b; font-weight:bold;">רשימת המעקב ריקה.<br>חפש שחקנים במאגר (סקאוטינג) והוסף אותם לכאן!</td></tr>';
         return;
     }
 
-    const myPlayers = allPlayers.filter(p => p.owner === 'מכבי סוליבי');
+    watchlistContainer.innerHTML = '';
+    window.myWatchlist.forEach(p => {
+        const tName = window.translateName ? window.translateName(p.name) : p.name;
+        const tTeam = window.translateName ? window.translateName(p.team) : p.team;
+        const pImg = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+        const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+        
+        watchlistContainer.innerHTML += `
+            <tr onclick="openPlayerModalById(${p.id}, false)" style="cursor: pointer;">
+                <td><div style="display:flex; align-items:center; gap:10px; justify-content:center;">
+                    <img src="${pImg}" style="width:28px; height:28px; border-radius:50%; border: 1px solid #e2e8f0;" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                    <span style="font-weight:900; color: var(--text-dark);">${tName}</span>
+                </div></td>
+                <td style="font-weight:bold; color: var(--text-dark);">${tTeam}</td>
+                <td style="color: var(--text-dark); font-weight:bold;">${p.displayPos}</td>
+                <td style="color:var(--brand-green); font-weight:900;">₪${valStr}</td>
+                <td style="display:flex; justify-content:center; gap:5px; align-items:center;">
+                    <button class="tt-btn" style="padding:6px 12px; font-size:11px; width: auto; margin:0;" onclick="event.stopPropagation(); openTradeModal(${p.id}, '${tTeam}')">הצע על שחקן</button>
+                    <button style="background:#ef4444; color:#fff; border:none; border-radius:6px; padding:6px 8px; font-size:10px; cursor:pointer;" onclick="event.stopPropagation(); removeFromWatchlist(${p.id})" title="הסר מרשימת המעקב">✖</button>
+                </td>
+            </tr>`;
+    });
+};
+
+window.removeFromWatchlist = function(id) {
+    window.myWatchlist = window.myWatchlist.filter(p => p.id !== id);
+    window.renderWatchlist();
+};
+
+// --- מנוע ניהול הצעות ורשימת מעקב (מחליף את initOffersManagement הקודם) ---
+window.myWatchlist = []; // מערך ריק שבו יישמרו השחקנים שאתה מוסיף
+let incomingOffers = [];
+let outgoingOffers = [];
+
+function initOffersAndWatchlist() {
+    const allPlayers = Object.values(window.allPlayersMap);
+    // אם המאגר עוד לא נטען, נחכה שנייה
+    if(allPlayers.length < 20) {
+        setTimeout(initOffersAndWatchlist, 1000);
+        return;
+    }
+
+    // 1. אתחול רצוי: הצעות דמה עם שחקנים אמיתיים מהמאגר
     const otherPlayers = allPlayers.filter(p => p.owner !== 'מכבי סוליבי');
+    const myPlayers = allPlayers.filter(p => p.owner === 'מכבי סוליבי');
 
     if(myPlayers.length > 0 && otherPlayers.length > 0) {
-        // הצעה נכנסת (מישהו רוצה שחקן שלי)
-        incomingOffers = [
-            {
-                id: 101,
-                date: "היום, 14:30",
-                fromTeam: "גלקטיקוס",
-                offerPlayer: otherPlayers[0], // שחקן שהוא מציע לי
-                offerMoney: 1500000,          // כסף שהוא מציע לי
-                wantedPlayer: myPlayers[0],   // השחקן שלי שהוא רוצה
-                wantedMoney: 0
-            }
-        ];
+        incomingOffers = [{
+            id: 101, date: "היום, 14:30", fromTeam: "גלקטיקוס",
+            offerPlayer: otherPlayers[10], offerMoney: 2000000,
+            wantedPlayer: myPlayers[0], wantedMoney: 0
+        }];
 
-        // הצעה יוצאת (אני הצעתי למישהו - כמו בחלון הטריידים)
-        outgoingOffers = [
-            {
-                id: 201,
-                date: "אתמול, 09:15",
-                toTeam: "הכרישים של מוטי",
-                offerPlayer: myPlayers[1] || myPlayers[0], // השחקן שלי שהצעתי
-                offerMoney: 0,
-                wantedPlayer: otherPlayers[1],             // השחקן שאני רוצה
-                wantedMoney: 0
-            }
-        ];
+        outgoingOffers = [{
+            id: 201, date: "לפני שעה", toTeam: "אריות וולפסון",
+            offerPlayer: myPlayers[1] || myPlayers[0], offerMoney: 500000,
+            wantedPlayer: otherPlayers[5], wantedMoney: 0
+        }];
     }
     
+    // מציירים את הכל על המסך
     renderOffersManagement();
+    renderWatchlist();
+}
+
+// פונקציה שמציירת את רשימת המעקב
+window.renderWatchlist = function() {
+    const watchlistContainer = document.getElementById('watchlist-body');
+    if (!watchlistContainer) return;
+    
+    if (window.myWatchlist.length === 0) {
+        watchlistContainer.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#64748b; font-weight:bold;">רשימת המעקב ריקה.<br>חפש שחקנים במאגר (סקאוטינג) והוסף אותם לכאן!</td></tr>';
+        return;
+    }
+
+    watchlistContainer.innerHTML = '';
+    window.myWatchlist.forEach(p => {
+        const tName = window.translateName ? window.translateName(p.name) : p.name;
+        const tTeam = window.translateName ? window.translateName(p.team) : p.team;
+        const pImg = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+        const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+        
+        watchlistContainer.innerHTML += `
+            <tr onclick="openPlayerModalById(${p.id}, false)" style="cursor: pointer;">
+                <td><div style="display:flex; align-items:center; gap:10px; justify-content:center;">
+                    <img src="${pImg}" style="width:28px; height:28px; border-radius:50%; border: 1px solid #e2e8f0;">
+                    <span style="font-weight:900; color: var(--text-dark);">${tName}</span>
+                </div></td>
+                <td style="font-weight:bold; color: var(--text-dark);">${tTeam}</td>
+                <td style="color: var(--text-dark); font-weight:bold;">${p.displayPos}</td>
+                <td style="color:var(--brand-green); font-weight:900;">₪${valStr}</td>
+                <td>
+                    <button style="background:#ef4444; color:#fff; border:none; border-radius:6px; padding:6px 10px; font-size:10px; cursor:pointer;" onclick="event.stopPropagation(); removeFromWatchlist(${p.id})">הסר ✖</button>
+                </td>
+            </tr>`;
+    });
+};
+
+window.removeFromWatchlist = function(id) {
+    window.myWatchlist = window.myWatchlist.filter(p => p.id !== id);
+    renderWatchlist();
+};
+
+function renderOffersManagement() {
+    const incContainer = document.getElementById('incoming-offers-container');
+    const outContainer = document.getElementById('outgoing-offers-container');
+    if(!incContainer || !outContainer) return;
+
+    if(incomingOffers.length === 0) {
+        incContainer.innerHTML = '<div class="offer-empty">אין כרגע הצעות נכנסות.</div>';
+    } else {
+        incContainer.innerHTML = '';
+        incomingOffers.forEach(o => {
+            const offerPName = window.translateName ? window.translateName(o.offerPlayer.name) : o.offerPlayer.name;
+            const wantedPName = window.translateName ? window.translateName(o.wantedPlayer.name) : o.wantedPlayer.name;
+            incContainer.innerHTML += `<div class="offer-card">... (קוד העיצוב של הקלף) ...</div>`;
+            // הערה: תשתמש בקוד העיצוב של הקלף שכבר יש לך ב-renderOffersManagement המקורי
+        });
+    }
+    // ... אותו דבר ל-outgoingOffers ...
 }
 
 function renderOffersManagement() {
@@ -5905,7 +6012,7 @@ window.cancelOutgoingOffer = function(id) {
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         if(document.getElementById('tab-manage-offers')) {
-            initOffersManagement();
+          initOffersAndWatchlist();
         }
     }, 2000);
 });
