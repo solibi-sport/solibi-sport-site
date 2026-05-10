@@ -5416,18 +5416,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1500);
 });
 
-        // ==========================================
+       // ==========================================
 // מנוע טריידים והעברות בין קבוצות
 // ==========================================
 
 let tradeTargetPlayer = null;
+window.simulatedTeams = window.simulatedTeams || {};
 
 // טעינת רשימת הקבוצות בליגה
 function initTeamTransfers() {
     const select = document.getElementById('tt-team-select');
     if(!select) return;
     
-    // קבוצות הליגה (מוקאפ לצורך הדגמה, אפשר לשאוב מה-DB בהמשך)
+    // קבוצות הליגה
     const leagueTeams = [
         "הכרישים של מוטי", "גלקטיקוס", "אריות וולפסון", 
         "בני יהודה אימפריה", "פ.צ. שווארמה", "רד בול פתח תקווה", "הפועל עגלות"
@@ -5449,12 +5450,52 @@ window.renderTeamRoster = function() {
         return;
     }
 
-    // שולף שחקנים אקראיים כדי לדמות את הסגל של הקבוצה שבחרנו (בעולם אמיתי: נסנן לפי p.owner === teamName)
-    let allPlayersList = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי');
-    let simulatedSquad = allPlayersList.sort(() => 0.5 - Math.random()).slice(0, 15);
+    let teamSquad = window.simulatedTeams[teamName];
+
+    // יצירת סגל של בדיוק 20 שחקנים לפי חוקים נוקשים
+    if (!teamSquad) {
+        let allPlayersList = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי');
+        let shuffled = allPlayersList.sort(() => 0.5 - Math.random());
+        
+        let squad = [];
+        let posCounts = { 'שוער': 0, 'הגנה': 0, 'קישור': 0, 'חלוץ': 0 };
+        let tierCounts = { 'כוכב על': 0, 'רמה 1': 0, 'רמה 2': 0, 'רמה 3': 0, 'רמה 4': 0 };
+        
+        let posLimits = { 'שוער': 2, 'הגנה': 6, 'קישור': 6, 'חלוץ': 6 };
+        let tierLimits = { 'כוכב על': 2, 'רמה 1': 3, 'רמה 2': 5, 'רמה 3': 5, 'רמה 4': 5 };
+
+        for(let p of shuffled) {
+            let pos = p.displayPos;
+            let tier = p.calcTierName;
+            
+            if (posCounts[pos] < posLimits[pos] && tierCounts[tier] < tierLimits[tier]) {
+                squad.push(p);
+                posCounts[pos]++;
+                tierCounts[tier]++;
+            }
+            if (squad.length === 20) break;
+        }
+
+        // השלמה ל-20 (גיבוי)
+        if (squad.length < 20) {
+            for(let p of shuffled) {
+                if (!squad.find(sp => sp.id === p.id)) {
+                    squad.push(p);
+                    if (squad.length === 20) break;
+                }
+            }
+        }
+
+        window.simulatedTeams[teamName] = squad;
+        teamSquad = squad;
+    }
+
+    // סידור השחקנים לפי רמות (כוכב על יופיע ראשון למעלה מימין)
+    const tierOrder = ['כוכב על', 'רמה 1', 'רמה 2', 'רמה 3', 'רמה 4'];
+    teamSquad.sort((a, b) => tierOrder.indexOf(a.calcTierName) - tierOrder.indexOf(b.calcTierName));
 
     container.innerHTML = '';
-    simulatedSquad.forEach(p => {
+    teamSquad.forEach(p => {
         const tName = window.translateName ? window.translateName(p.name) : p.name;
         const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
         const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
@@ -5465,7 +5506,7 @@ window.renderTeamRoster = function() {
                 <div class="tt-name">${tName}</div>
                 <div class="tt-pos">${p.displayPos} | <span style="color:var(--text-dark);">${p.calcTierName}</span></div>
                 <div class="tt-val">₪${valStr}</div>
-                <button class="tt-btn" onclick="openTradeModal(${p.id}, '${teamName}')">הצע טרייד 🤝</button>
+                <button class="tt-btn" onclick="openTradeModal(${p.id}, '${teamName}')">הצע על שחקן</button>
             </div>
         `;
     });
@@ -5476,7 +5517,6 @@ window.openTradeModal = function(playerId, teamName) {
     tradeTargetPlayer = window.allPlayersMap[playerId];
     if(!tradeTargetPlayer) return;
 
-    // הגדרת צד "מה אני מקבל"
     const tName = window.translateName ? window.translateName(tradeTargetPlayer.name) : tradeTargetPlayer.name;
     const playerImage = tradeTargetPlayer.photo || `https://media.api-sports.io/football/players/${tradeTargetPlayer.id}.png`;
     const valStr = window.formatPlayerValue ? window.formatPlayerValue(tradeTargetPlayer.value) : tradeTargetPlayer.value;
@@ -5487,12 +5527,10 @@ window.openTradeModal = function(playerId, teamName) {
     document.getElementById('tb-receive-meta').innerText = `${tradeTargetPlayer.displayPos} | ${tradeTargetPlayer.calcTierName}`;
     document.getElementById('tb-receive-val').innerText = `שווי: ₪${valStr}`;
 
-    // טעינת הסגל שלי לצד "מה אני נותן"
     const mySquad = Object.values(window.allPlayersMap).filter(p => p.owner === 'מכבי סוליבי');
     const select = document.getElementById('tb-give-select');
     select.innerHTML = '<option value="">-- בחר שחקן מהסגל שלך --</option>';
     
-    // אם הסגל עדיין לא נטען לבדיקות
     if (mySquad.length === 0) {
         select.innerHTML += `<option value="test">שחקן הרכב פיקטיבי - ₪20M</option>`;
     } else {
@@ -5503,11 +5541,11 @@ window.openTradeModal = function(playerId, teamName) {
         });
     }
 
-    // איפוס שדות
     document.getElementById('tb-money-input').value = '';
     updateTradePreview();
 
-    document.getElementById('trade-modal-overlay').style.display = 'flex';
+    // התיקון לקפיאת המסך!
+    document.getElementById('trade-modal-overlay').classList.add('active');
 };
 
 // עדכון לייב של המאזן בחלון הטרייד
@@ -5530,8 +5568,7 @@ window.updateTradePreview = function() {
         return;
     }
 
-    // אם נבחר שחקן
-    let myPlayerVal = 20000000; // ערך לבדיקה אם בחרנו בשחקן הפיקטיבי
+    let myPlayerVal = 20000000; 
     if(select.value !== 'test') {
         const myPlayer = window.allPlayersMap[select.value];
         myPlayerVal = myPlayer.value;
@@ -5547,7 +5584,6 @@ window.updateTradePreview = function() {
     document.getElementById('tb-give-val').style.display = 'block';
     document.getElementById('tb-give-val').innerText = `שווי: ₪${window.formatPlayerValue ? window.formatPlayerValue(myPlayerVal) : myPlayerVal}`;
 
-    // חישוב המאזן
     const moneyAdded = parseInt(moneyInput.value) || 0;
     const totalGiveValue = myPlayerVal + moneyAdded;
     const targetValue = tradeTargetPlayer.value;
@@ -5556,7 +5592,7 @@ window.updateTradePreview = function() {
 
     if (diff < 0) {
         alertBox.innerText = `ההצעה שלך נמוכה ב-₪${window.formatNumberWithCommas ? window.formatNumberWithCommas(Math.abs(diff)) : Math.abs(diff)} משווי השחקן. המנג'ר עלול לסרב.`;
-        alertBox.style.color = '#f59e0b'; // כתום אזהרה
+        alertBox.style.color = '#f59e0b';
     } else {
         alertBox.innerText = `הצעה הוגנת! חבילת הטרייד שווה או גבוהה משווי השחקן.`;
         alertBox.style.color = 'var(--brand-green)';
@@ -5565,14 +5601,15 @@ window.updateTradePreview = function() {
     submitBtn.disabled = false;
 };
 
+// סגירת החלון
 window.closeTradeModal = function() {
-    document.getElementById('trade-modal-overlay').style.display = 'none';
+    document.getElementById('trade-modal-overlay').classList.remove('active');
 };
 
+// שליחת ההצעה
 window.submitTradeOffer = function() {
     const moneyAdded = parseInt(document.getElementById('tb-money-input').value) || 0;
     
-    // קריאת התקציב (הדמיה)
     const userBudgetStr = document.getElementById('user-budget').innerText.replace(/[^\d]/g, '');
     const userBudget = parseInt(userBudgetStr) || 100000000;
 
@@ -5585,9 +5622,8 @@ window.submitTradeOffer = function() {
     closeTradeModal();
 };
 
-// הפעלת אתחול רשימת הקבוצות כשהדף עולה
 document.addEventListener('DOMContentLoaded', () => {
-    initTeamTransfers();
+    if(typeof initTeamTransfers === 'function') initTeamTransfers();
 });
         
     </script>
