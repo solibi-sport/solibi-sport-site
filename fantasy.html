@@ -1687,50 +1687,59 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
     .no-search-results { padding: 15px 20px; font-size: 13px; color: #64748b; text-align: center; }
 
-        /* =========================================
-   מרכז העברות - מכירות פומביות
+      /* =========================================
+   מרכז העברות - מכירות פומביות (עיצוב קומפקטי 5 בשורה)
    ========================================= */
 .auctions-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 10px;
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); /* מכריח 5 עמודות בשורה */
+    gap: 15px; 
+    padding: 10px 0;
 }
 
 .auction-card {
     background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
-    border-radius: 16px; padding: 20px; color: #fff; position: relative;
+    border-radius: 16px; padding: 15px 10px; color: #fff; position: relative;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; flex-direction: column;
-    align-items: center; transition: 0.3s;
+    align-items: center; transition: 0.3s; text-align: center;
 }
 
 .auction-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(124,168,86,0.3); }
 
 .auc-timer {
-    background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px;
-    font-family: 'Courier New', monospace; font-size: 18px; font-weight: 900;
-    color: var(--brand-green); margin-bottom: 15px; border: 1px solid rgba(124,168,86,0.3);
+    background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 20px;
+    font-family: 'Courier New', monospace; font-size: 14px; font-weight: 900;
+    color: var(--brand-green); margin-bottom: 10px; border: 1px solid rgba(124,168,86,0.3);
+    direction: ltr; /* מונע היפוך מספרים */
 }
 
 .auc-timer.ending-soon { color: #ef4444; border-color: #ef4444; animation: blink 1s infinite; }
 
-.auc-player-img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; object-fit: cover; margin-bottom: 10px; background: #fff; }
-.auc-player-name { font-size: 20px; font-weight: 900; margin-bottom: 5px; text-align: center;}
-.auc-meta { font-size: 13px; color: #cbd5e1; margin-bottom: 15px; display: flex; gap: 8px; align-items: center;}
+.auc-player-img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #fff; object-fit: cover; margin-bottom: 8px; background: #fff; }
+.auc-player-name { font-size: 16px; font-weight: 900; margin-bottom: 4px;}
+.auc-meta { font-size: 11px; color: #cbd5e1; margin-bottom: 10px; display: flex; gap: 6px; align-items: center; justify-content: center;}
 
 .auc-current-bid-box {
-    background: #f8fafc; border-radius: 12px; padding: 15px; width: 100%;
-    text-align: center; color: var(--text-dark); margin-bottom: 15px;
+    background: #f8fafc; border-radius: 12px; padding: 10px; width: 100%;
+    text-align: center; color: var(--text-dark); margin-bottom: 10px;
 }
-.auc-bid-lbl { font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 5px; }
-.auc-bid-val { font-size: 24px; font-weight: 900; color: var(--brand-green); margin-bottom: 5px;}
-.auc-leader { font-size: 12px; font-weight: bold; background: rgba(6, 33, 65, 0.1); padding: 4px 10px; border-radius: 6px; display: inline-block;}
+.auc-bid-lbl { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 3px; }
+.auc-bid-val { font-size: 20px; font-weight: 900; color: var(--brand-green); margin-bottom: 5px;}
+.auc-leader { font-size: 10px; font-weight: bold; background: rgba(6, 33, 65, 0.1); padding: 4px 6px; border-radius: 6px; display: inline-block;}
 .auc-leader.is-me { background: rgba(124,168,86,0.2); color: var(--brand-green); }
 
-.auc-controls { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
-.auc-input { padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; text-align: center; font-weight: 900; font-family: inherit; font-size: 16px; outline: none;}
-.auc-select { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #64748b; background: rgba(255,255,255,0.1); color: #fff; font-family: inherit; font-size: 12px; outline: none; cursor: pointer; }
+.auc-controls { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+.auc-input { padding: 8px; border-radius: 8px; border: 1px solid #cbd5e1; text-align: center; font-weight: 900; font-family: inherit; font-size: 13px; outline: none;}
+.auc-select { width: 100%; padding: 6px; border-radius: 8px; border: 1px solid #64748b; background: rgba(255,255,255,0.1); color: #fff; font-family: inherit; font-size: 11px; outline: none; cursor: pointer; }
 .auc-select option { background: var(--bg-gray); color: #fff; }
-.auc-btn { background: var(--brand-green); color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.2s; }
+.auc-btn { background: var(--brand-green); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; }
 .auc-btn:hover:not(:disabled) { background: #688e47; transform: scale(1.02); }
 .auc-btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
+
+/* רספונסיביות - שבירת שורות במסכים קטנים יותר */
+@media (max-width: 1400px) { .auctions-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px) { .auctions-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .auctions-grid { grid-template-columns: 1fr; } }
         
     </style>
         
@@ -5136,7 +5145,8 @@ function renderAuctions() {
 function startAuctionTimer(index, endTime) {
     const timerEl = document.getElementById(`auc-timer-${index}`);
     
-    const timer = setInterval(() => {
+    // פונקציה פנימית שמחשבת ומעדכנת את הזמן
+    function updateTimer() {
         const now = new Date().getTime();
         const distance = activeAuctions[index].endTime - now; // מתעדכן מהמערך למקרה של הארכה
 
@@ -5163,8 +5173,13 @@ function startAuctionTimer(index, endTime) {
         } else {
             timerEl.innerText = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
-    }, 1000);
+    }
+
+    // קריאה ראשונה מיידית (כדי שלא נראה "טוען..." בהתחלה)
+    updateTimer();
     
+    // הפעלת הטיימר כל שנייה
+    const timer = setInterval(updateTimer, 1000);
     auctionTimers.push(timer);
 }
 
