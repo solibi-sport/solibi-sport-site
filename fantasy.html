@@ -2179,31 +2179,52 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     </ul>
                                 </div>
 
-                                <div class="rules-section">
+                               <div class="rules-section">
                                     <h3><span>📊</span> 2. מאגר השחקנים ושווי שוק (הבורסה)</h3>
                                     <ul>
                                         <li><strong>המאגר:</strong> דאטאבייס קבוע של 1,000 השחקנים המובילים מ-5 הליגות הבכירות באירופה.</li>
                                         <li><strong>דירוג ייחודי:</strong> השחקנים מדורגים מ-1 עד 1,000 ללא חפיפה. לכל שחקן שווי שוק מדויק משלו (אין שני מחירים זהים).</li>
-                                        <li><strong>חוק הבורסה (סכום אפס):</strong> מדרג הרמות הוא קשיח. אם שחקן עולה ברמה, הוא בהכרח דוחק שחקן אחר למטה אל רמה נמוכה יותר.</li>
+                                        <li><strong>עדכון שבועי:</strong> בכל יום שלישי בשעה 10:00 בבוקר מתבצע רענון מקיף למאגר המבוסס על ביצועי השחקנים במחזור האחרון במציאות. בעדכון זה שווי השחקנים והרמה שלהם עשויים לעלות או לרדת.</li>
+                                        <li><strong>עליית וירידת רמות (סכום אפס):</strong> מדרג הרמות הוא קשיח (בדיוק 50 כוכבי על, 100 רמה 1 וכו'). הלוגיקה בנויה כך שאם, לדוגמה, שחקן מרמה 1 הגיע לשווי של 35 מיליון ₪, הוא הופך אוטומטית ל"כוכב על" על חשבונו של השחקן שהיה מדורג במקום ה-50 והאחרון ברשימת כוכבי העל, אשר יידחק בחזרה לרמה 1.</li>
                                     </ul>
-                                    <table class="rules-modern-table">
+                                    <table class="rules-modern-table" style="text-align: center;">
                                         <thead>
                                             <tr>
-                                                <th>דרגה (Tier)</th>
+                                                <th style="text-align: center; width: 25%;">דרגה (Tier)</th>
                                                 <th style="text-align: center;">כמות במאגר</th>
-                                                <th>טווח מחירים (₪)</th>
+                                                <th style="text-align: center;">טווח מחירים (₪)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr><td>🌟 כוכבי על</td><td style="text-align: center;">50</td><td style="color:var(--brand-green); font-weight:900;">35.0M - 50.0M</td></tr>
-                                            <tr><td>🥇 רמה 1</td><td style="text-align: center;">100</td><td style="color:var(--brand-green); font-weight:900;">19.0M - 34.9M</td></tr>
-                                            <tr><td>🥈 רמה 2</td><td style="text-align: center;">250</td><td style="color:var(--brand-green); font-weight:900;">10.0M - 18.9M</td></tr>
-                                            <tr><td>🥉 רמה 3</td><td style="text-align: center;">300</td><td style="color:var(--brand-green); font-weight:900;">5.0M - 9.9M</td></tr>
-                                            <tr><td>🧱 רמה 4</td><td style="text-align: center;">300</td><td style="color:var(--brand-green); font-weight:900;">500K - 4.9M</td></tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🌟 כוכבי על</td>
+                                                <td>50</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">35.0M - 50.0M</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🥇 רמה 1</td>
+                                                <td>100</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">19.0M - 34.9M</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🥈 רמה 2</td>
+                                                <td>250</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">10.0M - 18.9M</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🥉 רמה 3</td>
+                                                <td>300</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">5.0M - 9.9M</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🧱 רמה 4</td>
+                                                <td>300</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">500K - 4.9M</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
-
+                                
                                 <div class="rules-section">
                                     <h3><span>🎲</span> 3. הגרלת הדראפט (פתיחת העונה)</h3>
                                     <ul>
@@ -2223,11 +2244,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                             <div>
                                                 <strong style="color: var(--brand-green); font-size: 15px;">חלוקת רמות:</strong>
                                                 <div style="padding-right: 15px; margin-top: 4px; line-height: 1.8; color: var(--text-dark); font-weight: bold;">
-                                                    • כוכבי על - 2<br>
-                                                    • רמה 1 - 3<br>
-                                                    • רמה 2 - 5<br>
-                                                    • רמה 3 - 5<br>
-                                                    • רמה 4 - 5
+                                                    • כוכבי על - 2 שחקנים<br>
+                                                    • רמה 1 - 3 שחקנים<br>
+                                                    • רמה 2 - 5 שחקנים<br>
+                                                    • רמה 3 - 5 שחקנים<br>
+                                                    • רמה 4 - 5 שחקנים
                                                 </div>
                                             </div>
                                             
@@ -2253,19 +2274,20 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                         <li><strong>מכירה פומבית:</strong> התמודדות על שחקנים חופשיים (הצעת סכום + שחקן מהסגל לשחרור).</li>
                                         <li><strong>מכסת חילופים:</strong> בין מחזור למחזור מותר לבצע עד <strong>3 חילופים/העברות</strong> בסגל (ניתן להגדיל את המכסה נקודתית באמצעות קלף "חילוף אקסטרה" מחבילות ההפתעה).</li>
                                         <li><strong>טריידים ישירים:</strong> ניתן להציע למנג'ר יריב טרייד "ראש בראש" או הצעת שחקן + תוספת תשלום.</li>
-                                        <li><strong>מגבלת סגל מינימלית:</strong> אסור לבצע מהלך שישאיר אתכם עם פחות מ: 2 שוערים, 5 שחקני הגנה, 5 קשרים או 4 חלוצים.</li>
+                                        <li><strong>מגבלת סגל מינימלית:</strong> אסור לבצע מהלך שישאיר אתכם עם פחות מ: 2 שוערים, 5 שחקני הגנה, 5 קשרים או 4 חלוצים בסגל.</li>
                                     </ul>
                                 </div>
 
                                 <div class="rules-section">
                                     <h3><span>⚔️</span> 6. שיטת הדו-קרב (Head-to-Head)</h3>
                                     <ul>
-                                        <li><strong>המפגש השבועי:</strong> בכל מחזור מתקיים מפגש ישיר בין שתי קבוצות (לדוגמה: קבוצה א' נגד קבוצה ב'). הקבוצה שסך שחקניה צברו יותר נקודות פנטזי באותו מחזור, מנצחת במפגש ומקבלת <strong>3 נקודות</strong> לטבלת הליגה. במקרה של שוויון מוחלט בנקודות הפנטזי, המפגש מסתיים בתיקו וכל קבוצה מקבלת <strong>נקודה אחת</strong>.</li>
+                                        <li><strong>המפגש השבועי:</strong> בכל מחזור מתקיים מפגש ישיר בין שתי קבוצות (לדוגמה: קבוצה א' נגד קבוצה ב'). הקבוצה שסך שחקניה צברו יותר נקודות פנטזי באותו מחזור <strong>(לאחר שקלול כולל של בונוסי נקודות, במידה והופעלו)</strong>, מנצחת במפגש ומקבלת <strong>3 נקודות</strong> לטבלת הליגה. במקרה של שוויון מוחלט בנקודות הפנטזי (כולל הבונוסים), המפגש מסתיים בתיקו וכל קבוצה מקבלת <strong>נקודה אחת</strong>.</li>
                                         <li><strong>הכתרת האלופה:</strong> הליגה מסתיימת במקביל לסיום עונות הכדורגל בליגות הבכירות במציאות. עם שריקת הסיום של המחזורים האחרונים, הקבוצה שמוליכה את טבלת הליגה עם מרב הנקודות מוכתרת רשמית כאלופת הפנטזי!</li>
-                                        <li><strong>שוברי שוויון בטבלה:</strong> במצב שבו שתי קבוצות (או יותר) מסיימות את העונה עם מספר זהה של נקודות בטבלת הליגה, זהות האלופה (והמיקום הסופי בטבלה) תיקבע לפי שוברי השוויון הבאים בסדר יורד:
-                                            <br>1. <strong>מספר ניצחונות:</strong> הקבוצה שניצחה יותר מפגשי ראש-בראש במהלך העונה.
+                                        <li><strong>שוברי שוויון בטבלה:</strong> במצב שבו שתי קבוצות (או יותר) מחזיקות במספר זהה של נקודות בטבלת הליגה (במהלך העונה או בסיומה), המיקום בטבלה (וזהות האלופה) ייקבע לפי שוברי השוויון הבאים בסדר יורד:
+                                            <br>1. <strong>מספר ניצחונות כללי:</strong> הקבוצה שניצחה יותר משחקים באופן כללי במהלך העונה.
                                             <br>2. <strong>שערי זכות:</strong> הקבוצה ששחקניה הבקיעו יותר שערים במצטבר לאורך העונה.
                                             <br>3. <strong>רשת נקייה:</strong> הקבוצה ששחקניה שמרו יותר פעמים על שער נקי (Clean Sheets).
+                                            <br>4. <strong>מפגשים ישירים:</strong> הקבוצה בעלת המאזן הטוב יותר במפגשים הישירים בין הקבוצות הנמצאות בשוויון (במקרה נדיר של שוויון מוחלט בכל הפרמטרים הקודמים).
                                         </li>
                                     </ul>
                                 </div>
