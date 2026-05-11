@@ -5474,31 +5474,43 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             }
         };
 
-   // 1. הגדרת מאגרי הפרסים (Pools) לפי רמות - הכלכלה המאוזנת (כולל קוסמטיקה חדשה)
+  // 1. הגדרת מאגרי הפרסים (Pools) לפי רמות - הכלכלה המאוזנת והמורחבת (60+ פריטים)
         const rewardsPool = {
             base: [
+                // --- כסף ונקודות ---
                 { type: 'money', title: '100,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💵', val: 100000 },
                 { type: 'money', title: '250,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💵', val: 250000 },
                 { type: 'money', title: '500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 500000 },
+                { type: 'points', title: '+1 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 1 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 4', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 4.', icon: '🃏', val: 4 },
+                // --- 10 תגיות (כינויים) ---
                 { type: 'title', title: 'תגית: חובבן', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'חובבן' },
                 { type: 'title', title: 'תגית: אוהד שרוף', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'אוהד שרוף' },
                 { type: 'title', title: 'תגית: טקטיקן מתחיל', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'טקטיקן מתחיל' },
+                { type: 'title', title: 'תגית: עכבר כדורגל', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'עכבר כדורגל' },
+                { type: 'title', title: 'תגית: פרשן כורסה', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'פרשן כורסה' },
+                { type: 'title', title: 'תגית: מנג\'ר של שבת', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'מנגר של שבת' },
+                { type: 'title', title: 'תגית: שחקן ספסל', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'שחקן ספסל' },
+                { type: 'title', title: 'תגית: שורף תקציבים', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'שורף תקציבים' },
+                { type: 'title', title: 'תגית: סקאוט מתלמד', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'סקאוט מתלמד' },
+                { type: 'title', title: 'תגית: מאמן כושר', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'מאמן כושר' },
+                // --- 10 סמלי מועדון ---
                 { type: 'crest', title: 'סמל: כדורגל רטרו', desc: 'סמל מועדון קלאסי.', icon: '⚽', val: 'retro_ball' },
-                { type: 'points', title: '+1 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 1 },
-                { type: 'pick', title: 'בחירת שחקן: רמה 4', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 4.', icon: '🃏', val: 4 }
+                { type: 'crest', title: 'סמל: מגן ברזל', desc: 'סמל מועדון בסיסי.', icon: '🛡️', val: 'iron_shield' },
+                { type: 'crest', title: 'סמל: חולצת בית', desc: 'סמל מועדון בסיסי.', icon: '👕', val: 'home_shirt' },
+                { type: 'crest', title: 'סמל: דגל קרן', desc: 'סמל מועדון בסיסי.', icon: '🚩', val: 'corner_flag' },
+                { type: 'crest', title: 'סמל: כפפת זהב', desc: 'סמל מועדון בסיסי.', icon: '🧤', val: 'gold_glove' },
+                { type: 'crest', title: 'סמל: משרוקית', desc: 'סמל מועדון בסיסי.', icon: '🪈', val: 'whistle' },
+                { type: 'crest', title: 'סמל: לוח טקטי', desc: 'סמל מועדון בסיסי.', icon: '📋', val: 'tactic_board' },
+                { type: 'crest', title: 'סמל: סטופר', desc: 'סמל מועדון בסיסי.', icon: '⏱️', val: 'stopwatch' },
+                { type: 'crest', title: 'סמל: נעל פקקים', desc: 'סמל מועדון בסיסי.', icon: '👟', val: 'boots' },
+                { type: 'crest', title: 'סמל: יציע אוהדים', desc: 'סמל מועדון בסיסי.', icon: '🏟️', val: 'stands' }
             ],
             mid: [
+                // --- כסף, בוסטים ונקודות ---
                 { type: 'money', title: '1,000,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 1000000 },
                 { type: 'money', title: '1,500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 1500000 },
                 { type: 'money', title: '2,500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 2500000 },
-                { type: 'title', title: 'תגית: מלך השוק', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'מלך השוק' },
-                { type: 'title', title: 'תגית: שודד השחקנים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שודד השחקנים' },
-                { type: 'title', title: 'תגית: אמן החילופים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'אמן החילופים' },
-                { type: 'crest', title: 'סמל: פיראט', desc: 'סמל מועדון מעוצב.', icon: '🏴‍☠️', val: 'pirate' },
-                { type: 'crest', title: 'סמל: כוכב זהב', desc: 'סמל מועדון יוקרתי.', icon: '⭐', val: 'gold_star' },
-                // תוספות קוסמטיקה לרמת ביניים
-                { type: 'cosmetic', title: 'אצטדיון לילה', desc: 'עיצוב: דשא כהה עם תאורת זרקורים בהרכב.', icon: '🏟️', val: 'night_pitch' },
-                { type: 'cosmetic', title: 'מסגרת ניאון סייבר', desc: 'עיצוב: תכלת-זוהרת למראה מודרני בטבלה.', icon: '🔲', val: 'neon_border' },
                 { type: 'points', title: '+3 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 3 },
                 { type: 'points', title: '+5 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 5 },
                 { type: 'pick', title: 'בחירת שחקן: רמה 3', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 3.', icon: '🃏', val: 3 },
@@ -5508,24 +5520,62 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 { type: 'boost', title: 'סופר קפטן', desc: 'בוסט טקטי: הכפלת נקודות הקפטן פי 4.', icon: '🛡️', val: 'super_captain' },
                 { type: 'boost', title: 'להחנות את האוטובוס', desc: 'בוסט טקטי: רשת נקייה לכל ההגנה.', icon: '🚌', val: 'park_bus' },
                 { type: 'boost', title: 'חסינות מלאה', desc: 'בוסט טקטי: ביטול מינוסים מצהובים/אדומים.', icon: '🚫', val: 'immunity' },
-                { type: 'boost', title: 'יום חג לחלוצים', desc: 'בוסט טקטי: נק\' כפולות על שערי התקפה.', icon: '🔥', val: 'goal_fest' }
+                { type: 'boost', title: 'יום חג לחלוצים', desc: 'בוסט טקטי: נק\' כפולות על שערי התקפה.', icon: '🔥', val: 'goal_fest' },
+                // --- 10 תגיות (כינויים) ---
+                { type: 'title', title: 'תגית: מלך השוק', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'מלך השוק' },
+                { type: 'title', title: 'תגית: שודד השחקנים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שודד השחקנים' },
+                { type: 'title', title: 'תגית: אמן החילופים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'אמן החילופים' },
+                { type: 'title', title: 'תגית: גאון טקטי', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'גאון טקטי' },
+                { type: 'title', title: 'תגית: שועל קרבות', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שועל קרבות' },
+                { type: 'title', title: 'תגית: קבלן עליות', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'קבלן עליות' },
+                { type: 'title', title: 'תגית: צייד כישרונות', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'צייד כישרונות' },
+                { type: 'title', title: 'תגית: מוח כדורגל', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'מוח כדורגל' },
+                { type: 'title', title: 'תגית: שף של הרכבים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שף של הרכבים' },
+                { type: 'title', title: 'תגית: שובר שוויונות', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שובר שוויונות' },
+                // --- 10 סמלים ועיצובים (קוסמטיקה) ---
+                { type: 'crest', title: 'סמל: פיראט', desc: 'סמל מועדון מעוצב.', icon: '🏴‍☠️', val: 'pirate' },
+                { type: 'crest', title: 'סמל: כוכב זהב', desc: 'סמל מועדון יוקרתי.', icon: '⭐', val: 'gold_star' },
+                { type: 'crest', title: 'סמל: נשר דורס', desc: 'סמל מועדון מעוצב.', icon: '🦅', val: 'eagle' },
+                { type: 'crest', title: 'סמל: שור זועם', desc: 'סמל מועדון מעוצב.', icon: '🐂', val: 'bull' },
+                { type: 'crest', title: 'סמל: כריש רעב', desc: 'סמל מועדון מעוצב.', icon: '🦈', val: 'shark' },
+                { type: 'crest', title: 'סמל: חרבות מוצלבות', desc: 'סמל מועדון מעוצב.', icon: '⚔️', val: 'swords' },
+                { type: 'crest', title: 'סמל: זאב בודד', desc: 'סמל מועדון מעוצב.', icon: '🐺', val: 'wolf' },
+                { type: 'crest', title: 'סמל: פנתר שחור', desc: 'סמל מועדון מעוצב.', icon: '🐆', val: 'panther' },
+                { type: 'cosmetic', title: 'אצטדיון לילה', desc: 'עיצוב: דשא כהה עם תאורת זרקורים בהרכב.', icon: '🏟️', val: 'night_pitch' },
+                { type: 'cosmetic', title: 'מסגרת ניאון סייבר', desc: 'עיצוב: תכלת-זוהרת למראה מודרני בטבלה.', icon: '🔲', val: 'neon_border' }
             ],
             top: [
+                // --- כסף, בוסטים ונקודות ---
                 { type: 'money', title: '4,000,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💎', val: 4000000 },
                 { type: 'money', title: '7,000,000 ₪', desc: 'מכה יפה! נוסף לתקציב הקבוצה.', icon: '💎', val: 7000000 },
                 { type: 'money', title: '10,000,000 ₪', desc: 'ג\'קפוט תקציב ענק!', icon: '💎', val: 10000000 },
-                { type: 'title', title: 'תגית: GOAT', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'GOAT' },
-                { type: 'title', title: 'תגית: המיוחד', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'המיוחד' },
-                { type: 'crest', title: 'סמל: אריה מחשמל', desc: 'סמל מונפש ויוקרתי.', icon: '🦁', val: 'lion_zap' },
-                { type: 'crest', title: 'סמל: דרקון אש', desc: 'סמל מונפש ונדיר ביותר.', icon: '🐉', val: 'fire_dragon' },
-                // תוספות קוסמטיקה לרמת טופ
-                { type: 'cosmetic', title: 'מסגרת יהלום (VIP)', desc: 'עיצוב: הדגשה מונפשת לשם שלך בטבלת הליגה.', icon: '🔲', val: 'gold_border' },
-                { type: 'cosmetic', title: 'חגיגת שער (קונפטי)', desc: 'עיצוב: אנימציית קונפטי קופצת בלייב כשקבוצתך כובשת.', icon: '🎉', val: 'confetti' },
                 { type: 'points', title: '+10 נקודות', desc: 'שובר שוויון (בונוס לסיכום המחזור הקרוב).', icon: '🌟', val: 10 },
                 { type: 'pick', title: 'בחירת שחקן: רמה 1', desc: 'החלף שחקן מהסגל לשחקן רמה 1.', icon: '🃏', val: 1 },
                 { type: 'pick', title: 'בחירת שחקן: כוכב על', desc: 'אגדי! החלפת כוכב על בכוכב על מהמאגר.', icon: '🃏', val: 0 },
                 { type: '12th', title: 'השחקן ה-12', desc: 'שחקן הספסל המצטיין שלך נספר במחזור.', icon: '⚡', val: 1 },
-                { type: 'boost', title: 'ספסל פעיל', desc: 'בוסט פרמיום: כל שחקני הספסל מניבים נקודות!', icon: '🪑', val: 'bench_boost' }
+                { type: 'boost', title: 'ספסל פעיל', desc: 'בוסט פרמיום: כל שחקני הספסל מניבים נקודות!', icon: '🪑', val: 'bench_boost' },
+                // --- 10 תגיות אגדיות (כינויים) ---
+                { type: 'title', title: 'תגית: GOAT', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'GOAT' },
+                { type: 'title', title: 'תגית: המיוחד', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'המיוחד' },
+                { type: 'title', title: 'תגית: אדריכל ניצחונות', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'אדריכל ניצחונות' },
+                { type: 'title', title: 'תגית: מאסטרמיינד', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'מאסטרמיינד' },
+                { type: 'title', title: 'תגית: אגדת פנטזי', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'אגדת פנטזי' },
+                { type: 'title', title: 'תגית: פפ הישראלי', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'פפ הישראלי' },
+                { type: 'title', title: 'תגית: הבוס הגדול', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'הבוס הגדול' },
+                { type: 'title', title: 'תגית: בלתי מנוצח', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'בלתי מנוצח' },
+                { type: 'title', title: 'תגית: פנומן', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'פנומן' },
+                { type: 'title', title: 'תגית: דון קרלו', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'דון קרלו' },
+                // --- 10 סמלים ועיצובים אגדיים (קוסמטיקה) ---
+                { type: 'crest', title: 'סמל: אריה מחשמל', desc: 'סמל מונפש ויוקרתי.', icon: '🦁', val: 'lion_zap' },
+                { type: 'crest', title: 'סמל: דרקון אש', desc: 'סמל מונפש ונדיר ביותר.', icon: '🐉', val: 'fire_dragon' },
+                { type: 'crest', title: 'סמל: כתר יהלומים', desc: 'סמל מונפש ויוקרתי.', icon: '💎', val: 'diamond_crown' },
+                { type: 'crest', title: 'סמל: נמר גלקטי', desc: 'סמל מונפש ויוקרתי.', icon: '🐅', val: 'galaxy_tiger' },
+                { type: 'crest', title: 'סמל: גריפון אגדי', desc: 'סמל מונפש ונדיר ביותר.', icon: '🦅', val: 'griffin' },
+                { type: 'crest', title: 'סמל: קוברה ארסית', desc: 'סמל מונפש ויוקרתי.', icon: '🐍', val: 'cobra' },
+                { type: 'crest', title: 'סמל: פניקס אש', desc: 'סמל מונפש ונדיר ביותר.', icon: '🔥', val: 'phoenix' },
+                { type: 'crest', title: 'סמל: גלדיאטור', desc: 'סמל מונפש ויוקרתי.', icon: '🪖', val: 'gladiator' },
+                { type: 'cosmetic', title: 'מסגרת יהלום VIP', desc: 'עיצוב: הדגשה מונפשת לשם שלך בטבלת הליגה.', icon: '🔲', val: 'gold_border' },
+                { type: 'cosmetic', title: 'חגיגת שער (קונפטי)', desc: 'עיצוב: אנימציית קונפטי קופצת בלייב כשקבוצתך כובשת.', icon: '🎉', val: 'confetti' }
             ]
         };
 
