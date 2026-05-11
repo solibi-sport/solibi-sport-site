@@ -233,6 +233,60 @@
         /* עיצוב כללי לתוכן הלבן */
 h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; }        p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
 
+/* עיצוב ייעודי לדף החוקים - גלילה מימין מופרדת מהטקסט */
+        .rules-scroll-container {
+            flex: 1;
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.05);
+            direction: ltr; /* הופך את כיוון הגלילה לימין */
+        }
+        .rules-scroll-container::-webkit-scrollbar { width: 6px; }
+        .rules-scroll-container::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.4); border-radius: 10px; }
+        .rules-content-inner {
+            direction: rtl; /* מחזיר את הטקסט לעברית */
+            padding: 25px 45px 25px 20px; /* ה-45px מימין מרחיק את הטקסט מפס הגלילה */
+            color: var(--text-dark);
+        }
+        .rules-section {
+            margin-bottom: 20px;
+            background: var(--bg-silver-matte);
+            padding: 20px;
+            border-radius: 12px;
+            border-right: 4px solid var(--brand-green);
+        }
+        .rules-section h3 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .rules-section ul { list-style: none; padding: 0; margin: 0; }
+        .rules-section li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-right: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            font-weight: 600;
+            color: #475569;
+        }
+        .rules-section li strong { color: var(--text-dark); font-weight: 900; }
+        .rules-section li::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 7px;
+            width: 8px;
+            height: 8px;
+            background: var(--brand-green);
+            border-radius: 50%;
+        }
+        
         /* === מגרש (בחירת הרכב) === */
 .soccer-field { background: linear-gradient(180deg, #2a7344 0%, #184f2c 100%); position: relative; border: 1px solid rgba(124,168,86,0.5); border-radius: 12px; min-height: 400px; display: flex; flex-direction: column; justify-content: space-around; box-shadow: inset 0 0 40px rgba(0,0,0,0.3), 0 10px 25px rgba(0,0,0,0.15); overflow: hidden; padding: 15px 0; }        .field-lines { position: absolute; inset: 15px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; pointer-events: none; }
         .field-lines::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255,255,255,0.15); transform: translateY(-50%); }
@@ -1943,7 +1997,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         </div>
         <div class="fm-submenu">
             <div class="fm-sub-item active" onclick="event.stopPropagation(); switchFmTab('tab-intro', this)">סקירה כללית</div>
-            
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-rules', this)">תקנון וחוקים</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-dashboard', this)">הודעות והתראות</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-profile', this)">פרופיל המנג'ר</div>
         </div>
@@ -2075,6 +2129,65 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     <div class="play-triangle"></div>
                                 </div>
                                 <div class="video-text">סרטון הדרכה יעלה בקרוב...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                   <div id="tab-rules" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            תקנון וחוקי המשחק
+                        </h2>
+                        
+                        <div class="rules-scroll-container">
+                            <div class="rules-content-inner">
+                                
+                                <div class="rules-section">
+                                    <h3><span style="font-size:22px;">🏟️</span> 1. מבנה הליגה והקבוצות</h3>
+                                    <ul>
+                                        <li><strong>גודל ליגה:</strong> כל ליגה מורכבת מ-8 קבוצות בדיוק. כאשר 8 מנג'רים מצטרפים לליגה, היא נסגרת באופן אוטומטי.</li>
+                                        <li><strong>גודל סגל:</strong> בכל קבוצה יש בדיוק 20 שחקנים בכל זמן נתון.</li>
+                                        <li><strong>בלעדיות על שחקנים:</strong> שחקן יכול להיות שייך רק לקבוצה אחת באותה ליגה (לא יכולים להיות שני מנג'רים עם אמבפה באותה ליגה).</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rules-section">
+                                    <h3><span style="font-size:22px;">🎲</span> 2. שלב הדראפט המקדים</h3>
+                                    <ul>
+                                        <li>לאחר סגירת הליגה, מתבצעת הגרלת דראפט אקראית מתוך מאגר של 1000 שחקנים (מה-5 ליגות הבכירות באירופה).</li>
+                                        <li><strong>חלוקת עמדות מובטחת בדראפט:</strong> 2 שוערים, 6 שחקני הגנה, 6 קשרים ו-6 חלוצים.</li>
+                                        <li><strong>חלוקת רמות מובטחת בדראפט:</strong> 2 שחקני כוכב על, 3 רמה 1, 5 רמה 2, 5 רמה 3, ו-5 רמה 4.</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rules-section">
+                                    <h3><span style="font-size:22px;">🔄</span> 3. העברות, טריידים ומכירות פומביות</h3>
+                                    <ul>
+                                        <li><strong>חובת סגל מלא:</strong> כשמציעים על שחקן (מסגל יריב או ממכירה פומבית), חובה לבחור שחקן מהסגל שלכם שיופרש (יועבר לקבוצה השנייה או יהפוך לשחקן חופשי) כדי לשמור על 20 שחקנים.</li>
+                                        <li><strong>מכירות פומביות:</strong> התמודדות על שחקנים חופשיים. מציעים סכום כספי + שחקן מהסגל. הראשון שזוכה מקבל את השחקן.</li>
+                                        <li><strong>טריידים ישירים:</strong> ניתן להציע טרייד למנג'ר אחר ב-2 תצורות: ראש בראש (שחקן תמורת שחקן), או שחקן + תוספת תשלום כספית.</li>
+                                        <li><strong>מגבלת מינימום עמדות:</strong> כדי לאפשר בניית הרכבים, חל איסור לבצע מהלכים שישאירו אתכם עם פחות מ: 2 שוערים, 5 שחקני הגנה, 5 קשרים, 4 חלוצים.</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rules-section">
+                                    <h3><span style="font-size:22px;">⚽</span> 4. שיטת ניקוד וטבלה (Head-to-Head)</h3>
+                                    <ul>
+                                        <li><strong>ניקוד מציאותי:</strong> הנקודות ניתנות אך ורק על סמך ביצועי השחקנים בליגות המקומיות במציאות (לא כולל מפעלים אחרים).</li>
+                                        <li><strong>קרב פנים מול פנים:</strong> בכל מחזור יש דו-קרב בין מנג'רים (קבוצה א' נגד קבוצה ב').</li>
+                                        <li>הקבוצה שהשחקנים שלה צברו יותר נקודות במחזור מנצחת ומקבלת <strong>3 נקודות</strong> בטבלת הליגה. במקרה של שוויון בנקודות הפנטזי, שתי הקבוצות יקבלו <strong>נקודה אחת</strong>.</li>
+                                        <li><strong>שוברי שוויון בטבלה הכללית:</strong> במקרה של שוויון נקודות בסוף העונה, ההכרעה תהיה לפי: 1. למי יש יותר ניצחונות 2. יותר שערי זכות (של השחקנים) 3. הכי הרבה משחקי רשת נקייה.</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rules-section">
+                                    <h3><span style="font-size:22px;">🛍️</span> 5. חנות הפנטזי, בוסטים והפתעות</h3>
+                                    <ul>
+                                        <li><strong>בוסטים טקטיים:</strong> ניתן לרכוש בחנות בוסטים חד-פעמיים שתקפים למחזור אחד בלבד (למשל: 'סופר קפטן' שנותן פי 4 נקודות במחזור הקרוב).</li>
+                                        <li><strong>מחלקת חבילות (Packs):</strong> ניתן לרכוש חבילות פרימיום מיוחדות. בחבילות אלו מסתתרות הפתעות כגון פרסים כספיים גדולים לתקציב, בוסטים חזקים במיוחד ושדרוגים קוסמטיים למועדון.</li>
+                                    </ul>
+                                </div>
+
                             </div>
                         </div>
                     </div>
