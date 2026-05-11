@@ -5432,17 +5432,38 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             ]
         };
 
-        // 2. פונקציית העזר למשיכת אייטם רנדומלי מהפול
+        // 2. פונקציית עזר למשיכת אייטם רנדומלי מהפול (כולל הזרקת נתוני רמה לעיצוב ומיון)
         function getRandomItemFromPool(poolName) {
             const pool = rewardsPool[poolName];
-            return pool[Math.floor(Math.random() * pool.length)];
+            // אנחנו משכפלים את האובייקט כדי לא לדרוס את המאגר המקורי
+            let item = { ...pool[Math.floor(Math.random() * pool.length)] };
+            
+            if (poolName === 'base') {
+                item.tierWeight = 1;
+                item.tierLabel = 'בסיס';
+                item.borderColor = '#94a3b8';
+                item.badgeBg = '#e2e8f0';
+                item.badgeColor = '#0f172a';
+            } else if (poolName === 'mid') {
+                item.tierWeight = 2;
+                item.tierLabel = 'ביניים';
+                item.borderColor = '#38bdf8';
+                item.badgeBg = '#0284c7';
+                item.badgeColor = '#fff';
+            } else if (poolName === 'top') {
+                item.tierWeight = 3;
+                item.tierLabel = 'טופ!';
+                item.borderColor = '#fbbf24';
+                item.badgeBg = '#fbbf24';
+                item.badgeColor = '#000';
+            }
+            return item;
         }
 
         // 3. הפונקציה הראשית שפותחת את החבילה
         window.openGachaPack = function(tier, price) {
             const formattedPrice = window.formatNumberWithCommas ? window.formatNumberWithCommas(price) : price;
             
-            // כאן נוסיף בעתיד בדיקה האם יש למשתמש מספיק כסף בתקציב (מול ה-DB)
             if(!confirm(`האם אתה בטוח שברצונך לרכוש את החבילה ב-₪${formattedPrice}?`)) return;
 
             // אתחול האנימציה
@@ -5478,7 +5499,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             else if (tier === 'silver') {
                 box.style.stroke = "#cbd5e1";
                 totalItems = 8;
-                // מובטח 2 פריטי ביניים
                 drawnItems.push(getRandomItemFromPool('mid'));
                 drawnItems.push(getRandomItemFromPool('mid'));
                 for(let i=0; i<6; i++) {
@@ -5491,7 +5511,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             else if (tier === 'diamond') {
                 box.style.stroke = "#d8b4fe";
                 totalItems = 11;
-                // מובטח 3 פריטי ביניים
                 drawnItems.push(getRandomItemFromPool('mid'));
                 drawnItems.push(getRandomItemFromPool('mid'));
                 drawnItems.push(getRandomItemFromPool('mid'));
@@ -5505,7 +5524,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             else if (tier === 'gold') {
                 box.style.stroke = "#fbbf24";
                 totalItems = 15;
-                // מובטח טופ 1 ו-5 ביניים
                 drawnItems.push(getRandomItemFromPool('top'));
                 for(let i=0; i<5; i++) drawnItems.push(getRandomItemFromPool('mid'));
                 for(let i=0; i<9; i++) {
@@ -5516,16 +5534,18 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 }
             }
 
-            // יצירת ה-HTML של הקלפים המוגרלים
+            // 5. מיון האייטמים: קודם טופ, אחר כך ביניים, בסוף בסיס
+            drawnItems.sort((a, b) => b.tierWeight - a.tierWeight);
+
+            // יצירת ה-HTML של הקלפים המוגרלים עם התגית
             let rewardHtml = '';
             drawnItems.forEach((item, idx) => {
-                // קביעת צבע המסגרת לפי סוג האייטם (לדוגמה, יהלום לטופ, כסף למיד)
-                let borderColor = '#94a3b8'; // default base
-                if (rewardsPool.top.some(p => p.title === item.title)) borderColor = '#fbbf24'; // top
-                else if (rewardsPool.mid.some(p => p.title === item.title)) borderColor = '#38bdf8'; // mid
-
                 rewardHtml += `
-                    <div class="reward-card" style="border-color: ${borderColor}; animation-delay: ${idx * 0.1}s; min-width: 180px;">
+                    <div class="reward-card" style="border-color: ${item.borderColor}; animation-delay: ${idx * 0.1}s; min-width: 180px; position: relative;">
+                        <div style="position: absolute; top: -10px; right: -10px; background: ${item.badgeBg}; color: ${item.badgeColor}; font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid #1e293b; z-index: 10;">
+                            ${item.tierLabel}
+                        </div>
+                        
                         <div class="reward-icon">${item.icon}</div>
                         <div class="reward-title" style="font-size: 16px;">${item.title}</div>
                         <div class="reward-desc" style="font-size: 11px;">${item.desc}</div>
@@ -5533,14 +5553,13 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 `;
             });
 
-            // 5. תזמון הפיצוץ והצגת הפרסים
+            // 6. תזמון הפיצוץ והצגת הפרסים
             setTimeout(() => {
                 box.classList.remove('shaking');
                 box.classList.add('opening'); 
                 flash.classList.add('explode'); 
                 
                 setTimeout(() => {
-                    // עדכון התצוגה כך שהקלפים יוצגו ברשת (Grid) במקרה של הרבה קלפים
                     rewardsCont.style.display = 'grid';
                     rewardsCont.style.gridTemplateColumns = totalItems > 5 ? 'repeat(5, 1fr)' : 'repeat(auto-fit, minmax(180px, 1fr))';
                     rewardsCont.style.gap = '15px';
@@ -5559,7 +5578,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
         window.closeGachaPack = function() {
             document.getElementById('pack-overlay').classList.remove('active');
-            // כאן נוסיף בעתיד את השליחה של drawnItems למסד הנתונים של השחקן
+            // כאן נוסיף בעתיד את השליחה של drawnItems למסד הנתונים של השחקן (הפרסים שלי)
         };
 
         function loadRandomSurprisePlayer() {
