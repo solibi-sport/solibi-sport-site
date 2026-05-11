@@ -3772,72 +3772,63 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     </div>
 
 <div id="tab-packages" class="fm-tab">
-                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                            מחלקת חבילות והפתעות
-                        </h2>
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        מחלקת חבילות (Packs)
+    </h2>
 
-                        <div class="packs-grid">
-                            
-                            <div class="pack-card pack-bronze" onclick="openGachaPack('bronze', 2000000)">
-                                <div class="pack-icon">
-                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="1"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(205, 127, 50, 0.2)" stroke-width="2"></path></svg>
-                                </div>
-                                <div class="pack-title" style="color: #cd7f32;">ארגז בסיסי</div>
-                                <div class="pack-desc">חבילת פתיחה למנג'ר המתחיל. סיכוי נמוך להפתעות גדולות.</div>
-                                <div class="pack-chances">
-                                    <span><strong>80%</strong> - החזר כספי חלקי (1M)</span>
-                                    <span><strong>15%</strong> - קלף חילוף חינם</span>
-                                    <span><strong>5%</strong> - בוסט רגיל אקראי</span>
-                                </div>
-                                <button class="pack-btn">פתח ב-₪2.0M</button>
-                            </div>
+    <div class="packs-grid">
+        
+        <div class="pack-card pack-bronze">
+            <div class="pack-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(148, 163, 184, 0.2)" stroke-width="2"></path></svg>
+            </div>
+            <div class="pack-title" style="color: #cbd5e1;">חבילת בסיס</div>
+            <div class="pack-desc" style="margin-bottom: 10px;">ההתחלה שלך. מכילה 5 פריטים. סיכוי נמוך להפתעות גדולות.</div>
+            <div style="margin-bottom: 20px; z-index: 2; position: relative;">
+                <button onclick="showPackRates('bronze')" style="background: none; border: 1px dashed rgba(255,255,255,0.3); color: #cbd5e1; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">🔍 אחוזי זכייה</button>
+            </div>
+            <button class="pack-btn" style="background: rgba(148,163,184,0.1); border-color: #94a3b8;" onclick="openGachaPack('bronze', 2000000)">פתח ב-₪2.0M</button>
+        </div>
 
-                            <div class="pack-card pack-silver" onclick="openGachaPack('silver', 5000000)">
-                                <div class="pack-icon">
-                                    <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(203, 213, 225, 0.2)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="1"></polyline></svg>
-                                </div>
-                                <div class="pack-title" style="color: #e2e8f0;">מארז מקצוען</div>
-                                <div class="pack-desc">הסיכויים עולים! יותר כסף, יותר חילופים והזדמנות לבוסטים.</div>
-                                <div class="pack-chances">
-                                    <span><strong>60%</strong> - כסף מזומן (2M-4M)</span>
-                                    <span><strong>25%</strong> - 2 קלפי חילוף חינם</span>
-                                    <span><strong>15%</strong> - בוסט אסטרטגי יקר</span>
-                                </div>
-                                <button class="pack-btn">פתח ב-₪5.0M</button>
-                            </div>
+        <div class="pack-card pack-silver">
+            <div class="pack-icon">
+                <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.5"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(56, 189, 248, 0.2)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="1"></polyline></svg>
+            </div>
+            <div class="pack-title" style="color: #38bdf8;">חבילת פריים</div>
+            <div class="pack-desc" style="margin-bottom: 10px;">מכילה 8 פריטים. סיכוי לשחקני רוטציה משמעותיים ובוסטים.</div>
+            <div style="margin-bottom: 20px; z-index: 2; position: relative;">
+                <button onclick="showPackRates('silver')" style="background: none; border: 1px dashed rgba(255,255,255,0.3); color: #38bdf8; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">🔍 אחוזי זכייה</button>
+            </div>
+            <button class="pack-btn" style="background: rgba(56,189,248,0.1); border-color: #38bdf8; color:#fff;" onclick="openGachaPack('silver', 6000000)">פתח ב-₪6.0M</button>
+        </div>
 
-                            <div class="pack-card pack-gold" onclick="openGachaPack('gold', 12000000)">
-                                <div class="pack-icon">
-                                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" style="filter: drop-shadow(0 0 10px rgba(251,191,36,0.6));"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(251, 191, 36, 0.3)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="2"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                                </div>
-                                <div class="pack-title" style="color: #fbbf24;">כספת עילית</div>
-                                <div class="pack-desc">מובטח: לפחות בוסט אחד או פריט קוסמטיקה למועדון!</div>
-                                <div class="pack-chances">
-                                    <span><strong>40%</strong> - בוסט פרימיום (ספסל פעיל)</span>
-                                    <span><strong>40%</strong> - כסף מזומן מטורף (15M)</span>
-                                    <span><strong>20%</strong> - פריט קוסמטי (VIP)</span>
-                                </div>
-                                <button class="pack-btn">פתח ב-₪12.0M</button>
-                            </div>
+        <div class="pack-card pack-diamond">
+            <div class="pack-icon">
+                <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#d8b4fe" stroke-width="2" style="filter: drop-shadow(0 0 15px rgba(216,180,254,0.8));"><polygon points="12 2 2 7 12 12 22 7 12 2" fill="rgba(216,180,254,0.3)"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            </div>
+            <div class="pack-title" style="color: #d8b4fe;">חבילת פלטינום</div>
+            <div class="pack-desc" style="margin-bottom: 10px;">מכילה 11 פריטים. מובטח מינימום 3 פריטי ביניים ומעלה.</div>
+            <div style="margin-bottom: 20px; z-index: 2; position: relative;">
+                <button onclick="showPackRates('diamond')" style="background: none; border: 1px dashed rgba(255,255,255,0.3); color: #d8b4fe; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">🔍 אחוזי זכייה</button>
+            </div>
+            <button class="pack-btn" style="background: rgba(216,180,254,0.1); border-color: #d8b4fe;" onclick="openGachaPack('diamond', 14000000)">פתח ב-₪14.0M</button>
+        </div>
 
-                            <div class="pack-card pack-diamond" onclick="openGachaPack('diamond', 25000000)">
-                                <div class="pack-icon">
-                                    <svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="#d8b4fe" stroke-width="2" style="filter: drop-shadow(0 0 15px rgba(216,180,254,0.8));"><polygon points="12 2 2 7 12 12 22 7 12 2" fill="rgba(216,180,254,0.3)"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                                </div>
-                                <div class="pack-title" style="color: #d8b4fe;">תיבת טיטניום</div>
-                                <div class="pack-desc">למנג'רים עשירים בלבד. פרסים מחריבי-כלכלה מובטחים.</div>
-                                <div class="pack-chances">
-                                    <span><strong>100% מובטח:</strong></span>
-                                    <span>פריט קוסמטיקה (מסגרת זהב)</span>
-                                    <span>+ בוסט "ספסל פעיל"</span>
-                                    <span>+ החזר 5M למערכת</span>
-                                </div>
-                                <button class="pack-btn">פתח ב-₪25.0M</button>
-                            </div>
+        <div class="pack-card pack-gold">
+            <div class="pack-icon">
+                <svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" style="filter: drop-shadow(0 0 10px rgba(251,191,36,0.6));"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(251, 191, 36, 0.3)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="2"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+            <div class="pack-title" style="color: #fbbf24;">חבילת עלית</div>
+            <div class="pack-desc" style="margin-bottom: 10px;">15 פריטים. מובטח פריט טופ 1 אגדי מינימום!</div>
+            <div style="margin-bottom: 20px; z-index: 2; position: relative;">
+                <button onclick="showPackRates('gold')" style="background: none; border: 1px dashed rgba(255,255,255,0.3); color: #fbbf24; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">🔍 אחוזי זכייה</button>
+            </div>
+            <button class="pack-btn" style="background: rgba(251,191,36,0.1); border-color: #fbbf24;" onclick="openGachaPack('gold', 25000000)">פתח ב-₪25.0M</button>
+        </div>
 
-                        </div>
-                    </div>
+    </div>
+</div>
                   
                     </div> </div> </div> 
 
@@ -6194,6 +6185,93 @@ document.addEventListener('DOMContentLoaded', () => {
         
     </script>
 
+<div class="player-modal-overlay" id="rates-modal-overlay" onclick="closeRatesModal(event)" style="z-index: 10001; display: none;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 80vh; max-width: 400px; padding: 0; direction: rtl;">
+        <div class="pm-header" style="padding: 20px; text-align: center; border-bottom: 3px solid var(--brand-green);">
+            <svg class="pm-close" onclick="closeRatesModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="top: 20px; right: auto; left: 15px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <h3 id="rates-title" style="font-size: 20px; font-weight: 900; margin: 0; color: #fff;">אחוזי זכייה בחבילה</h3>
+        </div>
+        <div class="pm-body" style="padding: 20px; background: #fff;">
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; font-weight: bold; text-align: center;">האחוזים מייצגים את הסיכוי למשוך פריט מכל רמת נדירות עבור כל קלף בחבילה שאינו מובטח.</p>
+            <div id="rates-content" style="display: flex; flex-direction: column; gap: 15px;">
+                </div>
+            <button class="pm-btn-secondary" style="width: 100%; padding: 12px; margin-top: 25px; border-radius: 8px; font-weight: 900; cursor: pointer; border: 1px solid #cbd5e1; background: #f8fafc;" onclick="closeRatesModal()">הבנתי, סגור</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const packRatesDB = {
+        'bronze': {
+            title: 'חבילת בסיס',
+            color: '#94a3b8',
+            promise: 'סה"כ 5 אייטמים: מובטח לפחות 3-4 פריטי קוסמטיקה וכינויים מהבסיס.',
+            chances: [
+                {label: '🟢 פריטי בסיס (תקציב, כינויים רגילים)', rate: '90%'},
+                {label: '🔵 פריטי ביניים (בוסטים, בחירה רמה 3)', rate: '9%'},
+                {label: '🟣 פריטי טופ (אגדי / נדיר ביותר)', rate: '1%'}
+            ]
+        },
+        'silver': {
+            title: 'חבילת פריים',
+            color: '#38bdf8',
+            promise: 'סה"כ 8 אייטמים: מובטח לפחות 2 פריטי ביניים ומעלה.',
+            chances: [
+                {label: '🟢 פריטי בסיס (תקציב, כינויים רגילים)', rate: '70%'},
+                {label: '🔵 פריטי ביניים (בוסטים, בחירה רמה 3)', rate: '25%'},
+                {label: '🟣 פריטי טופ (אגדי / נדיר ביותר)', rate: '5%'}
+            ]
+        },
+        'diamond': {
+            title: 'חבילת פלטינום',
+            color: '#d8b4fe',
+            promise: 'סה"כ 11 אייטמים: מובטח 3 פריטי ביניים ומעלה.',
+            chances: [
+                {label: '🟢 פריטי בסיס (תקציב, כינויים רגילים)', rate: '50%'},
+                {label: '🔵 פריטי ביניים (בוסטים, בחירה רמה 3)', rate: '38%'},
+                {label: '🟣 פריטי טופ (אגדי / נדיר ביותר)', rate: '12%'}
+            ]
+        },
+        'gold': {
+            title: 'חבילת עלית',
+            color: '#fbbf24',
+            promise: 'סה"כ 15 אייטמים: מובטח 100% פריט טופ (רמה 3) אחד + 5 ביניים!',
+            chances: [
+                {label: '🟢 פריטי בסיס (תקציב, כינויים רגילים)', rate: '30%'},
+                {label: '🔵 פריטי ביניים (בוסטים, בחירה רמה 3)', rate: '50%'},
+                {label: '🟣 פריטי טופ (אגדי / נדיר ביותר)', rate: '20%'}
+            ]
+        }
+    };
+
+    function showPackRates(packId) {
+        const data = packRatesDB[packId];
+        if(!data) return;
+
+        document.getElementById('rates-title').innerText = `סיכויים: ${data.title}`;
+        document.getElementById('rates-title').style.color = data.color;
+        
+        let html = `<div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; border-right: 3px solid ${data.color}; font-size: 13px; font-weight: bold; margin-bottom: 10px;">${data.promise}</div>`;
+        
+        data.chances.forEach(item => {
+            html += `
+                <div style="display: flex; justify-content: space-between; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <span style="font-weight: bold; color: #334155; font-size: 14px;">${item.label}</span>
+                    <span style="font-weight: 900; color: ${data.color}; font-size: 16px;">${item.rate}</span>
+                </div>
+            `;
+        });
+
+        document.getElementById('rates-content').innerHTML = html;
+        document.getElementById('rates-modal-overlay').style.display = 'flex';
+    }
+
+    function closeRatesModal(e) {
+        if (e && e.target !== document.getElementById('rates-modal-overlay')) return;
+        document.getElementById('rates-modal-overlay').style.display = 'none';
+    }
+</script>
+    
     <div class="pack-overlay" id="pack-overlay">
         <div class="pack-flash" id="pack-flash"></div>
         <svg class="pack-box" id="pack-box" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="1.5">
