@@ -2251,6 +2251,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                         <li><strong>תקציב התחלתי:</strong> כל קבוצה מקבלת תקציב התחלתי של 100 מיליון ש"ח.</li> 
                                         <li><strong>חובת סגל מלא:</strong> בכל רכישת שחקן/טרייד חובה להפריש שחקן מהסגל שלכם כדי לשמור על מגבלת ה-20.</li>
                                         <li><strong>מכירה פומבית:</strong> התמודדות על שחקנים חופשיים (הצעת סכום + שחקן מהסגל לשחרור).</li>
+                                        <li><strong>מכסת חילופים:</strong> בין מחזור למחזור מותר לבצע עד <strong>3 חילופים/העברות</strong> בסגל (ניתן להגדיל את המכסה נקודתית באמצעות קלף "חילוף אקסטרה" מחבילות ההפתעה).</li>
                                         <li><strong>טריידים ישירים:</strong> ניתן להציע למנג'ר יריב טרייד "ראש בראש" או הצעת שחקן + תוספת תשלום.</li>
                                         <li><strong>מגבלת סגל מינימלית:</strong> אסור לבצע מהלך שישאיר אתכם עם פחות מ: 2 שוערים, 5 שחקני הגנה, 5 קשרים או 4 חלוצים.</li>
                                     </ul>
@@ -2347,11 +2348,91 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                 </div>
 
                                 <div class="rules-section">
-                                    <h3><span>🎁</span> 8. חנות הפנטזי וחבילות</h3>
-                                    <ul>
-                                        <li><strong>בוסטים:</strong> שדרוגים טקטיים לשימוש במחזור בודד (לדוגמה: "סופר קפטן" המכפיל את ניקוד הקפטן פי 4).</li>
-                                        <li><strong>חבילות הפתעה:</strong> אפשרות לרכוש חבילות וירטואליות המעניקות תקציב נוסף, בוסטים מיוחדים או קוסמטיקה למועדון.</li>
-                                    </ul>
+                                    <h3><span>🎁</span> 8. חנות הפנטזי וחבילות (Gacha)</h3>
+                                    <p style="font-size: 14px; margin-bottom: 10px; font-weight: bold;">חנות הפנטזי מאפשרת למנג'רים להשתמש בתקציב הקבוצה כדי לשדרג את הסגל, להפעיל מהלכים טקטיים ולהתאים אישית את המועדון.</p>
+                                    
+                                    <div class="rules-sub-heading">🛒 בוסטים וקוסמטיקה</div>
+                                    <table class="rules-modern-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 25%;">סוג פריט</th>
+                                                <th>תיאור</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>בוסטים טקטיים</strong></td>
+                                                <td>שדרוגים חד-פעמיים המופעלים למחזור הקרוב בלבד (לדוגמה: "סופר קפטן" המכפיל ניקוד פי 4, או "חסינות" ממינוסים). בוסט פעיל מסומן בכוכבית בטבלת הליגה.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>בוטיק קוסמטיקה</strong></td>
+                                                <td>פריטי עיצוב למועדון הנשמרים באוסף, כגון סמלי אנימציה (GIF), מסגרות תאורה לטבלת הליגה, וכינויי מנג'ר ייחודיים.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="rules-sub-heading">📦 חבילות הפתעה ומנגנון ההגרלות</div>
+                                    <p style="font-size: 14px; margin-bottom: 10px;">חבילות הן הדרך המהירה (והמסוכנת) ביותר להשיג יתרון. הן מכילות כסף לתקציב, בוסטים, כרטיסי חילוף בחינם, וקלפי "בחירת שחקן" נדירים. הפריטים מחולקים ל-3 רמות נדירות:</p>
+                                    
+                                    <table class="rules-modern-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 25%;">רמת פריט</th>
+                                                <th>תוכן אפשרי</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><span style="color: #94a3b8; font-weight: 900;">🟢 בסיס</span></td>
+                                                <td>כסף קטן (100K-500K), כינויים נפוצים, סמלים רגילים, קלפי "בחירת שחקן: רמה 4", +1 נק' בונוס.</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="color: #38bdf8; font-weight: 900;">🔵 ביניים</span></td>
+                                                <td>כסף בינוני (1M-2.5M), בוסטים טקטיים, "סגן קפטן", "חילוף אקסטרה", קלפי "בחירת שחקן: רמה 2-3".</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span style="color: #fbbf24; font-weight: 900;">🟣 טופ (אגדי)</span></td>
+                                                <td>כסף ענק (4M-15M), בוסט פרימיום (ספסל פעיל), קלפי "בחירת שחקן: כוכב על", סמלים מונפשים, +10 נק'.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="rules-sub-heading">🎰 אחוזי זכייה לפי חבילה</div>
+                                    <table class="rules-modern-table" style="text-align: center;">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: right;">שם החבילה</th>
+                                                <th style="text-align: center;">כמות פריטים</th>
+                                                <th style="text-align: center;">🟢 בסיס</th>
+                                                <th style="text-align: center;">🔵 ביניים</th>
+                                                <th style="text-align: center;">🟣 טופ</th>
+                                                <th style="text-align: right;">הבטחה בחבילה (Pity)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: right; color:#94a3b8; font-weight:900;">ארגז בסיסי</td>
+                                                <td>5</td><td>90%</td><td>9%</td><td>1%</td>
+                                                <td style="text-align: right;">ללא הבטחה</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right; color:#38bdf8; font-weight:900;">מארז מקצוען</td>
+                                                <td>8</td><td>70%</td><td>25%</td><td>5%</td>
+                                                <td style="text-align: right;">מינימום 2 פריטי ביניים</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right; color:#d8b4fe; font-weight:900;">חבילת פלטינום</td>
+                                                <td>11</td><td>50%</td><td>38%</td><td>12%</td>
+                                                <td style="text-align: right;">מינימום 3 פריטי ביניים</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right; color:#fbbf24; font-weight:900;">חבילת עלית</td>
+                                                <td>15</td><td>30%</td><td>50%</td><td>20%</td>
+                                                <td style="text-align: right;">מובטח פריט טופ 1 + 5 ביניים</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p style="font-size: 11px; color: #ef4444; margin-top: 5px;">* מנגנון מניעת הצפה: מובטח שייצאו מקסימום 2 פרסים כספיים ומקסימום 2 כרטיסי החלפת שחקן בחבילה אחת בודדת.</p>
                                 </div>
 
                             </div>
@@ -5583,12 +5664,14 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 
                 setTimeout(() => {
                     rewardsCont.style.display = 'grid';
-                    rewardsCont.style.gridTemplateColumns = totalItems > 5 ? 'repeat(5, 1fr)' : 'repeat(auto-fit, minmax(180px, 1fr))';
+                   rewardsCont.style.gridTemplateColumns = totalItems > 5 ? 'repeat(5, 1fr)' : 'repeat(auto-fit, minmax(180px, 1fr))';
                     rewardsCont.style.gap = '15px';
-                    rewardsCont.style.maxWidth = '90vw';
-                    rewardsCont.style.maxHeight = '70vh';
+                    rewardsCont.style.width = '100%';
+                    rewardsCont.style.maxWidth = '1200px'; /* מאפשר פריסה רחבה למסכים גדולים */
+                    rewardsCont.style.maxHeight = '85vh'; /* מגדיל את הגובה כדי למנוע גלילה מיותרת */
                     rewardsCont.style.overflowY = 'auto';
                     rewardsCont.style.padding = '20px';
+                    rewardsCont.style.direction = 'rtl'; /* פותר את בעיית פס הגלילה משמאל - מעביר לימין */
 
                     rewardsCont.innerHTML = rewardHtml;
                     rewardsCont.classList.add('show'); 
