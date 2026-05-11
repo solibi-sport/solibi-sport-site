@@ -1948,7 +1948,19 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .pts-plus { color: var(--brand-green); font-weight: 900; direction: ltr; display: inline-block; text-shadow: 0 0 5px rgba(124,168,86,0.3);}
         .pts-minus { color: #ef4444; font-weight: 900; direction: ltr; display: inline-block; }
         .rules-sub-heading { color: var(--text-dark); font-size: 16px; font-weight: 900; margin: 20px 0 10px 0; border-bottom: 2px solid rgba(124, 168, 86, 0.3); padding-bottom: 5px; display: inline-block; }
-        
+
+        /* === עיצוב דף הפרסים שלי === */
+        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 10px; }
+        .inv-card { background: var(--bg-silver-matte); border: 2px solid rgba(0,0,0,0.05); border-radius: 16px; padding: 20px 15px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .inv-card:hover { transform: translateY(-5px); border-color: var(--brand-green); box-shadow: 0 10px 25px rgba(124, 168, 86, 0.2); }
+        .inv-qty-badge { position: absolute; top: -10px; right: -10px; background: #e11d48; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 8px rgba(225, 29, 72, 0.5); border: 2px solid #fff; z-index: 10; }
+        .inv-icon-wrap { width: 70px; height: 70px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 35px; margin-bottom: 12px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); background: #fff; }
+        .inv-card.tier-legendary .inv-icon-wrap { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 2px solid #fbbf24; box-shadow: 0 0 15px rgba(251,191,36,0.4); }
+        .inv-card.tier-epic .inv-icon-wrap { background: linear-gradient(135deg, #f3e8ff, #d8b4fe); border: 2px solid #a855f7; box-shadow: 0 0 15px rgba(168,85,247,0.4); }
+        .inv-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; line-height: 1.2; }
+        .inv-desc { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 15px; flex: 1; }
+        .inv-btn { width: 100%; background: var(--element-navy-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .inv-btn:hover { background: var(--brand-green); transform: scale(1.02); }
     </style>
         
 </head>
@@ -2091,6 +2103,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         <div class="fm-submenu">
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-boosts', this)">בוסטים טקטיים</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-cosmetics', this)">בוטיק יוקרה</div> <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-packages', this)">חבילות והפתעות</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-my-rewards', this)">הפרסים שלי 🎒</div>
         </div>
     </div>
 </nav>
@@ -3827,7 +3840,31 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
     </div>
 </div>
-                  
+<div id="tab-my-rewards" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            הפרסים שלי (מלאי זמין)
+                        </h2>
+                        
+                        <p style="color: #64748b; font-weight: bold; margin-bottom: 20px;">כאן נשמרים כל הפריטים והקוסמטיקה. פריטים לשימוש חד-פעמי ייעלמו לאחר ההפעלה.</p>
+
+                        <div class="inventory-grid">
+                            <div class="inv-card tier-legendary">
+                                <div class="inv-qty-badge">x1</div>
+                                <div class="inv-icon-wrap">🃏</div>
+                                <div class="inv-title">בחירת שחקן: כוכב על</div>
+                                <div class="inv-desc">אגדי! בחר 1 מתוך 3 כוכבי על אקראיים.</div>
+                                <button class="inv-btn" onclick="alert('מערכת הגרלת שחקנים עולה בקרוב...')">השתמש עכשיו</button>
+                            </div>
+                            <div class="inv-card">
+                                <div class="inv-qty-badge">x3</div>
+                                <div class="inv-icon-wrap">🔄</div>
+                                <div class="inv-title">חילוף אקסטרה</div>
+                                <div class="inv-desc">מאפשר לבצע 4 חילופים במקום 3.</div>
+                                <button class="inv-btn" onclick="alert('נוסף לך חילוף אחד למחזור הנוכחי!')">השתמש עכשיו</button>
+                            </div>
+                        </div>
+                    </div>                  
                     </div> </div> </div> 
 
             <aside class="collapsible-live-panel" id="livePanel">
@@ -6269,7 +6306,44 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('rates-modal-overlay').style.display = 'none';
     }
 </script>
-    
+    <div class="player-modal-overlay" id="rates-modal-overlay" onclick="closeRatesModal(event)" style="z-index: 10001; display: none;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 80vh; max-width: 400px; padding: 0; direction: rtl;">
+        <div class="pm-header" style="padding: 20px; text-align: center; border-bottom: 3px solid var(--brand-green);">
+            <svg class="pm-close" onclick="closeRatesModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="top: 20px; right: auto; left: 15px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <h3 id="rates-title" style="font-size: 20px; font-weight: 900; margin: 0; color: #fff;">אחוזי זכייה בחבילה</h3>
+        </div>
+        <div class="pm-body" style="padding: 20px; background: #fff;">
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; font-weight: bold; text-align: center;">הסיכוי למשוך פריט מכל רמת נדירות בחבילה זו.</p>
+            <div id="rates-content" style="display: flex; flex-direction: column; gap: 15px;"></div>
+            <button class="pm-btn-secondary" style="width: 100%; padding: 12px; margin-top: 25px; border-radius: 8px; font-weight: 900; cursor: pointer; border: 1px solid #cbd5e1; background: #f8fafc;" onclick="closeRatesModal()">הבנתי, סגור</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const packRatesDB = {
+        'bronze': { title: 'חבילת בסיס', color: '#94a3b8', promise: 'סה"כ 5 אייטמים: מובטח לפחות 3 פריטי בסיס.', chances: [{label: '🟢 פריטי בסיס', rate: '90%'}, {label: '🔵 פריטי ביניים', rate: '9%'}, {label: '🟣 פריטי טופ', rate: '1%'}] },
+        'silver': { title: 'חבילת פריים', color: '#38bdf8', promise: 'סה"כ 8 אייטמים: מובטח 2 פריטי ביניים.', chances: [{label: '🟢 פריטי בסיס', rate: '70%'}, {label: '🔵 פריטי ביניים', rate: '25%'}, {label: '🟣 פריטי טופ', rate: '5%'}] },
+        'diamond': { title: 'חבילת פלטינום', color: '#d8b4fe', promise: 'סה"כ 11 אייטמים: מובטח 3 פריטי ביניים.', chances: [{label: '🟢 פריטי בסיס', rate: '50%'}, {label: '🔵 פריטי ביניים', rate: '38%'}, {label: '🟣 פריטי טופ', rate: '12%'}] },
+        'gold': { title: 'חבילת עלית', color: '#fbbf24', promise: 'סה"כ 15 אייטמים: מובטח 100% פריט טופ!', chances: [{label: '🟢 פריטי בסיס', rate: '30%'}, {label: '🔵 פריטי ביניים', rate: '50%'}, {label: '🟣 פריטי טופ', rate: '20%'}] }
+    };
+
+    function showPackRates(packId) {
+        const data = packRatesDB[packId];
+        if(!data) return;
+        document.getElementById('rates-title').innerText = `סיכויים: ${data.title}`;
+        document.getElementById('rates-title').style.color = data.color;
+        let html = `<div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; border-right: 3px solid ${data.color}; font-size: 13px; font-weight: bold; margin-bottom: 10px;">${data.promise}</div>`;
+        data.chances.forEach(item => { html += `<div style="display: flex; justify-content: space-between; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;"><span style="font-weight: bold; color: #334155; font-size: 14px;">${item.label}</span><span style="font-weight: 900; color: ${data.color}; font-size: 16px;">${item.rate}</span></div>`; });
+        document.getElementById('rates-content').innerHTML = html;
+        document.getElementById('rates-modal-overlay').style.display = 'flex';
+    }
+
+    function closeRatesModal(e) {
+        if (e && e.target !== document.getElementById('rates-modal-overlay')) return;
+        document.getElementById('rates-modal-overlay').style.display = 'none';
+    }
+</script>
     <div class="pack-overlay" id="pack-overlay">
         <div class="pack-flash" id="pack-flash"></div>
         <svg class="pack-box" id="pack-box" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="1.5">
