@@ -5395,47 +5395,59 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             }
         };
 
-    // ==========================================
-        // מנוע פתיחת חבילות (Gacha) - האמיתי
-        // ==========================================
-        
-        // 1. הגדרת מאגרי הפרסים (Pools) לפי רמות
+    // 1. הגדרת מאגרי הפרסים (Pools) לפי רמות - כולל בוסטים מיוחדים!
         const rewardsPool = {
             base: [
-                { type: 'money', title: '500,000 ₪', desc: 'תקציב רכש נוסף.', icon: '💵', val: 500000 },
-                { type: 'money', title: '1,000,000 ₪', desc: 'תקציב רכש נוסף.', icon: '💰', val: 1000000 },
+                { type: 'money', title: '100,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💵', val: 100000 },
+                { type: 'money', title: '250,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💵', val: 250000 },
+                { type: 'money', title: '500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 500000 },
                 { type: 'title', title: 'תגית: חובבן', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'חובבן' },
                 { type: 'title', title: 'תגית: אוהד שרוף', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'אוהד שרוף' },
-                { type: 'points', title: '+1 נקודות', desc: 'בונוס נקודות לקבוצה (מופעל אוטומטית).', icon: '⭐', val: 1 },
-                { type: 'pick', title: 'בחירת שחקן: רמה 4', desc: 'מאפשר החלפת שחקן מהסגל ברמה 4.', icon: '🃏', val: 4 }
+                { type: 'title', title: 'תגית: טקטיקן מתחיל', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'טקטיקן מתחיל' },
+                { type: 'crest', title: 'סמל: כדורגל רטרו', desc: 'סמל מועדון קלאסי.', icon: '⚽', val: 'retro_ball' },
+                { type: 'points', title: '+1 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 1 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 4', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 4.', icon: '🃏', val: 4 }
             ],
             mid: [
-                { type: 'money', title: '2,500,000 ₪', desc: 'תקציב רכש משמעותי.', icon: '💰', val: 2500000 },
-                { type: 'money', title: '3,500,000 ₪', desc: 'תקציב רכש משמעותי.', icon: '💰', val: 3500000 },
+                { type: 'money', title: '1,000,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 1000000 },
+                { type: 'money', title: '1,500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 1500000 },
+                { type: 'money', title: '2,500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 2500000 },
                 { type: 'title', title: 'תגית: מלך השוק', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'מלך השוק' },
+                { type: 'title', title: 'תגית: שודד השחקנים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שודד השחקנים' },
+                { type: 'title', title: 'תגית: אמן החילופים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'אמן החילופים' },
                 { type: 'crest', title: 'סמל: פיראט', desc: 'סמל מועדון מעוצב.', icon: '🏴‍☠️', val: 'pirate' },
-                { type: 'points', title: '+3 נקודות', desc: 'בונוס נקודות לקבוצה (מופעל אוטומטית).', icon: '⭐', val: 3 },
-                { type: 'pick', title: 'בחירת שחקן: רמה 3', desc: 'מאפשר החלפת שחקן מהסגל ברמה 3.', icon: '🃏', val: 3 },
-                { type: 'pick', title: 'בחירת שחקן: רמה 2', desc: 'מאפשר החלפת שחקן מהסגל ברמה 2.', icon: '🃏', val: 2 },
-                { type: 'sub', title: 'חילוף אקסטרה', desc: 'חילוף חינם נוסף למחזור.', icon: '🔄', val: 1 },
-                { type: 'vice', title: 'סגן קפטן', desc: 'ביטוח קפטן למקרה שלא ישחק.', icon: '🧠', val: 1 }
+                { type: 'crest', title: 'סמל: כוכב זהב', desc: 'סמל מועדון יוקרתי.', icon: '⭐', val: 'gold_star' },
+                { type: 'points', title: '+3 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 3 },
+                { type: 'points', title: '+5 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 5 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 3', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 3.', icon: '🃏', val: 3 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 2', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 2.', icon: '🃏', val: 2 },
+                { type: 'sub', title: 'חילוף אקסטרה', desc: 'חילוף חינם נוסף למחזור הקרוב.', icon: '🔄', val: 1 },
+                { type: 'vice', title: 'סגן קפטן', desc: 'ביטוח קפטן למקרה שלא ישחק.', icon: '🧠', val: 1 },
+                // הבוסטים החדשים (רמת ביניים)
+                { type: 'boost', title: 'סופר קפטן', desc: 'בוסט טקטי: הכפלת נקודות הקפטן פי 4.', icon: '🛡️', val: 'super_captain' },
+                { type: 'boost', title: 'להחנות את האוטובוס', desc: 'בוסט טקטי: רשת נקייה לכל ההגנה.', icon: '🚌', val: 'park_bus' },
+                { type: 'boost', title: 'חסינות מלאה', desc: 'בוסט טקטי: ביטול מינוסים מצהובים/אדומים.', icon: '🚫', val: 'immunity' },
+                { type: 'boost', title: 'יום חג לחלוצים', desc: 'בוסט טקטי: נק\' כפולות על שערי התקפה.', icon: '🔥', val: 'goal_fest' }
             ],
             top: [
-                { type: 'money', title: '10,000,000 ₪', desc: 'זכיית ענק!', icon: '💎', val: 10000000 },
-                { type: 'money', title: '15,000,000 ₪', desc: 'ג\'קפוט תקציב!', icon: '💎', val: 15000000 },
+                { type: 'money', title: '4,000,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💎', val: 4000000 },
+                { type: 'money', title: '7,000,000 ₪', desc: 'מכה יפה! נוסף לתקציב הקבוצה.', icon: '💎', val: 7000000 },
+                { type: 'money', title: '10,000,000 ₪', desc: 'ג\'קפוט תקציב ענק!', icon: '💎', val: 10000000 },
                 { type: 'title', title: 'תגית: GOAT', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'GOAT' },
+                { type: 'title', title: 'תגית: המיוחד', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'המיוחד' },
                 { type: 'crest', title: 'סמל: אריה מחשמל', desc: 'סמל מונפש ויוקרתי.', icon: '🦁', val: 'lion_zap' },
-                { type: 'points', title: '+10 נקודות', desc: 'שובר שוויון (מופעל אוטומטית).', icon: '🌟', val: 10 },
-                { type: 'pick', title: 'בחירת שחקן: רמה 1', desc: 'מאפשר החלפת שחקן מהסגל ברמה 1.', icon: '🃏', val: 1 },
-                { type: 'pick', title: 'בחירת שחקן: כוכב על', desc: 'אגדי! החלפת כוכב על בכוכב על.', icon: '🃏', val: 0 },
-                { type: '12th', title: 'השחקן ה-12', desc: 'שחקן הספסל המצטיין שלך נספר.', icon: '⚡', val: 1 }
+                { type: 'crest', title: 'סמל: דרקון אש', desc: 'סמל מונפש ונדיר ביותר.', icon: '🐉', val: 'fire_dragon' },
+                { type: 'points', title: '+10 נקודות', desc: 'שובר שוויון (בונוס לסיכום המחזור הקרוב).', icon: '🌟', val: 10 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 1', desc: 'החלף שחקן מהסגל לשחקן רמה 1.', icon: '🃏', val: 1 },
+                { type: 'pick', title: 'בחירת שחקן: כוכב על', desc: 'אגדי! החלפת כוכב על בכוכב על מהמאגר.', icon: '🃏', val: 0 },
+                { type: '12th', title: 'השחקן ה-12', desc: 'שחקן הספסל המצטיין שלך נספר במחזור.', icon: '⚡', val: 1 },
+                // בוסט אגדי (ספסל פעיל)
+                { type: 'boost', title: 'ספסל פעיל', desc: 'בוסט פרמיום: כל שחקני הספסל מניבים נקודות!', icon: '🪑', val: 'bench_boost' }
             ]
         };
 
-        // 2. פונקציית עזר למשיכת אייטם רנדומלי מהפול (כולל הזרקת נתוני רמה לעיצוב ומיון)
         function getRandomItemFromPool(poolName) {
             const pool = rewardsPool[poolName];
-            // אנחנו משכפלים את האובייקט כדי לא לדרוס את המאגר המקורי
             let item = { ...pool[Math.floor(Math.random() * pool.length)] };
             
             if (poolName === 'base') {
@@ -5460,13 +5472,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             return item;
         }
 
-        // 3. הפונקציה הראשית שפותחת את החבילה
         window.openGachaPack = function(tier, price) {
             const formattedPrice = window.formatNumberWithCommas ? window.formatNumberWithCommas(price) : price;
             
             if(!confirm(`האם אתה בטוח שברצונך לרכוש את החבילה ב-₪${formattedPrice}?`)) return;
 
-            // אתחול האנימציה
             const overlay = document.getElementById('pack-overlay');
             const box = document.getElementById('pack-box');
             const flash = document.getElementById('pack-flash');
@@ -5482,62 +5492,75 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             overlay.classList.add('active');
             box.classList.add('shaking');
 
-            // 4. בניית החבילה (ההגרלה עצמה!)
             let drawnItems = [];
+            let typeCounts = { pick: 0, money: 0, boost: 0 };
             let totalItems = 0;
+
+            const drawConstrainedItem = (poolName) => {
+                let item;
+                let retries = 20; 
+                while(retries > 0) {
+                    item = getRandomItemFromPool(poolName);
+                    if (item.type === 'pick' && typeCounts.pick >= 2) { retries--; continue; }
+                    if (item.type === 'money' && typeCounts.money >= 2) { retries--; continue; }
+                    if (item.type === 'boost' && typeCounts.boost >= 2) { retries--; continue; } // הגבלה על קבלת המון בוסטים יחד
+                    if (drawnItems.some(d => d.title === item.title)) { retries--; continue; }
+                    break;
+                }
+                typeCounts[item.type] = (typeCounts[item.type] || 0) + 1;
+                drawnItems.push(item);
+            };
 
             if(tier === 'bronze') {
                 box.style.stroke = "#cd7f32";
                 totalItems = 5;
                 for(let i=0; i<totalItems; i++) {
                     let r = Math.random() * 100;
-                    if(r <= 90) drawnItems.push(getRandomItemFromPool('base'));
-                    else if(r <= 99) drawnItems.push(getRandomItemFromPool('mid'));
-                    else drawnItems.push(getRandomItemFromPool('top'));
+                    if(r <= 90) drawConstrainedItem('base');
+                    else if(r <= 99) drawConstrainedItem('mid');
+                    else drawConstrainedItem('top');
                 }
             } 
             else if (tier === 'silver') {
                 box.style.stroke = "#cbd5e1";
                 totalItems = 8;
-                drawnItems.push(getRandomItemFromPool('mid'));
-                drawnItems.push(getRandomItemFromPool('mid'));
+                drawConstrainedItem('mid');
+                drawConstrainedItem('mid');
                 for(let i=0; i<6; i++) {
                     let r = Math.random() * 100;
-                    if(r <= 70) drawnItems.push(getRandomItemFromPool('base'));
-                    else if(r <= 95) drawnItems.push(getRandomItemFromPool('mid'));
-                    else drawnItems.push(getRandomItemFromPool('top'));
+                    if(r <= 70) drawConstrainedItem('base');
+                    else if(r <= 95) drawConstrainedItem('mid');
+                    else drawConstrainedItem('top');
                 }
             } 
             else if (tier === 'diamond') {
                 box.style.stroke = "#d8b4fe";
                 totalItems = 11;
-                drawnItems.push(getRandomItemFromPool('mid'));
-                drawnItems.push(getRandomItemFromPool('mid'));
-                drawnItems.push(getRandomItemFromPool('mid'));
+                drawConstrainedItem('mid');
+                drawConstrainedItem('mid');
+                drawConstrainedItem('mid');
                 for(let i=0; i<8; i++) {
                     let r = Math.random() * 100;
-                    if(r <= 50) drawnItems.push(getRandomItemFromPool('base'));
-                    else if(r <= 88) drawnItems.push(getRandomItemFromPool('mid'));
-                    else drawnItems.push(getRandomItemFromPool('top'));
+                    if(r <= 50) drawConstrainedItem('base');
+                    else if(r <= 88) drawConstrainedItem('mid');
+                    else drawConstrainedItem('top');
                 }
             } 
             else if (tier === 'gold') {
                 box.style.stroke = "#fbbf24";
                 totalItems = 15;
-                drawnItems.push(getRandomItemFromPool('top'));
-                for(let i=0; i<5; i++) drawnItems.push(getRandomItemFromPool('mid'));
+                drawConstrainedItem('top');
+                for(let i=0; i<5; i++) drawConstrainedItem('mid');
                 for(let i=0; i<9; i++) {
                     let r = Math.random() * 100;
-                    if(r <= 30) drawnItems.push(getRandomItemFromPool('base'));
-                    else if(r <= 80) drawnItems.push(getRandomItemFromPool('mid'));
-                    else drawnItems.push(getRandomItemFromPool('top'));
+                    if(r <= 30) drawConstrainedItem('base');
+                    else if(r <= 80) drawConstrainedItem('mid');
+                    else drawConstrainedItem('top');
                 }
             }
 
-            // 5. מיון האייטמים: קודם טופ, אחר כך ביניים, בסוף בסיס
             drawnItems.sort((a, b) => b.tierWeight - a.tierWeight);
 
-            // יצירת ה-HTML של הקלפים המוגרלים עם התגית
             let rewardHtml = '';
             drawnItems.forEach((item, idx) => {
                 rewardHtml += `
@@ -5553,7 +5576,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 `;
             });
 
-            // 6. תזמון הפיצוץ והצגת הפרסים
             setTimeout(() => {
                 box.classList.remove('shaking');
                 box.classList.add('opening'); 
@@ -5578,7 +5600,6 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
         window.closeGachaPack = function() {
             document.getElementById('pack-overlay').classList.remove('active');
-            // כאן נוסיף בעתיד את השליחה של drawnItems למסד הנתונים של השחקן (הפרסים שלי)
         };
 
         function loadRandomSurprisePlayer() {
