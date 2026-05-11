@@ -2124,9 +2124,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
 
-                  <div id="tab-rules" class="fm-tab">
-    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="margin-left: 8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+               <div id="tab-rules" class="fm-tab">
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
         תקנון וחוקי המשחק הרשמיים
     </h2>
     
@@ -2137,75 +2137,51 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 <h3><span>🏟️</span> 1. מבנה הליגה והבעלות</h3>
                 <ul>
                     <li><strong>הרכב הליגה:</strong> כל ליגה מורכבת מ-8 קבוצות (מנג'רים) בדיוק.</li>
-                    <li><strong>בעלות בלעדית:</strong> שחקן יכול להיות שייך רק לקבוצה אחת בתוך הליגה. לא ייתכן מצב שלשני מנג'רים יהיה את אותו שחקן בו זמנית.</li>
-                    <li><strong>הגבלת ניקוד:</strong> הניקוד נצבר אך ורק על סמך ביצועי השחקנים במשחקי הליגה הרשמיים (ללא גביעים או מפעלים אירופיים).</li>
+                    <li><strong>גודל סגל:</strong> בכל קבוצה יש בדיוק 20 שחקנים בכל זמן נתון.</li>
+                    <li><strong>בעלות בלעדית:</strong> שחקן יכול להיות שייך רק לקבוצה אחת בתוך הליגה. לא ייתכן שלשני מנג'רים יהיה את אותו שחקן.</li>
+                    <li><strong>הגבלת ניקוד:</strong> הניקוד נצבר אך ורק על סמך ביצועי השחקנים במשחקי הליגה הרשמיים במציאות (ללא גביעים או מפעלים אירופיים).</li>
                 </ul>
             </div>
 
             <div class="rules-section">
-                <h3><span>📊</span> 2. מאגר השחקנים ושיטת הדירוג</h3>
+                <h3><span>📊</span> 2. מאגר השחקנים ושווי שוק (הבורסה)</h3>
                 <ul>
                     <li><strong>המאגר:</strong> דאטאבייס קבוע של 1,000 השחקנים המובילים מ-5 הליגות הבכירות באירופה.</li>
                     <li><strong>דירוג ייחודי:</strong> השחקנים מדורגים מ-1 עד 1,000 ללא חפיפה. לכל שחקן שווי שוק מדויק משלו (אין שני מחירים זהים).</li>
-                    <li><strong>חוק הבורסה (סכום אפס):</strong> מדרג הרמות הוא קשיח. אם שחקן עולה ברמה, הוא בהכרח דוחק שחקן אחר למטה.</li>
-                </ul>
-                <table class="rules-table">
-                    <thead>
-                        <tr>
-                            <th>דרגה (Tier)</th>
-                            <th>כמות</th>
-                            <th>טווח מחירים (₪)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>🌟 כוכבי על</td><td>50</td><td>35.0M - 50.0M</td></tr>
-                        <tr><td>🥇 רמה 1</td><td>100</td><td>19.0M - 34.9M</td></tr>
-                        <tr><td>🥈 רמה 2</td><td>250</td><td>10.0M - 18.9M</td></tr>
-                        <tr><td>🥉 רמה 3</td><td>300</td><td>5.0M - 9.9M</td></tr>
-                        <tr><td>🧱 רמה 4</td><td>300</td><td>500K - 4.9M</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="rules-section">
-                <h3><span>📊</span> 3. מדרג השחקנים ושווי שוק (הבורסה)</h3>
-                <ul>
-                    <li><strong>דירוג ייחודי:</strong> 1,000 השחקנים במאגר מדורגים מ-1 עד 1,000. אין שני שחקנים באותו דירוג.</li>
-                    <li><strong>שווי שוק:</strong> לכל שחקן שווי שוק מדויק (במיליוני שקלים) הנגזר מהדירוג שלו. אין שני שחקנים עם שווי זהה.</li>
-                    <li><strong>חוק התחלופה (סכום אפס):</strong> החלוקה לרמות היא קשיחה. אם שחקן עולה ברמה, שחקן אחר תמיד יידחק למטה כדי לפנות לו מקום.</li>
+                    <li><strong>חוק הבורסה (סכום אפס):</strong> מדרג הרמות הוא קשיח. אם שחקן עולה ברמה, הוא בהכרח דוחק שחקן אחר למטה אל רמה נמוכה יותר.</li>
                 </ul>
                 <table class="rules-modern-table">
                     <thead>
                         <tr>
                             <th>דרגה (Tier)</th>
-                            <th>כמות שחקנים במאגר</th>
+                            <th style="text-align: center;">כמות שחקנים במאגר</th>
                             <th>טווח מחירים (₪)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>🌟 כוכבי על</td>
-                            <td>50 שחקנים</td>
+                            <td style="text-align: center;">50</td>
                             <td style="color:var(--brand-green); font-weight:900;">35.0M - 50.0M</td>
                         </tr>
                         <tr>
                             <td>🥇 רמה 1</td>
-                            <td>100 שחקנים</td>
+                            <td style="text-align: center;">100</td>
                             <td style="color:var(--brand-green); font-weight:900;">19.0M - 34.9M</td>
                         </tr>
                         <tr>
                             <td>🥈 רמה 2</td>
-                            <td>250 שחקנים</td>
+                            <td style="text-align: center;">250</td>
                             <td style="color:var(--brand-green); font-weight:900;">10.0M - 18.9M</td>
                         </tr>
                         <tr>
                             <td>🥉 רמה 3</td>
-                            <td>300 שחקנים</td>
+                            <td style="text-align: center;">300</td>
                             <td style="color:var(--brand-green); font-weight:900;">5.0M - 9.9M</td>
                         </tr>
                         <tr>
                             <td>🧱 רמה 4</td>
-                            <td>300 שחקנים</td>
+                            <td style="text-align: center;">300</td>
                             <td style="color:var(--brand-green); font-weight:900;">500K - 4.9M</td>
                         </tr>
                     </tbody>
@@ -2213,36 +2189,46 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             </div>
 
             <div class="rules-section">
+                <h3><span>🎲</span> 3. הגרלת הדראפט (פתיחת העונה)</h3>
+                <ul>
+                    <li>ברגע ש-8 מנג'רים מצטרפים לליגה, היא ננעלת ומתבצעת הגרלת דראפט אקראית לשחקנים.</li>
+                    <li><strong>חובה בכל סגל עמדות:</strong> 2 שוערים, 6 שחקני הגנה, 6 קשרים ו-6 חלוצים.</li>
+                    <li><strong>איזון רמות בדראפט:</strong> 2 כוכבי על, 3 מרמה 1, 5 מרמה 2, 5 מרמה 3 ו-5 מרמה 4.</li>
+                </ul>
+            </div>
+
+            <div class="rules-section">
                 <h3><span>📅</span> 4. מבנה העונה ולוח המשחקים</h3>
                 <ul>
-                    <li><strong>שיטת הסיבובים:</strong> סיבוב שלם מורכב מ-7 מחזורי "ראש בראש" (מול כל שאר המנג'רים).</li>
-                    <li><strong>מחזוריות:</strong> בסיום 7 מחזורים, מתחיל מיד סיבוב חדש (7 משחקים נוספים) וכך הלאה.</li>
-                    <li><strong>סיום העונה:</strong> הליגה מסתיימת עם סיום הליגות במציאות. כמות המחזורים הכוללת תלויה במועד פתיחת הליגה הספציפית.</li>
+                    <li><strong>הגרלת המשחקים:</strong> עם פתיחת הליגה נוצר לוח משחקים בשיטת "ראש בראש" בין המנג'רים.</li>
+                    <li><strong>מבנה הסיבוב:</strong> כל סיבוב ליגה נמשך בדיוק <strong>7 מחזורים</strong> (משחק מול כל שאר המשתתפים).</li>
+                    <li><strong>מחזוריות:</strong> בסיום סיבוב, מתחיל באופן רציף סיבוב חדש (7 משחקים נוספים).</li>
+                    <li><strong>סיום הליגה:</strong> העונה נמשכת עד לסיום הליגות באירופה במציאות (מספר המחזורים תלוי במועד פתיחת הליגה). בסיום מוכתרת האלופה.</li>
                 </ul>
             </div>
 
             <div class="rules-section">
-                <h3><span>⚔️</span> 5. ניקוד וטבלה (Head-to-Head)</h3>
+                <h3><span>💼</span> 5. זירת המסחר: קנייה, מכירה וטריידים</h3>
                 <ul>
-                    <li><strong>ניצחון במחזור:</strong> הקבוצה ששחקניה צברו יותר נקודות באותו שבוע מקבלת <strong>3 נקודות</strong> בטבלה.</li>
-                    <li><strong>תיקו:</strong> מעניק <strong>נקודה 1</strong> לכל מנג'ר.</li>
-                    <li><strong>שובר שוויון בטבלה:</strong> 1. כמות ניצחונות | 2. שערי זכות (של השחקנים) | 3. כמות רשתות נקיות.</li>
+                    <li><strong>חובת סגל מלא:</strong> בכל רכישת שחקן/טרייד חובה להפריש שחקן מהסגל שלכם כדי לשמור על מגבלת ה-20.</li>
+                    <li><strong>מכירה פומבית:</strong> התמודדות על שחקנים חופשיים (הצעת סכום + שחקן מהסגל לשחרור).</li>
+                    <li><strong>טריידים ישירים:</strong> ניתן להציע למנג'ר יריב טרייד "ראש בראש" או הצעת שחקן + תוספת תשלום.</li>
+                    <li><strong>מגבלת סגל מינימלית:</strong> אסור לבצע מהלך שישאיר אתכם עם פחות מ: 2 שוערים, 5 שחקני הגנה, 5 קשרים או 4 חלוצים.</li>
                 </ul>
             </div>
 
             <div class="rules-section">
-                <h3><span>💼</span> 6. זירת המסחר: קנייה, מכירה וטריידים</h3>
+                <h3><span>⚔️</span> 6. שיטת הדו-קרב (Head-to-Head)</h3>
                 <ul>
-                    <li><strong>חובת סגל מלא:</strong> כל הצעה דורשת בחירת שחקן מהסגל שישוחרר (כדי להישאר על 20 שחקנים).</li>
-                    <li><strong>דרכי מסחר:</strong> טרייד "ראש בראש" (שחקן מול שחקן) או שחקן + כסף מהתקציב הפנוי.</li>
-                    <li><strong>מכירה פומבית:</strong> התמודדות על שחקנים חופשיים במודל "כל הקודם זוכה" או מכרז כספי.</li>
-                    <li><strong>מגבלת סגל מינימלית:</strong> אסור לרדת מ: 2 שוערים, 5 מגנים, 5 קשרים ו-4 חלוצים.</li>
+                    <li>בכל מחזור, הקבוצה ששחקניה צברו יותר נקודות מנצחת ומקבלת <strong>3 נקודות</strong> לטבלת הליגה. תיקו מעניק נקודה אחת.</li>
+                    <li>האלופה היא הקבוצה שסיימה עם מרב הנקודות.</li>
+                    <li><strong>שוברי שוויון בטבלה:</strong> 1. מספר ניצחונות 2. שערי זכות 3. רשת נקייה.</li>
                 </ul>
             </div>
 
             <div class="rules-section">
-                <h3><span>💯</span> 7. מפתח ניקוד מפורט (Total Fantasy)</h3>
-                <p style="font-size: 14px; color: #475569; margin-bottom: 15px; font-weight: bold;">כל פעולה של השחקנים במציאות מתורגמת לנקודות פנטזי. הניקוד מבוסס על משחקי הליגות המקומיות בלבד.</p>
+                <h3><span>💯</span> 7. מפתח הניקוד המפורט (Total Fantasy)</h3>
+                <p style="font-size: 14px; color: #475569; margin-bottom: 10px; font-weight: bold;">ניקוד מוענק על סמך ביצועי השחקנים במשחקי הליגות שלהם במציאות:</p>
                 
                 <div class="rules-sub-heading">⚡ פעולות בסיס וקנסות (כל העמדות)</div>
                 <table class="rules-modern-table">
@@ -2256,7 +2242,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         <tr><td>הופעה במשחק (60 דקות ומעלה)</td><td style="text-align: center;"><span class="pts-plus">+2</span></td></tr>
                         <tr><td>הופעה כמחליף / פחות מ-60 דקות</td><td style="text-align: center;"><span class="pts-plus">+1</span></td></tr>
                         <tr><td>בישול שער</td><td style="text-align: center;"><span class="pts-plus">+5</span></td></tr>
-                        <tr><td>תיקולים מוצלחים (על כל 3 תיקולים = 1 נק')</td><td style="text-align: center;"><span class="pts-plus">+1</span></td></tr>
+                        <tr><td>תיקולים מוצלחים (כל 3 תיקולים = 1 נק')</td><td style="text-align: center;"><span class="pts-plus">+1</span></td></tr>
                         <tr><td>כרטיס צהוב</td><td style="text-align: center;"><span class="pts-minus">-1</span></td></tr>
                         <tr><td>כרטיס אדום</td><td style="text-align: center;"><span class="pts-minus">-3</span></td></tr>
                         <tr><td>שער עצמי</td><td style="text-align: center;"><span class="pts-minus">-3</span></td></tr>
@@ -2265,13 +2251,13 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 </table>
 
                 <div class="rules-sub-heading">⚽ שערים ורשת נקייה (לפי עמדה)</div>
-                <p style="font-size: 12px; color: #64748b; margin-bottom: 10px;">* רשת נקייה מותנית בהשתתפות השחקן במשחק. מחושבת בסימולציות כ-28% מהמשחקים.</p>
+                <p style="font-size: 12px; color: #64748b; margin-bottom: 10px;">* רשת נקייה מותנית בהשתתפות השחקן במשחק.</p>
                 <table class="rules-modern-table">
                     <thead>
                         <tr>
                             <th>עמדת השחקן</th>
                             <th style="text-align: center;">הבקעת שער</th>
-                            <th style="text-align: center;">רשת נקייה (Clean Sheet)</th>
+                            <th style="text-align: center;">רשת נקייה</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2298,7 +2284,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     </tbody>
                 </table>
 
-                <div class="rules-sub-heading">🏆 בונוסים מיוחדים</div>
+                <div class="rules-sub-heading">🏆 בונוסים ורייטינג אישי</div>
                 <table class="rules-modern-table">
                     <thead>
                         <tr>
@@ -2307,10 +2293,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>ניצחון קבוצה (לשחקן ששיחק 60+ דקות)</td><td style="text-align: center;"><span class="pts-plus">+4</span></td></tr>
-                        <tr><td>ניצחון קבוצה (לשחקן ששיחק פחות מ-60 דקות)</td><td style="text-align: center;"><span class="pts-plus">+2</span></td></tr>
+                        <tr><td>ניצחון קבוצה (לשחקן ששיחק 60+ דק')</td><td style="text-align: center;"><span class="pts-plus">+4</span></td></tr>
+                        <tr><td>ניצחון קבוצה (לשחקן ששיחק פחות מ-60 דק')</td><td style="text-align: center;"><span class="pts-plus">+2</span></td></tr>
                         <tr>
-                            <td>ציון רייטינג 7.5 ומעלה (מחושב מול כמות שערים ובישולים)</td>
+                            <td>ציון רייטינג 7.5 ומעלה במשחק</td>
                             <td style="text-align: center;"><span class="pts-plus">+2</span></td>
                         </tr>
                     </tbody>
@@ -2318,10 +2304,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             </div>
 
             <div class="rules-section">
-                <h3><span>🎁</span> 8. חנות הפנטזי וחבילות</h3>
+                <h3><span>🎁</span> 8. חנות הפנטזי והפתעות</h3>
                 <ul>
-                    <li><strong>בוסטים:</strong> שדרוגים למחזור בודד (למשל סופר קפטן המעניק פי 4 נקודות).</li>
-                    <li><strong>חבילות (Packs):</strong> רכישת חבילות הפתעה המעניקות פרסים כספיים, בוסטים נדירים ושדרוגים קוסמטיים.</li>
+                    <li><strong>בוסטים:</strong> שדרוגים טקטיים לשימוש במחזור בודד (לדוגמה: "סופר קפטן" המכפיל את ניקוד הקפטן פי 4).</li>
+                    <li><strong>חבילות הפתעה:</strong> אפשרות לרכוש חבילות וירטואליות המעניקות תקציב נוסף, בוסטים מיוחדים או קוסמטיקה למועדון.</li>
                 </ul>
             </div>
 
