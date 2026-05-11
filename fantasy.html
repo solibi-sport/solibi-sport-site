@@ -5395,93 +5395,172 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             }
         };
 
-     // ==========================================
-        // מנוע פתיחת חבילות (Gacha)
+    // ==========================================
+        // מנוע פתיחת חבילות (Gacha) - האמיתי
         // ==========================================
+        
+        // 1. הגדרת מאגרי הפרסים (Pools) לפי רמות
+        const rewardsPool = {
+            base: [
+                { type: 'money', title: '500,000 ₪', desc: 'תקציב רכש נוסף.', icon: '💵', val: 500000 },
+                { type: 'money', title: '1,000,000 ₪', desc: 'תקציב רכש נוסף.', icon: '💰', val: 1000000 },
+                { type: 'title', title: 'תגית: חובבן', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'חובבן' },
+                { type: 'title', title: 'תגית: אוהד שרוף', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'אוהד שרוף' },
+                { type: 'points', title: '+1 נקודות', desc: 'בונוס נקודות לקבוצה (מופעל אוטומטית).', icon: '⭐', val: 1 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 4', desc: 'מאפשר החלפת שחקן מהסגל ברמה 4.', icon: '🃏', val: 4 }
+            ],
+            mid: [
+                { type: 'money', title: '2,500,000 ₪', desc: 'תקציב רכש משמעותי.', icon: '💰', val: 2500000 },
+                { type: 'money', title: '3,500,000 ₪', desc: 'תקציב רכש משמעותי.', icon: '💰', val: 3500000 },
+                { type: 'title', title: 'תגית: מלך השוק', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'מלך השוק' },
+                { type: 'crest', title: 'סמל: פיראט', desc: 'סמל מועדון מעוצב.', icon: '🏴‍☠️', val: 'pirate' },
+                { type: 'points', title: '+3 נקודות', desc: 'בונוס נקודות לקבוצה (מופעל אוטומטית).', icon: '⭐', val: 3 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 3', desc: 'מאפשר החלפת שחקן מהסגל ברמה 3.', icon: '🃏', val: 3 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 2', desc: 'מאפשר החלפת שחקן מהסגל ברמה 2.', icon: '🃏', val: 2 },
+                { type: 'sub', title: 'חילוף אקסטרה', desc: 'חילוף חינם נוסף למחזור.', icon: '🔄', val: 1 },
+                { type: 'vice', title: 'סגן קפטן', desc: 'ביטוח קפטן למקרה שלא ישחק.', icon: '🧠', val: 1 }
+            ],
+            top: [
+                { type: 'money', title: '10,000,000 ₪', desc: 'זכיית ענק!', icon: '💎', val: 10000000 },
+                { type: 'money', title: '15,000,000 ₪', desc: 'ג\'קפוט תקציב!', icon: '💎', val: 15000000 },
+                { type: 'title', title: 'תגית: GOAT', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'GOAT' },
+                { type: 'crest', title: 'סמל: אריה מחשמל', desc: 'סמל מונפש ויוקרתי.', icon: '🦁', val: 'lion_zap' },
+                { type: 'points', title: '+10 נקודות', desc: 'שובר שוויון (מופעל אוטומטית).', icon: '🌟', val: 10 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 1', desc: 'מאפשר החלפת שחקן מהסגל ברמה 1.', icon: '🃏', val: 1 },
+                { type: 'pick', title: 'בחירת שחקן: כוכב על', desc: 'אגדי! החלפת כוכב על בכוכב על.', icon: '🃏', val: 0 },
+                { type: '12th', title: 'השחקן ה-12', desc: 'שחקן הספסל המצטיין שלך נספר.', icon: '⚡', val: 1 }
+            ]
+        };
+
+        // 2. פונקציית העזר למשיכת אייטם רנדומלי מהפול
+        function getRandomItemFromPool(poolName) {
+            const pool = rewardsPool[poolName];
+            return pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        // 3. הפונקציה הראשית שפותחת את החבילה
         window.openGachaPack = function(tier, price) {
             const formattedPrice = window.formatNumberWithCommas ? window.formatNumberWithCommas(price) : price;
+            
+            // כאן נוסיף בעתיד בדיקה האם יש למשתמש מספיק כסף בתקציב (מול ה-DB)
             if(!confirm(`האם אתה בטוח שברצונך לרכוש את החבילה ב-₪${formattedPrice}?`)) return;
 
-            // 1. אתחול אנימציה
+            // אתחול האנימציה
             const overlay = document.getElementById('pack-overlay');
             const box = document.getElementById('pack-box');
             const flash = document.getElementById('pack-flash');
             const rewardsCont = document.getElementById('rewards-container');
             const closeBtn = document.getElementById('close-pack-btn');
 
-            // איפוס מצבים
             rewardsCont.innerHTML = '';
             rewardsCont.classList.remove('show');
             closeBtn.classList.remove('show');
             box.classList.remove('opening');
             flash.classList.remove('explode');
             
-            // הצגת המסך השחור והקופסה הרועדת
             overlay.classList.add('active');
             box.classList.add('shaking');
 
-            // 2. הגרלת הפרס לפי הדרגה
-            let rewardHtml = '';
-            
+            // 4. בניית החבילה (ההגרלה עצמה!)
+            let drawnItems = [];
+            let totalItems = 0;
+
             if(tier === 'bronze') {
                 box.style.stroke = "#cd7f32";
-                rewardHtml = `<div class="reward-card"><div class="reward-icon">🎟️</div><div class="reward-title">חילוף חינם</div><div class="reward-desc">קיבלת קלף לחילוף נוסף בחינם למחזור הקרוב!</div></div>`;
-            } else if (tier === 'silver') {
+                totalItems = 5;
+                for(let i=0; i<totalItems; i++) {
+                    let r = Math.random() * 100;
+                    if(r <= 90) drawnItems.push(getRandomItemFromPool('base'));
+                    else if(r <= 99) drawnItems.push(getRandomItemFromPool('mid'));
+                    else drawnItems.push(getRandomItemFromPool('top'));
+                }
+            } 
+            else if (tier === 'silver') {
                 box.style.stroke = "#cbd5e1";
-                rewardHtml = `<div class="reward-card"><div class="reward-icon">💵</div><div class="reward-title">4,000,000 ₪</div><div class="reward-desc">מכה יפה! הכסף נוסף ישירות לתקציב שלך.</div></div>`;
-            } else if (tier === 'gold') {
+                totalItems = 8;
+                // מובטח 2 פריטי ביניים
+                drawnItems.push(getRandomItemFromPool('mid'));
+                drawnItems.push(getRandomItemFromPool('mid'));
+                for(let i=0; i<6; i++) {
+                    let r = Math.random() * 100;
+                    if(r <= 70) drawnItems.push(getRandomItemFromPool('base'));
+                    else if(r <= 95) drawnItems.push(getRandomItemFromPool('mid'));
+                    else drawnItems.push(getRandomItemFromPool('top'));
+                }
+            } 
+            else if (tier === 'diamond') {
+                box.style.stroke = "#d8b4fe";
+                totalItems = 11;
+                // מובטח 3 פריטי ביניים
+                drawnItems.push(getRandomItemFromPool('mid'));
+                drawnItems.push(getRandomItemFromPool('mid'));
+                drawnItems.push(getRandomItemFromPool('mid'));
+                for(let i=0; i<8; i++) {
+                    let r = Math.random() * 100;
+                    if(r <= 50) drawnItems.push(getRandomItemFromPool('base'));
+                    else if(r <= 88) drawnItems.push(getRandomItemFromPool('mid'));
+                    else drawnItems.push(getRandomItemFromPool('top'));
+                }
+            } 
+            else if (tier === 'gold') {
                 box.style.stroke = "#fbbf24";
-                rewardHtml = `<div class="reward-card" style="border-color: var(--brand-green);"><div class="reward-icon">🚌</div><div class="reward-title">בוסט: הגנת בטון</div><div class="reward-desc">זכית בבוסט רשת נקייה לחוליית ההגנה!</div></div>`;
-            } else if (tier === 'diamond') {
-                box.style.stroke = "#a855f7";
-                rewardHtml = `
-                    <div class="reward-card" style="border-color: #a855f7;"><div class="reward-icon">🪑</div><div class="reward-title">בוסט: ספסל פעיל</div><div class="reward-desc">סופר-בוסט! הספסל שלך ייצר נקודות.</div></div>
-                    <div class="reward-card" style="border-color: #fbbf24;"><div class="reward-icon">👑</div><div class="reward-title">מסגרת זהב VIP</div><div class="reward-desc">המועדון שלך קיבל מסגרת יוקרתית בטבלת הליגה!</div></div>
-                `;
+                totalItems = 15;
+                // מובטח טופ 1 ו-5 ביניים
+                drawnItems.push(getRandomItemFromPool('top'));
+                for(let i=0; i<5; i++) drawnItems.push(getRandomItemFromPool('mid'));
+                for(let i=0; i<9; i++) {
+                    let r = Math.random() * 100;
+                    if(r <= 30) drawnItems.push(getRandomItemFromPool('base'));
+                    else if(r <= 80) drawnItems.push(getRandomItemFromPool('mid'));
+                    else drawnItems.push(getRandomItemFromPool('top'));
+                }
             }
 
-            // 3. תזמון הפיצוץ והצגת הפרסים
+            // יצירת ה-HTML של הקלפים המוגרלים
+            let rewardHtml = '';
+            drawnItems.forEach((item, idx) => {
+                // קביעת צבע המסגרת לפי סוג האייטם (לדוגמה, יהלום לטופ, כסף למיד)
+                let borderColor = '#94a3b8'; // default base
+                if (rewardsPool.top.some(p => p.title === item.title)) borderColor = '#fbbf24'; // top
+                else if (rewardsPool.mid.some(p => p.title === item.title)) borderColor = '#38bdf8'; // mid
+
+                rewardHtml += `
+                    <div class="reward-card" style="border-color: ${borderColor}; animation-delay: ${idx * 0.1}s; min-width: 180px;">
+                        <div class="reward-icon">${item.icon}</div>
+                        <div class="reward-title" style="font-size: 16px;">${item.title}</div>
+                        <div class="reward-desc" style="font-size: 11px;">${item.desc}</div>
+                    </div>
+                `;
+            });
+
+            // 5. תזמון הפיצוץ והצגת הפרסים
             setTimeout(() => {
                 box.classList.remove('shaking');
-                box.classList.add('opening'); // הקופסה נעלמת
-                flash.classList.add('explode'); // פלאש לבן
+                box.classList.add('opening'); 
+                flash.classList.add('explode'); 
                 
                 setTimeout(() => {
+                    // עדכון התצוגה כך שהקלפים יוצגו ברשת (Grid) במקרה של הרבה קלפים
+                    rewardsCont.style.display = 'grid';
+                    rewardsCont.style.gridTemplateColumns = totalItems > 5 ? 'repeat(5, 1fr)' : 'repeat(auto-fit, minmax(180px, 1fr))';
+                    rewardsCont.style.gap = '15px';
+                    rewardsCont.style.maxWidth = '90vw';
+                    rewardsCont.style.maxHeight = '70vh';
+                    rewardsCont.style.overflowY = 'auto';
+                    rewardsCont.style.padding = '20px';
+
                     rewardsCont.innerHTML = rewardHtml;
-                    rewardsCont.classList.add('show'); // הפרסים קופצים
+                    rewardsCont.classList.add('show'); 
                     closeBtn.classList.add('show');
-                }, 500); // חצי שנייה אחרי הפלאש
+                }, 500); 
                 
-            }, 1800); // הקופסה רועדת במשך 1.8 שניות
+            }, 1800); 
         };
 
         window.closeGachaPack = function() {
             document.getElementById('pack-overlay').classList.remove('active');
+            // כאן נוסיף בעתיד את השליחה של drawnItems למסד הנתונים של השחקן
         };
-
-                // ==========================================
-        // מנוע מכירה בהפתעה (Flash Sale) - מתוקן סופית
-        // ==========================================
-        
-        let surpriseSaleTimerInterval;
-        let currentSurprisePlayer = null; 
-        let currentSurprisePrice = 0; 
-
-        function loadSquadIntoSurpriseSelect() {
-            const select = document.getElementById('ss-player-to-release');
-            if(!select) return;
-            
-            select.innerHTML = '<option value="">-- בחר שחקן לשחרור מהסגל שלך (חובה) --</option>';
-            const mySquadPlayers = Object.values(window.allPlayersMap).filter(p => p.owner === 'מכבי סוליבי');
-            
-            mySquadPlayers.forEach(p => {
-                const tName = window.translateName ? window.translateName(p.name) : p.name;
-                const valueStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
-                select.innerHTML += `<option value="${p.id}">${tName} (${p.displayPos}) - שווי: ₪${valueStr}</option>`;
-            });
-            
-            checkSurpriseSaleSelect();
-        }
 
         function loadRandomSurprisePlayer() {
             const freeAgents = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' && p.value > 0);
