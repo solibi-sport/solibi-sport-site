@@ -291,15 +291,20 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
            קוסמטיקה למגרש: מדים (Kits), מסגרות הרכב ואצטדיונים
            ========================================= */
         
-        /* --- 1. צורת החולצה הבסיסית (Kit Icon) --- */
-        .profile-kit-icon {
-            width: 30px; height: 35px;
-            /* גוזר את הריבוע לצורה מושלמת של חולצת כדורגל! */
+        /* --- 1. צורת סט המדים המלא (חולצה + מכנסיים) --- */
+        .profile-kit-wrapper {
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            width: 40px; margin: 0 auto;
+        }
+        .profile-kit-shirt {
+            width: 100%; height: 30px;
             clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 85% 35%, 75% 25%, 75% 100%, 25% 100%, 25% 25%, 15% 35%, 0% 20%);
-            margin-right: auto;
-            display: inline-block;
-            vertical-align: middle;
-            background-color: #e2e8f0; /* צבע ברירת מחדל */
+            background-color: #e2e8f0;
+        }
+        .profile-kit-shorts {
+            width: 75%; height: 16px;
+            clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 55% 100%, 50% 50%, 45% 100%, 0% 100%);
+            background-color: #e2e8f0;
         }
 
         /* --- 2. עיצובי מדים (רמת בסיס - חלקים) --- */
@@ -6829,8 +6834,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let iconHtml = '';
             
             // אם זה חולצה, אנחנו משתמשים בעיצוב שעשינו בשלב 1. אחרת, אייקון רגיל.
-            if(item.type === 'kit') {
-                iconHtml = `<div class="profile-kit-icon ${item.iconClass}" style="width: 45px; height: 50px; margin: 0 auto;"></div>`;
+           if(item.type === 'kit') {
+                iconHtml = `
+                <div class="profile-kit-wrapper">
+                    <div class="profile-kit-shirt ${item.iconClass}"></div>
+                    <div class="profile-kit-shorts ${item.iconClass}"></div>
+                </div>`;
             } else {
                 iconHtml = item.icon;
             }
