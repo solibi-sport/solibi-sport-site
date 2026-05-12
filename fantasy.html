@@ -144,7 +144,16 @@
 
         @keyframes tickerVertical { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
 
-        .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin: 0 10px 4px 10px; border-right: 3px solid var(--brand-green); flex-shrink: 0;}
+       /* עיצוב כותרת הליגה - פרימיום נייבי סימטרי */
+        .live-league-header { 
+            display: flex; align-items: center; gap: 8px; 
+            background: var(--element-navy-gradient); 
+            color: #ffffff; 
+            padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 900; 
+            margin: 0 10px 4px 10px; border-right: 3px solid var(--brand-green); flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
         .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
         .live-match-card-light { background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent; border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl; margin: 0 10px 8px 10px; flex-shrink: 0; }
         .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
@@ -191,27 +200,20 @@
         .fm-nav-group.open .dropdown-arrow { transform: rotate(180deg); opacity: 1; stroke: var(--brand-green); }
 
         /* === מעטפת התוכן המרכזית (הקוביה הלבנה) === */
-        /* min-width: 0 מונע מהטבלה לפרוץ את גבולות המסך ולדרוס את הפאנל משמאל */
         .content-container {
-            flex: 1; 
-            min-width: 0; 
-            height: 100%;
-            background: #ffffff; 
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px; 
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            flex: 1; min-width: 0; min-height: 0; /* 👈 תיקון קריטי לגלילה! */
+            height: 100%; background: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px; padding: 20px; display: flex; flex-direction: column;
+            overflow: hidden; box-shadow: 0 15px 50px rgba(0,0,0,0.4);
         }
 
-        .fm-layout { display: flex; flex-direction: column; flex: 1; height: 100%; gap: 15px; overflow: hidden; min-width: 0; }
+        .fm-layout { 
+            display: flex; flex-direction: column; flex: 1; height: 100%; 
+            gap: 15px; overflow: hidden; min-width: 0; min-height: 0; /* 👈 תיקון קריטי לגלילה! */
+        }
 
-        /* סרגל עליון - הפוך (כסוף עם טקסט נייבי) */
         .fm-top-bar {
-            background: var(--bg-silver-matte);
-            border: 1px solid rgba(124, 168, 86, 0.2); border-radius: 12px;
+            background: var(--bg-silver-matte); border: 1px solid rgba(124, 168, 86, 0.2); border-radius: 12px;
             display: flex; justify-content: space-around; align-items: center; padding: 10px 20px; color: var(--text-dark);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); flex-shrink: 0; position: relative; overflow: hidden;
         }
@@ -221,14 +223,59 @@
         .fm-top-stat-value.highlight { color: var(--brand-green); }
 
         .fm-content-area {
-            flex: 1; background: #ffffff; border-radius: 12px; padding: 10px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.03); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column;
-            border: 1px solid rgba(0,0,0,0.05); min-width: 0;
+            flex: 1; 
+            background: transparent; /* 👈 העלמנו את הרקע הלבן/אפור המיותר */
+            border: none; /* 👈 העלמנו את המסגרת הריקה */
+            box-shadow: none; /* 👈 העלמנו את ההצללה */
+            padding: 0 5px 0 0; /* 👈 0 למעלה ולמטה כדי למשוך את התוכן למעלה! (השארנו קצת מימין לפס הגלילה) */
+            min-width: 0; min-height: 0; 
+            overflow-y: auto; overflow-x: hidden; 
+            display: block; 
+            direction: ltr; 
         }
 
-        .fm-tab { display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); height: 100%; flex-direction: column;}
+        .fm-tab { 
+            display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            min-height: 100%; 
+            flex-direction: column;
+            direction: rtl; /* מחזיר את כיוון הטקסט לימין-לשמאל */
+            padding-bottom: 25px; /* מרווח נשימה בתחתית כדי ששום דבר לא ייחתך */
+        }
         .fm-tab.active { display: flex; }
         @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* =========================================
+           עיצוב פסי גלילה לכל המערכת ומיקומם בצד ימין
+           ========================================= */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.4); border-radius: 10px; border: 2px solid #fff; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+
+        /* העברת פסי הגלילה הפנימיים (של טבלאות, סטטיסטיקות ושיאים) לצד ימין */
+        .squad-table-wrap, .market-table-container, .fixtures-scroll-area, .s-card-list, .rules-scroll-container, #incoming-offers-container, #outgoing-offers-container {
+            direction: ltr !important;
+            overflow-y: auto;
+            min-height: 0 !important;
+        }
+        .squad-table, .market-table, .match-result-card, .s-list-row, .rules-content-inner, .offer-card, .offer-empty {
+            direction: rtl !important;
+        }
+        /* =========================================
+           עיצוב פסי גלילה יוקרתיים ומיקומם בימין הדף
+           ========================================= */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.5); border-radius: 10px; border: 2px solid #fff; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+
+        /* העברת פסי גלילה של אלמנטים פנימיים לצד ימין */
+        .squad-table-wrap, .market-table-container, .rules-scroll-container, .fixtures-scroll-area, .s-card-list {
+            direction: ltr !important; 
+        }
+        .squad-table, .market-table, .rules-content-inner, .fixtures-main-col, .s-list-row {
+            direction: rtl !important;
+        }
 
         /* עיצוב כללי לתוכן הלבן */
 h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; }        p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
@@ -277,6 +324,86 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             padding-bottom: 5px;
             display: inline-block;
         }
+
+/* =========================================
+           קוסמטיקה למגרש: מדים (Kits), מסגרות הרכב ואצטדיונים
+           ========================================= */
+        
+       /* --- 1. צורת סט המדים המלא (חולצה + מכנסיים) --- */
+        .profile-kit-wrapper {
+            display: flex; flex-direction: column; align-items: center; gap: 1px; /* רווח מינימלי בין החולצה למכנס */
+            width: 40px; margin: 0 auto;
+        }
+        .profile-kit-shirt {
+            width: 100%; height: 30px;
+            /* גוף החולצה יושב בדיוק בין 25% ל-75% מהרוחב */
+            clip-path: polygon(25% 0%, 75% 0%, 100% 20%, 85% 35%, 75% 25%, 75% 100%, 25% 100%, 25% 25%, 15% 35%, 0% 20%);
+            background-color: #e2e8f0;
+        }
+        .profile-kit-shorts {
+            width: 50%; /* התאמה מושלמת בדיוק לרוחב הגוף של החולצה! */
+            height: 14px;
+            /* גזירה מלבנית עם חיתוך קטן באמצע לרגליים */
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 55% 100%, 50% 30%, 45% 100%, 0% 100%);
+            background-color: #e2e8f0;
+        }
+
+        /* --- 2. עיצובי מדים (רמת בסיס - חלקים) --- */
+        .kit-solid-blue { background: #1d4ed8 !important; }
+        .kit-solid-red { background: #dc2626 !important; }
+        .kit-solid-green { background: #15803d !important; }
+        .kit-solid-white { background: #f8fafc !important; }
+        .kit-solid-black { background: #0f172a !important; }
+
+        /* --- 3. עיצובי מדים (רמת ביניים - פסים וצורות) --- */
+        .kit-half-yb { background: linear-gradient(90deg, #facc15 50%, #1e3a8a 50%) !important; } /* חצי צהוב חצי כחול */
+        .kit-half-rw { background: linear-gradient(90deg, #dc2626 50%, #ffffff 50%) !important; } /* חצי אדום חצי לבן */
+        .kit-stripes-gw { background: repeating-linear-gradient(90deg, #16a34a 0px, #16a34a 8px, #ffffff 8px, #ffffff 16px) !important; } /* פסי אורך ירוק לבן */
+        .kit-stripes-bw { background: repeating-linear-gradient(90deg, #000000 0px, #000000 8px, #ffffff 8px, #ffffff 16px) !important; } /* פסי אורך שחור לבן */
+        .kit-diag-rw { background: linear-gradient(135deg, #dc2626 50%, #ffffff 50%) !important; } /* אלכסון אדום לבן */
+
+        /* --- 4. עיצובי מדים (רמת פרו - פרימיום מיוחדים) --- */
+        .kit-gold-vip { background: linear-gradient(135deg, #b45309 0%, #fcd34d 50%, #b45309 100%) !important; } /* זהב בוהק */
+        .kit-neon-cyber { background: linear-gradient(135deg, #c026d3 0%, #06b6d4 100%) !important; } /* ניאון סייברפאנק */
+        .kit-fire { background: linear-gradient(0deg, #991b1b 0%, #ef4444 50%, #facc15 100%) !important; } /* אש בוערת */
+        .kit-galaxy { background: radial-gradient(circle, #4c1d95 0%, #020617 100%) !important; } /* גלקסיה כהה */
+        .kit-holo { background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important; } /* הולוגרפי ורוד-תכלת */
+
+        /* --- 5. מסגרות להרכב הפותח (Borders) --- */
+        /* בסיס */
+        .pitch-border-blue { border: 2px solid #3b82f6 !important; }
+        .pitch-border-red { border: 2px solid #ef4444 !important; }
+        /* ביניים */
+        .pitch-border-silver { border: 2px solid #cbd5e1 !important; box-shadow: 0 0 10px rgba(203,213,225,0.5) !important; }
+        .pitch-border-bronze { border: 2px solid #b45309 !important; box-shadow: 0 0 10px rgba(180,83,9,0.5) !important; }
+        /* פרו / טופ */
+        .pitch-border-gold { border: 2px solid #fbbf24 !important; box-shadow: 0 0 15px rgba(251,191,36,0.8), inset 0 0 10px rgba(251,191,36,0.4) !important; }
+        .pitch-border-neon { border: 2px solid #06b6d4 !important; box-shadow: 0 0 15px rgba(6,182,212,0.8), inset 0 0 10px rgba(6,182,212,0.4) !important; }
+        .pitch-border-fire { border: 2px solid #ef4444 !important; box-shadow: 0 0 15px rgba(239,68,68,0.8), inset 0 0 10px rgba(239,68,68,0.4) !important; }
+
+        /* --- 6. אצטדיונים (רקע הדשא) --- */
+        .pitch-bg-sunset { background: linear-gradient(180deg, #92400e 0%, #451a03 100%) !important; } /* שקיעה */
+        .pitch-bg-night { background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important; border-color: #334155 !important; } /* לילה */
+        .pitch-bg-tactical { background: radial-gradient(circle, #166534 20%, #14532d 80%) !important; } /* טקטי עגול */
+
+/* === עיצובים ספציפיים לגלריה === */
+        #tab-gallery .inv-card.active {
+            border-color: var(--brand-green);
+            box-shadow: 0 0 15px var(--brand-green-glow);
+            background: #fff;
+        }
+        
+        .tier-base { border-color: #94a3b8; }
+        .tier-mid { border-color: #38bdf8; }
+        .tier-legendary { border-color: #fbbf24; }
+
+        /* כפתור ניווט פנימי בתוך הגלריה */
+        .gallery-nav-btn {
+            flex: 1; background: none; border: none; padding: 10px;
+            font-weight: 900; font-size: 12px; cursor: pointer; color: #64748b;
+            transition: 0.2s; border-radius: 8px;
+        }
+        .gallery-nav-btn.active { background: #fff; color: var(--text-dark); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
         /* === מגרש (בחירת הרכב) === */
 .soccer-field { background: linear-gradient(180deg, #2a7344 0%, #184f2c 100%); position: relative; border: 1px solid rgba(124,168,86,0.5); border-radius: 12px; min-height: 400px; display: flex; flex-direction: column; justify-content: space-around; box-shadow: inset 0 0 40px rgba(0,0,0,0.3), 0 10px 25px rgba(0,0,0,0.15); overflow: hidden; padding: 15px 0; }        .field-lines { position: absolute; inset: 15px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; pointer-events: none; }
@@ -500,7 +627,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
             /* --- אזור התוכן הראשי --- */
             .main-content { gap: 15px; }
-            .fm-content-area { padding: 15px; }
+            .fm-content-area { padding: 0 5px 0 0 !important; background: transparent; border: none; box-shadow: none; }
 
             /* --- הודעות והתראות --- */
             .msg-row { padding: 10px; gap: 10px; }
@@ -584,7 +711,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .trend-up { color: var(--brand-green); }
         .trend-down { color: #ef4444; }
 
-        .profile-split-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .profile-split-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: flex-start; padding-bottom: 30px; }
 
         .profile-section-card { background: var(--bg-silver-matte); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; } /* שונה לכסוף */
         .p-section-title { font-size: 16px; font-weight: 900; color: #ffffff; background: var(--element-navy-gradient); margin-bottom: 15px; padding: 10px 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;}
@@ -1416,42 +1543,50 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .boost-card.premium .b-price-btn { background: linear-gradient(145deg, #fbbf24, #d97706); border-color: #fcd34d; color: #000; }
 
         /* =========================================
-           בוטיק קוסמטיקה - דף נפרד
+           בוטיק קוסמטיקה - שדרוג קופסאות דינמיות
            ========================================= */
         .cosmetics-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 10px; /* 3 קוביות בשורה */
+            display: flex; justify-content: center; gap: 20px; padding: 10px; flex-wrap: wrap;
         }
 
         .cosmetic-card {
             background: var(--element-navy-gradient); border: 2px solid var(--brand-green);
-            border-radius: 16px; padding: 20px 15px; text-align: center; transition: 0.3s;
+            border-radius: 16px; padding: 12px; text-align: center; transition: 0.3s;
             display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-            min-height: 300px; /* גובה אלגנטי וקטן יותר */
+            width: 240px; /* 👈 קוביות מוקטנות ומדויקות */
+            min-height: 220px;
         }
         
-        .cosmetic-card:hover { transform: scale(1.02); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        .cosmetic-card:hover { transform: scale(1.04); box-shadow: 0 15px 35px rgba(0,0,0,0.3); border-color: #fbbf24; }
 
         .c-preview { 
-            width: 100%; height: 100px; border-radius: 10px; margin-bottom: 15px; /* הוקטן מ-180 */
-            display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden;
+            width: 100%; height: 50px; border-radius: 10px; margin-bottom: 12px;
+            display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
-        .c-title { font-size: 18px; font-weight: 900; color: #fbbf24; margin-bottom: 8px; }
-        .c-desc { font-size: 12px; color: #cbd5e1; margin-bottom: 15px; line-height: 1.4; flex-grow: 1; display: flex; align-items: center;}
+        .c-title { font-size: 15px; font-weight: 900; color: #fbbf24; margin-bottom: 6px; }
+        .c-desc { font-size: 11px; color: #cbd5e1; margin-bottom: 12px; line-height: 1.3; }
+
+        /* התפריט הנפתח לבחירת הפריט */
+        .c-select {
+            width: 100%; padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); 
+            background: #0f172a; color: #fff; font-family: inherit; font-size: 11px; font-weight: bold; 
+            outline: none; cursor: pointer; margin-bottom: 10px; transition: 0.2s;
+        }
+        .c-select:focus { border-color: #fbbf24; }
+        .c-select option { font-weight: bold; }
 
         .c-buy-btn {
-            background: #fbbf24; color: #000; border: none; padding: 10px 20px;
-            border-radius: 30px; font-weight: 900; font-size: 15px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: auto;
+            background: #fbbf24; color: #000; border: none; padding: 8px 15px;
+            border-radius: 30px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; width: 100%; margin-top: auto;
         }
         .c-buy-btn:hover { background: #fff; transform: scale(1.02); }
 
-        /* תצוגות מקדימות בתוך הקלפים */
-        .preview-gold-border { border: 3px solid #fbbf24; box-shadow: 0 0 15px #fbbf24; padding: 8px 15px; border-radius: 8px; font-weight: 900; color: #fff; font-size: 16px; }
-        .preview-neon-border { border: 3px solid #06b6d4; box-shadow: 0 0 15px #06b6d4, inset 0 0 10px #06b6d4; padding: 8px 15px; border-radius: 8px; font-weight: 900; color: #fff; font-size: 16px; }
-        .preview-night-pitch { width: 80%; height: 70px; background: linear-gradient(to bottom, #0f172a, #1e293b); border: 2px solid #334155; position: relative; border-radius: 8px;}
-        .preview-manager-tag { background: linear-gradient(135deg, #e11d48, #9f1239); padding: 6px 15px; border-radius: 20px; color: #fff; font-weight: 900; font-size: 14px; }
-        .preview-crest { font-size: 40px; filter: drop-shadow(0 0 10px #fbbf24); }
-        .preview-celebration { font-size: 35px; animation: bounceCosmetic 1s infinite alternate; }
+        /* סמלים מונפשים בפנים התצוגה המקדימה */
+        .preview-crest { font-size: 28px; filter: drop-shadow(0 0 8px #fbbf24); transition: 0.3s;}
+        .preview-manager-tag { background: linear-gradient(135deg, #e11d48, #9f1239); padding: 4px 12px; border-radius: 20px; color: #fff; font-weight: 900; font-size: 12px; transition: 0.3s; }
+        .preview-gold-border { border: 2px solid #fbbf24; box-shadow: 0 0 10px #fbbf24; padding: 4px 10px; border-radius: 6px; font-weight: 900; color: #fff; font-size: 11px; transition: 0.3s;}
         
         @keyframes bounceCosmetic { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-10px) scale(1.1); } }
 
@@ -1948,7 +2083,20 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .pts-plus { color: var(--brand-green); font-weight: 900; direction: ltr; display: inline-block; text-shadow: 0 0 5px rgba(124,168,86,0.3);}
         .pts-minus { color: #ef4444; font-weight: 900; direction: ltr; display: inline-block; }
         .rules-sub-heading { color: var(--text-dark); font-size: 16px; font-weight: 900; margin: 20px 0 10px 0; border-bottom: 2px solid rgba(124, 168, 86, 0.3); padding-bottom: 5px; display: inline-block; }
-        
+
+        /* === עיצוב דף הפרסים שלי === */
+        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 10px; }
+        .inv-card { background: var(--bg-silver-matte); border: 2px solid rgba(0,0,0,0.05); border-radius: 16px; padding: 20px 15px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .inv-card:hover { transform: translateY(-5px); border-color: var(--brand-green); box-shadow: 0 10px 25px rgba(124, 168, 86, 0.2); }
+        .inv-qty-badge { position: absolute; top: -10px; right: -10px; background: #e11d48; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 8px rgba(225, 29, 72, 0.5); border: 2px solid #fff; z-index: 10; }
+        .inv-icon-wrap { width: 70px; height: 70px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 35px; margin-bottom: 12px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); background: #fff; }
+        .inv-card.tier-legendary .inv-icon-wrap { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 2px solid #fbbf24; box-shadow: 0 0 15px rgba(251,191,36,0.4); }
+        .inv-card.tier-epic .inv-icon-wrap { background: linear-gradient(135deg, #f3e8ff, #d8b4fe); border: 2px solid #a855f7; box-shadow: 0 0 15px rgba(168,85,247,0.4); }
+        .inv-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; line-height: 1.2; }
+        .inv-desc { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 15px; flex: 1; }
+        .inv-btn { width: 100%; background: var(--element-navy-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .inv-btn:hover { background: var(--brand-green); transform: scale(1.02); }
+      
     </style>
         
 </head>
@@ -2026,9 +2174,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         <div class="fm-submenu">
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-squad', this)">סגל שחקנים</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-tactics', this)">בחירת הרכב</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-gallery', this)">גלריית המועדון</div>
         </div>
     </div>
 
+           
     <div class="fm-nav-group" onclick="toggleNavGroup(this)">
         <div class="fm-menu-item">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -2089,8 +2239,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             <svg class="dropdown-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
         <div class="fm-submenu">
-            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-boosts', this)">בוסטים טקטיים</div>
-            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-cosmetics', this)">בוטיק יוקרה</div> <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-packages', this)">חבילות והפתעות</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-boosts', this)">בוסטים</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-cosmetics', this)">קוסמטיקה</div> <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-packages', this)">חבילות</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-my-rewards', this)">הפרסים שלי</div>
         </div>
     </div>
 </nav>
@@ -2157,6 +2308,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                             <div class="rules-content-inner">
 
                                 <div class="rules-section">
+                                    
                                     <h3><span>🏟️</span> 1. מבנה הליגה והבעלות</h3>
                                     <ul>
                                         <li><strong>הרכב הליגה:</strong> כל ליגה מורכבת מ-8 קבוצות (מנג'רים) בדיוק.</li>
@@ -2166,31 +2318,52 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     </ul>
                                 </div>
 
-                                <div class="rules-section">
+                               <div class="rules-section">
                                     <h3><span>📊</span> 2. מאגר השחקנים ושווי שוק (הבורסה)</h3>
                                     <ul>
                                         <li><strong>המאגר:</strong> דאטאבייס קבוע של 1,000 השחקנים המובילים מ-5 הליגות הבכירות באירופה.</li>
                                         <li><strong>דירוג ייחודי:</strong> השחקנים מדורגים מ-1 עד 1,000 ללא חפיפה. לכל שחקן שווי שוק מדויק משלו (אין שני מחירים זהים).</li>
-                                        <li><strong>חוק הבורסה (סכום אפס):</strong> מדרג הרמות הוא קשיח. אם שחקן עולה ברמה, הוא בהכרח דוחק שחקן אחר למטה אל רמה נמוכה יותר.</li>
+                                        <li><strong>עדכון שבועי:</strong> בכל יום שלישי בשעה 10:00 בבוקר מתבצע רענון מקיף למאגר המבוסס על ביצועי השחקנים במחזור האחרון במציאות. בעדכון זה שווי השחקנים והרמה שלהם עשויים לעלות או לרדת.</li>
+                                        <li><strong>עליית וירידת רמות (סכום אפס):</strong> מדרג הרמות הוא קשיח (בדיוק 50 כוכבי על, 100 רמה 1 וכו'). הלוגיקה בנויה כך שאם, לדוגמה, שחקן מרמה 1 הגיע לשווי של 35 מיליון ₪, הוא הופך אוטומטית ל"כוכב על" על חשבונו של השחקן שהיה מדורג במקום ה-50 והאחרון ברשימת כוכבי העל, אשר יידחק בחזרה לרמה 1.</li>
                                     </ul>
-                                    <table class="rules-modern-table">
+                                    <table class="rules-modern-table" style="text-align: center;">
                                         <thead>
                                             <tr>
-                                                <th>דרגה (Tier)</th>
+                                                <th style="text-align: center; width: 25%;">דרגה (Tier)</th>
                                                 <th style="text-align: center;">כמות במאגר</th>
-                                                <th>טווח מחירים (₪)</th>
+                                                <th style="text-align: center;">טווח מחירים (₪)</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr><td>🌟 כוכבי על</td><td style="text-align: center;">50</td><td style="color:var(--brand-green); font-weight:900;">35.0M - 50.0M</td></tr>
-                                            <tr><td>🥇 רמה 1</td><td style="text-align: center;">100</td><td style="color:var(--brand-green); font-weight:900;">19.0M - 34.9M</td></tr>
-                                            <tr><td>🥈 רמה 2</td><td style="text-align: center;">250</td><td style="color:var(--brand-green); font-weight:900;">10.0M - 18.9M</td></tr>
-                                            <tr><td>🥉 רמה 3</td><td style="text-align: center;">300</td><td style="color:var(--brand-green); font-weight:900;">5.0M - 9.9M</td></tr>
-                                            <tr><td>🧱 רמה 4</td><td style="text-align: center;">300</td><td style="color:var(--brand-green); font-weight:900;">500K - 4.9M</td></tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🌟 כוכבי על</td>
+                                                <td>50</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">35.0M - 50.0M</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🥇 רמה 1</td>
+                                                <td>100</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">19.0M - 34.9M</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🥈 רמה 2</td>
+                                                <td>250</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">10.0M - 18.9M</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🥉 רמה 3</td>
+                                                <td>300</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">5.0M - 9.9M</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;">🧱 רמה 4</td>
+                                                <td>300</td>
+                                                <td style="color:var(--brand-green); font-weight:900;">500K - 4.9M</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
-
+                                
                                 <div class="rules-section">
                                     <h3><span>🎲</span> 3. הגרלת הדראפט (פתיחת העונה)</h3>
                                     <ul>
@@ -2210,11 +2383,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                             <div>
                                                 <strong style="color: var(--brand-green); font-size: 15px;">חלוקת רמות:</strong>
                                                 <div style="padding-right: 15px; margin-top: 4px; line-height: 1.8; color: var(--text-dark); font-weight: bold;">
-                                                    • כוכבי על - 2<br>
-                                                    • רמה 1 - 3<br>
-                                                    • רמה 2 - 5<br>
-                                                    • רמה 3 - 5<br>
-                                                    • רמה 4 - 5
+                                                    • כוכבי על - 2 שחקנים<br>
+                                                    • רמה 1 - 3 שחקנים<br>
+                                                    • רמה 2 - 5 שחקנים<br>
+                                                    • רמה 3 - 5 שחקנים<br>
+                                                    • רמה 4 - 5 שחקנים
                                                 </div>
                                             </div>
                                             
@@ -2236,8 +2409,10 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     <h3><span>💼</span> 5. זירת המסחר: קנייה, מכירה וטריידים</h3>
                                     <ul>
                                         <li><strong>תקציב התחלתי:</strong> כל קבוצה מקבלת תקציב התחלתי של 100 מיליון ש"ח.</li> 
-                                        <li><strong>חובת סגל מלא:</strong> בכל רכישת שחקן/טרייד חובה להפריש שחקן מהסגל שלכם כדי לשמור על מגבלת ה-20.</li>
-                                        <li><strong>מכירה פומבית:</strong> התמודדות על שחקנים חופשיים (הצעת סכום + שחקן מהסגל לשחרור).</li>
+                                        <li><strong>חובת סגל מלא:</strong> בכל רכישת שחקן/טרייד חובה להפריש שחקן מהסגל שלכם כדי לשמור על מגבלת ה-20 שחקנים.</li>
+                                        <li><strong>מכירה פומבית:</strong> התמודדות מול מנג'רים אחרים על שחקנים חופשיים במכרז פתוח (הצעת סכום מתקציב + שחקן מהסגל לשחרור).</li>
+                                        <li><strong>מכירה בהפתעה (Flash Sale):</strong> פעם בשבוע, ביום ובשעה אקראיים לחלוטין, יוצע למכירה מהירה שחקן חופשי (מרמה רנדומלית) במחיר נמוך משמעותית משווי השוק שלו. המכירה פועלת על בסיס "כל הקודם זוכה" – המנג'ר הראשון שמגיש הצעה זוכה בשחקן במקום! חובה לבחור שחקן סגל שיהפוך לחופשי בתמורה.</li>
+                                        <li><strong>מכסת חילופים:</strong> בין מחזור למחזור מותר לבצע עד <strong>3 חילופים/העברות</strong> בסגל (ניתן להגדיל את המכסה נקודתית באמצעות קלף "חילוף אקסטרה" מחבילות ההפתעה).</li>
                                         <li><strong>טריידים ישירים:</strong> ניתן להציע למנג'ר יריב טרייד "ראש בראש" או הצעת שחקן + תוספת תשלום.</li>
                                         <li><strong>מגבלת סגל מינימלית:</strong> אסור לבצע מהלך שישאיר אתכם עם פחות מ: 2 שוערים, 5 שחקני הגנה, 5 קשרים או 4 חלוצים.</li>
                                     </ul>
@@ -2246,12 +2421,13 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                 <div class="rules-section">
                                     <h3><span>⚔️</span> 6. שיטת הדו-קרב (Head-to-Head)</h3>
                                     <ul>
-                                        <li><strong>המפגש השבועי:</strong> בכל מחזור מתקיים מפגש ישיר בין שתי קבוצות (לדוגמה: קבוצה א' נגד קבוצה ב'). הקבוצה שסך שחקניה צברו יותר נקודות פנטזי באותו מחזור, מנצחת במפגש ומקבלת <strong>3 נקודות</strong> לטבלת הליגה. במקרה של שוויון מוחלט בנקודות הפנטזי, המפגש מסתיים בתיקו וכל קבוצה מקבלת <strong>נקודה אחת</strong>.</li>
+                                        <li><strong>המפגש השבועי:</strong> בכל מחזור מתקיים מפגש ישיר בין שתי קבוצות (לדוגמה: קבוצה א' נגד קבוצה ב'). הקבוצה שסך שחקניה צברו יותר נקודות פנטזי באותו מחזור <strong>(לאחר שקלול כולל של בונוסי נקודות, במידה והופעלו)</strong>, מנצחת במפגש ומקבלת <strong>3 נקודות</strong> לטבלת הליגה. במקרה של שוויון מוחלט בנקודות הפנטזי (כולל הבונוסים), המפגש מסתיים בתיקו וכל קבוצה מקבלת <strong>נקודה אחת</strong>.</li>
                                         <li><strong>הכתרת האלופה:</strong> הליגה מסתיימת במקביל לסיום עונות הכדורגל בליגות הבכירות במציאות. עם שריקת הסיום של המחזורים האחרונים, הקבוצה שמוליכה את טבלת הליגה עם מרב הנקודות מוכתרת רשמית כאלופת הפנטזי!</li>
-                                        <li><strong>שוברי שוויון בטבלה:</strong> במצב שבו שתי קבוצות (או יותר) מסיימות את העונה עם מספר זהה של נקודות בטבלת הליגה, זהות האלופה (והמיקום הסופי בטבלה) תיקבע לפי שוברי השוויון הבאים בסדר יורד:
-                                            <br>1. <strong>מספר ניצחונות:</strong> הקבוצה שניצחה יותר מפגשי ראש-בראש במהלך העונה.
+                                        <li><strong>שוברי שוויון בטבלה:</strong> במצב שבו שתי קבוצות (או יותר) מחזיקות במספר זהה של נקודות בטבלת הליגה (במהלך העונה או בסיומה), המיקום בטבלה (וזהות האלופה) ייקבע לפי שוברי השוויון הבאים בסדר יורד:
+                                            <br>1. <strong>מספר ניצחונות כללי:</strong> הקבוצה שניצחה יותר משחקים באופן כללי במהלך העונה.
                                             <br>2. <strong>שערי זכות:</strong> הקבוצה ששחקניה הבקיעו יותר שערים במצטבר לאורך העונה.
                                             <br>3. <strong>רשת נקייה:</strong> הקבוצה ששחקניה שמרו יותר פעמים על שער נקי (Clean Sheets).
+                                            <br>4. <strong>מפגשים ישירים:</strong> הקבוצה בעלת המאזן הטוב יותר במפגשים הישירים בין הקבוצות הנמצאות בשוויון (במקרה נדיר של שוויון מוחלט בכל הפרמטרים הקודמים).
                                         </li>
                                     </ul>
                                 </div>
@@ -2333,17 +2509,71 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                     </table>
                                 </div>
 
-                                <div class="rules-section">
-                                    <h3><span>🎁</span> 8. חנות הפנטזי וחבילות</h3>
-                                    <ul>
-                                        <li><strong>בוסטים:</strong> שדרוגים טקטיים לשימוש במחזור בודד (לדוגמה: "סופר קפטן" המכפיל את ניקוד הקפטן פי 4).</li>
-                                        <li><strong>חבילות הפתעה:</strong> אפשרות לרכוש חבילות וירטואליות המעניקות תקציב נוסף, בוסטים מיוחדים או קוסמטיקה למועדון.</li>
-                                    </ul>
+                                <div class="rules-sub-heading">📦 חבילות הפתעה ומנגנון ההגרלות</div>
+                                    <p style="font-size: 14px; margin-bottom: 10px; text-align: center;">הפריטים מחולקים ל-3 רמות נדירות. ככל שהחבילה יקרה יותר, הסיכוי לפגוע ברמות הגבוהות עולה משמעותית.</p>
+                                    
+                                    <table class="rules-modern-table" style="text-align: center;">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center; width: 25%;">רמת פריט</th>
+                                                <th style="text-align: center;">תוכן אפשרי</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="vertical-align: middle;"><span style="color: #94a3b8; font-weight: 900;">🟢 בסיס</span></td>
+                                                <td style="text-align: center;">כסף קטן (100K-500K), כינויים נפוצים, סמלים רגילים, קלפי "בחירת שחקן: רמה 4", +1 נק' בונוס.</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;"><span style="color: #38bdf8; font-weight: 900;">🔵 ביניים</span></td>
+                                                <td style="text-align: center;">כסף בינוני (1M-2.5M), בוסטים טקטיים, "סגן קפטן", "חילוף אקסטרה", קלפי "בחירת שחקן: רמה 2-3", <strong>אצטדיון לילה, מסגרת ניאון סייבר</strong>.</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="vertical-align: middle;"><span style="color: #fbbf24; font-weight: 900;">🟣 טופ (אגדי)</span></td>
+                                                <td style="text-align: center;">כסף ענק (4M-15M), בוסט פרימיום (ספסל פעיל), קלפי "בחירת שחקן: כוכב על", <strong>מסגרת יהלום (VIP), חגיגת שער (קונפטי)</strong>, סמלים מונפשים, +10 נק'.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="rules-sub-heading">🎰 אחוזי זכייה לפי חבילה</div>
+                                    <table class="rules-modern-table" style="text-align: center;">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">שם החבילה</th>
+                                                <th style="text-align: center;">כמות פריטים</th>
+                                                <th style="text-align: center;">🟢 בסיס</th>
+                                                <th style="text-align: center;">🔵 ביניים</th>
+                                                <th style="text-align: center;">🟣 טופ</th>
+                                                <th style="text-align: center;">הבטחה בחבילה (Pity)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align: center; color:#94a3b8; font-weight:900;">חבילת בסיס</td>
+                                                <td style="text-align: center;">5</td><td style="text-align: center;">90%</td><td style="text-align: center;">9%</td><td style="text-align: center;">1%</td>
+                                                <td style="text-align: center;">ללא הבטחה</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; color:#38bdf8; font-weight:900;">חבילת פריים</td>
+                                                <td style="text-align: center;">8</td><td style="text-align: center;">70%</td><td style="text-align: center;">25%</td><td style="text-align: center;">5%</td>
+                                                <td style="text-align: center;">מינימום 2 פריטי ביניים</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; color:#d8b4fe; font-weight:900;">חבילת פלטינום</td>
+                                                <td style="text-align: center;">11</td><td style="text-align: center;">50%</td><td style="text-align: center;">38%</td><td style="text-align: center;">12%</td>
+                                                <td style="text-align: center;">מינימום 3 פריטי ביניים</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center; color:#fbbf24; font-weight:900;">חבילת עלית</td>
+                                                <td style="text-align: center;">15</td><td style="text-align: center;">30%</td><td style="text-align: center;">50%</td><td style="text-align: center;">20%</td>
+                                                <td style="text-align: center;">מובטח פריט טופ 1 + 5 ביניים</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p style="font-size: 11px; color: #ef4444; margin-top: 5px; text-align: center; font-weight: bold;">* מנגנון מניעת הצפה: מובטח שייצאו מקסימום 2 פרסים כספיים ומקסימום 2 כרטיסי החלפת שחקן בחבילה אחת בודדת.</p>
                                 </div>
 
                             </div>
-                        </div>
-                    </div>
                         </div>
                     </div>
 
@@ -2417,17 +2647,25 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     פרופיל מנג'ר
                 </h2>
                 
-                <div class="profile-header-card">
+               <div class="profile-header-card">
                     <div class="profile-avatar-wrap">
                         <img src="https://ui-avatars.com/api/?name=ישראל+ישראלי&background=7ca856&color=fff&size=150" alt="Avatar" class="profile-avatar">
                         <div class="profile-level-badge">רמה 42</div>
                     </div>
                     <div class="profile-details">
-                        <h2 class="manager-name">ישראל ישראלי</h2>
-                        <div class="manager-team-name">האריות של סוליבי</div>
+                        <h2 class="manager-name">ישראל ישראלי <span id="profile-manager-title" style="font-size: 13px; background: linear-gradient(135deg, #e11d48, #9f1239); color: #fff; padding: 3px 10px; border-radius: 12px; vertical-align: middle; margin-right: 8px;">👑 GOAT</span></h2>
+                        <div class="manager-team-name"><span id="profile-manager-crest" style="margin-left: 5px; font-size: 16px;">🦁</span> האריות של סוליבי</div>
                         <div class="manager-meta">
                             <span>🛡️ אוהד: מכבי תל אביב</span>
                             <span>📅 מנג'ר מאז: אוגוסט 2024</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-right: auto; text-align: center; background: rgba(0,0,0,0.03); padding: 10px 25px; border-radius: 12px; border: 1px dashed rgba(0,0,0,0.1);">
+                        <div style="font-size: 11px; font-weight: 900; color: #64748b; margin-bottom: 8px;">מדי המועדון</div>
+                        <div class="profile-kit-wrapper" id="profile-active-kit">
+                            <div class="profile-kit-shirt kit-solid-blue"></div>
+                            <div class="profile-kit-shorts kit-solid-blue"></div>
                         </div>
                     </div>
                 </div>
@@ -2596,7 +2834,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         
                         <div class="squad-layout" style="display: flex; gap: 20px; align-items: stretch;">
                             <div style="flex: 2.5; display: flex; flex-direction: column; gap: 8px; min-width: 0;">
-                                <div class="soccer-field" style="flex: 1; min-height: 320px; padding: 5px 0;">
+                               <div id="main-pitch" class="soccer-field" style="flex: 1; min-height: 320px; padding: 5px 0;">
                                     <div class="field-lines"></div>
                                     <div class="captain-control">
                                         <span>קפטן:</span>
@@ -2632,6 +2870,29 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
 
+<div id="tab-gallery" class="fm-tab">
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        גלריית המועדון: חדר ההלבשה
+    </h2>
+
+    <p class="content-desc">כאן מנוהל כל המיתוג הויזואלי של המועדון שלך. בחר את הפריטים הפעילים מתוך האוסף שצברת בחבילות ובבוטיק.</p>
+
+    <div class="tt-controls" style="margin-bottom: 20px;">
+        <span style="font-weight: 900; color: var(--text-dark);">בחר קטגוריה להצגה:</span>
+        <select id="gallery-category-select" onchange="renderGalleryItems(this.value)">
+            <option value="all">🌟 הצג את כל הפריטים</option>
+            <option value="kit">👕 מדי קבוצה (Kits)</option>
+            <option value="crest">🛡️ סמלי מועדון</option>
+            <option value="title">🏷️ תארי מנג'ר</option>
+            <option value="effect">✨ מגרש ואפקטים</option>
+        </select>
+    </div>
+
+    <div class="inventory-grid" id="gallery-items-container">
+    </div>
+</div>
+                
                    <div id="tab-league" class="fm-tab">
                         <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -3532,7 +3793,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                                 <option value="שוער">שוערים</option>
                                 <option value="הגנה">הגנה</option>
                                 <option value="קישור">קישור</option>
-                                <option value="חלוץ">התקפה</option>
+                                <option value="התקפה">התקפה</option>
                             </select>
                         </div>
                         <div class="market-table-container">
@@ -3727,118 +3988,142 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </h2>
 
                         <div class="cosmetics-grid">
+                            
                             <div class="cosmetic-card">
-                                <div class="c-preview"><div class="preview-gold-border">מכבי סוליבי</div></div>
-                                <div class="c-title">מסגרת יהלום (VIP)</div>
-                                <div class="c-desc">הדגשה מונפשת לשם שלך בטבלת הליגה.</div>
-                                <button class="c-buy-btn" onclick="buyBoost('cosmetic_border_gold', 12500000)">קנה ב-₪12.5M</button>
+                                <div class="c-preview"><div class="preview-crest" id="crest-preview">🦁</div></div>
+                                <div class="c-title">סמל קבוצה אגדי</div>
+                                <div class="c-desc">בחר סמל מונפש (רמת פרו) שילווה את המועדון שלך.</div>
+                                <select class="c-select" id="select-crest" onchange="document.getElementById('crest-preview').innerText = this.value.split(' ')[0]">
+                                    <option value="🦁 אריה מחשמל">🦁 אריה מחשמל</option>
+                                    <option value="🐉 דרקון אש">🐉 דרקון אש</option>
+                                    <option value="💎 כתר יהלומים">💎 כתר יהלומים</option>
+                                    <option value="🐅 נמר גלקטי">🐅 נמר גלקטי</option>
+                                    <option value="🦅 גריפון אגדי">🦅 גריפון אגדי</option>
+                                    <option value="🐍 קוברה ארסית">🐍 קוברה ארסית</option>
+                                    <option value="🔥 פניקס אש">🔥 פניקס אש</option>
+                                    <option value="🪖 גלדיאטור">🪖 גלדיאטור</option>
+                                </select>
+                                <button class="c-buy-btn" onclick="buyBoost('dynamic_crest', 3000000)">קנה ב-₪3.0M</button>
                             </div>
                             
                             <div class="cosmetic-card">
-                                <div class="c-preview"><div class="preview-neon-border">מכבי סוליבי</div></div>
-                                <div class="c-title">מסגרת ניאון סייבר</div>
-                                <div class="c-desc">מסגרת תכלת-זוהרת למראה מודרני בטבלה.</div>
-                                <button class="c-buy-btn" onclick="buyBoost('cosmetic_border_neon', 8500000)">קנה ב-₪8.5M</button>
+                                <div class="c-preview"><div class="preview-manager-tag" id="title-preview">👑 GOAT</div></div>
+                                <div class="c-title">תואר מנג'ר VIP</div>
+                                <div class="c-desc">תג שם מיוחד (רמת פרו) שיופיע תחת שמך במשחק.</div>
+                                <select class="c-select" id="select-title" onchange="document.getElementById('title-preview').innerText = '👑 ' + this.value">
+                                    <option value="GOAT">GOAT</option>
+                                    <option value="המיוחד">המיוחד</option>
+                                    <option value="אדריכל ניצחונות">אדריכל ניצחונות</option>
+                                    <option value="מאסטרמיינד">מאסטרמיינד</option>
+                                    <option value="אגדת פנטזי">אגדת פנטזי</option>
+                                    <option value="פפ הישראלי">פפ הישראלי</option>
+                                    <option value="הבוס הגדול">הבוס הגדול</option>
+                                    <option value="בלתי מנוצח">בלתי מנוצח</option>
+                                    <option value="פנומן">פנומן</option>
+                                    <option value="דון קרלו">דון קרלו</option>
+                                </select>
+                                <button class="c-buy-btn" onclick="buyBoost('dynamic_title', 3000000)">קנה ב-₪3.0M</button>
                             </div>
 
                             <div class="cosmetic-card">
-                                <div class="c-preview"><div class="preview-night-pitch"></div></div>
-                                <div class="c-title">אצטדיון לילה</div>
-                                <div class="c-desc">דשא כהה עם תאורת זרקורים במסך ההרכב.</div>
-                                <button class="c-buy-btn" onclick="buyBoost('cosmetic_pitch', 7500000)">קנה ב-₪7.5M</button>
+                                <div class="c-preview"><div class="preview-gold-border" id="effect-preview">מסגרת יהלום VIP</div></div>
+                                <div class="c-title">אפקטים למגרש ולטבלה</div>
+                                <div class="c-desc">שדרוג ויזואלי מתקדם (רמת פרו) להרכב ולדירוג.</div>
+                                <select class="c-select" id="select-effect" onchange="document.getElementById('effect-preview').innerText = this.options[this.selectedIndex].text">
+                                    <option value="vip_border">מסגרת יהלום VIP</option>
+                                    <option value="neon_border">מסגרת ניאון סייבר</option>
+                                    <option value="night_pitch">אצטדיון לילה מואר</option>
+                                    <option value="confetti">חגיגת שער (קונפטי)</option>
+                                </select>
+                                <button class="c-buy-btn" onclick="buyBoost('dynamic_effect', 3000000)">קנה ב-₪3.0M</button>
                             </div>
 
-                            <div class="cosmetic-card">
-                                <div class="c-preview"><div class="preview-manager-tag">👑 טקטיקן על</div></div>
-                                <div class="c-title">תואר מנג'ר</div>
-                                <div class="c-desc">תג אישי שמופיע תחת שמך בכל רחבי המשחק.</div>
-                                <button class="c-buy-btn" onclick="buyBoost('cosmetic_title', 5000000)">קנה ב-₪5.0M</button>
-                            </div>
-
-                            <div class="cosmetic-card">
-                                <div class="c-preview"><div class="preview-crest">🦁</div></div>
-                                <div class="c-title">סמל אריה מוזהב</div>
-                                <div class="c-desc">החלף את סמל המועדון הרגיל שלך בסמל יוקרתי.</div>
-                                <button class="c-buy-btn" onclick="buyBoost('cosmetic_crest', 10000000)">קנה ב-₪10.0M</button>
-                            </div>
-
-                            <div class="cosmetic-card">
-                                <div class="c-preview"><div class="preview-celebration">🎉⚽🎉</div></div>
-                                <div class="c-title">חגיגת שער (קונפטי)</div>
-                                <div class="c-desc">אנימציית קונפטי קופצת בלייב כשקבוצתך כובשת.</div>
-                                <button class="c-buy-btn" onclick="buyBoost('cosmetic_celebration', 8000000)">קנה ב-₪8.0M</button>
-                            </div>
                         </div>
                     </div>
 
 <div id="tab-packages" class="fm-tab">
-                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                            מחלקת חבילות והפתעות
-                        </h2>
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        מחלקת חבילות (Packs)
+    </h2>
 
-                        <div class="packs-grid">
+    <div class="packs-grid">
                             
-                            <div class="pack-card pack-bronze" onclick="openGachaPack('bronze', 2000000)">
+                            <div class="pack-card pack-bronze">
                                 <div class="pack-icon">
-                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#cd7f32" stroke-width="1"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(205, 127, 50, 0.2)" stroke-width="2"></path></svg>
+                                    <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(148, 163, 184, 0.1)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                                 </div>
-                                <div class="pack-title" style="color: #cd7f32;">ארגז בסיסי</div>
-                                <div class="pack-desc">חבילת פתיחה למנג'ר המתחיל. סיכוי נמוך להפתעות גדולות.</div>
-                                <div class="pack-chances">
-                                    <span><strong>80%</strong> - החזר כספי חלקי (1M)</span>
-                                    <span><strong>15%</strong> - קלף חילוף חינם</span>
-                                    <span><strong>5%</strong> - בוסט רגיל אקראי</span>
+                                <div class="pack-title" style="color: #cbd5e1;">חבילת בסיס</div>
+                                <div class="pack-desc" style="margin-bottom: 10px; font-size: 14px;">מכילה 5 פריטים אקראיים.</div>
+                                <div style="margin-bottom: 20px; z-index: 2; position: relative;">
+                                    <button onclick="showPackRates('bronze')" style="background: none; border: 1px dashed rgba(255,255,255,0.3); color: #cbd5e1; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">🔍 אחוזי זכייה</button>
                                 </div>
-                                <button class="pack-btn">פתח ב-₪2.0M</button>
+                                <button class="pack-btn" style="background: rgba(148,163,184,0.1); border-color: #94a3b8;" onclick="openGachaPack('bronze', 2000000)">פתח ב-₪2.0M</button>
                             </div>
 
-                            <div class="pack-card pack-silver" onclick="openGachaPack('silver', 5000000)">
+                            <div class="pack-card pack-silver">
                                 <div class="pack-icon">
-                                    <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(203, 213, 225, 0.2)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="1"></polyline></svg>
+                                    <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.5"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(56, 189, 248, 0.2)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="1"></polyline></svg>
                                 </div>
-                                <div class="pack-title" style="color: #e2e8f0;">מארז מקצוען</div>
-                                <div class="pack-desc">הסיכויים עולים! יותר כסף, יותר חילופים והזדמנות לבוסטים.</div>
-                                <div class="pack-chances">
-                                    <span><strong>60%</strong> - כסף מזומן (2M-4M)</span>
-                                    <span><strong>25%</strong> - 2 קלפי חילוף חינם</span>
-                                    <span><strong>15%</strong> - בוסט אסטרטגי יקר</span>
+                                <div class="pack-title" style="color: #38bdf8;">חבילת פריים</div>
+                                <div class="pack-desc" style="margin-bottom: 10px; font-size: 14px;">מכילה 8 פריטים אקראיים.</div>
+                                <div style="margin-bottom: 20px; z-index: 2; position: relative;">
+                                    <button onclick="showPackRates('silver')" style="background: none; border: 1px dashed rgba(255,255,255,0.3); color: #38bdf8; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">🔍 אחוזי זכייה</button>
                                 </div>
-                                <button class="pack-btn">פתח ב-₪5.0M</button>
+                                <button class="pack-btn" style="background: rgba(56,189,248,0.1); border-color: #38bdf8; color:#fff;" onclick="openGachaPack('silver', 6000000)">פתח ב-₪6.0M</button>
                             </div>
 
-                            <div class="pack-card pack-gold" onclick="openGachaPack('gold', 12000000)">
+                            <div class="pack-card pack-diamond">
                                 <div class="pack-icon">
-                                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" style="filter: drop-shadow(0 0 10px rgba(251,191,36,0.6));"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(251, 191, 36, 0.3)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="2"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#d8b4fe" stroke-width="2" style="filter: drop-shadow(0 0 15px rgba(216,180,254,0.6));"><path d="M21 16V8l-9-5-9 5v8l9 5 9-5z" fill="rgba(216, 180, 254, 0.2)" stroke-width="2"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="2"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                                 </div>
-                                <div class="pack-title" style="color: #fbbf24;">כספת עילית</div>
-                                <div class="pack-desc">מובטח: לפחות בוסט אחד או פריט קוסמטיקה למועדון!</div>
-                                <div class="pack-chances">
-                                    <span><strong>40%</strong> - בוסט פרימיום (ספסל פעיל)</span>
-                                    <span><strong>40%</strong> - כסף מזומן מטורף (15M)</span>
-                                    <span><strong>20%</strong> - פריט קוסמטי (VIP)</span>
+                                <div class="pack-title" style="color: #d8b4fe;">חבילת פלטינום</div>
+                                <div class="pack-desc" style="margin-bottom: 10px; font-size: 14px;">מכילה 11 פריטים אקראיים.</div>
+                                <div style="margin-bottom: 20px; z-index: 2; position: relative;">
+                                    <button onclick="showPackRates('diamond')" style="background: none; border: 1px dashed rgba(255,255,255,0.3); color: #d8b4fe; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">🔍 אחוזי זכייה</button>
                                 </div>
-                                <button class="pack-btn">פתח ב-₪12.0M</button>
+                                <button class="pack-btn" style="background: rgba(216,180,254,0.1); border-color: #d8b4fe;" onclick="openGachaPack('diamond', 14000000)">פתח ב-₪14.0M</button>
                             </div>
 
-                            <div class="pack-card pack-diamond" onclick="openGachaPack('diamond', 25000000)">
+                            <div class="pack-card pack-gold">
                                 <div class="pack-icon">
-                                    <svg width="110" height="110" viewBox="0 0 24 24" fill="none" stroke="#d8b4fe" stroke-width="2" style="filter: drop-shadow(0 0 15px rgba(216,180,254,0.8));"><polygon points="12 2 2 7 12 12 22 7 12 2" fill="rgba(216,180,254,0.3)"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                                    <svg width="115" height="115" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" style="filter: drop-shadow(0 0 20px rgba(251,191,36,0.8));"><polygon points="12 2 2 7 12 12 22 7 12 2" fill="rgba(251,191,36,0.3)"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
                                 </div>
-                                <div class="pack-title" style="color: #d8b4fe;">תיבת טיטניום</div>
-                                <div class="pack-desc">למנג'רים עשירים בלבד. פרסים מחריבי-כלכלה מובטחים.</div>
-                                <div class="pack-chances">
-                                    <span><strong>100% מובטח:</strong></span>
-                                    <span>פריט קוסמטיקה (מסגרת זהב)</span>
-                                    <span>+ בוסט "ספסל פעיל"</span>
-                                    <span>+ החזר 5M למערכת</span>
+                                <div class="pack-title" style="color: #fbbf24;">חבילת עלית</div>
+                                <div class="pack-desc" style="margin-bottom: 10px; font-size: 14px;">מכילה 15 פריטים אקראיים.</div>
+                                <div style="margin-bottom: 20px; z-index: 2; position: relative;">
+                                    <button onclick="showPackRates('gold')" style="background: none; border: 1px dashed rgba(255,255,255,0.3); color: #fbbf24; padding: 6px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s;">🔍 אחוזי זכייה</button>
                                 </div>
-                                <button class="pack-btn">פתח ב-₪25.0M</button>
+                                <button class="pack-btn" style="background: rgba(251,191,36,0.1); border-color: #fbbf24;" onclick="openGachaPack('gold', 25000000)">פתח ב-₪25.0M</button>
                             </div>
 
                         </div>
-                    </div>
-                  
+</div>
+<div id="tab-my-rewards" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            הפרסים שלי (מלאי זמין)
+                        </h2>
+                        
+                        <p style="color: #64748b; font-weight: bold; margin-bottom: 20px;">כאן נשמרים כל הפריטים והקוסמטיקה. פריטים לשימוש חד-פעמי ייעלמו לאחר ההפעלה.</p>
+
+                        <div class="inventory-grid">
+                            <div class="inv-card tier-legendary">
+                                <div class="inv-qty-badge">x1</div>
+                                <div class="inv-icon-wrap">🃏</div>
+                                <div class="inv-title">בחירת שחקן: כוכב על</div>
+                                <div class="inv-desc">מגריל 3 כוכבי-על פנויים לבחירתך.<br><span style="color:#ef4444; font-weight:900;">* חובה לשחרר כוכב-על קיים בתמורה (ניתן להתחרט ולבטל).</span></div>
+                                <button class="inv-btn" onclick="alert('מערכת הגרלת שחקנים עולה בקרוב...')">השתמש עכשיו</button>
+                            </div>
+                            <div class="inv-card">
+                                <div class="inv-qty-badge">x3</div>
+                                <div class="inv-icon-wrap">🔄</div>
+                                <div class="inv-title">חילוף אקסטרה</div>
+                                <div class="inv-desc">מאפשר לבצע 4 חילופים במקום 3.</div>
+                                <button class="inv-btn" onclick="alert('נוסף לך חילוף אחד למחזור הנוכחי!')">השתמש עכשיו</button>
+                            </div>
+                        </div>
+                    </div>                  
                     </div> </div> </div> 
 
             <aside class="collapsible-live-panel" id="livePanel">
@@ -4355,9 +4640,9 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             p.penMissed = Math.max(0, (p.pen_att || 0) - (p.pen_scored || 0));
             p.ownGoals = p.own_goals || 0;
 
-            // תיקון עמדות
+           // תיקון עמדות
             p.displayPos = p.pos;
-            if (p.pos === 'התקפה') p.displayPos = 'חלוץ';
+            if (p.pos === 'חלוץ' || p.pos === 'Attacker') p.displayPos = 'התקפה';
 
             // חישוב ציון ממוצע (Rating)
             let avgGoals = p.apps > 0 ? p.goals / p.apps : 0;
@@ -4448,7 +4733,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 // בניית סגל אישי (20 שחקנים לפי חוקים)
                 // ==========================================
                 const tierReqs = { 'כוכב על': 2, 'רמה 1': 3, 'רמה 2': 5, 'רמה 3': 5, 'רמה 4': 5 };
-                const posReqs = { 'שוער': 2, 'הגנה': 6, 'קישור': 6, 'חלוץ': 6 };
+                const posReqs = { 'שוער': 2, 'הגנה': 6, 'קישור': 6, 'התקפה': 6 };
                 const mySquad = [];
                 const pool = [...allPlayersData];
 
@@ -4470,7 +4755,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 }
 
                 // סידור הסגל לפי עמדות
-                const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'חלוץ': 4};
+               const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'התקפה': 4};
                 mySquad.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
 
                 // רינדור טבלת הסגל האישי (טאב סגל שחקנים)
@@ -4495,7 +4780,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     if(p.displayPos === 'שוער') posColor = '#f59e0b';
                     if(p.displayPos === 'הגנה') posColor = '#2ecc71';
                     if(p.displayPos === 'קישור') posColor = '#3498db';
-                    if(p.displayPos === 'חלוץ') posColor = '#e74c3c';
+                   if(p.displayPos === 'התקפה') posColor = '#e74c3c';
 
                    const statusIconsHtml = window.getPlayerStatusIcons ? window.getPlayerStatusIcons(p, false) : ''; // <--- יצירת הסמלים לשורה בטבלה
 
@@ -4642,7 +4927,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                 html += '</div>'; return html;
             };
 
-            pitch.innerHTML = createRow(attCount, 'חלוץ') + createRow(midCount, 'קישור') + createRow(defCount, 'הגנה') + `
+           pitch.innerHTML = createRow(attCount, 'התקפה') + createRow(midCount, 'קישור') + createRow(defCount, 'הגנה') + `
                 <div style="display: flex; justify-content: center; z-index: 10;">
                     <div id="pitch-slot-${slotIdCounter++}" class="player-slot" ondragover="allowDrop(event)" ondrop="dropPlayer(event, 'שוער')">
                         <div class="slot-icon">🧤</div><div class="slot-name">שוער</div>
@@ -5369,93 +5654,268 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             }
         };
 
-     // ==========================================
-        // מנוע פתיחת חבילות (Gacha)
-        // ==========================================
+  // 1. הגדרת מאגרי הפרסים (Pools) לפי רמות - הכלכלה המאוזנת והמורחבת (60+ פריטים)
+        const rewardsPool = {
+            base: [
+                // --- כסף ונקודות ---
+                { type: 'money', title: '100,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💵', val: 100000 },
+                { type: 'money', title: '250,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💵', val: 250000 },
+                { type: 'money', title: '500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 500000 },
+                { type: 'points', title: '+1 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 1 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 4', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 4.', icon: '🃏', val: 4 },
+                // --- 10 תגיות (כינויים) ---
+                { type: 'title', title: 'תגית: חובבן', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'חובבן' },
+                { type: 'title', title: 'תגית: אוהד שרוף', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'אוהד שרוף' },
+                { type: 'title', title: 'תגית: טקטיקן מתחיל', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'טקטיקן מתחיל' },
+                { type: 'title', title: 'תגית: עכבר כדורגל', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'עכבר כדורגל' },
+                { type: 'title', title: 'תגית: פרשן כורסה', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'פרשן כורסה' },
+                { type: 'title', title: 'תגית: מנג\'ר של שבת', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'מנגר של שבת' },
+                { type: 'title', title: 'תגית: שחקן ספסל', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'שחקן ספסל' },
+                { type: 'title', title: 'תגית: שורף תקציבים', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'שורף תקציבים' },
+                { type: 'title', title: 'תגית: סקאוט מתלמד', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'סקאוט מתלמד' },
+                { type: 'title', title: 'תגית: מאמן כושר', desc: 'כינוי מנג\'ר נפוץ.', icon: '🏷️', val: 'מאמן כושר' },
+                // --- 10 סמלי מועדון ---
+                { type: 'crest', title: 'סמל: כדורגל רטרו', desc: 'סמל מועדון קלאסי.', icon: '⚽', val: 'retro_ball' },
+                { type: 'crest', title: 'סמל: מגן ברזל', desc: 'סמל מועדון בסיסי.', icon: '🛡️', val: 'iron_shield' },
+                { type: 'crest', title: 'סמל: חולצת בית', desc: 'סמל מועדון בסיסי.', icon: '👕', val: 'home_shirt' },
+                { type: 'crest', title: 'סמל: דגל קרן', desc: 'סמל מועדון בסיסי.', icon: '🚩', val: 'corner_flag' },
+                { type: 'crest', title: 'סמל: כפפת זהב', desc: 'סמל מועדון בסיסי.', icon: '🧤', val: 'gold_glove' },
+                { type: 'crest', title: 'סמל: משרוקית', desc: 'סמל מועדון בסיסי.', icon: '🪈', val: 'whistle' },
+                { type: 'crest', title: 'סמל: לוח טקטי', desc: 'סמל מועדון בסיסי.', icon: '📋', val: 'tactic_board' },
+                { type: 'crest', title: 'סמל: סטופר', desc: 'סמל מועדון בסיסי.', icon: '⏱️', val: 'stopwatch' },
+                { type: 'crest', title: 'סמל: נעל פקקים', desc: 'סמל מועדון בסיסי.', icon: '👟', val: 'boots' },
+                { type: 'crest', title: 'סמל: יציע אוהדים', desc: 'סמל מועדון בסיסי.', icon: '🏟️', val: 'stands' }
+            ],
+            mid: [
+                // --- כסף, בוסטים ונקודות ---
+                { type: 'money', title: '1,000,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 1000000 },
+                { type: 'money', title: '1,500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 1500000 },
+                { type: 'money', title: '2,500,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💰', val: 2500000 },
+                { type: 'points', title: '+3 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 3 },
+                { type: 'points', title: '+5 נקודות', desc: 'בונוס לסיכום הנקודות במחזור הקרוב בלבד.', icon: '⭐', val: 5 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 3', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 3.', icon: '🃏', val: 3 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 2', desc: 'שחרר שחקן מהסגל ובחר 1 מ-3 שחקני רמה 2.', icon: '🃏', val: 2 },
+                { type: 'sub', title: 'חילוף אקסטרה', desc: 'חילוף חינם נוסף למחזור הקרוב.', icon: '🔄', val: 1 },
+                { type: 'vice', title: 'סגן קפטן', desc: 'ביטוח קפטן למקרה שלא ישחק.', icon: '🧠', val: 1 },
+                { type: 'boost', title: 'סופר קפטן', desc: 'בוסט טקטי: הכפלת נקודות הקפטן פי 4.', icon: '🛡️', val: 'super_captain' },
+                { type: 'boost', title: 'להחנות את האוטובוס', desc: 'בוסט טקטי: רשת נקייה לכל ההגנה.', icon: '🚌', val: 'park_bus' },
+                { type: 'boost', title: 'חסינות מלאה', desc: 'בוסט טקטי: ביטול מינוסים מצהובים/אדומים.', icon: '🚫', val: 'immunity' },
+                { type: 'boost', title: 'יום חג לחלוצים', desc: 'בוסט טקטי: נק\' כפולות על שערי התקפה.', icon: '🔥', val: 'goal_fest' },
+                // --- 10 תגיות (כינויים) ---
+                { type: 'title', title: 'תגית: מלך השוק', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'מלך השוק' },
+                { type: 'title', title: 'תגית: שודד השחקנים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שודד השחקנים' },
+                { type: 'title', title: 'תגית: אמן החילופים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'אמן החילופים' },
+                { type: 'title', title: 'תגית: גאון טקטי', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'גאון טקטי' },
+                { type: 'title', title: 'תגית: שועל קרבות', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שועל קרבות' },
+                { type: 'title', title: 'תגית: קבלן עליות', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'קבלן עליות' },
+                { type: 'title', title: 'תגית: צייד כישרונות', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'צייד כישרונות' },
+                { type: 'title', title: 'תגית: מוח כדורגל', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'מוח כדורגל' },
+                { type: 'title', title: 'תגית: שף של הרכבים', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שף של הרכבים' },
+                { type: 'title', title: 'תגית: שובר שוויונות', desc: 'כינוי מנג\'ר נדיר.', icon: '🏷️', val: 'שובר שוויונות' },
+                // --- 10 סמלים ועיצובים (קוסמטיקה) ---
+                { type: 'crest', title: 'סמל: פיראט', desc: 'סמל מועדון מעוצב.', icon: '🏴‍☠️', val: 'pirate' },
+                { type: 'crest', title: 'סמל: כוכב זהב', desc: 'סמל מועדון יוקרתי.', icon: '⭐', val: 'gold_star' },
+                { type: 'crest', title: 'סמל: נשר דורס', desc: 'סמל מועדון מעוצב.', icon: '🦅', val: 'eagle' },
+                { type: 'crest', title: 'סמל: שור זועם', desc: 'סמל מועדון מעוצב.', icon: '🐂', val: 'bull' },
+                { type: 'crest', title: 'סמל: כריש רעב', desc: 'סמל מועדון מעוצב.', icon: '🦈', val: 'shark' },
+                { type: 'crest', title: 'סמל: חרבות מוצלבות', desc: 'סמל מועדון מעוצב.', icon: '⚔️', val: 'swords' },
+                { type: 'crest', title: 'סמל: זאב בודד', desc: 'סמל מועדון מעוצב.', icon: '🐺', val: 'wolf' },
+                { type: 'crest', title: 'סמל: פנתר שחור', desc: 'סמל מועדון מעוצב.', icon: '🐆', val: 'panther' },
+                { type: 'cosmetic', title: 'אצטדיון לילה', desc: 'עיצוב: דשא כהה עם תאורת זרקורים בהרכב.', icon: '🏟️', val: 'night_pitch' },
+                { type: 'cosmetic', title: 'מסגרת ניאון סייבר', desc: 'עיצוב: תכלת-זוהרת למראה מודרני בטבלה.', icon: '🔲', val: 'neon_border' }
+            ],
+            top: [
+                // --- כסף, בוסטים ונקודות ---
+                { type: 'money', title: '4,000,000 ₪', desc: 'נוסף לתקציב הקבוצה.', icon: '💎', val: 4000000 },
+                { type: 'money', title: '7,000,000 ₪', desc: 'מכה יפה! נוסף לתקציב הקבוצה.', icon: '💎', val: 7000000 },
+                { type: 'money', title: '10,000,000 ₪', desc: 'ג\'קפוט תקציב ענק!', icon: '💎', val: 10000000 },
+                { type: 'points', title: '+10 נקודות', desc: 'שובר שוויון (בונוס לסיכום המחזור הקרוב).', icon: '🌟', val: 10 },
+                { type: 'pick', title: 'בחירת שחקן: רמה 1', desc: 'החלף שחקן מהסגל לשחקן רמה 1.', icon: '🃏', val: 1 },
+                { type: 'pick', title: 'בחירת שחקן: כוכב על', desc: 'אגדי! החלפת כוכב על בכוכב על מהמאגר.', icon: '🃏', val: 0 },
+                { type: '12th', title: 'השחקן ה-12', desc: 'שחקן הספסל המצטיין שלך נספר במחזור.', icon: '⚡', val: 1 },
+                { type: 'boost', title: 'ספסל פעיל', desc: 'בוסט פרמיום: כל שחקני הספסל מניבים נקודות!', icon: '🪑', val: 'bench_boost' },
+                // --- 10 תגיות אגדיות (כינויים) ---
+                { type: 'title', title: 'תגית: GOAT', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'GOAT' },
+                { type: 'title', title: 'תגית: המיוחד', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'המיוחד' },
+                { type: 'title', title: 'תגית: אדריכל ניצחונות', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'אדריכל ניצחונות' },
+                { type: 'title', title: 'תגית: מאסטרמיינד', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'מאסטרמיינד' },
+                { type: 'title', title: 'תגית: אגדת פנטזי', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'אגדת פנטזי' },
+                { type: 'title', title: 'תגית: פפ הישראלי', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'פפ הישראלי' },
+                { type: 'title', title: 'תגית: הבוס הגדול', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'הבוס הגדול' },
+                { type: 'title', title: 'תגית: בלתי מנוצח', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'בלתי מנוצח' },
+                { type: 'title', title: 'תגית: פנומן', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'פנומן' },
+                { type: 'title', title: 'תגית: דון קרלו', desc: 'כינוי מנג\'ר אגדי.', icon: '👑', val: 'דון קרלו' },
+                // --- 10 סמלים ועיצובים אגדיים (קוסמטיקה) ---
+                { type: 'crest', title: 'סמל: אריה מחשמל', desc: 'סמל מונפש ויוקרתי.', icon: '🦁', val: 'lion_zap' },
+                { type: 'crest', title: 'סמל: דרקון אש', desc: 'סמל מונפש ונדיר ביותר.', icon: '🐉', val: 'fire_dragon' },
+                { type: 'crest', title: 'סמל: כתר יהלומים', desc: 'סמל מונפש ויוקרתי.', icon: '💎', val: 'diamond_crown' },
+                { type: 'crest', title: 'סמל: נמר גלקטי', desc: 'סמל מונפש ויוקרתי.', icon: '🐅', val: 'galaxy_tiger' },
+                { type: 'crest', title: 'סמל: גריפון אגדי', desc: 'סמל מונפש ונדיר ביותר.', icon: '🦅', val: 'griffin' },
+                { type: 'crest', title: 'סמל: קוברה ארסית', desc: 'סמל מונפש ויוקרתי.', icon: '🐍', val: 'cobra' },
+                { type: 'crest', title: 'סמל: פניקס אש', desc: 'סמל מונפש ונדיר ביותר.', icon: '🔥', val: 'phoenix' },
+                { type: 'crest', title: 'סמל: גלדיאטור', desc: 'סמל מונפש ויוקרתי.', icon: '🪖', val: 'gladiator' },
+                { type: 'cosmetic', title: 'מסגרת יהלום VIP', desc: 'עיצוב: הדגשה מונפשת לשם שלך בטבלת הליגה.', icon: '🔲', val: 'gold_border' },
+                { type: 'cosmetic', title: 'חגיגת שער (קונפטי)', desc: 'עיצוב: אנימציית קונפטי קופצת בלייב כשקבוצתך כובשת.', icon: '🎉', val: 'confetti' }
+            ]
+        };
+
+        function getRandomItemFromPool(poolName) {
+            const pool = rewardsPool[poolName];
+            let item = { ...pool[Math.floor(Math.random() * pool.length)] };
+            
+            if (poolName === 'base') {
+                item.tierWeight = 1;
+                item.tierLabel = 'בסיס';
+                item.borderColor = '#94a3b8';
+                item.badgeBg = '#e2e8f0';
+                item.badgeColor = '#0f172a';
+            } else if (poolName === 'mid') {
+                item.tierWeight = 2;
+                item.tierLabel = 'ביניים';
+                item.borderColor = '#38bdf8';
+                item.badgeBg = '#0284c7';
+                item.badgeColor = '#fff';
+            } else if (poolName === 'top') {
+                item.tierWeight = 3;
+                item.tierLabel = 'טופ!';
+                item.borderColor = '#fbbf24';
+                item.badgeBg = '#fbbf24';
+                item.badgeColor = '#000';
+            }
+            return item;
+        }
+
         window.openGachaPack = function(tier, price) {
             const formattedPrice = window.formatNumberWithCommas ? window.formatNumberWithCommas(price) : price;
+            
             if(!confirm(`האם אתה בטוח שברצונך לרכוש את החבילה ב-₪${formattedPrice}?`)) return;
 
-            // 1. אתחול אנימציה
             const overlay = document.getElementById('pack-overlay');
             const box = document.getElementById('pack-box');
             const flash = document.getElementById('pack-flash');
             const rewardsCont = document.getElementById('rewards-container');
             const closeBtn = document.getElementById('close-pack-btn');
 
-            // איפוס מצבים
             rewardsCont.innerHTML = '';
             rewardsCont.classList.remove('show');
             closeBtn.classList.remove('show');
             box.classList.remove('opening');
             flash.classList.remove('explode');
             
-            // הצגת המסך השחור והקופסה הרועדת
             overlay.classList.add('active');
             box.classList.add('shaking');
 
-            // 2. הגרלת הפרס לפי הדרגה
-            let rewardHtml = '';
-            
+            let drawnItems = [];
+            let typeCounts = { pick: 0, money: 0, boost: 0 };
+            let totalItems = 0;
+
+            const drawConstrainedItem = (poolName) => {
+                let item;
+                let retries = 20; 
+                while(retries > 0) {
+                    item = getRandomItemFromPool(poolName);
+                    if (item.type === 'pick' && typeCounts.pick >= 2) { retries--; continue; }
+                    if (item.type === 'money' && typeCounts.money >= 2) { retries--; continue; }
+                    if (item.type === 'boost' && typeCounts.boost >= 2) { retries--; continue; } // הגבלה על קבלת המון בוסטים יחד
+                    if (drawnItems.some(d => d.title === item.title)) { retries--; continue; }
+                    break;
+                }
+                typeCounts[item.type] = (typeCounts[item.type] || 0) + 1;
+                drawnItems.push(item);
+            };
+
             if(tier === 'bronze') {
                 box.style.stroke = "#cd7f32";
-                rewardHtml = `<div class="reward-card"><div class="reward-icon">🎟️</div><div class="reward-title">חילוף חינם</div><div class="reward-desc">קיבלת קלף לחילוף נוסף בחינם למחזור הקרוב!</div></div>`;
-            } else if (tier === 'silver') {
+                totalItems = 5;
+                for(let i=0; i<totalItems; i++) {
+                    let r = Math.random() * 100;
+                    if(r <= 90) drawConstrainedItem('base');
+                    else if(r <= 99) drawConstrainedItem('mid');
+                    else drawConstrainedItem('top');
+                }
+            } 
+            else if (tier === 'silver') {
                 box.style.stroke = "#cbd5e1";
-                rewardHtml = `<div class="reward-card"><div class="reward-icon">💵</div><div class="reward-title">4,000,000 ₪</div><div class="reward-desc">מכה יפה! הכסף נוסף ישירות לתקציב שלך.</div></div>`;
-            } else if (tier === 'gold') {
+                totalItems = 8;
+                drawConstrainedItem('mid');
+                drawConstrainedItem('mid');
+                for(let i=0; i<6; i++) {
+                    let r = Math.random() * 100;
+                    if(r <= 70) drawConstrainedItem('base');
+                    else if(r <= 95) drawConstrainedItem('mid');
+                    else drawConstrainedItem('top');
+                }
+            } 
+            else if (tier === 'diamond') {
+                box.style.stroke = "#d8b4fe";
+                totalItems = 11;
+                drawConstrainedItem('mid');
+                drawConstrainedItem('mid');
+                drawConstrainedItem('mid');
+                for(let i=0; i<8; i++) {
+                    let r = Math.random() * 100;
+                    if(r <= 50) drawConstrainedItem('base');
+                    else if(r <= 88) drawConstrainedItem('mid');
+                    else drawConstrainedItem('top');
+                }
+            } 
+            else if (tier === 'gold') {
                 box.style.stroke = "#fbbf24";
-                rewardHtml = `<div class="reward-card" style="border-color: var(--brand-green);"><div class="reward-icon">🚌</div><div class="reward-title">בוסט: הגנת בטון</div><div class="reward-desc">זכית בבוסט רשת נקייה לחוליית ההגנה!</div></div>`;
-            } else if (tier === 'diamond') {
-                box.style.stroke = "#a855f7";
-                rewardHtml = `
-                    <div class="reward-card" style="border-color: #a855f7;"><div class="reward-icon">🪑</div><div class="reward-title">בוסט: ספסל פעיל</div><div class="reward-desc">סופר-בוסט! הספסל שלך ייצר נקודות.</div></div>
-                    <div class="reward-card" style="border-color: #fbbf24;"><div class="reward-icon">👑</div><div class="reward-title">מסגרת זהב VIP</div><div class="reward-desc">המועדון שלך קיבל מסגרת יוקרתית בטבלת הליגה!</div></div>
-                `;
+                totalItems = 15;
+                drawConstrainedItem('top');
+                for(let i=0; i<5; i++) drawConstrainedItem('mid');
+                for(let i=0; i<9; i++) {
+                    let r = Math.random() * 100;
+                    if(r <= 30) drawConstrainedItem('base');
+                    else if(r <= 80) drawConstrainedItem('mid');
+                    else drawConstrainedItem('top');
+                }
             }
 
-            // 3. תזמון הפיצוץ והצגת הפרסים
+            drawnItems.sort((a, b) => b.tierWeight - a.tierWeight);
+
+            let rewardHtml = '';
+            drawnItems.forEach((item, idx) => {
+                rewardHtml += `
+                    <div class="reward-card" style="border-color: ${item.borderColor}; animation-delay: ${idx * 0.1}s; min-width: 180px; position: relative;">
+                        <div style="position: absolute; top: -10px; right: -10px; background: ${item.badgeBg}; color: ${item.badgeColor}; font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid #1e293b; z-index: 10;">
+                            ${item.tierLabel}
+                        </div>
+                        
+                        <div class="reward-icon">${item.icon}</div>
+                        <div class="reward-title" style="font-size: 16px;">${item.title}</div>
+                        <div class="reward-desc" style="font-size: 11px;">${item.desc}</div>
+                    </div>
+                `;
+            });
+
             setTimeout(() => {
                 box.classList.remove('shaking');
-                box.classList.add('opening'); // הקופסה נעלמת
-                flash.classList.add('explode'); // פלאש לבן
+                box.classList.add('opening'); 
+                flash.classList.add('explode'); 
                 
                 setTimeout(() => {
+                    rewardsCont.style.display = 'grid';
+                   rewardsCont.style.gridTemplateColumns = totalItems > 5 ? 'repeat(5, 1fr)' : 'repeat(auto-fit, minmax(180px, 1fr))';
+                    rewardsCont.style.gap = '15px';
+                    rewardsCont.style.width = '100%';
+                    rewardsCont.style.maxWidth = '1200px'; /* מאפשר פריסה רחבה למסכים גדולים */
+                    rewardsCont.style.maxHeight = '85vh'; /* מגדיל את הגובה כדי למנוע גלילה מיותרת */
+                    rewardsCont.style.overflowY = 'auto';
+                    rewardsCont.style.padding = '20px';
+                    rewardsCont.style.direction = 'rtl'; /* פותר את בעיית פס הגלילה משמאל - מעביר לימין */
+
                     rewardsCont.innerHTML = rewardHtml;
-                    rewardsCont.classList.add('show'); // הפרסים קופצים
+                    rewardsCont.classList.add('show'); 
                     closeBtn.classList.add('show');
-                }, 500); // חצי שנייה אחרי הפלאש
+                }, 500); 
                 
-            }, 1800); // הקופסה רועדת במשך 1.8 שניות
+            }, 1800); 
         };
 
         window.closeGachaPack = function() {
             document.getElementById('pack-overlay').classList.remove('active');
         };
-
-                // ==========================================
-        // מנוע מכירה בהפתעה (Flash Sale) - מתוקן סופית
-        // ==========================================
-        
-        let surpriseSaleTimerInterval;
-        let currentSurprisePlayer = null; 
-        let currentSurprisePrice = 0; 
-
-        function loadSquadIntoSurpriseSelect() {
-            const select = document.getElementById('ss-player-to-release');
-            if(!select) return;
-            
-            select.innerHTML = '<option value="">-- בחר שחקן לשחרור מהסגל שלך (חובה) --</option>';
-            const mySquadPlayers = Object.values(window.allPlayersMap).filter(p => p.owner === 'מכבי סוליבי');
-            
-            mySquadPlayers.forEach(p => {
-                const tName = window.translateName ? window.translateName(p.name) : p.name;
-                const valueStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
-                select.innerHTML += `<option value="${p.id}">${tName} (${p.displayPos}) - שווי: ₪${valueStr}</option>`;
-            });
-            
-            checkSurpriseSaleSelect();
-        }
 
         function loadRandomSurprisePlayer() {
             const freeAgents = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' && p.value > 0);
@@ -6194,6 +6654,130 @@ document.addEventListener('DOMContentLoaded', () => {
         
     </script>
 
+<div class="player-modal-overlay" id="rates-modal-overlay" onclick="closeRatesModal(event)" style="z-index: 10001; display: none;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 80vh; max-width: 400px; padding: 0; direction: rtl;">
+        <div class="pm-header" style="padding: 20px; text-align: center; border-bottom: 3px solid var(--brand-green);">
+            <svg class="pm-close" onclick="closeRatesModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="top: 20px; right: auto; left: 15px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <h3 id="rates-title" style="font-size: 20px; font-weight: 900; margin: 0; color: #fff;">אחוזי זכייה בחבילה</h3>
+        </div>
+        <div class="pm-body" style="padding: 20px; background: #fff;">
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; font-weight: bold; text-align: center;">האחוזים מייצגים את הסיכוי למשוך פריט מכל רמת נדירות עבור כל קלף בחבילה שאינו מובטח.</p>
+            <div id="rates-content" style="display: flex; flex-direction: column; gap: 15px;">
+                </div>
+            <button class="pm-btn-secondary" style="width: 100%; padding: 12px; margin-top: 25px; border-radius: 8px; font-weight: 900; cursor: pointer; border: 1px solid #cbd5e1; background: #f8fafc;" onclick="closeRatesModal()">הבנתי, סגור</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const packRatesDB = {
+        'bronze': {
+            title: 'חבילת בסיס',
+            color: '#94a3b8',
+            promise: 'סה"כ 5 אייטמים: מובטח לפחות 3-4 פריטי קוסמטיקה וכינויים מהבסיס.',
+            chances: [
+                {label: '🟢 פריטי בסיס (תקציב, כינויים רגילים)', rate: '90%'},
+                {label: '🔵 פריטי ביניים (בוסטים, בחירה רמה 3)', rate: '9%'},
+                {label: '🟣 פריטי טופ (אגדי / נדיר ביותר)', rate: '1%'}
+            ]
+        },
+        'silver': {
+            title: 'חבילת פריים',
+            color: '#38bdf8',
+            promise: 'סה"כ 8 אייטמים: מובטח לפחות 2 פריטי ביניים ומעלה.',
+            chances: [
+                {label: '🟢 פריטי בסיס (תקציב, כינויים רגילים)', rate: '70%'},
+                {label: '🔵 פריטי ביניים (בוסטים, בחירה רמה 3)', rate: '25%'},
+                {label: '🟣 פריטי טופ (אגדי / נדיר ביותר)', rate: '5%'}
+            ]
+        },
+        'diamond': {
+            title: 'חבילת פלטינום',
+            color: '#d8b4fe',
+            promise: 'סה"כ 11 אייטמים: מובטח 3 פריטי ביניים ומעלה.',
+            chances: [
+                {label: '🟢 פריטי בסיס (תקציב, כינויים רגילים)', rate: '50%'},
+                {label: '🔵 פריטי ביניים (בוסטים, בחירה רמה 3)', rate: '38%'},
+                {label: '🟣 פריטי טופ (אגדי / נדיר ביותר)', rate: '12%'}
+            ]
+        },
+        'gold': {
+            title: 'חבילת עלית',
+            color: '#fbbf24',
+            promise: 'סה"כ 15 אייטמים: מובטח 100% פריט טופ (רמה 3) אחד + 5 ביניים!',
+            chances: [
+                {label: '🟢 פריטי בסיס (תקציב, כינויים רגילים)', rate: '30%'},
+                {label: '🔵 פריטי ביניים (בוסטים, בחירה רמה 3)', rate: '50%'},
+                {label: '🟣 פריטי טופ (אגדי / נדיר ביותר)', rate: '20%'}
+            ]
+        }
+    };
+
+    function showPackRates(packId) {
+        const data = packRatesDB[packId];
+        if(!data) return;
+
+        document.getElementById('rates-title').innerText = `סיכויים: ${data.title}`;
+        document.getElementById('rates-title').style.color = data.color;
+        
+        let html = `<div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; border-right: 3px solid ${data.color}; font-size: 13px; font-weight: bold; margin-bottom: 10px;">${data.promise}</div>`;
+        
+        data.chances.forEach(item => {
+            html += `
+                <div style="display: flex; justify-content: space-between; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <span style="font-weight: bold; color: #334155; font-size: 14px;">${item.label}</span>
+                    <span style="font-weight: 900; color: ${data.color}; font-size: 16px;">${item.rate}</span>
+                </div>
+            `;
+        });
+
+        document.getElementById('rates-content').innerHTML = html;
+        document.getElementById('rates-modal-overlay').style.display = 'flex';
+    }
+
+    function closeRatesModal(e) {
+        if (e && e.target !== document.getElementById('rates-modal-overlay')) return;
+        document.getElementById('rates-modal-overlay').style.display = 'none';
+    }
+</script>
+    <div class="player-modal-overlay" id="rates-modal-overlay" onclick="closeRatesModal(event)" style="z-index: 10001; display: none;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 80vh; max-width: 400px; padding: 0; direction: rtl;">
+        <div class="pm-header" style="padding: 20px; text-align: center; border-bottom: 3px solid var(--brand-green);">
+            <svg class="pm-close" onclick="closeRatesModal()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="top: 20px; right: auto; left: 15px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <h3 id="rates-title" style="font-size: 20px; font-weight: 900; margin: 0; color: #fff;">אחוזי זכייה בחבילה</h3>
+        </div>
+        <div class="pm-body" style="padding: 20px; background: #fff;">
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; font-weight: bold; text-align: center;">הסיכוי למשוך פריט מכל רמת נדירות בחבילה זו.</p>
+            <div id="rates-content" style="display: flex; flex-direction: column; gap: 15px;"></div>
+            <button class="pm-btn-secondary" style="width: 100%; padding: 12px; margin-top: 25px; border-radius: 8px; font-weight: 900; cursor: pointer; border: 1px solid #cbd5e1; background: #f8fafc;" onclick="closeRatesModal()">הבנתי, סגור</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const packRatesDB = {
+        'bronze': { title: 'חבילת בסיס', color: '#94a3b8', promise: 'סה"כ 5 אייטמים: מובטח לפחות 3 פריטי בסיס.', chances: [{label: '🟢 פריטי בסיס', rate: '90%'}, {label: '🔵 פריטי ביניים', rate: '9%'}, {label: '🟣 פריטי טופ', rate: '1%'}] },
+        'silver': { title: 'חבילת פריים', color: '#38bdf8', promise: 'סה"כ 8 אייטמים: מובטח 2 פריטי ביניים.', chances: [{label: '🟢 פריטי בסיס', rate: '70%'}, {label: '🔵 פריטי ביניים', rate: '25%'}, {label: '🟣 פריטי טופ', rate: '5%'}] },
+        'diamond': { title: 'חבילת פלטינום', color: '#d8b4fe', promise: 'סה"כ 11 אייטמים: מובטח 3 פריטי ביניים.', chances: [{label: '🟢 פריטי בסיס', rate: '50%'}, {label: '🔵 פריטי ביניים', rate: '38%'}, {label: '🟣 פריטי טופ', rate: '12%'}] },
+        'gold': { title: 'חבילת עלית', color: '#fbbf24', promise: 'סה"כ 15 אייטמים: מובטח 100% פריט טופ!', chances: [{label: '🟢 פריטי בסיס', rate: '30%'}, {label: '🔵 פריטי ביניים', rate: '50%'}, {label: '🟣 פריטי טופ', rate: '20%'}] }
+    };
+
+    function showPackRates(packId) {
+        const data = packRatesDB[packId];
+        if(!data) return;
+        document.getElementById('rates-title').innerText = `סיכויים: ${data.title}`;
+        document.getElementById('rates-title').style.color = data.color;
+        let html = `<div style="background: rgba(0,0,0,0.03); padding: 12px; border-radius: 8px; border-right: 3px solid ${data.color}; font-size: 13px; font-weight: bold; margin-bottom: 10px;">${data.promise}</div>`;
+        data.chances.forEach(item => { html += `<div style="display: flex; justify-content: space-between; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;"><span style="font-weight: bold; color: #334155; font-size: 14px;">${item.label}</span><span style="font-weight: 900; color: ${data.color}; font-size: 16px;">${item.rate}</span></div>`; });
+        document.getElementById('rates-content').innerHTML = html;
+        document.getElementById('rates-modal-overlay').style.display = 'flex';
+    }
+
+    function closeRatesModal(e) {
+        if (e && e.target !== document.getElementById('rates-modal-overlay')) return;
+        document.getElementById('rates-modal-overlay').style.display = 'none';
+    }
+</script>
     <div class="pack-overlay" id="pack-overlay">
         <div class="pack-flash" id="pack-flash"></div>
         <svg class="pack-box" id="pack-box" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="1.5">
@@ -6206,6 +6790,136 @@ document.addEventListener('DOMContentLoaded', () => {
         
         <button class="close-pack-btn" id="close-pack-btn" onclick="closeGachaPack()">המשך במשחק</button>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        
+        async function keepSupabaseAlive() {
+            const lastPing = localStorage.getItem('supabase_last_ping');
+            const now = new Date().getTime();
+            
+            // 86,400,000 מילישניות = 24 שעות. נבצע קריאה רק פעם ביום.
+            if (!lastPing || (now - parseInt(lastPing)) > 86400000) { 
+                try {
+                    // יצירת חיבור נקודתי וקל רק בשביל הפינג
+                    const ping_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
+                    const ping_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
+                    const pingClient = window.supabase.createClient(ping_URL, ping_KEY);
+
+                    // קריאת דמה סופר-קלה: מביאים רק שורה אחת, ורק את העמודה id
+                    const { data, error } = await pingClient
+                        .from('master_players') // ב"סוליבי עסקים" זכור לשנות לטבלה שיש שם!
+                        .select('id')
+                        .limit(1);
+                        
+                    if (!error) {
+                        console.log("Supabase Keep-Alive Ping Successful 🟢");
+                        // מעדכנים את הזמן הנוכחי כדי שלא נציק לשרת שוב היום
+                        localStorage.setItem('supabase_last_ping', now.toString());
+                    } else {
+                        console.error("Supabase Keep-Alive Error:", error);
+                    }
+                } catch (err) {
+                    console.error("Supabase Keep-Alive Failed:", err);
+                }
+            }
+        }
+
+        // מפעיל את הפונקציה
+        keepSupabaseAlive();
+    });
+        
+</script>
+<script>
+    // מאגר הפריטים המלא של הגלריה להדגמה (בלי לכתוב 100 פעמים HTML!)
+    const galleryItemsDB = [
+        // --- מדים (Kits) ---
+        { type: 'kit', title: 'מדי בית (כחול)', desc: 'מדים חלקים קלאסיים.', iconClass: 'kit-solid-blue', tier: 'tier-base' },
+        { type: 'kit', title: 'מדי חוץ (אדום)', desc: 'מדים חלקים קלאסיים.', iconClass: 'kit-solid-red', tier: 'tier-base' },
+        { type: 'kit', title: 'צהוב-כחול חצי', desc: 'עיצוב גיאומטרי.', iconClass: 'kit-half-yb', tier: 'tier-mid' },
+        { type: 'kit', title: 'ירוק-לבן פסים', desc: 'עיצוב פסי אורך.', iconClass: 'kit-stripes-gw', tier: 'tier-mid' },
+        { type: 'kit', title: 'קרבון מוזהב VIP', desc: 'מדי פרימיום נוצצים.', iconClass: 'kit-gold-vip', tier: 'tier-legendary' },
+        { type: 'kit', title: 'ניאון סייבר', desc: 'מדי פרימיום עתידניים.', iconClass: 'kit-neon-cyber', tier: 'tier-legendary' },
+        { type: 'kit', title: 'אש גיהנום', desc: 'מדי פרימיום לוהטים.', iconClass: 'kit-fire', tier: 'tier-legendary' },
+
+        // --- סמלים (Crests) ---
+        { type: 'crest', title: 'מגן ברזל', desc: 'סמל מועדון בסיסי.', icon: '🛡️', tier: 'tier-base' },
+        { type: 'crest', title: 'זאב בודד', desc: 'סמל מועדון מעוצב.', icon: '🐺', tier: 'tier-mid' },
+        { type: 'crest', title: 'פיראט', desc: 'סמל מועדון מעוצב.', icon: '🏴‍☠️', tier: 'tier-mid' },
+        { type: 'crest', title: 'אריה מחשמל', desc: 'סמל פרו מונפש.', icon: '🦁', tier: 'tier-legendary' },
+        { type: 'crest', title: 'דרקון אש', desc: 'סמל פרו מונפש.', icon: '🐉', tier: 'tier-legendary' },
+
+        // --- תארים (Titles) ---
+        { type: 'title', title: 'חובבן', desc: 'תגית מנג\'ר נפוצה.', icon: '🏷️', tier: 'tier-base' },
+        { type: 'title', title: 'טקטיקן מתחיל', desc: 'תגית מנג\'ר נפוצה.', icon: '🏷️', tier: 'tier-base' },
+        { type: 'title', title: 'גאון טקטי', desc: 'תגית מנג\'ר נדירה.', icon: '🏷️', tier: 'tier-mid' },
+        { type: 'title', title: 'מלך השוק', desc: 'תגית מנג\'ר נדירה.', icon: '🏷️', tier: 'tier-mid' },
+        { type: 'title', title: '👑 GOAT', desc: 'תגית מנג\'ר אגדית.', icon: '👑', tier: 'tier-legendary' },
+        { type: 'title', title: '👑 המיוחד', desc: 'תגית מנג\'ר אגדית.', icon: '👑', tier: 'tier-legendary' },
+
+        // --- אפקטים ומגרש (Effects) ---
+        { type: 'effect', title: 'מסגרת כסף מטאלי', desc: 'עיצוב כסוף להרכב.', icon: '🔲', tier: 'tier-mid' },
+        { type: 'effect', title: 'אצטדיון שקיעה', desc: 'תאורה חמימה למגרש.', icon: '🌇', tier: 'tier-mid' },
+        { type: 'effect', title: 'אצטדיון לילה VIP', desc: 'תאורת זרקורים פרימיום.', icon: '🏟️', tier: 'tier-legendary' },
+        { type: 'effect', title: 'מסגרת יהלום VIP', desc: 'זהב מונפש להרכב הפותח.', icon: '✨', tier: 'tier-legendary' },
+        { type: 'effect', title: 'מסגרת אש גיהנום', desc: 'אש בוערת סביב השחקנים.', icon: '🔥', tier: 'tier-legendary' }
+    ];
+
+    // פונקציה שמציירת את הגלריה לפי הסינון מהרשימה הנפתחת!
+    window.renderGalleryItems = function(category) {
+        const container = document.getElementById('gallery-items-container');
+        if(!container) return;
+        
+        container.innerHTML = ''; // מנקה את התצוגה הישנה
+
+        // מסנן את המערך לפי מה שנבחר ב-Select
+        const filtered = category === 'all' ? galleryItemsDB : galleryItemsDB.filter(item => item.type === category);
+
+        if(filtered.length === 0) {
+            container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#64748b; font-weight:bold;">אין פריטים בקטגוריה זו.</div>';
+            return;
+        }
+
+        // מצייר את הקוביות אוטומטית!
+        filtered.forEach((item, index) => {
+            let iconHtml = '';
+            
+            // אם זה חולצה, אנחנו משתמשים בעיצוב שעשינו בשלב 1. אחרת, אייקון רגיל.
+           if(item.type === 'kit') {
+                iconHtml = `
+                <div class="profile-kit-wrapper">
+                    <div class="profile-kit-shirt ${item.iconClass}"></div>
+                    <div class="profile-kit-shorts ${item.iconClass}"></div>
+                </div>`;
+            } else {
+                iconHtml = item.icon;
+            }
+
+            // הפריט הראשון ברשימה יהיה מסומן כ"פעיל" רק בשביל להראות את העיצוב
+            const isActive = index === 0; 
+            const activeClass = isActive ? 'active' : '';
+            const activeTag = isActive ? `<div style="position: absolute; top: 10px; right: 10px; background: var(--brand-green); color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">פעיל</div>` : '';
+            const btnText = isActive ? 'מוגדר כפעיל' : 'הגדר כפעיל';
+            const btnStyle = isActive ? 'background: transparent; color: var(--brand-green); border: 2px solid var(--brand-green);' : '';
+
+            container.innerHTML += `
+                <div class="inv-card ${item.tier} ${activeClass}">
+                    ${activeTag}
+                    <div class="inv-icon-wrap" style="${item.type === 'kit' ? 'background: #fff;' : ''}">${iconHtml}</div>
+                    <div class="inv-title">${item.title}</div>
+                    <div class="inv-desc">${item.desc}</div>
+                    <button class="inv-btn" style="${btnStyle}" ${isActive ? 'disabled' : ''} onclick="alert('בחרת להפעיל את: ${item.title}')">${btnText}</button>
+                </div>
+            `;
+        });
+    };
+
+    // מפעיל את הפונקציה בפעם הראשונה כשהדף נטען
+    document.addEventListener('DOMContentLoaded', () => {
+        if(document.getElementById('gallery-items-container')) {
+            renderGalleryItems('all');
+        }
+    });
+</script>
     
 <script src="search.js"></script>
 </body>
