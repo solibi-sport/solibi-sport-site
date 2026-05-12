@@ -2823,30 +2823,18 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
     <p class="content-desc">כאן מנוהל כל המיתוג הויזואלי של המועדון שלך. בחר את הפריטים הפעילים מתוך האוסף שצברת בחבילות ובבוטיק.</p>
 
-    <div style="display: flex; gap: 10px; margin-bottom: 20px; background: #f1f5f9; padding: 8px; border-radius: 10px;">
-        <button class="pm-tab-btn active" style="font-size: 11px; padding: 8px 12px;" onclick="filterGallery('kit')">👕 מדים</button>
-        <button class="pm-tab-btn" style="font-size: 11px; padding: 8px 12px;" onclick="filterGallery('crest')">🛡️ סמלים</button>
-        <button class="pm-tab-btn" style="font-size: 11px; padding: 8px 12px;" onclick="filterGallery('title')">🏷️ תארים</button>
-        <button class="pm-tab-btn" style="font-size: 11px; padding: 8px 12px;" onclick="filterGallery('effect')">✨ מגרש ואפקטים</button>
+    <div class="tt-controls" style="margin-bottom: 20px;">
+        <span style="font-weight: 900; color: var(--text-dark);">בחר קטגוריה להצגה:</span>
+        <select id="gallery-category-select" onchange="renderGalleryItems(this.value)">
+            <option value="all">🌟 הצג את כל הפריטים</option>
+            <option value="kit">👕 מדי קבוצה (Kits)</option>
+            <option value="crest">🛡️ סמלי מועדון</option>
+            <option value="title">🏷️ תארי מנג'ר</option>
+            <option value="effect">✨ מגרש ואפקטים</option>
+        </select>
     </div>
 
     <div class="inventory-grid" id="gallery-items-container">
-        <div class="inv-card tier-base active" data-type="kit">
-            <div style="position: absolute; top: 10px; right: 10px; background: var(--brand-green); color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px;">פעיל</div>
-            <div class="inv-icon-wrap" style="background: #fff;">
-                <div class="profile-kit-icon kit-solid-blue" style="width: 45px; height: 50px;"></div>
-            </div>
-            <div class="inv-title">מדי בית (כחול)</div>
-            <div class="inv-desc">מדי המועדון הבסיסיים שלך.</div>
-            <button class="inv-btn" disabled>מוגדר כפעיל</button>
-        </div>
-
-        <div class="inv-card tier-legendary" data-type="crest" style="display: none;">
-            <div class="inv-icon-wrap">🦁</div>
-            <div class="inv-title">אריה מחשמל</div>
-            <div class="inv-desc">סמל מונפש (רמת פרו).</div>
-            <button class="inv-btn">הגדר כפעיל</button>
-        </div>
     </div>
 </div>
                 
@@ -6786,6 +6774,94 @@ document.addEventListener('DOMContentLoaded', () => {
     });
         
 </script>
+<script>
+    // מאגר הפריטים המלא של הגלריה להדגמה (בלי לכתוב 100 פעמים HTML!)
+    const galleryItemsDB = [
+        // --- מדים (Kits) ---
+        { type: 'kit', title: 'מדי בית (כחול)', desc: 'מדים חלקים קלאסיים.', iconClass: 'kit-solid-blue', tier: 'tier-base' },
+        { type: 'kit', title: 'מדי חוץ (אדום)', desc: 'מדים חלקים קלאסיים.', iconClass: 'kit-solid-red', tier: 'tier-base' },
+        { type: 'kit', title: 'צהוב-כחול חצי', desc: 'עיצוב גיאומטרי.', iconClass: 'kit-half-yb', tier: 'tier-mid' },
+        { type: 'kit', title: 'ירוק-לבן פסים', desc: 'עיצוב פסי אורך.', iconClass: 'kit-stripes-gw', tier: 'tier-mid' },
+        { type: 'kit', title: 'קרבון מוזהב VIP', desc: 'מדי פרימיום נוצצים.', iconClass: 'kit-gold-vip', tier: 'tier-legendary' },
+        { type: 'kit', title: 'ניאון סייבר', desc: 'מדי פרימיום עתידניים.', iconClass: 'kit-neon-cyber', tier: 'tier-legendary' },
+        { type: 'kit', title: 'אש גיהנום', desc: 'מדי פרימיום לוהטים.', iconClass: 'kit-fire', tier: 'tier-legendary' },
+
+        // --- סמלים (Crests) ---
+        { type: 'crest', title: 'מגן ברזל', desc: 'סמל מועדון בסיסי.', icon: '🛡️', tier: 'tier-base' },
+        { type: 'crest', title: 'זאב בודד', desc: 'סמל מועדון מעוצב.', icon: '🐺', tier: 'tier-mid' },
+        { type: 'crest', title: 'פיראט', desc: 'סמל מועדון מעוצב.', icon: '🏴‍☠️', tier: 'tier-mid' },
+        { type: 'crest', title: 'אריה מחשמל', desc: 'סמל פרו מונפש.', icon: '🦁', tier: 'tier-legendary' },
+        { type: 'crest', title: 'דרקון אש', desc: 'סמל פרו מונפש.', icon: '🐉', tier: 'tier-legendary' },
+
+        // --- תארים (Titles) ---
+        { type: 'title', title: 'חובבן', desc: 'תגית מנג\'ר נפוצה.', icon: '🏷️', tier: 'tier-base' },
+        { type: 'title', title: 'טקטיקן מתחיל', desc: 'תגית מנג\'ר נפוצה.', icon: '🏷️', tier: 'tier-base' },
+        { type: 'title', title: 'גאון טקטי', desc: 'תגית מנג\'ר נדירה.', icon: '🏷️', tier: 'tier-mid' },
+        { type: 'title', title: 'מלך השוק', desc: 'תגית מנג\'ר נדירה.', icon: '🏷️', tier: 'tier-mid' },
+        { type: 'title', title: '👑 GOAT', desc: 'תגית מנג\'ר אגדית.', icon: '👑', tier: 'tier-legendary' },
+        { type: 'title', title: '👑 המיוחד', desc: 'תגית מנג\'ר אגדית.', icon: '👑', tier: 'tier-legendary' },
+
+        // --- אפקטים ומגרש (Effects) ---
+        { type: 'effect', title: 'מסגרת כסף מטאלי', desc: 'עיצוב כסוף להרכב.', icon: '🔲', tier: 'tier-mid' },
+        { type: 'effect', title: 'אצטדיון שקיעה', desc: 'תאורה חמימה למגרש.', icon: '🌇', tier: 'tier-mid' },
+        { type: 'effect', title: 'אצטדיון לילה VIP', desc: 'תאורת זרקורים פרימיום.', icon: '🏟️', tier: 'tier-legendary' },
+        { type: 'effect', title: 'מסגרת יהלום VIP', desc: 'זהב מונפש להרכב הפותח.', icon: '✨', tier: 'tier-legendary' },
+        { type: 'effect', title: 'מסגרת אש גיהנום', desc: 'אש בוערת סביב השחקנים.', icon: '🔥', tier: 'tier-legendary' }
+    ];
+
+    // פונקציה שמציירת את הגלריה לפי הסינון מהרשימה הנפתחת!
+    window.renderGalleryItems = function(category) {
+        const container = document.getElementById('gallery-items-container');
+        if(!container) return;
+        
+        container.innerHTML = ''; // מנקה את התצוגה הישנה
+
+        // מסנן את המערך לפי מה שנבחר ב-Select
+        const filtered = category === 'all' ? galleryItemsDB : galleryItemsDB.filter(item => item.type === category);
+
+        if(filtered.length === 0) {
+            container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#64748b; font-weight:bold;">אין פריטים בקטגוריה זו.</div>';
+            return;
+        }
+
+        // מצייר את הקוביות אוטומטית!
+        filtered.forEach((item, index) => {
+            let iconHtml = '';
+            
+            // אם זה חולצה, אנחנו משתמשים בעיצוב שעשינו בשלב 1. אחרת, אייקון רגיל.
+            if(item.type === 'kit') {
+                iconHtml = `<div class="profile-kit-icon ${item.iconClass}" style="width: 45px; height: 50px; margin: 0 auto;"></div>`;
+            } else {
+                iconHtml = item.icon;
+            }
+
+            // הפריט הראשון ברשימה יהיה מסומן כ"פעיל" רק בשביל להראות את העיצוב
+            const isActive = index === 0; 
+            const activeClass = isActive ? 'active' : '';
+            const activeTag = isActive ? `<div style="position: absolute; top: 10px; right: 10px; background: var(--brand-green); color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">פעיל</div>` : '';
+            const btnText = isActive ? 'מוגדר כפעיל' : 'הגדר כפעיל';
+            const btnStyle = isActive ? 'background: transparent; color: var(--brand-green); border: 2px solid var(--brand-green);' : '';
+
+            container.innerHTML += `
+                <div class="inv-card ${item.tier} ${activeClass}">
+                    ${activeTag}
+                    <div class="inv-icon-wrap" style="${item.type === 'kit' ? 'background: #fff;' : ''}">${iconHtml}</div>
+                    <div class="inv-title">${item.title}</div>
+                    <div class="inv-desc">${item.desc}</div>
+                    <button class="inv-btn" style="${btnStyle}" ${isActive ? 'disabled' : ''} onclick="alert('בחרת להפעיל את: ${item.title}')">${btnText}</button>
+                </div>
+            `;
+        });
+    };
+
+    // מפעיל את הפונקציה בפעם הראשונה כשהדף נטען
+    document.addEventListener('DOMContentLoaded', () => {
+        if(document.getElementById('gallery-items-container')) {
+            renderGalleryItems('all');
+        }
+    });
+</script>
+    
 <script src="search.js"></script>
 </body>
 </html>
