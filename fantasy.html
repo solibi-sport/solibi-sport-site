@@ -225,22 +225,39 @@
         .fm-content-area {
             flex: 1; background: #ffffff; border-radius: 12px; padding: 15px;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); 
-            display: flex; flex-direction: column; 
-            min-width: 0; min-height: 0; /* 👈 חובה לגלילה תקינה ומניעת רווחים אפורים */
+            min-width: 0; min-height: 0; /* מונע חיתוך הדף */
             overflow-y: auto; overflow-x: hidden; 
-            direction: ltr; /* 👈 טריק: מעביר את פס הגלילה הראשי לימין */
+            display: block; /* מבטל את המתיחה שגרמה לרווח האפור המיותר */
+            direction: ltr; /* מעביר את פס הגלילה הראשי לצד ימין */
         }
 
         .fm-tab { 
             display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            height: 100%; min-height: 0; /* 👈 מונע מתיחת יתר כלפי מטה */
+            min-height: 100%; 
             flex-direction: column;
-            direction: rtl; /* 👈 מחזיר את הטקסט לכיוון ימין-לשמאל */
-            padding-bottom: 20px; /* מרווח נשימה בתחתית הדף */
+            direction: rtl; /* מחזיר את כיוון הטקסט לימין-לשמאל */
+            padding-bottom: 25px; /* מרווח נשימה בתחתית כדי ששום דבר לא ייחתך */
         }
         .fm-tab.active { display: flex; }
         @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
+        /* =========================================
+           עיצוב פסי גלילה לכל המערכת ומיקומם בצד ימין
+           ========================================= */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.4); border-radius: 10px; border: 2px solid #fff; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+
+        /* העברת פסי הגלילה הפנימיים (של טבלאות, סטטיסטיקות ושיאים) לצד ימין */
+        .squad-table-wrap, .market-table-container, .fixtures-scroll-area, .s-card-list, .rules-scroll-container, #incoming-offers-container, #outgoing-offers-container {
+            direction: ltr !important;
+            overflow-y: auto;
+            min-height: 0 !important;
+        }
+        .squad-table, .market-table, .match-result-card, .s-list-row, .rules-content-inner, .offer-card, .offer-empty {
+            direction: rtl !important;
+        }
         /* =========================================
            עיצוב פסי גלילה יוקרתיים ומיקומם בימין הדף
            ========================================= */
