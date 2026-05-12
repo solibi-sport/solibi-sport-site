@@ -6612,7 +6612,45 @@ document.addEventListener('DOMContentLoaded', () => {
         
         <button class="close-pack-btn" id="close-pack-btn" onclick="closeGachaPack()">המשך במשחק</button>
     </div>
-    
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        
+        async function keepSupabaseAlive() {
+            const lastPing = localStorage.getItem('supabase_last_ping');
+            const now = new Date().getTime();
+            
+            // 86,400,000 מילישניות = 24 שעות. נבצע קריאה רק פעם ביום.
+            if (!lastPing || (now - parseInt(lastPing)) > 86400000) { 
+                try {
+                    // יצירת חיבור נקודתי וקל רק בשביל הפינג
+                    const ping_URL = 'https://fkuvgvlxlmzmyacaosgi.supabase.co';
+                    const ping_KEY = 'sb_publishable_FVsN5ZdlDNAEh2w8sE9Ipw_R8g0KJkR';
+                    const pingClient = window.supabase.createClient(ping_URL, ping_KEY);
+
+                    // קריאת דמה סופר-קלה: מביאים רק שורה אחת, ורק את העמודה id
+                    const { data, error } = await pingClient
+                        .from('master_players') // ב"סוליבי עסקים" זכור לשנות לטבלה שיש שם!
+                        .select('id')
+                        .limit(1);
+                        
+                    if (!error) {
+                        console.log("Supabase Keep-Alive Ping Successful 🟢");
+                        // מעדכנים את הזמן הנוכחי כדי שלא נציק לשרת שוב היום
+                        localStorage.setItem('supabase_last_ping', now.toString());
+                    } else {
+                        console.error("Supabase Keep-Alive Error:", error);
+                    }
+                } catch (err) {
+                    console.error("Supabase Keep-Alive Failed:", err);
+                }
+            }
+        }
+
+        // מפעיל את הפונקציה
+        keepSupabaseAlive();
+    });
+        
+</script>
 <script src="search.js"></script>
 </body>
 </html>
