@@ -151,14 +151,22 @@
         .collapsible-live-panel.expanded { height: calc(100% - 40px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
         
         .panel-header-btn { font-size: 14px; font-weight: 900; color: var(--text-dark); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 44px; flex-shrink: 0; cursor: pointer; }
-        .toggle-arrow { transition: transform 0.4s; }
+        .toggle/* עיצוב כותרת הליגה - פרימיום נייבי סימטרי */
+        .live-league-header { 
+            display: flex; align-items: center; gap: 8px; 
+            background: var(--element-navy-gradient); 
+            color: #ffffff; 
+            padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 900; 
+            margin: 0 10px 4px 10px; border-right: 3px solid var(--brand-green); flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }-arrow { transition: transform 0.4s; }
         .collapsible-live-panel.expanded .toggle-arrow { transform: rotate(180deg); }
         
         .panel-content { position: relative; flex: 1; padding: 10px 0; overflow-y: auto; }
         .panel-content::-webkit-scrollbar { width: 4px; }
         .panel-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
 
-        .live-league-header { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.7); padding: 4px 10px; border-radius: 6px; color: var(--text-dark); font-size: 11px; font-weight: 900; margin-top: 5px; border-right: 3px solid var(--brand-green); }
+        
         .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
 
         .live-match-card-light {
