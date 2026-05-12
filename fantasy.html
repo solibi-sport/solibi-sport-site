@@ -200,27 +200,20 @@
         .fm-nav-group.open .dropdown-arrow { transform: rotate(180deg); opacity: 1; stroke: var(--brand-green); }
 
         /* === מעטפת התוכן המרכזית (הקוביה הלבנה) === */
-        /* min-width: 0 מונע מהטבלה לפרוץ את גבולות המסך ולדרוס את הפאנל משמאל */
         .content-container {
-            flex: 1; 
-            min-width: 0; 
-            height: 100%;
-            background: #ffffff; 
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px; 
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            flex: 1; min-width: 0; min-height: 0; /* 👈 תיקון קריטי לגלילה! */
+            height: 100%; background: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px; padding: 20px; display: flex; flex-direction: column;
+            overflow: hidden; box-shadow: 0 15px 50px rgba(0,0,0,0.4);
         }
 
-        .fm-layout { display: flex; flex-direction: column; flex: 1; height: 100%; gap: 15px; overflow: hidden; min-width: 0; }
+        .fm-layout { 
+            display: flex; flex-direction: column; flex: 1; height: 100%; 
+            gap: 15px; overflow: hidden; min-width: 0; min-height: 0; /* 👈 תיקון קריטי לגלילה! */
+        }
 
-        /* סרגל עליון - הפוך (כסוף עם טקסט נייבי) */
         .fm-top-bar {
-            background: var(--bg-silver-matte);
-            border: 1px solid rgba(124, 168, 86, 0.2); border-radius: 12px;
+            background: var(--bg-silver-matte); border: 1px solid rgba(124, 168, 86, 0.2); border-radius: 12px;
             display: flex; justify-content: space-around; align-items: center; padding: 10px 20px; color: var(--text-dark);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); flex-shrink: 0; position: relative; overflow: hidden;
         }
@@ -230,14 +223,39 @@
         .fm-top-stat-value.highlight { color: var(--brand-green); }
 
         .fm-content-area {
-            flex: 1; background: #ffffff; border-radius: 12px; padding: 10px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.03); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column;
-            border: 1px solid rgba(0,0,0,0.05); min-width: 0;
+            flex: 1; background: #ffffff; border-radius: 12px; padding: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); 
+            display: flex; flex-direction: column; 
+            min-width: 0; min-height: 0; /* 👈 חובה לגלילה תקינה ומניעת רווחים אפורים */
+            overflow-y: auto; overflow-x: hidden; 
+            direction: ltr; /* 👈 טריק: מעביר את פס הגלילה הראשי לימין */
         }
 
-        .fm-tab { display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); height: 100%; flex-direction: column;}
+        .fm-tab { 
+            display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            height: 100%; min-height: 0; /* 👈 מונע מתיחת יתר כלפי מטה */
+            flex-direction: column;
+            direction: rtl; /* 👈 מחזיר את הטקסט לכיוון ימין-לשמאל */
+            padding-bottom: 20px; /* מרווח נשימה בתחתית הדף */
+        }
         .fm-tab.active { display: flex; }
         @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* =========================================
+           עיצוב פסי גלילה יוקרתיים ומיקומם בימין הדף
+           ========================================= */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.5); border-radius: 10px; border: 2px solid #fff; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+
+        /* העברת פסי גלילה של אלמנטים פנימיים לצד ימין */
+        .squad-table-wrap, .market-table-container, .rules-scroll-container, .fixtures-scroll-area, .s-card-list {
+            direction: ltr !important; 
+        }
+        .squad-table, .market-table, .rules-content-inner, .fixtures-main-col, .s-list-row {
+            direction: rtl !important;
+        }
 
         /* עיצוב כללי לתוכן הלבן */
 h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; }        p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
@@ -2058,20 +2076,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .inv-desc { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 15px; flex: 1; }
         .inv-btn { width: 100%; background: var(--element-navy-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .inv-btn:hover { background: var(--brand-green); transform: scale(1.02); }
-
-/* =========================================
-           תיקון קריטי: מניעת חיתוך והחזרת פסי הגלילה (Flexbox Fix)
-           ========================================= */
-        .fm-content-area, .fm-tab {
-            min-height: 0 !important; /* מכריח את הקופסה לשים פס גלילה במקום להיחתך */
-        }
-        .squad-table-wrap, .market-table-container, .s-card-list, .rules-scroll-container {
-            min-height: 0 !important; /* מחזיר את הגלילה לטבלאות ולקוביות הקטנות */
-        }
-        .profile-split-layout {
-            padding-bottom: 40px !important; /* נותן "אוויר" לתחתית פרופיל המנג'ר */
-        }
-        
+      
     </style>
         
 </head>
