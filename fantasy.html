@@ -2058,6 +2058,20 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .inv-desc { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 15px; flex: 1; }
         .inv-btn { width: 100%; background: var(--element-navy-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .inv-btn:hover { background: var(--brand-green); transform: scale(1.02); }
+
+/* =========================================
+           תיקון קריטי: מניעת חיתוך והחזרת פסי הגלילה (Flexbox Fix)
+           ========================================= */
+        .fm-content-area, .fm-tab {
+            min-height: 0 !important; /* מכריח את הקופסה לשים פס גלילה במקום להיחתך */
+        }
+        .squad-table-wrap, .market-table-container, .s-card-list, .rules-scroll-container {
+            min-height: 0 !important; /* מחזיר את הגלילה לטבלאות ולקוביות הקטנות */
+        }
+        .profile-split-layout {
+            padding-bottom: 40px !important; /* נותן "אוויר" לתחתית פרופיל המנג'ר */
+        }
+        
     </style>
         
 </head>
