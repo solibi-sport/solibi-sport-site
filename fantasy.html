@@ -223,12 +223,15 @@
         .fm-top-stat-value.highlight { color: var(--brand-green); }
 
         .fm-content-area {
-            flex: 1; background: #ffffff; border-radius: 12px; padding: 15px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); 
-            min-width: 0; min-height: 0; /* מונע חיתוך הדף */
+            flex: 1; 
+            background: transparent; /* 👈 העלמנו את הרקע הלבן/אפור המיותר */
+            border: none; /* 👈 העלמנו את המסגרת הריקה */
+            box-shadow: none; /* 👈 העלמנו את ההצללה */
+            padding: 0 5px 0 0; /* 👈 0 למעלה ולמטה כדי למשוך את התוכן למעלה! (השארנו קצת מימין לפס הגלילה) */
+            min-width: 0; min-height: 0; 
             overflow-y: auto; overflow-x: hidden; 
-            display: block; /* מבטל את המתיחה שגרמה לרווח האפור המיותר */
-            direction: ltr; /* מעביר את פס הגלילה הראשי לצד ימין */
+            display: block; 
+            direction: ltr; 
         }
 
         .fm-tab { 
@@ -624,7 +627,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
 
             /* --- אזור התוכן הראשי --- */
             .main-content { gap: 15px; }
-            .fm-content-area { padding: 15px; }
+            .fm-content-area { padding: 0 5px 0 0 !important; background: transparent; border: none; box-shadow: none; }
 
             /* --- הודעות והתראות --- */
             .msg-row { padding: 10px; gap: 10px; }
