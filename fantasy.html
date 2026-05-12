@@ -200,27 +200,20 @@
         .fm-nav-group.open .dropdown-arrow { transform: rotate(180deg); opacity: 1; stroke: var(--brand-green); }
 
         /* === מעטפת התוכן המרכזית (הקוביה הלבנה) === */
-        /* min-width: 0 מונע מהטבלה לפרוץ את גבולות המסך ולדרוס את הפאנל משמאל */
         .content-container {
-            flex: 1; 
-            min-width: 0; 
-            height: 100%;
-            background: #ffffff; 
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 20px; 
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; 
-            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            flex: 1; min-width: 0; min-height: 0; /* 👈 תיקון קריטי לגלילה! */
+            height: 100%; background: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px; padding: 20px; display: flex; flex-direction: column;
+            overflow: hidden; box-shadow: 0 15px 50px rgba(0,0,0,0.4);
         }
 
-        .fm-layout { display: flex; flex-direction: column; flex: 1; height: 100%; gap: 15px; overflow: hidden; min-width: 0; }
+        .fm-layout { 
+            display: flex; flex-direction: column; flex: 1; height: 100%; 
+            gap: 15px; overflow: hidden; min-width: 0; min-height: 0; /* 👈 תיקון קריטי לגלילה! */
+        }
 
-        /* סרגל עליון - הפוך (כסוף עם טקסט נייבי) */
         .fm-top-bar {
-            background: var(--bg-silver-matte);
-            border: 1px solid rgba(124, 168, 86, 0.2); border-radius: 12px;
+            background: var(--bg-silver-matte); border: 1px solid rgba(124, 168, 86, 0.2); border-radius: 12px;
             display: flex; justify-content: space-around; align-items: center; padding: 10px 20px; color: var(--text-dark);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); flex-shrink: 0; position: relative; overflow: hidden;
         }
@@ -230,14 +223,39 @@
         .fm-top-stat-value.highlight { color: var(--brand-green); }
 
         .fm-content-area {
-            flex: 1; background: #ffffff; border-radius: 12px; padding: 10px;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.03); overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column;
-            border: 1px solid rgba(0,0,0,0.05); min-width: 0;
+            flex: 1; background: #ffffff; border-radius: 12px; padding: 15px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); 
+            display: flex; flex-direction: column; 
+            min-width: 0; min-height: 0; /* 👈 חובה לגלילה תקינה ומניעת רווחים אפורים */
+            overflow-y: auto; overflow-x: hidden; 
+            direction: ltr; /* 👈 טריק: מעביר את פס הגלילה הראשי לימין */
         }
 
-        .fm-tab { display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); height: 100%; flex-direction: column;}
+        .fm-tab { 
+            display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            height: 100%; min-height: 0; /* 👈 מונע מתיחת יתר כלפי מטה */
+            flex-direction: column;
+            direction: rtl; /* 👈 מחזיר את הטקסט לכיוון ימין-לשמאל */
+            padding-bottom: 20px; /* מרווח נשימה בתחתית הדף */
+        }
         .fm-tab.active { display: flex; }
         @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* =========================================
+           עיצוב פסי גלילה יוקרתיים ומיקומם בימין הדף
+           ========================================= */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.5); border-radius: 10px; border: 2px solid #fff; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+
+        /* העברת פסי גלילה של אלמנטים פנימיים לצד ימין */
+        .squad-table-wrap, .market-table-container, .rules-scroll-container, .fixtures-scroll-area, .s-card-list {
+            direction: ltr !important; 
+        }
+        .squad-table, .market-table, .rules-content-inner, .fixtures-main-col, .s-list-row {
+            direction: rtl !important;
+        }
 
         /* עיצוב כללי לתוכן הלבן */
 h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; }        p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
@@ -286,6 +304,86 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
             padding-bottom: 5px;
             display: inline-block;
         }
+
+/* =========================================
+           קוסמטיקה למגרש: מדים (Kits), מסגרות הרכב ואצטדיונים
+           ========================================= */
+        
+       /* --- 1. צורת סט המדים המלא (חולצה + מכנסיים) --- */
+        .profile-kit-wrapper {
+            display: flex; flex-direction: column; align-items: center; gap: 1px; /* רווח מינימלי בין החולצה למכנס */
+            width: 40px; margin: 0 auto;
+        }
+        .profile-kit-shirt {
+            width: 100%; height: 30px;
+            /* גוף החולצה יושב בדיוק בין 25% ל-75% מהרוחב */
+            clip-path: polygon(25% 0%, 75% 0%, 100% 20%, 85% 35%, 75% 25%, 75% 100%, 25% 100%, 25% 25%, 15% 35%, 0% 20%);
+            background-color: #e2e8f0;
+        }
+        .profile-kit-shorts {
+            width: 50%; /* התאמה מושלמת בדיוק לרוחב הגוף של החולצה! */
+            height: 14px;
+            /* גזירה מלבנית עם חיתוך קטן באמצע לרגליים */
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 55% 100%, 50% 30%, 45% 100%, 0% 100%);
+            background-color: #e2e8f0;
+        }
+
+        /* --- 2. עיצובי מדים (רמת בסיס - חלקים) --- */
+        .kit-solid-blue { background: #1d4ed8 !important; }
+        .kit-solid-red { background: #dc2626 !important; }
+        .kit-solid-green { background: #15803d !important; }
+        .kit-solid-white { background: #f8fafc !important; }
+        .kit-solid-black { background: #0f172a !important; }
+
+        /* --- 3. עיצובי מדים (רמת ביניים - פסים וצורות) --- */
+        .kit-half-yb { background: linear-gradient(90deg, #facc15 50%, #1e3a8a 50%) !important; } /* חצי צהוב חצי כחול */
+        .kit-half-rw { background: linear-gradient(90deg, #dc2626 50%, #ffffff 50%) !important; } /* חצי אדום חצי לבן */
+        .kit-stripes-gw { background: repeating-linear-gradient(90deg, #16a34a 0px, #16a34a 8px, #ffffff 8px, #ffffff 16px) !important; } /* פסי אורך ירוק לבן */
+        .kit-stripes-bw { background: repeating-linear-gradient(90deg, #000000 0px, #000000 8px, #ffffff 8px, #ffffff 16px) !important; } /* פסי אורך שחור לבן */
+        .kit-diag-rw { background: linear-gradient(135deg, #dc2626 50%, #ffffff 50%) !important; } /* אלכסון אדום לבן */
+
+        /* --- 4. עיצובי מדים (רמת פרו - פרימיום מיוחדים) --- */
+        .kit-gold-vip { background: linear-gradient(135deg, #b45309 0%, #fcd34d 50%, #b45309 100%) !important; } /* זהב בוהק */
+        .kit-neon-cyber { background: linear-gradient(135deg, #c026d3 0%, #06b6d4 100%) !important; } /* ניאון סייברפאנק */
+        .kit-fire { background: linear-gradient(0deg, #991b1b 0%, #ef4444 50%, #facc15 100%) !important; } /* אש בוערת */
+        .kit-galaxy { background: radial-gradient(circle, #4c1d95 0%, #020617 100%) !important; } /* גלקסיה כהה */
+        .kit-holo { background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important; } /* הולוגרפי ורוד-תכלת */
+
+        /* --- 5. מסגרות להרכב הפותח (Borders) --- */
+        /* בסיס */
+        .pitch-border-blue { border: 2px solid #3b82f6 !important; }
+        .pitch-border-red { border: 2px solid #ef4444 !important; }
+        /* ביניים */
+        .pitch-border-silver { border: 2px solid #cbd5e1 !important; box-shadow: 0 0 10px rgba(203,213,225,0.5) !important; }
+        .pitch-border-bronze { border: 2px solid #b45309 !important; box-shadow: 0 0 10px rgba(180,83,9,0.5) !important; }
+        /* פרו / טופ */
+        .pitch-border-gold { border: 2px solid #fbbf24 !important; box-shadow: 0 0 15px rgba(251,191,36,0.8), inset 0 0 10px rgba(251,191,36,0.4) !important; }
+        .pitch-border-neon { border: 2px solid #06b6d4 !important; box-shadow: 0 0 15px rgba(6,182,212,0.8), inset 0 0 10px rgba(6,182,212,0.4) !important; }
+        .pitch-border-fire { border: 2px solid #ef4444 !important; box-shadow: 0 0 15px rgba(239,68,68,0.8), inset 0 0 10px rgba(239,68,68,0.4) !important; }
+
+        /* --- 6. אצטדיונים (רקע הדשא) --- */
+        .pitch-bg-sunset { background: linear-gradient(180deg, #92400e 0%, #451a03 100%) !important; } /* שקיעה */
+        .pitch-bg-night { background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important; border-color: #334155 !important; } /* לילה */
+        .pitch-bg-tactical { background: radial-gradient(circle, #166534 20%, #14532d 80%) !important; } /* טקטי עגול */
+
+/* === עיצובים ספציפיים לגלריה === */
+        #tab-gallery .inv-card.active {
+            border-color: var(--brand-green);
+            box-shadow: 0 0 15px var(--brand-green-glow);
+            background: #fff;
+        }
+        
+        .tier-base { border-color: #94a3b8; }
+        .tier-mid { border-color: #38bdf8; }
+        .tier-legendary { border-color: #fbbf24; }
+
+        /* כפתור ניווט פנימי בתוך הגלריה */
+        .gallery-nav-btn {
+            flex: 1; background: none; border: none; padding: 10px;
+            font-weight: 900; font-size: 12px; cursor: pointer; color: #64748b;
+            transition: 0.2s; border-radius: 8px;
+        }
+        .gallery-nav-btn.active { background: #fff; color: var(--text-dark); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
         /* === מגרש (בחירת הרכב) === */
 .soccer-field { background: linear-gradient(180deg, #2a7344 0%, #184f2c 100%); position: relative; border: 1px solid rgba(124,168,86,0.5); border-radius: 12px; min-height: 400px; display: flex; flex-direction: column; justify-content: space-around; box-shadow: inset 0 0 40px rgba(0,0,0,0.3), 0 10px 25px rgba(0,0,0,0.15); overflow: hidden; padding: 15px 0; }        .field-lines { position: absolute; inset: 15px; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; pointer-events: none; }
@@ -593,7 +691,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .trend-up { color: var(--brand-green); }
         .trend-down { color: #ef4444; }
 
-        .profile-split-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .profile-split-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: flex-start; padding-bottom: 30px; }
 
         .profile-section-card { background: var(--bg-silver-matte); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; } /* שונה לכסוף */
         .p-section-title { font-size: 16px; font-weight: 900; color: #ffffff; background: var(--element-navy-gradient); margin-bottom: 15px; padding: 10px 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;}
@@ -1978,6 +2076,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         .inv-desc { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 15px; flex: 1; }
         .inv-btn { width: 100%; background: var(--element-navy-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .inv-btn:hover { background: var(--brand-green); transform: scale(1.02); }
+      
     </style>
         
 </head>
@@ -2055,9 +2154,11 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
         <div class="fm-submenu">
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-squad', this)">סגל שחקנים</div>
             <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-tactics', this)">בחירת הרכב</div>
+            <div class="fm-sub-item" onclick="event.stopPropagation(); switchFmTab('tab-gallery', this)">גלריית המועדון</div>
         </div>
     </div>
 
+           
     <div class="fm-nav-group" onclick="toggleNavGroup(this)">
         <div class="fm-menu-item">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -2526,17 +2627,25 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     פרופיל מנג'ר
                 </h2>
                 
-                <div class="profile-header-card">
+               <div class="profile-header-card">
                     <div class="profile-avatar-wrap">
                         <img src="https://ui-avatars.com/api/?name=ישראל+ישראלי&background=7ca856&color=fff&size=150" alt="Avatar" class="profile-avatar">
                         <div class="profile-level-badge">רמה 42</div>
                     </div>
                     <div class="profile-details">
-                        <h2 class="manager-name">ישראל ישראלי</h2>
-                        <div class="manager-team-name">האריות של סוליבי</div>
+                        <h2 class="manager-name">ישראל ישראלי <span id="profile-manager-title" style="font-size: 13px; background: linear-gradient(135deg, #e11d48, #9f1239); color: #fff; padding: 3px 10px; border-radius: 12px; vertical-align: middle; margin-right: 8px;">👑 GOAT</span></h2>
+                        <div class="manager-team-name"><span id="profile-manager-crest" style="margin-left: 5px; font-size: 16px;">🦁</span> האריות של סוליבי</div>
                         <div class="manager-meta">
                             <span>🛡️ אוהד: מכבי תל אביב</span>
                             <span>📅 מנג'ר מאז: אוגוסט 2024</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-right: auto; text-align: center; background: rgba(0,0,0,0.03); padding: 10px 25px; border-radius: 12px; border: 1px dashed rgba(0,0,0,0.1);">
+                        <div style="font-size: 11px; font-weight: 900; color: #64748b; margin-bottom: 8px;">מדי המועדון</div>
+                        <div class="profile-kit-wrapper" id="profile-active-kit">
+                            <div class="profile-kit-shirt kit-solid-blue"></div>
+                            <div class="profile-kit-shorts kit-solid-blue"></div>
                         </div>
                     </div>
                 </div>
@@ -2705,7 +2814,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         
                         <div class="squad-layout" style="display: flex; gap: 20px; align-items: stretch;">
                             <div style="flex: 2.5; display: flex; flex-direction: column; gap: 8px; min-width: 0;">
-                                <div class="soccer-field" style="flex: 1; min-height: 320px; padding: 5px 0;">
+                               <div id="main-pitch" class="soccer-field" style="flex: 1; min-height: 320px; padding: 5px 0;">
                                     <div class="field-lines"></div>
                                     <div class="captain-control">
                                         <span>קפטן:</span>
@@ -2741,6 +2850,29 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         </div>
                     </div>
 
+<div id="tab-gallery" class="fm-tab">
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        גלריית המועדון: חדר ההלבשה
+    </h2>
+
+    <p class="content-desc">כאן מנוהל כל המיתוג הויזואלי של המועדון שלך. בחר את הפריטים הפעילים מתוך האוסף שצברת בחבילות ובבוטיק.</p>
+
+    <div class="tt-controls" style="margin-bottom: 20px;">
+        <span style="font-weight: 900; color: var(--text-dark);">בחר קטגוריה להצגה:</span>
+        <select id="gallery-category-select" onchange="renderGalleryItems(this.value)">
+            <option value="all">🌟 הצג את כל הפריטים</option>
+            <option value="kit">👕 מדי קבוצה (Kits)</option>
+            <option value="crest">🛡️ סמלי מועדון</option>
+            <option value="title">🏷️ תארי מנג'ר</option>
+            <option value="effect">✨ מגרש ואפקטים</option>
+        </select>
+    </div>
+
+    <div class="inventory-grid" id="gallery-items-container">
+    </div>
+</div>
+                
                    <div id="tab-league" class="fm-tab">
                         <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -6677,6 +6809,98 @@ document.addEventListener('DOMContentLoaded', () => {
     });
         
 </script>
+<script>
+    // מאגר הפריטים המלא של הגלריה להדגמה (בלי לכתוב 100 פעמים HTML!)
+    const galleryItemsDB = [
+        // --- מדים (Kits) ---
+        { type: 'kit', title: 'מדי בית (כחול)', desc: 'מדים חלקים קלאסיים.', iconClass: 'kit-solid-blue', tier: 'tier-base' },
+        { type: 'kit', title: 'מדי חוץ (אדום)', desc: 'מדים חלקים קלאסיים.', iconClass: 'kit-solid-red', tier: 'tier-base' },
+        { type: 'kit', title: 'צהוב-כחול חצי', desc: 'עיצוב גיאומטרי.', iconClass: 'kit-half-yb', tier: 'tier-mid' },
+        { type: 'kit', title: 'ירוק-לבן פסים', desc: 'עיצוב פסי אורך.', iconClass: 'kit-stripes-gw', tier: 'tier-mid' },
+        { type: 'kit', title: 'קרבון מוזהב VIP', desc: 'מדי פרימיום נוצצים.', iconClass: 'kit-gold-vip', tier: 'tier-legendary' },
+        { type: 'kit', title: 'ניאון סייבר', desc: 'מדי פרימיום עתידניים.', iconClass: 'kit-neon-cyber', tier: 'tier-legendary' },
+        { type: 'kit', title: 'אש גיהנום', desc: 'מדי פרימיום לוהטים.', iconClass: 'kit-fire', tier: 'tier-legendary' },
+
+        // --- סמלים (Crests) ---
+        { type: 'crest', title: 'מגן ברזל', desc: 'סמל מועדון בסיסי.', icon: '🛡️', tier: 'tier-base' },
+        { type: 'crest', title: 'זאב בודד', desc: 'סמל מועדון מעוצב.', icon: '🐺', tier: 'tier-mid' },
+        { type: 'crest', title: 'פיראט', desc: 'סמל מועדון מעוצב.', icon: '🏴‍☠️', tier: 'tier-mid' },
+        { type: 'crest', title: 'אריה מחשמל', desc: 'סמל פרו מונפש.', icon: '🦁', tier: 'tier-legendary' },
+        { type: 'crest', title: 'דרקון אש', desc: 'סמל פרו מונפש.', icon: '🐉', tier: 'tier-legendary' },
+
+        // --- תארים (Titles) ---
+        { type: 'title', title: 'חובבן', desc: 'תגית מנג\'ר נפוצה.', icon: '🏷️', tier: 'tier-base' },
+        { type: 'title', title: 'טקטיקן מתחיל', desc: 'תגית מנג\'ר נפוצה.', icon: '🏷️', tier: 'tier-base' },
+        { type: 'title', title: 'גאון טקטי', desc: 'תגית מנג\'ר נדירה.', icon: '🏷️', tier: 'tier-mid' },
+        { type: 'title', title: 'מלך השוק', desc: 'תגית מנג\'ר נדירה.', icon: '🏷️', tier: 'tier-mid' },
+        { type: 'title', title: '👑 GOAT', desc: 'תגית מנג\'ר אגדית.', icon: '👑', tier: 'tier-legendary' },
+        { type: 'title', title: '👑 המיוחד', desc: 'תגית מנג\'ר אגדית.', icon: '👑', tier: 'tier-legendary' },
+
+        // --- אפקטים ומגרש (Effects) ---
+        { type: 'effect', title: 'מסגרת כסף מטאלי', desc: 'עיצוב כסוף להרכב.', icon: '🔲', tier: 'tier-mid' },
+        { type: 'effect', title: 'אצטדיון שקיעה', desc: 'תאורה חמימה למגרש.', icon: '🌇', tier: 'tier-mid' },
+        { type: 'effect', title: 'אצטדיון לילה VIP', desc: 'תאורת זרקורים פרימיום.', icon: '🏟️', tier: 'tier-legendary' },
+        { type: 'effect', title: 'מסגרת יהלום VIP', desc: 'זהב מונפש להרכב הפותח.', icon: '✨', tier: 'tier-legendary' },
+        { type: 'effect', title: 'מסגרת אש גיהנום', desc: 'אש בוערת סביב השחקנים.', icon: '🔥', tier: 'tier-legendary' }
+    ];
+
+    // פונקציה שמציירת את הגלריה לפי הסינון מהרשימה הנפתחת!
+    window.renderGalleryItems = function(category) {
+        const container = document.getElementById('gallery-items-container');
+        if(!container) return;
+        
+        container.innerHTML = ''; // מנקה את התצוגה הישנה
+
+        // מסנן את המערך לפי מה שנבחר ב-Select
+        const filtered = category === 'all' ? galleryItemsDB : galleryItemsDB.filter(item => item.type === category);
+
+        if(filtered.length === 0) {
+            container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#64748b; font-weight:bold;">אין פריטים בקטגוריה זו.</div>';
+            return;
+        }
+
+        // מצייר את הקוביות אוטומטית!
+        filtered.forEach((item, index) => {
+            let iconHtml = '';
+            
+            // אם זה חולצה, אנחנו משתמשים בעיצוב שעשינו בשלב 1. אחרת, אייקון רגיל.
+           if(item.type === 'kit') {
+                iconHtml = `
+                <div class="profile-kit-wrapper">
+                    <div class="profile-kit-shirt ${item.iconClass}"></div>
+                    <div class="profile-kit-shorts ${item.iconClass}"></div>
+                </div>`;
+            } else {
+                iconHtml = item.icon;
+            }
+
+            // הפריט הראשון ברשימה יהיה מסומן כ"פעיל" רק בשביל להראות את העיצוב
+            const isActive = index === 0; 
+            const activeClass = isActive ? 'active' : '';
+            const activeTag = isActive ? `<div style="position: absolute; top: 10px; right: 10px; background: var(--brand-green); color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">פעיל</div>` : '';
+            const btnText = isActive ? 'מוגדר כפעיל' : 'הגדר כפעיל';
+            const btnStyle = isActive ? 'background: transparent; color: var(--brand-green); border: 2px solid var(--brand-green);' : '';
+
+            container.innerHTML += `
+                <div class="inv-card ${item.tier} ${activeClass}">
+                    ${activeTag}
+                    <div class="inv-icon-wrap" style="${item.type === 'kit' ? 'background: #fff;' : ''}">${iconHtml}</div>
+                    <div class="inv-title">${item.title}</div>
+                    <div class="inv-desc">${item.desc}</div>
+                    <button class="inv-btn" style="${btnStyle}" ${isActive ? 'disabled' : ''} onclick="alert('בחרת להפעיל את: ${item.title}')">${btnText}</button>
+                </div>
+            `;
+        });
+    };
+
+    // מפעיל את הפונקציה בפעם הראשונה כשהדף נטען
+    document.addEventListener('DOMContentLoaded', () => {
+        if(document.getElementById('gallery-items-container')) {
+            renderGalleryItems('all');
+        }
+    });
+</script>
+    
 <script src="search.js"></script>
 </body>
 </html>
