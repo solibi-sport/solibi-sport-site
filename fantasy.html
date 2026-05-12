@@ -2608,17 +2608,25 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                     פרופיל מנג'ר
                 </h2>
                 
-                <div class="profile-header-card">
+               <div class="profile-header-card">
                     <div class="profile-avatar-wrap">
                         <img src="https://ui-avatars.com/api/?name=ישראל+ישראלי&background=7ca856&color=fff&size=150" alt="Avatar" class="profile-avatar">
                         <div class="profile-level-badge">רמה 42</div>
                     </div>
                     <div class="profile-details">
-                        <h2 class="manager-name">ישראל ישראלי</h2>
-                        <div class="manager-team-name">האריות של סוליבי</div>
+                        <h2 class="manager-name">ישראל ישראלי <span id="profile-manager-title" style="font-size: 13px; background: linear-gradient(135deg, #e11d48, #9f1239); color: #fff; padding: 3px 10px; border-radius: 12px; vertical-align: middle; margin-right: 8px;">👑 GOAT</span></h2>
+                        <div class="manager-team-name"><span id="profile-manager-crest" style="margin-left: 5px; font-size: 16px;">🦁</span> האריות של סוליבי</div>
                         <div class="manager-meta">
                             <span>🛡️ אוהד: מכבי תל אביב</span>
                             <span>📅 מנג'ר מאז: אוגוסט 2024</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-right: auto; text-align: center; background: rgba(0,0,0,0.03); padding: 10px 25px; border-radius: 12px; border: 1px dashed rgba(0,0,0,0.1);">
+                        <div style="font-size: 11px; font-weight: 900; color: #64748b; margin-bottom: 8px;">מדי המועדון</div>
+                        <div class="profile-kit-wrapper" id="profile-active-kit">
+                            <div class="profile-kit-shirt kit-solid-blue"></div>
+                            <div class="profile-kit-shorts kit-solid-blue"></div>
                         </div>
                     </div>
                 </div>
@@ -2787,7 +2795,7 @@ h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight:
                         
                         <div class="squad-layout" style="display: flex; gap: 20px; align-items: stretch;">
                             <div style="flex: 2.5; display: flex; flex-direction: column; gap: 8px; min-width: 0;">
-                                <div class="soccer-field" style="flex: 1; min-height: 320px; padding: 5px 0;">
+                                <div id="main-pitch" class="soccer-field pitch-bg-night" style="flex: 1; min-height: 320px; padding: 5px 0; border: 2px solid #1e293b; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                                     <div class="field-lines"></div>
                                     <div class="captain-control">
                                         <span>קפטן:</span>
