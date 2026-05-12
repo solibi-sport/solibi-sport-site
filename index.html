@@ -50,35 +50,21 @@
             justify-content: center; /* ממרכז את התפריט האמצעי */
             align-items: center;
             width: 100%;
+            flex-shrink: 0;
         }
 
-        /* נועל את הלוגו בדיוק באותן קואורדינטות של הסיידבר הימני */
         .header-right-col { 
-            position: absolute;
-            right: 20px; 
-            width: var(--sidebar-width); 
-            height: 100%;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            position: absolute; right: 20px; width: var(--sidebar-width); height: 100%; 
+            display: flex; justify-content: center; align-items: center; 
         }
-
+        
         .header-center-col { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: clamp(15px, 2vw, 30px); 
+            display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); 
         }
-
-        /* נועל את שורת החיפוש בדיוק באותן קואורדינטות של הסיידבר השמאלי */
+        
         .header-left-col { 
-            position: absolute;
-            left: 20px; 
-            width: var(--sidebar-width); 
-            height: 100%;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            position: absolute; left: 20px; width: var(--sidebar-width); height: 100%; 
+            display: flex; justify-content: center; align-items: center; 
         }
         
         .logo-wrapper {
