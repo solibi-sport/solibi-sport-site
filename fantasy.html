@@ -226,39 +226,42 @@
         .fm-top-stat-value { font-size: 18px; font-weight: 900; color: var(--text-dark); }
         .fm-top-stat-value.highlight { color: var(--brand-green); }
 
-       .fm-content-area {
+      /* === אזור התוכן והגלילה הפנימית === */
+        .fm-content-area {
             flex: 1; 
             background: transparent; 
             border: none; 
             box-shadow: none; 
-            padding: 0; /* איפסנו כדי שהכותרת הנייבי תגיע עד הסוף ותהיה ברוחב הסרגל העליון */
+            padding: 0; /* איפסנו פדינג כדי שהרוחב יהיה 100% מושלם וסימטרי עם הסרגל העליון */
             min-width: 0; min-height: 0; 
-            overflow: hidden; /* ביטלנו את הגלילה כאן כדי להעביר אותה פנימה */
+            overflow: hidden; /* ביטלנו את הגלילה כאן - אנחנו מעבירים אותה פנימה לטאב */
             display: flex; 
             flex-direction: column; 
         }
 
         .fm-tab { 
             display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            flex: 1; 
+            flex: 1; /* מוודא שהטאב יתפוס את כל הגובה ויאפשר גלילה */
             flex-direction: column;
-            direction: ltr; /* מעביר את פס הגלילה ימינה */
-            overflow-y: auto; /* הוספנו גלילה לטאב עצמו */
+            direction: ltr; /* מעביר את פס הגלילה לימין */
+            overflow-y: auto; /* 👈 הגלילה קורית עכשיו בתוך הטאב עצמו! */
             overflow-x: hidden;
-            padding-right: 5px; /* מרווח לפס הגלילה שיהיה מתחת לכותרת */
-            padding-bottom: 25px; 
+            padding-right: 0; /* הורדנו מרווח כדי להבטיח יישור מושלם עם הסרגל האפור */
+            padding-bottom: 25px; /* מרווח נשימה בתחתית */
         }
         .fm-tab.active { display: flex; }
         .fm-tab > * {
             direction: rtl; /* מחזיר את התוכן הפנימי לימין-לשמאל */
         }
-        
-        /* הקסם: דוחף את המסלול של פס הגלילה למטה כדי שיתחיל רק מתחת לכותרת! */
+
+        /* הקסם: דוחף את מסלול פס הגלילה למטה כדי שיתחיל רק *מתחת* לכותרת הנייבי! */
         .fm-tab::-webkit-scrollbar-track {
-            margin-top: 68px; 
+            margin-top: 75px; 
+            background: transparent;
         }
 
         @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
         /* =========================================
            עיצוב פסי גלילה לכל המערכת ומיקומם בצד ימין
            ========================================= */
@@ -273,35 +276,26 @@
             overflow-y: auto;
             min-height: 0 !important;
         }
-        .squad-table, .market-table, .match-result-card, .s-list-row, .rules-content-inner, .offer-card, .offer-empty {
+        .squad-table, .market-table, .match-result-card, .s-list-row, .rules-content-inner, .offer-card, .offer-empty, .fixtures-main-col {
             direction: rtl !important;
         }
+
         /* =========================================
-           עיצוב פסי גלילה יוקרתיים ומיקומם בימין הדף
+           קיבוע הכותרת הנייבי (Sticky) למעלה
            ========================================= */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.5); border-radius: 10px; border: 2px solid #fff; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
-
-        /* העברת פסי גלילה של אלמנטים פנימיים לצד ימין */
-        .squad-table-wrap, .market-table-container, .rules-scroll-container, .fixtures-scroll-area, .s-card-list {
-            direction: ltr !important; 
-        }
-        .squad-table, .market-table, .rules-content-inner, .fixtures-main-col, .s-list-row {
-            direction: rtl !important;
-        }
-
-       /* עיצוב כללי לתוכן הלבן */
         h2.content-header-title { 
             font-size: 24px; color: var(--text-dark); font-weight: 900; 
-            border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px; 
+            border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; 
+            margin-bottom: 20px !important; 
             display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; 
-            position: sticky; /* הופך את הכותרת ל"צפה" וקבועה */
+            
+            /* 👈 קיבוע הכותרת למעלה */
+            position: -webkit-sticky; 
+            position: sticky; 
             top: 0; 
-            z-index: 100; /* דואג שכל התוכן ייגלל מתחתיה */
+            z-index: 100; /* שומר שהיא תמיד תהיה מעל התוכן שנגלל */
             margin-top: 0;
-            width: 100%; /* מתיישר בדיוק לרוחב הקוביה שמעל */
+            width: 100%; /* מיישר אותה באופן מושלם עם הסרגל שמעליה */
         }        
         p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
 /* טבלאות חוקים מודרניות */
