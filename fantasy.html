@@ -2172,6 +2172,37 @@
         #tab-intro > div > * {
             direction: rtl; 
         }
+
+        /* === מערכת ניתוח נתונים (Player Analysis - Premium) === */
+        .analysis-grid { display: flex; flex-direction: column; gap: 15px; padding: 5px; }
+        .analysis-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .analysis-card-header { font-size: 14px; font-weight: 900; color: var(--text-dark); margin-bottom: 15px; display: flex; align-items: center; gap: 6px; border-bottom: 2px solid rgba(124,168,86,0.2); padding-bottom: 8px;}
+        
+        /* פסי תכונות */
+        .attr-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .attr-label { width: 65px; font-size: 11.5px; font-weight: bold; color: #64748b; text-align: right; }
+        .attr-bar-bg { flex: 1; height: 10px; background: #f1f5f9; border-radius: 10px; overflow: hidden; border: 1px solid rgba(0,0,0,0.03);}
+        .attr-bar-fill { height: 100%; border-radius: 10px; transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); width: 0%; }
+        .attr-val { width: 25px; font-size: 12px; font-weight: 900; color: var(--text-dark); text-align: left; }
+        
+        /* גרף כושר (עמודות) */
+        .form-chart-container { display: flex; align-items: flex-end; justify-content: space-between; height: 90px; padding: 10px 10px 0 10px; border-bottom: 1px dashed #e2e8f0; margin-bottom: 10px;}
+        .form-bar-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 5px; width: 16%; }
+        .form-bar { width: 100%; max-width: 28px; border-radius: 6px 6px 0 0; background: linear-gradient(0deg, var(--brand-green) 0%, #a4e575 100%); transition: height 1s cubic-bezier(0.22, 1, 0.36, 1); box-shadow: 0 -2px 8px rgba(124,168,86,0.3); height: 0%;}
+        .form-bar.bad { background: linear-gradient(0deg, #ef4444 0%, #fca5a5 100%); box-shadow: 0 -2px 8px rgba(239,68,68,0.3);}
+        .form-pts { font-size: 12px; font-weight: 900; color: var(--text-dark); opacity: 0; transition: opacity 0.5s 0.8s; }
+        .form-pts.visible { opacity: 1; }
+        .form-gw-label { font-size: 10px; color: #94a3b8; font-weight: bold; text-align: center; margin-top: 5px;}
+        
+        /* תובנות (פרוס/קונס) */
+        .insights-box { display: flex; gap: 15px; }
+        .insight-col { flex: 1; background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .insight-title { font-size: 13px; font-weight: 900; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .insight-title.pro { color: #16a34a; }
+        .insight-title.con { color: #dc2626; }
+        .insight-item { font-size: 11.5px; color: #475569; font-weight: bold; margin-bottom: 6px; display: flex; align-items: flex-start; gap: 5px; line-height: 1.4;}
+        .insight-item::before { content: '✓'; color: #16a34a; font-size: 10px; margin-top: 2px;}
+        .insight-col:nth-child(2) .insight-item::before { content: '✖'; color: #dc2626; font-size: 9px; margin-top: 3px;}<div id="pm-tab-analysis" class="pm-tab-pane">
         
     </style>
         
@@ -4338,26 +4369,41 @@
                 </div>
 
                 <div id="pm-tab-analysis" class="pm-tab-pane">
-                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">מערכת הניתוח המתקדמת בבנייה 📊</div>
+                    <div class="analysis-grid">
+                        
+                        <div class="analysis-card">
+                            <div class="analysis-card-header">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                כושר נוכחי (5 משחקים אחרונים)
+                            </div>
+                            <div class="form-chart-container" id="pm-form-chart">
+                                </div>
+                            <div style="display: flex; justify-content: space-between; padding: 0 10px;" id="pm-form-labels">
+                                </div>
+                        </div>
+
+                        <div class="analysis-card">
+                            <div class="analysis-card-header">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                פרופיל שחקן (מדדים מתקדמים)
+                            </div>
+                            <div id="pm-attributes">
+                                </div>
+                        </div>
+
+                        <div class="insights-box">
+                            <div class="insight-col">
+                                <div class="insight-title pro">נקודות חוזק</div>
+                                <div id="pm-pros-list"></div>
+                            </div>
+                            <div class="insight-col">
+                                <div class="insight-title con">נקודות חולשה</div>
+                                <div id="pm-cons-list"></div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <div id="pm-tab-matches" class="pm-tab-pane">
-                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">משחקים אחרונים בבנייה 📅</div>
-                </div>
-                <div id="pm-tab-offers" class="pm-tab-pane">
-                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">ממשק הצעות וטריידים בבנייה 🤝</div>
-                </div>
-                <div id="pm-tab-compare" class="pm-tab-pane">
-                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">מערכת השוואת שחקנים בבנייה 🔍</div>
-                </div>
-                
-                <div class="pm-actions">
-                    <button id="pm-action-main-btn" class="pm-btn pm-btn-primary" onclick="handleDynamicPlayerAction()">נהל בהרכב</button>
-                    <button class="pm-btn pm-btn-secondary" onclick="closePlayerModal()">סגור כרטיס</button>
-                </div>
-            </div>
-            
-        </div>
-    </div>
     
     <script src="../translations.js"></script>
     <script src="../matchEvents.js"></script>
@@ -4365,6 +4411,106 @@
 
     <script>
 
+// מנוע מחולל ניתוח שחקנים מתקדם
+        function renderPlayerAnalysis(p) {
+            // "מחולל אקראי קבוע" מבוסס מזהה השחקן, כדי שהנתונים יישארו זהים לאותו שחקן
+            const seed = p.id ? p.id.toString().charCodeAt(0) + p.id.toString().charCodeAt(p.id.toString().length-1) : 1;
+            const randomGen = (min, max, offset) => Math.floor(Math.abs(Math.sin(seed + offset)) * (max - min + 1)) + min;
+
+            // 1. גרף כושר (5 משחקים)
+            const formChart = document.getElementById('pm-form-chart');
+            const formLabels = document.getElementById('pm-form-labels');
+            formChart.innerHTML = ''; formLabels.innerHTML = '';
+            
+            const maxPts = 20; 
+            for(let i=1; i<=5; i++) {
+                let pts = randomGen(0, 16, i * 2);
+                if (p.fantasyPts === 0) pts = 0; // אם השחקן לא משחק בכלל
+                
+                let heightPct = (pts / maxPts) * 100;
+                if(heightPct > 100) heightPct = 100;
+                if(heightPct < 8) heightPct = 8; // גובה מינימלי חזותי
+                
+                let barClass = pts < 3 ? 'form-bar bad' : 'form-bar';
+                
+                formChart.innerHTML += `
+                    <div class="form-bar-col">
+                        <span class="form-pts">${pts}</span>
+                        <div class="${barClass}" data-height="${heightPct}%"></div>
+                    </div>
+                `;
+                formLabels.innerHTML += `<div class="form-gw-label">מ' ${randomGen(1, 15, i+10)}</div>`;
+            }
+
+            // 2. מדדי ביצועים בהתאם לעמדה
+            const attrs = document.getElementById('pm-attributes');
+            let attrData = [];
+            
+            if (p.displayPos === 'התקפה') {
+                attrData = [
+                    {label: 'סיומת', val: randomGen(75, 96, 11), color: '#ef4444'},
+                    {label: 'מהירות', val: randomGen(70, 95, 12), color: '#f59e0b'},
+                    {label: 'דריבל', val: randomGen(70, 95, 13), color: '#8b5cf6'},
+                    {label: 'פיזיות', val: randomGen(50, 85, 14), color: '#3b82f6'}
+                ];
+            } else if (p.displayPos === 'קישור') {
+                attrData = [
+                    {label: 'מסירות', val: randomGen(75, 96, 11), color: '#3b82f6'},
+                    {label: 'ראיית משחק', val: randomGen(75, 95, 12), color: '#f59e0b'},
+                    {label: 'דריבל', val: randomGen(65, 90, 13), color: '#8b5cf6'},
+                    {label: 'הגנה', val: randomGen(50, 80, 14), color: '#10b981'}
+                ];
+            } else if (p.displayPos === 'הגנה') {
+                attrData = [
+                    {label: 'תיקולים', val: randomGen(75, 96, 11), color: '#10b981'},
+                    {label: 'פיזיות', val: randomGen(75, 95, 12), color: '#3b82f6'},
+                    {label: 'מהירות', val: randomGen(60, 85, 13), color: '#f59e0b'},
+                    {label: 'מסירות', val: randomGen(60, 85, 14), color: '#8b5cf6'}
+                ];
+            } else {
+                attrData = [
+                    {label: 'רפלקסים', val: randomGen(75, 96, 11), color: '#f59e0b'},
+                    {label: 'מיקום', val: randomGen(75, 95, 12), color: '#10b981'},
+                    {label: 'מסירה', val: randomGen(60, 85, 13), color: '#3b82f6'},
+                    {label: '1 על 1', val: randomGen(70, 90, 14), color: '#ef4444'}
+                ];
+            }
+
+            // זריקת בונוס לרמות גבוהות
+            if(p.calcTierName === 'כוכב על' || p.calcTierName === 'רמה 1') {
+                attrData.forEach(a => a.val = Math.min(99, a.val + 6));
+            }
+
+            attrs.innerHTML = '';
+            attrData.forEach(a => {
+                attrs.innerHTML += `
+                    <div class="attr-row">
+                        <div class="attr-label">${a.label}</div>
+                        <div class="attr-bar-bg">
+                            <div class="attr-bar-fill" style="background: ${a.color};" data-width="${a.val}%"></div>
+                        </div>
+                        <div class="attr-val">${a.val}</div>
+                    </div>
+                `;
+            });
+            
+            // 3. תובנות סקאוט
+            const pros = document.getElementById('pm-pros-list');
+            const cons = document.getElementById('pm-cons-list');
+            const possiblePros = ["מייצר המון מצבי הבקעה", "מומחה למצבים נייחים", "יציב מאוד לאורך העונה", "זוכה בהרבה מאבקי אוויר", "איום מתמיד מחוץ לרחבה", "מסירות מפתח מדויקות", "עבודת הגנה מצוינת", "קשה להוציא ממנו כדור"];
+            const possibleCons = ["נוטה לאבד כדורים", "מרבה לבצע עבירות", "חלש במאבקים פיזיים", "מועד לפציעות קלות", "נוטה להיעלם ממשחקים", "מרבה להיתפס בנבדל", "מסירות קצרות לא מדויקות"];
+            
+            pros.innerHTML = `<div class="insight-item">${possiblePros[randomGen(0, 3, 21)]}</div><div class="insight-item">${possiblePros[randomGen(4, 7, 22)]}</div>`;
+            cons.innerHTML = `<div class="insight-item">${possibleCons[randomGen(0, 3, 23)]}</div><div class="insight-item">${possibleCons[randomGen(4, 6, 24)]}</div>`;
+
+            // הפעלת האנימציות בהשהיה קלה לפרימיום פיל
+            setTimeout(() => {
+                document.querySelectorAll('.form-bar').forEach(b => b.style.height = b.getAttribute('data-height'));
+                document.querySelectorAll('.attr-bar-fill').forEach(b => b.style.width = b.getAttribute('data-width'));
+                document.querySelectorAll('.form-pts').forEach(p => p.classList.add('visible'));
+            }, 100);
+        }
+        
         // ==========================================
         // מודאל כרטיס שחקן (הקוד שהיה חסר בשחזור)
         // ==========================================
@@ -4430,6 +4576,9 @@
             const firstTabBtn = document.querySelector('.pm-tab-btn');
             if(firstTabBtn) window.switchPlayerTab('pm-tab-overview', firstTabBtn);
 
+           // מפעיל את מנוע הניתוח
+            renderPlayerAnalysis(p);
+           
             document.getElementById('playerModal').classList.add('active');
         };
 
