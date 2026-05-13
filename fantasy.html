@@ -4512,9 +4512,9 @@
         }
         
         // ==========================================
-        // מודאל כרטיס שחקן (הקוד המלא והמתוקן)
+        // מודאל כרטיס שחקן (הקוד שהיה חסר בשחזור)
         // ==========================================
-        window.openPlayerModalById = function(playerId, isMySquad) {
+       window.openPlayerModalById = function(playerId, isMySquad) {
             const p = window.allPlayersMap[playerId];
             if (!p) { alert('שחקן לא נמצא במערכת.'); return; }
 
@@ -4535,7 +4535,9 @@
             
             document.getElementById('pm-age').innerText = p.birthDate + ` (${p.age || 25})`;
             
-            // הזרקת העיצוב (CSS) והטקסט של הרמה
+            // ----------------------------------------------------
+            // התיקון של הרמה - הזרקת העיצוב (CSS) והטקסט הנכון!
+            // ----------------------------------------------------
             const tierBadge = document.getElementById('pm-tier-css-badge');
             if (tierBadge) {
                 tierBadge.className = `tier-badge ${p.calcTierClass}`;
@@ -4551,16 +4553,14 @@
             document.getElementById('pm-owner').innerText = actualOwner;
             
             const mainActionBtn = document.getElementById('pm-action-main-btn');
-            if (mainActionBtn) {
-                if (actualOwner === 'מכבי סוליבי') {
-                    mainActionBtn.innerText = 'נהל בהרכב';
-                    mainActionBtn.style.background = 'var(--brand-green)';
-                    mainActionBtn.setAttribute('data-action', 'manage');
-                } else { 
-                    mainActionBtn.innerText = 'הוסף לרשימת מעקב 👁️';
-                    mainActionBtn.style.background = '#3498db'; 
-                    mainActionBtn.setAttribute('data-action', 'watchlist');
-                }
+            if (actualOwner === 'מכבי סוליבי') {
+                mainActionBtn.innerText = 'נהל בהרכב';
+                mainActionBtn.style.background = 'var(--brand-green)';
+                mainActionBtn.setAttribute('data-action', 'manage');
+            } else { 
+                mainActionBtn.innerText = 'הוסף לרשימת מעקב 👁️';
+                mainActionBtn.style.background = '#3498db'; 
+                mainActionBtn.setAttribute('data-action', 'watchlist');
             }
 
             document.getElementById('pm-val-apps').innerText = p.apps;
@@ -4576,14 +4576,10 @@
             const firstTabBtn = document.querySelector('.pm-tab-btn');
             if(firstTabBtn) window.switchPlayerTab('pm-tab-overview', firstTabBtn);
 
+           // מפעיל את מנוע הניתוח
+            renderPlayerAnalysis(p);
+           
             document.getElementById('playerModal').classList.add('active');
-
-            // הפעלת מנוע הניתוח באנימציה חלקה אחרי הפתיחה
-            setTimeout(() => {
-                if (typeof renderPlayerAnalysis === 'function') {
-                    renderPlayerAnalysis(p);
-                }
-            }, 50);
         };
 
         window.openPlayerModal = function(name, photo, pos, team, pts, gls, ast, value, apps, mins, tkl, cs, psv, pgl, yel, red, tierName, country, age, owner, rating) {
@@ -4604,16 +4600,6 @@
             if(document.getElementById('pm-img')) document.getElementById('pm-img').src = photo || '';
             document.getElementById('pm-pos').innerText = pos || '-';
             document.getElementById('pm-team').innerText = team || '-';
-            
-            // גיבוי לרמה
-            const tierBadge = document.getElementById('pm-tier-css-badge');
-            if (tierBadge) {
-                tierBadge.className = 'tier-badge tier-star'; 
-                tierBadge.innerText = 'כוכב על';
-            }
-            
-            document.getElementById('playerModal').classList.add('active');
-        };
             
             // גיבוי לרמה גם אם לוחצים על שחקן מוקאפ ישן
             const tierBadge = document.getElementById('pm-tier-css-badge');
@@ -5386,18 +5372,11 @@
             document.getElementById('pm-val-red').innerText = p.red;
             document.getElementById('pm-val-rating').innerText = p.avgRating;
 
-           const firstTabBtn = document.querySelector('.pm-tab-btn');
+            const firstTabBtn = document.querySelector('.pm-tab-btn');
             if(firstTabBtn) switchPlayerTab('pm-tab-overview', firstTabBtn);
 
             document.getElementById('playerModal').classList.add('active');
-
-            // התיקון: מפעיל את מנוע הניתוח רק אחרי שהמודאל באוויר
-            setTimeout(() => {
-                if (typeof renderPlayerAnalysis === 'function') {
-                    renderPlayerAnalysis(p);
-                }
-            }, 50);
-        };
+        }
 // מערכת החלפת מחזורים בטבלת הליגה
         let currentDisplayedRound = 10;
         
