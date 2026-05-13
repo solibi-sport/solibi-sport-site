@@ -5372,11 +5372,18 @@
             document.getElementById('pm-val-red').innerText = p.red;
             document.getElementById('pm-val-rating').innerText = p.avgRating;
 
-            const firstTabBtn = document.querySelector('.pm-tab-btn');
+           const firstTabBtn = document.querySelector('.pm-tab-btn');
             if(firstTabBtn) switchPlayerTab('pm-tab-overview', firstTabBtn);
 
             document.getElementById('playerModal').classList.add('active');
-        }
+
+            // התיקון: מפעיל את מנוע הניתוח רק אחרי שהמודאל באוויר
+            setTimeout(() => {
+                if (typeof renderPlayerAnalysis === 'function') {
+                    renderPlayerAnalysis(p);
+                }
+            }, 50);
+        };
 // מערכת החלפת מחזורים בטבלת הליגה
         let currentDisplayedRound = 10;
         
