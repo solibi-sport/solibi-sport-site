@@ -226,29 +226,39 @@
         .fm-top-stat-value { font-size: 18px; font-weight: 900; color: var(--text-dark); }
         .fm-top-stat-value.highlight { color: var(--brand-green); }
 
-        /* --- אזור התוכן שנגלל --- */
-        .fm-content-area {
+       .fm-content-area {
             flex: 1; 
             background: transparent; 
             border: none; 
             box-shadow: none; 
-            padding: 0 5px 0 0; 
+            padding: 0; /* איפסנו כדי שהכותרת הנייבי תגיע עד הסוף ותהיה ברוחב הסרגל העליון */
             min-width: 0; min-height: 0; 
-            overflow-y: auto; overflow-x: hidden; 
-            display: block; 
-            direction: ltr; 
+            overflow: hidden; /* ביטלנו את הגלילה כאן כדי להעביר אותה פנימה */
+            display: flex; 
+            flex-direction: column; 
         }
 
         .fm-tab { 
             display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            min-height: 100%; 
+            flex: 1; 
             flex-direction: column;
-            direction: rtl; /* מחזיר את כיוון הטקסט לימין-לשמאל */
-            padding-bottom: 25px; /* מרווח נשימה בתחתית כדי ששום דבר לא ייחתך */
+            direction: ltr; /* מעביר את פס הגלילה ימינה */
+            overflow-y: auto; /* הוספנו גלילה לטאב עצמו */
+            overflow-x: hidden;
+            padding-right: 5px; /* מרווח לפס הגלילה שיהיה מתחת לכותרת */
+            padding-bottom: 25px; 
         }
         .fm-tab.active { display: flex; }
-        @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .fm-tab > * {
+            direction: rtl; /* מחזיר את התוכן הפנימי לימין-לשמאל */
+        }
+        
+        /* הקסם: דוחף את המסלול של פס הגלילה למטה כדי שיתחיל רק מתחת לכותרת! */
+        .fm-tab::-webkit-scrollbar-track {
+            margin-top: 68px; 
+        }
 
+        @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         /* =========================================
            עיצוב פסי גלילה לכל המערכת ומיקומם בצד ימין
            ========================================= */
@@ -282,9 +292,18 @@
             direction: rtl !important;
         }
 
-        /* עיצוב כללי לתוכן הלבן */
-h2.content-header-title { font-size: 24px; color: var(--text-dark); font-weight: 900; border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; }        p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
-
+       /* עיצוב כללי לתוכן הלבן */
+        h2.content-header-title { 
+            font-size: 24px; color: var(--text-dark); font-weight: 900; 
+            border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; margin-bottom: 15px; 
+            display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; 
+            position: sticky; /* הופך את הכותרת ל"צפה" וקבועה */
+            top: 0; 
+            z-index: 100; /* דואג שכל התוכן ייגלל מתחתיה */
+            margin-top: 0;
+            width: 100%; /* מתיישר בדיוק לרוחב הקוביה שמעל */
+        }        
+        p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
 /* טבלאות חוקים מודרניות */
         .rules-modern-table {
             width: 100%;
