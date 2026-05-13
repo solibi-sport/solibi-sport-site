@@ -4338,36 +4338,26 @@
                 </div>
 
                 <div id="pm-tab-analysis" class="pm-tab-pane">
-    <div class="analysis-grid">
-        <div class="analysis-card">
-            <div class="analysis-card-header">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                כושר נוכחי (5 משחקים אחרונים)
+                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">מערכת הניתוח המתקדמת בבנייה 📊</div>
+                </div>
+                <div id="pm-tab-matches" class="pm-tab-pane">
+                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">משחקים אחרונים בבנייה 📅</div>
+                </div>
+                <div id="pm-tab-offers" class="pm-tab-pane">
+                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">ממשק הצעות וטריידים בבנייה 🤝</div>
+                </div>
+                <div id="pm-tab-compare" class="pm-tab-pane">
+                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">מערכת השוואת שחקנים בבנייה 🔍</div>
+                </div>
+                
+                <div class="pm-actions">
+                    <button id="pm-action-main-btn" class="pm-btn pm-btn-primary" onclick="handleDynamicPlayerAction()">נהל בהרכב</button>
+                    <button class="pm-btn pm-btn-secondary" onclick="closePlayerModal()">סגור כרטיס</button>
+                </div>
             </div>
-            <div class="form-chart-container" id="pm-form-chart"></div>
-            <div style="display: flex; justify-content: space-between; padding: 0 10px;" id="pm-form-labels"></div>
-        </div>
-
-        <div class="analysis-card">
-            <div class="analysis-card-header">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                פרופיל שחקן (מדדים מתקדמים)
-            </div>
-            <div id="pm-attributes"></div>
-        </div>
-
-        <div class="insights-box">
-            <div class="insight-col">
-                <div class="insight-title pro">נקודות חוזק</div>
-                <div id="pm-pros-list"></div>
-            </div>
-            <div class="insight-col">
-                <div class="insight-title con">נקודות חולשה</div>
-                <div id="pm-cons-list"></div>
-            </div>
+            
         </div>
     </div>
-</div>
     
     <script src="../translations.js"></script>
     <script src="../matchEvents.js"></script>
@@ -5175,53 +5165,6 @@
             }
         }
 
-function renderPlayerAnalysis(p) {
-    const seed = p.id ? p.id % 100 : 1;
-    const randomGen = (min, max, offset) => Math.floor(Math.abs(Math.sin(seed + offset)) * (max - min + 1)) + min;
-
-    // 1. ציור גרף כושר
-    const formChart = document.getElementById('pm-form-chart');
-    const formLabels = document.getElementById('pm-form-labels');
-    if (formChart) {
-        formChart.innerHTML = ''; formLabels.innerHTML = '';
-        for(let i=1; i<=5; i++) {
-            let pts = randomGen(0, 15, i);
-            let heightPct = (pts / 20) * 100;
-            formChart.innerHTML += `
-                <div class="form-bar-col">
-                    <span class="form-pts">${pts}</span>
-                    <div class="form-bar ${pts < 3 ? 'bad' : ''}" style="height: ${heightPct}%"></div>
-                </div>`;
-            formLabels.innerHTML += `<div class="form-gw-label">מ' ${randomGen(1, 20, i+5)}</div>`;
-        }
-    }
-
-    // 2. פסי מדדים לפי עמדה
-    const attrs = document.getElementById('pm-attributes');
-    if (attrs) {
-        let attrList = p.displayPos === 'התקפה' ? ['סיומת', 'מהירות', 'דריבל', 'פיזיות'] : 
-                      (p.displayPos === 'הגנה' ? ['תיקולים', 'פיזיות', 'מהירות', 'מיקום'] : ['מסירות', 'ראיית משחק', 'דריבל', 'הגנה']);
-        attrs.innerHTML = '';
-        attrList.forEach((a, idx) => {
-            let val = randomGen(65, 95, idx + 10);
-            attrs.innerHTML += `
-                <div class="attr-row">
-                    <div class="attr-label">${a}</div>
-                    <div class="attr-bar-bg"><div class="attr-bar-fill" style="width: ${val}%; background: var(--brand-green);"></div></div>
-                    <div class="attr-val">${val}</div>
-                </div>`;
-        });
-    }
-
-    // 3. תובנות סקאוט
-    const pros = document.getElementById('pm-pros-list');
-    const cons = document.getElementById('pm-cons-list');
-    if (pros) {
-        pros.innerHTML = `<div class="insight-item">יציבות לאורך זמן</div><div class="insight-item">מומחה למצבים נייחים</div>`;
-        cons.innerHTML = `<div class="insight-item">נוטה לאבד כדורים</div>`;
-    }
-}
-        
         // ==========================================
         // פונקציית המודאל החדשה (ניזונה ממאגר Supabase ישירות!)
         // ==========================================
@@ -5280,17 +5223,11 @@ function renderPlayerAnalysis(p) {
             document.getElementById('pm-val-red').innerText = p.red;
             document.getElementById('pm-val-rating').innerText = p.avgRating;
 
-           const firstTabBtn = document.querySelector('.pm-tab-btn');
-    if(firstTabBtn) window.switchPlayerTab('pm-tab-overview', firstTabBtn);
+            const firstTabBtn = document.querySelector('.pm-tab-btn');
+            if(firstTabBtn) switchPlayerTab('pm-tab-overview', firstTabBtn);
 
-    document.getElementById('playerModal').classList.add('active');
-
-    // השורה החשובה: טוען את הנתונים לתוך הטאב ברגע שהחלון נפתח
-    setTimeout(() => {
-        renderPlayerAnalysis(p);
-    }, 50);
-};
-        
+            document.getElementById('playerModal').classList.add('active');
+        }
 // מערכת החלפת מחזורים בטבלת הליגה
         let currentDisplayedRound = 10;
         
