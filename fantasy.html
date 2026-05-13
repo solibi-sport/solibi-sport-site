@@ -209,25 +209,30 @@
 
         .fm-layout { 
             display: flex; flex-direction: column; flex: 1; height: 100%; 
-            gap: 15px; overflow: hidden; min-width: 0; min-height: 0; /* 👈 תיקון קריטי לגלילה! */
+            overflow: hidden; min-width: 0; min-height: 0; 
         }
 
+        /* --- הקיבוע של הסרגל העליון --- */
         .fm-top-bar {
             background: var(--bg-silver-matte); border: 2px solid var(--brand-green); border-radius: 12px;
             display: flex; justify-content: space-around; align-items: center; padding: 10px 20px; color: var(--text-dark);
             box-shadow: 0 4px 15px rgba(124, 168, 86, 0.15); flex-shrink: 0; position: relative; overflow: hidden;
+            z-index: 10; /* מוודא שיישאר מעל לתוכן שנגלל */
+            margin-bottom: 15px; /* מרווח קבוע מהתוכן שמתחתיו */
+            width: 100%; /* מבטיח רוחב מלא כדי להתיישר עם כותרות הנייבי */
         }
         .fm-top-stat { display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .fm-top-stat-title { font-size: 10px; color: rgba(6, 33, 65, 0.6); font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
         .fm-top-stat-value { font-size: 18px; font-weight: 900; color: var(--text-dark); }
         .fm-top-stat-value.highlight { color: var(--brand-green); }
 
+        /* --- אזור התוכן שנגלל --- */
         .fm-content-area {
             flex: 1; 
-            background: transparent; /* 👈 העלמנו את הרקע הלבן/אפור המיותר */
-            border: none; /* 👈 העלמנו את המסגרת הריקה */
-            box-shadow: none; /* 👈 העלמנו את ההצללה */
-            padding: 0 5px 0 0; /* 👈 0 למעלה ולמטה כדי למשוך את התוכן למעלה! (השארנו קצת מימין לפס הגלילה) */
+            background: transparent; 
+            border: none; 
+            box-shadow: none; 
+            padding: 0 5px 0 0; 
             min-width: 0; min-height: 0; 
             overflow-y: auto; overflow-x: hidden; 
             display: block; 
