@@ -2869,11 +2869,14 @@
                                     <span class="sq-w-val">1 פצוע, 1 מושעה</span>
                                 </div>
                             </div>
-                            <div class="sq-widget">
+                           <div class="sq-widget">
                                 <div class="sq-icon money">💰</div>
                                 <div class="sq-w-text">
-                                    <span class="sq-w-title">שינוי שווי הקבוצה</span>
-                                    <span class="sq-w-val" style="color:var(--brand-green);">+₪1.2M השבוע</span>
+                                    <span class="sq-w-title">שווי הקבוצה</span>
+                                    <div style="display: flex; align-items: baseline; gap: 6px;">
+                                        <span class="sq-w-val" id="squad-total-value">₪0</span>
+                                        <span style="font-size: 11px; color: #64748b; font-weight: bold;">(+₪1.2M השבוע)</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -4829,9 +4832,35 @@
                     }
                 }
 
-                // סידור הסגל לפי עמדות
-               const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'התקפה': 4};
-                mySquad.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
+               // --- חישוב שווי סגל כולל והזרקה לקובייה ---
+                let totalSquadValue = 0;
+                mySquad.forEach(p => totalSquadValue += (p.value || 0));
+                const squadValueEl = document.getElementById('squad-total-value');
+                if (squadValueEl) {
+                    squadValueEl.innerText = '₪' + (window.formatPlayerValue ? window.formatPlayerValue(totalSquadValue) : totalSquadValue);
+                }
+
+                // --- חלוקה חכמה: הרכב פותח (3-4-3) וספסל מסודר ---
+                const formationLimits = { 'שוער': 1, 'הגנה': 3, 'קישור': 4, 'התקפה': 3 };
+                const currentFormationCount = { 'שוער': 0, 'הגנה': 0, 'קישור': 0, 'התקפה': 0 };
+                let startingXI = [];
+                let bench = [];
+
+                mySquad.forEach(p => {
+                    if (currentFormationCount[p.displayPos] < formationLimits[p.displayPos]) {
+                        startingXI.push(p);
+                        currentFormationCount[p.displayPos]++;
+                    } else {
+                        bench.push(p);
+                    }
+                });
+
+                const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'התקפה': 4};
+                startingXI.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
+                bench.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
+
+                // איחוד חזרה: 11 ראשונים הרכב, 9 אחרונים ספסל
+                const sortedSquad = [...startingXI, ...bench];
 
                 // רינדור טבלת הסגל האישי (טאב סגל שחקנים)
                 const squadTbody = document.getElementById('my-squad-body');
@@ -4840,7 +4869,7 @@
                 if (squadTbody) squadTbody.innerHTML = '';
                 if (benchList) benchList.innerHTML = '';
 
-                mySquad.forEach((p, index) => {
+                sortedSquad.forEach((p, index) => {
                     const isStartingXI = index < 11; // 11 ראשונים להרכב, השאר ספסל (לצורך התצוגה בטבלה)
                     const statusHtml = isStartingXI 
                         ? `<span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span>`
