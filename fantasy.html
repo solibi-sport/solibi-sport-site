@@ -770,6 +770,8 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); 
             display: flex; flex-direction: column; 
             margin: 0; /* איפוס המרג'ין כי אנחנו משתמשים ב-gap של האבא */
+            flex: 1; /* 👈 הפקודה שמותחת את הקוביות למלא את השטח הריק! */
+            justify-content: space-evenly; /* 👈 מוודא שהתוכן הפנימי מרווח יפה כשהקובייה גדלה */
         }
         .p-section-title { font-size: 16px; font-weight: 900; color: #ffffff; background: var(--element-navy-gradient); margin-bottom: 15px; padding: 10px 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;}
 
