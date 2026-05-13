@@ -2136,7 +2136,36 @@
         .inv-desc { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 15px; flex: 1; }
         .inv-btn { width: 100%; background: var(--element-navy-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; }
         .inv-btn:hover { background: var(--brand-green); transform: scale(1.02); }
-      
+
+/* =========================================
+           תיקונים סופיים לסקירה כללית ולסרגל העליון
+           ========================================= */
+
+        /* 1. הצרת הסרגל האפור העליון כך שיתיישר בדיוק עם הכותרות (חיסור הרוחב של פס הגלילה) */
+        .fm-top-bar {
+            width: calc(100% - 13px) !important;
+            margin-right: 13px !important;
+        }
+
+        /* 2. הקפאת המסגרת הלבנה ב"סקירה כללית" - הטאב לא נגלל, רק התוכן הפנימי */
+        #tab-intro {
+            overflow: hidden !important; 
+            padding-right: 13px !important; /* שומר על היישור הסימטרי למרות שאין פה פס גלילה חיצוני */
+        }
+
+        /* 3. הגלילה קורית עכשיו בתוך הקוביה הלבנה עצמה! המסגרת עומדת במקום */
+        #tab-intro > div {
+            overflow-y: auto !important; 
+            direction: ltr; /* פס הגלילה בצד ימין */
+            padding-right: 10px !important; /* מרווח יפה מפס הגלילה לטקסט */
+            min-height: 0; /* קריטי כדי שהגלילה תעבוד תקין */
+        }
+
+        /* מחזיר את הטקסט בתוך הקוביה הלבנה לכיוון קריאה תקין (ימין לשמאל) */
+        #tab-intro > div > * {
+            direction: rtl; 
+        }
+        
     </style>
         
 </head>
