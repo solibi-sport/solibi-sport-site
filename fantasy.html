@@ -756,7 +756,14 @@
         .trend-down { color: #ef4444; }
 
         /* הפיכת הפריסה ל-Flex כדי שנוכל למתוח אותה על כל השטח הנותר וליישר קוביות */
-        .profile-split-layout { display: flex; gap: 20px; flex: 1; min-height: 0; padding-bottom: 5px; } 
+        .profile-split-layout { 
+            display: flex; 
+            gap: 20px; 
+            flex: 1; 
+            min-height: 0; 
+            padding-bottom: 5px; 
+            align-items: stretch; /* 👈 מכריח את שתי העמודות להיות באותו גובה בדיוק */
+        } 
         
         .profile-main-col { display: flex; flex-direction: column; flex: 2; gap: 15px; min-width: 0; }
         .profile-side-col { display: flex; flex-direction: column; flex: 1; min-width: 0; }
@@ -770,10 +777,12 @@
             margin: 0; 
             flex: 1; 
             justify-content: space-evenly; 
+            height: 100%; /* 👈 פקודת הקסם: הקוביה תמיד תמלא את העמודה עד הסוף */
             
            /* 👈 המסגרת הנייבי וההצללה לקוביות הגדולות למטה */
             border: 2px solid transparent;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
         }
         .p-section-title { font-size: 16px; font-weight: 900; color: #ffffff; background: var(--element-navy-gradient); margin-bottom: 15px; padding: 10px 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;}
 
