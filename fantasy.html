@@ -6090,7 +6090,8 @@ window.renderLeagueStats = function() {
         let tTeam = window.translateName ? window.translateName(p.team) : p.team;
         let imgHtml = `<img src="${p.photo || `https://media.api-sports.io/football/players/${p.id}.png`}" onerror="this.src='https://ui-avatars.com/api/?name=${p.name}&background=e2e8f0&color=000'">`;
         
-        container.innerHTML += buildRowHTML(idx, imgHtml, tName, tTeam, val);
+        // כאן הוספנו את ה-id
+        container.innerHTML += buildRowHTML(idx, imgHtml, tName, tTeam, val, p.id, false);
     });
 };
 
@@ -6384,31 +6385,35 @@ window.generateMatchPlayersBreakdown = function(targetScore) {
             imgHtml = `<img src="https://media.api-sports.io/football/players/${p.i}.png" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(p.n)}&background=e2e8f0&color=000'">`;
         }
         
-        container.innerHTML += buildRowHTML(idx, imgHtml, p.n, p.t, p.v);
+        // הוספנו את פרטי הקליק
+        container.innerHTML += buildRowHTML(idx, imgHtml, p.n, p.t, p.v, p.i, p.isTeam);
     });
 }
 
-        function buildRowHTML(idx, imgHtml, name, team, val) {
-            let rankClass = '';
-            if (idx === 0) rankClass = 'color: #fbbf24; font-size: 16px;';
-            else if (idx === 1) rankClass = 'color: #94a3b8;';
-            else if (idx === 2) rankClass = 'color: #b45309;';
-            
-            return `
-                <div class="s-list-row">
-                    <div class="s-rank" style="${rankClass}">${idx + 1}</div>
-                    <div class="s-player-info">
-                        ${imgHtml}
-                        <div class="s-player-text">
-                            <span class="s-p-name">${name}</span>
-                            <span class="s-p-team">${team}</span>
-                        </div>
-                    </div>
-                    <div class="s-value neutral">${val}</div>
+       function buildRowHTML(idx, imgHtml, name, team, val, id = null, isTeam = false) {
+    let rankClass = '';
+    if (idx === 0) rankClass = 'color: #fbbf24; font-size: 16px;';
+    else if (idx === 1) rankClass = 'color: #94a3b8;';
+    else if (idx === 2) rankClass = 'color: #b45309;';
+    
+    // הוספת פעולת הלחיצה רק אם זה שחקן
+    let onClickAttr = (!isTeam && id) ? `onclick="openPlayerModalById('${id}', false)"` : '';
+    let cursorStyle = (!isTeam && id) ? 'cursor: pointer;' : 'cursor: default;';
+    
+    return `
+        <div class="s-list-row" ${onClickAttr} style="${cursorStyle}">
+            <div class="s-rank" style="${rankClass}">${idx + 1}</div>
+            <div class="s-player-info">
+                ${imgHtml}
+                <div class="s-player-text">
+                    <span class="s-p-name">${name}</span>
+                    <span class="s-p-team">${team}</span>
                 </div>
-            `;
-        }
-
+            </div>
+            <div class="s-value neutral">${val}</div>
+        </div>
+    `;
+}
         document.addEventListener('DOMContentLoaded', () => {
             if(document.getElementById('l-stats-body')) {
                 renderLeagueStats();
