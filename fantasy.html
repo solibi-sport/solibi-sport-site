@@ -2369,25 +2369,77 @@
     flex-direction: column;
     gap: 6px;
 }
+/* מבנה שורת שחקן במודאל משחק - 3 חלקים */
 .mb-player-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 10px;
+    padding: 8px 12px;
     background: var(--bg-silver-matte);
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--text-dark);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    margin-bottom: 6px;
+    transition: 0.2s;
 }
+
+.mb-player-row:hover {
+    background: #fff;
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
 .mb-player-row.is-12th {
-    border: 1px dashed var(--brand-green);
+    border-color: var(--brand-green);
     background: rgba(124, 168, 86, 0.05);
 }
+
+/* ימין: תמונה ושם */
+.mb-player-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1.2;
+    justify-content: flex-start;
+}
+
+.mb-player-right img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #cbd5e1;
+}
+
+.mb-player-name {
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--text-dark);
+    white-space: nowrap;
+}
+
+/* אמצע: עמדה וקבוצה במציאות */
+.mb-player-center {
+    flex: 1.5;
+    text-align: center;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* שמאל: נקודות */
+.mb-player-left {
+    flex: 0.8;
+    text-align: left;
+}
+
 .mb-player-pts {
     color: var(--brand-green);
     font-weight: 900;
     font-size: 14px;
+    background: rgba(124, 168, 86, 0.1);
+    padding: 2px 8px;
+    border-radius: 6px;
 }
         
     </style>
@@ -5991,65 +6043,69 @@ window.generateMatchPlayersBreakdown = function(targetScore) {
     let has12thMan = Math.random() > 0.8;
     if (has12thMan) selected.push(shuffled[12]);
 
-    // טיפול במקרה של תוצאה 0
+    // קודם כל נחלק להם ציונים ונשמור אותם על אובייקט השחקן זמנית
     if (targetScore === 0) {
-        let zeroHtml = '';
         selected.forEach((p, idx) => {
-            let tName = window.translateName ? window.translateName(p.name) : p.name;
-            let is12th = (has12thMan && idx === 11);
-            let rowClass = is12th ? 'mb-player-row is-12th' : 'mb-player-row';
-            let tag = is12th ? '<span style="font-size:9px; background:var(--brand-green); color:#fff; padding:2px 4px; border-radius:4px; margin-right:4px;">שחקן 12 ⚡</span>' : '';
-            
-            zeroHtml += `
-                <div class="${rowClass}">
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <img src="${p.photo || `https://media.api-sports.io/football/players/${p.id}.png`}" onerror="this.src='https://ui-avatars.com/api/?name=${p.name}&background=e2e8f0&color=000'" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">
-                        <span>${tName} ${tag}</span>
-                    </div>
-                    <span class="mb-player-pts" style="color:#94a3b8;">0 נק'</span>
-                </div>
-            `;
+            p.tempScore = 0;
+            p.is12th = (has12thMan && idx === selected.length - 1);
         });
-        return zeroHtml;
-    }
+    } else {
+        // חלוקת הנקודות באופן כזה שיסתכם בדיוק לתוצאת המשחק!
+        let points = selected.map(() => Math.max(1, Math.floor(Math.random() * 10)));
+        let currentSum = points.reduce((a, b) => a + b, 0);
 
-    // חלוקת הנקודות באופן כזה שיסתכם בדיוק לתוצאת המשחק!
-    let points = selected.map(() => Math.max(1, Math.floor(Math.random() * 10)));
-    let currentSum = points.reduce((a, b) => a + b, 0);
-
-    let scaledPoints = points.map(p => Math.round((p / currentSum) * targetScore));
-    let finalSum = scaledPoints.reduce((a, b) => a + b, 0);
-    
-    // תיקון שארית עיגול על השחקן הראשון
-    scaledPoints[0] += (targetScore - finalSum);
-    if(scaledPoints[0] < 0) {
-         scaledPoints[1] += Math.abs(scaledPoints[0]);
-         scaledPoints[0] = 0;
-    }
-
-    // בניית ה-HTML הסופי
-    let html = '';
-    selected.forEach((p, idx) => {
-        let tName = window.translateName ? window.translateName(p.name) : p.name;
-        let pts = scaledPoints[idx];
-        let is12th = (has12thMan && idx === 11);
+        let scaledPoints = points.map(p => Math.round((p / currentSum) * targetScore));
+        let finalSum = scaledPoints.reduce((a, b) => a + b, 0);
         
-        let rowClass = is12th ? 'mb-player-row is-12th' : 'mb-player-row';
-        let tag = is12th ? '<span style="font-size:9px; background:var(--brand-green); color:#fff; padding:2px 4px; border-radius:4px; margin-right:4px;">שחקן 12 ⚡</span>' : '';
+        // תיקון שארית עיגול על השחקן הראשון
+        scaledPoints[0] += (targetScore - finalSum);
+        if(scaledPoints[0] < 0) {
+             scaledPoints[1] += Math.abs(scaledPoints[0]);
+             scaledPoints[0] = 0;
+        }
+
+        // שומרים את הניקוד על השחקן
+        selected.forEach((p, idx) => {
+            p.tempScore = scaledPoints[idx];
+            p.is12th = (has12thMan && idx === selected.length - 1); 
+        });
+    }
+
+    // 🌟 המיון החדש: מהציון הגבוה ביותר לנמוך ביותר 🌟
+    selected.sort((a, b) => b.tempScore - a.tempScore);
+
+    // בניית ה-HTML הסופי לפי העיצוב של 3 החלקים
+    let html = '';
+    selected.forEach((p) => {
+        let tName = window.translateName ? window.translateName(p.name) : p.name;
+        let tTeam = window.translateName ? window.translateName(p.team) : p.team;
+        let pos = p.displayPos || 'לא ידוע';
+        let imgSrc = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+        let fallbackSrc = `https://ui-avatars.com/api/?name=${p.name}&background=e2e8f0&color=000`;
+        
+        let rowClass = p.is12th ? 'mb-player-row is-12th' : 'mb-player-row';
+        let tag = p.is12th ? '<span style="font-size:9px; background:var(--brand-green); color:#fff; padding:2px 4px; border-radius:4px; margin-right:4px;">שחקן 12 ⚡</span>' : '';
         
         html += `
             <div class="${rowClass}">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <img src="${p.photo || `https://media.api-sports.io/football/players/${p.id}.png`}" onerror="this.src='https://ui-avatars.com/api/?name=${p.name}&background=e2e8f0&color=000'" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">
-                    <span>${tName} ${tag}</span>
+                <div class="mb-player-right">
+                    <img src="${imgSrc}" onerror="this.src='${fallbackSrc}'">
+                    <span class="mb-player-name">${tName} ${tag}</span>
                 </div>
-                <span class="mb-player-pts">${pts} נק'</span>
+                
+                <div class="mb-player-center">
+                    ${pos} | ${tTeam}
+                </div>
+                
+                <div class="mb-player-left">
+                    <span class="mb-player-pts">${p.tempScore} נק'</span>
+                </div>
             </div>
         `;
     });
+    
     return html;
 };
-
 // --- תיקון רינדור תוצאות הליגה להוספת אירוע הלחיצה למודאל ---
 function changeLeagueRound(direction) {
     let newRound = currentDisplayedRound + direction;
