@@ -4540,42 +4540,49 @@
     </footer>
 
 <div class="player-modal-overlay" id="pre-match-overlay" onclick="closePreMatchPreview(event)" style="z-index: 10006; display: none;">
-    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 85vh; width: 95%; max-width: 600px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 90vh; width: 95%; max-width: 850px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
         
-        <div class="pm-header" style="padding: 15px 20px; text-align: center; border-bottom: 3px solid var(--brand-green); display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="font-size: 18px; font-weight: 900; margin: 0; color: #fff;">דוח סקאוטינג לקראת משחק</h3>
+        <div class="pm-header" style="padding: 15px 20px; text-align: center; border-bottom: 3px solid var(--brand-green); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+            <h3 style="font-size: 18px; font-weight: 900; margin: 0; color: #fff;">דוח סקאוטינג: הרכבים וטקטיקה</h3>
             <svg class="pm-close" onclick="closePreMatchPreview(event)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: static; cursor: pointer; opacity: 0.8;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </div>
         
-        <div class="pm-body" style="padding: 30px 20px; background: #f8fafc;">
-            <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 25px;">
-                <div style="text-align: center; flex: 1;">
-                    <img id="pre-match-home-img" src="" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: #fff;">
-                    <h3 id="pre-match-home-name" style="margin-top: 12px; color: var(--text-dark); font-weight: 900; font-size: 16px;">קבוצת בית</h3>
-                </div>
-                
-                <div style="font-size: 28px; font-weight: 900; color: #cbd5e1; flex-shrink: 0; padding: 0 20px;">VS</div>
-                
-                <div style="text-align: center; flex: 1;">
-                    <img id="pre-match-away-img" src="" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: #fff;">
-                    <h3 id="pre-match-away-name" style="margin-top: 12px; color: var(--text-dark); font-weight: 900; font-size: 16px;">קבוצת חוץ</h3>
-                </div>
-            </div>
+        <div class="pm-body match-breakdown-body" style="background: #f8fafc; overflow-y: auto;">
             
-            <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
-                <div style="font-size: 24px; margin-bottom: 10px;">🕵️‍♂️</div>
-                <h4 style="color: var(--brand-green); margin-bottom: 10px; font-weight: 900; font-size: 16px;">הערכת המערכת למשחק זה</h4>
-                <p style="font-size: 14px; color: #64748b; line-height: 1.6; font-weight: 600; margin-bottom: 15px;">
-                    המשחק צפוי להיות צמוד וטקטי. היריבה נוטה לשחק במערך הגנתי עם יציאה למתפרצות מהירות.
-                    <br><strong>המלצת סקאוט:</strong> כדאי לפתוח עם קשרים אחוריים חזקים כדי למנוע את המתפרצות, ולשקול להפעיל בוסט הגנתי.
-                </p>
-                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 15px;">
-                    <div style="font-size: 12px; color: var(--text-dark); font-weight: bold;">סיכויי ניצחון:</div>
-                    <div style="font-size: 12px; color: var(--brand-green); font-weight: 900;">בית: 45%</div>
-                    <div style="font-size: 12px; color: #94a3b8; font-weight: 900;">תיקו: 20%</div>
-                    <div style="font-size: 12px; color: #ef4444; font-weight: 900;">חוץ: 35%</div>
+            <div class="mb-team-col" style="max-height: none; overflow: visible;">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <img id="pre-match-home-img" src="" style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #fff;">
+                    <h3 id="pre-match-home-name" style="margin-top: 8px; color: var(--text-dark); font-weight: 900; font-size: 16px;">קבוצת בית</h3>
                 </div>
+                
+                <h4 style="color: var(--brand-green); font-size: 13px; font-weight: 900; margin-bottom: 8px; border-bottom: 1px solid rgba(124,168,86,0.3); padding-bottom: 4px;">⚡ בוסטים מופעלים</h4>
+                <div id="pre-match-home-boosts" style="margin-bottom: 15px; font-size: 12px; color: var(--text-dark); font-weight: bold; background: rgba(124,168,86,0.1); padding: 8px; border-radius: 8px; border: 1px dashed var(--brand-green);"></div>
+
+                <h4 style="color: #ef4444; font-size: 13px; font-weight: 900; margin-bottom: 8px; border-bottom: 1px solid rgba(239,68,68,0.3); padding-bottom: 4px;">🏥 פצועים ומורחקים</h4>
+                <div id="pre-match-home-missing" style="margin-bottom: 15px; font-size: 12px; color: #475569; font-weight: bold; display: flex; flex-direction: column; gap: 6px;"></div>
+
+                <h4 style="color: #062141; font-size: 13px; font-weight: 900; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">👕 הרכב פותח משוער</h4>
+                <div id="pre-match-home-lineup" class="mb-players-list"></div>
             </div>
+
+            <div style="display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 900; color: #cbd5e1; padding: 0 10px;" class="hide-on-mobile">VS</div>
+
+            <div class="mb-team-col" style="max-height: none; overflow: visible;">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <img id="pre-match-away-img" src="" style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #fff;">
+                    <h3 id="pre-match-away-name" style="margin-top: 8px; color: var(--text-dark); font-weight: 900; font-size: 16px;">קבוצת חוץ</h3>
+                </div>
+                
+                <h4 style="color: var(--brand-green); font-size: 13px; font-weight: 900; margin-bottom: 8px; border-bottom: 1px solid rgba(124,168,86,0.3); padding-bottom: 4px;">⚡ בוסטים מופעלים</h4>
+                <div id="pre-match-away-boosts" style="margin-bottom: 15px; font-size: 12px; color: var(--text-dark); font-weight: bold; background: rgba(124,168,86,0.1); padding: 8px; border-radius: 8px; border: 1px dashed var(--brand-green);"></div>
+
+                <h4 style="color: #ef4444; font-size: 13px; font-weight: 900; margin-bottom: 8px; border-bottom: 1px solid rgba(239,68,68,0.3); padding-bottom: 4px;">🏥 פצועים ומורחקים</h4>
+                <div id="pre-match-away-missing" style="margin-bottom: 15px; font-size: 12px; color: #475569; font-weight: bold; display: flex; flex-direction: column; gap: 6px;"></div>
+
+                <h4 style="color: #062141; font-size: 13px; font-weight: 900; margin-bottom: 8px; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px;">👕 הרכב פותח משוער</h4>
+                <div id="pre-match-away-lineup" class="mb-players-list"></div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -6122,35 +6129,121 @@ window.closeMatchBreakdown = function(e) {
     }, 300);
 };
 
-        // --- פתיחת חלון "לקראת המשחק" (דוח סקאוטינג) ---
+        // רשימת הבוסטים האפשריים במשחק (כולל הסברים בסוגריים)
+const allGameBoosts = [
+    "סופר קפטן (הכפלת נקודות הקפטן פי 4)",
+    "להחנות את האוטובוס (רשת נקייה לכל שחקני ההגנה)",
+    "חסינות מלאה (ביטול מינוסים מצהובים ואדומים)",
+    "יום חג לחלוצים (נקודות כפולות על שערי התקפה)",
+    "ספסל פעיל (כל שחקני הספסל מניבים נקודות)",
+    "השחקן ה-12 (שחקן הספסל המצטיין נספר לציון)"
+];
+
 window.openPreMatchPreview = function(homeName, awayName) {
     document.getElementById('pre-match-home-name').innerText = homeName;
     document.getElementById('pre-match-away-name').innerText = awayName;
     
-    // יצירת תמונות מדוכות יפות מבוססות שם הקבוצה (כמו שיש בטבלה)
     document.getElementById('pre-match-home-img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(homeName.substring(0,2))}&background=062141&color=fff`;
     document.getElementById('pre-match-away-img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(awayName.substring(0,2))}&background=94a3b8&color=fff`;
 
+    // 1. הגרלת בוסטים (0 עד 2 בוסטים לקבוצה)
+    const getMockBoosts = () => {
+        let count = Math.floor(Math.random() * 3); // 0, 1, או 2
+        if (count === 0) return `<div style="color: #64748b; font-weight: normal;">לא הופעלו בוסטים</div>`;
+        
+        let shuffled = [...allGameBoosts].sort(() => 0.5 - Math.random());
+        let selectedBoosts = shuffled.slice(0, count);
+        return selectedBoosts.map(b => `<div>🚀 ${b}</div>`).join('');
+    };
+
+    document.getElementById('pre-match-home-boosts').innerHTML = getMockBoosts();
+    document.getElementById('pre-match-away-boosts').innerHTML = getMockBoosts();
+
+    // 2. פונקציית עזר ליצירת HTML של שחקן
+    const createPlayerRow = (pName, pos, imgUrl, missingType) => {
+        let extraIcon = '';
+        if (missingType === 'injured') extraIcon = '<span title="פצוע">🏥</span>';
+        if (missingType === 'suspended') extraIcon = '<span title="מורחק">🟥</span>';
+        
+        let isMissingStyle = missingType ? 'opacity: 0.8; background: #fef2f2; border: 1px solid #fecaca;' : '';
+
+        return `
+            <div class="mb-player-row" style="${isMissingStyle}">
+                <div class="mb-player-right" style="flex: 2;">
+                    <img src="${imgUrl}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(pName)}&background=e2e8f0&color=000'">
+                    <span class="mb-player-name">${pName}</span>
+                </div>
+                <div class="mb-player-center" style="flex: 1; text-align: left;">
+                    ${pos} ${extraIcon}
+                </div>
+            </div>
+        `;
+    };
+
+    // 3. הגרלת שחקנים מהמאגר (הרכב + חסרים)
+    const generateTeamData = (containerLineupId, containerMissingId) => {
+        let allPlayers = Object.values(window.allPlayersMap || {});
+        let lineupHtml = '';
+        let missingHtml = '';
+
+        if (allPlayers.length < 20) {
+            lineupHtml = '<div style="text-align:center; padding:10px; color:#64748b;">טוען נתונים מהמאגר...</div>';
+        } else {
+            let shuffled = allPlayers.sort(() => 0.5 - Math.random());
+            
+            // בוחרים 11 להרכב הפותח
+            let lineup = shuffled.slice(0, 11);
+            // ממיינים אותם בערך לפי עמדות (שוער ראשון, התקפה אחרון)
+            const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'התקפה': 4};
+            lineup.sort((a, b) => (posOrder[a.displayPos] || 5) - (posOrder[b.displayPos] || 5));
+            
+            lineup.forEach(p => {
+                let pName = window.translateName ? window.translateName(p.name) : p.name;
+                let img = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+                lineupHtml += createPlayerRow(pName, p.displayPos || 'שחקן', img, null);
+            });
+
+            // בוחרים 0 עד 2 שחקנים חסרים (פצועים/מורחקים)
+            let missingCount = Math.floor(Math.random() * 3);
+            if (missingCount === 0) {
+                missingHtml = `<div style="color: #64748b; font-weight: normal; padding-right: 5px;">סגל מלא וכשיר</div>`;
+            } else {
+                let missingPlayers = shuffled.slice(11, 11 + missingCount);
+                missingPlayers.forEach(p => {
+                    let pName = window.translateName ? window.translateName(p.name) : p.name;
+                    let img = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+                    let reason = Math.random() > 0.5 ? 'injured' : 'suspended';
+                    missingHtml += createPlayerRow(pName, p.displayPos || 'שחקן', img, reason);
+                });
+            }
+        }
+
+        document.getElementById(containerLineupId).innerHTML = lineupHtml;
+        document.getElementById(containerMissingId).innerHTML = missingHtml;
+    };
+
+    // הפעלת הפונקציה לשתי הקבוצות
+    generateTeamData('pre-match-home-lineup', 'pre-match-home-missing');
+    generateTeamData('pre-match-away-lineup', 'pre-match-away-missing');
+
+    // פתיחת המודאל עם האנימציה
     const overlay = document.getElementById('pre-match-overlay');
     overlay.style.display = 'flex';
-    
-    // טריק של JS כדי שהאנימציה של השקיפות תעבוד
-    setTimeout(() => {
-        overlay.classList.add('active');
-    }, 10);
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            overlay.classList.add('active');
+        });
+    });
 };
 
 window.closePreMatchPreview = function(e) {
     const overlay = document.getElementById('pre-match-overlay');
-    
-    // סגירה בלחיצה על X או על הרקע הכהה
     if (e && e.target !== overlay && !e.target.closest('.pm-close')) return;
     
     overlay.classList.remove('active');
-    
     setTimeout(() => {
         overlay.style.display = 'none';
-    }, 300); // מחכה שהאנימציה תסתיים
+    }, 300);
 };
 
 window.generateMatchPlayersBreakdown = function(targetScore) {
