@@ -2224,6 +2224,23 @@
         .pm-prog-header span strong { color: var(--text-dark); font-weight: 900; }
         .pm-prog-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
         .pm-prog-fill { height: 100%; background: linear-gradient(90deg, var(--brand-green) 0%, #5d823e 100%); border-radius: 3px; }
+
+        /* =========================================
+           עיצוב טאב משחקים אחרונים (בתוך מודאל שחקן)
+           ========================================= */
+        .pm-matches-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; }
+        .pm-matches-table th { background: var(--bg-silver-matte); color: #64748b; font-weight: bold; padding: 8px 4px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+        .pm-matches-table td { padding: 10px 4px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; color: var(--text-dark); font-weight: 600; }
+        .pm-matches-table tr:hover td { background: rgba(124, 168, 86, 0.05); }
+        .pm-matches-table tr:last-child td { border-bottom: none; }
+        
+        .pm-match-opp { display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .pm-match-opp img { width: 18px; height: 18px; border-radius: 50%; object-fit: contain; }
+        .pm-match-opp span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60px;}
+
+        .pm-pts-badge { background: rgba(124, 168, 86, 0.15); color: var(--brand-green); font-weight: 900; padding: 4px 8px; border-radius: 6px; display: inline-block; font-size: 12px; border: 1px solid rgba(124, 168, 86, 0.3);}
+        .pm-pts-badge.negative { background: rgba(239, 68, 68, 0.15); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
+        .pm-pts-badge.zero { background: #f1f5f9; color: #94a3b8; border-color: #cbd5e1; }
         
     </style>
         
@@ -4484,8 +4501,94 @@
 
                     </div>
                 </div>
-                <div id="pm-tab-matches" class="pm-tab-pane">
-                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">משחקים אחרונים בבנייה 📅</div>
+               <div id="pm-tab-matches" class="pm-tab-pane">
+                    <div class="pm-a-box" style="padding: 0; overflow-x: auto; border: none; box-shadow: none;">
+                        <table class="pm-matches-table" style="direction: rtl;">
+                            <thead>
+                                <tr>
+                                    <th title="מחזור ויריבה">יריבה</th>
+                                    <th title="דקות ששיחק">⏱️</th>
+                                    <th title="שערים שהבקיע">⚽</th>
+                                    <th title="בישולים">👟</th>
+                                    <th title="רשת נקייה">🛡️</th>
+                                    <th title="כרטיסים / קנסות">🟨/🟥</th>
+                                    <th title="סה״כ נקודות פנטזי במשחק">⭐ נק'</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="pm-match-opp">
+                                            <span style="font-size: 9px; color: #94a3b8;">מ' 9</span>
+                                            <img src="https://ui-avatars.com/api/?name=F+C&background=1abc9c&color=fff" title="פ.צ. שווארמה">
+                                        </div>
+                                    </td>
+                                    <td>90'</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td><span style="color:#ef4444;">❌</span></td>
+                                    <td>-</td>
+                                    <td><span class="pm-pts-badge">15</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="pm-match-opp">
+                                            <span style="font-size: 9px; color: #94a3b8;">מ' 8</span>
+                                            <img src="https://ui-avatars.com/api/?name=H+A&background=94a3b8&color=fff" title="הפועל עגלות">
+                                        </div>
+                                    </td>
+                                    <td>75'</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td><span style="color:#2ecc71;">✅</span></td>
+                                    <td>🟨</td>
+                                    <td><span class="pm-pts-badge negative">-1</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="pm-match-opp">
+                                            <span style="font-size: 9px; color: #94a3b8;">מ' 7</span>
+                                            <img src="https://ui-avatars.com/api/?name=A+V&background=9b59b6&color=fff" title="אריות וולפסון">
+                                        </div>
+                                    </td>
+                                    <td>90'</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td><span style="color:#ef4444;">❌</span></td>
+                                    <td>-</td>
+                                    <td><span class="pm-pts-badge">12</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="pm-match-opp">
+                                            <span style="font-size: 9px; color: #94a3b8;">מ' 6</span>
+                                            <img src="https://ui-avatars.com/api/?name=G+G&background=3498db&color=fff" title="גלקטיקוס">
+                                        </div>
+                                    </td>
+                                    <td>45'</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td><span style="color:#ef4444;">❌</span></td>
+                                    <td>-</td>
+                                    <td><span class="pm-pts-badge">8</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="pm-match-opp">
+                                            <span style="font-size: 9px; color: #94a3b8;">מ' 5</span>
+                                            <img src="https://ui-avatars.com/api/?name=S+F&background=fbbf24&color=fff" title="הכרישים של מוטי">
+                                        </div>
+                                    </td>
+                                    <td>12'</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td><span style="color:#ef4444;">❌</span></td>
+                                    <td>-</td>
+                                    <td><span class="pm-pts-badge zero">2</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div id="pm-tab-offers" class="pm-tab-pane">
                     <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">ממשק הצעות וטריידים בבנייה 🤝</div>
