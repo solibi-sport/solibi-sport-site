@@ -4539,6 +4539,47 @@
         <div id="ticker-placeholder"></div>
     </footer>
 
+<div class="player-modal-overlay" id="pre-match-overlay" onclick="closePreMatchPreview(event)" style="z-index: 10006; display: none;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 85vh; width: 95%; max-width: 600px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
+        
+        <div class="pm-header" style="padding: 15px 20px; text-align: center; border-bottom: 3px solid var(--brand-green); display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 18px; font-weight: 900; margin: 0; color: #fff;">דוח סקאוטינג לקראת משחק</h3>
+            <svg class="pm-close" onclick="closePreMatchPreview(event)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: static; cursor: pointer; opacity: 0.8;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        
+        <div class="pm-body" style="padding: 30px 20px; background: #f8fafc;">
+            <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 25px;">
+                <div style="text-align: center; flex: 1;">
+                    <img id="pre-match-home-img" src="" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: #fff;">
+                    <h3 id="pre-match-home-name" style="margin-top: 12px; color: var(--text-dark); font-weight: 900; font-size: 16px;">קבוצת בית</h3>
+                </div>
+                
+                <div style="font-size: 28px; font-weight: 900; color: #cbd5e1; flex-shrink: 0; padding: 0 20px;">VS</div>
+                
+                <div style="text-align: center; flex: 1;">
+                    <img id="pre-match-away-img" src="" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: #fff;">
+                    <h3 id="pre-match-away-name" style="margin-top: 12px; color: var(--text-dark); font-weight: 900; font-size: 16px;">קבוצת חוץ</h3>
+                </div>
+            </div>
+            
+            <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                <div style="font-size: 24px; margin-bottom: 10px;">🕵️‍♂️</div>
+                <h4 style="color: var(--brand-green); margin-bottom: 10px; font-weight: 900; font-size: 16px;">הערכת המערכת למשחק זה</h4>
+                <p style="font-size: 14px; color: #64748b; line-height: 1.6; font-weight: 600; margin-bottom: 15px;">
+                    המשחק צפוי להיות צמוד וטקטי. היריבה נוטה לשחק במערך הגנתי עם יציאה למתפרצות מהירות.
+                    <br><strong>המלצת סקאוט:</strong> כדאי לפתוח עם קשרים אחוריים חזקים כדי למנוע את המתפרצות, ולשקול להפעיל בוסט הגנתי.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 15px;">
+                    <div style="font-size: 12px; color: var(--text-dark); font-weight: bold;">סיכויי ניצחון:</div>
+                    <div style="font-size: 12px; color: var(--brand-green); font-weight: 900;">בית: 45%</div>
+                    <div style="font-size: 12px; color: #94a3b8; font-weight: 900;">תיקו: 20%</div>
+                    <div style="font-size: 12px; color: #ef4444; font-weight: 900;">חוץ: 35%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
 <div class="player-modal-overlay" id="match-breakdown-overlay" onclick="closeMatchBreakdown(event)" style="z-index: 10005; display: none;">    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 85vh; width: 95%; max-width: 900px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
         <div class="pm-header" style="padding: 15px 20px; text-align: center; border-bottom: 3px solid var(--brand-green); display: flex; justify-content: space-between; align-items: center;">
             <h3 style="font-size: 18px; font-weight: 900; margin: 0; color: #fff;">פירוט ניקוד למשחק</h3>
@@ -6079,6 +6120,37 @@ window.closeMatchBreakdown = function(e) {
     setTimeout(() => {
         overlay.style.display = 'none';
     }, 300);
+};
+
+        // --- פתיחת חלון "לקראת המשחק" (דוח סקאוטינג) ---
+window.openPreMatchPreview = function(homeName, awayName) {
+    document.getElementById('pre-match-home-name').innerText = homeName;
+    document.getElementById('pre-match-away-name').innerText = awayName;
+    
+    // יצירת תמונות מדוכות יפות מבוססות שם הקבוצה (כמו שיש בטבלה)
+    document.getElementById('pre-match-home-img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(homeName.substring(0,2))}&background=062141&color=fff`;
+    document.getElementById('pre-match-away-img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(awayName.substring(0,2))}&background=94a3b8&color=fff`;
+
+    const overlay = document.getElementById('pre-match-overlay');
+    overlay.style.display = 'flex';
+    
+    // טריק של JS כדי שהאנימציה של השקיפות תעבוד
+    setTimeout(() => {
+        overlay.classList.add('active');
+    }, 10);
+};
+
+window.closePreMatchPreview = function(e) {
+    const overlay = document.getElementById('pre-match-overlay');
+    
+    // סגירה בלחיצה על X או על הרקע הכהה
+    if (e && e.target !== overlay && !e.target.closest('.pm-close')) return;
+    
+    overlay.classList.remove('active');
+    
+    setTimeout(() => {
+        overlay.style.display = 'none';
+    }, 300); // מחכה שהאנימציה תסתיים
 };
 
 window.generateMatchPlayersBreakdown = function(targetScore) {
