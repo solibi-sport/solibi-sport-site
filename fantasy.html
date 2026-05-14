@@ -5888,9 +5888,10 @@
         });
 
         // --- הפעלת "מובילי הליגה" מתוך מאגר סופאבייס האמיתי ---
-function renderLeagueStats() {
+window.renderLeagueStats = function() {
     const type = document.getElementById('l-stats-select').value;
     const container = document.getElementById('l-stats-body');
+    if(!container) return;
     container.innerHTML = '';
     
     // משיכת כל השחקנים האמיתיים
@@ -5898,23 +5899,18 @@ function renderLeagueStats() {
     if (allPlayers.length === 0) {
         container.innerHTML = '<div style="padding: 10px; text-align: center; font-weight: bold; color: var(--brand-green);">ממתין לטעינת נתונים...</div>';
         // אם הנתונים טרם נטענו, ננסה שוב עוד שנייה
-        setTimeout(renderLeagueStats, 1000);
+        setTimeout(window.renderLeagueStats, 1000);
         return;
     }
 
-    // מיון לפי הסוג שנבחר ב-Select
+    // מיון לפי הסוג שנבחר
     let sorted = [];
-    if (type === 'goals') {
-        sorted = allPlayers.sort((a, b) => (b.goals || 0) - (a.goals || 0));
-    } else if (type === 'assists') {
-        sorted = allPlayers.sort((a, b) => (b.assists || 0) - (a.assists || 0));
-    } else if (type === 'tackles') {
-        sorted = allPlayers.sort((a, b) => (b.tackles || 0) - (a.tackles || 0));
-    } else if (type === 'points') {
-        sorted = allPlayers.sort((a, b) => (b.fantasyPts || 0) - (a.fantasyPts || 0));
-    }
+    if (type === 'goals') sorted = allPlayers.sort((a, b) => (b.goals || 0) - (a.goals || 0));
+    else if (type === 'assists') sorted = allPlayers.sort((a, b) => (b.assists || 0) - (a.assists || 0));
+    else if (type === 'tackles') sorted = allPlayers.sort((a, b) => (b.tackles || 0) - (a.tackles || 0));
+    else if (type === 'points') sorted = allPlayers.sort((a, b) => (b.fantasyPts || 0) - (a.fantasyPts || 0));
 
-    // חיתוך ה-5 הראשונים בלבד
+    // שולפים רק את ה-5 הטובים ביותר
     const top5 = sorted.slice(0, 5);
     
     top5.forEach((p, idx) => {
@@ -5930,7 +5926,7 @@ function renderLeagueStats() {
         
         container.innerHTML += buildRowHTML(idx, imgHtml, tName, tTeam, val);
     });
-}
+};
 
 // --- בניית מודאל פירוט התוצאה למשחק ---
 window.openMatchBreakdown = function(homeName, awayName, homeScore, awayScore) {
@@ -5940,9 +5936,9 @@ window.openMatchBreakdown = function(homeName, awayName, homeScore, awayScore) {
     const homeContainer = document.getElementById('mb-home-players');
     const awayContainer = document.getElementById('mb-away-players');
 
-    // ייצור רשימת 11-12 שחקנים שסך הנקודות שלהם תואם לתוצאה המדויקת!
-    homeContainer.innerHTML = generateMatchPlayersBreakdown(homeScore);
-    awayContainer.innerHTML = generateMatchPlayersBreakdown(awayScore);
+    // ייצור רשימת שחקנים שסך הנקודות שלהם תואם לתוצאה המדויקת
+    homeContainer.innerHTML = window.generateMatchPlayersBreakdown(parseInt(homeScore) || 0);
+    awayContainer.innerHTML = window.generateMatchPlayersBreakdown(parseInt(awayScore) || 0);
 
     document.getElementById('match-breakdown-overlay').style.display = 'flex';
 };
@@ -5952,33 +5948,57 @@ window.closeMatchBreakdown = function(e) {
     document.getElementById('match-breakdown-overlay').style.display = 'none';
 };
 
-function generateMatchPlayersBreakdown(targetScore) {
+window.generateMatchPlayersBreakdown = function(targetScore) {
     let allPlayers = Object.values(window.allPlayersMap || {});
-    if(allPlayers.length < 24) return '<div>ממתין לנתונים מהשרת...</div>';
+    
+    // אם המאגר עוד לא נטען
+    if(allPlayers.length < 24) return '<div style="text-align:center; padding:20px; font-weight:bold;">ממתין לנתונים מהשרת...</div>';
 
-    // בחירת שחקנים אקראיים מהמאגר האמיתי עבור סימולציית ההרכב (11 הרכב)
+    // בוחרים 11 שחקנים אקראיים אמיתיים מהמאגר
     let shuffled = allPlayers.sort(() => 0.5 - Math.random());
     let selected = shuffled.slice(0, 11);
     
-    // סיכוי של 20% שלאחד מהמנג'רים היה בוסט "השחקן ה-12"
+    // סיכוי של 20% שהופעל בוסט "השחקן ה-12" עבור קבוצה זו
     let has12thMan = Math.random() > 0.8;
     if (has12thMan) selected.push(shuffled[12]);
 
-    // חלוקת סך כל הנקודות בין השחקנים שנבחרו
+    // טיפול במקרה של תוצאה 0
+    if (targetScore === 0) {
+        let zeroHtml = '';
+        selected.forEach((p, idx) => {
+            let tName = window.translateName ? window.translateName(p.name) : p.name;
+            let is12th = (has12thMan && idx === 11);
+            let rowClass = is12th ? 'mb-player-row is-12th' : 'mb-player-row';
+            let tag = is12th ? '<span style="font-size:9px; background:var(--brand-green); color:#fff; padding:2px 4px; border-radius:4px; margin-right:4px;">שחקן 12 ⚡</span>' : '';
+            
+            zeroHtml += `
+                <div class="${rowClass}">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <img src="${p.photo || `https://media.api-sports.io/football/players/${p.id}.png`}" onerror="this.src='https://ui-avatars.com/api/?name=${p.name}&background=e2e8f0&color=000'" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">
+                        <span>${tName} ${tag}</span>
+                    </div>
+                    <span class="mb-player-pts" style="color:#94a3b8;">0 נק'</span>
+                </div>
+            `;
+        });
+        return zeroHtml;
+    }
+
+    // חלוקת הנקודות באופן כזה שיסתכם בדיוק לתוצאת המשחק!
     let points = selected.map(() => Math.max(1, Math.floor(Math.random() * 10)));
     let currentSum = points.reduce((a, b) => a + b, 0);
 
-    // נרמול (Scaling) כדי שהסכום יהיה שווה ל-targetScore במדויק
     let scaledPoints = points.map(p => Math.round((p / currentSum) * targetScore));
     let finalSum = scaledPoints.reduce((a, b) => a + b, 0);
     
-    // תיקון שארית העיגול (מוסיפים/מורידים מהשחקן הראשון)
+    // תיקון שארית עיגול על השחקן הראשון
     scaledPoints[0] += (targetScore - finalSum);
     if(scaledPoints[0] < 0) {
          scaledPoints[1] += Math.abs(scaledPoints[0]);
          scaledPoints[0] = 0;
     }
 
+    // בניית ה-HTML הסופי
     let html = '';
     selected.forEach((p, idx) => {
         let tName = window.translateName ? window.translateName(p.name) : p.name;
@@ -5999,7 +6019,7 @@ function generateMatchPlayersBreakdown(targetScore) {
         `;
     });
     return html;
-}
+};
 
 // --- תיקון רינדור תוצאות הליגה להוספת אירוע הלחיצה למודאל ---
 function changeLeagueRound(direction) {
