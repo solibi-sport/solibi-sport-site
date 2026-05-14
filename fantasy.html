@@ -2241,6 +2241,37 @@
         .pm-pts-badge { background: rgba(124, 168, 86, 0.15); color: var(--brand-green); font-weight: 900; padding: 4px 8px; border-radius: 6px; display: inline-block; font-size: 12px; border: 1px solid rgba(124, 168, 86, 0.3);}
         .pm-pts-badge.negative { background: rgba(239, 68, 68, 0.15); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
         .pm-pts-badge.zero { background: #f1f5f9; color: #94a3b8; border-color: #cbd5e1; }
+
+        /* =========================================
+           עיצוב טאב הצעות והשוואה (בתוך מודאל שחקן)
+           ========================================= */
+        /* הצעות */
+        .pm-offer-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; margin-bottom: 10px; text-align: right; }
+        .pm-offer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #cbd5e1; padding-bottom: 5px; margin-bottom: 8px; font-size: 10px; color: #64748b; font-weight: bold; }
+        .pm-offer-badge { padding: 3px 8px; border-radius: 4px; color: #fff; font-size: 9px; font-weight: 900; }
+        .pm-badge-auction { background: #f59e0b; }
+        .pm-badge-incoming { background: var(--brand-green); }
+        .pm-badge-outgoing { background: #3b82f6; }
+        .pm-offer-body { display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 600; color: var(--text-dark); }
+        .pm-offer-player { display: flex; align-items: center; gap: 6px; }
+        .pm-offer-player img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1; }
+        .pm-offer-actions { margin-top: 10px; display: flex; gap: 5px; }
+        .pm-offer-btn { flex: 1; padding: 6px; font-size: 11px; font-weight: 900; border-radius: 4px; cursor: pointer; border: none; color: #fff; text-align: center; transition: 0.2s; }
+        .pm-offer-btn:hover { filter: brightness(1.1); }
+
+        /* השוואה */
+        .pm-comp-header { display: flex; gap: 10px; margin-bottom: 15px; }
+        .pm-comp-player { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .pm-comp-player img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin-bottom: 6px; border: 2px solid #cbd5e1; }
+        .pm-comp-name { font-size: 12px; font-weight: 900; color: var(--text-dark); line-height: 1.2; }
+        .pm-comp-select { width: 95%; padding: 6px; border: 1px solid #94a3b8; border-radius: 6px; font-size: 10px; font-weight: bold; font-family: inherit; margin-top: auto; outline: none; background: #f8fafc;}
+        
+        .pm-comp-table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: center; }
+        .pm-comp-table th { background: var(--element-navy-gradient); color: #fff; font-weight: 900; padding: 8px 0; border-bottom: 2px solid var(--brand-green); font-size: 11px; }
+        .pm-comp-table td { padding: 10px 2px; border-bottom: 1px solid #f1f5f9; color: var(--text-dark); font-weight: 600; width: 33%; vertical-align: middle; }
+        .pm-comp-table td:nth-child(2) { color: #64748b; font-weight: 900; background: #f8fafc; font-size: 10px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; } 
+        
+        .pm-comp-win { color: var(--brand-green) !important; font-weight: 900 !important; background: rgba(124, 168, 86, 0.15); border-radius: 6px; display: inline-block; padding: 3px 8px; border: 1px solid rgba(124, 168, 86, 0.3);}
         
     </style>
         
@@ -4591,10 +4622,132 @@
                     </div>
                 </div>
                 <div id="pm-tab-offers" class="pm-tab-pane">
-                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">ממשק הצעות וטריידים בבנייה 🤝</div>
+                    <div class="pm-a-box" style="padding: 10px; overflow-y: auto; max-height: 350px;">
+                        
+                        <div class="pm-offer-card">
+                            <div class="pm-offer-header">
+                                <span class="pm-offer-badge pm-badge-auction">מכרז פעיל עליו</span>
+                                <span>מסתיים בעוד: 03:45:12</span>
+                            </div>
+                            <div class="pm-offer-body">
+                                <div>הצעה מובילה: <strong style="color:var(--brand-green); font-size:13px;">₪12.5M</strong></div>
+                                <div style="font-size: 9px; color: #64748b;">(על ידי: הכרישים של מוטי)</div>
+                            </div>
+                            <div class="pm-offer-actions">
+                                <button class="pm-offer-btn" style="background: var(--element-navy-gradient);" onclick="switchFmTab('tab-auctions'); closePlayerModal();">קפוץ למכירה הפומבית</button>
+                            </div>
+                        </div>
+
+                        <div class="pm-offer-card">
+                            <div class="pm-offer-header">
+                                <span class="pm-offer-badge pm-badge-incoming">הצעת טרייד נכנסת</span>
+                                <span>מאת: גלקטיקוס</span>
+                            </div>
+                            <div class="pm-offer-body">
+                                <div class="pm-offer-player">
+                                    <img src="https://media.api-sports.io/football/players/73195.png" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                                    <div style="display:flex; flex-direction:column; text-align:right;">
+                                        <span>צ'רון שרי</span>
+                                        <span style="font-size:10px; color:var(--brand-green); font-weight:900;">+ ₪1.5M</span>
+                                    </div>
+                                </div>
+                                <div style="font-size:16px; color:#cbd5e1; font-weight:900; margin: 0 10px;">↔</div>
+                                <div style="text-align:left;">
+                                    <div style="font-size: 10px; color: #64748b;">בתמורה אליו</div>
+                                </div>
+                            </div>
+                            <div class="pm-offer-actions">
+                                <button class="pm-offer-btn" style="background: var(--brand-green);">אשר טרייד</button>
+                                <button class="pm-offer-btn" style="background: #ef4444;">דחה הצעה</button>
+                            </div>
+                        </div>
+
+                        <div class="pm-offer-card">
+                            <div class="pm-offer-header">
+                                <span class="pm-offer-badge pm-badge-outgoing">הצעה יוצאת שלך</span>
+                                <span>אל: בני יהודה אימפריה</span>
+                            </div>
+                            <div class="pm-offer-body">
+                                <div>הצעת אותו כפיתיון תמורת:</div>
+                                <div class="pm-offer-player">
+                                    <span style="text-align:left;">דין דוד</span>
+                                    <img src="https://media.api-sports.io/football/players/73197.png" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                                </div>
+                            </div>
+                            <div class="pm-offer-actions">
+                                <button class="pm-offer-btn" style="background: #94a3b8;">בטל הצעה</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
+
                 <div id="pm-tab-compare" class="pm-tab-pane">
-                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">מערכת השוואת שחקנים בבנייה 🔍</div>
+                    
+                    <div class="pm-comp-header">
+                        <div class="pm-comp-player" style="border-color: var(--brand-green); background: rgba(124,168,86,0.05);">
+                            <img id="pm-comp-img-1" src="https://media.api-sports.io/football/players/73156.png" onerror="this.src='https://ui-avatars.com/api/?name=1&background=7ca856&color=fff'">
+                            <span class="pm-comp-name" id="pm-comp-name-1">שחקן נוכחי</span>
+                        </div>
+                        
+                        <div style="display:flex; align-items:center; font-size:24px; font-weight:900; color:#cbd5e1;">VS</div>
+                        
+                        <div class="pm-comp-player">
+                            <img id="pm-comp-img-2" src="https://ui-avatars.com/api/?name=?&background=e2e8f0&color=94a3b8">
+                            <span class="pm-comp-name" id="pm-comp-name-2" style="color: #94a3b8; margin-bottom: 8px;">בחר שחקן להשוואה</span>
+                            <select class="pm-comp-select" id="pm-comp-select-player">
+                                <option value="">-- בחר מתחרה --</option>
+                                <option value="1">פרנצדי פיירו</option>
+                                <option value="2">דין דוד</option>
+                                <option value="3">דור תורג'מן</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pm-a-box" style="padding: 0; overflow: hidden; border: none; box-shadow: none;">
+                        <table class="pm-comp-table">
+                            <thead>
+                                <tr>
+                                    <th style="border-radius: 0 8px 0 0;">שחקן נוכחי</th>
+                                    <th>פרמטר השוואה</th>
+                                    <th style="border-radius: 8px 0 0 0;">שחקן נבחר</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="pm-comp-win">145</span></td>
+                                    <td>⭐ נקודות העונה</td>
+                                    <td>115</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pm-comp-win">₪10.5M</span></td>
+                                    <td>💰 שווי שוק</td>
+                                    <td>₪8.2M</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pm-comp-win">16</span></td>
+                                    <td>⚽ שערים</td>
+                                    <td>11</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>👟 בישולים</td>
+                                    <td><span class="pm-comp-win">6</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pm-comp-win">24</span></td>
+                                    <td>⏱️ הופעות</td>
+                                    <td>20</td>
+                                </tr>
+                                <tr>
+                                    <td>7.8</td>
+                                    <td>📈 ציון ממוצע</td>
+                                    <td><span class="pm-comp-win">8.1</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
                 
                 <div class="pm-actions">
