@@ -4719,8 +4719,12 @@
                 </div>
             </div>
             
-            <div id="tm-tab-stats" class="pm-tab-pane" style="overflow-y: auto; padding-right: 5px;">
-                <div class="stats-grid-layout" style="grid-template-columns: 1fr 1fr;">
+           <div id="tm-tab-stats" class="pm-tab-pane" style="overflow-y: auto; padding-right: 5px;">
+                <div class="stats-grid-layout" style="grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="stat-category-card" style="box-shadow: none; border-color: #cbd5e1;">
+                        <div class="s-card-header">⏱️ מלך ההופעות</div>
+                        <div class="s-card-list" id="tm-stats-apps"></div>
+                    </div>
                     <div class="stat-category-card" style="box-shadow: none; border-color: #cbd5e1;">
                         <div class="s-card-header">⚽ מלך השערים</div>
                         <div class="s-card-list" id="tm-stats-goals"></div>
@@ -4729,7 +4733,7 @@
                         <div class="s-card-header">👟 מלך הבישולים</div>
                         <div class="s-card-list" id="tm-stats-assists"></div>
                     </div>
-                    <div class="stat-category-card" style="grid-column: 1 / -1; box-shadow: none; border-color: #cbd5e1;">
+                    <div class="stat-category-card" style="box-shadow: none; border-color: #cbd5e1;">
                         <div class="s-card-header">⭐ שחקני העונה (סה"כ נק')</div>
                         <div class="s-card-list" id="tm-stats-points"></div>
                     </div>
@@ -8303,7 +8307,7 @@ window.openTeamModal = function(teamName) {
     });
 
     // --- טאב 2: סטטיסטיקות פנימיות ---
-    const renderInnerStat = (containerId, sortKey) => {
+    const renderInnerStat = (containerId, sortKey, isPoints = false) => {
         const cont = document.getElementById(containerId);
         cont.innerHTML = '';
         let sorted = [...squad].sort((a, b) => (b[sortKey] || 0) - (a[sortKey] || 0)).slice(0, 3);
@@ -8311,6 +8315,8 @@ window.openTeamModal = function(teamName) {
             let pName = window.translateName ? window.translateName(p.name) : p.name;
             let img = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
             let rankClass = idx === 0 ? 'color: #fbbf24; font-size: 16px;' : (idx === 1 ? 'color: #94a3b8;' : 'color: #b45309;');
+            let valueColor = isPoints ? 'color: var(--brand-green);' : 'color: var(--text-dark);'; // כאן הקסם של הצבע הירוק
+
             cont.innerHTML += `
                 <div class="s-list-row" onclick="openPlayerModalById(${p.id}, false)" style="cursor: pointer;">
                     <div class="s-rank" style="${rankClass}">${idx + 1}</div>
@@ -8320,15 +8326,17 @@ window.openTeamModal = function(teamName) {
                             <span class="s-p-name">${pName}</span>
                         </div>
                     </div>
-                    <div class="s-value neutral">${p[sortKey] || 0}</div>
+                    <div class="s-value" style="${valueColor} font-size: 14px; font-weight: 900;">${p[sortKey] || 0}</div>
                 </div>
             `;
         });
     };
-    renderInnerStat('tm-stats-goals', 'goals');
-    renderInnerStat('tm-stats-assists', 'assists');
-    renderInnerStat('tm-stats-points', 'fantasyPts');
-
+    
+    // הפעלת הפונקציה לכל ה-4 קוביות (שימו לב ל-true בקובייה האחרונה!)
+    renderInnerStat('tm-stats-apps', 'apps', false);
+    renderInnerStat('tm-stats-goals', 'goals', false);
+    renderInnerStat('tm-stats-assists', 'assists', false);
+    renderInnerStat('tm-stats-points', 'fantasyPts', true);
     // --- טאב 3: משחקים ---
     const fixBody = document.getElementById('tm-fixtures-body');
     fixBody.innerHTML = '';
