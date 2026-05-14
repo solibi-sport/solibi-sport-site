@@ -2505,6 +2505,74 @@
     background: var(--element-navy-gradient);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+
+        /* === תיקון גלילה בלוח המשחקים (הקפאת המסך וגלילה פנימית בלבד) === */
+#tab-fixtures {
+    /* המפתח פה הוא flex: 1 כדי שיתפוס את כל הגובה, ו-min-height: 0 כדי שלא ידחוף גלילה החוצה */
+    display: flex !important;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0; 
+    overflow: hidden !important; /* נועלים את הגלילה של כל הטאב העוטף */
+    padding-right: 0 !important;
+}
+
+#tab-fixtures .fixtures-split-layout {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+#tab-fixtures .fixtures-main-col {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    min-height: 0;
+}
+
+#tab-fixtures .profile-section-card {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0; /* קריטי כדי שהקובייה הזו תוכל להתכווץ ולהכיל גלילה פנימית */
+}
+
+/* כאן מועברת כל הגלילה! רק לאזור רשימת המשחקים למטה */
+#tab-fixtures .fixtures-scroll-area {
+    flex: 1;
+    overflow-y: auto !important;
+    max-height: none !important; 
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+
+#tab-fixtures .fixtures-side-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto !important; /* מאפשר לסטטיסטיקות הצד להיגלל אם המסך קטן */
+    padding-right: 5px;
+}
+
+/* שבירה מסודרת במסכים קטנים */
+@media (max-width: 1200px) {
+    #tab-fixtures .fixtures-split-layout {
+        flex-direction: column;
+        overflow-y: auto !important; /* בנייד נחזיר גלילה כוללת, כי אי אפשר להקפיא הכל */
+    }
+    #tab-fixtures {
+        overflow-y: auto !important;
+    }
+    #tab-fixtures .fixtures-scroll-area, 
+    #tab-fixtures .fixtures-side-col {
+        overflow-y: visible !important;
+        flex: none;
+    }
+}
         
     </style>
         
@@ -3556,7 +3624,7 @@
                                                 <img src="https://media.api-sports.io/football/players/145892.png" onerror="this.style.display='none'">
                                                 <div class="m-mvp-info">
                                                     <span class="m-mvp-title">MVP משחק</span>
-                                                    <span class="m-mvp-name">ע. סק (12 נק')</span>
+                                                    <span class="m-mvp-name">ה. קיין (12 נק')</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -3574,7 +3642,7 @@
                                                 <img src="https://media.api-sports.io/football/players/73156.png" onerror="this.style.display='none'">
                                                 <div class="m-mvp-info">
                                                     <span class="m-mvp-title">MVP משחק</span>
-                                                    <span class="m-mvp-name">ע. זהבי (14 נק')</span>
+                                                    <span class="m-mvp-name">מ. אוליסה (14 נק')</span>
                                                 </div>
                                             </div>
                                         </div>
