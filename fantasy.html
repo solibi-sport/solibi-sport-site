@@ -2322,16 +2322,26 @@
     border-color: var(--brand-green);
 }
 
-.match-breakdown-body {
+..match-breakdown-body {
     display: flex;
+    flex-direction: row; /* מכריח את העמודות להיות אחת ליד השנייה (ימין ושמאל) */
     gap: 15px;
     align-items: stretch;
     padding: 20px;
+    width: 100%;
 }
-@media (max-width: 768px) {
-    .match-breakdown-body {
-        flex-direction: column;
-    }
+
+.mb-team-col {
+    flex: 1; /* כל עמודה תופסת בדיוק חצי מהמקום */
+    width: 50%; /* מוודא חלוקה שווה של 50-50 */
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    /* מאפשר גלילה פנימית אם הרשימה ארוכה מדי */
+    max-height: 500px;
+    overflow-y: auto;
 }
 .mb-team-col {
     flex: 1;
@@ -4443,11 +4453,11 @@
         <div id="ticker-placeholder"></div>
     </footer>
 
-<div class="player-modal-overlay" id="match-breakdown-overlay" onclick="closeMatchBreakdown(event)" style="z-index: 10005; display: none;">
-    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 85vh; width: 95%; max-width: 800px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
+<div class="player-modal-overlay" id="match-breakdown-overlay" onclick="closeMatchBreakdown(event)" style="z-index: 10005; display: none; opacity: 0; transition: opacity 0.3s;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 85vh; width: 95%; max-width: 900px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
         <div class="pm-header" style="padding: 15px 20px; text-align: center; border-bottom: 3px solid var(--brand-green); display: flex; justify-content: space-between; align-items: center;">
             <h3 style="font-size: 18px; font-weight: 900; margin: 0; color: #fff;">פירוט ניקוד למשחק</h3>
-            <svg class="pm-close" onclick="closeMatchBreakdown()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: static; cursor: pointer; opacity: 0.8;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <svg class="pm-close" onclick="closeMatchBreakdown(event)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: static; cursor: pointer; opacity: 0.8;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </div>
         <div class="pm-body match-breakdown-body">
             <div class="mb-team-col">
