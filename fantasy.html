@@ -2505,6 +2505,46 @@
     background: var(--element-navy-gradient);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+
+        /* === תיקון גלילה בלוח המשחקים (הקפאת המסך וגלילה פנימית בלבד) === */
+        #tab-fixtures {
+            overflow: hidden !important; /* ביטול פס הגלילה הכללי של העמוד */
+            display: flex;
+            flex-direction: column;
+            padding-right: 0 !important;
+        }
+
+        #tab-fixtures .fixtures-split-layout {
+            flex: 1;
+            min-height: 0;
+            align-items: stretch !important;
+            margin-bottom: 10px;
+        }
+
+        #tab-fixtures .fixtures-main-col {
+            height: 100%;
+            min-height: 0;
+        }
+
+        #tab-fixtures .profile-section-card {
+            min-height: 0; /* קריטי כדי שהתוכן לא ידחוף את המסך כולו למטה */
+        }
+
+        #tab-fixtures .fixtures-scroll-area {
+            flex: 1;
+            min-height: 0;
+            max-height: none !important; /* ביטול הגבלת הגובה הישנה */
+            overflow-y: auto !important; /* העברת פס הגלילה רק לתוך הרשימה */
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        #tab-fixtures .fixtures-side-col {
+            height: 100%;
+            min-height: 0;
+            overflow-y: auto; /* מאפשר גלילה נפרדת לקוביות בצד ימין אם המסך קטן */
+            padding-right: 5px;
+        }
         
     </style>
         
