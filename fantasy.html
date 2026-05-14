@@ -3504,15 +3504,15 @@
                                             </div>
                                         </div>
 
-                                        <div id="upcoming-match-card" class="match-result-card m-future" style="background: rgba(124,168,86,0.05); border: 1px solid var(--brand-green);">
-                                            <div class="m-round" style="color: var(--brand-green);">מחזור 5 (קרוב)</div>
-                                            <div class="m-teams-score">
-                                                <span class="m-team-name">מכבי סוליבי</span>
-                                                <div class="m-score-box future-score"> - : - </div>
-                                                <span class="m-team-name" style="color: #64748b;">אריות וולפסון</span>
-                                            </div>
-                                            <div class="m-mvp-badge" style="visibility: hidden;"></div>
-                                        </div>
+                                       <div id="upcoming-match-card" class="match-result-card m-future" style="background: rgba(124,168,86,0.05); border: 1px solid var(--brand-green);">
+    <div class="m-round" style="color: var(--brand-green);">מחזור 5 (קרוב)</div>
+    <div class="m-teams-score">
+        <span class="m-team-name">מכבי סוליבי</span>
+        <div class="m-score-box pre-match-btn" onclick="openPreMatchPreview('מכבי סוליבי', 'אריות וולפסון')">לקראת המשחק</div>
+        <span class="m-team-name" style="color: #64748b;">אריות וולפסון</span>
+    </div>
+    <div class="m-mvp-badge" style="visibility: hidden;"></div>
+</div>
 
                                         <div class="match-result-card m-future">
                                             <div class="m-round">מחזור 6</div>
@@ -5947,17 +5947,16 @@
             ]
         };
 
-        function changeLeagueRound(direction) {
+        window.changeLeagueRound = function(direction) {
     let newRound = currentDisplayedRound + direction;
     if (!leagueRoundsData[newRound]) return; 
     
     currentDisplayedRound = newRound;
     
-    // סידור כותרת המחזור
     let titleText = `מחזור ${currentDisplayedRound}`;
     if (currentDisplayedRound === 10) titleText += " (קרוב)";
     else if (currentDisplayedRound < 10) titleText += " (שוחק)";
-    else titleText += " (עתידי)"; // כיתוב למחזורים רחוקים
+    else titleText += " (עתידי)";
     
     document.getElementById('lf-round-display').innerText = titleText;
 
@@ -5973,19 +5972,15 @@
         let displayScore = "";
         let onclickAttr = "";
         
-        // הלוגיקה החכמה של הכפתורים
         if (isPlayed) {
-            // משחק ששוחק - תוצאה רגילה וחלון סיכום
             scoreClass = "lf-score";
             displayScore = match.score;
             onclickAttr = `onclick="openMatchBreakdown('${match.home}', '${match.away}', ${match.score.split('-')[0].trim()}, ${match.score.split('-')[1].trim()})"`;
         } else if (isNextRound) {
-            // המחזור הקרוב - כפתור ירוק פותח דוח סקאוטינג
             scoreClass = "m-score-box pre-match-btn";
             displayScore = "לקראת המשחק";
             onclickAttr = `onclick="openPreMatchPreview('${match.home}', '${match.away}')"`;
         } else if (isFarFuture) {
-            // מחזור רחוק - כפתור אפור נעול
             scoreClass = "m-score-box pre-match-btn disabled-future";
             displayScore = "דוח טרם זמין";
             onclickAttr = `onclick="alert('דוח הסקאוטינג והמידע הטקטי מופקים רק סמוך למועד המשחק (מחזור אחד קדימה). יש לחזור לכאן לקראת המחזור עצמו.')"`;
@@ -6004,7 +5999,7 @@
             </div>
         `;
     });
-}
+};
 
         document.addEventListener('DOMContentLoaded', () => {
             if(document.getElementById('lf-matches-container')) changeLeagueRound(0); 
@@ -6163,41 +6158,6 @@ window.generateMatchPlayersBreakdown = function(targetScore) {
     
     return html;
 };
-// --- תיקון רינדור תוצאות הליגה להוספת אירוע הלחיצה למודאל ---
-function changeLeagueRound(direction) {
-    let newRound = currentDisplayedRound + direction;
-    if (!leagueRoundsData[newRound]) return; 
-    
-    currentDisplayedRound = newRound;
-    
-    let titleText = `מחזור ${currentDisplayedRound}`;
-    if (currentDisplayedRound === 10) titleText += " (קרוב)";
-    else if (currentDisplayedRound < 10) titleText += " (שוחק)";
-    document.getElementById('lf-round-display').innerText = titleText;
-
-    const container = document.getElementById('lf-matches-container');
-    container.innerHTML = '';
-    
-    leagueRoundsData[currentDisplayedRound].forEach(match => {
-        let scoreClass = match.score === "- : -" ? "lf-score future" : "lf-score";
-        
-        // 👈 התנאי שמוסיף את הלחיצה לפתיחת המודאל!
-        let onclickAttr = match.score !== "- : -" ? `onclick="openMatchBreakdown('${match.home}', '${match.away}', ${match.score.split('-')[0].trim()}, ${match.score.split('-')[1].trim()})"` : "";
-
-        let hImgParams = match.homeImg.split('/');
-        let aImgParams = match.awayImg.split('/');
-        let hSrc = `https://ui-avatars.com/api/?name=${hImgParams[0]}&background=${hImgParams[1]}&color=fff`;
-        let aSrc = `https://ui-avatars.com/api/?name=${aImgParams[0]}&background=${aImgParams[1]}&color=fff`;
-
-        container.innerHTML += `
-            <div class="lf-match">
-                <div class="lf-team"><img src="${hSrc}"> <span>${match.home}</span></div>
-                <div class="${scoreClass}" ${onclickAttr}>${match.score}</div>
-                <div class="lf-team away"><img src="${aSrc}"> <span>${match.away}</span></div>
-            </div>
-        `;
-    });
-}
 
         function renderLeagueRecords() {
             const type = document.getElementById('l-records-select').value;
