@@ -805,8 +805,9 @@
         /* רשימת ליגות */
         .p-leagues-list { 
             display: flex; flex-direction: column; 
-            gap: 10px; /* 👈 מרווח קבוע של 10 פיקסלים בין שורה לשורה */
-            justify-content: flex-start !important; /* 👈 מכריח אותן להיצמד למעלה! */
+            gap: 10px; 
+            flex: 1; /* פקודת הקסם 1: תתפוס את כל הגובה הפנוי בתוך הקובייה */
+            justify-content: space-evenly !important; /* פקודת הקסם 2: רווח את הליגות בצורה שווה לאורך כל הגובה */
         }
         .p-league-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid transparent; background: #ffffff; border-radius: 8px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); } 
         .p-league-row:hover { border-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.1); }
