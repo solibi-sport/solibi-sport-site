@@ -4604,6 +4604,74 @@
         </div>
     </div>
 </div>
+
+<div class="player-modal-overlay" id="team-modal-overlay" onclick="closeTeamModal(event)" style="z-index: 10008; display: none;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 90vh; width: 95%; max-width: 800px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
+        
+        <div class="pm-header" style="padding: 20px; text-align: center; border-bottom: 3px solid var(--brand-green); display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <img id="tm-img" src="" style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.2); background: #fff; object-fit: contain;">
+                <div style="text-align: right;">
+                    <h3 id="tm-name" style="font-size: 22px; font-weight: 900; margin: 0; color: #fff;">שם הקבוצה</h3>
+                    <div style="font-size: 13px; color: #cbd5e1; margin-top: 5px;">מנג'ר: <span id="tm-manager-name" style="font-weight: bold; color: var(--brand-green);">---</span></div>
+                </div>
+            </div>
+            <svg class="pm-close" onclick="closeTeamModal(event)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: static; cursor: pointer; opacity: 0.8;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        
+        <div class="pm-tabs-nav" style="margin: 15px auto 0 auto; width: calc(100% - 30px);">
+            <button class="pm-tab-btn active" onclick="switchTeamTab('tm-tab-squad', this)">סגל הקבוצה</button>
+            <button class="pm-tab-btn" onclick="switchTeamTab('tm-tab-stats', this)">סטטיסטיקות מובילים</button>
+            <button class="pm-tab-btn" onclick="switchTeamTab('tm-tab-fixtures', this)">לוח משחקים</button>
+            <button class="pm-tab-btn" onclick="switchTeamTab('tm-tab-transfers', this)">היסטוריית העברות</button>
+        </div>
+        
+        <div class="pm-body" style="background: #f8fafc; flex: 1; overflow: hidden; display: flex; flex-direction: column; padding: 15px;">
+            
+            <div id="tm-tab-squad" class="pm-tab-pane active" style="overflow-y: auto; padding-right: 5px;">
+                <div class="squad-table-wrap" style="min-height: auto; box-shadow: none; border: 1px solid #cbd5e1;">
+                    <table class="squad-table" style="width: 100%; font-size: 12px;">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">עמדה</th>
+                                <th style="width: 45%;">שחקן</th>
+                                <th style="width: 20%;">נק' העונה</th>
+                                <th style="width: 20%;">שווי שוק</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tm-squad-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div id="tm-tab-stats" class="pm-tab-pane" style="overflow-y: auto; padding-right: 5px;">
+                <div class="stats-grid-layout" style="grid-template-columns: 1fr 1fr;">
+                    <div class="stat-category-card" style="box-shadow: none; border-color: #cbd5e1;">
+                        <div class="s-card-header">⚽ מלך השערים</div>
+                        <div class="s-card-list" id="tm-stats-goals"></div>
+                    </div>
+                    <div class="stat-category-card" style="box-shadow: none; border-color: #cbd5e1;">
+                        <div class="s-card-header">👟 מלך הבישולים</div>
+                        <div class="s-card-list" id="tm-stats-assists"></div>
+                    </div>
+                    <div class="stat-category-card" style="grid-column: 1 / -1; box-shadow: none; border-color: #cbd5e1;">
+                        <div class="s-card-header">⭐ שחקני העונה (סה"כ נק')</div>
+                        <div class="s-card-list" id="tm-stats-points"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="tm-tab-fixtures" class="pm-tab-pane" style="overflow-y: auto; padding-right: 5px;">
+                <div class="fixtures-scroll-area" id="tm-fixtures-body" style="max-height: none;"></div>
+            </div>
+            
+            <div id="tm-tab-transfers" class="pm-tab-pane" style="overflow-y: auto; padding-right: 5px;">
+                <div style="display: flex; flex-direction: column; gap: 10px;" id="tm-transfers-body"></div>
+            </div>
+            
+        </div>
+    </div>
+</div>
     
     <div id="playerModal" class="player-modal-overlay" onclick="closePlayerModal(event)">
         <div class="player-modal" onclick="event.stopPropagation()">
@@ -6390,15 +6458,23 @@ window.generateMatchPlayersBreakdown = function(targetScore) {
     });
 }
 
-       function buildRowHTML(idx, imgHtml, name, team, val, id = null, isTeam = false) {
+      function buildRowHTML(idx, imgHtml, name, team, val, id = null, isTeam = false) {
     let rankClass = '';
     if (idx === 0) rankClass = 'color: #fbbf24; font-size: 16px;';
     else if (idx === 1) rankClass = 'color: #94a3b8;';
     else if (idx === 2) rankClass = 'color: #b45309;';
     
-    // הוספת פעולת הלחיצה רק אם זה שחקן
-    let onClickAttr = (!isTeam && id) ? `onclick="openPlayerModalById('${id}', false)"` : '';
-    let cursorStyle = (!isTeam && id) ? 'cursor: pointer;' : 'cursor: default;';
+    // קסם ההפרדה: אם זה שחקן פותח מודאל שחקן, אם זו קבוצה פותח מודאל קבוצה!
+    let onClickAttr = '';
+    let cursorStyle = 'cursor: default;';
+    
+    if (!isTeam && id) {
+        onClickAttr = `onclick="openPlayerModalById('${id}', false)"`;
+        cursorStyle = 'cursor: pointer;';
+    } else if (isTeam) {
+        onClickAttr = `onclick="window.openTeamModal('${name}')"`;
+        cursorStyle = 'cursor: pointer;';
+    }
     
     return `
         <div class="s-list-row" ${onClickAttr} style="${cursorStyle}">
@@ -8056,6 +8132,180 @@ document.addEventListener('DOMContentLoaded', () => {
             renderGalleryItems('all');
         }
     });
+
+    // === מנוע מודאל כרטיס מועדון (קבוצה) ===
+window.openTeamModal = function(teamName) {
+    if(!teamName || teamName === '-' || teamName === 'חופשי') return;
+    
+    // 1. כותרות ולוגו
+    document.getElementById('tm-name').innerText = teamName;
+    let managerName = "אורח";
+    if(teamName === "מכבי סוליבי") managerName = "ישראל ישראלי (אתה)";
+    else if(teamName === "הכרישים של מוטי") managerName = "מוטי";
+    else managerName = "מנג'ר " + teamName.split(' ')[0];
+    document.getElementById('tm-manager-name').innerText = managerName;
+    
+    const colors = {
+        "מכבי סוליבי": "7ca856", "הכרישים של מוטי": "fbbf24", "גלקטיקוס": "3498db", 
+        "אריות וולפסון": "9b59b6", "בני יהודה אימפריה": "e67e22", "פ.צ. שווארמה": "1abc9c",
+        "רד בול פתח תקווה": "e74c3c", "הפועל עגלות": "94a3b8"
+    };
+    const bg = colors[teamName] || "062141";
+    const initials = teamName.substring(0,2).replace(/\s/g, '');
+    document.getElementById('tm-img').src = `https://ui-avatars.com/api/?name=${initials}&background=${bg}&color=fff`;
+
+    // 2. בניית הסגל (נמשוך מסופאבייס/זיכרון)
+    let squad = window.simulatedTeams ? window.simulatedTeams[teamName] : null;
+    if (!squad) {
+        const allPlayersList = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' || teamName === 'מכבי סוליבי');
+        let shuffled = allPlayersList.sort(() => 0.5 - Math.random());
+        squad = shuffled.slice(0, 20); 
+        const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'התקפה': 4};
+        squad.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
+    }
+
+    // --- טאב 1: סגל ---
+    const squadBody = document.getElementById('tm-squad-body');
+    squadBody.innerHTML = '';
+    squad.forEach(p => {
+        let pName = window.translateName ? window.translateName(p.name) : p.name;
+        let img = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+        let val = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+        let posColor = '#cbd5e1';
+        if(p.displayPos === 'שוער') posColor = '#f59e0b';
+        if(p.displayPos === 'הגנה') posColor = '#2ecc71';
+        if(p.displayPos === 'קישור') posColor = '#3498db';
+        if(p.displayPos === 'התקפה') posColor = '#e74c3c';
+
+        squadBody.innerHTML += `
+            <tr style="border-bottom: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(124,168,86,0.05)'" onmouseout="this.style.background='transparent'" onclick="openPlayerModalById(${p.id}, false)">
+                <td style="padding: 8px; color: ${posColor}; font-weight: bold; text-align: center;">${p.displayPos}</td>
+                <td style="padding: 8px;">
+                    <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <img src="${img}" onerror="this.src='https://ui-avatars.com/api/?name=P'" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid #cbd5e1;">
+                        <span style="font-weight:900; color:var(--text-dark);">${pName}</span>
+                    </div>
+                </td>
+                <td style="padding: 8px; font-weight: 900; text-align: center; color: var(--text-dark);">${p.fantasyPts || 0}</td>
+                <td style="padding: 8px; color: var(--brand-green); font-weight: bold; text-align: center;">₪${val}</td>
+            </tr>
+        `;
+    });
+
+    // --- טאב 2: סטטיסטיקות פנימיות ---
+    const renderInnerStat = (containerId, sortKey) => {
+        const cont = document.getElementById(containerId);
+        cont.innerHTML = '';
+        let sorted = [...squad].sort((a, b) => (b[sortKey] || 0) - (a[sortKey] || 0)).slice(0, 3);
+        sorted.forEach((p, idx) => {
+            let pName = window.translateName ? window.translateName(p.name) : p.name;
+            let img = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+            let rankClass = idx === 0 ? 'color: #fbbf24; font-size: 16px;' : (idx === 1 ? 'color: #94a3b8;' : 'color: #b45309;');
+            cont.innerHTML += `
+                <div class="s-list-row" onclick="openPlayerModalById(${p.id}, false)" style="cursor: pointer;">
+                    <div class="s-rank" style="${rankClass}">${idx + 1}</div>
+                    <div class="s-player-info">
+                        <img src="${img}" onerror="this.src='https://ui-avatars.com/api/?name=P'">
+                        <div class="s-player-text">
+                            <span class="s-p-name">${pName}</span>
+                        </div>
+                    </div>
+                    <div class="s-value neutral">${p[sortKey] || 0}</div>
+                </div>
+            `;
+        });
+    };
+    renderInnerStat('tm-stats-goals', 'goals');
+    renderInnerStat('tm-stats-assists', 'assists');
+    renderInnerStat('tm-stats-points', 'fantasyPts');
+
+    // --- טאב 3: משחקים ---
+    const fixBody = document.getElementById('tm-fixtures-body');
+    fixBody.innerHTML = '';
+    Object.keys(leagueRoundsData).forEach(round => {
+        leagueRoundsData[round].forEach(m => {
+            if(m.home === teamName || m.away === teamName) {
+                let isPlayed = m.score !== "- : -";
+                let scoreClass = isPlayed ? "m-score-box" : "m-score-box future-score";
+                let matchStatusClass = isPlayed ? "" : "m-future";
+                
+                if(isPlayed) {
+                    let scores = m.score.split('-');
+                    let hScore = parseInt(scores[0]), aScore = parseInt(scores[1]);
+                    if(m.home === teamName) {
+                        matchStatusClass = hScore > aScore ? "m-win" : (hScore < aScore ? "m-loss" : "m-draw");
+                    } else {
+                        matchStatusClass = aScore > hScore ? "m-win" : (aScore < hScore ? "m-loss" : "m-draw");
+                    }
+                }
+
+                let homeColor = m.home === teamName ? 'color:var(--brand-green); font-weight:900;' : '';
+                let awayColor = m.away === teamName ? 'color:var(--brand-green); font-weight:900;' : '';
+
+                fixBody.innerHTML += `
+                    <div class="match-result-card ${matchStatusClass}" style="margin-bottom: 10px;">
+                        <div class="m-round">מחזור ${round}</div>
+                        <div class="m-teams-score">
+                            <span class="m-team-name" style="${homeColor}">${m.home}</span>
+                            <div class="${scoreClass}">${m.score}</div>
+                            <span class="m-team-name" style="${awayColor}">${m.away}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+    });
+
+    // --- טאב 4: היסטוריית העברות ---
+    const transBody = document.getElementById('tm-transfers-body');
+    const randomPlayerNames = ["ג'וד בלינגהאם", "רוברט לבנדובסקי", "ענאן חלאילי", "ליאור רפאלוב"];
+    transBody.innerHTML = `
+        <div style="background: #fff; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: 900; color: var(--text-dark);">${randomPlayerNames[Math.floor(Math.random()*2)]}</span>
+                <span style="font-size: 11px; color: #64748b;">נקנה במכירה פומבית</span>
+            </div>
+            <div style="color: #e74c3c; font-weight: 900; direction: ltr;">-₪18.5M</div>
+        </div>
+        <div style="background: #fff; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: 900; color: var(--text-dark);">${randomPlayerNames[Math.floor(Math.random()*2)+2]}</span>
+                <span style="font-size: 11px; color: #64748b;">הגיע בטרייד (מול קבוצה אחרת)</span>
+            </div>
+            <div style="color: #f59e0b; font-weight: 900;">טרייד ↔</div>
+        </div>
+        <div style="background: #fff; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: 900; color: var(--text-dark);">שחקן אקראי</span>
+                <span style="font-size: 11px; color: #ef4444;">נמכר לשוק החופשי</span>
+            </div>
+            <div style="color: var(--brand-green); font-weight: 900; direction: ltr;">+₪5.2M</div>
+        </div>
+    `;
+
+    // פתיחה ואנימציה
+    const firstTabBtn = document.querySelector('#team-modal-overlay .pm-tab-btn');
+    if(firstTabBtn) window.switchTeamTab('tm-tab-squad', firstTabBtn);
+    
+    const overlay = document.getElementById('team-modal-overlay');
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => { requestAnimationFrame(() => { overlay.classList.add('active'); }); });
+};
+
+window.closeTeamModal = function(e) {
+    const overlay = document.getElementById('team-modal-overlay');
+    if (e && e.target !== overlay && !e.target.closest('.pm-close')) return;
+    overlay.classList.remove('active');
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+};
+
+window.switchTeamTab = function(tabId, btnElement) {
+    const overlay = document.getElementById('team-modal-overlay');
+    overlay.querySelectorAll('.pm-tab-pane').forEach(p => p.classList.remove('active'));
+    overlay.querySelectorAll('.pm-tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btnElement.classList.add('active');
+};
 </script>
     
 <script src="search.js"></script>
