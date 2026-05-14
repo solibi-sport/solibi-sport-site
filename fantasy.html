@@ -871,8 +871,17 @@
         /* Body */
         .pm-body { padding: 20px; width: 100%; background: #f8fafc; box-sizing: border-box; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         
-        .pm-tab-pane { display: none; flex: 1; animation: pmFadeIn 0.3s ease; overflow-y: auto; padding-bottom: 10px; }
+        .pm-tab-pane { 
+            display: none; 
+            flex: 1; 
+            animation: pmFadeIn 0.3s ease; 
+            overflow-y: auto; 
+            overflow-x: hidden;
+            padding-bottom: 10px; 
+            direction: ltr; /* מעביר את פס הגלילה לימין */
+        }
         .pm-tab-pane.active { display: flex; flex-direction: column; }
+        .pm-tab-pane > * { direction: rtl; /* מחזיר את התוכן הפנימי לכיוון הנכון */ }
         @keyframes pmFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .pm-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: auto; }
@@ -4622,7 +4631,7 @@
                     </div>
                 </div>
                 <div id="pm-tab-offers" class="pm-tab-pane">
-                    <div class="pm-a-box" style="padding: 10px; overflow-y: auto; max-height: 350px;">
+                    <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 5px;">
                         
                         <div class="pm-offer-card">
                             <div class="pm-offer-header">
@@ -4708,21 +4717,31 @@
                         <table class="pm-comp-table">
                             <thead>
                                 <tr>
-                                    <th style="border-radius: 0 8px 0 0;">שחקן נוכחי</th>
-                                    <th>פרמטר השוואה</th>
-                                    <th style="border-radius: 8px 0 0 0;">שחקן נבחר</th>
+                                    <th style="border-radius: 0 8px 0 0; width: 30%;">שחקן נוכחי</th>
+                                    <th style="width: 40%;">פרמטר השוואה</th>
+                                    <th style="border-radius: 8px 0 0 0; width: 30%;">שחקן נבחר</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td><span class="pm-comp-win">145</span></td>
-                                    <td>⭐ נקודות העונה</td>
+                                    <td>⭐ נקודות פנטזי</td>
                                     <td>115</td>
                                 </tr>
                                 <tr>
                                     <td><span class="pm-comp-win">₪10.5M</span></td>
                                     <td>💰 שווי שוק</td>
                                     <td>₪8.2M</td>
+                                </tr>
+                                <tr>
+                                    <td>7.8</td>
+                                    <td>📈 ציון ממוצע</td>
+                                    <td><span class="pm-comp-win">8.1</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pm-comp-win">24</span></td>
+                                    <td>⏱️ הופעות</td>
+                                    <td>20</td>
                                 </tr>
                                 <tr>
                                     <td><span class="pm-comp-win">16</span></td>
@@ -4735,14 +4754,39 @@
                                     <td><span class="pm-comp-win">6</span></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="pm-comp-win">24</span></td>
-                                    <td>⏱️ הופעות</td>
-                                    <td>20</td>
+                                    <td><span class="pm-comp-win">8</span></td>
+                                    <td>🛡️ רשת נקייה</td>
+                                    <td>5</td>
                                 </tr>
                                 <tr>
-                                    <td>7.8</td>
-                                    <td>📈 ציון ממוצע</td>
-                                    <td><span class="pm-comp-win">8.1</span></td>
+                                    <td>12</td>
+                                    <td>⚔️ תיקולים מוצלחים</td>
+                                    <td><span class="pm-comp-win">18</span></td>
+                                </tr>
+                                <tr>
+                                    <td>0</td>
+                                    <td>🧤 הדיפות פנדל</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pm-comp-win">2</span></td>
+                                    <td>🟨 צהובים (נמוך=טוב)</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>0</td>
+                                    <td>🟥 אדומים (נמוך=טוב)</td>
+                                    <td><span class="pm-comp-win">1</span></td>
+                                </tr>
+                                <tr>
+                                    <td>0</td>
+                                    <td>❌ החמצת פנדל</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>0</td>
+                                    <td>🤦‍♂️ שער עצמי</td>
+                                    <td>0</td>
                                 </tr>
                             </tbody>
                         </table>
