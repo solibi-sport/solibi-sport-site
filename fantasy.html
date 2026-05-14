@@ -2181,6 +2181,49 @@
         #tab-intro > div > * {
             direction: rtl; 
         }
+
+        /* =========================================
+           עיצוב טאב ניתוח נתונים (Analysis)
+           ========================================= */
+        .pm-analysis-layout { display: flex; flex-direction: column; gap: 12px; padding-bottom: 10px; }
+        
+        /* גריד נתונים עליון */
+        .pm-a-top-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .pm-a-mini-box { background: #fff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px 5px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .pm-a-mini-val { font-size: 15px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
+        .pm-a-mini-lbl { font-size: 9.5px; color: #64748b; font-weight: bold; }
+        
+        .val-up { color: var(--brand-green); }
+        .val-down { color: #ef4444; }
+
+        /* קופסאות תוכן מרכזיות */
+        .pm-a-box { background: #fff; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .pm-a-box-title { font-size: 12px; font-weight: 900; color: var(--text-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 6px;}
+        
+        /* גרף כושר משחק (Form) */
+        .pm-form-chart { display: flex; align-items: flex-end; justify-content: space-between; height: 60px; padding-top: 15px; gap: 5px; }
+        .pm-form-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+        .pm-form-bar-wrap { width: 100%; height: 40px; background: #f1f5f9; border-radius: 4px; position: relative; overflow: hidden; }
+        .pm-form-bar { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--brand-green); border-radius: 4px; transition: height 0.5s ease; }
+        .pm-form-pts { font-size: 10px; font-weight: 900; color: var(--text-dark); z-index: 2; position: relative; }
+        .pm-form-gw { font-size: 9px; color: #94a3b8; font-weight: bold; }
+
+        /* קושי משחקים קרובים (FDR) */
+        .pm-fdr-list { display: flex; gap: 8px; justify-content: space-between; }
+        .pm-fdr-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; background: #f8fafc; padding: 6px 2px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .pm-fdr-item img { width: 20px; height: 20px; object-fit: contain; }
+        .pm-fdr-badge { font-size: 10px; font-weight: 900; color: #fff; padding: 2px 0; width: 100%; text-align: center; border-radius: 4px; }
+        .fdr-easy { background: #2ecc71; }
+        .fdr-mid { background: #f59e0b; }
+        .fdr-hard { background: #ef4444; }
+
+        /* פסי התקדמות (סטטיסטיקות עומק) */
+        .pm-prog-row { margin-bottom: 8px; }
+        .pm-prog-row:last-child { margin-bottom: 0; }
+        .pm-prog-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #64748b; }
+        .pm-prog-header span strong { color: var(--text-dark); font-weight: 900; }
+        .pm-prog-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+        .pm-prog-fill { height: 100%; background: linear-gradient(90deg, var(--brand-green) 0%, #5d823e 100%); border-radius: 3px; }
         
     </style>
         
@@ -4344,8 +4387,102 @@
                     </div>
                 </div>
 
-                <div id="pm-tab-analysis" class="pm-tab-pane">
-                    <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">מערכת הניתוח המתקדמת בבנייה 📊</div>
+               <div id="pm-tab-analysis" class="pm-tab-pane">
+                    <div class="pm-analysis-layout">
+                        
+                        <div class="pm-a-top-grid">
+                            <div class="pm-a-mini-box">
+                                <div class="pm-a-mini-val val-up">▲ ₪150K</div>
+                                <div class="pm-a-mini-lbl">שינוי שווי השבוע</div>
+                            </div>
+                            <div class="pm-a-mini-box">
+                                <div class="pm-a-mini-val">24.5%</div>
+                                <div class="pm-a-mini-lbl">אחוז בעלות בליגה</div>
+                            </div>
+                            <div class="pm-a-mini-box">
+                                <div class="pm-a-mini-val">13.2</div>
+                                <div class="pm-a-mini-lbl">נקודות למיליון (VFM)</div>
+                            </div>
+                        </div>
+
+                        <div class="pm-a-box">
+                            <div class="pm-a-box-title">📈 כושר נוכחי (5 משחקים אחרונים)</div>
+                            <div class="pm-form-chart">
+                                <div class="pm-form-col">
+                                    <div class="pm-form-pts">2</div>
+                                    <div class="pm-form-bar-wrap"><div class="pm-form-bar" style="height: 15%; background: #94a3b8;"></div></div>
+                                    <div class="pm-form-gw">מ' 5</div>
+                                </div>
+                                <div class="pm-form-col">
+                                    <div class="pm-form-pts">8</div>
+                                    <div class="pm-form-bar-wrap"><div class="pm-form-bar" style="height: 50%;"></div></div>
+                                    <div class="pm-form-gw">מ' 6</div>
+                                </div>
+                                <div class="pm-form-col">
+                                    <div class="pm-form-pts">12</div>
+                                    <div class="pm-form-bar-wrap"><div class="pm-form-bar" style="height: 75%;"></div></div>
+                                    <div class="pm-form-gw">מ' 7</div>
+                                </div>
+                                <div class="pm-form-col">
+                                    <div class="pm-form-pts">1</div>
+                                    <div class="pm-form-bar-wrap"><div class="pm-form-bar" style="height: 10%; background: #ef4444;"></div></div>
+                                    <div class="pm-form-gw">מ' 8</div>
+                                </div>
+                                <div class="pm-form-col">
+                                    <div class="pm-form-pts">15</div>
+                                    <div class="pm-form-bar-wrap"><div class="pm-form-bar" style="height: 95%;"></div></div>
+                                    <div class="pm-form-gw">מ' 9</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pm-a-box">
+                            <div class="pm-a-box-title">📅 קושי משחקים קרובים (FDR)</div>
+                            <div class="pm-fdr-list">
+                                <div class="pm-fdr-item">
+                                    <span style="font-size: 9px; color:#64748b; font-weight:bold;">מחזור 10 (בית)</span>
+                                    <img src="https://ui-avatars.com/api/?name=H+A&background=94a3b8&color=fff" style="border-radius:50%;">
+                                    <div class="pm-fdr-badge fdr-easy">2 (קל)</div>
+                                </div>
+                                <div class="pm-fdr-item">
+                                    <span style="font-size: 9px; color:#64748b; font-weight:bold;">מחזור 11 (חוץ)</span>
+                                    <img src="https://ui-avatars.com/api/?name=G+G&background=3498db&color=fff" style="border-radius:50%;">
+                                    <div class="pm-fdr-badge fdr-hard">5 (קשה)</div>
+                                </div>
+                                <div class="pm-fdr-item">
+                                    <span style="font-size: 9px; color:#64748b; font-weight:bold;">מחזור 12 (בית)</span>
+                                    <img src="https://ui-avatars.com/api/?name=S+F&background=fbbf24&color=fff" style="border-radius:50%;">
+                                    <div class="pm-fdr-badge fdr-mid">3 (בינוני)</div>
+                                </div>
+                                <div class="pm-fdr-item">
+                                    <span style="font-size: 9px; color:#64748b; font-weight:bold;">מחזור 13 (חוץ)</span>
+                                    <img src="https://ui-avatars.com/api/?name=F+C&background=1abc9c&color=fff" style="border-radius:50%;">
+                                    <div class="pm-fdr-badge fdr-easy">2 (קל)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pm-a-box">
+                            <div class="pm-a-box-title">🔬 סטטיסטיקות עומק למשחק</div>
+                            
+                            <div class="pm-prog-row">
+                                <div class="pm-prog-header"><span>שערים צפויים (xG)</span> <span><strong>0.45</strong> / למשחק</span></div>
+                                <div class="pm-prog-bg"><div class="pm-prog-fill" style="width: 45%;"></div></div>
+                            </div>
+                            
+                            <div class="pm-prog-row">
+                                <div class="pm-prog-header"><span>בישולים צפויים (xA)</span> <span><strong>0.22</strong> / למשחק</span></div>
+                                <div class="pm-prog-bg"><div class="pm-prog-fill" style="width: 22%; background: linear-gradient(90deg, #3498db, #2980b9);"></div></div>
+                            </div>
+                            
+                            <div class="pm-prog-row">
+                                <div class="pm-prog-header"><span>מעורבות בשערי קבוצה</span> <span><strong>68%</strong> מכלל השערים</span></div>
+                                <div class="pm-prog-bg"><div class="pm-prog-fill" style="width: 68%; background: linear-gradient(90deg, #f59e0b, #d97706);"></div></div>
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
                 <div id="pm-tab-matches" class="pm-tab-pane">
                     <div style="flex:1; display:flex; align-items:center; justify-content:center; height:100%; color: #94a3b8; font-weight: bold; font-size:16px;">משחקים אחרונים בבנייה 📅</div>
