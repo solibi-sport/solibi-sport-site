@@ -2470,6 +2470,41 @@
     transform: none !important;
     box-shadow: none !important;
 }
+
+        /* === תיקוני עיצוב מיוחדים למודאל קבוצה (Team Modal) === */
+#team-modal-overlay .pm-tabs-nav { 
+    background: #e2e8f0; 
+    padding: 6px; 
+    border-radius: 12px; 
+}
+#team-modal-overlay .pm-tab-btn { 
+    background: #062141; /* בלו נייבי */
+    color: #ffffff; 
+    margin: 0 4px; 
+    border-radius: 8px; 
+    font-size: 12px;
+}
+#team-modal-overlay .pm-tab-btn:hover { 
+    background: #0a2e57; 
+}
+#team-modal-overlay .pm-tab-btn.active { 
+    background: var(--brand-green); /* ירוק סוליבי כשהוא פעיל */
+    color: #ffffff; 
+    box-shadow: 0 4px 10px rgba(124,168,86,0.4); 
+}
+
+/* קיבוע הכותרות בטבלת הסגל של המודאל */
+#tm-tab-squad {
+    position: relative;
+}
+#tm-tab-squad .squad-table th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -1px; /* מדביק את זה למעלה בגלילה */
+    z-index: 20;
+    background: var(--element-navy-gradient);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
         
     </style>
         
@@ -8221,9 +8256,9 @@ window.openTeamModal = function(teamName) {
             <tr style="border-bottom: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(124,168,86,0.05)'" onmouseout="this.style.background='transparent'" onclick="openPlayerModalById(${p.id}, false)">
                 <td style="padding: 8px; color: ${posColor}; font-weight: bold; text-align: center;">${p.displayPos}</td>
                 <td style="padding: 8px;">
-                    <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
-                        <img src="${img}" onerror="this.src='https://ui-avatars.com/api/?name=P'" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid #cbd5e1;">
-                        <span style="font-weight:900; color:var(--text-dark);">${pName}</span>
+                    <div style="display:flex; align-items:center; justify-content:flex-start; gap:12px; width: 160px; margin: 0 auto;">
+                        <img src="${img}" onerror="this.src='https://ui-avatars.com/api/?name=P'" style="width:30px; height:30px; border-radius:50%; object-fit:cover; border:2px solid #cbd5e1; flex-shrink: 0; background:#fff;">
+                        <span style="font-weight:900; color:var(--text-dark); text-align:right;">${pName}</span>
                     </div>
                 </td>
                 <td style="padding: 8px; font-weight: 900; text-align: center; color: var(--text-dark);">${p.fantasyPts || 0}</td>
@@ -8231,7 +8266,7 @@ window.openTeamModal = function(teamName) {
             </tr>
         `;
     });
-
+    
     // --- טאב 2: סטטיסטיקות פנימיות ---
     const renderInnerStat = (containerId, sortKey) => {
         const cont = document.getElementById(containerId);
