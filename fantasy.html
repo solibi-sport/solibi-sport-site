@@ -5940,12 +5940,27 @@ window.openMatchBreakdown = function(homeName, awayName, homeScore, awayScore) {
     homeContainer.innerHTML = window.generateMatchPlayersBreakdown(parseInt(homeScore) || 0);
     awayContainer.innerHTML = window.generateMatchPlayersBreakdown(parseInt(awayScore) || 0);
 
-    document.getElementById('match-breakdown-overlay').style.display = 'flex';
+    const overlay = document.getElementById('match-breakdown-overlay');
+    overlay.style.display = 'flex';
+    
+    // הפקודה שחסרה: הוספת ה-active מבטלת את השקיפות ומפעילה את האנימציה!
+    setTimeout(() => {
+        overlay.classList.add('active');
+    }, 10);
 };
 
 window.closeMatchBreakdown = function(e) {
-    if (e && e.target !== document.getElementById('match-breakdown-overlay')) return;
-    document.getElementById('match-breakdown-overlay').style.display = 'none';
+    const overlay = document.getElementById('match-breakdown-overlay');
+    
+    // בדיקה: האם לחצו על הרקע השחור או על כפתור ה-X
+    if (e && e.target !== overlay && !e.target.closest('.pm-close')) return;
+    
+    overlay.classList.remove('active'); // מחזיר את השקיפות ל-0
+    
+    // מעלים את החלון לגמרי אחרי שהאנימציה מסתיימת (300 מילישניות)
+    setTimeout(() => {
+        overlay.style.display = 'none';
+    }, 300);
 };
 
 window.generateMatchPlayersBreakdown = function(targetScore) {
