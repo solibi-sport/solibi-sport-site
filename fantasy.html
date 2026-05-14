@@ -2505,6 +2505,61 @@
     background: var(--element-navy-gradient);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
+
+        /* === תיקון גלילה בלוח המשחקים (הקפאת המסך וגלילה פנימית) - גירסה מתוקנת ובטוחה === */
+        
+        /* 1. מונע את גלילת העמוד רק כשהטאב פעיל (מונע התנגשות ודריסת טאבים אחרים!) */
+        #tab-fixtures.active {
+            overflow: hidden !important;
+        }
+
+        /* 2. מותח את הגריד הראשי על כל הגובה הפנוי */
+        #tab-fixtures .fixtures-split-layout {
+            flex: 1;
+            min-height: 0;
+            align-items: stretch !important; /* קריטי כדי שהעמודות יגיעו עד למטה */
+        }
+
+        /* 3. עמודת המשחקים (ימין) מתנהגת כפלקס גמיש */
+        #tab-fixtures .fixtures-main-col {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            height: 100%;
+        }
+
+        /* 4. הקוביה הלבנה התחתונה מקבלת את כל השטח הנותר ולא חורגת ממנו */
+        #tab-fixtures .fixtures-main-col .profile-section-card {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 5. פס הגלילה מועבר נטו לתוך רשימת המשחקים */
+        #tab-fixtures .fixtures-scroll-area {
+            flex: 1;
+            min-height: 0;
+            max-height: none !important; /* ביטול הגבלת הגובה הישנה */
+            overflow-y: auto !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        /* 6. עמודת הסטטיסטיקות (שמאל) מקבלת גלילה משלה במידת הצורך */
+        #tab-fixtures .fixtures-side-col {
+            height: 100%;
+            min-height: 0;
+            overflow-y: auto !important;
+            padding-left: 5px;
+        }
+
+        /* 7. ביטול הקפאת המסך בניידים ומסכים קטנים (כדי למנוע תקלות מגע) */
+        @media (max-width: 1200px) {
+            #tab-fixtures.active { overflow-y: auto !important; }
+            #tab-fixtures .fixtures-scroll-area { overflow-y: visible !important; flex: none; }
+            #tab-fixtures .fixtures-side-col { overflow-y: visible !important; height: auto; }
+        }
         
     </style>
         
