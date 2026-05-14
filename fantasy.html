@@ -4681,7 +4681,7 @@
 </div>
 
 <div class="player-modal-overlay" id="team-modal-overlay" onclick="closeTeamModal(event)" style="z-index: 10008; display: none;">
-    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 90vh; width: 95%; max-width: 800px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
+<div class="player-modal" onclick="event.stopPropagation()" style="height: 650px; max-height: 90vh; width: 95%; max-width: 800px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
         
         <div class="pm-header" style="padding: 20px; text-align: center; border-bottom: 3px solid var(--brand-green); display: flex; align-items: center; justify-content: space-between;">
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -8229,14 +8229,49 @@ window.openTeamModal = function(teamName) {
     const initials = teamName.substring(0,2).replace(/\s/g, '');
     document.getElementById('tm-img').src = `https://ui-avatars.com/api/?name=${initials}&background=${bg}&color=fff`;
 
-    // 2. בניית הסגל (נמשוך מסופאבייס/זיכרון)
+    // 2. בניית הסגל לפי פרוטוקול חוקים נוקשה (או משיכה מהזיכרון אם כבר נוצר)
     let squad = window.simulatedTeams ? window.simulatedTeams[teamName] : null;
+    
     if (!squad) {
-        const allPlayersList = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' || teamName === 'מכבי סוליבי');
-        let shuffled = allPlayersList.sort(() => 0.5 - Math.random());
-        squad = shuffled.slice(0, 20); 
+        let pool = Object.values(window.allPlayersMap).filter(p => p.owner !== 'מכבי סוליבי' || teamName === 'מכבי סוליבי');
+        pool = pool.sort(() => 0.5 - Math.random()); // ערבוב המאגר
+
+        let generatedSquad = [];
+        let posCounts = { 'שוער': 0, 'הגנה': 0, 'קישור': 0, 'התקפה': 0 };
+        let tierCounts = { 'כוכב על': 0, 'רמה 1': 0, 'רמה 2': 0, 'רמה 3': 0, 'רמה 4': 0 };
+
+        let posLimits = { 'שוער': 2, 'הגנה': 6, 'קישור': 6, 'התקפה': 6 };
+        let tierLimits = { 'כוכב על': 2, 'רמה 1': 3, 'רמה 2': 5, 'רמה 3': 5, 'רמה 4': 5 };
+
+        // בנייה מדויקת לפי ההגבלות
+        for (let p of pool) {
+            let pos = p.displayPos;
+            let tier = p.calcTierName;
+
+            if (posCounts[pos] < posLimits[pos] && tierCounts[tier] < tierLimits[tier]) {
+                generatedSquad.push(p);
+                posCounts[pos]++;
+                tierCounts[tier]++;
+            }
+            if (generatedSquad.length === 20) break;
+        }
+
+        // השלמה במקרה שמשהו חסר במאגר הפנוי (כדי לא להשאיר קבוצה עם 19 שחקנים)
+        if (generatedSquad.length < 20) {
+            for (let p of pool) {
+                if (!generatedSquad.find(sp => sp.id === p.id)) {
+                    generatedSquad.push(p);
+                    if (generatedSquad.length === 20) break;
+                }
+            }
+        }
+
         const posOrder = {'שוער': 1, 'הגנה': 2, 'קישור': 3, 'התקפה': 4};
-        squad.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
+        generatedSquad.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
+
+        if (!window.simulatedTeams) window.simulatedTeams = {};
+        window.simulatedTeams[teamName] = generatedSquad;
+        squad = generatedSquad;
     }
 
     // --- טאב 1: סגל ---
@@ -8266,7 +8301,7 @@ window.openTeamModal = function(teamName) {
             </tr>
         `;
     });
-    
+
     // --- טאב 2: סטטיסטיקות פנימיות ---
     const renderInnerStat = (containerId, sortKey) => {
         const cont = document.getElementById(containerId);
