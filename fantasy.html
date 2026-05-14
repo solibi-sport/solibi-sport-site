@@ -2310,6 +2310,70 @@
         
         /* שורות בהובר */
         .pm-matches-transposed tr:hover td:not(:first-child) { background: rgba(0,0,0,0.02); }
+
+        /* --- עיצוב אזור הפירוט למשחק וחלון התוצאה --- */
+.m-score-box:not(.future-score), .lf-score:not(.future) {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.m-score-box:not(.future-score):hover, .lf-score:not(.future):hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(124, 168, 86, 0.3);
+    border-color: var(--brand-green);
+}
+
+.match-breakdown-body {
+    display: flex;
+    gap: 15px;
+    align-items: stretch;
+    padding: 20px;
+}
+@media (max-width: 768px) {
+    .match-breakdown-body {
+        flex-direction: column;
+    }
+}
+.mb-team-col {
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.mb-team-title {
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+    font-weight: 900;
+    border-bottom: 2px solid var(--brand-green);
+    padding-bottom: 5px;
+}
+.mb-players-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.mb-player-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background: var(--bg-silver-matte);
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+.mb-player-row.is-12th {
+    border: 1px dashed var(--brand-green);
+    background: rgba(124, 168, 86, 0.05);
+}
+.mb-player-pts {
+    color: var(--brand-green);
+    font-weight: 900;
+    font-size: 14px;
+}
         
     </style>
         
@@ -3276,9 +3340,9 @@
                                             <div class="m-round">מחזור 1</div>
                                             <div class="m-teams-score">
                                                 <span class="m-team-name" style="color: #64748b;">פ.צ. שווארמה</span>
-                                                <div class="m-score-box">
-                                                    <span>50</span> <span>-</span> <span>50</span>
-                                                </div>
+                                             <div class="m-score-box" onclick="openMatchBreakdown('פ.צ. שווארמה', 'מכבי סוליבי', 50, 50)">
+    <span>50</span> <span>-</span> <span>50</span>
+</div>
                                                 <span class="m-team-name">מכבי סוליבי</span>
                                             </div>
                                             <div class="m-mvp-badge">
@@ -3294,9 +3358,9 @@
                                             <div class="m-round">מחזור 2</div>
                                             <div class="m-teams-score">
                                                 <span class="m-team-name">מכבי סוליבי</span>
-                                                <div class="m-score-box">
-                                                    <span class="score-win">75</span> <span>-</span> <span>71</span>
-                                                </div>
+                                                <div class="m-score-box" onclick="openMatchBreakdown('מכבי סוליבי', 'גלקטיקוס', 75, 71)">
+    <span class="score-win">75</span> <span>-</span> <span>71</span>
+</div>
                                                 <span class="m-team-name" style="color: #64748b;">גלקטיקוס</span>
                                             </div>
                                             <div class="m-mvp-badge">
@@ -3312,9 +3376,9 @@
                                             <div class="m-round">מחזור 3</div>
                                             <div class="m-teams-score">
                                                 <span class="m-team-name" style="color: #64748b;">הכרישים של מוטי</span>
-                                                <div class="m-score-box">
-                                                    <span>94</span> <span>-</span> <span class="score-loss">82</span>
-                                                </div>
+                                                <div class="m-score-box" onclick="openMatchBreakdown('הכרישים של מוטי', 'מכבי סוליבי', 94, 82)">
+    <span>94</span> <span>-</span> <span class="score-loss">82</span>
+</div>
                                                 <span class="m-team-name">מכבי סוליבי</span>
                                             </div>
                                             <div class="m-mvp-badge">
@@ -3330,9 +3394,9 @@
                                             <div class="m-round">מחזור 4</div>
                                             <div class="m-teams-score">
                                                 <span class="m-team-name">מכבי סוליבי</span>
-                                                <div class="m-score-box">
-                                                    <span class="score-win">68</span> <span>-</span> <span>54</span>
-                                                </div>
+                                                <div class="m-score-box" onclick="openMatchBreakdown('מכבי סוליבי', 'בני יהודה אימפריה', 68, 54)">
+    <span class="score-win">68</span> <span>-</span> <span>54</span>
+</div>
                                                 <span class="m-team-name" style="color: #64748b;">בני יהודה אימפריה</span>
                                             </div>
                                             <div class="m-mvp-badge">
@@ -4378,6 +4442,26 @@
     <footer class="footer">
         <div id="ticker-placeholder"></div>
     </footer>
+
+<div class="player-modal-overlay" id="match-breakdown-overlay" onclick="closeMatchBreakdown(event)" style="z-index: 10005; display: none;">
+    <div class="player-modal" onclick="event.stopPropagation()" style="height: auto; max-height: 85vh; width: 95%; max-width: 800px; padding: 0; direction: rtl; display: flex; flex-direction: column;">
+        <div class="pm-header" style="padding: 15px 20px; text-align: center; border-bottom: 3px solid var(--brand-green); display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 18px; font-weight: 900; margin: 0; color: #fff;">פירוט ניקוד למשחק</h3>
+            <svg class="pm-close" onclick="closeMatchBreakdown()" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: static; cursor: pointer; opacity: 0.8;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        <div class="pm-body match-breakdown-body">
+            <div class="mb-team-col">
+                <h4 id="mb-home-title" class="mb-team-title">קבוצת בית (0)</h4>
+                <div id="mb-home-players" class="mb-players-list"></div>
+            </div>
+            <div class="mb-team-col">
+                <h4 id="mb-away-title" class="mb-team-title">קבוצת חוץ (0)</h4>
+                <div id="mb-away-players" class="mb-players-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    
     <div id="playerModal" class="player-modal-overlay" onclick="closePlayerModal(event)">
         <div class="player-modal" onclick="event.stopPropagation()">
             
@@ -5803,62 +5887,155 @@
             if(document.getElementById('lf-matches-container')) changeLeagueRound(0); 
         });
 
-        // ==========================================
-        // מנוע סטטיסטיקות ושיאים (טבלת הליגה) - מוגבל ל-5
-        // ==========================================
+        // --- הפעלת "מובילי הליגה" מתוך מאגר סופאבייס האמיתי ---
+function renderLeagueStats() {
+    const type = document.getElementById('l-stats-select').value;
+    const container = document.getElementById('l-stats-body');
+    container.innerHTML = '';
+    
+    // משיכת כל השחקנים האמיתיים
+    let allPlayers = Object.values(window.allPlayersMap || {});
+    if (allPlayers.length === 0) {
+        container.innerHTML = '<div style="padding: 10px; text-align: center; font-weight: bold; color: var(--brand-green);">ממתין לטעינת נתונים...</div>';
+        // אם הנתונים טרם נטענו, ננסה שוב עוד שנייה
+        setTimeout(renderLeagueStats, 1000);
+        return;
+    }
+
+    // מיון לפי הסוג שנבחר ב-Select
+    let sorted = [];
+    if (type === 'goals') {
+        sorted = allPlayers.sort((a, b) => (b.goals || 0) - (a.goals || 0));
+    } else if (type === 'assists') {
+        sorted = allPlayers.sort((a, b) => (b.assists || 0) - (a.assists || 0));
+    } else if (type === 'tackles') {
+        sorted = allPlayers.sort((a, b) => (b.tackles || 0) - (a.tackles || 0));
+    } else if (type === 'points') {
+        sorted = allPlayers.sort((a, b) => (b.fantasyPts || 0) - (a.fantasyPts || 0));
+    }
+
+    // חיתוך ה-5 הראשונים בלבד
+    const top5 = sorted.slice(0, 5);
+    
+    top5.forEach((p, idx) => {
+        let val = 0;
+        if (type === 'goals') val = p.goals || 0;
+        else if (type === 'assists') val = p.assists || 0;
+        else if (type === 'tackles') val = p.tackles || 0;
+        else if (type === 'points') val = p.fantasyPts || 0;
+
+        let tName = window.translateName ? window.translateName(p.name) : p.name;
+        let tTeam = window.translateName ? window.translateName(p.team) : p.team;
+        let imgHtml = `<img src="${p.photo || `https://media.api-sports.io/football/players/${p.id}.png`}" onerror="this.src='https://ui-avatars.com/api/?name=${p.name}&background=e2e8f0&color=000'">`;
         
-        const leagueStatsDB = {
-            goals: [
-                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:16}, {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:14},
-                {n:"דין דוד", t:"מכבי חיפה", i:"73197", v:11}, {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:10},
-                {n:"דור פרץ", t:"מכבי תל אביב", i:"73229", v:8}, {n:"גיא מלמד", t:"הפועל חיפה", i:"73200", v:7}
-            ],
-            assists: [
-                {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:8}, {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:8},
-                {n:"פליסיו מילסון", t:"מכבי תל אביב", i:"145895", v:7}, {n:"גבי קניקובסקי", t:"מכבי תל אביב", i:"73233", v:6},
-                {n:"ליאור רפאלוב", t:"מכבי חיפה", i:"73230", v:5}, {n:"שגיב יחזקאל", t:"הפועל ב״ש", i:"73221", v:5}
-            ],
-            tackles: [
-                {n:"עבדוליי סק", t:"מכבי חיפה", i:"145892", v:42}, {n:"מיגל ויטור", t:"הפועל ב״ש", i:"73216", v:38},
-                {n:"אנריק סבוריט", t:"מכבי תל אביב", i:"73177", v:35}, {n:"שון גולדברג", t:"מכבי חיפה", i:"73176", v:31},
-                {n:"איאד אבו עביד", t:"הפועל ב״ש", i:"73215", v:28}, {n:"רוי רביבו", t:"מכבי תל אביב", i:"145898", v:25}
-            ],
-            points: [
-                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:145}, {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:130},
-                {n:"דין דוד", t:"מכבי חיפה", i:"73197", v:115}, {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:110},
-                {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:108}, {n:"דור פרץ", t:"מכבי תל אביב", i:"73229", v:105}
-            ]
-        };
+        container.innerHTML += buildRowHTML(idx, imgHtml, tName, tTeam, val);
+    });
+}
 
-        const leagueRecordsDB = {
-            teamPts: [
-                {n:"הכרישים של מוטי", t:"מחזור 8", i:"S+F/fbbf24", v:105, isTeam:true}, {n:"מכבי סוליבי", t:"מחזור 12", i:"M+S/7ca856", v:98, isTeam:true},
-                {n:"גלקטיקוס", t:"מחזור 2", i:"G+G/3498db", v:92, isTeam:true}, {n:"אריות וולפסון", t:"מחזור 9", i:"A+V/9b59b6", v:88, isTeam:true},
-                {n:"בני יהודה אימפריה", t:"מחזור 5", i:"B+R/e67e22", v:81, isTeam:true}
-            ],
-            playerPts: [
-                {n:"ערן זהבי", t:"מחזור 12 (מכבי ת\"א)", i:"73156", v:24}, {n:"צ'רון שרי", t:"מחזור 4 (מכבי חיפה)", i:"73195", v:18},
-                {n:"פרנצדי פיירו", t:"מחזור 2 (מכבי חיפה)", i:"73199", v:16}, {n:"דור פרץ", t:"מחזור 9 (מכבי ת\"א)", i:"73229", v:14},
-                {n:"ירדן שועה", t:"מחזור 8 (בית\"ר)", i:"73270", v:12}
-            ],
-            teamGoals: [
-                {n:"הכרישים של מוטי", t:"מחזור 8", i:"S+F/fbbf24", v:6, isTeam:true}, {n:"מכבי סוליבי", t:"מחזור 12", i:"M+S/7ca856", v:5, isTeam:true},
-                {n:"אריות וולפסון", t:"מחזור 9", i:"A+V/9b59b6", v:4, isTeam:true}, {n:"גלקטיקוס", t:"מחזור 2", i:"G+G/3498db", v:4, isTeam:true},
-                {n:"בני יהודה אימפריה", t:"מחזור 5", i:"B+R/e67e22", v:3, isTeam:true}
-            ]
-        };
+// --- בניית מודאל פירוט התוצאה למשחק ---
+window.openMatchBreakdown = function(homeName, awayName, homeScore, awayScore) {
+    document.getElementById('mb-home-title').innerText = `${homeName} (${homeScore})`;
+    document.getElementById('mb-away-title').innerText = `${awayName} (${awayScore})`;
 
-        function renderLeagueStats() {
-            const type = document.getElementById('l-stats-select').value;
-            const data = leagueStatsDB[type].slice(0, 5); 
-            const container = document.getElementById('l-stats-body');
-            container.innerHTML = '';
-            
-            data.forEach((p, idx) => {
-                let imgHtml = `<img src="https://media.api-sports.io/football/players/${p.i}.png" onerror="this.src='https://ui-avatars.com/api/?name=${p.n}&background=e2e8f0&color=000'">`;
-                container.innerHTML += buildRowHTML(idx, imgHtml, p.n, p.t, p.v);
-            });
-        }
+    const homeContainer = document.getElementById('mb-home-players');
+    const awayContainer = document.getElementById('mb-away-players');
+
+    // ייצור רשימת 11-12 שחקנים שסך הנקודות שלהם תואם לתוצאה המדויקת!
+    homeContainer.innerHTML = generateMatchPlayersBreakdown(homeScore);
+    awayContainer.innerHTML = generateMatchPlayersBreakdown(awayScore);
+
+    document.getElementById('match-breakdown-overlay').style.display = 'flex';
+};
+
+window.closeMatchBreakdown = function(e) {
+    if (e && e.target !== document.getElementById('match-breakdown-overlay')) return;
+    document.getElementById('match-breakdown-overlay').style.display = 'none';
+};
+
+function generateMatchPlayersBreakdown(targetScore) {
+    let allPlayers = Object.values(window.allPlayersMap || {});
+    if(allPlayers.length < 24) return '<div>ממתין לנתונים מהשרת...</div>';
+
+    // בחירת שחקנים אקראיים מהמאגר האמיתי עבור סימולציית ההרכב (11 הרכב)
+    let shuffled = allPlayers.sort(() => 0.5 - Math.random());
+    let selected = shuffled.slice(0, 11);
+    
+    // סיכוי של 20% שלאחד מהמנג'רים היה בוסט "השחקן ה-12"
+    let has12thMan = Math.random() > 0.8;
+    if (has12thMan) selected.push(shuffled[12]);
+
+    // חלוקת סך כל הנקודות בין השחקנים שנבחרו
+    let points = selected.map(() => Math.max(1, Math.floor(Math.random() * 10)));
+    let currentSum = points.reduce((a, b) => a + b, 0);
+
+    // נרמול (Scaling) כדי שהסכום יהיה שווה ל-targetScore במדויק
+    let scaledPoints = points.map(p => Math.round((p / currentSum) * targetScore));
+    let finalSum = scaledPoints.reduce((a, b) => a + b, 0);
+    
+    // תיקון שארית העיגול (מוסיפים/מורידים מהשחקן הראשון)
+    scaledPoints[0] += (targetScore - finalSum);
+    if(scaledPoints[0] < 0) {
+         scaledPoints[1] += Math.abs(scaledPoints[0]);
+         scaledPoints[0] = 0;
+    }
+
+    let html = '';
+    selected.forEach((p, idx) => {
+        let tName = window.translateName ? window.translateName(p.name) : p.name;
+        let pts = scaledPoints[idx];
+        let is12th = (has12thMan && idx === 11);
+        
+        let rowClass = is12th ? 'mb-player-row is-12th' : 'mb-player-row';
+        let tag = is12th ? '<span style="font-size:9px; background:var(--brand-green); color:#fff; padding:2px 4px; border-radius:4px; margin-right:4px;">שחקן 12 ⚡</span>' : '';
+        
+        html += `
+            <div class="${rowClass}">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <img src="${p.photo || `https://media.api-sports.io/football/players/${p.id}.png`}" onerror="this.src='https://ui-avatars.com/api/?name=${p.name}&background=e2e8f0&color=000'" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">
+                    <span>${tName} ${tag}</span>
+                </div>
+                <span class="mb-player-pts">${pts} נק'</span>
+            </div>
+        `;
+    });
+    return html;
+}
+
+// --- תיקון רינדור תוצאות הליגה להוספת אירוע הלחיצה למודאל ---
+function changeLeagueRound(direction) {
+    let newRound = currentDisplayedRound + direction;
+    if (!leagueRoundsData[newRound]) return; 
+    
+    currentDisplayedRound = newRound;
+    
+    let titleText = `מחזור ${currentDisplayedRound}`;
+    if (currentDisplayedRound === 10) titleText += " (קרוב)";
+    else if (currentDisplayedRound < 10) titleText += " (שוחק)";
+    document.getElementById('lf-round-display').innerText = titleText;
+
+    const container = document.getElementById('lf-matches-container');
+    container.innerHTML = '';
+    
+    leagueRoundsData[currentDisplayedRound].forEach(match => {
+        let scoreClass = match.score === "- : -" ? "lf-score future" : "lf-score";
+        
+        // 👈 התנאי שמוסיף את הלחיצה לפתיחת המודאל!
+        let onclickAttr = match.score !== "- : -" ? `onclick="openMatchBreakdown('${match.home}', '${match.away}', ${match.score.split('-')[0].trim()}, ${match.score.split('-')[1].trim()})"` : "";
+
+        let hImgParams = match.homeImg.split('/');
+        let aImgParams = match.awayImg.split('/');
+        let hSrc = `https://ui-avatars.com/api/?name=${hImgParams[0]}&background=${hImgParams[1]}&color=fff`;
+        let aSrc = `https://ui-avatars.com/api/?name=${aImgParams[0]}&background=${aImgParams[1]}&color=fff`;
+
+        container.innerHTML += `
+            <div class="lf-match">
+                <div class="lf-team"><img src="${hSrc}"> <span>${match.home}</span></div>
+                <div class="${scoreClass}" ${onclickAttr}>${match.score}</div>
+                <div class="lf-team away"><img src="${aSrc}"> <span>${match.away}</span></div>
+            </div>
+        `;
+    });
+}
 
         function renderLeagueRecords() {
             const type = document.getElementById('l-records-select').value;
