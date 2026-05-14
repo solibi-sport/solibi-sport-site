@@ -2234,19 +2234,6 @@
         .pm-prog-bg { width: 100%; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
         .pm-prog-fill { height: 100%; background: linear-gradient(90deg, var(--brand-green) 0%, #5d823e 100%); border-radius: 3px; }
 
-        /* =========================================
-           עיצוב טאב משחקים אחרונים (בתוך מודאל שחקן)
-           ========================================= */
-        .pm-matches-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; }
-        .pm-matches-table th { background: var(--bg-silver-matte); color: #64748b; font-weight: bold; padding: 8px 4px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
-        .pm-matches-table td { padding: 10px 4px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; color: var(--text-dark); font-weight: 600; }
-        .pm-matches-table tr:hover td { background: rgba(124, 168, 86, 0.05); }
-        .pm-matches-table tr:last-child td { border-bottom: none; }
-        
-        .pm-match-opp { display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .pm-match-opp img { width: 18px; height: 18px; border-radius: 50%; object-fit: contain; }
-        .pm-match-opp span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60px;}
-
         .pm-pts-badge { background: rgba(124, 168, 86, 0.15); color: var(--brand-green); font-weight: 900; padding: 4px 8px; border-radius: 6px; display: inline-block; font-size: 12px; border: 1px solid rgba(124, 168, 86, 0.3);}
         .pm-pts-badge.negative { background: rgba(239, 68, 68, 0.15); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
         .pm-pts-badge.zero { background: #f1f5f9; color: #94a3b8; border-color: #cbd5e1; }
@@ -2281,6 +2268,39 @@
         .pm-comp-table td:nth-child(2) { color: #64748b; font-weight: 900; background: #f8fafc; font-size: 10px; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; } 
         
         .pm-comp-win { color: var(--brand-green) !important; font-weight: 900 !important; background: rgba(124, 168, 86, 0.15); border-radius: 6px; display: inline-block; padding: 3px 8px; border: 1px solid rgba(124, 168, 86, 0.3);}
+
+/* =========================================
+           עיצוב טאב משחקים אחרונים מורחב (הפוך צירים)
+           ========================================= */
+        .pm-matches-transposed { width: 100%; border-collapse: collapse; font-size: 12px; text-align: center; }
+        .pm-matches-transposed th { background: var(--bg-silver-matte); color: var(--text-dark); font-weight: 900; padding: 10px 4px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; line-height: 1.4; border-left: 1px solid #cbd5e1;}
+        .pm-matches-transposed td { padding: 10px 4px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; color: var(--text-dark); font-weight: 600; border-left: 1px solid #f1f5f9; white-space: nowrap;}
+        
+        /* קיבוע העמודה הימנית שתמיד תישאר על המסך בגלילה אופקית */
+        .pm-matches-transposed th:first-child,
+        .pm-matches-transposed td:first-child {
+            position: -webkit-sticky;
+            position: sticky;
+            right: 0;
+            background: #ffffff;
+            z-index: 2;
+            border-left: 2px solid #cbd5e1;
+            text-align: right;
+            padding-right: 15px;
+            font-weight: 900;
+        }
+        .pm-matches-transposed th:first-child {
+            background: var(--bg-silver-matte);
+            z-index: 3;
+            border-bottom: 2px solid #cbd5e1;
+        }
+        
+        /* שורת סך הכל נקודות צבועה בירוק עדין */
+        .pm-matches-transposed tr.pts-total-row td { background: rgba(124, 168, 86, 0.05); }
+        .pm-matches-transposed tr.pts-total-row td:first-child { background: #f4f8f1; color: var(--brand-green); }
+        
+        /* שורות בהובר */
+        .pm-matches-transposed tr:hover td:not(:first-child) { background: rgba(0,0,0,0.02); }
         
     </style>
         
@@ -4541,89 +4561,106 @@
 
                     </div>
                 </div>
-               <div id="pm-tab-matches" class="pm-tab-pane">
-                    <div class="pm-a-box" style="padding: 0; overflow-x: auto; border: none; box-shadow: none;">
-                        <table class="pm-matches-table" style="direction: rtl;">
+              <div id="pm-tab-matches" class="pm-tab-pane">
+                    <div class="pm-a-box" style="padding: 0; overflow-x: auto; border: none; box-shadow: none; direction: rtl;">
+                        <table class="pm-matches-transposed">
                             <thead>
                                 <tr>
-                                    <th title="מחזור ויריבה">יריבה</th>
-                                    <th title="דקות ששיחק">⏱️</th>
-                                    <th title="שערים שהבקיע">⚽</th>
-                                    <th title="בישולים">👟</th>
-                                    <th title="רשת נקייה">🛡️</th>
-                                    <th title="כרטיסים / קנסות">🟨/🟥</th>
-                                    <th title="סה״כ נקודות פנטזי במשחק">⭐ נק'</th>
+                                    <th style="min-width: 140px;">פרמטר / יריבה</th>
+                                    <th>מ' 9<br><span style="font-size: 9px; font-weight: bold; color: #64748b;">פ.צ. שווארמה</span></th>
+                                    <th>מ' 8<br><span style="font-size: 9px; font-weight: bold; color: #64748b;">הפועל עגלות</span></th>
+                                    <th>מ' 7<br><span style="font-size: 9px; font-weight: bold; color: #64748b;">אריות וולפסון</span></th>
+                                    <th>מ' 6<br><span style="font-size: 9px; font-weight: bold; color: #64748b;">גלקטיקוס</span></th>
+                                    <th>מ' 5<br><span style="font-size: 9px; font-weight: bold; color: #64748b;">מוטי</span></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <div class="pm-match-opp">
-                                            <span style="font-size: 9px; color: #94a3b8;">מ' 9</span>
-                                            <img src="https://ui-avatars.com/api/?name=F+C&background=1abc9c&color=fff" title="פ.צ. שווארמה">
-                                        </div>
-                                    </td>
+                                    <td>⏱️ דקות משחק</td>
                                     <td>90'</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td><span style="color:#ef4444;">❌</span></td>
-                                    <td>-</td>
-                                    <td><span class="pm-pts-badge">15</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="pm-match-opp">
-                                            <span style="font-size: 9px; color: #94a3b8;">מ' 8</span>
-                                            <img src="https://ui-avatars.com/api/?name=H+A&background=94a3b8&color=fff" title="הפועל עגלות">
-                                        </div>
-                                    </td>
                                     <td>75'</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td><span style="color:#2ecc71;">✅</span></td>
-                                    <td>🟨</td>
-                                    <td><span class="pm-pts-badge negative">-1</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="pm-match-opp">
-                                            <span style="font-size: 9px; color: #94a3b8;">מ' 7</span>
-                                            <img src="https://ui-avatars.com/api/?name=A+V&background=9b59b6&color=fff" title="אריות וולפסון">
-                                        </div>
-                                    </td>
                                     <td>90'</td>
-                                    <td>1</td>
-                                    <td>0</td>
-                                    <td><span style="color:#ef4444;">❌</span></td>
-                                    <td>-</td>
-                                    <td><span class="pm-pts-badge">12</span></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="pm-match-opp">
-                                            <span style="font-size: 9px; color: #94a3b8;">מ' 6</span>
-                                            <img src="https://ui-avatars.com/api/?name=G+G&background=3498db&color=fff" title="גלקטיקוס">
-                                        </div>
-                                    </td>
                                     <td>45'</td>
-                                    <td>0</td>
-                                    <td>1</td>
-                                    <td><span style="color:#ef4444;">❌</span></td>
-                                    <td>-</td>
-                                    <td><span class="pm-pts-badge">8</span></td>
+                                    <td>12'</td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div class="pm-match-opp">
-                                            <span style="font-size: 9px; color: #94a3b8;">מ' 5</span>
-                                            <img src="https://ui-avatars.com/api/?name=S+F&background=fbbf24&color=fff" title="הכרישים של מוטי">
-                                        </div>
-                                    </td>
-                                    <td>12'</td>
+                                    <td>⚽ שערים</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>1</td>
                                     <td>0</td>
                                     <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>👟 בישולים</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>🛡️ רשת נקייה</td>
                                     <td><span style="color:#ef4444;">❌</span></td>
-                                    <td>-</td>
+                                    <td><span style="color:#2ecc71;">✅</span></td>
+                                    <td><span style="color:#ef4444;">❌</span></td>
+                                    <td><span style="color:#ef4444;">❌</span></td>
+                                    <td><span style="color:#ef4444;">❌</span></td>
+                                </tr>
+                                <tr>
+                                    <td>⚔️ תיקולים מוצלחים</td>
+                                    <td>4</td>
+                                    <td>2</td>
+                                    <td>5</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>🧤 הדיפות (שוער)</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>🟨 כרטיס צהוב</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>🟥 כרטיס אדום</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>❌ החמצת פנדל</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>🤦‍♂️ שער עצמי</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr class="pts-total-row">
+                                    <td>⭐ סה״כ פנטזי</td>
+                                    <td><span class="pm-pts-badge">15</span></td>
+                                    <td><span class="pm-pts-badge negative">-1</span></td>
+                                    <td><span class="pm-pts-badge">12</span></td>
+                                    <td><span class="pm-pts-badge">8</span></td>
                                     <td><span class="pm-pts-badge zero">2</span></td>
                                 </tr>
                             </tbody>
