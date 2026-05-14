@@ -755,14 +755,14 @@
         .trend-up { color: var(--brand-green); }
         .trend-down { color: #ef4444; }
 
-        /* הפיכת הפריסה ל-Flex כדי שנוכל למתוח אותה על כל השטח הנותר וליישר קוביות */
+      /* הפיכת הפריסה ל-Flex כדי שנוכל למתוח אותה על כל השטח הנותר וליישר קוביות */
         .profile-split-layout { 
             display: flex; 
             gap: 20px; 
             flex: 1; 
             min-height: 0; 
             padding-bottom: 5px; 
-            align-items: stretch; /* 👈 מכריח את שתי העמודות להיות באותו גובה בדיוק */
+            align-items: stretch; /* מותח את העמודות לאותו גובה בדיוק */
         } 
         
         .profile-main-col { display: flex; flex-direction: column; flex: 2; gap: 15px; min-width: 0; }
@@ -775,21 +775,18 @@
             display: flex; 
             flex-direction: column; 
             margin: 0; 
-            flex: 1; 
-            justify-content: space-evenly; 
-            height: 100%; /* 👈 פקודת הקסם: הקוביה תמיד תמלא את העמודה עד הסוף */
-            
-           /* 👈 המסגרת הנייבי וההצללה לקוביות הגדולות למטה */
+            flex: 1; /* מאפשר לקובייה למלא את כל הגובה של העמודה שלה */
+            justify-content: flex-start; /* שומר על התוכן צמוד למעלה ולא מורח אותו */
             border: 2px solid transparent;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
-        }
+
         .p-section-title { font-size: 16px; font-weight: 900; color: #ffffff; background: var(--element-navy-gradient); margin-bottom: 15px; padding: 10px 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;}
 
         /* ארון התארים */
         .trophies-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
         .trophy-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
-        .trophy-icon { font-size: 32px; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; background: #fff; border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.02);} /* רקע לבן שייבלט על הכסוף */
+        .trophy-icon { font-size: 32px; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; background: #fff; border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.02);} 
         .trophy-icon.gold { border-color: #fbbf24; background: #fff; }
         .trophy-icon.silver { border-color: #94a3b8; background: #fff; }
         .trophy-icon.bronze { border-color: #b45309; background: #fff; }
@@ -798,7 +795,7 @@
 
         /* אנליטיקה */
         .analytics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .a-item { display: flex; justify-content: space-between; padding: 12px; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); } /* רקע לבן */
+        .a-item { display: flex; justify-content: space-between; padding: 12px; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); } 
         .a-label { font-size: 13px; color: #64748b; font-weight: 600; }
         .a-val { font-size: 13px; font-weight: 900; color: var(--text-dark); }
 
@@ -806,8 +803,8 @@
         .p-leagues-list { 
             display: flex; flex-direction: column; 
             gap: 10px; 
-            flex: 1; /* פקודת הקסם 1: תתפוס את כל הגובה הפנוי בתוך הקובייה */
-            justify-content: space-evenly !important; /* פקודת הקסם 2: רווח את הליגות בצורה שווה לאורך כל הגובה */
+            flex: 1;
+            justify-content: flex-start !important; /* מהדק את השורות למעלה במסכים גדולים וקטנים */
         }
         .p-league-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid transparent; background: #ffffff; border-radius: 8px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); } 
         .p-league-row:hover { border-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.1); }
@@ -816,7 +813,7 @@
         .p-league-rank { font-size: 11px; color: #64748b; font-weight: 600; }
         
         @media (max-width: 1200px) {
-            .profile-split-layout { grid-template-columns: 1fr; }
+            .profile-split-layout { flex-direction: column; } /* תוקן כדי שיסתדר מעולה במסכים קטנים/ניידים */
             .profile-stats-grid { grid-template-columns: repeat(2, 1fr); }
             .trophies-container { grid-template-columns: repeat(2, 1fr); }
         }
