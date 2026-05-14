@@ -267,13 +267,22 @@
 
         @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* =========================================
+       /* =========================================
            עיצוב פסי גלילה לכל המערכת ומיקומם בצד ימין
            ========================================= */
-        ::-webkit-scrollbar { width: 10px; height: 10px; } /* 👈 החזרנו לעובי קריא יותר */
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); border-radius: 10px; } 
-        ::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; } /* 👈 צבע ירוק מלא מודגש */
-        ::-webkit-scrollbar-thumb:hover { background: #5d823e; border: 2px solid transparent; background-clip: padding-box; } /* 👈 ירוק כהה יותר בהובר */
+        * {
+            scrollbar-color: var(--brand-green) transparent; /* מכריח דפדפנים כמו פיירפוקס להשתמש בירוק */
+        }
+        
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02) !important; border-radius: 10px; } 
+        ::-webkit-scrollbar-thumb { 
+            background-color: var(--brand-green) !important; /* נעילה אגרסיבית לירוק שלנו */
+            border-radius: 10px; 
+            border: 2px solid transparent; 
+            background-clip: padding-box; 
+        } 
+        ::-webkit-scrollbar-thumb:hover { background-color: #5d823e !important; } /* ירוק כהה בהובר */
 
         /* העברת פסי הגלילה הפנימיים (של טבלאות, סטטיסטיקות ושיאים) לצד ימין */
         .squad-table-wrap, .market-table-container, .fixtures-scroll-area, .s-card-list, .rules-scroll-container, #incoming-offers-container, #outgoing-offers-container {
