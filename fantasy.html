@@ -4868,18 +4868,21 @@
                 startingXI.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
                 bench.sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
 
-                // איחוד חזרה: 11 ראשונים הרכב, 9 אחרונים ספסל
+               // איחוד חזרה: 11 ראשונים הרכב, 9 אחרונים ספסל (לשימוש בטבלת הסגל הגדולה בלבד)
                 const sortedSquad = [...startingXI, ...bench];
+                
+                // 👈 יצירת מערך חדש עבור קוביית "בחירת הרכב" (ממוין נטו לפי עמדות מ-1 עד 4)
+                const tacticsSortedSquad = [...mySquad].sort((a, b) => posOrder[a.displayPos] - posOrder[b.displayPos]);
 
-                // רינדור טבלת הסגל האישי (טאב סגל שחקנים)
+                // ניקוי הקונטיינרים
                 const squadTbody = document.getElementById('my-squad-body');
                 const benchList = document.getElementById('bench-list');
-                
                 if (squadTbody) squadTbody.innerHTML = '';
                 if (benchList) benchList.innerHTML = '';
 
+                // 1. ציור טבלת הסגל (ללא שינוי, שומר על החלוקה להרכב וספסל)
                 sortedSquad.forEach((p, index) => {
-                    const isStartingXI = index < 11; // 11 ראשונים להרכב, השאר ספסל (לצורך התצוגה בטבלה)
+                    const isStartingXI = index < 11; // 11 ראשונים להרכב, השאר ספסל
                     const statusHtml = isStartingXI 
                         ? `<span style="background:rgba(124,168,86,0.1); color:var(--brand-green); padding:3px 8px; border-radius:4px; font-size:10px;">הרכב</span>`
                         : `<span style="background:#f1f5f9; color:#64748b; padding:3px 8px; border-radius:4px; font-size:10px;">ספסל</span>`;
@@ -4888,16 +4891,14 @@
                     const tTeam = window.translateName ? window.translateName(p.team) : p.team;
                     const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
 
-                    // צבעי עמדות
                     let posColor = '#cbd5e1';
                     if(p.displayPos === 'שוער') posColor = '#f59e0b';
                     if(p.displayPos === 'הגנה') posColor = '#2ecc71';
                     if(p.displayPos === 'קישור') posColor = '#3498db';
-                   if(p.displayPos === 'התקפה') posColor = '#e74c3c';
+                    if(p.displayPos === 'התקפה') posColor = '#e74c3c';
 
-                   const statusIconsHtml = window.getPlayerStatusIcons ? window.getPlayerStatusIcons(p, false) : ''; // <--- יצירת הסמלים לשורה בטבלה
+                    const statusIconsHtml = window.getPlayerStatusIcons ? window.getPlayerStatusIcons(p, false) : '';
 
-                    // 1. הוספה לטבלת הסגל
                     if (squadTbody) {
                         squadTbody.innerHTML += `
                             <tr onclick="openPlayerModalById(${p.id}, true)">
@@ -4918,8 +4919,19 @@
                             </tr>
                         `;
                     }
+                });
 
-                    // 2. הוספה לרשימת הספסל (טאב בחירת הרכב)
+                // 2. ציור רשימת השחקנים בבחירת הרכב (ממוין נטו לפי עמדות מ-1 עד 4)
+                tacticsSortedSquad.forEach(p => {
+                    const tName = window.translateName ? window.translateName(p.name) : p.name;
+                    const playerImage = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+
+                    let posColor = '#cbd5e1';
+                    if(p.displayPos === 'שוער') posColor = '#f59e0b';
+                    if(p.displayPos === 'הגנה') posColor = '#2ecc71';
+                    if(p.displayPos === 'קישור') posColor = '#3498db';
+                    if(p.displayPos === 'התקפה') posColor = '#e74c3c';
+
                     if (benchList) {
                         benchList.innerHTML += `
                             <div draggable="true" ondragstart="dragStart(event)" data-id="${p.id}" data-name="${tName}" data-photo="${playerImage}" data-pos="${p.displayPos}" onclick="openPlayerModalById(${p.id}, true)" style="background: #fff; border: 1px solid #cbd5e1; border-right: 4px solid ${posColor}; border-radius: 6px; padding: 4px 8px; display: flex; align-items: center; justify-content: flex-start; gap: 10px; cursor: grab; transition: 0.2s; height: 48px;" onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='#fff'">
