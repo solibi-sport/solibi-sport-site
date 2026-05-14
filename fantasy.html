@@ -1779,6 +1779,7 @@
             max-width: 800px;
             aspect-ratio: 16 / 9;
             max-height: 450px; /* הגבלת גובה כדי שלא יתפוס חצי מסך בלפטופ */
+            flex-shrink: 0; /* פקודת קסם: מונעת מהסרטון להימחץ במסכים קטנים! */
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border-radius: 16px;
             border: 2px dashed #334155;
@@ -2362,8 +2363,7 @@
                             סקירה כללית: ליגת סוליבי
                         </h2>
                         
-<div style="background: #fff; padding: 40px 30px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 100%; min-height: min-content; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow-y: auto;">    <p class="content-desc" style="font-size: 15px; line-height: 1.6; margin-bottom: 30px; text-align: right; max-width: 800px; width: 100%; direction: rtl;">
-        ברוכים הבאים לליגת סוליבי של סוליבי ספורט. כאן תוכלו לבנות את קבוצת החלומות שלכם, לנהל תקציב רכש, לבצע חילופים טקטיים, להתחרות בליגות מול חברים, לאסוף בונוסים יומיים ולשדרג את הקבוצה דרך חנות הבוסטים וגלגל המזל.
+<div style="background: #fff; padding: 40px 30px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 100%; flex: 1; min-height: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow-y: auto;">        ברוכים הבאים לליגת סוליבי של סוליבי ספורט. כאן תוכלו לבנות את קבוצת החלומות שלכם, לנהל תקציב רכש, לבצע חילופים טקטיים, להתחרות בליגות מול חברים, לאסוף בונוסים יומיים ולשדרג את הקבוצה דרך חנות הבוסטים וגלגל המזל.
     </p>
     
     <div class="intro-video-placeholder" style="margin: 0; width: 100%;">
