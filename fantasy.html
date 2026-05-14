@@ -2442,6 +2442,35 @@
     border-radius: 6px;
 }
         
+/* --- עיצוב כפתור "לקראת המשחק" --- */
+.pre-match-btn {
+    font-size: 11px !important;
+    background: rgba(124, 168, 86, 0.1) !important;
+    color: var(--brand-green) !important;
+    border: 1px solid var(--brand-green) !important;
+    padding: 6px 12px !important;
+    border-radius: 6px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.pre-match-btn:hover {
+    background: var(--brand-green) !important;
+    color: #fff !important;
+}
+/* כפתור נעול למחזורים רחוקים */
+.pre-match-btn.disabled-future {
+    background: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    border: 1px dashed #cbd5e1 !important;
+    cursor: not-allowed !important;
+}
+.pre-match-btn.disabled-future:hover {
+    background: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+        
     </style>
         
 </head>
@@ -5919,35 +5948,63 @@
         };
 
         function changeLeagueRound(direction) {
-            let newRound = currentDisplayedRound + direction;
-            if (!leagueRoundsData[newRound]) return; 
-            
-            currentDisplayedRound = newRound;
-            
-            let titleText = `מחזור ${currentDisplayedRound}`;
-            if (currentDisplayedRound === 10) titleText += " (קרוב)";
-            else if (currentDisplayedRound < 10) titleText += " (שוחק)";
-            document.getElementById('lf-round-display').innerText = titleText;
+    let newRound = currentDisplayedRound + direction;
+    if (!leagueRoundsData[newRound]) return; 
+    
+    currentDisplayedRound = newRound;
+    
+    // סידור כותרת המחזור
+    let titleText = `מחזור ${currentDisplayedRound}`;
+    if (currentDisplayedRound === 10) titleText += " (קרוב)";
+    else if (currentDisplayedRound < 10) titleText += " (שוחק)";
+    else titleText += " (עתידי)"; // כיתוב למחזורים רחוקים
+    
+    document.getElementById('lf-round-display').innerText = titleText;
 
-            const container = document.getElementById('lf-matches-container');
-            container.innerHTML = '';
-            
-            leagueRoundsData[currentDisplayedRound].forEach(match => {
-                let scoreClass = match.score === "- : -" ? "lf-score future" : "lf-score";
-                let hImgParams = match.homeImg.split('/');
-                let aImgParams = match.awayImg.split('/');
-                let hSrc = `https://ui-avatars.com/api/?name=${hImgParams[0]}&background=${hImgParams[1]}&color=fff`;
-                let aSrc = `https://ui-avatars.com/api/?name=${aImgParams[0]}&background=${aImgParams[1]}&color=fff`;
-
-                container.innerHTML += `
-                    <div class="lf-match">
-                        <div class="lf-team"><img src="${hSrc}"> <span>${match.home}</span></div>
-                        <div class="${scoreClass}">${match.score}</div>
-                        <div class="lf-team away"><img src="${aSrc}"> <span>${match.away}</span></div>
-                    </div>
-                `;
-            });
+    const container = document.getElementById('lf-matches-container');
+    container.innerHTML = '';
+    
+    leagueRoundsData[currentDisplayedRound].forEach(match => {
+        let isPlayed = match.score !== "- : -";
+        let isNextRound = (currentDisplayedRound === 10);
+        let isFarFuture = (currentDisplayedRound > 10);
+        
+        let scoreClass = "";
+        let displayScore = "";
+        let onclickAttr = "";
+        
+        // הלוגיקה החכמה של הכפתורים
+        if (isPlayed) {
+            // משחק ששוחק - תוצאה רגילה וחלון סיכום
+            scoreClass = "lf-score";
+            displayScore = match.score;
+            onclickAttr = `onclick="openMatchBreakdown('${match.home}', '${match.away}', ${match.score.split('-')[0].trim()}, ${match.score.split('-')[1].trim()})"`;
+        } else if (isNextRound) {
+            // המחזור הקרוב - כפתור ירוק פותח דוח סקאוטינג
+            scoreClass = "m-score-box pre-match-btn";
+            displayScore = "לקראת המשחק";
+            onclickAttr = `onclick="openPreMatchPreview('${match.home}', '${match.away}')"`;
+        } else if (isFarFuture) {
+            // מחזור רחוק - כפתור אפור נעול
+            scoreClass = "m-score-box pre-match-btn disabled-future";
+            displayScore = "דוח טרם זמין";
+            onclickAttr = `onclick="alert('דוח הסקאוטינג והמידע הטקטי מופקים רק סמוך למועד המשחק (מחזור אחד קדימה). יש לחזור לכאן לקראת המחזור עצמו.')"`;
         }
+
+        let hImgParams = match.homeImg.split('/');
+        let aImgParams = match.awayImg.split('/');
+        let hSrc = `https://ui-avatars.com/api/?name=${hImgParams[0]}&background=${hImgParams[1]}&color=fff`;
+        let aSrc = `https://ui-avatars.com/api/?name=${aImgParams[0]}&background=${aImgParams[1]}&color=fff`;
+
+        container.innerHTML += `
+            <div class="lf-match">
+                <div class="lf-team"><img src="${hSrc}"> <span>${match.home}</span></div>
+                <div class="${scoreClass}" ${onclickAttr}>${displayScore}</div>
+                <div class="lf-team away"><img src="${aSrc}"> <span>${match.away}</span></div>
+            </div>
+        `;
+    });
+}
 
         document.addEventListener('DOMContentLoaded', () => {
             if(document.getElementById('lf-matches-container')) changeLeagueRound(0); 
