@@ -4247,7 +4247,7 @@
     </div>
 </div>
 
-<div class="player-modal-overlay" id="trade-modal-overlay" style="z-index: 10000; display: none;">
+<div class="player-modal-overlay" id="trade-modal-overlay" onclick="closeTradeModal(event)" style="z-index: 10000; display: none;">
     <div class="trade-builder-modal">
         <div class="tb-header">🤝 הצעת טרייד ל<span id="tb-target-team">---</span></div>
         <div class="tb-body">
@@ -4288,7 +4288,7 @@
         <div class="tb-footer">
             <div class="tb-diff-alert" id="tb-diff-alert">אנא בחר שחקן להחלפה.</div>
             <div class="tb-actions">
-                <button class="tb-cancel" onclick="closeTradeModal()">ביטול</button>
+                <button class="tb-cancel" onclick="closeTradeModal(event)">ביטול</button>
                 <button class="tb-submit" id="tb-submit-btn" onclick="submitTradeOffer()" disabled>שלח הצעה למנג'ר</button>
             </div>
         </div>
@@ -7754,8 +7754,12 @@ window.openTradeModal = function(playerId, teamName) {
     document.getElementById('tb-money-input').value = '';
     updateTradePreview();
 
-    // התיקון לקפיאת המסך!
-    document.getElementById('trade-modal-overlay').classList.add('active');
+    // התיקון לקפיאת המסך והופעת החלון!
+    const modal = document.getElementById('trade-modal-overlay');
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
 };
 
 // עדכון לייב של המאזן בחלון הטרייד
@@ -7811,11 +7815,17 @@ window.updateTradePreview = function() {
     submitBtn.disabled = false;
 };
 
-// סגירת החלון
-window.closeTradeModal = function() {
-    document.getElementById('trade-modal-overlay').classList.remove('active');
+// סגירת החלון באנימציה
+window.closeTradeModal = function(e) {
+    const modal = document.getElementById('trade-modal-overlay');
+    if (e && e.target !== modal && !e.target.closest('.tb-cancel')) return; // מוודא שלחיצה בפנים לא תסגור
+    
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
 };
-
+        
 // שליחת ההצעה
 window.submitTradeOffer = function() {
     const moneyAdded = parseInt(document.getElementById('tb-money-input').value) || 0;
