@@ -2726,6 +2726,89 @@
             gap: 15px;
         }
         .wl-empty svg { width: 50px; height: 50px; stroke: #cbd5e1; }
+
+        /* =========================================
+           מודאל בחירת שחקן (Player Pick 1 of 3)
+           ========================================= */
+        .pick-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 16, 33, 0.92); backdrop-filter: blur(8px);
+            z-index: 11000; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.4s ease; direction: rtl;
+        }
+        .pick-modal-overlay.active { opacity: 1; display: flex; }
+
+        .pick-modal-box {
+            width: 95%; max-width: 850px;
+            background: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
+            border: 2px solid #fbbf24;
+            border-radius: 20px; padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 0 30px rgba(251,191,36,0.1);
+            transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; position: relative;
+        }
+        .pick-modal-overlay.active .pick-modal-box { transform: scale(1) translateY(0); }
+
+        .pick-header-title {
+            font-size: 26px; font-weight: 900; color: #fff; margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .pick-header-desc { color: #cbd5e1; font-size: 14px; margin-bottom: 30px; font-weight: bold; }
+
+        .pick-cards-grid {
+            display: flex; justify-content: center; gap: 20px; margin-bottom: 30px;
+        }
+
+        .pick-card {
+            flex: 1; min-width: 200px; max-width: 250px;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid #334155; border-radius: 16px;
+            padding: 25px 15px; cursor: pointer; position: relative;
+            transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .pick-card::before {
+            content: ''; position: absolute; inset: 0; border-radius: 14px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%); pointer-events: none;
+        }
+
+        .pick-card:hover { transform: translateY(-10px); border-color: #94a3b8; box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+        
+        /* הקלף שנבחר */
+        .pick-card.selected {
+            transform: translateY(-10px) scale(1.05);
+            border-color: #fbbf24;
+            box-shadow: 0 15px 40px rgba(251,191,36,0.3), inset 0 0 20px rgba(251,191,36,0.2);
+            background: linear-gradient(180deg, #1e293b 0%, #291e0a 100%);
+        }
+        .pick-card.selected::after {
+            content: '✓'; position: absolute; top: -12px; right: -12px;
+            background: #2ecc71; color: #fff; width: 30px; height: 30px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold;
+            border: 3px solid #062141; box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .pc-img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.4); margin-bottom: 15px; object-fit: cover; background: #fff;}
+        .pc-name { font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .pc-team { font-size: 11px; color: #94a3b8; font-weight: bold; margin-bottom: 12px; }
+        .pc-stats { width: 100%; display: flex; justify-content: space-around; background: rgba(0,0,0,0.3); padding: 10px 5px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .pc-stat-col { display: flex; flex-direction: column; align-items: center; }
+        .pc-stat-val { color: var(--brand-green); font-weight: 900; font-size: 16px; }
+        .pc-stat-lbl { color: #cbd5e1; font-size: 10px; }
+
+        .pick-actions { display: flex; justify-content: center; gap: 15px; }
+        .pick-btn { padding: 12px 35px; border-radius: 30px; font-weight: 900; font-size: 16px; cursor: pointer; transition: 0.3s; border: none; outline: none; }
+        .pick-btn-confirm { background: var(--brand-green); color: #fff; box-shadow: 0 5px 15px rgba(124,168,86,0.4); }
+        .pick-btn-confirm:hover:not(:disabled) { transform: scale(1.05); background: #8fc964; }
+        .pick-btn-confirm:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none; }
+        .pick-btn-cancel { background: transparent; color: #cbd5e1; border: 2px solid #64748b; }
+        .pick-btn-cancel:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+        @media (max-width: 768px) {
+            .pick-cards-grid { flex-direction: column; align-items: center; }
+            .pick-card { width: 100%; max-width: 300px; }
+        }
         
     </style>
         
@@ -4868,7 +4951,7 @@
                                 <div class="inv-icon-wrap">🃏</div>
                                 <div class="inv-title">בחירת שחקן: כוכב על</div>
                                 <div class="inv-desc">מגריל 3 כוכבי-על פנויים לבחירתך.<br><span style="color:#ef4444; font-weight:900;">* חובה לשחרר כוכב-על קיים בתמורה (ניתן להתחרט ולבטל).</span></div>
-                                <button class="inv-btn" onclick="alert('מערכת הגרלת שחקנים עולה בקרוב...')">השתמש עכשיו</button>
+                               <button class="inv-btn" onclick="openPlayerPickModal('כוכב על')">השתמש עכשיו</button>
                             </div>
                             <div class="inv-card">
                                 <div class="inv-qty-badge">x3</div>
@@ -5526,6 +5609,31 @@
             
         </div>
     </div>
+
+<div class="pick-modal-overlay" id="player-pick-modal">
+    <div class="pick-modal-box">
+        <div class="pick-header-title">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            <span id="pick-modal-title">בחירת שחקן: כוכב על</span>
+        </div>
+        <div class="pick-header-desc">בחר איזה שחקן ברצונך לצרף לקבוצה, ואיזה שחקן (מאותה רמה) אתה משחרר בתמורה!</div>
+        
+        <div class="pick-cards-grid" id="pick-cards-container">
+            </div>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 15px 20px; border-radius: 12px; margin-bottom: 20px; border: 1px dashed rgba(251,191,36,0.4); text-align: right;">
+            <div style="color: #fbbf24; font-weight: 900; font-size: 14px; margin-bottom: 8px;">🔄 בחר שחקן הרכב לשחרור תמורתו:</div>
+            <select class="c-select" id="pick-release-select" onchange="checkPickFormValidity()" style="width: 100%; padding: 10px; font-size: 14px; background: #0f172a; border: 1px solid #64748b; color: #fff; border-radius: 8px;">
+                <option value="">-- בחר שחקן מהסגל שלך להחלפה --</option>
+            </select>
+        </div>
+
+        <div class="pick-actions">
+            <button class="pick-btn pick-btn-cancel" onclick="closePlayerPickModal()">סגור ושמור לאחר כך</button>
+            <button class="pick-btn pick-btn-confirm" id="pick-confirm-btn" disabled onclick="confirmPlayerPick()">בחר שחקן לצירוף ושחקן לשחרור</button>
+        </div>
+    </div>
+</div>
     
     <script src="../translations.js"></script>
     <script src="../matchEvents.js"></script>
@@ -8903,6 +9011,145 @@ window.switchTeamTab = function(tabId, btnElement) {
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(renderWatchlistDemo, 2000);
         });
+
+    // ==========================================
+        // מנוע Player Pick (בחירת 1 מתוך 3) + שחרור מאותה רמה
+        // ==========================================
+        let currentSelectedPickId = null;
+
+        window.openPlayerPickModal = function(tierName) {
+            const container = document.getElementById('pick-cards-container');
+            const title = document.getElementById('pick-modal-title');
+            const confirmBtn = document.getElementById('pick-confirm-btn');
+            const releaseSelect = document.getElementById('pick-release-select');
+            
+            // עדכון כותרת
+            title.innerText = `בחירת שחקן: ${tierName}`;
+            
+            // איפוס בחירה קודמת
+            currentSelectedPickId = null;
+            confirmBtn.disabled = true;
+            confirmBtn.innerText = "בחר שחקן לצירוף ושחקן לשחרור";
+            container.innerHTML = '<div style="color:#fff; font-weight:bold;">מגריל שחקנים מהמאגר... 🎲</div>';
+
+            // מציגים את המודאל מיד
+            const modal = document.getElementById('player-pick-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('active'); }, 10);
+
+            // 1. טיפול ברשימת השחקנים לשחרור (שולף מהסגל שלך בלבד מאותה רמה)
+            const allPlayers = Object.values(window.allPlayersMap || {});
+            const myTierPlayers = allPlayers.filter(p => p.owner === 'מכבי סוליבי' && p.calcTierName === tierName);
+            
+            releaseSelect.innerHTML = '<option value="">-- בחר שחקן מהסגל שלך להחלפה --</option>';
+            if (myTierPlayers.length === 0) {
+                // מקרה קצה (או בדיקה) אם אין למשתמש שחקנים מרמה זו
+                releaseSelect.innerHTML += '<option value="test">אין לך שחקנים מרמה זו (דמו לבדיקה)</option>';
+            } else {
+                myTierPlayers.forEach(p => {
+                    let pName = window.translateName ? window.translateName(p.name) : p.name;
+                    releaseSelect.innerHTML += `<option value="${p.id}">${pName} (${p.displayPos})</option>`;
+                });
+            }
+
+            // 2. הגרלת 3 שחקנים להצעה מתוך המאגר החופשי
+            const validFreeAgents = allPlayers.filter(p => p.calcTierName === tierName && p.owner !== 'מכבי סוליבי');
+
+            if (validFreeAgents.length < 3) {
+                container.innerHTML = '<div style="color:#ef4444; font-weight:bold;">שגיאה: אין מספיק שחקנים פנויים ברמה זו במאגר כרגע.</div>';
+                return;
+            }
+
+            // ערבוב אקראי ובחירת 3 שחקנים פנויים
+            const shuffled = validFreeAgents.sort(() => 0.5 - Math.random());
+            const pickedPlayers = shuffled.slice(0, 3);
+
+            // רינדור הקלפים למסך עם השהייה קטנה ליצירת מתח
+            setTimeout(() => {
+                container.innerHTML = '';
+                pickedPlayers.forEach((p, index) => {
+                    const tName = window.translateName ? window.translateName(p.name) : p.name;
+                    const tTeam = window.translateName ? window.translateName(p.team) : p.team;
+                    const pImg = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+                    const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+                    const pts = p.fantasyPts || 0;
+
+                    container.innerHTML += `
+                        <div class="pick-card" id="pick-card-${p.id}" onclick="selectPickCard(this, ${p.id}, '${tName}')" style="animation: scaleUp 0.4s ease ${index * 0.15}s both;">
+                            <span class="tier-badge ${p.calcTierClass}" style="position: absolute; top: -10px; font-size: 11px; padding: 2px 10px; border: 2px solid #0f172a; z-index: 5;">${p.calcTierName}</span>
+                            <img src="${pImg}" class="pc-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                            <div class="pc-name">${tName}</div>
+                            <div class="pc-team">${p.displayPos} | ${tTeam}</div>
+                            <div class="pc-stats">
+                                <div class="pc-stat-col">
+                                    <span class="pc-stat-val">${pts}</span>
+                                    <span class="pc-stat-lbl">נק' עונה</span>
+                                </div>
+                                <div class="pc-stat-col">
+                                    <span class="pc-stat-val" style="color: #fbbf24;">₪${valStr}</span>
+                                    <span class="pc-stat-lbl">שווי</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }, 600);
+        };
+
+        window.selectPickCard = function(element, playerId, playerName) {
+            // הסרת הבחירה מכל הקלפים האחרים
+            document.querySelectorAll('.pick-card').forEach(card => card.classList.remove('selected'));
+            
+            // הוספת הבחירה לקלף שעליו לחצו
+            element.classList.add('selected');
+            currentSelectedPickId = playerId;
+            
+            // בדיקה האם גם נבחר שחקן להחלפה מהתפריט
+            checkPickFormValidity();
+        };
+
+        window.checkPickFormValidity = function() {
+            const confirmBtn = document.getElementById('pick-confirm-btn');
+            const releaseSelect = document.getElementById('pick-release-select');
+            
+            // מאשר את הכפתור רק אם שניהם נבחרו (גם קלף וגם שחקן לשחרור)
+            if (currentSelectedPickId && releaseSelect.value) {
+                confirmBtn.disabled = false;
+                const newPlayer = window.allPlayersMap[currentSelectedPickId];
+                const tName = window.translateName ? window.translateName(newPlayer.name) : newPlayer.name;
+                confirmBtn.innerText = `אשר טרייד והחתם את ${tName.split(' ')[0]}`;
+            } else {
+                confirmBtn.disabled = true;
+                confirmBtn.innerText = "בחר שחקן לצירוף ושחקן לשחרור";
+            }
+        };
+
+        window.confirmPlayerPick = function() {
+            if (!currentSelectedPickId) return;
+            const releaseSelect = document.getElementById('pick-release-select');
+            if (!releaseSelect.value) return;
+
+            const newP = window.allPlayersMap[currentSelectedPickId];
+            const tNameNew = window.translateName ? window.translateName(newP.name) : newP.name;
+            
+            let releasedName = "שחקן פיקטיבי";
+            if(releaseSelect.value !== "test") {
+                const oldP = window.allPlayersMap[releaseSelect.value];
+                releasedName = window.translateName ? window.translateName(oldP.name) : oldP.name;
+            }
+
+            alert(`🎉 הצלחה!\nהשחקן ${releasedName} שוחרר מהסגל.\nבמקומו הוחתם: ${tNameNew}!`);
+            
+            // (בעתיד: כאן יהיה קוד המחיקה וההוספה אל מול סופאבייס)
+            
+            closePlayerPickModal();
+        };
+
+        window.closePlayerPickModal = function() {
+            const modal = document.getElementById('player-pick-modal');
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 400);
+        };
     
 </script>
     
