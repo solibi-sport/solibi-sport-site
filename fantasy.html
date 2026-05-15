@@ -2567,6 +2567,19 @@
             #tab-fixtures .fixtures-scroll-area { overflow-y: visible !important; flex: none; }
             #tab-fixtures .fixtures-side-col { overflow-y: visible !important; height: auto; }
         }
+
+        /* יצירת "וילון לבן" מתחת לכותרות כדי להסתיר את הגלילה */
+        h2.content-header-title::after {
+            content: '';
+            position: absolute;
+            top: 100%; /* מתחיל בדיוק איפה שהכותרת נגמרת למטה */
+            left: 0;
+            width: 100%;
+            height: 20px; /* שומר על רווח לבן ונקי של 20 פיקסלים */
+            background-color: #ffffff; /* הרקע הלבן של הקוביה שלך */
+            z-index: -1; /* מוודא שזה יושב מאחורי הכותרת אבל מעל הטבלאות */
+            pointer-events: none; /* מבטיח שזה לא יפריע ללחיצות עכבר על השורה הראשונה בטבלה */
+        }
         
     </style>
         
