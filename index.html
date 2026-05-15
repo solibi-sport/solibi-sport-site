@@ -130,25 +130,33 @@
         /* === עיצוב פאנל עדכונים חמים === */
         #updates-container { position: relative; flex: 1; display: flex; flex-direction: column; padding: 10px 0; overflow: hidden; }
         
-        .updates-item { 
-            margin: 4px 15px; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.9); 
-            padding: 8px 10px; border-radius: 10px; display: flex; align-items: center; justify-content: flex-start; gap: 12px; 
-            text-decoration: none; color: var(--text-dark); position: relative; transition: 0.3s; flex: 1; min-height: 0;
-            /* הוספת אנימציית הופעה יוקרתית */
-            animation: flipInX 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
        .updates-item { 
-            /* הקטנו פדינג ומרווחים כדי ש-10 ייכנסו בצורה יוקרתית ולא צפופה מדי */
-            margin: 3px 15px; 
-            padding: 5px 10px; 
-            gap: 10px; 
-            background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.9); 
-            border-radius: 10px; display: flex; align-items: center; justify-content: flex-start; 
-            text-decoration: none; color: var(--text-dark); position: relative; transition: 0.3s; flex: 1; min-height: 0;
-            /* האנימציה שמופעלת כשנוצרות שורות חדשות */
+            margin: 4px 15px; 
+            padding: 8px 12px; 
+            gap: 12px; 
+            background: #ffffff; /* רקע לבן אטום */
+            border: 1px solid rgba(6, 33, 65, 0.15); /* 👈 נגיעת נייבי במסגרת */
+            border-right: 4px solid var(--brand-green); /* פס ירוק בצד ימין שנותן סטייל */
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-start; 
+            text-decoration: none; 
+            color: var(--text-dark); 
+            position: relative; 
+            transition: all 0.3s ease; 
+            flex: 1; 
+            min-height: 0;
+            box-shadow: 0 4px 10px rgba(6, 33, 65, 0.06); /* 👈 צל נייבי סופר עדין */
             animation: flipInX 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
         }
-        .updates-item:hover { transform: scale(1.02); background: #fff; border-color: var(--brand-green); }
+
+        .updates-item:hover { 
+            transform: translateX(-5px); /* קפיצה קטנה הצידה במקום זום */
+            background: #f8fafc; 
+            border-color: rgba(6, 33, 65, 0.3);
+            box-shadow: 0 6px 15px rgba(6, 33, 65, 0.1);
+        }
         
         .updates-icon { 
             background: #f0f4f8; 
@@ -319,13 +327,36 @@
         
         .square-box > * { position: relative; z-index: 2; }
 
-        /* קוביית פנטזי מיוחדת */
+       /* קוביית פנטזי מיוחדת - הופכת לירוקה כדי לבלוט! */
         .fantasy-highlight { 
-            background: linear-gradient(135deg, #0a2e57 0%, #163625 100%); 
-            border: 2px solid var(--brand-green); 
+            background: linear-gradient(135deg, var(--brand-green) 0%, #4a6a30 100%) !important; 
+            border: 2px solid #ffffff !important; 
+            box-shadow: 0 10px 30px rgba(124, 168, 86, 0.4) !important;
             animation: premiumPulse 2.5s infinite alternate; 
         }
-        .fantasy-highlight:hover { animation: none; }
+        
+        .fantasy-highlight:hover { 
+            animation: none; 
+            background: linear-gradient(135deg, #8fc964 0%, var(--brand-green) 100%) !important;
+            box-shadow: 0 15px 40px rgba(124, 168, 86, 0.6) !important;
+            border-color: #fbbf24 !important; /* מסגרת זהב בהובר */
+        }
+
+        /* משנה את צבע התגית בתוך הקובייה הירוקה כדי שתבלוט */
+        .fantasy-highlight .box-tag {
+            color: #ffffff;
+            background: rgba(0,0,0,0.2);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        /* משנה את האייקון שיהיה לבן במקום ירוק */
+        .fantasy-highlight .box-icon-wrap {
+            border-color: #ffffff !important;
+        }
+        .fantasy-highlight .box-icon-wrap svg {
+            stroke: #ffffff !important;
+        }
         
         .hot-badge {
             position: absolute; top: 12px; right: -28px; background: #ef4444; color: #fff; font-size: 10px; font-weight: 900;
@@ -534,7 +565,7 @@
         
         /* === שורת פוטר === */
         .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 45s linear infinite; }
         .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
         .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
