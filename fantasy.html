@@ -231,57 +231,86 @@
         .fm-top-stat-value { font-size: 18px; font-weight: 900; color: var(--text-dark); }
         .fm-top-stat-value.highlight { color: var(--brand-green); }
 
-      /* === אזור התוכן והגלילה הפנימית (המסגרת הבלתי נראית) === */
+      /* === אזור התוכן והגלילה הפנימית === */
         .fm-content-area {
             flex: 1; 
             background: transparent; 
             border: none; 
             box-shadow: none; 
-            padding: 0; 
+            padding: 0; /* איפסנו פדינג כדי שהרוחב יהיה 100% מושלם וסימטרי עם הסרגל העליון */
             min-width: 0; min-height: 0; 
-            overflow: hidden; 
+            overflow: hidden; /* ביטלנו את הגלילה כאן - אנחנו מעבירים אותה פנימה לטאב */
             display: flex; 
             flex-direction: column; 
         }
 
-        /* 1. הטאב הופך למסגרת קשיחה - לא גולל בכלל! */
         .fm-tab { 
-            display: none; 
-            animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            flex: 1; 
+            display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            flex: 1; /* מוודא שהטאב יתפוס את כל הגובה ויאפשר גלילה */
             flex-direction: column;
-            overflow: hidden; /* 👈 חוסם כל גלישה החוצה */
-            padding-right: 0; 
-            padding-bottom: 10px;
+            direction: ltr; /* מעביר את פס הגלילה לימין */
+            overflow-y: auto; /* 👈 הגלילה קורית עכשיו בתוך הטאב עצמו! */
+            overflow-x: hidden;
+            padding-right: 0; /* הורדנו מרווח כדי להבטיח יישור מושלם עם הסרגל האפור */
+            padding-bottom: 25px; /* מרווח נשימה בתחתית */
+        }
+        .fm-tab.active { display: flex; }
+        .fm-tab > * {
+            direction: rtl; /* מחזיר את התוכן הפנימי לימין-לשמאל */
         }
 
-        .fm-tab.active { display: flex; }
-
-        /* 2. הכותרת יושבת סטטית למעלה - אי אפשר לעלות מאחוריה */
-        h2.content-header-title { 
-            font-size: 24px; color: var(--text-dark); font-weight: 900; 
-            border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; 
-            margin-bottom: 15px !important; 
-            display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; 
-            width: 100%;
-            flex-shrink: 0; /* שומר על גובה הכותרת במסכים קטנים */
+        /* הקסם: דוחף את מסלול פס הגלילה למטה כדי שיתחיל רק *מתחת* לכותרת הנייבי! */
+        .fm-tab::-webkit-scrollbar-track {
+            margin-top: 75px; 
             background: transparent;
         }
 
-        /* 3. קסם הגלילה הפנימית: כל תוכן שמתחת לכותרת, הוא זה שנגלל ונעצר בקו שלה! */
-        .fm-tab > div:not(.content-header-title) {
-            flex: 1;
+        @keyframes scaleUp { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+       /* =========================================
+           עיצוב פסי גלילה לכל המערכת ומיקומם בצד ימין
+           ========================================= */
+        * {
+            scrollbar-color: var(--brand-green) transparent; /* מכריח דפדפנים כמו פיירפוקס להשתמש בירוק */
+        }
+        
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02) !important; border-radius: 10px; } 
+        ::-webkit-scrollbar-thumb { 
+            background-color: var(--brand-green) !important; /* נעילה אגרסיבית לירוק שלנו */
+            border-radius: 10px; 
+            border: 2px solid transparent; 
+            background-clip: padding-box; 
+        } 
+        ::-webkit-scrollbar-thumb:hover { background-color: #5d823e !important; } /* ירוק כהה בהובר */
+
+        /* העברת פסי הגלילה הפנימיים (של טבלאות, סטטיסטיקות ושיאים) לצד ימין */
+        .squad-table-wrap, .market-table-container, .fixtures-scroll-area, .s-card-list, .rules-scroll-container, #incoming-offers-container, #outgoing-offers-container {
+            direction: ltr !important;
             overflow-y: auto;
-            overflow-x: hidden;
-            direction: ltr; /* פס הגלילה מועבר לצד ימין */
-            padding-right: 15px; /* מרווח יפה מפס הגלילה */
-            padding-bottom: 20px;
+            min-height: 0 !important;
+        }
+        .squad-table, .market-table, .match-result-card, .s-list-row, .rules-content-inner, .offer-card, .offer-empty, .fixtures-main-col {
+            direction: rtl !important;
         }
 
-        /* מחזירים את התוכן הפנימי לכיוון קריאה רגיל (ימין לשמאל) */
-        .fm-tab > div:not(.content-header-title) > * {
-            direction: rtl;
-        }
+        /* =========================================
+           קיבוע הכותרת הנייבי (Sticky) למעלה
+           ========================================= */
+        h2.content-header-title { 
+            font-size: 24px; color: var(--text-dark); font-weight: 900; 
+            border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; 
+            margin-bottom: 20px !important; 
+            display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; 
+            
+            /* 👈 קיבוע הכותרת למעלה */
+            position: -webkit-sticky; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; /* שומר שהיא תמיד תהיה מעל התוכן שנגלל */
+            margin-top: 0;
+            width: 100%; /* מיישר אותה באופן מושלם עם הסרגל שמעליה */
+        }        
         p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
 /* טבלאות חוקים מודרניות */
         .rules-modern-table {
