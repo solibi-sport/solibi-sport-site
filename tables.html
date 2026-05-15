@@ -303,7 +303,7 @@
             margin-top: clamp(2px, 4cqi, 5px);
         }
 
-        /* תמונת הדגל הגדולה שמופיעה ברקע */
+       /* תמונת הדגל הגדולה שמופיעה ברקע - מעודכן לנראות בולטת יותר */
         .league-cube::before {
             content: ""; 
             position: absolute; 
@@ -311,16 +311,29 @@
             background-image: var(--bg-image); 
             background-size: cover; 
             background-position: center;
-            opacity: 0; 
-            transition: opacity 0.5s ease; 
+            opacity: 0.25; /* שינינו מ-0 ל-0.25 כדי שהדגל יבלוט תמיד */
+            transition: all 0.5s ease; 
             z-index: 1; 
-            mix-blend-mode: overlay;
+            mix-blend-mode: luminosity; /* מאפשר לדגל להשתלב יפה עם הנייבי בלי להיראות כמו כתם צבע */
             pointer-events: none;
         }
 
-        .league-cube:hover::before { opacity: 0.4; }
-        .league-cube.svg-bg::before { background-size: 60%; background-repeat: no-repeat; mix-blend-mode: normal; }
-        .league-cube.svg-bg:hover::before { opacity: 0.12; }
+        /* במעבר עכבר - הדגל נדלק וחוזר לצבעים המקוריים שלו */
+        .league-cube:hover::before { 
+            opacity: 0.5; 
+            mix-blend-mode: overlay; 
+        }
+        
+        /* תיקון לסמלי היבשות והמפעלים (ליגת האלופות וכו') */
+        .league-cube.svg-bg::before { 
+            background-size: 60%; 
+            background-repeat: no-repeat; 
+            mix-blend-mode: normal; 
+            opacity: 0.08; /* סמל רקע עדין קבוע */
+        }
+        .league-cube.svg-bg:hover::before { 
+            opacity: 0.2; 
+        }
 
         /* מנגנון סינון קוביות דרך JS */
         .league-cube.hidden { display: none; }
