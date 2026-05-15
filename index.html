@@ -371,37 +371,48 @@
             padding: 100px calc(var(--sidebar-width) + 40px) 0;
         }
 
+       /* === מרכז העמוד והגריד === */
+        .center-wrapper {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; /* שומר שהכל יתחיל מלמעלה */
+            flex: 1; 
+            width: 100%; 
+            padding: 70px calc(var(--sidebar-width) + 40px) 0; /* 70 פיקסלים מההדר למעלה */
+        }
+
         /* =========================================
-           שורת מדדים (KPI Bar) - קומפקטי ואלגנטי
+           שורת מדדים (KPI Bar) - קומפקטי ואלגנטי עם כבלים
            ========================================= */
         .home-kpi-bar {
             background: rgba(6, 33, 65, 0.85);
             backdrop-filter: blur(15px);
-            border-radius: 40px; /* הוקטן מעט */
-            padding: 8px 30px; /* פדינג קטן ומהודק בהרבה */
+            border-radius: 40px; 
+            padding: 8px 30px; 
             display: flex;
             justify-content: space-between;
             align-items: center;
             
-            margin-top: 0; /* מנוהל על ידי ה-padding של האבא */
-            margin-bottom: 25px; /* מקרב את זה לקוביות הזכוכית למטה */
+            margin-top: 0; 
+            margin-bottom: 25px; /* מרווח בין ה-KPI לענן הזכוכית של הקוביות */
             
             box-shadow: 0 10px 30px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(124, 168, 86, 0.4);
             width: 100%;
-            max-width: 820px; /* 👈 צר הרבה יותר, לא תופס פוקוס */
+            max-width: 820px; /* קפסולה קטנה ואלגנטית */
             position: relative;
             z-index: 20;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* הכבלים התלויים מתארכים בדיוק ל-100 פיקסלים כדי לגעת בהדר */
+        /* הכבלים התלויים - אורכם בדיוק 70 פיקסלים כדי לגעת בהדר! */
         .home-kpi-bar::before,
         .home-kpi-bar::after {
             content: '';
             position: absolute;
             bottom: 100%;
             width: 2px;
-            height: 100px; /* 👈 נוגע בדיוק בהדר העליון! */
+            height: 70px; /* 👈 נוגע בדיוק בהדר העליון */
             background: linear-gradient(0deg, var(--brand-green) 0%, transparent 100%);
             opacity: 0.5;
             transition: 0.4s;
@@ -418,7 +429,7 @@
         
         .home-kpi-bar:hover::before,
         .home-kpi-bar:hover::after {
-            height: 98px; /* מתקצר ב-2 פיקסלים כי הקפסולה עולה ב-2 פיקסלים */
+            height: 68px; /* מתקצר ב-2 פיקסלים כי הקפסולה עולה ב-2 פיקסלים */
             opacity: 0.9;
             box-shadow: 0 0 8px var(--brand-green-glow);
         }
@@ -445,7 +456,7 @@
         }
 
         .kpi-icon-wrap {
-            font-size: 16px; /* 👈 הקטנה משמעותית של האייקון */
+            font-size: 16px; 
             color: var(--brand-green);
             display: flex;
             align-items: center;
@@ -461,7 +472,7 @@
         }
 
         .kpi-val {
-            font-size: 15px; /* 👈 הקטנה של המספרים */
+            font-size: 15px; 
             font-weight: 900;
             color: #ffffff;
             line-height: 1;
@@ -478,7 +489,7 @@
         }
 
         .kpi-lbl {
-            font-size: 10px; /* 👈 הקטנה של הטקסט */
+            font-size: 10px; 
             color: #94a3b8;
             font-weight: 600;
         }
