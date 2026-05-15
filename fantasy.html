@@ -394,12 +394,17 @@
         .kit-stripes-bw { background: repeating-linear-gradient(90deg, #000000 0px, #000000 8px, #ffffff 8px, #ffffff 16px) !important; } /* פסי אורך שחור לבן */
         .kit-diag-rw { background: linear-gradient(135deg, #dc2626 50%, #ffffff 50%) !important; } /* אלכסון אדום לבן */
 
-        /* --- 4. עיצובי מדים (רמת פרו - פרימיום מיוחדים) --- */
-        .kit-gold-vip { background: linear-gradient(135deg, #b45309 0%, #fcd34d 50%, #b45309 100%) !important; } /* זהב בוהק */
-        .kit-neon-cyber { background: linear-gradient(135deg, #c026d3 0%, #06b6d4 100%) !important; } /* ניאון סייברפאנק */
-        .kit-fire { background: linear-gradient(0deg, #991b1b 0%, #ef4444 50%, #facc15 100%) !important; } /* אש בוערת */
-        .kit-galaxy { background: radial-gradient(circle, #4c1d95 0%, #020617 100%) !important; } /* גלקסיה כהה */
-        .kit-holo { background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%) !important; } /* הולוגרפי ורוד-תכלת */
+        /* --- עיצובי מדים: קולקציית הבוטיק החדשה --- */
+        .kit-gold-vip { background: linear-gradient(135deg, #b45309 0%, #fcd34d 50%, #b45309 100%) !important; }
+        .kit-neon-cyber { background: linear-gradient(135deg, #c026d3 0%, #06b6d4 100%) !important; }
+        .kit-fire-dragon { background: linear-gradient(0deg, #7f1d1d 0%, #ef4444 50%, #f59e0b 100%) !important; }
+        .kit-ice-frost { background: linear-gradient(135deg, #e0f2fe 0%, #38bdf8 50%, #0284c7 100%) !important; }
+        .kit-galaxy-star { background: radial-gradient(circle, #4c1d95 0%, #020617 100%) !important; }
+        .kit-camo-stealth { background: repeating-linear-gradient(45deg, #1e293b 0px, #1e293b 10px, #0f172a 10px, #0f172a 20px) !important; }
+        .kit-retro-90s { background: linear-gradient(135deg, #ec4899 0%, #facc15 50%, #06b6d4 100%) !important; }
+        .kit-gold-black-stripes { background: repeating-linear-gradient(90deg, #000 0px, #000 8px, #fbbf24 8px, #fbbf24 16px) !important; }
+        .kit-holo-prism { background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%) !important; }
+        .kit-diamond-elite { background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%) !important; }
 
         /* --- 5. מסגרות להרכב הפותח (Borders) --- */
         /* בסיס */
@@ -4763,6 +4768,29 @@
                                     <option value="confetti">חגיגת שער (קונפטי)</option>
                                 </select>
                                 <button class="c-buy-btn" onclick="buyBoost('dynamic_effect', 3000000)">קנה ב-₪3.0M</button>
+                            </div>
+                            <div class="cosmetic-card">
+                                <div class="c-preview">
+                                    <div class="profile-kit-wrapper" style="transform: scale(0.9); margin-top: 8px;">
+                                        <div id="kit-preview-shirt" class="profile-kit-shirt kit-gold-vip"></div>
+                                        <div id="kit-preview-shorts" class="profile-kit-shorts kit-gold-vip"></div>
+                                    </div>
+                                </div>
+                                <div class="c-title">מדי קבוצה אקסקלוסיביים</div>
+                                <div class="c-desc">שדרג את נראות הקבוצה שלך על המגרש עם סטים נדירים בייצור אישי.</div>
+                                <select class="c-select" id="select-kit" onchange="document.getElementById('kit-preview-shirt').className = 'profile-kit-shirt ' + this.value; document.getElementById('kit-preview-shorts').className = 'profile-kit-shorts ' + this.value;">
+                                    <option value="kit-gold-vip">קרבון מוזהב (VIP)</option>
+                                    <option value="kit-neon-cyber">ניאון סייבר (כחול/סגול)</option>
+                                    <option value="kit-fire-dragon">אש ודרקונים (אדום/כתום)</option>
+                                    <option value="kit-ice-frost">קרח קפוא (תכלת/לבן)</option>
+                                    <option value="kit-galaxy-star">גלקסיה (שחור/כוכבים)</option>
+                                    <option value="kit-camo-stealth">הסוואה שחורה (טקטי)</option>
+                                    <option value="kit-retro-90s">רטרו ניינטיז (צבעוני)</option>
+                                    <option value="kit-gold-black-stripes">פסי זהב שחור (אלגנטי)</option>
+                                    <option value="kit-holo-prism">הולוגרפי (מעברי צבע)</option>
+                                    <option value="kit-diamond-elite">יהלום עלית (כסוף מבריק)</option>
+                                </select>
+                                <button class="c-buy-btn" onclick="buyBoost('exclusive_kit', 5000000)">קנה ב-₪5.0M</button>
                             </div>
 
                         </div>
