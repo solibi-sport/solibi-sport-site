@@ -359,24 +359,36 @@
         .tech-chat { position: absolute; top: 10px; left: 10px; opacity: 0.15; transition: 0.4s; width: 14px; height: 14px; } .tech-chat svg { width: 100%; height: 100%; stroke: #fff; } .square-box:hover .tech-chat { opacity: 0.8; transform: scale(1.1); } .square-box:hover .tech-chat svg { stroke: var(--brand-green); }
 
 /* =========================================
-           שורת מדדים (KPI Bar) חיה לדף הבית
+           שורת מדדים (KPI Bar) חיה לדף הבית + ענן זכוכית
            ========================================= */
+        .kpi-glass-wrapper {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 15px 25px; /* פדינג קטן ומהודק לשורה צרה */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.8);
+            width: 100%;
+            /* 👈 הקסם הסימטרי: מעתיק בדיוק את נוסחת הרוחב של ענן הקוביות! */
+            max-width: min(1000px, calc((100vh - 280px) * 2.4)); 
+            margin: 15px auto 25px auto; 
+            position: relative;
+            z-index: 20;
+        }
+
         .home-kpi-bar {
             background: var(--element-navy-gradient);
-            border-radius: 12px;
+            border-radius: 16px; /* מעוגל יותר שיזרום עם הענן */
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            margin-top: 15px; /* מרווח מלמעלה - מחליף את המרווח של הכותרת הישנה */
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             border: 1px solid rgba(124, 168, 86, 0.3);
             flex-wrap: wrap; 
             gap: 10px;
             width: 100%;
-            max-width: 920px; /* תואם לרוחב שהיה לכותרת לפני כן */
-            z-index: 20;
+            margin: 0; /* ללא מרווח, הענן עוטף אותו */
         }
 
         .kpi-item {
@@ -409,7 +421,7 @@
         .kpi-text-col {
             display: flex;
             flex-direction: column;
-            text-align: right; /* יישור לימין כמו כל האתר */
+            text-align: right; 
         }
 
         .kpi-val {
@@ -515,36 +527,43 @@
 
         <div class="center-wrapper">
             
-           <div class="home-kpi-bar">
-    <div class="kpi-item">
-        <div class="kpi-icon-wrap">
-            <span class="live-dot"></span>
+         <div class="kpi-glass-wrapper">
+    <div class="home-kpi-bar">
+        
+        <div class="kpi-item">
+            <div class="kpi-icon-wrap">
+                <span class="live-dot"></span>
+            </div>
+            <div class="kpi-text-col">
+                <span class="kpi-val" id="kpi-online-users">1,248</span>
+                <span class="kpi-lbl">מחוברים באתר</span>
+            </div>
         </div>
-        <div class="kpi-text-col">
-            <span class="kpi-val" id="kpi-online-users">1,248</span>
-            <span class="kpi-lbl">מחוברים באתר</span>
+
+        <div class="kpi-item">
+            <div class="kpi-icon-wrap">👥</div>
+            <div class="kpi-text-col">
+                <span class="kpi-val" id="kpi-total-users">15,420</span>
+                <span class="kpi-lbl">חברי קהילת סוליבי</span>
+            </div>
         </div>
-    </div>
-    <div class="kpi-item">
-        <div class="kpi-icon-wrap">👥</div>
-        <div class="kpi-text-col">
-            <span class="kpi-val" id="kpi-total-users">15,420</span>
-            <span class="kpi-lbl">חברי קהילת סוליבי</span>
+
+        <div class="kpi-item">
+            <div class="kpi-icon-wrap">💬</div>
+            <div class="kpi-text-col">
+                <span class="kpi-val" id="kpi-active-forums">42</span>
+                <span class="kpi-lbl">פורומים פעילים</span>
+            </div>
         </div>
-    </div>
-    <div class="kpi-item">
-        <div class="kpi-icon-wrap">💬</div>
-        <div class="kpi-text-col">
-            <span class="kpi-val" id="kpi-active-forums">42</span>
-            <span class="kpi-lbl">פורומים פעילים</span>
+
+        <div class="kpi-item">
+            <div class="kpi-icon-wrap">⚽</div>
+            <div class="kpi-text-col">
+                <span class="kpi-val" id="kpi-live-matches">0</span>
+                <span class="kpi-lbl">משחקים בלייב</span>
+            </div>
         </div>
-    </div>
-    <div class="kpi-item">
-        <div class="kpi-icon-wrap">⚽</div>
-        <div class="kpi-text-col">
-            <span class="kpi-val" id="kpi-live-matches">0</span>
-            <span class="kpi-lbl">משחקים בלייב</span>
-        </div>
+
     </div>
 </div>
 
