@@ -127,7 +127,6 @@
             border-bottom: 2px solid var(--brand-green); background: rgba(255,255,255,0.5); z-index: 10;
         }
 
-        /* כפתור שליטה על גלילת הלייב */
         .ticker-control-btn {
             background: rgba(6, 33, 65, 0.1);
             border: none;
@@ -140,8 +139,9 @@
             justify-content: center;
             cursor: pointer;
             transition: 0.2s;
-            margin-right: auto; /* דוחף אותו לצד שמאל של הכותרת */
+            /* מחקנו את ה-margin כדי לאפשר מירכוז כותרת */
         }
+        
         .ticker-control-btn:hover {
             background: var(--brand-green);
             color: #fff;
@@ -352,50 +352,58 @@
         
         .square-box > * { position: relative; z-index: 2; }
 
-       /* קוביית פנטזי מיוחדת - הופכת לירוקה כדי לבלוט! */
+       /* 🎬 אפקט נטפליקס לקוביית הפנטזי - קריאות מקסימלית */
         .fantasy-highlight { 
             background: linear-gradient(135deg, var(--brand-green) 0%, #4a6a30 100%) !important; 
             border: 2px solid #ffffff !important; 
-            box-shadow: 0 10px 30px rgba(124, 168, 86, 0.4) !important;
-            animation: premiumPulse 2.5s infinite alternate; 
-        }
-        
-        .fantasy-highlight:hover { 
-            animation: none; 
-            background: linear-gradient(135deg, #8fc964 0%, var(--brand-green) 100%) !important;
-            box-shadow: 0 15px 40px rgba(124, 168, 86, 0.6) !important;
-            border-color: #fbbf24 !important; /* מסגרת זהב בהובר */
+            overflow: hidden;
+            position: relative;
         }
 
-        /* 👈 תיקון קריאות וצבעים לקוביית הפנטזי הירוקה */
+        /* שכבת הצללה בתחתית הקובייה (Vignette) */
+        .fantasy-highlight::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(6, 33, 65, 0.9) 0%, rgba(6, 33, 65, 0.4) 40%, transparent 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* מוודא שהטקסט והאייקון מעל שכבת הצל */
+        .fantasy-highlight > * {
+            position: relative;
+            z-index: 2;
+        }
+
         .fantasy-highlight .box-title,
         .fantasy-highlight .box-desc {
-            color: #062141 !important; /* טקסט נייבי */
-            text-shadow: none !important; /* ביטול הצל הלבן שמפריע */
-            font-weight: 900;
+            color: #ffffff !important;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
+            font-weight: 700;
         }
-        
+
         .fantasy-highlight .box-tag {
-            color: #062141 !important;
-            background: rgba(6, 33, 65, 0.15) !important; /* רקע נייבי חצי שקוף לתגית */
+            color: #ffffff !important;
+            background: var(--brand-green) !important;
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        
+
         .fantasy-highlight .box-icon-wrap {
-            border-color: #062141 !important;
+            border-color: #ffffff !important;
+            background: rgba(255,255,255,0.1);
         }
-        
+
         .fantasy-highlight .box-icon-wrap svg {
-            stroke: #062141 !important; /* אייקון נייבי במצב רגיל */
+            stroke: #ffffff !important;
         }
-        
-        /* התנהגות במעבר עכבר (Hover) על קוביית הפנטזי */
+
+        /* אפקט הובר משודרג */
         .fantasy-highlight:hover .box-icon-wrap {
-            background: #062141 !important; /* הקובייה של האייקון מתמלאת בנייבי */
-            border-color: transparent !important;
+            background: #ffffff !important;
         }
-        
         .fantasy-highlight:hover .box-icon-wrap svg {
-            stroke: #ffffff !important; /* האייקון עצמו הופך ללבן שקופץ החוצה */
+            stroke: var(--brand-green) !important;
         }
         
         .hot-badge {
@@ -651,12 +659,13 @@
         </aside>
 
         <aside class="side-panel panel-left">
-            <div class="panel-header" style="justify-content: flex-start; padding: 0 15px;">
+            <div class="panel-header" style="position: relative; display: flex; align-items: center; justify-content: center;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span>תוצאות לייב</span>
                     <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
                 </div>
-                <button id="ticker-toggle-btn" class="ticker-control-btn" onclick="toggleLiveTicker()" title="עצור/הפעל גלילה">
+                
+                <button id="ticker-toggle-btn" class="ticker-control-btn" onclick="toggleLiveTicker()" title="עצור/הפעל גלילה" style="position: absolute; left: 10px;">
                     <svg id="ticker-pause-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
                     <svg id="ticker-play-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" style="display:none;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 </button>
