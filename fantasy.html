@@ -246,14 +246,37 @@
 
         .fm-tab { 
             display: none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            flex: 1; /* מוודא שהטאב יתפוס את כל הגובה ויאפשר גלילה */
+            flex: 1; 
             flex-direction: column;
-            direction: ltr; /* מעביר את פס הגלילה לימין */
-            overflow-y: auto; /* 👈 הגלילה קורית עכשיו בתוך הטאב עצמו! */
-            overflow-x: hidden;
-            padding-right: 0; /* הורדנו מרווח כדי להבטיח יישור מושלם עם הסרגל האפור */
-            padding-bottom: 25px; /* מרווח נשימה בתחתית */
+            direction: ltr; 
+            /* הסרנו מפה את הגלילה כדי שהכותרת לא תיגלל איתה! */
+            overflow: hidden; 
+            padding-right: 0; 
+            padding-bottom: 10px;
         }
+
+        /* 👈 כאן מתבצע הקסם: אנחנו עוטפים רק את התוכן של הטאב בגלילה ולא את הכותרת */
+        .fm-tab > .stats-grid-layout,
+        .fm-tab > .league-layout-split,
+        .fm-tab > .fixtures-split-layout,
+        .fm-tab > .inventory-grid {
+            flex: 1;
+            overflow-y: auto;
+            direction: ltr;
+            padding-right: 15px; /* מרווח יפה מפס הגלילה לתוכן */
+            margin-top: 5px; /* שומר על המרווח היפה מהכותרת לטבלאות! */
+            padding-bottom: 20px;
+        }
+
+        /* מחזירים את התוכן הפנימי לימין-לשמאל */
+        .fm-tab > .stats-grid-layout > *,
+        .fm-tab > .league-layout-split > *,
+        .fm-tab > .fixtures-split-layout > *,
+        .fm-tab > .inventory-grid > * {
+            direction: rtl;
+        }
+        
+        .fm-tab.active { display: flex; }
         .fm-tab.active { display: flex; }
         .fm-tab > * {
             direction: rtl; /* מחזיר את התוכן הפנימי לימין-לשמאל */
@@ -294,23 +317,14 @@
             direction: rtl !important;
         }
 
-        /* =========================================
-           קיבוע הכותרת הנייבי (Sticky) למעלה
-           ========================================= */
         h2.content-header-title { 
             font-size: 24px; color: var(--text-dark); font-weight: 900; 
             border-bottom: 2px solid rgba(124,168,86,0.3); padding-bottom: 10px; 
-            margin-bottom: 20px !important; 
+            margin-bottom: 10px !important; 
             display: flex; align-items: center; gap: 8px; justify-content: flex-start; flex-direction: row; 
-            
-            /* 👈 קיבוע הכותרת למעלה */
-            position: -webkit-sticky; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; /* שומר שהיא תמיד תהיה מעל התוכן שנגלל */
-            margin-top: 0;
-            width: 100%; /* מיישר אותה באופן מושלם עם הסרגל שמעליה */
-        }        
+            width: 100%;
+            flex-shrink: 0; /* מונע מהכותרת להימחץ */
+        }
         p.content-desc { color: #444; font-size: 14px; margin-bottom: 20px; }
 /* טבלאות חוקים מודרניות */
         .rules-modern-table {
