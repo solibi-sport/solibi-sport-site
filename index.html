@@ -854,6 +854,68 @@
             // מתחלף כל 10 שניות (10000 אלפיות שנייה)
             setInterval(renderUpdates, 10000); 
         });
+
+        // ==========================================
+        // מנוע עדכון מדדים (KPIs) - דף הבית הראשי
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const onlineUsersEl = document.getElementById('kpi-online-users');
+            const totalUsersEl = document.getElementById('kpi-total-users');
+            const activeForumsEl = document.getElementById('kpi-active-forums');
+            const liveMatchesEl = document.getElementById('kpi-live-matches');
+
+            if (!onlineUsersEl) return;
+
+            // פונקציית עזר למספרים עם פסיקים, אם הפונקציה הגלובלית לא קיימת
+            const formatNum = (num) => window.formatNumberWithCommas ? window.formatNumberWithCommas(num) : num.toLocaleString();
+
+            function updateKpiValue(element, newValue) {
+                if (!element) return;
+                element.innerText = formatNum(newValue);
+                element.classList.add('updated');
+                setTimeout(() => {
+                    element.classList.remove('updated');
+                }, 300);
+            }
+
+            // נתוני התחלה לסימולציה
+            let currentOnline = 1248;
+            let currentTotalUsers = 15420;
+            let currentForums = 42;
+
+            // 1. עדכון כמות מחוברים ומשתמשים חדשים
+            setInterval(() => {
+                const change = Math.floor(Math.random() * 9) - 3; 
+                currentOnline += change;
+                if (currentOnline < 1000) currentOnline = 1000; 
+                updateKpiValue(onlineUsersEl, currentOnline);
+
+                if (Math.random() > 0.85) {
+                    currentTotalUsers += 1;
+                    updateKpiValue(totalUsersEl, currentTotalUsers);
+                }
+            }, 4000);
+
+            // 2. עדכון פורומים פעילים 
+            setInterval(() => {
+                if (Math.random() > 0.9) { 
+                    currentForums += 1;
+                    updateKpiValue(activeForumsEl, currentForums);
+                }
+            }, 12000);
+            
+            // 3. חיבור אמיתי למנוע ה-Live Score
+            setInterval(() => {
+                if(window.allLiveMatches && liveMatchesEl) {
+                    const realLiveCount = window.allLiveMatches.length;
+                    const currentDisplayed = parseInt(liveMatchesEl.innerText.replace(/,/g, ''));
+                    if(currentDisplayed !== realLiveCount && !isNaN(realLiveCount)) {
+                        updateKpiValue(liveMatchesEl, realLiveCount);
+                    }
+                }
+            }, 5000); 
+        });
+        
     </script>
     
 <script src="search.js"></script>
