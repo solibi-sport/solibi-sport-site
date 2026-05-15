@@ -359,63 +359,65 @@
         .tech-chat { position: absolute; top: 10px; left: 10px; opacity: 0.15; transition: 0.4s; width: 14px; height: 14px; } .tech-chat svg { width: 100%; height: 100%; stroke: #fff; } .square-box:hover .tech-chat { opacity: 0.8; transform: scale(1.1); } .square-box:hover .tech-chat svg { stroke: var(--brand-green); }
 
 /* =========================================
-           שורת מדדים (KPI Bar) חיה לדף הבית + ענן זכוכית
+           שורת מדדים (KPI Bar) - עיצוב קפסולה צפה פרימיום
            ========================================= */
-        .kpi-glass-wrapper {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 15px 25px; /* פדינג קטן ומהודק לשורה צרה */
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.8);
-            width: 100%;
-            /* 👈 הקסם הסימטרי: מעתיק בדיוק את נוסחת הרוחב של ענן הקוביות! */
-            max-width: min(1000px, calc((100vh - 280px) * 2.4)); 
-            margin: 15px auto 25px auto; 
-            position: relative;
-            z-index: 20;
-        }
-
         .home-kpi-bar {
-            background: var(--element-navy-gradient);
-            border-radius: 16px; /* מעוגל יותר שיזרום עם הענן */
-            padding: 10px 20px;
+            background: rgba(6, 33, 65, 0.85); /* נייבי שקוף יוקרתי */
+            backdrop-filter: blur(15px); /* טשטוש חזק יותר */
+            border-radius: 50px; /* 👈 הקטע: צורת אליפסה/קפסולה חלקה לחלוטין */
+            padding: 12px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            border: 1px solid rgba(124, 168, 86, 0.3);
-            flex-wrap: wrap; 
-            gap: 10px;
+            
+            /* 👈 המרווחים שיצרנו: מרחיק מהתקרה, ומרחיק מאוד מהקוביות למטה */
+            margin-top: 35px; 
+            margin-bottom: 50px; 
+            
+            /* אפקטים וזוהר פנימי */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2), inset 0 0 0 2px rgba(124, 168, 86, 0.4);
             width: 100%;
-            margin: 0; /* ללא מרווח, הענן עוטף אותו */
+            max-width: 1000px; /* תואם לרוחב הקוביות */
+            position: relative;
+            z-index: 20;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .home-kpi-bar:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3), inset 0 0 15px rgba(124, 168, 86, 0.6);
+            transform: translateY(-3px); /* הקפסולה מרחפת קצת למעלה */
         }
 
         .kpi-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             flex: 1;
-            min-width: 150px; 
-            padding: 0 10px;
-            border-left: 1px dashed rgba(255,255,255,0.1);
+            justify-content: center; /* ממרכז את התוכן בכל בלוק */
+            position: relative;
         }
         
-        .kpi-item:last-child {
-            border-left: none;
+        /* מפריד עדין וקטן בין הפריטים, מרגיש היי-טקי */
+        .kpi-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 30px;
+            width: 2px;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            border-radius: 2px;
         }
 
         .kpi-icon-wrap {
-            font-size: 20px;
-            background: rgba(0,0,0,0.2);
-            width: 38px;
-            height: 38px;
+            font-size: 24px;
+            color: var(--brand-green); /* האייקונים ירוקים וזוהרים עכשיו */
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
             flex-shrink: 0;
-            color: #fff;
+            filter: drop-shadow(0 0 8px rgba(124,168,86,0.5));
         }
 
         .kpi-text-col {
@@ -425,46 +427,58 @@
         }
 
         .kpi-val {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 900;
-            color: var(--brand-green);
+            color: #ffffff; /* המספרים לבנים וגדולים */
             line-height: 1;
-            margin-bottom: 3px;
-            transition: color 0.3s, text-shadow 0.3s;
+            margin-bottom: 2px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            display: inline-block;
         }
 
+        /* 👈 אפקט הקפיצה והזוהר כשהמספר משתנה! */
         .kpi-val.updated {
-            color: #fff;
-            text-shadow: 0 0 10px var(--brand-green-glow);
+            color: var(--brand-green);
+            text-shadow: 0 0 15px var(--brand-green-glow);
+            transform: scale(1.15) translateY(-2px);
         }
 
         .kpi-lbl {
             font-size: 11px;
-            color: #cbd5e1;
+            color: #94a3b8;
             font-weight: bold;
         }
 
         .live-dot {
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background-color: #2ecc71;
             border-radius: 50%;
-            box-shadow: 0 0 8px #2ecc71;
+            box-shadow: 0 0 10px #2ecc71;
             animation: pulse-dot 1.5s infinite;
         }
 
         @keyframes pulse-dot {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { transform: scale(1.2); box-shadow: 0 0 0 8px rgba(46, 204, 113, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
         }
 
         @media (max-width: 900px) {
+            .home-kpi-bar {
+                flex-wrap: wrap;
+                border-radius: 24px; /* פחות מעוגל במובייל כדי שיכנסו שורות יפה */
+                padding: 20px;
+                gap: 20px;
+            }
             .kpi-item {
                 min-width: 40%;
-                margin-bottom: 10px;
-                border-left: none; 
+                justify-content: flex-start;
+            }
+            .kpi-item:not(:last-child)::after {
+                display: none; /* מעלים מפרידים במסכים קטנים */
             }
         }
         
@@ -527,43 +541,39 @@
 
         <div class="center-wrapper">
             
-         <div class="kpi-glass-wrapper">
-    <div class="home-kpi-bar">
-        
-        <div class="kpi-item">
-            <div class="kpi-icon-wrap">
-                <span class="live-dot"></span>
-            </div>
-            <div class="kpi-text-col">
-                <span class="kpi-val" id="kpi-online-users">1,248</span>
-                <span class="kpi-lbl">מחוברים באתר</span>
-            </div>
+        <div class="home-kpi-bar">
+    <div class="kpi-item">
+        <div class="kpi-icon-wrap">
+            <span class="live-dot"></span>
         </div>
-
-        <div class="kpi-item">
-            <div class="kpi-icon-wrap">👥</div>
-            <div class="kpi-text-col">
-                <span class="kpi-val" id="kpi-total-users">15,420</span>
-                <span class="kpi-lbl">חברי קהילת סוליבי</span>
-            </div>
+        <div class="kpi-text-col">
+            <span class="kpi-val" id="kpi-online-users">1,248</span>
+            <span class="kpi-lbl">מחוברים באתר</span>
         </div>
-
-        <div class="kpi-item">
-            <div class="kpi-icon-wrap">💬</div>
-            <div class="kpi-text-col">
-                <span class="kpi-val" id="kpi-active-forums">42</span>
-                <span class="kpi-lbl">פורומים פעילים</span>
-            </div>
+    </div>
+    
+    <div class="kpi-item">
+        <div class="kpi-icon-wrap">👥</div>
+        <div class="kpi-text-col">
+            <span class="kpi-val" id="kpi-total-users">15,420</span>
+            <span class="kpi-lbl">חברי קהילת סוליבי</span>
         </div>
-
-        <div class="kpi-item">
-            <div class="kpi-icon-wrap">⚽</div>
-            <div class="kpi-text-col">
-                <span class="kpi-val" id="kpi-live-matches">0</span>
-                <span class="kpi-lbl">משחקים בלייב</span>
-            </div>
+    </div>
+    
+    <div class="kpi-item">
+        <div class="kpi-icon-wrap">💬</div>
+        <div class="kpi-text-col">
+            <span class="kpi-val" id="kpi-active-forums">42</span>
+            <span class="kpi-lbl">פורומים פעילים</span>
         </div>
-
+    </div>
+    
+    <div class="kpi-item">
+        <div class="kpi-icon-wrap">⚽</div>
+        <div class="kpi-text-col">
+            <span class="kpi-val" id="kpi-live-matches">0</span>
+            <span class="kpi-lbl">משחקים בלייב</span>
+        </div>
     </div>
 </div>
 
