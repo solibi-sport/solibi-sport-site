@@ -2329,15 +2329,36 @@
     border-color: var(--brand-green);
 }
 
+/* --- עיצוב אזור הפירוט למשחק וחלון התוצאה --- */
+.m-score-box:not(.future-score), .lf-score:not(.future) {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.m-score-box:not(.future-score):hover, .lf-score:not(.future):hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(124, 168, 86, 0.3);
+    border-color: var(--brand-green);
+}
+
 .match-breakdown-body {
     display: flex !important;
     flex-direction: row !important; /* מכריח את זה להיות ימין ושמאל! */
     justify-content: space-between;
     gap: 20px;
-    align-items: stretch;
+    align-items: flex-start; /* שונה מ-stretch כדי שהעמודות לא יימתחו ויאפשרו גלילה אחידה */
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
+    /* הגדרות הגלילה החדשות - גלילה אחידה לכל הבודי, ופס גלילה מימין */
+    overflow-y: auto; 
+    direction: ltr; /* מעביר את פס הגלילה לימין */
+    /* גובה מקסימלי לבודי עצמו */
+    max-height: 550px; 
+}
+
+/* מחזיר את התוכן הפנימי לכיוון הנכון (ימין לשמאל) אחרי העברת פס הגלילה */
+.match-breakdown-body > * {
+    direction: rtl; 
 }
 
 .mb-team-col {
@@ -2348,8 +2369,9 @@
     border: 1px solid #e2e8f0;
     padding: 15px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    max-height: 500px;
-    overflow-y: auto;
+    /* ביטול הגלילה הפנימית בעמודה! */
+    max-height: none; 
+    overflow-y: visible; 
 }
 
 /* שבירה לאחד מעל השני רק בניידים קטנים */
@@ -2359,10 +2381,9 @@
     }
     .mb-team-col {
         width: 100% !important;
-        max-height: 300px;
+        /* במובייל אפשר להשאיר ככה, העמודות יהיו אחת מעל השנייה והגלילה הכללית תעבוד */
     }
 }
-
 .mb-team-title {
     text-align: center;
     margin-bottom: 15px;
