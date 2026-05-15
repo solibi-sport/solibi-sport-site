@@ -622,6 +622,14 @@
             transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
             direction: rtl; /* 👈 הקסם 2: מחזיר את הטקסט לימין-לשמאל */
         }
+        /* אפקט הריחוף לקוביות ההתראות */
+        .msg-row:hover {
+            transform: translateX(-5px); /* מזיז את הקובייה מעט הצידה */
+            background: #ffffff; /* מבהיר את הרקע */
+            border-color: var(--brand-green); /* מדליק מסגרת ירוקה */
+            box-shadow: 0 8px 25px rgba(124, 168, 86, 0.15); /* צל ירוק עדין שנותן עומק */
+            cursor: pointer;
+        }
         .msg-badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 900; color: #fff; white-space: nowrap; flex-shrink: 0; text-align: center; width: 100px; letter-spacing: 0.5px; }
         .msg-badge.system { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
         .msg-badge.alert { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
