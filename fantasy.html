@@ -4554,6 +4554,27 @@
                             </table> 
                         </div>
                     </div>
+
+<div id="tab-watchlist" class="fm-tab">
+                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            רשימת המעקב שלי (Watchlist)
+                        </h2>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px;">
+                            <p class="content-desc" style="margin: 0;">השחקנים שסימנת בעין. עקוב אחרי כושר המשחק שלהם ושינויי המחירים לקראת רכישה.</p>
+                            <span style="font-size: 11px; font-weight: bold; color: #64748b; background: rgba(0,0,0,0.05); padding: 4px 10px; border-radius: 20px;">4 שחקנים במעקב</span>
+                        </div>
+
+                        <div class="watchlist-container" id="watchlist-body">
+                            <div class="wl-empty">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><line x1="4" y1="4" x2="20" y2="20"></line></svg>
+                                <h3>אין שחקנים ברשימת המעקב</h3>
+                                <span>היכנס לכרטיס שחקן ולחץ על "הוסף לרשימת מעקב" כדי להוסיף שחקנים לכאן.</span>
+                            </div>
+                        </div>
+                    </div>
+                   
 <div id="tab-hot-players" class="fm-tab">
                         <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
@@ -8757,6 +8778,117 @@ window.switchTeamTab = function(tabId, btnElement) {
     document.getElementById(tabId).classList.add('active');
     btnElement.classList.add('active');
 };
+
+// ==========================================
+        // מנוע רשימת מעקב (Watchlist - Premium List)
+        // ==========================================
+        
+        function renderWatchlistDemo() {
+            const container = document.getElementById('watchlist-body');
+            if (!container) return;
+
+            const allPlayers = Object.values(window.allPlayersMap || {});
+            if (allPlayers.length < 10) {
+                setTimeout(renderWatchlistDemo, 1000); // ממתין למאגר שייטען
+                return;
+            }
+
+            // נשלוף 4 שחקנים מוכרים לצורך ההדגמה (או שחקנים אקראיים מהטופ)
+            let watchlistPlayers = allPlayers
+                .sort((a, b) => (b.value || 0) - (a.value || 0))
+                .slice(5, 9); // לוקחים כמה שחקנים מהטופ
+
+            container.innerHTML = '';
+
+            watchlistPlayers.forEach(p => {
+                const tName = window.translateName ? window.translateName(p.name) : p.name;
+                const tTeam = window.translateName ? window.translateName(p.team) : p.team;
+                const pImg = p.photo || `https://media.api-sports.io/football/players/${p.id}.png`;
+                const valStr = window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value;
+                const pts = p.fantasyPts || 0;
+
+                // יצירת עיגולי כושר רנדומליים להדגמה
+                const formDots = `
+                    <div class="form-container" style="gap: 3px;">
+                        <div class="form-dot ${Math.random()>0.3 ? 'f-w' : 'f-l'}">${Math.random()>0.3 ? 'W' : 'L'}</div>
+                        <div class="form-dot ${Math.random()>0.2 ? 'f-w' : 'f-d'}">${Math.random()>0.2 ? 'W' : 'D'}</div>
+                        <div class="form-dot f-w">W</div>
+                    </div>
+                `;
+
+                container.innerHTML += `
+                    <div class="wl-row" id="wl-row-${p.id}">
+                        <div class="wl-player-area" onclick="openPlayerModalById(${p.id}, false)">
+                            <img src="${pImg}" class="wl-avatar" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0'">
+                            <div class="wl-info">
+                                <div class="wl-name">${tName}</div>
+                                <div class="wl-meta">${p.displayPos} | <span>${tTeam}</span></div>
+                            </div>
+                        </div>
+
+                        <div class="wl-stats-area">
+                            <div class="wl-stat-block">
+                                <span class="wl-stat-lbl">רמה</span>
+                                <span class="tier-badge ${p.calcTierClass}" style="width: 80px; padding: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">${p.calcTierName}</span>
+                            </div>
+                            
+                            <div class="wl-stat-block">
+                                <span class="wl-stat-lbl">כושר (אחרונים)</span>
+                                ${formDots}
+                            </div>
+
+                            <div class="wl-stat-block">
+                                <span class="wl-stat-lbl">ניקוד עונה</span>
+                                <span class="wl-stat-val">${pts} נק'</span>
+                            </div>
+
+                            <div class="wl-stat-block">
+                                <span class="wl-stat-lbl">שווי נוכחי</span>
+                                <span class="wl-stat-val green">₪${valStr}</span>
+                            </div>
+                        </div>
+
+                        <div class="wl-actions-area">
+                            <button class="wl-btn-trade" onclick="alert('עובר למסך רכש / הצעה על ${tName}')">הצע חוזה</button>
+                            <button class="wl-btn-remove" onclick="removePlayerFromWatchlist(${p.id}, '${tName}')" title="הסר מרשימת המעקב">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // פונקציית מחיקה עם אנימציה יפה
+        window.removePlayerFromWatchlist = function(id, name) {
+            if(!confirm(`האם אתה בטוח שברצונך להסיר את ${name} מרשימת המעקב?`)) return;
+            
+            const row = document.getElementById(`wl-row-${id}`);
+            if(row) {
+                row.style.transform = 'translateX(-100%)';
+                row.style.opacity = '0';
+                setTimeout(() => {
+                    row.remove();
+                    // אם הרשימה התרוקנה, מראה את מצב האמפטי
+                    const container = document.getElementById('watchlist-body');
+                    if(container.children.length === 0) {
+                        container.innerHTML = `
+                            <div class="wl-empty">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><line x1="4" y1="4" x2="20" y2="20"></line></svg>
+                                <h3>אין שחקנים ברשימת המעקב</h3>
+                                <span>היכנס לכרטיס שחקן ולחץ על "הוסף לרשימת מעקב" כדי להוסיף שחקנים לכאן.</span>
+                            </div>
+                        `;
+                    }
+                }, 300);
+            }
+        };
+
+        // הוסף את הקריאה הזו ל-DOMContentLoaded הראשי שלך כדי שהיא תיטען
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(renderWatchlistDemo, 2000);
+        });
+    
 </script>
     
 <script src="search.js"></script>
