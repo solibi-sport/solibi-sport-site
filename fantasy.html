@@ -2602,6 +2602,58 @@
             z-index: -1; /* מוודא שזה יושב מאחורי הכותרת אבל מעל הטבלאות */
             pointer-events: none; /* מבטיח שזה לא יפריע ללחיצות עכבר על השורה הראשונה בטבלה */
         }
+
+        /* =========================================
+           הוספת מסגרת "בלו נייבי" לכל הטבלאות בנפרד
+           ========================================= */
+
+        /* 1. שלוש הטבלאות בטאב "חוקים ותקנון" */
+        #tab-rules .rules-modern-table {
+            border: 2px solid #062141 !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
+            border-radius: 8px; /* שומר על פינות מעוגלות */
+            overflow: hidden;
+            margin-bottom: 25px; /* מרווח יפה בין טבלה לטבלה */
+        }
+
+        /* מניעת קווים כפולים בכותרות הטבלאות של החוקים */
+        #tab-rules .rules-modern-table th {
+            border-left: none !important;
+            border-right: none !important;
+            box-shadow: -1px 0 0 #062141, 1px 0 0 #062141 !important;
+        }
+
+        /* 2. טבלת "השוואת שחקנים" בתוך מודאל כרטיס שחקן */
+        #pm-tab-compare .pm-a-box {
+            border: 2px solid #062141 !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff !important; /* מוודא שהרקע נשאר לבן */
+        }
+        
+        /* סידור נכון של כותרת ההשוואה (מונע שבירת מסגרת) */
+        .pm-comp-table th {
+            border-bottom: 2px solid var(--brand-green) !important;
+        }
+
+        /* 3. טבלת "משחקים אחרונים" בתוך מודאל כרטיס שחקן */
+        #pm-tab-matches .pm-a-box {
+             border: 2px solid #062141 !important;
+             box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
+             border-radius: 12px;
+             overflow-x: auto; /* מאפשר גלילה רוחבית בתוך הטבלה הממוסגרת */
+             overflow-y: hidden;
+             background: #fff !important;
+        }
+        
+        /* מניעת הופעת קו כפול או מסגרת פנימית סותרת בטבלת המשחקים */
+        .pm-matches-transposed {
+            border: none !important; 
+        }
+        .pm-matches-transposed th:first-child {
+            border-left: 2px solid #cbd5e1 !important; /* מחזיר קו הפרדה לעמודה המקובעת */
+        }
         
     </style>
         
