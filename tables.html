@@ -311,15 +311,15 @@
             background-image: var(--bg-image); 
             background-size: cover; 
             background-position: center;
-            opacity: 0; 
+            opacity: 0.15; /* 👈 כל הקסם פה: שינינו מ-0 ל-0.15 כדי שתמיד תהיה השתקפות עדינה */
             transition: opacity 0.5s ease; 
             z-index: 1; 
-            mix-blend-mode: overlay;
+            mix-blend-mode: overlay; /* 👈 השארנו overlay, זה מה שנותן את המראה של דף הבית */
             pointer-events: none;
         }
 
         .league-cube:hover::before { opacity: 0.4; }
-        .league-cube.svg-bg::before { background-size: 60%; background-repeat: no-repeat; mix-blend-mode: normal; }
+        .league-cube.svg-bg::before { background-size: 60%; background-repeat: no-repeat; mix-blend-mode: normal; opacity: 0.05; }
         .league-cube.svg-bg:hover::before { opacity: 0.12; }
 
         /* מנגנון סינון קוביות דרך JS */
