@@ -7924,15 +7924,19 @@ function renderOffersManagement() {
                     <div class="offer-body">
                         <div class="offer-side">
                             <span style="font-size:9px; color:#64748b; margin-bottom:3px;">הוא מציע:</span>
-                            <img src="${oImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
-                            <div class="offer-side-name">${offerPName}</div>
+                            <div onclick="openPlayerModalById(${o.offerPlayer.id}, false)" style="cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'" title="לחץ לצפייה בכרטיס השחקן">
+                                <img src="${oImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                                <div class="offer-side-name">${offerPName}</div>
+                            </div>
                             ${oMoneyHtml}
                         </div>
                         <div class="offer-vs">↔</div>
                         <div class="offer-side">
                             <span style="font-size:9px; color:#64748b; margin-bottom:3px;">תמורת (שלך):</span>
-                            <img src="${wImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
-                            <div class="offer-side-name">${wantedPName}</div>
+                            <div onclick="openPlayerModalById(${o.wantedPlayer.id}, true)" style="cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'" title="לחץ לצפייה בכרטיס השחקן">
+                                <img src="${wImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                                <div class="offer-side-name">${wantedPName}</div>
+                            </div>
                             ${wMoneyHtml}
                         </div>
                     </div>
@@ -7967,15 +7971,19 @@ function renderOffersManagement() {
                     <div class="offer-body">
                         <div class="offer-side">
                             <span style="font-size:9px; color:#64748b; margin-bottom:3px;">הצעת את:</span>
-                            <img src="${oImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
-                            <div class="offer-side-name">${offerPName}</div>
+                            <div onclick="openPlayerModalById(${o.offerPlayer.id}, true)" style="cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'" title="לחץ לצפייה בכרטיס השחקן">
+                                <img src="${oImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                                <div class="offer-side-name">${offerPName}</div>
+                            </div>
                             ${oMoneyHtml}
                         </div>
                         <div class="offer-vs">↔</div>
                         <div class="offer-side">
                             <span style="font-size:9px; color:#64748b; margin-bottom:3px;">תמורת:</span>
-                            <img src="${wImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
-                            <div class="offer-side-name">${wantedPName}</div>
+                            <div onclick="openPlayerModalById(${o.wantedPlayer.id}, false)" style="cursor: pointer; transition: 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'" title="לחץ לצפייה בכרטיס השחקן">
+                                <img src="${wImg}" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                                <div class="offer-side-name">${wantedPName}</div>
+                            </div>
                             ${wMoneyHtml}
                         </div>
                     </div>
