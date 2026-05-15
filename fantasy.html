@@ -4315,6 +4315,59 @@
     <div class="auctions-grid" id="auctions-container">
         </div>
 </div>
+
+                   <div id="tab-surprise-sale" class="fm-tab">
+    <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 20px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="3" style="vertical-align: text-bottom; margin-left: 8px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        מכירה בהפתעה (Flash Sale)
+    </h2>
+    <p class="content-desc">פעם בשבוע שחקן חופשי מוצע בהנחה ענקית. המנג'ר הראשון שלוחץ "הצע" ומשחרר שחקן במקומו - זוכה בו מיד!</p>
+
+    <div class="ss-container">
+        
+        <div class="ss-empty-state active" id="ss-empty-state">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5" style="margin-bottom:15px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <h3 style="color: var(--text-dark); margin-bottom: 5px;">אין מכירה פעילה כרגע</h3>
+            <p>המכירה הבאה תצוץ בהפתעה! הישארו מעודכנים.</p>
+        </div>
+
+        <div class="ss-card hidden" id="ss-active-card">
+            <div class="ss-badge">הזדמנות!</div>
+            <div class="ss-header">
+                <div style="font-size: 13px; color: #cbd5e1; font-weight: bold; margin-bottom: 5px;">הזמן אוזל:</div>
+                <div class="ss-timer" id="ss-timer">00:15:00</div>
+            </div>
+            
+            <div class="ss-body">
+                <img src="" id="ss-img" class="ss-player-img" onerror="this.src='https://ui-avatars.com/api/?name=P&background=e2e8f0&color=000'">
+                <div class="ss-player-name" id="ss-name">שם השחקן</div>
+                
+                <div class="ss-player-meta-row">
+                    <span id="ss-pos">עמדה</span>
+                    <span class="separator">|</span>
+                    <span id="ss-team">שם קבוצה</span>
+                    <span class="separator">|</span>
+                    <span id="ss-tier-container"></span>
+                </div>
+
+                <div class="ss-prices">
+                    <span class="ss-old-price" id="ss-old-price">שווי שוק: ₪0</span>
+                    <span class="ss-new-price" id="ss-new-price">₪0 בלבד!</span>
+                </div>
+
+                <div class="ss-swap-box">
+                    <span class="ss-swap-label">בחר שחקן לשחרור (חובה):</span>
+                    <select class="ss-select" id="ss-player-to-release" onchange="checkSurpriseSaleSelect()">
+                        <option value="">-- רשימת הסגל תטען כאן --</option>
+                    </select>
+                </div>
+
+                <button class="ss-buy-btn" id="ss-submit-btn" disabled onclick="executeSurpriseBuy()">הצע (יש לבחור שחקן תחילה)</button>
+            </div>
+        </div>
+
+    </div>
+</div>
                    
                     <div id="tab-market" class="fm-tab">
                        <h2 class="content-header-title" style="background: var(--element-navy-gradient); color: #fff; padding: 15px 20px; border-radius: 12px; border-bottom: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); justify-content: flex-start; flex-direction: row; margin-bottom: 15px;">
