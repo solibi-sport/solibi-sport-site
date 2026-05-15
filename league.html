@@ -178,11 +178,23 @@
         .stat-dropdown-pill:hover { transform: scale(1.02); }
         .stat-dropdown-pill option { background-color: var(--card-bg); color: var(--white); font-weight: bold; }
 
-        .table-container, .stats-list-container { flex: 1; overflow-y: auto; overflow-x: auto; padding-left: 5px; }
-        .table-container::-webkit-scrollbar, .stats-list-container::-webkit-scrollbar { width: 6px; height: 6px; }
-        .table-container::-webkit-scrollbar-track, .stats-list-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        .table-container::-webkit-scrollbar-thumb, .stats-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+       /* === הגדרות גלילה - מעביר את פס הגלילה ימינה === */
+        .table-container, .stats-list-container, #api-fixtures-list { 
+            flex: 1; 
+            overflow-y: auto; 
+            overflow-x: auto; 
+            padding-left: 5px; 
+            direction: ltr; /* 👈 זורק את פס הגלילה לצד ימין */
+        }
+        
+        /* 👈 מחזיר את התוכן עצמו לעברית (מימין לשמאל) */
+        .table-container > *, .stats-list-container > *, #api-fixtures-list > * { 
+            direction: rtl; 
+        }
 
+        .table-container::-webkit-scrollbar, .stats-list-container::-webkit-scrollbar, #api-fixtures-list::-webkit-scrollbar { width: 6px; height: 6px; }
+        .table-container::-webkit-scrollbar-track, .stats-list-container::-webkit-scrollbar-track, #api-fixtures-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .table-container::-webkit-scrollbar-thumb, .stats-list-container::-webkit-scrollbar-thumb, #api-fixtures-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
         /* =========================================
            עיצוב אחיד לכל 3 העמודות (טבלה, משחקים, שחקנים)
            ========================================= */
