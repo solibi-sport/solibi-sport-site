@@ -6699,55 +6699,106 @@ window.generateMatchPlayersBreakdown = function(targetScore) {
         });
 
         // ==========================================
-        // מנוע דף סקאוטינג - השחקנים החמים
+        // מנוע דף סקאוטינג - השחקנים החמים (נתונים אמיתיים)
         // ==========================================
         
-        const hotPlayersDB = {
-            onFire: [
-                {n:"קול פאלמר", t:"מנצ'סטר סיטי", i:"73195", v:"12.5 נק'", color:"var(--brand-green)"},
-                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:"11.0 נק'", color:"var(--brand-green)"},
-                {n:"ויניסיוס ג'וניור", t:"ריאל מדריד", i:"145895", v:"9.8 נק'", color:"var(--brand-green)"},
-                {n:"מוחמד סלאח", t:"ליברפול", i:"73230", v:"9.5 נק'", color:"var(--text-dark)"},
-                {n:"הארי קיין", t:"באיירן מינכן", i:"73199", v:"9.2 נק'", color:"var(--text-dark)"}
-            ],
-            gems: [
-                {n:"אוסקר גלוך", t:"זלצבורג", i:"145899", v:"0.8% בעלות", color:"#fbbf24"},
-                {n:"ענאן חלאילי", t:"סן ז'ילואז", i:"145892", v:"1.2% בעלות", color:"#fbbf24"},
-                {n:"רוי רביבו", t:"מכבי תל אביב", i:"145898", v:"2.5% בעלות", color:"#fbbf24"},
-                {n:"גבי קניקובסקי", t:"מכבי תל אביב", i:"73233", v:"3.1% בעלות", color:"var(--text-dark)"},
-                {n:"גיא מלמד", t:"הפועל חיפה", i:"73200", v:"4.0% בעלות", color:"var(--text-dark)"}
-            ],
-            rising: [
-                {n:"לאמין ימאל", t:"ברצלונה", i:"73270", v:"▲ ₪0.5M", color:"var(--brand-green)"},
-                {n:"דור תורג'מן", t:"מכבי תל אביב", i:"73240", v:"▲ ₪0.3M", color:"var(--brand-green)"},
-                {n:"דין דוד", t:"מכבי חיפה", i:"73197", v:"▲ ₪0.3M", color:"var(--brand-green)"},
-                {n:"ג'וד בלינגהאם", t:"ריאל מדריד", i:"73229", v:"▲ ₪0.2M", color:"var(--text-dark)"},
-                {n:"פיל פודן", t:"מנצ'סטר סיטי", i:"73235", v:"▲ ₪0.2M", color:"var(--text-dark)"}
-            ],
-            fixtures: [
-                {n:"פרנצדי פיירו", t:"מכבי חיפה", i:"73199", v:"3 קרובים קלים", color:"var(--brand-green)"},
-                {n:"צ'רון שרי", t:"מכבי חיפה", i:"73195", v:"3 קרובים קלים", color:"var(--brand-green)"},
-                {n:"בוקאיו סאקה", t:"ארסנל", i:"73177", v:"לוח ירוק", color:"var(--text-dark)"},
-                {n:"מנור סולומון", t:"לידס", i:"73215", v:"לוח ירוק", color:"var(--text-dark)"},
-                {n:"איאד אבו עביד", t:"הפועל ב״ש", i:"73218", v:"לוח סביר", color:"var(--text-dark)"}
-            ],
-            transfers: [
-                {n:"ערן זהבי", t:"מכבי תל אביב", i:"73156", v:"2,450 קניות", color:"#3498db"},
-                {n:"קיליאן אמבפה", t:"ריאל מדריד", i:"73216", v:"1,890 קניות", color:"#3498db"},
-                {n:"ארלינג האלנד", t:"מנצ'סטר סיטי", i:"73176", v:"1,500 קניות", color:"#3498db"},
-                {n:"ירדן שועה", t:"בית״ר י-ם", i:"73270", v:"950 קניות", color:"var(--text-dark)"},
-                {n:"פליסיו מילסון", t:"מכבי תל אביב", i:"145895", v:"820 קניות", color:"var(--text-dark)"}
-            ],
-            cold: [
-                {n:"קווין דה בריינה", t:"מנצ'סטר סיטי", i:"73220", v:"▼ ₪0.4M", color:"#ef4444"},
-                {n:"רוברט לבנדובסקי", t:"ברצלונה", i:"73255", v:"▼ ₪0.3M", color:"#ef4444"},
-                {n:"מרכוס רשפורד", t:"ליברפול", i:"73180", v:"0 נק' ברצף", color:"#ef4444"},
-                {n:"שגיב יחזקאל", t:"הפועל ב״ש", i:"73223", v:"פצוע", color:"var(--text-dark)"},
-                {n:"עלי מוחמד", t:"מכבי חיפה", i:"73191", v:"ללא בישול/שער", color:"var(--text-dark)"}
-            ]
-        };
-
         function renderHotPlayers() {
+            // הופך את המאגר השלם למערך לצורך סינונים
+            const allPlayers = Object.values(window.allPlayersMap || {});
+            
+            // אם המאגר עוד לא נטען, נמתין קצת וננסה שוב
+            if (allPlayers.length === 0) {
+                setTimeout(renderHotPlayers, 1000);
+                return;
+            }
+
+            // 1. בכושר שיא (ממוין לפי צורת כושר / ניקוד כללי)
+            const onFire = [...allPlayers]
+                .sort((a, b) => (b.fantasyPts || 0) - (a.fantasyPts || 0))
+                .slice(0, 5)
+                .map(p => ({
+                    n: window.translateName ? window.translateName(p.name) : p.name,
+                    t: window.translateName ? window.translateName(p.team) : p.team,
+                    i: p.id,
+                    v: `${p.fantasyPts || 0} נק'`,
+                    color: "var(--brand-green)"
+                }));
+
+            // 2. מציאות (שחקנים זולים עם ניקוד טוב)
+            const gems = [...allPlayers]
+                .filter(p => p.value > 0 && p.value <= 10000000 && p.fantasyPts > 20)
+                .sort((a, b) => (b.fantasyPts / b.value) - (a.fantasyPts / a.value)) // יחס נקודות לשווי
+                .slice(0, 5)
+                .map(p => ({
+                    n: window.translateName ? window.translateName(p.name) : p.name,
+                    t: window.translateName ? window.translateName(p.team) : p.team,
+                    i: p.id,
+                    v: `₪${window.formatPlayerValue ? window.formatPlayerValue(p.value) : p.value}`,
+                    color: "#fbbf24"
+                }));
+
+            // 3. פוטנציאל השקעה (שחקנים שעלו בשווי) - כרגע נשתמש בשחקנים מהרמות הבינוניות עם ביצועים טובים
+            const rising = [...allPlayers]
+                .filter(p => (p.calcTierName === 'רמה 3' || p.calcTierName === 'רמה 4') && p.goals > 3)
+                .sort((a, b) => (b.goals || 0) - (a.goals || 0))
+                .slice(0, 5)
+                .map(p => ({
+                    n: window.translateName ? window.translateName(p.name) : p.name,
+                    t: window.translateName ? window.translateName(p.team) : p.team,
+                    i: p.id,
+                    v: `▲ בעלייה`,
+                    color: "var(--brand-green)"
+                }));
+
+            // 4. לוח נוח (במקרה הזה ניקח שחקנים עם הרבה בישולים במחיר סביר)
+            const fixtures = [...allPlayers]
+                .sort((a, b) => (b.assists || 0) - (a.assists || 0))
+                .slice(0, 5)
+                .map(p => ({
+                    n: window.translateName ? window.translateName(p.name) : p.name,
+                    t: window.translateName ? window.translateName(p.team) : p.team,
+                    i: p.id,
+                    v: `${p.assists || 0} בישולים`,
+                    color: "var(--text-dark)"
+                }));
+
+            // 5. הכי נרכשים (שחקנים הכי פופולריים מהקבוצות הגדולות)
+            const popularTeams = ['Real Madrid', 'Manchester City', 'Arsenal', 'Barcelona', 'Bayern Munich'];
+            const transfers = [...allPlayers]
+                .filter(p => popularTeams.includes(p.team))
+                .sort((a, b) => (b.fantasyPts || 0) - (a.fantasyPts || 0))
+                .slice(0, 5)
+                .map(p => ({
+                    n: window.translateName ? window.translateName(p.name) : p.name,
+                    t: window.translateName ? window.translateName(p.team) : p.team,
+                    i: p.id,
+                    v: "מבוקש מאוד",
+                    color: "#3498db"
+                }));
+
+            // 6. מתקררים (שחקנים עם הרבה כרטיסים ומינוסים)
+            const cold = [...allPlayers]
+                .filter(p => p.yellow > 2 || p.red > 0)
+                .sort((a, b) => ((b.red * 3) + b.yellow) - ((a.red * 3) + a.yellow))
+                .slice(0, 5)
+                .map(p => ({
+                    n: window.translateName ? window.translateName(p.name) : p.name,
+                    t: window.translateName ? window.translateName(p.team) : p.team,
+                    i: p.id,
+                    v: `${p.yellow} צהובים, ${p.red} אדומים`,
+                    color: "#ef4444"
+                }));
+
+            // האובייקט שמאגד את כל התוצאות
+            const hotPlayersDB = {
+                onFire: onFire,
+                gems: gems,
+                rising: rising,
+                fixtures: fixtures,
+                transfers: transfers,
+                cold: cold
+            };
+
             const categories = [
                 { id: 'hot-on-fire', data: hotPlayersDB.onFire },
                 { id: 'hot-gems', data: hotPlayersDB.gems },
@@ -6763,11 +6814,14 @@ window.generateMatchPlayersBreakdown = function(targetScore) {
                 container.innerHTML = '';
                 
                 cat.data.forEach((p, idx) => {
-                    let imgHtml = `<img src="https://media.api-sports.io/football/players/${p.i}.png" onerror="this.src='https://ui-avatars.com/api/?name=${p.n}&background=e2e8f0&color=000'">`;
+                    // תיקון למקרה שאין תמונה לשחקן
+                    let fallbackSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(p.n.substring(0,2))}&background=e2e8f0&color=000`;
+                    let imgHtml = `<img src="https://media.api-sports.io/football/players/${p.i}.png" onerror="this.src='${fallbackSrc}'">`;
+                    
                     let rankClass = idx === 0 ? 'color: #fbbf24; font-size: 16px;' : (idx === 1 ? 'color: #94a3b8;' : (idx === 2 ? 'color: #b45309;' : ''));
                     
                     container.innerHTML += `
-                        <div class="s-list-row" onclick="openPlayerModal('${p.n}', 'https://media.api-sports.io/football/players/${p.i}.png', 'עמדה', '${p.t}', 0, 0, 0)">
+                        <div class="s-list-row" onclick="openPlayerModalById(${p.i}, false)" style="cursor: pointer;">
                             <div class="s-rank" style="${rankClass}">${idx + 1}</div>
                             <div class="s-player-info">
                                 ${imgHtml}
@@ -6783,9 +6837,9 @@ window.generateMatchPlayersBreakdown = function(targetScore) {
             });
         }
 
-        // טעינה אוטומטית כשהדף עולה
+        // טעינה אוטומטית כשהדף עולה (הפונקציה קוראת לעצמה עד שהמאגר נטען)
         document.addEventListener('DOMContentLoaded', () => {
-            renderHotPlayers();
+            setTimeout(renderHotPlayers, 1500); // נותנים זמן למאגר לרדת מסופאבייס
         });
 
         // ==========================================
