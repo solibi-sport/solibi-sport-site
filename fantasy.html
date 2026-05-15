@@ -9013,9 +9013,11 @@ window.switchTeamTab = function(tabId, btnElement) {
         });
 
     // ==========================================
-        // מנוע Player Pick (בחירת 1 מתוך 3) + שחרור מאותה רמה
+        // מנוע Player Pick (בחירת 1 מתוך 3) + שמירת הגרלה למניעת רמאויות
         // ==========================================
         let currentSelectedPickId = null;
+        let currentPickTier = null; // שומר את הרמה הנוכחית כדי שנדע מה למחוק אח"כ
+        window.savedPlayerPicks = window.savedPlayerPicks || {}; // הזיכרון שלנו!
 
         window.openPlayerPickModal = function(tierName) {
             const container = document.getElementById('pick-cards-container');
@@ -9028,6 +9030,7 @@ window.switchTeamTab = function(tabId, btnElement) {
             
             // איפוס בחירה קודמת
             currentSelectedPickId = null;
+            currentPickTier = tierName;
             confirmBtn.disabled = true;
             confirmBtn.innerText = "בחר שחקן לצירוף ושחקן לשחרור";
             container.innerHTML = '<div style="color:#fff; font-weight:bold;">מגריל שחקנים מהמאגר... 🎲</div>';
@@ -9052,19 +9055,25 @@ window.switchTeamTab = function(tabId, btnElement) {
                 });
             }
 
-            // 2. הגרלת 3 שחקנים להצעה מתוך המאגר החופשי
-            const validFreeAgents = allPlayers.filter(p => p.calcTierName === tierName && p.owner !== 'מכבי סוליבי');
-
-            if (validFreeAgents.length < 3) {
-                container.innerHTML = '<div style="color:#ef4444; font-weight:bold;">שגיאה: אין מספיק שחקנים פנויים ברמה זו במאגר כרגע.</div>';
-                return;
+            // 2. בדיקה אם כבר קיימת הגרלה שמורה לרמה הזו (החלק שמונע רמאויות!)
+            let pickedPlayers = [];
+            if (window.savedPlayerPicks[tierName]) {
+                pickedPlayers = window.savedPlayerPicks[tierName]; // טוען מהזיכרון
+            } else {
+                // הגרלה חדשה לגמרי
+                const validFreeAgents = allPlayers.filter(p => p.calcTierName === tierName && p.owner !== 'מכבי סוליבי');
+                if (validFreeAgents.length < 3) {
+                    container.innerHTML = '<div style="color:#ef4444; font-weight:bold;">שגיאה: אין מספיק שחקנים פנויים במאגר.</div>';
+                    return;
+                }
+                const shuffled = validFreeAgents.sort(() => 0.5 - Math.random());
+                pickedPlayers = shuffled.slice(0, 3);
+                
+                // שמירה לזיכרון למקרה שהוא יסגור את החלון
+                window.savedPlayerPicks[tierName] = pickedPlayers;
             }
 
-            // ערבוב אקראי ובחירת 3 שחקנים פנויים
-            const shuffled = validFreeAgents.sort(() => 0.5 - Math.random());
-            const pickedPlayers = shuffled.slice(0, 3);
-
-            // רינדור הקלפים למסך עם השהייה קטנה ליצירת מתח
+            // 3. רינדור הקלפים למסך עם השהייה קטנה ליצירת מתח
             setTimeout(() => {
                 container.innerHTML = '';
                 pickedPlayers.forEach((p, index) => {
@@ -9097,14 +9106,9 @@ window.switchTeamTab = function(tabId, btnElement) {
         };
 
         window.selectPickCard = function(element, playerId, playerName) {
-            // הסרת הבחירה מכל הקלפים האחרים
             document.querySelectorAll('.pick-card').forEach(card => card.classList.remove('selected'));
-            
-            // הוספת הבחירה לקלף שעליו לחצו
             element.classList.add('selected');
             currentSelectedPickId = playerId;
-            
-            // בדיקה האם גם נבחר שחקן להחלפה מהתפריט
             checkPickFormValidity();
         };
 
@@ -9112,7 +9116,7 @@ window.switchTeamTab = function(tabId, btnElement) {
             const confirmBtn = document.getElementById('pick-confirm-btn');
             const releaseSelect = document.getElementById('pick-release-select');
             
-            // מאשר את הכפתור רק אם שניהם נבחרו (גם קלף וגם שחקן לשחרור)
+            // מאשר את הכפתור רק אם שניהם נבחרו
             if (currentSelectedPickId && releaseSelect.value) {
                 confirmBtn.disabled = false;
                 const newPlayer = window.allPlayersMap[currentSelectedPickId];
@@ -9140,7 +9144,10 @@ window.switchTeamTab = function(tabId, btnElement) {
 
             alert(`🎉 הצלחה!\nהשחקן ${releasedName} שוחרר מהסגל.\nבמקומו הוחתם: ${tNameNew}!`);
             
-            // (בעתיד: כאן יהיה קוד המחיקה וההוספה אל מול סופאבייס)
+            // מחיקת ההגרלה השמורה כדי שבפעם הבאה שיפתח קלף כזה, המערכת תגריל מחדש!
+            if (currentPickTier) {
+                delete window.savedPlayerPicks[currentPickTier];
+            }
             
             closePlayerPickModal();
         };
