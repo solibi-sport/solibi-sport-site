@@ -127,6 +127,31 @@
             border-bottom: 2px solid var(--brand-green); background: rgba(255,255,255,0.5); z-index: 10;
         }
 
+        /* כפתור שליטה על גלילת הלייב */
+        .ticker-control-btn {
+            background: rgba(6, 33, 65, 0.1);
+            border: none;
+            color: var(--text-dark);
+            border-radius: 6px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-right: auto; /* דוחף אותו לצד שמאל של הכותרת */
+        }
+        .ticker-control-btn:hover {
+            background: var(--brand-green);
+            color: #fff;
+        }
+        
+        /* מחלקה שמוענקת לטיקר כשהמשתמש עוצר אותו ידנית */
+        .live-track.paused-manually {
+            animation-play-state: paused !important;
+        }
+
         /* === עיצוב פאנל עדכונים חמים === */
         #updates-container { position: relative; flex: 1; display: flex; flex-direction: column; padding: 10px 0; overflow: hidden; }
         
@@ -342,20 +367,35 @@
             border-color: #fbbf24 !important; /* מסגרת זהב בהובר */
         }
 
-        /* משנה את צבע התגית בתוך הקובייה הירוקה כדי שתבלוט */
+        /* 👈 תיקון קריאות וצבעים לקוביית הפנטזי הירוקה */
+        .fantasy-highlight .box-title,
+        .fantasy-highlight .box-desc {
+            color: #062141 !important; /* טקסט נייבי */
+            text-shadow: none !important; /* ביטול הצל הלבן שמפריע */
+            font-weight: 900;
+        }
+        
         .fantasy-highlight .box-tag {
-            color: #ffffff;
-            background: rgba(0,0,0,0.2);
-            padding: 3px 8px;
-            border-radius: 6px;
+            color: #062141 !important;
+            background: rgba(6, 33, 65, 0.15) !important; /* רקע נייבי חצי שקוף לתגית */
         }
-
-        /* משנה את האייקון שיהיה לבן במקום ירוק */
+        
         .fantasy-highlight .box-icon-wrap {
-            border-color: #ffffff !important;
+            border-color: #062141 !important;
         }
+        
         .fantasy-highlight .box-icon-wrap svg {
-            stroke: #ffffff !important;
+            stroke: #062141 !important; /* אייקון נייבי במצב רגיל */
+        }
+        
+        /* התנהגות במעבר עכבר (Hover) על קוביית הפנטזי */
+        .fantasy-highlight:hover .box-icon-wrap {
+            background: #062141 !important; /* הקובייה של האייקון מתמלאת בנייבי */
+            border-color: transparent !important;
+        }
+        
+        .fantasy-highlight:hover .box-icon-wrap svg {
+            stroke: #ffffff !important; /* האייקון עצמו הופך ללבן שקופץ החוצה */
         }
         
         .hot-badge {
@@ -611,9 +651,15 @@
         </aside>
 
         <aside class="side-panel panel-left">
-            <div class="panel-header">
-                <span>תוצאות לייב</span>
-                <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
+            <div class="panel-header" style="justify-content: flex-start; padding: 0 15px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span>תוצאות לייב</span>
+                    <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
+                </div>
+                <button id="ticker-toggle-btn" class="ticker-control-btn" onclick="toggleLiveTicker()" title="עצור/הפעל גלילה">
+                    <svg id="ticker-pause-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    <svg id="ticker-play-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" style="display:none;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
             </div>
             <div id="live-container">
                 <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;" id="live-loading">טוען משחקים... ⚽</div>
@@ -782,6 +828,27 @@
 
         window.matchGoalTracker = window.matchGoalTracker || {};
         window.allLiveMatches = []; 
+
+        // פונקציה לעצירה והפעלה של גלילת הלייב
+        window.toggleLiveTicker = function() {
+            const track = document.getElementById('live-track');
+            const pauseIcon = document.getElementById('ticker-pause-icon');
+            const playIcon = document.getElementById('ticker-play-icon');
+            
+            if (!track) return;
+
+            if (track.classList.contains('paused-manually')) {
+                // אם כרגע במצב מושהה -> החזר לפעולה
+                track.classList.remove('paused-manually');
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            } else {
+                // אם כרגע פועל -> השהה
+                track.classList.add('paused-manually');
+                pauseIcon.style.display = 'none';
+                playIcon.style.display = 'block';
+            }
+        };
 
         async function fetchLiveMatches() {
             try {
