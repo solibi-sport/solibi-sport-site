@@ -267,7 +267,7 @@
         .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--text-dark)); border-radius: 2px; }
         .title-line.left { background: linear-gradient(270deg, transparent, var(--text-dark)); }
 
-        /* === מעטפת ענן זכוכית מאחורי כל הקוביות === */
+       /* === מעטפת ענן זכוכית מאחורי כל הקוביות === */
         .cards-glass-wrapper {
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(10px);
@@ -277,7 +277,7 @@
             border: 1px solid rgba(255,255,255,0.8);
             width: 100%;
             max-width: min(1000px, calc((100vh - 280px) * 2.4));
-            margin: 0 auto;
+            margin: auto; /* 👈 הקסם! דוחף את הקוביות בדיוק לאמצע השטח שנותר */
         }
 
         .cards-grid { 
