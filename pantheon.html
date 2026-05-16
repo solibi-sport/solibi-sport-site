@@ -443,18 +443,17 @@ html, body {
             border-color: #e2e8f0 !important; 
         }
 
-        /* מרכוז כללי, אבל עם חריגים לעמודות ספציפיות כדי שייראו ישרות */
+        /* מרכוז מלא לכל תאי הטבלה */
         .pantheon-table th, .pantheon-table td { text-align: center !important; }
-        .pantheon-table th.align-right, .pantheon-table td.align-right { text-align: right !important; padding-right: 30px; }
         
-        /* התמונות יעמדו בקו ישר פלס מצד ימין, והשם משמאלן */
-        .player-identity-cell { display: flex; align-items: center; gap: 15px; justify-content: flex-start; }
+        /* מרכוז עמודת השחקן - אבל שמירה על קו ישר של התמונות! */
+        .player-identity-cell { display: flex; align-items: center; gap: 15px; justify-content: center; width: max-content; margin: 0 auto; }
         
-        .player-name-wrap { display: flex; flex-direction: column; justify-content: center; }
+        .player-name-wrap { display: flex; flex-direction: column; justify-content: center; text-align: right; min-width: 130px; } /* רוחב מינימלי מקבע את המרחק */
         .player-name-main { font-weight: 900; color: var(--text-dark); font-size: 16px; margin: 0; }
         
-        /* עיצוב לעמודת התיאור החדשה */
-        .new-desc-cell { font-size: 13px; color: #475569; line-height: 1.5; white-space: normal; max-width: 350px; }
+        /* עיצוב ומרכוז לעמודת התיאור החדשה */
+        .new-desc-cell { font-size: 13px; color: #475569; line-height: 1.5; white-space: normal; max-width: 350px; margin: 0 auto; }
 
         /* --- עיצוב מחדש של טבלת התארים (כותרת מעל, פירוט מתחת) --- */
         .titles-table { width: 100%; border-collapse: collapse; direction: rtl; text-align: center; font-size: 14px; background: #fff; border-radius: 8px; overflow: hidden; }
@@ -3243,13 +3242,12 @@ html, body {
             const table = document.querySelector('.pantheon-table');
             if(!table) return;
 
-            // 1. מעצבים מחדש את הכותרות: 4 עמודות נקיות בלבד
             const theadTr = table.querySelector('thead tr');
             if(theadTr) {
                 theadTr.innerHTML = `
                     <th style="text-align: center; width: 80px;">מיקום</th>
-                    <th class="align-right">שחקן</th>
-                    <th class="align-right">תיאור והישגים</th>
+                    <th style="text-align: center;">שחקן</th>
+                    <th style="text-align: center;">תיאור והישגים</th>
                     <th style="text-align: center; width: 140px;">פעולות</th>
                 `;
             }
@@ -3297,7 +3295,7 @@ html, body {
                 // הזרקת 4 העמודות הנקיות (תמונות מיושרות + עמודת תיאור חדשה)
                 row.innerHTML = `
                     <td style="text-align: center;"><div class="pantheon-rank-badge ${rankClass}">${rank}</div></td>
-                    <td class="align-right">
+                    <td>
                         <div class="player-identity-cell">
                             <img src="${defaultAvatar}" class="player-avatar-mini">
                             <div class="player-name-wrap">
@@ -3305,7 +3303,7 @@ html, body {
                             </div>
                         </div>
                     </td>
-                    <td class="align-right new-desc-cell">${desc}</td>
+                    <td class="new-desc-cell">${desc}</td>
                     <td style="text-align: center;">
                         <button class="stats-action-btn" onclick="openMagicModal('${safeData}')">
                             <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
