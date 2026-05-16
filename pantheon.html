@@ -150,6 +150,11 @@ html, body {
             flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: auto; 
             margin-left: calc(var(--sidebar-width) + 20px); 
+            direction: ltr; /* זורק את פס הגלילה לימין */
+        }
+        
+        .content-area > * {
+            direction: rtl; /* מחזיר את כל התוכן הפנימי לימין-לשמאל */
         }
 
         .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; height: 100%; }
@@ -3177,12 +3182,12 @@ html, body {
                 <div id="hof-tab-general" class="hof-tab-panel active">
                     <div class="scrollable-tab-area">
                         <div class="hof-stats-grid" style="grid-template-columns: repeat(3, 1fr);">
-                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: -5px;">קריירת מועדונים 🏢</div>
+                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: -5px;">קריירת מועדונים</div>
                             <div class="hof-stat-card highlight"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="hof-club-apps">0</div></div>
                             <div class="hof-stat-card highlight"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="hof-club-goals">0</div></div>
                             <div class="hof-stat-card highlight"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="hof-club-assists">0</div></div>
 
-                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-top: 10px; margin-bottom: -5px;">נבחרת ישראל 🇮🇱</div>
+                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-top: 10px; margin-bottom: -5px;">נבחרת ישראל</div>
                             <div class="hof-stat-card"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="hof-intl-apps">0</div></div>
                             <div class="hof-stat-card"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="hof-intl-goals">0</div></div>
                             <div class="hof-stat-card"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="hof-intl-assists">0</div></div>
