@@ -3079,6 +3079,7 @@ html, body {
             const table = document.querySelector('.pantheon-table');
             if(!table) return;
 
+            // 1. מעצבים מחדש את הכותרות העליונות של הטבלה
             const theadTr = table.querySelector('thead tr');
             if(theadTr) {
                 theadTr.innerHTML = `
@@ -3092,6 +3093,10 @@ html, body {
                 `;
             }
 
+            // צללית ברירת מחדל נקייה ויפה (סילואט)
+            const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+
+            // 2. עוברים שורה-שורה ובונים מחדש
             const rows = table.querySelectorAll('tbody tr');
             rows.forEach((row) => {
                 const cells = row.querySelectorAll('td');
@@ -3122,7 +3127,9 @@ html, body {
                     clubApps, clubGoals, clubAssists,
                     allTitles, rank
                 };
-                const safeData = JSON.stringify(playerData).replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+                
+                // קידוד המידע כדי שהדפדפן לא יקרוס מהגרשיים
+                const safeData = encodeURIComponent(JSON.stringify(playerData));
 
                 let rankClass = '';
                 if(rank === '1') rankClass = 'rank-1';
@@ -3133,7 +3140,7 @@ html, body {
                     <td style="text-align: center; width: 60px;"><div class="pantheon-rank-badge ${rankClass}">${rank}</div></td>
                     <td>
                         <div class="player-identity-cell">
-                            <img src="https://media.api-sports.io/football/players/${rank}.png" class="player-avatar-mini" onerror="this.src='https://media.api-sports.io/football/players/1.png'">
+                            <img src="${defaultAvatar}" class="player-avatar-mini">
                             <div class="player-name-wrap">
                                 <span class="player-name-main">${name}</span>
                                 <span class="player-name-desc">${desc}</span>
@@ -3154,8 +3161,9 @@ html, body {
             });
         });
 
+        // 3. הפונקציה שמקבלת את הנתונים, מפענחת אותם ומפעילה את המודל החדש
         window.openMagicModal = function(dataStr) {
-            const data = JSON.parse(dataStr);
+            const data = JSON.parse(decodeURIComponent(dataStr));
             
             document.getElementById('hof-modal-name').innerText = data.name;
             document.getElementById('hof-modal-pos').innerText = data.position;
@@ -3174,7 +3182,6 @@ html, body {
 
             document.getElementById('hof-modal').classList.add('active');
         };
-
     </script>
     <script src="search.js"></script>
 </body>
