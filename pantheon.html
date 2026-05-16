@@ -148,13 +148,17 @@
 
 .content-area {
             flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: auto; 
+            padding: 35px; position: relative; display: flex; flex-direction: column; 
             margin-left: calc(var(--sidebar-width) + 20px);
-            direction: ltr !important; /* מעביר את פס הגלילה האמיתי ימינה */
+            
+            /* 3 שורות הקסם לגלילה בימין: */
+            overflow-y: scroll !important; 
+            direction: ltr !important; 
+            min-height: 0 !important; /* זה מה שחוסם את הקופסה מלהימתח עד אינסוף ומחזיר את הפס! */
         }
 
         .content-area > * {
-            direction: rtl !important; /* משאיר את התוכן בעברית */
+            direction: rtl !important; 
         }
 
         /* חוסם את פס הגלילה הכפול השמאלי שהטבלה ייצרה בטעות */
