@@ -147,15 +147,15 @@
         .sidebar-item:hover, .sidebar-item.active { background: rgba(124, 168, 86, 0.1); color: #ffffff; border-right-color: var(--brand-green); padding-right: 25px; }
 
 .content-area {
-    flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: scroll;
-    margin-left: calc(var(--sidebar-width) + 20px);
-    direction: ltr;
-}
+            flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: scroll;
+            margin-left: calc(var(--sidebar-width) + 20px);
+            transform: scaleX(-1) !important;
+        }
 
-.content-area > * {
-    direction: rtl;
-}
+        .content-area > * {
+            transform: scaleX(-1) !important;
+        }
         .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; height: 100%; }
         .tab-content.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
