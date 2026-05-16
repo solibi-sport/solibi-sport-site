@@ -2654,76 +2654,78 @@
                 <p class="content-desc">הכדורגל הוא לא רק שחקנים. דירוגים של המאמנים הגדולים, בעלים משפיעים ושופטים.</p>
                 <div class="placeholder-box">כאן ישולבו נתוני המאמנים וההנהלה...</div>
             </div>
-            <div id="tab-7" class="tab-content">
+           <div id="tab-7" class="tab-content">
                 <h2 class="content-header-title">ליגת העל: היסטורית התארים המלאה</h2>
-                <p class="content-desc">ארכיון התארים המקיף של הכדורגל הישראלי. כל האלופות, מחזיקות הגביע וזוכות הסופר קאפ מקום המדינה ועד היום בסדר כרונולוגי יורד.</p>
+                <p class="content-desc">ארכיון התארים המקיף של הכדורגל הישראלי. בחר מפעל מהרשימה כדי לראות את היסטוריית הזכיות בסדר כרונולוגי יורד.</p>
                 
+                <div style="display: flex; justify-content: flex-start; margin-bottom: 15px; direction: rtl;">
+                    <select id="trophy-selector" onchange="switchTrophyTable()" style="padding: 10px 20px; border-radius: 8px; border: 2px solid var(--element-navy-gradient); background: #ffffff; color: var(--text-dark); font-size: 15px; font-weight: 900; cursor: pointer; outline: none; font-family: inherit; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                        <option value="championship">אליפות המדינה</option>
+                        <option value="state-cup">גביע המדינה</option>
+                        <option value="toto-cup">גביע הטוטו</option>
+                        <option value="super-cup">אלוף האלופים (סופר קאפ)</option>
+                    </select>
+                </div>
+
                 <style>
-                    /* התאמת עיצוב ייחודית לטבלת ארכיון התארים הרחבה */
+                    /* מעטפת הטבלאות */
                     .history-table-wrapper {
-                        max-height: 68vh;
+                        max-height: 60vh;
                         overflow-y: auto !important;
                         background: #ffffff;
                         border-radius: 12px;
-                        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-                        border: 3px solid var(--text-dark); /* מסגרת בלו-נייבי מודגשת */
-                        margin-top: 15px;
-                        direction: ltr; /* מעביר את פס הגלילה הראשי לצד ימין */
+                        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                        border: 2px solid var(--text-dark) !important;
+                        direction: ltr; /* פס הגלילה בצד ימין */
                     }
-                    .history-table {
+                    /* הטבלאות הדינמיות */
+                    .trophy-table {
                         width: 100%;
                         border-collapse: collapse;
                         font-size: 13px;
                         text-align: center;
-                        table-layout: fixed; /* הפקודה שמכריחה את כל העמודות להיות שוות בגודלן */
-                        direction: rtl; 
+                        table-layout: fixed; 
+                        direction: rtl; /* הטקסט מימין לשמאל */
+                        display: none; /* מוסתר כברירת מחדל */
                     }
-                    .history-table th {
+                    .trophy-table.active {
+                        display: table; /* מוצג כשהוא פעיל */
+                    }
+                    .trophy-table th {
                         background: var(--element-navy-gradient);
                         color: #ffffff;
-                        padding: 12px 8px;
+                        padding: 14px 10px;
                         position: sticky;
                         top: 0;
                         z-index: 10;
+                        font-weight: 700;
                         border-left: 1px solid rgba(255,255,255,0.15);
-                    }
-                    /* שורת הכותרת הראשית העליונה */
-                    .history-table th.main-title-th {
-                        font-size: 14px;
-                        font-weight: 900;
                         border-bottom: 3px solid var(--brand-green);
                     }
-                    /* שורת כותרות המשנה */
-                    .history-table th.sub-title-th {
-                        font-size: 11px;
-                        background: #0f2d52;
-                        border-bottom: 2px solid #cbd5e1;
-                        padding: 6px 4px;
-                    }
-                    .history-table td {
-                        padding: 10px 6px;
+                    .trophy-table td {
+                        padding: 12px 10px;
                         color: var(--text-dark);
-                        border-left: 1px solid #e2e8f0;
+                        border-left: 1px solid var(--text-dark); /* קו הפרדה נייבי אלגנטי */
                         border-bottom: 1px solid #cbd5e1;
                         vertical-align: middle;
                         font-weight: 500;
                     }
-                    .history-table td.season-td {
+                    .trophy-table th:last-child, .trophy-table td:last-child {
+                        border-left: none;
+                    }
+                    .trophy-table td.season-td {
                         background: #f8fafc;
                         color: #64748b;
                         font-weight: 700;
                     }
-                    .history-table td.winner-td {
+                    .trophy-table td.winner-td {
                         font-weight: 900;
                     }
-                    .history-table tbody tr:nth-child(even) td.winner-td {
-                        background-color: #fafafa;
+                    .trophy-table tbody tr:nth-child(even) {
+                        background-color: #f8fafc;
                     }
-                    .history-table tbody tr:hover td {
+                    .trophy-table tbody tr:hover td {
                         background-color: rgba(124, 168, 86, 0.08) !important;
-                    }
-                    .history-table th:last-child, .history-table td:last-child {
-                        border-left: none;
                     }
                     .text-pending {
                         color: #94a3b8;
@@ -2733,387 +2735,172 @@
                 </style>
 
                 <div class="history-table-wrapper">
-                    <table class="history-table">
+                    
+                    <table class="trophy-table active" id="table-championship">
                         <thead>
                             <tr>
-                                <th colspan="2" class="main-title-th">אליפות המדינה</th>
-                                <th colspan="2" class="main-title-th">גביע המדינה</th>
-                                <th colspan="2" class="main-title-th">גביע הטוטו</th>
-                                <th colspan="2" class="main-title-th">אלוף האלופים (סופר קאפ)</th>
-                            </tr>
-                            <tr>
-                                <th class="sub-title-th">עונה</th>
-                                <th class="sub-title-th">אלופה</th>
-                                <th class="sub-title-th">עונה</th>
-                                <th class="sub-title-th">מחזיקת הגביע</th>
-                                <th class="sub-title-th">עונה</th>
-                                <th class="sub-title-th">זוכה</th>
-                                <th class="sub-title-th">עונה</th>
-                                <th class="sub-title-th">זוכה</th>
+                                <th style="width: 25%;">עונה</th>
+                                <th style="width: 45%;">אלופה</th>
+                                <th style="width: 30%;">סגנית</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="season-td">2025/2026</td><td class="winner-td text-pending">טרם נקבעה</td>
-                                <td class="season-td">2025/26</td><td class="winner-td text-pending">-</td>
-                                <td class="season-td">2025/26</td><td class="winner-td text-pending">-</td>
-                                <td class="season-td">2025/26</td><td class="winner-td text-pending">-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2024/2025</td><td class="winner-td" style="color: #b49342;">מכבי ת"א</td>
-                                <td class="season-td">2024/25</td><td>-</td><td class="season-td">2024/25</td><td>-</td><td class="season-td">2024/25</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2023/2024</td><td class="winner-td">מכבי ת"א</td>
-                                <td class="season-td">2023/24</td><td>-</td><td class="season-td">2023/24</td><td>-</td><td class="season-td">2023/24</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2022/2023</td><td class="winner-td" style="color: #16a34a;">מכבי חיפה</td>
-                                <td class="season-td">2022/23</td><td>-</td><td class="season-td">2022/23</td><td>-</td><td class="season-td">2022/23</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2021/2022</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2021/22</td><td>-</td><td class="season-td">2021/22</td><td>-</td><td class="season-td">2021/22</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2020/2021</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2020/21</td><td>-</td><td class="season-td">2020/21</td><td>-</td><td class="season-td">2020/21</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2019/2020</td><td class="winner-td">מכבי ת"א</td>
-                                <td class="season-td">2019/20</td><td>-</td><td class="season-td">2019/20</td><td>-</td><td class="season-td">2019/20</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2018/2019</td><td class="winner-td">מכבי ת"א</td>
-                                <td class="season-td">2018/19</td><td>-</td><td class="season-td">2018/19</td><td>-</td><td class="season-td">2018/19</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2017/2018</td><td class="winner-td" style="color: #dc2626;">הפועל ב"ש</td>
-                                <td class="season-td">2017/18</td><td>-</td><td class="season-td">2017/18</td><td>-</td><td class="season-td">2017/18</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2016/2017</td><td class="winner-td">הפועל ב"ש</td>
-                                <td class="season-td">2016/17</td><td>-</td><td class="season-td">2016/17</td><td>-</td><td class="season-td">2016/17</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2015/2016</td><td class="winner-td">הפועל ב"ש</td>
-                                <td class="season-td">2015/16</td><td>-</td><td class="season-td">2015/16</td><td>-</td><td class="season-td">2015/16</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2014/2015</td><td class="winner-td">מכבי ת"א</td>
-                                <td class="season-td">2014/15</td><td>-</td><td class="season-td">2014/15</td><td>-</td><td class="season-td">2014/15</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2013/2014</td><td class="winner-td">מכבי ת"א</td>
-                                <td class="season-td">2013/14</td><td>-</td><td class="season-td">2013/14</td><td>-</td><td class="season-td">2013/14</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2012/2013</td><td class="winner-td">מכבי ת"א</td>
-                                <td class="season-td">2012/13</td><td>-</td><td class="season-td">2012/13</td><td>-</td><td class="season-td">2012/13</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2011/2012</td><td class="winner-td">הפועל ק"ש</td>
-                                <td class="season-td">2011/12</td><td>-</td><td class="season-td">2011/12</td><td>-</td><td class="season-td">2011/12</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2010/2011</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2010/11</td><td>-</td><td class="season-td">2010/11</td><td>-</td><td class="season-td">2010/11</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2009/2010</td><td class="winner-td">הפועל ת"א</td>
-                                <td class="season-td">2009/10</td><td>-</td><td class="season-td">2009/10</td><td>-</td><td class="season-td">2009/10</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2008/2009</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2008/09</td><td>-</td><td class="season-td">2008/09</td><td>-</td><td class="season-td">2008/09</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2007/2008</td><td class="winner-td">בית"ר י-ם</td>
-                                <td class="season-td">2007/08</td><td>-</td><td class="season-td">2007/08</td><td>-</td><td class="season-td">2007/08</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2006/2007</td><td class="winner-td">בית"ר י-ם</td>
-                                <td class="season-td">2006/07</td><td>-</td><td class="season-td">2006/07</td><td>-</td><td class="season-td">2006/07</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2005/2006</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2005/06</td><td>-</td><td class="season-td">2005/06</td><td>-</td><td class="season-td">2005/06</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2004/2005</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2004/05</td><td>-</td><td class="season-td">2004/05</td><td>-</td><td class="season-td">2004/05</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2003/2004</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2003/04</td><td>-</td><td class="season-td">2003/04</td><td>-</td><td class="season-td">2003/04</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2002/2003</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">2002/03</td><td>-</td><td class="season-td">2002/03</td><td>-</td><td class="season-td">2002/03</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2001/2002</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2001/02</td><td>-</td><td class="season-td">2001/02</td><td>-</td><td class="season-td">2001/02</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">2000/2001</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">2000/01</td><td>-</td><td class="season-td">2000/01</td><td>-</td><td class="season-td">2000/01</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1999/2000</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1999/00</td><td>-</td><td class="season-td">1999/00</td><td>-</td><td class="season-td">1999/00</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1998/1999</td><td class="winner-td">הפועל חיפה</td>
-                                <td class="season-td">1998/19</td><td>-</td><td class="season-td">1998/19</td><td>-</td><td class="season-td">1998/19</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1997/1998</td><td class="winner-td">בית"ר ירושלים</td>
-                                <td class="season-td">1997/98</td><td>-</td><td class="season-td">1997/98</td><td>-</td><td class="season-td">1997/98</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1996/1997</td><td class="winner-td">בית"ר ירושלים</td>
-                                <td class="season-td">1996/97</td><td>-</td><td class="season-td">1996/97</td><td>-</td><td class="season-td">1996/97</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1995/1996</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1995/96</td><td>-</td><td class="season-td">1995/96</td><td>-</td><td class="season-td">1995/96</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1994/1995</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1994/95</td><td>-</td><td class="season-td">1994/95</td><td>-</td><td class="season-td">1994/95</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1993/1994</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">1993/14</td><td>-</td><td class="season-td">1993/14</td><td>-</td><td class="season-td">1993/14</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1992/1993</td><td class="winner-td">בית"ר ירושלים</td>
-                                <td class="season-td">1992/93</td><td>-</td><td class="season-td">1992/93</td><td>-</td><td class="season-td">1992/93</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1991/1992</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1991/92</td><td>-</td><td class="season-td">1991/92</td><td>-</td><td class="season-td">1991/92</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1990/1991</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">1990/91</td><td>-</td><td class="season-td">1990/91</td><td>-</td><td class="season-td">1990/91</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1989/1990</td><td class="winner-td">בני יהודה תל אביב</td>
-                                <td class="season-td">1989/90</td><td>-</td><td class="season-td">1989/90</td><td>-</td><td class="season-td">1989/90</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1988/1989</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">1988/89</td><td>-</td><td class="season-td">1988/89</td><td>-</td><td class="season-td">1988/89</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1987/1988</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1987/88</td><td>-</td><td class="season-td">1987/88</td><td>-</td><td class="season-td">1987/88</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1986/1987</td><td class="winner-td">בית"ר ירושלים</td>
-                                <td class="season-td">1986/87</td><td>-</td><td class="season-td">1986/87</td><td>-</td><td class="season-td">1986/87</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1985/1986</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1985/86</td><td>-</td><td class="season-td">1985/86</td><td>-</td><td class="season-td">1985/86</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1984/1985</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">1984/85</td><td>-</td><td class="season-td">1984/85</td><td>-</td><td class="season-td">1984/85</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1983/1984</td><td class="winner-td">מכבי חיפה</td>
-                                <td class="season-td">1983/84</td><td>-</td><td class="season-td">1983/84</td><td>-</td><td class="season-td">1983/84</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1982/1983</td><td class="winner-td">מכבי נתניה</td>
-                                <td class="season-td">1982/83</td><td>-</td><td class="season-td">1982/83</td><td>-</td><td class="season-td">1982/83</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1981/1982</td><td class="winner-td">הפועל כפר סבא</td>
-                                <td class="season-td">1981/82</td><td>-</td><td class="season-td">1981/82</td><td>-</td><td class="season-td">1981/82</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1980/1981</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1980/81</td><td>-</td><td class="season-td">1980/81</td><td>-</td><td class="season-td">1980/81</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1979/1980</td><td class="winner-td">מכבי נתניה</td>
-                                <td class="season-td">1979/80</td><td>-</td><td class="season-td">1979/80</td><td>-</td><td class="season-td">1979/80</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1978/1979</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1978/79</td><td>-</td><td class="season-td">1978/79</td><td>-</td><td class="season-td">1978/79</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1977/1978</td><td class="winner-td">מכבי נתניה</td>
-                                <td class="season-td">1977/78</td><td>-</td><td class="season-td">1977/78</td><td>-</td><td class="season-td">1977/78</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1976/1977</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1976/77</td><td>-</td><td class="season-td">1976/77</td><td>-</td><td class="season-td">1976/77</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1975/1976</td><td class="winner-td">הפועל באר שבע</td>
-                                <td class="season-td">1975/76</td><td>-</td><td class="season-td">1975/76</td><td>-</td><td class="season-td">1975/76</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1974/1975</td><td class="winner-td">הפועל באר שבע</td>
-                                <td class="season-td">1974/75</td><td>-</td><td class="season-td">1974/75</td><td>-</td><td class="season-td">1974/75</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1973/1974</td><td class="winner-td">מכבי נתניה</td>
-                                <td class="season-td">1973/74</td><td>-</td><td class="season-td">1973/74</td><td>-</td><td class="season-td">1973/74</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1972/1973</td><td class="winner-td">הכח מכבי רמת גן</td>
-                                <td class="season-td">1972/73</td><td>-</td><td class="season-td">1972/73</td><td>-</td><td class="season-td">1972/73</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1971/1972</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1971/72</td><td>-</td><td class="season-td">1971/72</td><td>-</td><td class="season-td">1971/72</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1970/1971</td><td class="winner-td">מכבי נתניה</td>
-                                <td class="season-td">1970/71</td><td>-</td><td class="season-td">1970/71</td><td>-</td><td class="season-td">1970/71</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1969/1970</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1969/70</td><td>-</td><td class="season-td">1969/70</td><td>-</td><td class="season-td">1969/70</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1968/1969</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1968/69</td><td>-</td><td class="season-td">1968/69</td><td>-</td><td class="season-td">1968/69</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1966/1977</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1966/67</td><td>-</td><td class="season-td">1966/67</td><td>-</td><td class="season-td">1966/67</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1965/1966</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1965/66</td><td>-</td><td class="season-td">1965/66</td><td>-</td><td class="season-td">1965/66</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1964/1965</td><td class="winner-td">הכח מכבי רמת גן</td>
-                                <td class="season-td">1964/65</td><td>-</td><td class="season-td">1964/65</td><td>-</td><td class="season-td">1964/65</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1963/1964</td><td class="winner-td">הפועל רמת גן</td>
-                                <td class="season-td">1963/64</td><td>-</td><td class="season-td">1963/64</td><td>-</td><td class="season-td">1963/64</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1962/1963</td><td class="winner-td">הפועל פתח תקווה</td>
-                                <td class="season-td">1962/63</td><td>-</td><td class="season-td">1962/63</td><td>-</td><td class="season-td">1962/63</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1961/1962</td><td class="winner-td">הפועל פתח תקווה</td>
-                                <td class="season-td">1961/62</td><td>-</td><td class="season-td">1961/62</td><td>-</td><td class="season-td">1961/62</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1960/1961</td><td class="winner-td">הפועל פתח תקווה</td>
-                                <td class="season-td">1960/61</td><td>-</td><td class="season-td">1960/61</td><td>-</td><td class="season-td">1960/61</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1959/1960</td><td class="winner-td">הפועל פתח תקווה</td>
-                                <td class="season-td">1959/60</td><td>-</td><td class="season-td">1959/60</td><td>-</td><td class="season-td">1959/60</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1958/1959</td><td class="winner-td">הפועל פתח תקווה</td>
-                                <td class="season-td">1958/59</td><td>-</td><td class="season-td">1958/59</td><td>-</td><td class="season-td">1958/59</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1957/1958</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1957/58</td><td>-</td><td class="season-td">1957/58</td><td>-</td><td class="season-td">1957/58</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1956/1957</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1956/57</td><td>-</td><td class="season-td">1956/57</td><td>-</td><td class="season-td">1956/57</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1955/1956</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1955/56</td><td>-</td><td class="season-td">1955/56</td><td>-</td><td class="season-td">1955/56</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1954/1955</td><td class="winner-td">הפועל פתח תקווה</td>
-                                <td class="season-td">1954/55</td><td>-</td><td class="season-td">1954/55</td><td>-</td><td class="season-td">1954/55</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1953/1954</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1953/54</td><td>-</td><td class="season-td">1953/54</td><td>-</td><td class="season-td">1953/54</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1951/1952</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1951/52</td><td>-</td><td class="season-td">1951/52</td><td>-</td><td class="season-td">1951/52</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1949/1950</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1949/50</td><td>-</td><td class="season-td">1949/50</td><td>-</td><td class="season-td">1949/50</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1948/1949</td><td class="winner-td">נורדיה תל אביב</td>
-                                <td class="season-td">1948/49</td><td>-</td><td class="season-td">1948/49</td><td>-</td><td class="season-td">1948/49</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1947/1948</td><td class="winner-td">נורדיה תל אביב</td>
-                                <td class="season-td">1947/48</td><td>-</td><td class="season-td">1947/48</td><td>-</td><td class="season-td">1947/48</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1946/1947</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1946/47</td><td>-</td><td class="season-td">1946/47</td><td>-</td><td class="season-td">1946/47</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1944/1945</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1944/45</td><td>-</td><td class="season-td">1944/45</td><td>-</td><td class="season-td">1944/45</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1943/1944</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1943/44</td><td>-</td><td class="season-td">1943/44</td><td>-</td><td class="season-td">1943/44</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1941/1942</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1941/42</td><td>-</td><td class="season-td">1941/42</td><td>-</td><td class="season-td">1941/42</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1940/1941</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1940/41</td><td>-</td><td class="season-td">1940/41</td><td>-</td><td class="season-td">1940/41</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1939/1940</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1939/40</td><td>-</td><td class="season-td">1939/40</td><td>-</td><td class="season-td">1939/40</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1938/1939</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1938/39</td><td>-</td><td class="season-td">1938/39</td><td>-</td><td class="season-td">1938/39</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1937/1938</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1937/38</td><td>-</td><td class="season-td">1937/38</td><td>-</td><td class="season-td">1937/38</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1936/1937</td><td class="winner-td">מכבי תל אביב</td>
-                                <td class="season-td">1936/37</td><td>-</td><td class="season-td">1936/37</td><td>-</td><td class="season-td">1936/37</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1934/1935</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1934/35</td><td>-</td><td class="season-td">1934/35</td><td>-</td><td class="season-td">1934/35</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1933/1934</td><td class="winner-td">הפועל תל אביב</td>
-                                <td class="season-td">1933/34</td><td>-</td><td class="season-td">1933/34</td><td>-</td><td class="season-td">1933/34</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1931/1932</td><td class="winner-td">המשטרה הארצית הבריטית</td>
-                                <td class="season-td">1931/32</td><td>-</td><td class="season-td">1931/32</td><td>-</td><td class="season-td">1931/32</td><td>-</td>
-                            </tr>
-                            <tr>
-                                <td class="season-td">1928/1929</td><td class="winner-td">מכבי חשמונאים ירושליים</td>
-                                <td class="season-td">1928/29</td><td>-</td><td class="season-td">1928/29</td><td>-</td><td class="season-td">1928/29</td><td>-</td>
-                            </tr>
+                            <tr><td class="season-td">2025/2026</td><td class="winner-td text-pending">טרם נקבעה</td><td>-</td></tr>
+                            <tr><td class="season-td">2024/2025</td><td class="winner-td" style="color: #b49342;">מכבי ת"א</td><td>-</td></tr>
+                            <tr><td class="season-td">2023/2024</td><td class="winner-td">מכבי ת"א</td><td>-</td></tr>
+                            <tr><td class="season-td">2022/2023</td><td class="winner-td" style="color: #16a34a;">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2021/2022</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2020/2021</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2019/2020</td><td class="winner-td">מכבי ת"א</td><td>-</td></tr>
+                            <tr><td class="season-td">2018/2019</td><td class="winner-td">מכבי ת"א</td><td>-</td></tr>
+                            <tr><td class="season-td">2017/2018</td><td class="winner-td" style="color: #dc2626;">הפועל ב"ש</td><td>-</td></tr>
+                            <tr><td class="season-td">2016/2017</td><td class="winner-td">הפועל ב"ש</td><td>-</td></tr>
+                            <tr><td class="season-td">2015/2016</td><td class="winner-td">הפועל ב"ש</td><td>-</td></tr>
+                            <tr><td class="season-td">2014/2015</td><td class="winner-td">מכבי ת"א</td><td>-</td></tr>
+                            <tr><td class="season-td">2013/2014</td><td class="winner-td">מכבי ת"א</td><td>-</td></tr>
+                            <tr><td class="season-td">2012/2013</td><td class="winner-td">מכבי ת"א</td><td>-</td></tr>
+                            <tr><td class="season-td">2011/2012</td><td class="winner-td">הפועל ק"ש</td><td>-</td></tr>
+                            <tr><td class="season-td">2010/2011</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2009/2010</td><td class="winner-td">הפועל ת"א</td><td>-</td></tr>
+                            <tr><td class="season-td">2008/2009</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2007/2008</td><td class="winner-td">בית"ר י-ם</td><td>-</td></tr>
+                            <tr><td class="season-td">2006/2007</td><td class="winner-td">בית"ר י-ם</td><td>-</td></tr>
+                            <tr><td class="season-td">2005/2006</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2004/2005</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2003/2004</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2002/2003</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">2001/2002</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">2000/2001</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">1999/2000</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1998/1999</td><td class="winner-td">הפועל חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">1997/1998</td><td class="winner-td">בית"ר ירושלים</td><td>-</td></tr>
+                            <tr><td class="season-td">1996/1997</td><td class="winner-td">בית"ר ירושלים</td><td>-</td></tr>
+                            <tr><td class="season-td">1995/1996</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1994/1995</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1993/1994</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">1992/1993</td><td class="winner-td">בית"ר ירושלים</td><td>-</td></tr>
+                            <tr><td class="season-td">1991/1992</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1990/1991</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">1989/1990</td><td class="winner-td">בני יהודה תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1988/1989</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">1987/1988</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1986/1987</td><td class="winner-td">בית"ר ירושלים</td><td>-</td></tr>
+                            <tr><td class="season-td">1985/1986</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1984/1985</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">1983/1984</td><td class="winner-td">מכבי חיפה</td><td>-</td></tr>
+                            <tr><td class="season-td">1982/1983</td><td class="winner-td">מכבי נתניה</td><td>-</td></tr>
+                            <tr><td class="season-td">1981/1982</td><td class="winner-td">הפועל כפר סבא</td><td>-</td></tr>
+                            <tr><td class="season-td">1980/1981</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1979/1980</td><td class="winner-td">מכבי נתניה</td><td>-</td></tr>
+                            <tr><td class="season-td">1978/1979</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1977/1978</td><td class="winner-td">מכבי נתניה</td><td>-</td></tr>
+                            <tr><td class="season-td">1976/1977</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1975/1976</td><td class="winner-td">הפועל באר שבע</td><td>-</td></tr>
+                            <tr><td class="season-td">1974/1975</td><td class="winner-td">הפועל באר שבע</td><td>-</td></tr>
+                            <tr><td class="season-td">1973/1974</td><td class="winner-td">מכבי נתניה</td><td>-</td></tr>
+                            <tr><td class="season-td">1972/1973</td><td class="winner-td">הכח מכבי רמת גן</td><td>-</td></tr>
+                            <tr><td class="season-td">1971/1972</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1970/1971</td><td class="winner-td">מכבי נתניה</td><td>-</td></tr>
+                            <tr><td class="season-td">1969/1970</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1968/1969</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1966/1967</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1965/1966</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1964/1965</td><td class="winner-td">הכח מכבי רמת גן</td><td>-</td></tr>
+                            <tr><td class="season-td">1963/1964</td><td class="winner-td">הפועל רמת גן</td><td>-</td></tr>
+                            <tr><td class="season-td">1962/1963</td><td class="winner-td">הפועל פתח תקווה</td><td>-</td></tr>
+                            <tr><td class="season-td">1961/1962</td><td class="winner-td">הפועל פתח תקווה</td><td>-</td></tr>
+                            <tr><td class="season-td">1960/1961</td><td class="winner-td">הפועל פתח תקווה</td><td>-</td></tr>
+                            <tr><td class="season-td">1959/1960</td><td class="winner-td">הפועל פתח תקווה</td><td>-</td></tr>
+                            <tr><td class="season-td">1958/1959</td><td class="winner-td">הפועל פתח תקווה</td><td>-</td></tr>
+                            <tr><td class="season-td">1957/1958</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1956/1957</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1955/1956</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1954/1955</td><td class="winner-td">הפועל פתח תקווה</td><td>-</td></tr>
+                            <tr><td class="season-td">1953/1954</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1951/1952</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1949/1950</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1948/1949</td><td class="winner-td">נורדיה תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1947/1948</td><td class="winner-td">נורדיה תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1946/1947</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1944/1945</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1943/1944</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1941/1942</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1940/1941</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1939/1940</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1938/1939</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1937/1938</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1936/1937</td><td class="winner-td">מכבי תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1934/1935</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1933/1934</td><td class="winner-td">הפועל תל אביב</td><td>-</td></tr>
+                            <tr><td class="season-td">1931/1932</td><td class="winner-td">המשטרה הארצית הבריטית</td><td>-</td></tr>
+                            <tr><td class="season-td">1928/1929</td><td class="winner-td">מכבי חשמונאים ירושליים</td><td>-</td></tr>
                         </tbody>
                     </table>
+
+                    <table class="trophy-table" id="table-state-cup">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">עונה</th>
+                                <th style="width: 25%;">מחזיקת הגביע</th>
+                                <th style="width: 25%;">סגנית</th>
+                                <th style="width: 15%;">תוצאת הגמר</th>
+                                <th style="width: 20%;">אצטדיון</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="season-td">2025/2026</td><td class="winner-td text-pending">טרם נקבעה</td><td>-</td><td>-</td><td>-</td></tr>
+                            <tr><td class="season-td">2024/2025</td><td class="winner-td">-</td><td>-</td><td>-</td><td>-</td></tr>
+                        </tbody>
+                    </table>
+
+                    <table class="trophy-table" id="table-toto-cup">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">עונה</th>
+                                <th style="width: 25%;">זוכה</th>
+                                <th style="width: 25%;">סגנית</th>
+                                <th style="width: 15%;">תוצאת הגמר</th>
+                                <th style="width: 20%;">אצטדיון</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="season-td">2025/2026</td><td class="winner-td text-pending">טרם נקבעה</td><td>-</td><td>-</td><td>-</td></tr>
+                            <tr><td class="season-td">2024/2025</td><td class="winner-td">-</td><td>-</td><td>-</td><td>-</td></tr>
+                        </tbody>
+                    </table>
+
+                    <table class="trophy-table" id="table-super-cup">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">עונה</th>
+                                <th style="width: 25%;">זוכה</th>
+                                <th style="width: 25%;">סגנית</th>
+                                <th style="width: 15%;">תוצאת הגמר</th>
+                                <th style="width: 20%;">אצטדיון</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="season-td">2025/2026</td><td class="winner-td text-pending">טרם נקבעה</td><td>-</td><td>-</td><td>-</td></tr>
+                            <tr><td class="season-td">2024/2025</td><td class="winner-td">-</td><td>-</td><td>-</td><td>-</td></tr>
+                        </tbody>
+                    </table>
+
                 </div>
+
+                <script>
+                    function switchTrophyTable() {
+                        var selectedTrophy = document.getElementById('trophy-selector').value;
+                        
+                        // מסיר את הקלאס 'active' (הצגה) מכל הטבלאות
+                        var tables = document.querySelectorAll('.trophy-table');
+                        tables.forEach(function(table) {
+                            table.classList.remove('active');
+                        });
+                        
+                        // מוסיף את הקלאס רק לטבלה שנבחרה
+                        document.getElementById('table-' + selectedTrophy).classList.add('active');
+                    }
+                </script>
             </div>
         </section>
 
