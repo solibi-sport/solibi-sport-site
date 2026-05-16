@@ -3074,7 +3074,7 @@ html, body {
 
     
         
-  <script>
+ <script>
         document.addEventListener("DOMContentLoaded", function() {
             const table = document.querySelector('.pantheon-table');
             if(!table) return;
@@ -3093,8 +3093,8 @@ html, body {
                 `;
             }
 
-            // צללית ברירת מחדל נקייה ויפה (סילואט)
-            const defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+            // צללית ברירת מחדל אפורה (במקום התמונות של השחקנים הלא קשורים)
+            const defaultAvatar = "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3e%3c/svg%3e";
 
             // 2. עוברים שורה-שורה ובונים מחדש
             const rows = table.querySelectorAll('tbody tr');
@@ -3128,8 +3128,9 @@ html, body {
                     allTitles, rank
                 };
                 
-                // קידוד המידע כדי שהדפדפן לא יקרוס מהגרשיים
-                const safeData = encodeURIComponent(JSON.stringify(playerData));
+                // התיקון האולטימטיבי: קידוד Base64!
+                // מונע לחלוטין קריסות בגלל מילים כמו "צ'לסי" או "ברקוביץ'"
+                const safeData = btoa(unescape(encodeURIComponent(JSON.stringify(playerData))));
 
                 let rankClass = '';
                 if(rank === '1') rankClass = 'rank-1';
@@ -3161,9 +3162,10 @@ html, body {
             });
         });
 
-        // 3. הפונקציה שמקבלת את הנתונים, מפענחת אותם ומפעילה את המודל החדש
-        window.openMagicModal = function(dataStr) {
-            const data = JSON.parse(decodeURIComponent(dataStr));
+        // 3. הפונקציה שמקבלת את הנתונים המקודדים, מפענחת אותם ומפעילה את המודל החדש
+        window.openMagicModal = function(base64Str) {
+            // פענוח הנתונים חזרה לאובייקט נקי
+            const data = JSON.parse(decodeURIComponent(escape(atob(base64Str))));
             
             document.getElementById('hof-modal-name').innerText = data.name;
             document.getElementById('hof-modal-pos').innerText = data.position;
@@ -3177,7 +3179,11 @@ html, body {
             document.getElementById('hof-intl-goals').innerText = data.intlGoals;
             document.getElementById('hof-intl-assists').innerText = data.intlAssists;
 
-            document.getElementById('hof-stat-titles').innerText = data.allTitles === '-' ? 'אין נתונים' : data.allTitles;
+            // הוספתי "white-space: pre-line" כדי שהשורות בתארים ירדו יפה אחת מתחת לשנייה
+            const titlesElem = document.getElementById('hof-stat-titles');
+            titlesElem.style.whiteSpace = "pre-line";
+            titlesElem.innerText = data.allTitles === '-' ? 'אין נתונים' : data.allTitles;
+            
             document.getElementById('hof-teams-list').innerText = data.teams;
 
             document.getElementById('hof-modal').classList.add('active');
