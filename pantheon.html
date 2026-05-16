@@ -733,6 +733,29 @@
             font-size: 18px;
             font-weight: 700;
         }
+
+                  /* =========================================
+                       קווי הפרדה מודגשים ופרימיום בין המפעלים
+                       ========================================= */
+                    
+                    /* קו הפרדה ירוק בין הכותרות הראשיות למעלה */
+                    .history-table th.main-title-th:not(:last-child) {
+                        border-left: 3px solid var(--brand-green);
+                    }
+
+                    /* קו הפרדה ירוק בין כותרות המשנה של העונות/קבוצות */
+                    .history-table th.sub-title-th:nth-child(2),
+                    .history-table th.sub-title-th:nth-child(4),
+                    .history-table th.sub-title-th:nth-child(6) {
+                        border-left: 3px solid var(--brand-green);
+                    }
+
+                    /* קו הפרדה אלגנטי ומודגש לאורך כל שורות הטבלה (אפור-צפחה) */
+                    .history-table td:nth-child(2),
+                    .history-table td:nth-child(4),
+                    .history-table td:nth-child(6) {
+                        border-left: 3px solid #94a3b8; 
+                    }
                   
 </style>
 
