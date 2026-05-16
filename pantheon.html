@@ -2960,11 +2960,8 @@
         };
 
         function openHofModal(playerName, teamId) {
-            // הנתונים כרגע הם דמו (תוכל להוסיף אותם לאובייקט hofTeamsData בעתיד)
-            // יצרתי פה נתונים דמו יפים של איציק זוהר כדי שתראה איך הכל עובד!
-            
             document.getElementById('hof-modal-name').innerText = playerName;
-           
+            
             // תפקיד
             let posName = "שחקן שדה";
             const teamData = hofTeamsData[teamId];
@@ -2974,44 +2971,56 @@
             if(teamData.att.includes(playerName)) posName = "חלוץ";
             document.getElementById('hof-modal-pos').innerText = posName;
 
-           // נתונים דמו של איציק זוהר
-            if(playerName === "איציק זוהר") {
-                document.getElementById('hof-modal-years').innerText = "1997 - 2002";
-                document.getElementById('hof-club-apps').innerText = "83";
-                document.getElementById('hof-club-goals').innerText = "22";
-                document.getElementById('hof-club-assists').innerText = "30";
-                document.getElementById('hof-team-titles').innerText = "2 אליפויות, גביע המדינה";
-                document.getElementById('hof-personal-titles').innerText = "-";
-            } else {
-                // נתונים אקראיים יפים לשאר השחקנים
-                const demoApps = Math.floor(Math.random() * 200) + 50;
-                const demoGoals = posName === 'שוער' ? 0 : Math.floor(Math.random() * 60);
-                const demoAssists = posName === 'שוער' ? 0 : Math.floor(Math.random() * 40);
-                
-                document.getElementById('hof-modal-years').innerText = "199" + Math.floor(Math.random()*9) + " - 200" + Math.floor(Math.random()*9);
-                document.getElementById('hof-club-apps').innerText = demoApps;
-                document.getElementById('hof-club-goals').innerText = demoGoals;
-                document.getElementById('hof-club-assists').innerText = demoAssists;
-                document.getElementById('hof-team-titles').innerText = "אליפות, גביע המדינה";
-                document.getElementById('hof-personal-titles').innerText = "-";
-            }
+            // איפוס מיקום ותאריך (מכיוון שאין אותם ב-11 הגדולים)
+            document.getElementById('hof-modal-rank').innerText = "-";
+            document.getElementById('hof-modal-bday').innerHTML = "<span>חסר מידע</span>";
 
-            // יצירת טבלת עונות - תיקון: סידור יורד מהעונה החדשה לישנה
+            // יצירת נתונים אקראיים כדי שהכרטיס ייראה מלא
+            const demoApps = Math.floor(Math.random() * 200) + 50;
+            const demoGoals = posName === 'שוער' ? 0 : Math.floor(Math.random() * 60);
+            const demoAssists = posName === 'שוער' ? 0 : Math.floor(Math.random() * 40);
+            
+            document.getElementById('hof-modal-years').innerText = "199" + Math.floor(Math.random()*9) + " - 200" + Math.floor(Math.random()*9);
+            
+            // הזנת הסטטיסטיקות עם ה-IDs החדשים והנכונים!
+            document.getElementById('hof-club-apps').innerText = demoApps;
+            document.getElementById('hof-club-goals').innerText = demoGoals;
+            document.getElementById('hof-club-assists').innerText = demoAssists;
+            
+            document.getElementById('hof-intl-apps').innerText = Math.floor(Math.random() * 50);
+            document.getElementById('hof-intl-goals').innerText = posName === 'שוער' ? 0 : Math.floor(Math.random() * 10);
+            document.getElementById('hof-intl-assists').innerText = posName === 'שוער' ? 0 : Math.floor(Math.random() * 10);
+
+            // תארים
+            document.getElementById('hof-team-titles').innerText = "אליפות, גביע המדינה";
+            document.getElementById('hof-personal-titles').innerText = "שחקן העונה";
+
+            // יצירת טבלת עונות אקראית
             let seasonsHtml = '';
-            // מתחילים מהעונה החדשה ביותר ויורדים
             for(let year = 2005; year >= 1998; year--) {
                 seasonsHtml += `
                     <tr>
-                        <td>${year}/${year+1}</td>
-                        <td>${Math.floor(Math.random() * 30) + 5}</td>
-                        <td>${posName === 'שוער' ? 0 : Math.floor(Math.random() * 15)}</td>
-                        <td>${posName === 'שוער' ? 0 : Math.floor(Math.random() * 10)}</td>
+                        <td class="fm-season">${year}/${year+1}</td>
+                        <td class="fm-team">${hofTeamNamesHebrew[teamId] || "מכבי חיפה"}</td>
+                        <td class="fm-stat">${Math.floor(Math.random() * 30) + 5}</td>
+                        <td class="fm-stat">${posName === 'שוער' ? 0 : Math.floor(Math.random() * 15)}</td>
+                        <td class="fm-stat">${posName === 'שוער' ? 0 : Math.floor(Math.random() * 10)}</td>
                     </tr>
                 `;
             }
-            document.getElementById('hof-seasons-tbody').innerHTML = seasonsHtml;
+            document.getElementById('hof-fm-tbody').innerHTML = seasonsHtml;
 
-            // פתיחת המודל
+            // איפוס הטאבים תמיד לטאב הראשון כשפותחים
+            document.querySelectorAll('.hof-modal-tab-btn').forEach((btn, idx) => {
+                if(idx === 0) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            document.querySelectorAll('.hof-tab-panel').forEach((panel, idx) => {
+                if(idx === 0) panel.classList.add('active');
+                else panel.classList.remove('active');
+            });
+
+            // פתיחת המודל!
             document.getElementById('hof-modal').classList.add('active');
         }
 
