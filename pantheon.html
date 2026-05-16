@@ -24,7 +24,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html, body {
+html, body {
             font-family: 'Rubik', sans-serif;
             background: var(--bg-silver-matte);
             width: 100%;
@@ -146,22 +146,17 @@
         .sidebar-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0;}
         .sidebar-item:hover, .sidebar-item.active { background: rgba(124, 168, 86, 0.1); color: #ffffff; border-right-color: var(--brand-green); padding-right: 25px; }
 
-.content-area {
+        .content-area {
             flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: auto; 
-            margin-left: calc(var(--sidebar-width) + 20px);
-            direction: ltr !important; /* מעביר את פס הגלילה האמיתי ימינה */
-        }
-
-        .content-area > * {
-            direction: rtl !important; /* משאיר את התוכן בעברית */
-        }
-
-        /* חוסם את פס הגלילה הכפול השמאלי שהטבלה ייצרה בטעות */
-        .pantheon-table-wrapper {
-            overflow-y: hidden !important; 
+            margin-left: calc(var(--sidebar-width) + 20px); 
+            direction: ltr; /* זורק את פס הגלילה לימין */
         }
         
+        .content-area > * {
+            direction: rtl; /* מחזיר את כל התוכן הפנימי לימין-לשמאל */
+        }
+
         .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; height: 100%; }
         .tab-content.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -478,7 +473,7 @@
         .fm-career-table .fm-season { font-weight: 700; color: #64748b; }
         .fm-career-table .fm-team { font-weight: 900; }
         .fm-career-table .fm-stat { font-weight: bold; }
-
+        
     </style>
 
 </head>
@@ -509,7 +504,7 @@
 
         <section class="content-area">
             <div id="tab-intro" class="tab-content active">
-    <h2 class="content-header-title">סקירה כללית:פנתיאון הכדורגל הישראלי</h2>
+    <h2 class="content-header-title">סקירה כללית: 100 הישראלים הגדולים</h2>
     <p class="content-desc" style="font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
         ברוכים הבאים לדירוג המקיף של 100 השחקנים הישראלים הגדולים בכל הזמנים. בסקירה זו תוכלו לחקור את הקריירות, הסטטיסטיקות, וההישגים של אגדות הכדורגל המקומי שלנו, ולהבין איך נבחר ודורג כל שחקן בפנתיאון.
     </p>
@@ -3108,8 +3103,8 @@
         }
         
 </script>
-
-    <style>
+<style>
+        <style>
         /* תוספות עיצוב לטאבים החדשים (FM Style) */
         .titles-section { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; direction: rtl; }
         .titles-section h4 { color: var(--element-navy-gradient); font-weight: 900; margin-bottom: 8px; font-size: 15px; border-bottom: 2px solid var(--brand-green); padding-bottom: 4px; display: inline-block; }
