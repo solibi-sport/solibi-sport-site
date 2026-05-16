@@ -443,9 +443,18 @@ html, body {
             border-color: #e2e8f0 !important; 
         }
 
-        /* מרכוז מלא לטבלה הראשית של הפנתיאון (במקום יישור לימין) */
+        /* מרכוז כללי, אבל עם חריגים לעמודות ספציפיות כדי שייראו ישרות */
         .pantheon-table th, .pantheon-table td { text-align: center !important; }
-        .player-identity-cell { justify-content: center; } 
+        .pantheon-table th.align-right, .pantheon-table td.align-right { text-align: right !important; padding-right: 30px; }
+        
+        /* התמונות יעמדו בקו ישר פלס מצד ימין, והשם משמאלן */
+        .player-identity-cell { display: flex; align-items: center; gap: 15px; justify-content: flex-start; }
+        
+        .player-name-wrap { display: flex; flex-direction: column; justify-content: center; }
+        .player-name-main { font-weight: 900; color: var(--text-dark); font-size: 16px; margin: 0; }
+        
+        /* עיצוב לעמודת התיאור החדשה */
+        .new-desc-cell { font-size: 13px; color: #475569; line-height: 1.5; white-space: normal; max-width: 350px; }
 
         /* --- עיצוב מחדש של טבלת התארים (כותרת מעל, פירוט מתחת) --- */
         .titles-table { width: 100%; border-collapse: collapse; direction: rtl; text-align: center; font-size: 14px; background: #fff; border-radius: 8px; overflow: hidden; }
@@ -3230,30 +3239,30 @@ html, body {
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+       document.addEventListener("DOMContentLoaded", function() {
             const table = document.querySelector('.pantheon-table');
             if(!table) return;
 
+            // 1. מעצבים מחדש את הכותרות: 4 עמודות נקיות בלבד
             const theadTr = table.querySelector('thead tr');
             if(theadTr) {
                 theadTr.innerHTML = `
-                    <th style="text-align: center;">מיקום</th>
-                    <th style="text-align: right;">שחקן</th>
-                    <th>עמדה</th>
-                    <th>שנות פעילות</th>
-                    <th title="מספר תארים קבוצתיים">תארים קבוצתיים</th>
-                    <th title="מספר תארים אישיים">תארים אישיים</th>
-                    <th style="text-align: center;">פעולות</th>
+                    <th style="text-align: center; width: 80px;">מיקום</th>
+                    <th class="align-right">שחקן</th>
+                    <th class="align-right">תיאור והישגים</th>
+                    <th style="text-align: center; width: 140px;">פעולות</th>
                 `;
             }
 
             const defaultAvatar = "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3e%3c/svg%3e";
 
+            // 2. עוברים שורה-שורה ובונים אותה מחדש רק עם 4 עמודות
             const rows = table.querySelectorAll('tbody tr');
             rows.forEach((row) => {
                 const cells = row.querySelectorAll('td');
                 if(cells.length < 16) return;
 
+                // שואבים את כל המידע הקיים כדי להעביר אותו למודל
                 const rank = cells[0].innerText.trim();
                 const name = cells[1].innerText.trim();
                 const position = cells[2].innerText.trim();
@@ -3268,7 +3277,6 @@ html, body {
                 const clubAssists = cells[11].innerText.trim();
                 const teamTitlesCount = cells[12].innerText.trim();
                 const personalTitlesCount = cells[13].innerText.trim();
-                
                 const teamTitlesDesc = cells[14].innerText.trim();
                 const personalTitlesDesc = cells[15].innerText.trim();
 
@@ -3286,22 +3294,19 @@ html, body {
                 else if(rank === '2') rankClass = 'rank-2';
                 else if(rank === '3') rankClass = 'rank-3';
 
+                // הזרקת 4 העמודות הנקיות (תמונות מיושרות + עמודת תיאור חדשה)
                 row.innerHTML = `
-                    <td style="text-align: center; width: 60px;"><div class="pantheon-rank-badge ${rankClass}">${rank}</div></td>
-                    <td>
+                    <td style="text-align: center;"><div class="pantheon-rank-badge ${rankClass}">${rank}</div></td>
+                    <td class="align-right">
                         <div class="player-identity-cell">
                             <img src="${defaultAvatar}" class="player-avatar-mini">
                             <div class="player-name-wrap">
                                 <span class="player-name-main">${name}</span>
-                                <span class="player-name-desc">${desc}</span>
                             </div>
                         </div>
                     </td>
-                    <td>${position}</td>
-                    <td>${years}</td>
-                    <td class="stat-num">${teamTitlesCount}</td>
-                    <td class="stat-num">${personalTitlesCount}</td>
-                    <td style="text-align: center; width: 140px;">
+                    <td class="align-right new-desc-cell">${desc}</td>
+                    <td style="text-align: center;">
                         <button class="stats-action-btn" onclick="openMagicModal('${safeData}')">
                             <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                             דו"ח קריירה
