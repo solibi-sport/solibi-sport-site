@@ -3122,22 +3122,24 @@ html, body {
             
             <div class="hof-modal-header" style="flex-shrink: 0;">
                 <div class="hof-modal-avatar" id="hof-modal-img"></div>
-                <div class="hof-modal-info">
-                    <div class="hof-modal-info-right">
+                <div class="hof-modal-info" style="justify-content: flex-start;">
+                    <div class="hof-modal-info-right" style="width: 100%;">
+                        
                         <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 5px;">
                             <div class="hof-modal-name" id="hof-modal-name" style="margin-bottom: 0;">שם השחקן</div>
                             <div class="hof-modal-bday" id="hof-modal-bday"></div>
                         </div>
-                        <div class="hof-modal-meta">עמדה: <span id="hof-modal-pos"></span></div>
-                        <div class="hof-modal-meta">שנות פעילות: <span id="hof-modal-years"></span></div>
-                    </div>
-                    <div class="hof-modal-info-left">
-                        <div class="hof-modal-bday" id="hof-modal-bday"></div>
-                        <div class="modal-rank-circle" id="hof-modal-rank">1</div>
+                        
+                        <div class="hof-modal-meta" style="margin-bottom: 5px;">עמדה: <span id="hof-modal-pos"></span></div>
+                        
+                        <div style="display: flex; align-items: center; gap: 30px;">
+                            <div class="hof-modal-meta" style="margin-bottom: 0;">שנות פעילות: <span id="hof-modal-years"></span></div>
+                            <div class="modal-rank-circle" id="hof-modal-rank">1</div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-
             <div class="hof-modal-tabs-wrap" style="flex-shrink: 0;">
                 <button class="hof-modal-tab-btn active" onclick="switchHofTab('general', this)">סטטיסטיקות</button>
                 <button class="hof-modal-tab-btn" onclick="switchHofTab('titles', this)">תארים</button>
@@ -3298,17 +3300,18 @@ html, body {
             document.getElementById('hof-modal-rank').innerText = data.rank;
 
             // יצירת תאריך לידה הגיוני-אקראי (פחות 18-20 שנה מתחילת הקריירה)
+           // יצירת תאריך לידה נקי בלי מילים נוספות
             const yearsMatch = data.years.match(/(\d{4})[^\d]*(\d{4})/);
             if (yearsMatch) {
                 const startYear = parseInt(yearsMatch[1]);
-                const birthYear = startYear - (Math.floor(Math.random() * 4) + 17); // התחיל לשחק בגיל 17-21
+                const birthYear = startYear - (Math.floor(Math.random() * 4) + 17);
                 const bDayStr = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0') + "." + 
                                 String(Math.floor(Math.random() * 12) + 1).padStart(2, '0') + "." + birthYear;
-                document.getElementById('hof-modal-bday').innerText = "נולד ב: " + bDayStr;
+                // כאן נמחק ה"נולד ב:"
+                document.getElementById('hof-modal-bday').innerHTML = "<span>" + bDayStr + "</span>";
             } else {
-                document.getElementById('hof-modal-bday').innerText = "תאריך לידה: חסר מידע";
+                document.getElementById('hof-modal-bday').innerHTML = "<span>חסר מידע</span>";
             }
-            
             // טאב 1: סטטיסטיקות
             document.getElementById('hof-club-apps').innerText = data.clubApps;
             document.getElementById('hof-club-goals').innerText = data.clubGoals;
