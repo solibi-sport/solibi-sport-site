@@ -150,11 +150,11 @@ html, body {
             flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: auto; 
             margin-left: calc(var(--sidebar-width) + 20px); 
-            direction: ltr; /* זורק את פס הגלילה לימין */
+            transform: scaleX(-1); /* הטריק שמעביר את הפס ימינה פיזית */
         }
         
         .content-area > * {
-            direction: rtl; /* מחזיר את כל התוכן הפנימי לימין-לשמאל */
+            transform: scaleX(-1); /* הופך את התוכן חזרה כדי שיהיה קריא */
         }
 
         .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; height: 100%; }
@@ -474,14 +474,6 @@ html, body {
         .fm-career-table .fm-team { font-weight: 900; }
         .fm-career-table .fm-stat { font-weight: bold; }
 
-        /* הכרחת פס הגלילה האנכי של האזור הלבן לעבור ימינה */
-.content-area {
-    direction: ltr !important; 
-}
-.content-area > * {
-    direction: rtl !important; 
-}
-        
     </style>
 
 </head>
