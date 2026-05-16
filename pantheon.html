@@ -2974,13 +2974,14 @@
             if(teamData.att.includes(playerName)) posName = "חלוץ";
             document.getElementById('hof-modal-pos').innerText = posName;
 
-            // נתונים דמו של איציק זוהר
+           // נתונים דמו של איציק זוהר
             if(playerName === "איציק זוהר") {
                 document.getElementById('hof-modal-years').innerText = "1997 - 2002";
-                document.getElementById('hof-stat-apps').innerText = "83";
-                document.getElementById('hof-stat-goals').innerText = "22";
-                document.getElementById('hof-stat-assists').innerText = "30";
-                document.getElementById('hof-stat-titles').innerText = "2 אליפויות, גביע המדינה";
+                document.getElementById('hof-club-apps').innerText = "83";
+                document.getElementById('hof-club-goals').innerText = "22";
+                document.getElementById('hof-club-assists').innerText = "30";
+                document.getElementById('hof-team-titles').innerText = "2 אליפויות, גביע המדינה";
+                document.getElementById('hof-personal-titles').innerText = "-";
             } else {
                 // נתונים אקראיים יפים לשאר השחקנים
                 const demoApps = Math.floor(Math.random() * 200) + 50;
@@ -2988,10 +2989,11 @@
                 const demoAssists = posName === 'שוער' ? 0 : Math.floor(Math.random() * 40);
                 
                 document.getElementById('hof-modal-years').innerText = "199" + Math.floor(Math.random()*9) + " - 200" + Math.floor(Math.random()*9);
-                document.getElementById('hof-stat-apps').innerText = demoApps;
-                document.getElementById('hof-stat-goals').innerText = demoGoals;
-                document.getElementById('hof-stat-assists').innerText = demoAssists;
-                document.getElementById('hof-stat-titles').innerText = "אליפות, גביע המדינה";
+                document.getElementById('hof-club-apps').innerText = demoApps;
+                document.getElementById('hof-club-goals').innerText = demoGoals;
+                document.getElementById('hof-club-assists').innerText = demoAssists;
+                document.getElementById('hof-team-titles').innerText = "אליפות, גביע המדינה";
+                document.getElementById('hof-personal-titles').innerText = "-";
             }
 
             // יצירת טבלת עונות - תיקון: סידור יורד מהעונה החדשה לישנה
