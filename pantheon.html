@@ -147,10 +147,19 @@
         .sidebar-item:hover, .sidebar-item.active { background: rgba(124, 168, 86, 0.1); color: #ffffff; border-right-color: var(--brand-green); padding-right: 25px; }
 
 .content-area {
-            flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 35px; position: relative; display: flex; flex-direction: column; 
-            margin-left: calc(var(--sidebar-width) + 20px);
-        }
+    flex: 1;
+    background: #ffffff;
+    border-radius: 16px;
+    /* שינוי ה-box-shadow מ-40px ל-10px, הפחתת האטימות ל-0.05, והוספת border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e1e8ed;
+    padding: 35px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-left: calc(var(--sidebar-width) + 20px);
+}
 
         /* פס הגלילה יושב רק על הטבלה עצמה, ובצד ימין! */
         .pantheon-table-wrapper {
