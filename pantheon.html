@@ -442,6 +442,24 @@ html, body {
             background: #fff !important; 
             border-color: #e2e8f0 !important; 
         }
+
+        /* מרכוז מלא לטבלה הראשית של הפנתיאון (במקום יישור לימין) */
+        .pantheon-table th, .pantheon-table td { text-align: center !important; }
+        .player-identity-cell { justify-content: center; } 
+
+        /* --- עיצוב מחדש של טבלת התארים (כותרת מעל, פירוט מתחת) --- */
+        .titles-table { width: 100%; border-collapse: collapse; direction: rtl; text-align: center; font-size: 14px; background: #fff; border-radius: 8px; overflow: hidden; }
+        .titles-table th { background: var(--element-navy-gradient); color: #fff; padding: 10px; font-weight: 700; border-bottom: 2px solid var(--brand-green); }
+        .titles-table td { padding: 15px; border-bottom: 5px solid #f8fafc; color: var(--text-dark); line-height: 1.6; font-weight: 500; white-space: pre-line; background: #fff; }
+        
+        /* --- מרכוז טבלת עונות בקריירה (FM Style) --- */
+        .fm-career-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; direction: rtl; }
+        .fm-career-table th { background: var(--element-navy-gradient); color: #fff; padding: 8px 10px; font-weight: 700; position: sticky; top: 0; z-index: 5; text-align: center !important; }
+        .fm-career-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; color: var(--text-dark); text-align: center !important; }
+        .fm-career-table tr:hover td { background: rgba(124, 168, 86, 0.1); }
+        .fm-career-table .fm-season { font-weight: 700; color: #64748b; }
+        .fm-career-table .fm-team { font-weight: 900; }
+        .fm-career-table .fm-stat { font-weight: bold; }
         
     </style>
 
@@ -3164,17 +3182,21 @@ html, body {
                     </div>
                 </div>
 
-                <div id="hof-tab-titles" class="hof-tab-panel">
-                    <div class="scrollable-tab-area" style="border: 1px solid #e2e8f0; border-radius: 8px; padding-left: 0; overflow: hidden;">
+               <div id="hof-tab-titles" class="hof-tab-panel">
+                    <div class="scrollable-tab-area" style="padding-left: 0; overflow-x: hidden;">
                         <div>
                             <table class="titles-table">
                                 <tbody>
                                     <tr>
                                         <th>תארים קבוצתיים</th>
+                                    </tr>
+                                    <tr>
                                         <td id="hof-team-titles"></td>
                                     </tr>
                                     <tr>
                                         <th>תארים אישיים</th>
+                                    </tr>
+                                    <tr>
                                         <td id="hof-personal-titles"></td>
                                     </tr>
                                 </tbody>
@@ -3187,15 +3209,15 @@ html, body {
                     <div class="scrollable-tab-area" style="border: 1px solid #e2e8f0; border-radius: 8px; padding-left: 0;">
                         <div>
                             <table class="fm-career-table">
-                                <thead>
-                                    <tr>
-                                        <th>עונה</th>
-                                        <th>קבוצה</th>
-                                        <th style="text-align: left;">הופ'</th>
-                                        <th style="text-align: left;">שערים</th>
-                                        <th style="text-align: left;">ביש'</th>
-                                    </tr>
-                                </thead>
+                               <thead>
+                                <tr>
+                                    <th>עונה</th>
+                                    <th>קבוצה</th>
+                                    <th>הופ'</th>
+                                    <th>שערים</th>
+                                    <th>ביש'</th>
+                                </tr>
+                            </thead>
                                 <tbody id="hof-fm-tbody">
                                     </tbody>
                             </table>
