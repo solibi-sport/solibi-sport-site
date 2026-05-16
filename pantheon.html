@@ -146,12 +146,16 @@
         .sidebar-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0;}
         .sidebar-item:hover, .sidebar-item.active { background: rgba(124, 168, 86, 0.1); color: #ffffff; border-right-color: var(--brand-green); padding-right: 25px; }
 
-        .content-area {
-            flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: scroll; 
-            margin-left: calc(var(--sidebar-width) + 20px);        
-        }
+.content-area {
+    flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: scroll;
+    margin-left: calc(var(--sidebar-width) + 20px);
+    direction: ltr;
+}
 
+.content-area > * {
+    direction: rtl;
+}
         .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; height: 100%; }
         .tab-content.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -469,13 +473,6 @@
         .fm-career-table .fm-team { font-weight: 900; }
         .fm-career-table .fm-stat { font-weight: bold; }
 
-.content-area {
-            direction: ltr !important; 
-        }
-        .content-area > * {
-            direction: rtl !important; 
-        }
-        
     </style>
 
 </head>
@@ -3105,8 +3102,8 @@
         }
         
 </script>
-<style>
-        <style>
+
+    <style>
         /* תוספות עיצוב לטאבים החדשים (FM Style) */
         .titles-section { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; direction: rtl; }
         .titles-section h4 { color: var(--element-navy-gradient); font-weight: 900; margin-bottom: 8px; font-size: 15px; border-bottom: 2px solid var(--brand-green); padding-bottom: 4px; display: inline-block; }
