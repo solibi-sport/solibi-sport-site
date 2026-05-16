@@ -150,20 +150,17 @@
             flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             padding: 35px; position: relative; display: flex; flex-direction: column; 
             margin-left: calc(var(--sidebar-width) + 20px);
-            
-            /* 3 שורות הקסם לגלילה בימין: */
-            overflow-y: scroll !important; 
-            direction: ltr !important; 
-            min-height: 0 !important; /* זה מה שחוסם את הקופסה מלהימתח עד אינסוף ומחזיר את הפס! */
         }
 
-        .content-area > * {
-            direction: rtl !important; 
-        }
-
-        /* חוסם את פס הגלילה הכפול השמאלי שהטבלה ייצרה בטעות */
+        /* פס הגלילה יושב רק על הטבלה עצמה, ובצד ימין! */
         .pantheon-table-wrapper {
-            overflow-y: hidden !important; 
+            max-height: 65vh; /* הגבלת הגובה יוצרת את הגלילה הפנימית */
+            overflow-y: auto !important; 
+            direction: ltr; /* מעביר את פס הגלילה ימינה */
+        }
+        
+        .pantheon-table {
+            direction: rtl; /* שומר על הטקסט בתוך הטבלה מימין לשמאל */
         }
         
         .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; height: 100%; }
@@ -3080,7 +3077,7 @@
                 let html = `<div class="hof-row ${rowClass}">`;
                 namesArray.forEach(name => {
                     // התיקון: אנחנו "מנקים" את הגרשיים והמירכאות כדי שלא ישברו את הקוד
-                    const safeName = name.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+                   const safeName = name.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
                     
                     html += `
                         <div class="hof-player" onclick="openHofModal('${safeName}', '${teamId}')" onKeyUp="if(event.keyCode==13) openHofModal('${safeName}', '${teamId}')" tabindex="0">
