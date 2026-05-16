@@ -412,6 +412,37 @@ html, body {
         .titles-table th { background: var(--element-navy-gradient); color: #fff; padding: 15px; font-weight: 700; width: 35%; border-bottom: 2px solid var(--brand-green); vertical-align: top; }
         .titles-table td { padding: 15px; border-bottom: 1px solid #e2e8f0; color: var(--text-dark); line-height: 1.6; font-weight: 500; white-space: pre-line; }
         .titles-table tr:last-child th, .titles-table tr:last-child td { border-bottom: none; }
+
+/* --- עיצוב מחדש של תאריך הלידה --- */
+        .hof-modal-bday { 
+            font-size: 13px; 
+            color: #cbd5e1; 
+            background: rgba(255,255,255,0.1); 
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-weight: 500;
+        }
+        .hof-modal-bday span { color: var(--brand-green); font-weight: 900; }
+
+        /* --- עיצוב צבעי הסטטיסטיקות (ירוק למילים, נייבי למספרים) --- */
+        .hof-stat-lbl { 
+            font-size: 13px !important; 
+            color: var(--brand-green) !important; 
+            font-weight: 900 !important; 
+            margin-bottom: 4px;
+        }
+        .hof-stat-val { 
+            font-size: 30px !important; 
+            font-weight: 900 !important; 
+            color: var(--text-dark) !important; /* זה הבלו-נייבי שלנו */
+        }
+        
+        /* ביטול הרקע הירקרק מקופסאות מסוימות כדי לשמור על מראה נקי ואחיד */
+        .hof-stat-card.highlight { 
+            background: #fff !important; 
+            border-color: #e2e8f0 !important; 
+        }
+        
     </style>
 
 </head>
@@ -3093,7 +3124,10 @@ html, body {
                 <div class="hof-modal-avatar" id="hof-modal-img"></div>
                 <div class="hof-modal-info">
                     <div class="hof-modal-info-right">
-                        <div class="hof-modal-name" id="hof-modal-name">שם השחקן</div>
+                        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 5px;">
+                            <div class="hof-modal-name" id="hof-modal-name" style="margin-bottom: 0;">שם השחקן</div>
+                            <div class="hof-modal-bday" id="hof-modal-bday"></div>
+                        </div>
                         <div class="hof-modal-meta">עמדה: <span id="hof-modal-pos"></span></div>
                         <div class="hof-modal-meta">שנות פעילות: <span id="hof-modal-years"></span></div>
                     </div>
