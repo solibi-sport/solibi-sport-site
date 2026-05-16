@@ -150,11 +150,6 @@ html, body {
             flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: auto; 
             margin-left: calc(var(--sidebar-width) + 20px); 
-            direction: ltr; /* זורק את פס הגלילה לימין */
-        }
-        
-        .content-area > * {
-            direction: rtl; /* מחזיר את כל התוכן הפנימי לימין-לשמאל */
         }
 
         .tab-content { display: none; animation: fadeIn 0.4s ease; flex-direction: column; height: 100%; }
@@ -447,32 +442,6 @@ html, body {
             background: #fff !important; 
             border-color: #e2e8f0 !important; 
         }
-
-        /* מרכוז מלא לכל תאי הטבלה */
-        .pantheon-table th, .pantheon-table td { text-align: center !important; }
-        
-        /* מרכוז עמודת השחקן - אבל שמירה על קו ישר של התמונות! */
-        .player-identity-cell { display: flex; align-items: center; gap: 15px; justify-content: center; width: max-content; margin: 0 auto; }
-        
-        .player-name-wrap { display: flex; flex-direction: column; justify-content: center; text-align: right; min-width: 130px; } /* רוחב מינימלי מקבע את המרחק */
-        .player-name-main { font-weight: 900; color: var(--text-dark); font-size: 16px; margin: 0; }
-        
-        /* עיצוב ומרכוז לעמודת התיאור החדשה */
-        .new-desc-cell { font-size: 13px; color: #475569; line-height: 1.5; white-space: normal; max-width: 350px; margin: 0 auto; }
-
-        /* --- עיצוב מחדש של טבלת התארים (כותרת מעל, פירוט מתחת) --- */
-        .titles-table { width: 100%; border-collapse: collapse; direction: rtl; text-align: center; font-size: 14px; background: #fff; border-radius: 8px; overflow: hidden; }
-        .titles-table th { background: var(--element-navy-gradient); color: #fff; padding: 10px; font-weight: 700; border-bottom: 2px solid var(--brand-green); }
-        .titles-table td { padding: 15px; border-bottom: 5px solid #f8fafc; color: var(--text-dark); line-height: 1.6; font-weight: 500; white-space: pre-line; background: #fff; }
-        
-        /* --- מרכוז טבלת עונות בקריירה (FM Style) --- */
-        .fm-career-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: center; direction: rtl; }
-        .fm-career-table th { background: var(--element-navy-gradient); color: #fff; padding: 8px 10px; font-weight: 700; position: sticky; top: 0; z-index: 5; text-align: center !important; }
-        .fm-career-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; color: var(--text-dark); text-align: center !important; }
-        .fm-career-table tr:hover td { background: rgba(124, 168, 86, 0.1); }
-        .fm-career-table .fm-season { font-weight: 700; color: #64748b; }
-        .fm-career-table .fm-team { font-weight: 900; }
-        .fm-career-table .fm-stat { font-weight: bold; }
         
     </style>
 
@@ -3182,12 +3151,12 @@ html, body {
                 <div id="hof-tab-general" class="hof-tab-panel active">
                     <div class="scrollable-tab-area">
                         <div class="hof-stats-grid" style="grid-template-columns: repeat(3, 1fr);">
-                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: -5px;">קריירת מועדונים</div>
+                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: -5px;">קריירת מועדונים 🏢</div>
                             <div class="hof-stat-card highlight"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="hof-club-apps">0</div></div>
                             <div class="hof-stat-card highlight"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="hof-club-goals">0</div></div>
                             <div class="hof-stat-card highlight"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="hof-club-assists">0</div></div>
 
-                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-top: 10px; margin-bottom: -5px;">נבחרת ישראל</div>
+                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-top: 10px; margin-bottom: -5px;">נבחרת ישראל 🇮🇱</div>
                             <div class="hof-stat-card"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="hof-intl-apps">0</div></div>
                             <div class="hof-stat-card"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="hof-intl-goals">0</div></div>
                             <div class="hof-stat-card"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="hof-intl-assists">0</div></div>
@@ -3195,21 +3164,17 @@ html, body {
                     </div>
                 </div>
 
-               <div id="hof-tab-titles" class="hof-tab-panel">
-                    <div class="scrollable-tab-area" style="padding-left: 0; overflow-x: hidden;">
+                <div id="hof-tab-titles" class="hof-tab-panel">
+                    <div class="scrollable-tab-area" style="border: 1px solid #e2e8f0; border-radius: 8px; padding-left: 0; overflow: hidden;">
                         <div>
                             <table class="titles-table">
                                 <tbody>
                                     <tr>
                                         <th>תארים קבוצתיים</th>
-                                    </tr>
-                                    <tr>
                                         <td id="hof-team-titles"></td>
                                     </tr>
                                     <tr>
                                         <th>תארים אישיים</th>
-                                    </tr>
-                                    <tr>
                                         <td id="hof-personal-titles"></td>
                                     </tr>
                                 </tbody>
@@ -3222,15 +3187,15 @@ html, body {
                     <div class="scrollable-tab-area" style="border: 1px solid #e2e8f0; border-radius: 8px; padding-left: 0;">
                         <div>
                             <table class="fm-career-table">
-                               <thead>
-                                <tr>
-                                    <th>עונה</th>
-                                    <th>קבוצה</th>
-                                    <th>הופ'</th>
-                                    <th>שערים</th>
-                                    <th>ביש'</th>
-                                </tr>
-                            </thead>
+                                <thead>
+                                    <tr>
+                                        <th>עונה</th>
+                                        <th>קבוצה</th>
+                                        <th style="text-align: left;">הופ'</th>
+                                        <th style="text-align: left;">שערים</th>
+                                        <th style="text-align: left;">ביש'</th>
+                                    </tr>
+                                </thead>
                                 <tbody id="hof-fm-tbody">
                                     </tbody>
                             </table>
@@ -3243,29 +3208,30 @@ html, body {
     </div>
 
     <script>
-       document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function() {
             const table = document.querySelector('.pantheon-table');
             if(!table) return;
 
             const theadTr = table.querySelector('thead tr');
             if(theadTr) {
                 theadTr.innerHTML = `
-                    <th style="text-align: center; width: 80px;">מיקום</th>
-                    <th style="text-align: center;">שחקן</th>
-                    <th style="text-align: center;">תיאור והישגים</th>
-                    <th style="text-align: center; width: 140px;">פעולות</th>
+                    <th style="text-align: center;">מיקום</th>
+                    <th style="text-align: right;">שחקן</th>
+                    <th>עמדה</th>
+                    <th>שנות פעילות</th>
+                    <th title="מספר תארים קבוצתיים">תארים קבוצתיים</th>
+                    <th title="מספר תארים אישיים">תארים אישיים</th>
+                    <th style="text-align: center;">פעולות</th>
                 `;
             }
 
             const defaultAvatar = "data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3e%3c/svg%3e";
 
-            // 2. עוברים שורה-שורה ובונים אותה מחדש רק עם 4 עמודות
             const rows = table.querySelectorAll('tbody tr');
             rows.forEach((row) => {
                 const cells = row.querySelectorAll('td');
                 if(cells.length < 16) return;
 
-                // שואבים את כל המידע הקיים כדי להעביר אותו למודל
                 const rank = cells[0].innerText.trim();
                 const name = cells[1].innerText.trim();
                 const position = cells[2].innerText.trim();
@@ -3280,6 +3246,7 @@ html, body {
                 const clubAssists = cells[11].innerText.trim();
                 const teamTitlesCount = cells[12].innerText.trim();
                 const personalTitlesCount = cells[13].innerText.trim();
+                
                 const teamTitlesDesc = cells[14].innerText.trim();
                 const personalTitlesDesc = cells[15].innerText.trim();
 
@@ -3297,19 +3264,22 @@ html, body {
                 else if(rank === '2') rankClass = 'rank-2';
                 else if(rank === '3') rankClass = 'rank-3';
 
-                // הזרקת 4 העמודות הנקיות (תמונות מיושרות + עמודת תיאור חדשה)
                 row.innerHTML = `
-                    <td style="text-align: center;"><div class="pantheon-rank-badge ${rankClass}">${rank}</div></td>
+                    <td style="text-align: center; width: 60px;"><div class="pantheon-rank-badge ${rankClass}">${rank}</div></td>
                     <td>
                         <div class="player-identity-cell">
                             <img src="${defaultAvatar}" class="player-avatar-mini">
                             <div class="player-name-wrap">
                                 <span class="player-name-main">${name}</span>
+                                <span class="player-name-desc">${desc}</span>
                             </div>
                         </div>
                     </td>
-                    <td class="new-desc-cell">${desc}</td>
-                    <td style="text-align: center;">
+                    <td>${position}</td>
+                    <td>${years}</td>
+                    <td class="stat-num">${teamTitlesCount}</td>
+                    <td class="stat-num">${personalTitlesCount}</td>
+                    <td style="text-align: center; width: 140px;">
                         <button class="stats-action-btn" onclick="openMagicModal('${safeData}')">
                             <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                             דו"ח קריירה
