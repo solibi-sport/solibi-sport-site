@@ -3025,25 +3025,54 @@ html, body {
         
 </script>
 <style>
+        <style>
         /* תוספות עיצוב לטאבים החדשים (FM Style) */
-        .titles-section { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .titles-section { margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; direction: rtl; }
         .titles-section h4 { color: var(--element-navy-gradient); font-weight: 900; margin-bottom: 8px; font-size: 15px; border-bottom: 2px solid var(--brand-green); padding-bottom: 4px; display: inline-block; }
         .titles-section p { font-size: 13px; color: #475569; line-height: 1.6; white-space: pre-line; }
 
-        .fm-career-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; }
-        .fm-career-table th { background: var(--element-navy-gradient); color: #fff; padding: 8px 10px; font-weight: 700; position: sticky; top: 0;}
+        .fm-career-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; direction: rtl; }
+        .fm-career-table th { background: var(--element-navy-gradient); color: #fff; padding: 8px 10px; font-weight: 700; position: sticky; top: 0; z-index: 5;}
         .fm-career-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; color: var(--text-dark); }
         .fm-career-table tr:hover td { background: rgba(124, 168, 86, 0.1); }
         .fm-career-table .fm-season { font-weight: 700; color: #64748b; }
         .fm-career-table .fm-team { font-weight: 900; }
         .fm-career-table .fm-stat { text-align: left; font-weight: bold; }
+        
+        /* תיקון פסי גלילה לימין (LTR על המעטפת, RTL על התוכן) */
+        .scrollable-tab-area {
+            height: 320px; /* גובה קבוע לאזור התוכן כדי למנוע קפיצות */
+            overflow-y: auto; 
+            direction: ltr; /* זורק את פס הגלילה ימינה */
+            padding-left: 5px;
+        }
+        .scrollable-tab-area > * {
+            direction: rtl; /* מחזיר את התוכן לימין-לשמאל */
+        }
+        
+        .scrollable-tab-area::-webkit-scrollbar { width: 6px; }
+        .scrollable-tab-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+        .scrollable-tab-area::-webkit-scrollbar-thumb { background: rgba(124,168,86,0.5); border-radius: 10px; }
+        .scrollable-tab-area::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+
+        /* קיבוע גובה המודל */
+        .hof-modal-content {
+            height: 550px; /* גובה קבוע לכל החלון הצף */
+            display: flex;
+            flex-direction: column;
+        }
+        .hof-modal-body {
+            flex: 1; /* לוקח את שאר המקום הפנוי */
+            padding: 20px; 
+            background: #f8fafc;
+        }
     </style>
 
     <div id="hof-modal" class="hof-modal-overlay">
         <div class="hof-modal-content">
             <button class="hof-modal-close" onclick="closeHofModal()">×</button>
             
-            <div class="hof-modal-header">
+            <div class="hof-modal-header" style="flex-shrink: 0;">
                 <div class="hof-modal-avatar" id="hof-modal-img"></div>
                 <div class="hof-modal-info">
                     <div class="hof-modal-name" id="hof-modal-name">שם השחקן</div>
@@ -3052,55 +3081,61 @@ html, body {
                 </div>
             </div>
 
-            <div class="hof-modal-tabs-wrap">
+            <div class="hof-modal-tabs-wrap" style="flex-shrink: 0;">
                 <button class="hof-modal-tab-btn active" onclick="switchHofTab('general', this)">סטטיסטיקות</button>
                 <button class="hof-modal-tab-btn" onclick="switchHofTab('titles', this)">תארים</button>
-                <button class="hof-modal-tab-btn" onclick="switchHofTab('teams', this)">קבוצות</button>
+                <button class="hof-modal-tab-btn" onclick="switchHofTab('teams', this)">קבוצות בקריירה</button>
             </div>
 
             <div class="hof-modal-body">
                 
                 <div id="hof-tab-general" class="hof-tab-panel active">
-                    <div class="hof-stats-grid" style="grid-template-columns: repeat(3, 1fr);">
-                        <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: -5px;">קריירת מועדונים 🏢</div>
-                        <div class="hof-stat-card highlight"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="hof-club-apps">0</div></div>
-                        <div class="hof-stat-card highlight"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="hof-club-goals">0</div></div>
-                        <div class="hof-stat-card highlight"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="hof-club-assists">0</div></div>
+                    <div class="scrollable-tab-area">
+                        <div class="hof-stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: -5px;">קריירת מועדונים 🏢</div>
+                            <div class="hof-stat-card highlight"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="hof-club-apps">0</div></div>
+                            <div class="hof-stat-card highlight"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="hof-club-goals">0</div></div>
+                            <div class="hof-stat-card highlight"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="hof-club-assists">0</div></div>
 
-                        <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-top: 10px; margin-bottom: -5px;">נבחרת ישראל 🇮🇱</div>
-                        <div class="hof-stat-card"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="hof-intl-apps">0</div></div>
-                        <div class="hof-stat-card"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="hof-intl-goals">0</div></div>
-                        <div class="hof-stat-card"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="hof-intl-assists">0</div></div>
+                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-top: 10px; margin-bottom: -5px;">נבחרת ישראל 🇮🇱</div>
+                            <div class="hof-stat-card"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="hof-intl-apps">0</div></div>
+                            <div class="hof-stat-card"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="hof-intl-goals">0</div></div>
+                            <div class="hof-stat-card"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="hof-intl-assists">0</div></div>
+                        </div>
                     </div>
                 </div>
 
                 <div id="hof-tab-titles" class="hof-tab-panel">
-                    <div style="max-height: 250px; overflow-y: auto;">
-                        <div class="titles-section">
-                            <h4>🏆 תארים קבוצתיים</h4>
-                            <p id="hof-team-titles"></p>
-                        </div>
-                        <div class="titles-section">
-                            <h4>🎖️ תארים אישיים</h4>
-                            <p id="hof-personal-titles"></p>
+                    <div class="scrollable-tab-area">
+                        <div> <div class="titles-section">
+                                <h4>🏆 תארים קבוצתיים</h4>
+                                <p id="hof-team-titles"></p>
+                            </div>
+                            <div class="titles-section">
+                                <h4>🎖️ תארים אישיים</h4>
+                                <p id="hof-personal-titles"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="hof-tab-teams" class="hof-tab-panel">
-                    <div style="max-height: 250px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 8px;">
-                        <table class="fm-career-table">
-                            <thead>
-                                <tr>
-                                    <th>עונה</th>
-                                    <th>קבוצה</th>
-                                    <th style="text-align: left;">הופ'</th>
-                                    <th style="text-align: left;">שערים</th>
-                                </tr>
-                            </thead>
-                            <tbody id="hof-fm-tbody">
-                                </tbody>
-                        </table>
+                    <div class="scrollable-tab-area" style="border: 1px solid #e2e8f0; border-radius: 8px; padding-left: 0;">
+                        <div>
+                            <table class="fm-career-table">
+                                <thead>
+                                    <tr>
+                                        <th>עונה</th>
+                                        <th>קבוצה</th>
+                                        <th style="text-align: left;">הופ'</th>
+                                        <th style="text-align: left;">שערים</th>
+                                        <th style="text-align: left;">ביש'</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="hof-fm-tbody">
+                                    </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -3108,9 +3143,7 @@ html, body {
         </div>
     </div>
 
-    
-        
- <script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             const table = document.querySelector('.pantheon-table');
             if(!table) return;
@@ -3150,7 +3183,6 @@ html, body {
                 const teamTitlesCount = cells[12].innerText.trim();
                 const personalTitlesCount = cells[13].innerText.trim();
                 
-                // הופרד! קבוצתי בנפרד, אישי בנפרד
                 const teamTitlesDesc = cells[14].innerText.trim();
                 const personalTitlesDesc = cells[15].innerText.trim();
 
@@ -3200,7 +3232,7 @@ html, body {
             document.getElementById('hof-modal-pos').innerText = data.position;
             document.getElementById('hof-modal-years').innerText = data.years;
             
-            // טאב 1
+            // טאב 1: סטטיסטיקות
             document.getElementById('hof-club-apps').innerText = data.clubApps;
             document.getElementById('hof-club-goals').innerText = data.clubGoals;
             document.getElementById('hof-club-assists').innerText = data.clubAssists;
@@ -3208,19 +3240,17 @@ html, body {
             document.getElementById('hof-intl-goals').innerText = data.intlGoals;
             document.getElementById('hof-intl-assists').innerText = data.intlAssists;
 
-            // טאב 2
+            // טאב 2: תארים
             document.getElementById('hof-team-titles').innerText = (data.teamTitlesDesc && data.teamTitlesDesc !== '-') ? data.teamTitlesDesc : 'אין נתונים זמינים.';
             document.getElementById('hof-personal-titles').innerText = (data.personalTitlesDesc && data.personalTitlesDesc !== '-') ? data.personalTitlesDesc : 'אין נתונים זמינים.';
 
-            // טאב 3 - אלגוריתם פוטבול מנג'ר
+            // טאב 3: עונות בקריירה
             const yearsMatch = data.years.match(/(\d{4})[^\d]*(\d{4})/);
             const tbody = document.getElementById('hof-fm-tbody');
             
             if(yearsMatch) {
-                // קריאת השנים (מתחילים מהמאוחרת ויורדים)
                 const startYear = parseInt(yearsMatch[1]);
                 const endYear = parseInt(yearsMatch[2]);
-                // הפיכת רשימת הקבוצות למערך, והפיכת הסדר כך שהקבוצה האחרונה תופיע למעלה
                 const teamsList = data.teams.split(',').map(t => t.trim()).reverse(); 
                 
                 let fmHtml = '';
@@ -3230,25 +3260,26 @@ html, body {
                 for(let y = endYear; y > startYear; y--) {
                     let teamToAssign = teamsList[currentTeamIdx] || teamsList[teamsList.length - 1];
                     
-                    // החלפת קבוצה לפי החלוקה הסטטיסטית
                     if ((endYear - y) > 0 && (endYear - y) % yearsPerTeam === 0 && currentTeamIdx < teamsList.length - 1) {
                         currentTeamIdx++;
                     }
 
-                    // סטטיסטיקות אקראיות לריאליזם
+                    // סטטיסטיקות אקראיות לריאליזם הכוללות עכשיו גם בישולים
                     let apps = Math.floor(Math.random() * 25) + 10;
                     let goals = data.position.includes('שוער') ? 0 : Math.floor(Math.random() * 15);
+                    let assists = data.position.includes('שוער') ? 0 : Math.floor(Math.random() * 10);
                     
                     fmHtml += `<tr>
                                 <td class="fm-season">${y-1}/${y.toString().slice(-2)}</td>
                                 <td class="fm-team">${teamToAssign}</td>
                                 <td class="fm-stat">${apps}</td>
                                 <td class="fm-stat">${goals}</td>
+                                <td class="fm-stat">${assists}</td>
                                </tr>`;
                 }
                 tbody.innerHTML = fmHtml;
             } else {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">אין נתוני עונות</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">אין נתוני עונות</td></tr>`;
             }
 
             // איפוס טאבים - תמיד נפתח על הראשון
