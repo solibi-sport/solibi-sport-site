@@ -3689,7 +3689,17 @@
                     </tr>
                 `;
             }
-            document.getElementById('foreign-fm-tbody').innerHTML = seasonsHtml;
+            
+           document.getElementById('foreign-fm-tbody').innerHTML = seasonsHtml;
+            
+            // --- חישוב מספר עונות וקבוצות (בינתיים נתוני דמה) ---
+            const numberOfSeasons = 2005 - 1996 + 1; 
+            const numberOfTeams = Math.floor(Math.random() * 3) + 1; 
+            
+            document.getElementById('foreign-sum-seasons').innerText = numberOfSeasons + ' עונות';
+            document.getElementById('foreign-sum-teams').innerText = numberOfTeams + ' קבוצות';
+            // ---------------------------------------------------
+
             document.getElementById('foreign-sum-apps').innerText = totalApps;
             document.getElementById('foreign-sum-goals').innerText = totalGoals;
             document.getElementById('foreign-sum-assists').innerText = totalAssists;
@@ -4032,7 +4042,8 @@
                                     </tbody>
                                 <tfoot>
                                     <tr style="background: var(--element-navy-gradient); color: #fff;">
-                                        <td colspan="2" style="font-weight: 900; text-align: left; padding: 10px;">סה"כ בקריירה בישראל:</td>
+                                        <td style="font-weight: 900; color:#fff;" id="foreign-sum-seasons">0 עונות</td>
+                                        <td style="font-weight: 900; color:#fff;" id="foreign-sum-teams">0 קבוצות</td>
                                         <td style="font-weight: 900; color:#fff;" id="foreign-sum-apps">0</td>
                                         <td style="font-weight: 900; color:#fff;" id="foreign-sum-goals">0</td>
                                         <td style="font-weight: 900; color:#fff;" id="foreign-sum-assists">0</td>
