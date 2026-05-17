@@ -150,15 +150,20 @@
     flex: 1;
     background: #ffffff;
     border-radius: 16px;
-    /* שינוי ה-box-shadow מ-40px ל-10px, הפחתת האטימות ל-0.05, והוספת border */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     border: 1px solid #e1e8ed;
     padding: 35px;
     position: relative;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-y: auto; /* כאן התיקון הראשון: auto במקום scroll */
     margin-left: calc(var(--sidebar-width) + 20px);
+    scrollbar-width: none; /* העלמה מוחלטת לפיירפוקס */
+}
+
+/* העלמה מוחלטת לכרום ואדג' */
+.content-area::-webkit-scrollbar {
+    display: none;
 }
 
         /* פס הגלילה יושב רק על הטבלה עצמה, ובצד ימין! */
