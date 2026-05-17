@@ -3503,6 +3503,9 @@
         // פונקציות למודל הזרים (טאב 2)
         // ==========================================
         function openForeignModal(name, position, country, height, bday, leagueApps, leagueGoals, leagueAssists, totalApps, totalGoals, totalAssists, teamTitles, personalTitles, aboutText) {
+
+            // השורה החדשה שמכניסה את המיקום לתוך העיגול
+            document.getElementById('foreign-modal-rank').innerText = rank;
             
             // עדכון פרטים אישיים
             document.getElementById('foreign-modal-name').innerText = name;
@@ -3809,8 +3812,9 @@
                             <div class="hof-modal-meta">גובה: <span id="foreign-modal-height"></span></div>
                         </div>
                         
-                        <div style="display: flex; align-items: center; gap: 30px;">
+                       <div style="display: flex; align-items: center; gap: 30px;">
                             <div class="hof-modal-meta" style="margin-bottom: 0;">תאריך לידה: <span id="foreign-modal-bday"></span></div>
+                            <div class="modal-rank-circle" id="foreign-modal-rank">1</div>
                         </div>
 
                     </div>
