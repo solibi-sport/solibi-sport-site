@@ -490,6 +490,8 @@
         .fm-career-table .fm-team { font-weight: 900; }
         .fm-career-table .fm-stat { font-weight: bold; }
 
+.hof-modal-tabs-wrap .hof-modal-tab-btn { flex: 1; text-align: center; white-space: nowrap; }
+        
     </style>
 
 </head>
@@ -3887,7 +3889,8 @@
             <div class="hof-modal-tabs-wrap" style="flex-shrink: 0;">
                 <button class="hof-modal-tab-btn active" onclick="switchHofTab('general', this)">סטטיסטיקות</button>
                 <button class="hof-modal-tab-btn" onclick="switchHofTab('titles', this)">תארים</button>
-                <button class="hof-modal-tab-btn" onclick="switchHofTab('teams', this)">קבוצות</button>
+                <button class="hof-modal-tab-btn" onclick="switchHofTab('teams', this)">קבוצות בקריירה</button>
+                <button class="hof-modal-tab-btn" onclick="switchHofTab('milestones', this)">ציוני דרך</button>
             </div>
 
             <div class="hof-modal-body">
@@ -3947,6 +3950,15 @@
                                 <tbody id="hof-fm-tbody">
                                     </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="hof-tab-milestones" class="hof-tab-panel">
+                    <div class="scrollable-tab-area">
+                        <div class="titles-section" style="border: none; background: transparent; padding: 0;">
+                            <h4 style="font-size: 18px;">רגעים משמעותיים בקריירה</h4>
+                            <p id="hof-milestones-text" style="font-size: 14px; line-height: 1.8; margin-top: 10px;"></p>
                         </div>
                     </div>
                 </div>
@@ -4112,7 +4124,7 @@
                 const personalTitlesCount = cells[13].innerText.trim();
                 const teamTitlesDesc = cells[14].innerText.trim();
                 const personalTitlesDesc = cells[15].innerText.trim();
-
+       
                 const playerData = {
                     name, position, years, teams, desc,
                     intlApps, intlGoals, intlAssists,
@@ -4183,6 +4195,9 @@
             // טאב 2: תארים
             document.getElementById('hof-team-titles').innerText = (data.teamTitlesDesc && data.teamTitlesDesc !== '-') ? data.teamTitlesDesc : 'אין נתונים זמינים.';
             document.getElementById('hof-personal-titles').innerText = (data.personalTitlesDesc && data.personalTitlesDesc !== '-') ? data.personalTitlesDesc : 'אין נתונים זמינים.';
+           document.getElementById('hof-milestones-text').innerText = data.desc; // בינתיים משכפל את התיאור לפה
+
+           
 
             // טאב 3: עונות בקריירה
             const tbody = document.getElementById('hof-fm-tbody');
