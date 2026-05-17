@@ -2620,8 +2620,7 @@
                                     </div>
                                 </td>
                                 <td style="text-align: center;">
-                                    <button class="stats-action-btn" onclick="openForeignModal('ג\'ובאני רוסו', 'קשר התקפי', 'קרואטיה', '1.80 מ\'', '17.11.1972', '270', '52', '60', '350', '70', '80', '5 אליפויות, גביע המדינה, גביע הטוטו', 'כדורגלן העונה (1999, 2002)', 'קשר יצירתי ווירטואוז קרואטי. נחשב לאחד הזרים הגדולים והמשפיעים ביותר בתולדות הכדורגל הישראלי, עם טכניקה נדירה וקסם אישי שכבש את האוהדים בכל קבוצה בה שיחק.')">
-                                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+<button class="stats-action-btn" onclick="openForeignModal('1', 'ג\'ובאני רוסו', 'קשר התקפי', 'קרואטיה', '1.80 מ\'', '17.11.1972', '270', '52', '60', '350', '70', '80', '5 אליפויות, גביע המדינה, גביע הטוטו', 'כדורגלן העונה (1999, 2002)', 'קשר יצירתי ווירטואוז קרואטי. נחשב לאחד הזרים הגדולים והמשפיעים ביותר בתולדות הכדורגל הישראלי, עם טכניקה נדירה וקסם אישי שכבש את האוהדים בכל קבוצה בה שיחק.')">                                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                         דו"ח שחקן
                                     </button>
                                 </td>
@@ -3502,7 +3501,7 @@
 // ==========================================
         // פונקציות למודל הזרים (טאב 2)
         // ==========================================
-        function openForeignModal(name, position, country, height, bday, leagueApps, leagueGoals, leagueAssists, totalApps, totalGoals, totalAssists, teamTitles, personalTitles, aboutText) {
+        function openForeignModal(rank, name, position, country, height, bday, leagueApps, leagueGoals, leagueAssists, totalApps, totalGoals, totalAssists, teamTitles, personalTitles, aboutText) {
             
             // עדכון פרטים אישיים
             document.getElementById('foreign-modal-name').innerText = name;
@@ -3816,11 +3815,11 @@
                     </div>
                 </div>
             </div>
-            <div class="hof-modal-tabs-wrap" style="flex-shrink: 0;">
-                <button class="foreign-modal-tab-btn active" onclick="switchForeignTab('general', this)">סטטיסטיקות</button>
-                <button class="foreign-modal-tab-btn" onclick="switchForeignTab('titles', this)">תארים</button>
-                <button class="foreign-modal-tab-btn" onclick="switchForeignTab('teams', this)">קבוצות בקריירה</button>
-                <button class="foreign-modal-tab-btn" onclick="switchForeignTab('about', this)">אודות</button>
+           <div class="hof-modal-tabs-wrap" style="flex-shrink: 0;">
+                <button class="hof-modal-tab-btn foreign-modal-tab-btn active" onclick="switchForeignTab('general', this)">סטטיסטיקות</button>
+                <button class="hof-modal-tab-btn foreign-modal-tab-btn" onclick="switchForeignTab('titles', this)">תארים</button>
+                <button class="hof-modal-tab-btn foreign-modal-tab-btn" onclick="switchForeignTab('teams', this)">קבוצות בקריירה</button>
+                <button class="hof-modal-tab-btn foreign-modal-tab-btn" onclick="switchForeignTab('about', this)">אודות</button>
             </div>
 
             <div class="hof-modal-body">
