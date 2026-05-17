@@ -2595,10 +2595,40 @@
     </table>
 </div>
             </div>
-            <div id="tab-2" class="tab-content">
+           <div id="tab-2" class="tab-content">
                 <h2 class="content-header-title">50 הזרים הגדולים</h2>
                 <p class="content-desc">השחקנים הזרים האיכותיים והמשפיעים ביותר שנחתו בישראל והשאירו חותם על הליגה לאורך השנים.</p>
-                <div class="placeholder-box">כאן תשולב רשימת 50 הזרים...</div>
+                
+                <div class="pantheon-table-wrapper">
+                    <table class="pantheon-table" id="foreigners-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 80px;">מיקום</th>
+                                <th style="text-align: center;">שם השחקן</th>
+                                <th style="text-align: center; width: 140px;">דו"ח שחקן</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;"><div class="pantheon-rank-badge rank-1">1</div></td>
+                                <td>
+                                    <div class="player-identity-cell" style="justify-content: center;">
+                                        <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3e%3c/svg%3e" class="player-avatar-mini">
+                                        <div class="player-name-wrap">
+                                            <span class="player-name-main">ג'ובאני רוסו</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center;">
+                                    <button class="stats-action-btn" onclick="openForeignModal('ג\'ובאני רוסו', 'קשר התקפי', 'קרואטיה', '1.80 מ\'', '17.11.1972', '270', '52', '60', '350', '70', '80', '5 אליפויות, גביע המדינה, גביע הטוטו', 'כדורגלן העונה (1999, 2002)', 'קשר יצירתי ווירטואוז קרואטי. נחשב לאחד הזרים הגדולים והמשפיעים ביותר בתולדות הכדורגל הישראלי, עם טכניקה נדירה וקסם אישי שכבש את האוהדים בכל קבוצה בה שיחק.')">
+                                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                        דו"ח שחקן
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div id="tab-3" class="tab-content">
                 <h2 class="content-header-title">נבחרת ישראל: שיאים וציוני דרך</h2>
@@ -3469,6 +3499,77 @@
             document.getElementById('hof-tab-' + tabId).classList.add('active');
         }
 
+// ==========================================
+        // פונקציות למודל הזרים (טאב 2)
+        // ==========================================
+        function openForeignModal(name, position, country, height, bday, leagueApps, leagueGoals, leagueAssists, totalApps, totalGoals, totalAssists, teamTitles, personalTitles, aboutText) {
+            
+            // עדכון פרטים אישיים
+            document.getElementById('foreign-modal-name').innerText = name;
+            document.getElementById('foreign-modal-pos').innerText = position;
+            document.getElementById('foreign-modal-country').innerText = country;
+            document.getElementById('foreign-modal-height').innerText = height;
+            document.getElementById('foreign-modal-bday').innerText = bday;
+            
+            // עדכון סטטיסטיקות
+            document.getElementById('foreign-league-apps').innerText = leagueApps;
+            document.getElementById('foreign-league-goals').innerText = leagueGoals;
+            document.getElementById('foreign-league-assists').innerText = leagueAssists;
+            document.getElementById('foreign-total-apps').innerText = totalApps;
+            document.getElementById('foreign-total-goals').innerText = totalGoals;
+            document.getElementById('foreign-total-assists').innerText = totalAssists;
+
+            // עדכון תארים
+            document.getElementById('foreign-team-titles').innerText = teamTitles || '-';
+            document.getElementById('foreign-personal-titles').innerText = personalTitles || '-';
+            
+            // עדכון אודות
+            document.getElementById('foreign-about-text').innerText = aboutText || 'אין מידע זמין כרגע.';
+
+            // יצירת טבלת עונות דינמית (דוגמה) + שורת סה"כ
+            let seasonsHtml = '';
+            for(let year = 2005; year >= 1996; year--) {
+                seasonsHtml += `
+                    <tr>
+                        <td class="fm-season">${year}/${year+1}</td>
+                        <td class="fm-team">מכבי חיפה</td>
+                        <td class="fm-stat">${Math.floor(Math.random() * 30) + 10}</td>
+                        <td class="fm-stat">${Math.floor(Math.random() * 15)}</td>
+                        <td class="fm-stat">${Math.floor(Math.random() * 10)}</td>
+                    </tr>
+                `;
+            }
+            document.getElementById('foreign-fm-tbody').innerHTML = seasonsHtml;
+            document.getElementById('foreign-sum-apps').innerText = totalApps;
+            document.getElementById('foreign-sum-goals').innerText = totalGoals;
+            document.getElementById('foreign-sum-assists').innerText = totalAssists;
+
+            // איפוס הטאבים (פתיחה תמיד על הראשון)
+            document.querySelectorAll('.foreign-modal-tab-btn').forEach((btn, idx) => {
+                if(idx === 0) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            document.querySelectorAll('.foreign-tab-panel').forEach((panel, idx) => {
+                if(idx === 0) panel.classList.add('active');
+                else panel.classList.remove('active');
+            });
+
+            // פתיחת המודל
+            document.getElementById('foreign-modal').classList.add('active');
+        }
+
+        function closeForeignModal() {
+            document.getElementById('foreign-modal').classList.remove('active');
+        }
+
+        function switchForeignTab(tabId, btnElement) {
+            document.querySelectorAll('.foreign-modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            document.querySelectorAll('.foreign-tab-panel').forEach(panel => panel.classList.remove('active'));
+            document.getElementById('foreign-tab-' + tabId).classList.add('active');
+        }
+        
         // מילון סמלי קבוצות מתוקן (הקישורים המדויקים והסופיים של ליגת העל בלי להוריד כלום!)
         const hofTeamLogos = {
             "maccabi_tlv": "https://images.fotmob.com/image_resources/logo/teamlogo/7855.png",
@@ -3689,6 +3790,121 @@
         </div>
     </div>
 
+<div id="foreign-modal" class="hof-modal-overlay">
+        <div class="hof-modal-content">
+            <button class="hof-modal-close" onclick="closeForeignModal()">×</button>
+            
+            <div class="hof-modal-header" style="flex-shrink: 0;">
+                <div class="hof-modal-avatar" id="foreign-modal-img"></div>
+                <div class="hof-modal-info" style="justify-content: flex-start;">
+                    <div class="hof-modal-info-right" style="width: 100%;">
+                        
+                        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 5px;">
+                            <div class="hof-modal-name" id="foreign-modal-name" style="margin-bottom: 0;">שם השחקן</div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 5px; flex-wrap: wrap;">
+                            <div class="hof-modal-meta">תפקיד: <span id="foreign-modal-pos"></span></div>
+                            <div class="hof-modal-meta">מדינה: <span id="foreign-modal-country"></span></div>
+                            <div class="hof-modal-meta">גובה: <span id="foreign-modal-height"></span></div>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 30px;">
+                            <div class="hof-modal-meta" style="margin-bottom: 0;">תאריך לידה: <span id="foreign-modal-bday"></span></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="hof-modal-tabs-wrap" style="flex-shrink: 0;">
+                <button class="foreign-modal-tab-btn active" onclick="switchForeignTab('general', this)">סטטיסטיקות</button>
+                <button class="foreign-modal-tab-btn" onclick="switchForeignTab('titles', this)">תארים</button>
+                <button class="foreign-modal-tab-btn" onclick="switchForeignTab('teams', this)">קבוצות בקריירה</button>
+                <button class="foreign-modal-tab-btn" onclick="switchForeignTab('about', this)">אודות</button>
+            </div>
+
+            <div class="hof-modal-body">
+                
+                <div id="foreign-tab-general" class="hof-tab-panel foreign-tab-panel active">
+                    <div class="scrollable-tab-area">
+                        <div class="hof-stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: -5px;">ליגת העל (ישראל)</div>
+                            <div class="hof-stat-card highlight"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="foreign-league-apps">0</div></div>
+                            <div class="hof-stat-card highlight"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="foreign-league-goals">0</div></div>
+                            <div class="hof-stat-card highlight"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="foreign-league-assists">0</div></div>
+
+                            <div style="grid-column: span 3; font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-top: 10px; margin-bottom: -5px;">כל המסגרות (ישראל)</div>
+                            <div class="hof-stat-card"><div class="hof-stat-lbl">הופעות</div><div class="hof-stat-val" id="foreign-total-apps">0</div></div>
+                            <div class="hof-stat-card"><div class="hof-stat-lbl">שערים</div><div class="hof-stat-val" id="foreign-total-goals">0</div></div>
+                            <div class="hof-stat-card"><div class="hof-stat-lbl">בישולים</div><div class="hof-stat-val" id="foreign-total-assists">0</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="foreign-tab-titles" class="hof-tab-panel foreign-tab-panel">
+                    <div class="scrollable-tab-area" style="padding-left: 0; overflow-x: hidden;">
+                        <div>
+                            <table class="titles-table">
+                                <tbody>
+                                    <tr>
+                                        <th>תארים קבוצתיים בישראל</th>
+                                    </tr>
+                                    <tr>
+                                        <td id="foreign-team-titles"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>תארים אישיים בישראל</th>
+                                    </tr>
+                                    <tr>
+                                        <td id="foreign-personal-titles"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="foreign-tab-teams" class="hof-tab-panel foreign-tab-panel">
+                    <div class="scrollable-tab-area" style="border: 1px solid #e2e8f0; border-radius: 8px; padding-left: 0;">
+                        <div>
+                            <table class="fm-career-table">
+                                <thead>
+                                    <tr>
+                                        <th>עונה</th>
+                                        <th>קבוצה</th>
+                                        <th>הופ'</th>
+                                        <th>שערים</th>
+                                        <th>ביש'</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="foreign-fm-tbody">
+                                    </tbody>
+                                <tfoot>
+                                    <tr style="background: var(--element-navy-gradient); color: #fff;">
+                                        <td colspan="2" style="font-weight: 900; text-align: left; padding: 10px;">סה"כ בקריירה בישראל:</td>
+                                        <td style="font-weight: 900; color:#fff;" id="foreign-sum-apps">0</td>
+                                        <td style="font-weight: 900; color:#fff;" id="foreign-sum-goals">0</td>
+                                        <td style="font-weight: 900; color:#fff;" id="foreign-sum-assists">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="foreign-tab-about" class="hof-tab-panel foreign-tab-panel">
+                    <div class="scrollable-tab-area">
+                        <div class="titles-section" style="border: none; background: transparent; padding: 0;">
+                            <h4 style="font-size: 18px;">סיכום קריירה</h4>
+                            <p id="foreign-about-text" style="font-size: 14px; line-height: 1.8; margin-top: 10px;"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
     <script>
        document.addEventListener("DOMContentLoaded", function() {
             const table = document.querySelector('.pantheon-table');
