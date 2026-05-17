@@ -2598,7 +2598,37 @@
             <div id="tab-2" class="tab-content">
                 <h2 class="content-header-title">50 הזרים הגדולים</h2>
                 <p class="content-desc">השחקנים הזרים האיכותיים והמשפיעים ביותר שנחתו בישראל והשאירו חותם על הליגה לאורך השנים.</p>
-                <div class="placeholder-box">כאן תשולב רשימת 50 הזרים...</div>
+                
+                <div class="pantheon-table-wrapper">
+                    <table class="pantheon-table" id="foreigners-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 80px;">מיקום</th>
+                                <th style="text-align: center;">שם השחקן</th>
+                                <th style="text-align: center; width: 140px;">דו"ח שחקן</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: center;"><div class="pantheon-rank-badge rank-1">1</div></td>
+                                <td>
+                                    <div class="player-identity-cell" style="justify-content: center;">
+                                        <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3e%3c/svg%3e" class="player-avatar-mini">
+                                        <div class="player-name-wrap">
+                                            <span class="player-name-main">ג'ובאני רוסו</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center;">
+                                    <button class="stats-action-btn" onclick="openForeignModal('ג\'ובאני רוסו', 'קשר התקפי', 'קרואטיה', '1.80 מ\'', '17.11.1972', '270', '52', '60', '350', '70', '80', '5 אליפויות, גביע המדינה, גביע הטוטו', 'כדורגלן העונה (1999, 2002)', 'קשר יצירתי ווירטואוז קרואטי. נחשב לאחד הזרים הגדולים והמשפיעים ביותר בתולדות הכדורגל הישראלי, עם טכניקה נדירה וקסם אישי שכבש את האוהדים בכל קבוצה בה שיחק.')">
+                                        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                        דו"ח שחקן
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div id="tab-3" class="tab-content">
                 <h2 class="content-header-title">נבחרת ישראל: שיאים וציוני דרך</h2>
@@ -3688,6 +3718,77 @@
             </div>
         </div>
     </div>
+
+    // ==========================================
+        // פונקציות למודל הזרים (טאב 2)
+        // ==========================================
+        function openForeignModal(name, position, country, height, bday, leagueApps, leagueGoals, leagueAssists, totalApps, totalGoals, totalAssists, teamTitles, personalTitles, aboutText) {
+            
+            // עדכון פרטים אישיים
+            document.getElementById('foreign-modal-name').innerText = name;
+            document.getElementById('foreign-modal-pos').innerText = position;
+            document.getElementById('foreign-modal-country').innerText = country;
+            document.getElementById('foreign-modal-height').innerText = height;
+            document.getElementById('foreign-modal-bday').innerText = bday;
+            
+            // עדכון סטטיסטיקות
+            document.getElementById('foreign-league-apps').innerText = leagueApps;
+            document.getElementById('foreign-league-goals').innerText = leagueGoals;
+            document.getElementById('foreign-league-assists').innerText = leagueAssists;
+            document.getElementById('foreign-total-apps').innerText = totalApps;
+            document.getElementById('foreign-total-goals').innerText = totalGoals;
+            document.getElementById('foreign-total-assists').innerText = totalAssists;
+
+            // עדכון תארים
+            document.getElementById('foreign-team-titles').innerText = teamTitles || '-';
+            document.getElementById('foreign-personal-titles').innerText = personalTitles || '-';
+            
+            // עדכון אודות
+            document.getElementById('foreign-about-text').innerText = aboutText || 'אין מידע זמין כרגע.';
+
+            // יצירת טבלת עונות דינמית (דוגמה) + שורת סה"כ
+            let seasonsHtml = '';
+            for(let year = 2005; year >= 1996; year--) {
+                seasonsHtml += `
+                    <tr>
+                        <td class="fm-season">${year}/${year+1}</td>
+                        <td class="fm-team">מכבי חיפה</td>
+                        <td class="fm-stat">${Math.floor(Math.random() * 30) + 10}</td>
+                        <td class="fm-stat">${Math.floor(Math.random() * 15)}</td>
+                        <td class="fm-stat">${Math.floor(Math.random() * 10)}</td>
+                    </tr>
+                `;
+            }
+            document.getElementById('foreign-fm-tbody').innerHTML = seasonsHtml;
+            document.getElementById('foreign-sum-apps').innerText = totalApps;
+            document.getElementById('foreign-sum-goals').innerText = totalGoals;
+            document.getElementById('foreign-sum-assists').innerText = totalAssists;
+
+            // איפוס הטאבים (פתיחה תמיד על הראשון)
+            document.querySelectorAll('.foreign-modal-tab-btn').forEach((btn, idx) => {
+                if(idx === 0) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            document.querySelectorAll('.foreign-tab-panel').forEach((panel, idx) => {
+                if(idx === 0) panel.classList.add('active');
+                else panel.classList.remove('active');
+            });
+
+            // פתיחת המודל
+            document.getElementById('foreign-modal').classList.add('active');
+        }
+
+        function closeForeignModal() {
+            document.getElementById('foreign-modal').classList.remove('active');
+        }
+
+        function switchForeignTab(tabId, btnElement) {
+            document.querySelectorAll('.foreign-modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            document.querySelectorAll('.foreign-tab-panel').forEach(panel => panel.classList.remove('active'));
+            document.getElementById('foreign-tab-' + tabId).classList.add('active');
+        }
 
     <script>
        document.addEventListener("DOMContentLoaded", function() {
