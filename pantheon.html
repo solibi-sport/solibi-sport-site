@@ -890,12 +890,12 @@
         }
         .sidebar-sub-item.active::before { background: var(--brand-green); box-shadow: 0 0 5px var(--brand-green); }
 
-                  /* === הדגשת הטאבים הראשיים הפעילים (רקע בהיר וטקסט נייבי) === */
+                  /* === הדגשת הטאבים הראשיים הפעילים === */
         .sidebar-item.active, 
         .sidebar-dropdown-btn.open {
-            background: #f8fafc !important; /* רקע אפור-לבן של האתר */
-            color: var(--text-dark) !important; /* טקסט נייבי */
-            border-right-color: var(--brand-green) !important; /* שמירה על הפס הירוק בימין */
+            background: rgba(255, 255, 255, 0.08) !important; /* רקע אפור-נייבי אלגנטי */
+            color: #ffffff !important; /* טקסט לבן */
+            border-right-color: var(--brand-green) !important; /* שמירה על הפס הירוק */
         }
 
         /* צביעת האייקונים (כולל החץ) לירוק כשהטאב נבחר, כדי שיבלטו על הרקע הבהיר */
@@ -3431,16 +3431,19 @@
             element.classList.add('active');
         }
 
-        // === פונקציה חדשה: פתיחה וסגירה של תפריט אקורדיון ===
+       // === פונקציה חדשה: פתיחה וסגירה של תפריט אקורדיון ===
         function toggleSidebarMenu(btn) {
             const submenu = btn.nextElementSibling;
             const isOpen = btn.classList.contains('open');
             
-            // סוגרים קודם את כל התפריטים כדי שרק אחד יהיה פתוח בכל פעם (אפקט אקורדיון נקי)
+            // 1. סוגרים את כל התפריטים הנפתחים
             document.querySelectorAll('.sidebar-dropdown-btn').forEach(b => b.classList.remove('open'));
             document.querySelectorAll('.sidebar-submenu').forEach(s => s.classList.remove('open'));
             
-            // אם התפריט שלחצנו עליו לא היה פתוח קודם, נפתח אותו עכשיו
+            // 2. מכבים טאבים רגילים (כמו "סקירה כללית" או "היסטורית התארים") כדי שלא יהיו שניים מסומנים
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            
+            // 3. פותחים ומדגישים רק את מה שלחצנו עליו
             if (!isOpen) {
                 btn.classList.add('open');
                 submenu.classList.add('open');
