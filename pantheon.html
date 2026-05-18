@@ -889,6 +889,20 @@
             padding-right: 25px;
         }
         .sidebar-sub-item.active::before { background: var(--brand-green); box-shadow: 0 0 5px var(--brand-green); }
+
+                  /* === הדגשת הטאבים הראשיים הפעילים (רקע בהיר וטקסט נייבי) === */
+        .sidebar-item.active, 
+        .sidebar-dropdown-btn.open {
+            background: #f8fafc !important; /* רקע אפור-לבן של האתר */
+            color: var(--text-dark) !important; /* טקסט נייבי */
+            border-right-color: var(--brand-green) !important; /* שמירה על הפס הירוק בימין */
+        }
+
+        /* צביעת האייקונים (כולל החץ) לירוק כשהטאב נבחר, כדי שיבלטו על הרקע הבהיר */
+        .sidebar-item.active svg, 
+        .sidebar-dropdown-btn.open svg {
+            color: var(--brand-green) !important;
+        }
                   
 </style>
 
