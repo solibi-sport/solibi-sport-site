@@ -511,17 +511,66 @@
                 <div class="sidebar-title"> פנתיאון הכדורגל הישראלי</div>
             </div>
             <nav class="sidebar-menu">
-               <div class="sidebar-item active" onclick="switchInternalTab('tab-intro', this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-    סקירה כללית
-</div>
-               <div class="sidebar-item" onclick="switchInternalTab('tab-1', this)"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg><span>100 הישראלים הגדולים</span></div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-2', this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg><span>50 הזרים הגדולים</span></div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-3', this)"><svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg><span>נבחרת ישראל: שיאים</span></div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-4', this)"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span> קבוצות: 11 הגדולים (1990-היום)</span></div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-5', this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg><span>ספר השיאים האישיים</span></div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-6', this)"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg><span>מאמנים והנהלה</span></div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-7', this)"><svg viewBox="0 0 24 24"><path d="M8 21h8m-4-4v4m-7-4h14m-1-10a2 2 0 0 1-2 2h-1.63a7 7 0 0 1-8.74 0H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>היסטורית התארים</span></div>
+                
+                <div class="sidebar-item active" onclick="switchInternalTab('tab-intro', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                    <span>סקירה כללית</span>
+                </div>
+
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarMenu(this)">
+                    <div class="menu-title-wrap">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <span>דירוגי סוליבי</span>
+                    </div>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="sidebar-submenu">
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-1', this, true)">100 הישראלים הגדולים</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-2', this, true)">50 הזרים הגדולים</a>
+                </div>
+
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarMenu(this)">
+                    <div class="menu-title-wrap">
+                        <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                        <span>נבחרת ישראל</span>
+                    </div>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="sidebar-submenu">
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-3', this, true)">שיאי נבחרת</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-new-1', this, true)">שיאים אישיים</a>
+                </div>
+
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarMenu(this)">
+                    <div class="menu-title-wrap">
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        <span>קבוצות</span>
+                    </div>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="sidebar-submenu">
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-4', this, true)">11 הגדולים (1990-היום)</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-new-2', this, true)">שיאים והישגים קבוצות</a>
+                </div>
+
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarMenu(this)">
+                    <div class="menu-title-wrap">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                        <span>שחקנים</span>
+                    </div>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="sidebar-submenu">
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-new-3', this, true)">נבחרת ישראל</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-new-4', this, true)">ליגת העל</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-new-5', this, true)">אירופה</a>
+                </div>
+
+                <div class="sidebar-item" onclick="switchInternalTab('tab-7', this)">
+                    <svg viewBox="0 0 24 24"><path d="M8 21h8m-4-4v4m-7-4h14m-1-10a2 2 0 0 1-2 2h-1.63a7 7 0 0 1-8.74 0H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <span>היסטורית התארים</span>
+                </div>
+                
             </nav>
         </aside>
 
@@ -773,6 +822,73 @@
                     .history-table td:nth-child(6) {
                         border-left: 3px solid var(--text-dark); /* שימוש בצבע הבלו נייבי הכהה */
                     }
+
+                  /* === עיצוב תפריט אקורדיון (נפתח) בסיידבר === */
+        .sidebar-dropdown-btn {
+            padding: 16px 20px;
+            color: rgba(255,255,255,0.6);
+            font-weight: 700;
+            font-size: 14px;
+            background: transparent;
+            border: none;
+            border-right: 4px solid transparent;
+            width: 100%;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .sidebar-dropdown-btn .menu-title-wrap { display: flex; align-items: center; gap: 12px; }
+        .sidebar-dropdown-btn .menu-title-wrap svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+        .sidebar-dropdown-btn .chevron { transition: transform 0.3s; width: 14px; height: 14px; opacity: 0.7; }
+        
+        .sidebar-dropdown-btn:hover, .sidebar-dropdown-btn.open { 
+            color: #ffffff; 
+            background: rgba(255, 255, 255, 0.05); 
+        }
+        .sidebar-dropdown-btn.open .chevron { 
+            transform: rotate(180deg); 
+            color: var(--brand-green); 
+            opacity: 1; 
+        }
+
+        .sidebar-submenu {
+            display: none;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.15); /* רקע קצת יותר כהה להבדיל שזה תת תפריט */
+            border-right: 2px solid var(--brand-green);
+        }
+        .sidebar-submenu.open {
+            display: flex;
+            animation: fadeInDown 0.3s ease;
+        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .sidebar-sub-item {
+            padding: 12px 20px 12px 40px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        /* הוספת קו קטן ויזואלי לתת-קטגוריות */
+        .sidebar-sub-item::before {
+            content: ''; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: 0.3s;
+        }
+        .sidebar-sub-item:hover, .sidebar-sub-item.active {
+            color: #ffffff;
+            background: rgba(124, 168, 86, 0.1);
+            padding-right: 25px;
+        }
+        .sidebar-sub-item.active::before { background: var(--brand-green); box-shadow: 0 0 5px var(--brand-green); }
                   
 </style>
 
