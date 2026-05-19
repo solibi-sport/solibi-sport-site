@@ -384,6 +384,88 @@
         .header-nav a.store-nav-link:hover svg {
             transform: translateX(-4px) scale(1.1); /* מסיע את העגלה שמאלה */
         }
+
+        /* === עיצוב תפריט אקורדיון (נפתח) בסיידבר === */
+        .sidebar-dropdown-btn {
+            padding: 16px 20px;
+            color: rgba(255,255,255,0.6);
+            font-weight: 700;
+            font-size: 14px;
+            background: transparent;
+            border: none;
+            border-right: 4px solid transparent;
+            width: 100%;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+        .sidebar-dropdown-btn .menu-title-wrap { display: flex; align-items: center; gap: 12px; }
+        .sidebar-dropdown-btn .menu-title-wrap svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
+        .sidebar-dropdown-btn .chevron { transition: transform 0.3s; width: 14px; height: 14px; opacity: 0.7; }
+        
+        .sidebar-dropdown-btn:hover, .sidebar-dropdown-btn.open { 
+            color: #ffffff; 
+            background: rgba(255, 255, 255, 0.05); 
+        }
+        .sidebar-dropdown-btn.open .chevron { 
+            transform: rotate(180deg); 
+            color: var(--brand-green); 
+            opacity: 1; 
+        }
+
+        .sidebar-submenu {
+            display: none;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.15); 
+            border-right: 2px solid var(--brand-green);
+        }
+        .sidebar-submenu.open {
+            display: flex;
+            animation: fadeInDown 0.3s ease;
+        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .sidebar-sub-item {
+            padding: 12px 20px 12px 40px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        .sidebar-sub-item::before {
+            content: ''; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: 0.3s;
+        }
+        .sidebar-sub-item:hover, .sidebar-sub-item.active {
+            color: #ffffff;
+            background: rgba(124, 168, 86, 0.1);
+            padding-right: 25px;
+        }
+        .sidebar-sub-item.active::before { background: var(--brand-green); box-shadow: 0 0 5px var(--brand-green); }
+
+        /* === הדגשת הטאבים הראשיים הפעילים (רקע אפור, טקסט נייבי ומסגרת ירוקה) === */
+        .sidebar-item.active, 
+        .sidebar-dropdown-btn.open {
+            background: var(--bg-silver-matte) !important; 
+            color: var(--text-dark) !important; 
+            border: 2px solid var(--brand-green) !important; 
+            border-radius: 8px !important; 
+            margin: 0 auto !important; 
+            width: calc(100% - 4px) !important; 
+        }
+
+        .sidebar-item.active svg, 
+        .sidebar-dropdown-btn.open svg {
+            color: var(--brand-green) !important;
+        }
         
     </style>
 </head>
@@ -405,45 +487,48 @@
                     <span>סקירה כללית</span>
                 </div>
 
-                <div class="sidebar-divider">כלים ואנליטיקה</div>
                 <div class="sidebar-item" onclick="switchInternalTab('tab-1', this)">
                     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     <span>מנוע חיפוש קלפים</span>
                 </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-2', this)">
-                    <svg viewBox="0 0 24 24"><path d="M12 2c0 0-5 6.5-5 11.5a5 5 0 0 0 10 0C17 8.5 12 2 12 2z"></path></svg>
-                    <span>מדד השחקנים החמים</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-3', this)">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                    <span>המלצות ורדאר רוקיז</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-4', this)">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                    <span>כלים עתידיים</span>
+
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarMenu(this)">
+                    <div class="menu-title-wrap">
+                        <svg viewBox="0 0 24 24"><path d="M12 2c0 0-5 6.5-5 11.5a5 5 0 0 0 10 0C17 8.5 12 2 12 2z"></path></svg>
+                        <span>מדדים והמלצות</span>
+                    </div>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="sidebar-submenu">
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-2', this, true)">מדד השחקנים החמים</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-3', this, true)">המלצות להשקעות</a>
                 </div>
 
-                <div class="sidebar-divider" style="margin-top: 10px;">תפריט בורסה אישי</div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-5', this)">
-                    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                    <span>יומן עסקאות אישי</span>
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarMenu(this)">
+                    <div class="menu-title-wrap">
+                        <svg viewBox="0 0 24 24"><path d="M14 13.5V11.5l-4-4-4 4v2"></path><path d="M10 17.5v-4"></path><path d="M22 10.5l-4-4-4 4v2"></path><path d="M18 14.5v-4"></path><path d="M2 21h20"></path></svg>
+                        <span>מכירה והחלפה</span>
+                    </div>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="sidebar-submenu">
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-9', this, true)">מכירות פומביות</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-8', this, true)">זירת ההחלפות</a>
                 </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-6', this)">
-                    <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
-                    <span>מחשבון שווי אוסף</span>
+
+                <button class="sidebar-dropdown-btn" onclick="toggleSidebarMenu(this)">
+                    <div class="menu-title-wrap">
+                        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                        <span>תפריט אישי</span>
+                    </div>
+                    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="sidebar-submenu">
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-5', this, true)">יומן עסקאות</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-6', this, true)">מחשבון שווי אוסף</a>
+                    <a class="sidebar-sub-item" onclick="switchInternalTab('tab-7', this, true)">הצ'קליסטים שלי</a>
                 </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-7', this)">
-                    <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    <span>הצ'קליסטים שלי</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-8', this)">
-                    <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
-                    <span>זירת ההחלפות</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-9', this)">
-                    <svg viewBox="0 0 24 24"><path d="M14 13.5V11.5l-4-4-4 4v2"></path><path d="M10 17.5v-4"></path><path d="M22 10.5l-4-4-4 4v2"></path><path d="M18 14.5v-4"></path><path d="M2 21h20"></path></svg>
-                    <span>מכירות פומביות</span>
-                </div>
+
             </nav>
         </aside>
 
