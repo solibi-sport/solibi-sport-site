@@ -329,6 +329,40 @@
         .trivia-header { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; color: #64748b; margin-bottom: 10px; }
         .timer-bar { flex: 1; height: 8px; background: #e2e8f0; border-radius: 10px; margin-right: 20px; overflow: hidden; }
         .timer-fill { height: 100%; background: var(--brand-green); width: 100%; transition: width 1s linear; }
+
+/* === עיצוב טבלת דירוג הגולשים (Leaderboard) === */
+        .leaderboard-wrapper {
+            background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px;
+            padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-top: 15px;
+        }
+        
+        .lb-header {
+            display: grid; grid-template-columns: 60px 1fr 100px; padding: 15px;
+            border-bottom: 2px solid var(--brand-green); font-weight: 900; color: var(--text-dark);
+            font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .lb-row {
+            display: grid; grid-template-columns: 60px 1fr 100px; padding: 15px;
+            border-bottom: 1px solid #f1f5f9; align-items: center; transition: 0.2s;
+        }
+        .lb-row:hover { background: rgba(124, 168, 86, 0.05); transform: translateX(-5px); }
+        .lb-row:last-child { border-bottom: none; }
+
+        .lb-rank {
+            font-size: 18px; font-weight: 900; color: #94a3b8; display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 50%; background: #f8fafc;
+        }
+        
+        /* מדליות לטופ 3 */
+        .lb-row.rank-1 .lb-rank { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4); }
+        .lb-row.rank-2 .lb-rank { background: linear-gradient(135deg, #cbd5e1, #94a3b8); color: white; box-shadow: 0 4px 10px rgba(148, 163, 184, 0.4); }
+        .lb-row.rank-3 .lb-rank { background: linear-gradient(135deg, #d97706, #b45309); color: white; box-shadow: 0 4px 10px rgba(180, 83, 9, 0.4); }
+
+        .lb-user { display: flex; align-items: center; gap: 15px; font-weight: 700; color: var(--text-dark); font-size: 16px; }
+        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--element-navy-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        .lb-points { font-weight: 900; color: var(--brand-green); font-size: 18px; text-align: left; direction: ltr; }
         
     </style>
 </head>
@@ -440,9 +474,137 @@
             </div>
             
             <div id="tab-4" class="tab-content">
-                <h2 class="content-header-title">טבלת דירוג גולשים</h2>
-                <p class="content-desc">טבלת האלופים של סוליבי. בדקו איפה אתם ממוקמים ביחס לחברים שלכם ולשאר הקהילה.</p>
-                <div class="placeholder-box">כאן תשולב טבלת דירוג המשתמשים (Leaderboard)...</div>
+                <h2 class="content-header-title">טבלת דירוג גולשים (Leaderboard)</h2>
+                <p class="content-desc">טבלת האלופים של סוליבי. הדירוג מבוסס על השתתפות בטריוויה, הצבעות בסקרים, מעורבות בקהילה וזכיות בטורנירים.</p>
+                
+                <div class="leaderboard-wrapper">
+                    <div class="lb-header">
+                        <div>דירוג</div>
+                        <div>משתמש</div>
+                        <div style="text-align: left;">נקודות</div>
+                    </div>
+                    
+                    <div class="lb-row rank-1">
+                        <div class="lb-rank">1</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar">YD</div>
+                            Yossi_D
+                            <span style="font-size: 12px; background: rgba(251,191,36,0.2); color: #d97706; padding: 2px 8px; border-radius: 12px;">אלוף מכהן</span>
+                        </div>
+                        <div class="lb-points">14,520</div>
+                    </div>
+
+                    <div class="lb-row rank-2">
+                        <div class="lb-rank">2</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: #10b981;">AM</div>
+                            Aviv_M
+                        </div>
+                        <div class="lb-points">13,850</div>
+                    </div>
+
+                    <div class="lb-row rank-3">
+                        <div class="lb-rank">3</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: #3b82f6;">DR</div>
+                            Dan_Ronaldo
+                        </div>
+                        <div class="lb-points">12,100</div>
+                    </div>
+
+                    <div class="lb-row">
+                        <div class="lb-rank">4</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: #8b5cf6;">EL</div>
+                            Eran_Levi
+                        </div>
+                        <div class="lb-points">10,450</div>
+                    </div>
+
+                    <div class="lb-row">
+                        <div class="lb-rank">5</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: #ef4444;">OM</div>
+                            Omer_Macabi
+                        </div>
+                        <div class="lb-points">9,800</div>
+                    </div>
+                    
+                    <div class="lb-row" style="margin-top: 15px; border-top: 2px dashed #cbd5e1; background: rgba(124, 168, 86, 0.05); border-radius: 0 0 16px 16px;">
+                        <div class="lb-rank" style="background: var(--brand-green); color: white;">42</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: var(--text-dark);">אתה</div>
+                            המשתמש שלי
+                        </div>
+                        <div class="lb-points" id="myLeaderboardPoints">120</div>
+                    </div>
+                </div>
+            </div><div id="tab-4" class="tab-content">
+                <h2 class="content-header-title">טבלת דירוג גולשים (Leaderboard)</h2>
+                <p class="content-desc">טבלת האלופים של סוליבי. הדירוג מבוסס על השתתפות בטריוויה, הצבעות בסקרים, מעורבות בקהילה וזכיות בטורנירים.</p>
+                
+                <div class="leaderboard-wrapper">
+                    <div class="lb-header">
+                        <div>דירוג</div>
+                        <div>משתמש</div>
+                        <div style="text-align: left;">נקודות</div>
+                    </div>
+                    
+                    <div class="lb-row rank-1">
+                        <div class="lb-rank">1</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar">YD</div>
+                            Yossi_D
+                            <span style="font-size: 12px; background: rgba(251,191,36,0.2); color: #d97706; padding: 2px 8px; border-radius: 12px;">אלוף מכהן</span>
+                        </div>
+                        <div class="lb-points">14,520</div>
+                    </div>
+
+                    <div class="lb-row rank-2">
+                        <div class="lb-rank">2</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: #10b981;">AM</div>
+                            Aviv_M
+                        </div>
+                        <div class="lb-points">13,850</div>
+                    </div>
+
+                    <div class="lb-row rank-3">
+                        <div class="lb-rank">3</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: #3b82f6;">DR</div>
+                            Dan_Ronaldo
+                        </div>
+                        <div class="lb-points">12,100</div>
+                    </div>
+
+                    <div class="lb-row">
+                        <div class="lb-rank">4</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: #8b5cf6;">EL</div>
+                            Eran_Levi
+                        </div>
+                        <div class="lb-points">10,450</div>
+                    </div>
+
+                    <div class="lb-row">
+                        <div class="lb-rank">5</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: #ef4444;">OM</div>
+                            Omer_Macabi
+                        </div>
+                        <div class="lb-points">9,800</div>
+                    </div>
+                    
+                    <div class="lb-row" style="margin-top: 15px; border-top: 2px dashed #cbd5e1; background: rgba(124, 168, 86, 0.05); border-radius: 0 0 16px 16px;">
+                        <div class="lb-rank" style="background: var(--brand-green); color: white;">42</div>
+                        <div class="lb-user">
+                            <div class="lb-avatar" style="background: var(--text-dark);">אתה</div>
+                            המשתמש שלי
+                        </div>
+                        <div class="lb-points" id="myLeaderboardPoints">120</div>
+                    </div>
+                </div>
             </div>
 
         </section>
