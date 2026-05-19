@@ -294,6 +294,41 @@
         .sidebar-item.active svg {
             color: var(--brand-green) !important;
         }
+
+        /* === עיצוב מערכת הטריוויה === */
+        .user-stats-badge {
+            background: rgba(124, 168, 86, 0.1); border: 2px solid var(--brand-green);
+            padding: 8px 16px; border-radius: 20px; display: flex; gap: 15px; font-weight: 700; color: var(--text-dark);
+        }
+        .stat-item span { color: var(--brand-green); font-size: 16px; }
+
+        .trivia-container {
+            background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px;
+            padding: 30px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex; flex-direction: column; gap: 20px; min-height: 300px; justify-content: center;
+        }
+        
+        .action-btn {
+            background: var(--brand-green); color: #fff; border: none; padding: 12px 24px;
+            border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s;
+            align-self: center; font-family: inherit;
+        }
+        .action-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(124,168,86,0.3); }
+
+        .question-text { font-size: 22px; color: var(--text-dark); font-weight: 900; line-height: 1.4; }
+        
+        .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .answer-btn {
+            background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px;
+            font-size: 16px; font-weight: 600; color: var(--text-dark); cursor: pointer; transition: 0.2s; font-family: inherit;
+        }
+        .answer-btn:hover { border-color: var(--brand-green); background: rgba(124,168,86,0.05); }
+        .answer-btn.correct { background: #10b981; color: white; border-color: #10b981; }
+        .answer-btn.wrong { background: #ef4444; color: white; border-color: #ef4444; }
+        
+        .trivia-header { display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: bold; color: #64748b; margin-bottom: 10px; }
+        .timer-bar { flex: 1; height: 8px; background: #e2e8f0; border-radius: 10px; margin-right: 20px; overflow: hidden; }
+        .timer-fill { height: 100%; background: var(--brand-green); width: 100%; transition: width 1s linear; }
         
     </style>
 </head>
@@ -354,9 +389,42 @@
             </div>
 
             <div id="tab-1" class="tab-content">
-                <h2 class="content-header-title">טריוויה וחידונים</h2>
-                <p class="content-desc">בחנו את הידע שלכם על עולם הספורט, אירועים היסטוריים, וסטטיסטיקות. ענו נכון וצברו נקודות לדירוג המשתמשים.</p>
-                <div class="placeholder-box">כאן תשולב מערכת הטריוויה והחידונים...</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h2 class="content-header-title">טריוויה וחידונים</h2>
+                        <p class="content-desc" style="margin-bottom: 0; padding-bottom: 0; border: none;">ענו נכון, עלו רמות וצברו נקודות לדירוג הכללי.</p>
+                    </div>
+                    <div class="user-stats-badge">
+                        <div class="stat-item">רמה: <span id="userLevelDisplay">1</span></div>
+                        <div class="stat-item">נקודות שלי: <span id="userPointsDisplay">0</span></div>
+                    </div>
+                </div>
+
+                <div id="trivia-start-screen" class="trivia-container">
+                    <h3>מוכנים לאתגר?</h3>
+                    <p>בחנו את הידע שלכם בכדורגל. ככל שתעלו רמה, השאלות יהיו קשות יותר והניקוד גבוה יותר!</p>
+                    <button class="action-btn" onclick="startTrivia()">התחל טריוויה - רמה <span id="startLevelText">1</span></button>
+                </div>
+
+                <div id="trivia-game-screen" class="trivia-container" style="display: none;">
+                    <div class="trivia-header">
+                        <span id="questionCounter">שאלה 1 מתוך 5</span>
+                        <div class="timer-bar"><div id="timerProgress" class="timer-fill"></div></div>
+                    </div>
+                    <h3 id="questionText" class="question-text">טוען שאלה...</h3>
+                    <div id="answersContainer" class="answers-grid">
+                        </div>
+                </div>
+
+                <div id="trivia-end-screen" class="trivia-container" style="display: none;">
+                    <h3 id="endMessageTitle">סיום החידון!</h3>
+                    <p id="endMessageText">כל הכבוד! סיימת את החידון.</p>
+                    <div class="score-summary">
+                        נקודות שהורווחו: <span id="earnedPoints" style="color: var(--brand-green); font-weight: 900; font-size: 24px;">0</span>
+                    </div>
+                    <button id="nextLevelBtn" class="action-btn" style="display:none;" onclick="startTrivia()">המשך לרמה הבאה</button>
+                    <button id="retryBtn" class="action-btn" style="background: #e2e8f0; color: var(--text-dark);" onclick="startTrivia()">נסה שוב</button>
+                </div>
             </div>
             
             <div id="tab-2" class="tab-content">
@@ -587,7 +655,128 @@
                 if(placeholder) placeholder.innerHTML = data;
             })
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+        // === מנוע טריוויה וחידונים ===
         
+        // נתוני המשתמש (במערכת אמיתית זה יגיע מהשרת)
+        let currentUserData = {
+            level: 1,
+            totalPoints: 0
+        };
+
+        // מאגר שאלות מחולק לפי רמות
+        const triviaDatabase = {
+            1: [ // רמה 1 - קל (10 נקודות לשאלה)
+                { q: "באיזו מדינה נולדה המילה 'מונדיאל'?", options: ["ברזיל", "ספרד", "ארגנטינה", "איטליה"], correct: 1 },
+                { q: "מי זכתה בליגת האלופות בשנת 2023?", options: ["ריאל מדריד", "מנצ'סטר סיטי", "אינטר", "באיירן מינכן"], correct: 1 },
+                { q: "באיזו קבוצה משחק ארלינג האלנד (נכון ל-2024)?", options: ["בורוסיה דורטמונד", "ריאל מדריד", "מנצ'סטר סיטי", "ברצלונה"], correct: 2 }
+            ],
+            2: [ // רמה 2 - בינוני (20 נקודות לשאלה)
+                { q: "מי מלך השערים של ליגת האלופות בכל הזמנים?", options: ["ליונל מסי", "כריסטיאנו רונאלדו", "ראול", "רוברט לבנדובסקי"], correct: 1 },
+                { q: "באיזו שנה זכתה מכבי חיפה לראשונה באליפות?", options: ["1984", "1989", "1994", "1981"], correct: 0 },
+                { q: "איזה שחקן ישראלי שיחק בליברפול?", options: ["יוסי בניון", "אבי כהן", "רוני רוזנטל", "כל התשובות נכונות"], correct: 3 }
+            ]
+            // אפשר להוסיף עוד רמות ועוד עשרות שאלות...
+        };
+
+        let currentQuizQuestions = [];
+        let currentQuestionIndex = 0;
+        let currentQuizScore = 0;
+        let pointsPerQuestion = 10;
+
+        function updateStatsDisplay() {
+            document.getElementById('userLevelDisplay').innerText = currentUserData.level;
+            document.getElementById('userPointsDisplay').innerText = currentUserData.totalPoints;
+            document.getElementById('startLevelText').innerText = currentUserData.level;
+        }
+
+        function startTrivia() {
+            let level = currentUserData.level;
+            if (!triviaDatabase[level]) {
+                alert("וואו! סיימת את כל הרמות הקיימות כרגע. חזור בקרוב לשאלות חדשות!");
+                return;
+            }
+            
+            // הגדרת המשחק
+            currentQuizQuestions = [...triviaDatabase[level]];
+            // ערבוב השאלות כדי שלא יופיעו באותו סדר
+            currentQuizQuestions.sort(() => Math.random() - 0.5); 
+            
+            currentQuestionIndex = 0;
+            currentQuizScore = 0;
+            pointsPerQuestion = level * 10; // רמה 1=10, רמה 2=20 וכו'
+
+            document.getElementById('trivia-start-screen').style.display = 'none';
+            document.getElementById('trivia-end-screen').style.display = 'none';
+            document.getElementById('trivia-game-screen').style.display = 'flex';
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            let qData = currentQuizQuestions[currentQuestionIndex];
+            document.getElementById('questionCounter').innerText = `שאלה ${currentQuestionIndex + 1} מתוך ${currentQuizQuestions.length}`;
+            document.getElementById('questionText').innerText = qData.q;
+            
+            let answersHtml = '';
+            qData.options.forEach((opt, index) => {
+                answersHtml += `<button class="answer-btn" onclick="checkAnswer(${index}, this)">${opt}</button>`;
+            });
+            document.getElementById('answersContainer').innerHTML = answersHtml;
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            // חוסם לחיצות נוספות
+            const buttons = document.querySelectorAll('.answer-btn');
+            buttons.forEach(b => b.style.pointerEvents = 'none');
+
+            let correctIndex = currentQuizQuestions[currentQuestionIndex].correct;
+            
+            if (selectedIndex === correctIndex) {
+                btnElement.classList.add('correct');
+                currentQuizScore += pointsPerQuestion;
+            } else {
+                btnElement.classList.add('wrong');
+                buttons[correctIndex].classList.add('correct'); // מראה מה התשובה הנכונה
+            }
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuizQuestions.length) {
+                    showQuestion();
+                } else {
+                    endTrivia();
+                }
+            }, 1500); // ממתין שנייה וחצי למעבר לשאלה הבאה
+        }
+
+        function endTrivia() {
+            document.getElementById('trivia-game-screen').style.display = 'none';
+            document.getElementById('trivia-end-screen').style.display = 'flex';
+            
+            document.getElementById('earnedPoints').innerText = currentQuizScore;
+            
+            let maxPossibleScore = currentQuizQuestions.length * pointsPerQuestion;
+            
+            // אם ענה נכון על לפחות 60% - עולה רמה
+            if (currentQuizScore >= (maxPossibleScore * 0.6)) {
+                document.getElementById('endMessageTitle').innerText = "אלוף! עברת את הרמה!";
+                document.getElementById('endMessageText').innerText = "הנקודות התווספו לחשבון שלך.";
+                document.getElementById('nextLevelBtn').style.display = 'inline-block';
+                document.getElementById('retryBtn').style.display = 'none';
+                
+                currentUserData.totalPoints += currentQuizScore;
+                currentUserData.level++; // עולה רמה!
+                updateStatsDisplay();
+            } else {
+                document.getElementById('endMessageTitle').innerText = "לא נורא...";
+                document.getElementById('endMessageText').innerText = "לא צברת מספיק נקודות כדי לעלות רמה. נסה שוב!";
+                document.getElementById('nextLevelBtn').style.display = 'none';
+                document.getElementById('retryBtn').style.display = 'inline-block';
+            }
+        }
+
+        // אתחול התצוגה בעליית הדף
+        updateStatsDisplay();
     </script>
     <script src="search.js"></script>
 </body>
