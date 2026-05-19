@@ -299,6 +299,22 @@
         .header-nav a.store-nav-link:hover svg {
             transform: translateX(-4px) scale(1.1); /* מסיע את העגלה שמאלה */
         }
+
+        /* === הדגשת הטאבים הראשיים הפעילים (רקע אפור, טקסט נייבי ומסגרת ירוקה) === */
+        .sidebar-item.active {
+            background: var(--bg-silver-matte) !important; 
+            color: var(--text-dark) !important; 
+            border: 2px solid var(--brand-green) !important; 
+            border-radius: 8px !important; 
+            margin: 0 auto !important; 
+            width: calc(100% - 4px) !important; 
+            display: flex !important; /* מבטיח יישור פנימי נכון */
+        }
+
+        /* צביעת האייקונים לירוק כשהטאב נבחר */
+        .sidebar-item.active svg {
+            color: var(--brand-green) !important;
+        }
         
     </style>
 </head>
@@ -320,78 +336,65 @@
                 </div>
 
                 <div class="sidebar-item" onclick="switchInternalTab('tab-1', this)">
-                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     <span>פורומים ודיונים</span>
                 </div>
+
                 <div class="sidebar-item" onclick="switchInternalTab('tab-2', this)">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
                     <span>ליגות חברים פרטיות</span>
                 </div>
+
                 <div class="sidebar-item" onclick="switchInternalTab('tab-3', this)">
-                    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    <span>אזור VIP ומועדון זהב</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>איזור VIP</span>
                 </div>
+
                 <div class="sidebar-item" onclick="switchInternalTab('tab-4', this)">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                     <span>צ'אט לייב למשחקים</span>
                 </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-5', this)">
-                    <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
-                    <span>לוח מודעות וטריידים</span>
-                </div>
-                <div class="sidebar-item" onclick="switchInternalTab('tab-6', this)">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                    <span>תמיכה ועזרה</span>
-                </div>
+
             </nav>
         </aside>
 
         <section class="content-area">
             
             <div id="tab-intro" class="tab-content active">
-                <h2 class="content-header-title">סקירה כללית: קהילת סוליבי ספורט</h2>
+                <h2 class="content-header-title">סקירה כללית: קהילה וליגות</h2>
                 <p class="content-desc" style="font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
-                    ברוכים הבאים למקום שבו המנג'רים נפגשים! כאן תוכלו לפתוח ליגות פרטיות מול החברים, לדון על טקטיקות בפורומים שלנו, להציע הצעות טרייד למנג'רים אחרים, להשתתף בצ'אט חי בזמן משחקים, וליהנות מתוכן אקסקלוסיבי באזור ה-VIP.
+                    הבית של קהילת סוליבי ספורט. כאן מנהלים את הליגות הפרטיות מול החברים, משתתפים בפורומים, נהנים מהטבות ה-VIP ומדברים על המשחקים החמים בזמן אמת.
                 </p>
-                
                 <div class="intro-video-placeholder">
-                    <div class="play-btn-circle">
-                        <div class="play-triangle"></div>
-                    </div>
+                    <div class="play-btn-circle"><div class="play-triangle"></div></div>
                     <div class="video-text">סרטון הדרכה יעלה בקרוב...</div>
                 </div>
             </div>
 
             <div id="tab-1" class="tab-content">
                 <h2 class="content-header-title">פורומים ודיונים</h2>
-                <p class="content-desc">הצטרפו לדיונים. חדר הלבשה טקטי, המלצות סקאוטינג, תמיכה טכנית, ופורום אוהדים פתוח לכל נושא ספורטיבי.</p>
-                <div class="placeholder-box">כאן ישולבו הפורומים השונים...</div>
+                <p class="content-desc">הזירה המרכזית לשיח פתוח בין חברי הקהילה. בואו לדבר על המשחקים, לשתף אוספים ולהחליף דעות.</p>
+                <div class="placeholder-box">כאן ישולבו מערכות הפורומים והאשכולות...</div>
             </div>
+            
             <div id="tab-2" class="tab-content">
                 <h2 class="content-header-title">ליגות חברים פרטיות</h2>
-                <p class="content-desc">צרו ליגה סגורה לחבר'ה מהעבודה או מהשכונה. נהלו תקנונים פנימיים, עקבו אחרי הדירוג החברתי, והוכיחו מי המנג'ר הטוב בחבורה.</p>
-                <div class="placeholder-box">כאן תשולב מערכת ניהול הליגות...</div>
+                <p class="content-desc">נהלו את הליגות שלכם מול החברים, עקבו אחרי הטבלאות, והזמינו שחקנים חדשים להתחרות מולכם.</p>
+                <div class="placeholder-box">כאן יופיע לוח ניהול הליגות והטבלאות...</div>
             </div>
+            
             <div id="tab-3" class="tab-content">
                 <h2 class="content-header-title">אזור VIP ומועדון זהב</h2>
-                <p class="content-desc">תוכן פרימיום למנויים בלבד. טיפים אקסקלוסיביים מהמומחים שלנו, גישה מוקדמת לפילטרים מתקדמים, ומעקב אישי אחרי הקבוצה שלכם.</p>
-                <div class="placeholder-box">כאן ישולב אזור ה-VIP...</div>
+                <p class="content-desc">המתחם היוקרתי לחברי מועדון הזהב. קבלו גישה להטבות בלעדיות, תוכן פרימיום ותחרויות סגורות.</p>
+                <div class="placeholder-box">כאן ישולב אזור ה-VIP והטבות מועדון הזהב...</div>
             </div>
+            
             <div id="tab-4" class="tab-content">
                 <h2 class="content-header-title">צ'אט לייב למשחקים</h2>
-                <p class="content-desc">אל תצפו במשחק לבד! היכנסו לחדרי הצ'אט הייעודיים בזמן משחקי ליגת העל וליגת האלופות ותחוו את הטירוף יחד עם שאר המנג'רים.</p>
-                <div class="placeholder-box">כאן ישולב הצ'אט החי...</div>
+                <p class="content-desc">אל תראו את המשחק לבד! הצטרפו לחדרי הצ'אט שלנו בזמן משחקים חיים ודברו עם הקהילה בזמן אמת על כל גול ואירוע.</p>
+                <div class="placeholder-box">כאן תשולב מערכת הצ'אט לייב...</div>
             </div>
-            <div id="tab-5" class="tab-content">
-                <h2 class="content-header-title">לוח מודעות וטריידים</h2>
-                <p class="content-desc">מחפשים קשר שמאלי דחוף? רוצים להיפטר מחלוץ שלא פוגע? פרסמו הצעות בלוח הטריידים, נהלו משא ומתן עם מנג'רים אחרים וסגרו עסקאות.</p>
-                <div class="placeholder-box">כאן ישולב לוח הטריידים וההעברות...</div>
-            </div>
-            <div id="tab-6" class="tab-content">
-                <h2 class="content-header-title">תמיכה, עזרה וחוקים</h2>
-                <p class="content-desc">לא מבינים איך מחשבים נקודות? נתקלתם בבאג? קראו את ספר החוקים המלא או פנו ישירות לצוות האדמינים שלנו לקבלת עזרה.</p>
-                <div class="placeholder-box">כאן ישולב אזור העזרה והתמיכה...</div>
-            </div>
+
         </section>
 
         <aside class="collapsible-live-panel" id="livePanel">
