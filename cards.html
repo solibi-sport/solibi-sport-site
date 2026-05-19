@@ -741,12 +741,46 @@
     <script src="../matchEvents.js"></script>
 
     <script>
-        // ניהול טאבים פנימי
-        function switchInternalTab(tabId, element) {
+       // === ניהול טאבים פנימי (מעודכן לתפריט נפתח) ===
+        function switchInternalTab(tabId, element, isSubItem = false) {
+            // 1. מסירים את ההדגשה מכל התוכן, הכפתורים הראשיים ותתי-הכפתורים
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll('.sidebar-sub-item').forEach(item => item.classList.remove('active'));
+            
+            // 2. אם לחצנו על כפתור ראשי רגיל, נסגור את האקורדיונים הפתוחים
+            if (!isSubItem) {
+                document.querySelectorAll('.sidebar-dropdown-btn').forEach(btn => btn.classList.remove('open'));
+                document.querySelectorAll('.sidebar-submenu').forEach(menu => menu.classList.remove('open'));
+            }
+
+            // 3. מציגים את הטאב המבוקש
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.classList.add('active');
+            }
+            
+            // 4. מדגישים את הכפתור שנלחץ
             element.classList.add('active');
+        }
+
+        // === פונקציה חדשה: פתיחה וסגירה של תפריט אקורדיון ===
+        function toggleSidebarMenu(btn) {
+            const submenu = btn.nextElementSibling;
+            const isOpen = btn.classList.contains('open');
+            
+            // 1. סוגרים את כל התפריטים הנפתחים
+            document.querySelectorAll('.sidebar-dropdown-btn').forEach(b => b.classList.remove('open'));
+            document.querySelectorAll('.sidebar-submenu').forEach(s => s.classList.remove('open'));
+            
+            // 2. מכבים טאבים ראשיים (כמו "סקירה כללית" או "מנוע חיפוש") כדי למנוע כפילויות בהדגשה
+            document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+            
+            // 3. פותחים ומדגישים רק את מה שלחצנו עליו
+            if (!isOpen) {
+                btn.classList.add('open');
+                submenu.classList.add('open');
+            }
         }
 
         // טעינת הטיקר החיצוני
