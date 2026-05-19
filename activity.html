@@ -279,6 +279,21 @@
         .header-nav a.store-nav-link:hover svg {
             transform: translateX(-4px) scale(1.1); /* מסיע את העגלה שמאלה */
         }
+
+        /* === הדגשת הטאבים הראשיים הפעילים (רקע אפור, טקסט נייבי ומסגרת ירוקה) === */
+        .sidebar-item.active {
+            background: var(--bg-silver-matte) !important; 
+            color: var(--text-dark) !important; 
+            border: 2px solid var(--brand-green) !important; 
+            border-radius: 8px !important; 
+            margin: 0 auto !important; 
+            width: calc(100% - 4px) !important; 
+        }
+
+        /* צביעת האייקונים לירוק כשהטאב נבחר */
+        .sidebar-item.active svg {
+            color: var(--brand-green) !important;
+        }
         
     </style>
 </head>
