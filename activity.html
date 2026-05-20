@@ -330,39 +330,79 @@
         .timer-bar { flex: 1; height: 8px; background: #e2e8f0; border-radius: 10px; margin-right: 20px; overflow: hidden; }
         .timer-fill { height: 100%; background: var(--brand-green); width: 100%; transition: width 1s linear; }
 
-/* === עיצוב טבלת דירוג הגולשים (Leaderboard) === */
-        .leaderboard-wrapper {
-            background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px;
-            padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-top: 15px;
-        }
-        
-        .lb-header {
-            display: grid; grid-template-columns: 60px 1fr 100px; padding: 15px;
-            border-bottom: 2px solid var(--brand-green); font-weight: 900; color: var(--text-dark);
-            font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;
+/* =========================================
+           עיצוב טבלת דירוג הגולשים (בסגנון פנתיאון)
+           ========================================= */
+        .pantheon-table-wrapper {
+            overflow-x: auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+            border: 3px solid var(--text-dark) !important; 
+            margin-top: 15px;
+            max-height: 65vh;
+            direction: ltr; /* משאיר את פס הגלילה בצד ימין */
         }
 
-        .lb-row {
-            display: grid; grid-template-columns: 60px 1fr 100px; padding: 15px;
-            border-bottom: 1px solid #f1f5f9; align-items: center; transition: 0.2s;
+        .pantheon-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: center !important;
+            white-space: nowrap;
+            direction: rtl; /* מחזיר את הטקסט הפנימי לימין-שמאל */
         }
-        .lb-row:hover { background: rgba(124, 168, 86, 0.05); transform: translateX(-5px); }
-        .lb-row:last-child { border-bottom: none; }
 
-        .lb-rank {
-            font-size: 18px; font-weight: 900; color: #94a3b8; display: flex; align-items: center; justify-content: center;
-            width: 36px; height: 36px; border-radius: 50%; background: #f8fafc;
+        .pantheon-table th {
+            background: var(--element-navy-gradient);
+            color: #ffffff;
+            font-weight: 700;
+            padding: 14px 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.15); 
+            border-bottom: 3px solid var(--brand-green); 
+            text-align: center !important;
+        }
+        .pantheon-table th:last-child { border-left: none; }
+
+        .pantheon-table tbody tr:nth-child(even) { background-color: #f8fafc; }
+        .pantheon-table tbody tr:nth-child(odd) { background-color: #ffffff; }
+
+        .pantheon-table tbody tr {
+            border-bottom: 1px solid #cbd5e1;
+            transition: all 0.2s ease;
         }
         
-        /* מדליות לטופ 3 */
-        .lb-row.rank-1 .lb-rank { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4); }
-        .lb-row.rank-2 .lb-rank { background: linear-gradient(135deg, #cbd5e1, #94a3b8); color: white; box-shadow: 0 4px 10px rgba(148, 163, 184, 0.4); }
-        .lb-row.rank-3 .lb-rank { background: linear-gradient(135deg, #d97706, #b45309); color: white; box-shadow: 0 4px 10px rgba(180, 83, 9, 0.4); }
+        .pantheon-table td {
+            padding: 12px 10px;
+            color: var(--text-dark);
+            border-left: 1px solid #e2e8f0;
+            vertical-align: middle;
+            text-align: center !important;
+        }
+        .pantheon-table td:last-child { border-left: none; }
 
-        .lb-user { display: flex; align-items: center; gap: 15px; font-weight: 700; color: var(--text-dark); font-size: 16px; }
-        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--element-navy-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        
-        .lb-points { font-weight: 900; color: var(--brand-green); font-size: 18px; text-align: left; direction: ltr; }
+        .pantheon-table tbody tr:hover { background-color: rgba(124, 168, 86, 0.1) !important; }
+
+        /* עיצוב עיגולי המיקום והמדליות מהפנתיאון */
+        .pantheon-rank-badge {
+            display: inline-flex; justify-content: center; align-items: center;
+            width: 32px; height: 32px; border-radius: 50%; font-weight: 900; font-size: 14px;
+            background: #f1f5f9; color: var(--text-dark); border: 2px solid #e2e8f0;
+            margin: 0 auto;
+        }
+        .rank-1 { background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #fff; border: none; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4); }
+        .rank-2 { background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%); color: #fff; border: none; }
+        .rank-3 { background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #fff; border: none; }
+
+        /* עיצוב המשתמש והעמודות החדשות */
+        .player-identity-cell { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 0 auto; width: max-content; }
+        .lb-user-name { font-weight: 900; color: var(--text-dark); font-size: 14px; }
+        .lb-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--element-navy-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .lb-total-points { font-weight: 900; color: var(--brand-green); font-size: 16px; }
+        .lb-stat-num { font-weight: 700; color: #64748b; }
         
     </style>
 </head>
@@ -475,80 +515,109 @@
             
             <div id="tab-4" class="tab-content">
                 <h2 class="content-header-title">טבלת דירוג גולשים (Leaderboard)</h2>
-                <p class="content-desc">טבלת האלופים של סוליבי. הדירוג מבוסס על השתתפות בטריוויה, הצבעות בסקרים, מעורבות בקהילה וזכיות בטורנירים.</p>
+                <p class="content-desc">טבלת האלופים הרשמית של סוליבי ספורט. הניקוד הכללי מורכב משקלול הביצועים שלכם בחידונים, השתתפות בסקרים ופעילויות נושאות פרסים.</p>
                 
-                <div class="leaderboard-wrapper">
-                    <div class="lb-header">
-                        <div>דירוג</div>
-                        <div>משתמש</div>
-                        <div style="text-align: left;">נקודות</div>
-                    </div>
-                    
-                    <div class="lb-row rank-1">
-                        <div class="lb-rank">1</div>
-                        <div class="lb-user">
-                            <div class="lb-avatar">YD</div>
-                            Yossi_D
-                            <span style="font-size: 12px; background: rgba(251,191,36,0.2); color: #d97706; padding: 2px 8px; border-radius: 12px;">אלוף מכהן</span>
-                        </div>
-                        <div class="lb-points">14,520</div>
-                    </div>
+                <div class="pantheon-table-wrapper">
+                    <table class="pantheon-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">מיקום</th>
+                                <th>שם הגולש</th>
+                                <th>טריוויה וחידונים</th>
+                                <th>סקרים והצבעות</th>
+                                <th>הגרלות ופרסים</th>
+                                <th>סה"כ נקודות</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="pantheon-rank-badge rank-1">1</div></td>
+                                <td>
+                                    <div class="player-identity-cell">
+                                        <div class="lb-avatar">YD</div>
+                                        <span class="lb-user-name">Yossi_D</span>
+                                        <span style="font-size: 11px; background: rgba(251,191,36,0.2); color: #d97706; padding: 2px 8px; border-radius: 12px; font-weight: bold;">אלוף מכהן</span>
+                                    </div>
+                                </td>
+                                <td class="lb-stat-num">8,400</td>
+                                <td class="lb-stat-num">3,120</td>
+                                <td class="lb-stat-num">3,000</td>
+                                <td class="lb-total-points">14,520</td>
+                            </tr>
 
-                    <div class="lb-row rank-2">
-                        <div class="lb-rank">2</div>
-                        <div class="lb-user">
-                            <div class="lb-avatar" style="background: #10b981;">AM</div>
-                            Aviv_M
-                        </div>
-                        <div class="lb-points">13,850</div>
-                    </div>
+                            <tr>
+                                <td><div class="pantheon-rank-badge rank-2">2</div></td>
+                                <td>
+                                    <div class="player-identity-cell">
+                                        <div class="lb-avatar" style="background: #10b981;">AM</div>
+                                        <span class="lb-user-name">Aviv_M</span>
+                                    </div>
+                                </td>
+                                <td class="lb-stat-num">7,900</td>
+                                <td class="lb-stat-num">2,950</td>
+                                <td class="lb-stat-num">3,000</td>
+                                <td class="lb-total-points">13,850</td>
+                            </tr>
 
-                    <div class="lb-row rank-3">
-                        <div class="lb-rank">3</div>
-                        <div class="lb-user">
-                            <div class="lb-avatar" style="background: #3b82f6;">DR</div>
-                            Dan_Ronaldo
-                        </div>
-                        <div class="lb-points">12,100</div>
-                    </div>
+                            <tr>
+                                <td><div class="pantheon-rank-badge rank-3">3</div></td>
+                                <td>
+                                    <div class="player-identity-cell">
+                                        <div class="lb-avatar" style="background: #3b82f6;">DR</div>
+                                        <span class="lb-user-name">Dan_Ronaldo</span>
+                                    </div>
+                                </td>
+                                <td class="lb-stat-num">6,200</td>
+                                <td class="lb-stat-num">3,400</td>
+                                <td class="lb-stat-num">2,500</td>
+                                <td class="lb-total-points">12,100</td>
+                            </tr>
 
-                    <div class="lb-row">
-                        <div class="lb-rank">4</div>
-                        <div class="lb-user">
-                            <div class="lb-avatar" style="background: #8b5cf6;">EL</div>
-                            Eran_Levi
-                        </div>
-                        <div class="lb-points">10,450</div>
-                    </div>
+                            <tr>
+                                <td><div class="pantheon-rank-badge">4</div></td>
+                                <td>
+                                    <div class="player-identity-cell">
+                                        <div class="lb-avatar" style="background: #8b5cf6;">EL</div>
+                                        <span class="lb-user-name">Eran_Levi</span>
+                                    </div>
+                                </td>
+                                <td class="lb-stat-num">5,800</td>
+                                <td class="lb-stat-num">2,650</td>
+                                <td class="lb-stat-num">2,000</td>
+                                <td class="lb-total-points">10,450</td>
+                            </tr>
 
-                    <div class="lb-row">
-                        <div class="lb-rank">5</div>
-                        <div class="lb-user">
-                            <div class="lb-avatar" style="background: #ef4444;">OM</div>
-                            Omer_Macabi
-                        </div>
-                        <div class="lb-points">9,800</div>
-                    </div>
-                    
-                    <div class="lb-row" style="margin-top: 15px; border-top: 2px dashed #cbd5e1; background: rgba(124, 168, 86, 0.05); border-radius: 0 0 16px 16px;">
-                        <div class="lb-rank" style="background: var(--brand-green); color: white;">42</div>
-                        <div class="lb-user">
-                            <div class="lb-avatar" style="background: var(--text-dark);">אתה</div>
-                            המשתמש שלי
-                        </div>
-                        <div class="lb-points" id="myLeaderboardPoints">120</div>
-                    </div>
+                            <tr>
+                                <td><div class="pantheon-rank-badge">5</div></td>
+                                <td>
+                                    <div class="player-identity-cell">
+                                        <div class="lb-avatar" style="background: #ef4444;">OM</div>
+                                        <span class="lb-user-name">Omer_Macabi</span>
+                                    </div>
+                                </td>
+                                <td class="lb-stat-num">5,100</td>
+                                <td class="lb-stat-num">2,200</td>
+                                <td class="lb-stat-num">2,500</td>
+                                <td class="lb-total-points">9,800</td>
+                            </tr>
+
+                            <tr style="background: rgba(124, 168, 86, 0.12); border-top: 3px dashed var(--brand-green);">
+                                <td><div class="pantheon-rank-badge" style="background: var(--brand-green); color: white; border: none;">42</div></td>
+                                <td>
+                                    <div class="player-identity-cell">
+                                        <div class="lb-avatar" style="background: var(--text-dark);">אתה</div>
+                                        <span class="lb-user-name" style="color: var(--brand-green);">המשתמש שלי</span>
+                                    </div>
+                                </td>
+                                <td class="lb-stat-num" id="lb-my-trivia-pts" style="color: var(--text-dark); font-weight: 900;">120</td>
+                                <td class="lb-stat-num" id="lb-my-polls-pts">0</td>
+                                <td class="lb-stat-num" id="lb-my-lottery-pts">0</td>
+                                <td class="lb-total-points" id="myLeaderboardPoints">120</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div><div id="tab-4" class="tab-content">
-                <h2 class="content-header-title">טבלת דירוג גולשים (Leaderboard)</h2>
-                <p class="content-desc">טבלת האלופים של סוליבי. הדירוג מבוסס על השתתפות בטריוויה, הצבעות בסקרים, מעורבות בקהילה וזכיות בטורנירים.</p>
-                
-                <div class="leaderboard-wrapper">
-                    <div class="lb-header">
-                        <div>דירוג</div>
-                        <div>משתמש</div>
-                        <div style="text-align: left;">נקודות</div>
-                    </div>
+            </div>
                     
                     <div class="lb-row rank-1">
                         <div class="lb-rank">1</div>
