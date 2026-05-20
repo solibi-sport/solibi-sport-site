@@ -595,9 +595,35 @@
 </div>
 
 <div id="tab-legionnaires" class="tab-content">
-                <h2 class="content-header-title">מעקב ליגיונרים: דירוג העוצמה שבועי</h2>
-                <p class="content-desc">המעקב המקיף אחרי השחקנים הישראלים מעבר לים. מי כבש, מי בישל, מי שומר על יציבות ומי מוביל את דירוג העוצמה השבועי של סוליבי ספורט.</p>
-                <div class="placeholder-box">כאן ישולב לוח מעקב הליגיונרים וטבלת דירוג העוצמה הדינמית...</div>
+                <h2 class="content-header-title">מעקב ליגיונרים: דירוג העוצמה</h2>
+                <p class="content-desc">מי הליגיונר הלוהט של השבוע? דירוג העוצמה (Power Ranking) של סוליבי משקלל סטטיסטיקות מתקדמות הכוללות דקות, איומים, מסירות ופעולות הגנתיות כדי לקבוע מי הישראלי בכושר הטוב ביותר באירופה.</p>
+                
+                <div class="pantheon-table-wrapper">
+                    <table class="pantheon-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">דירוג</th>
+                                <th style="width: 60px;">מגמה</th>
+                                <th>שם השחקן</th>
+                                <th>קבוצה וליגה</th>
+                                <th title="הופעות">הופעות</th>
+                                <th title="דקות משחק">דק'</th>
+                                <th title="שערים">שערים</th>
+                                <th title="בישולים">בישולים</th>
+                                <th title="בעיטות למסגרת">איומים למסגרת</th>
+                                <th title="אחוז ניצול מצבים">ניצול מצבים</th>
+                                <th title="אחוז דיוק במסירות">דיוק מסירות</th>
+                                <th title="תיקולים מוצלחים">תיקולים</th>
+                                <th title="הצלות (לשוערים)">הצלות</th>
+                                <th title="הצלות פנדל (לשוערים)">הצלות פנדל</th>
+                                <th title="ציון ממוצע העונה">ציון ממוצע</th>
+                                <th>מדד עוצמה</th>
+                            </tr>
+                        </thead>
+                        <tbody id="legionnaires-tbody">
+                            </tbody>
+                    </table>
+                </div>
             </div>
             
             <div id="tab-1" class="tab-content">
@@ -918,6 +944,29 @@
         .sidebar-dropdown-btn.open svg {
             color: var(--brand-green) !important;
         }
+
+                  /* =========================================
+           עיצוב טבלת מעקב ליגיונרים ודירוג עוצמה
+           ========================================= */
+        .power-score-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+            color: #fff; font-weight: 900; font-size: 16px; padding: 6px 12px;
+            border-radius: 8px; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+            min-width: 50px;
+        }
+        
+        .trend-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 24px; height: 24px; border-radius: 50%; font-size: 14px; font-weight: bold;
+        }
+        .trend-up { background: rgba(22, 163, 74, 0.1); color: #16a34a; }
+        .trend-down { background: rgba(220, 38, 38, 0.1); color: #dc2626; }
+        .trend-same { background: rgba(100, 116, 139, 0.1); color: #64748b; }
+
+        .club-league-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .club-league-wrap img { width: 24px; height: 24px; object-fit: contain; }
+        .club-league-wrap span { font-size: 11px; color: #64748b; font-weight: 600; }
                   
 </style>
 
@@ -4431,6 +4480,107 @@
 
             document.getElementById('hof-modal').classList.add('active');
         };
+
+// ==========================================
+        // מנוע מעקב ליגיונרים - דירוג עוצמה (Power Ranking) מורחב
+        // ==========================================
+
+        // הדמיית נתונים כפי שיחזרו מ-API Football (עם המון סטטיסטיקות)
+        const legionnairesDataFromAPI = [
+            { id: 1, name: "אוסקר גלוך", position: "קשר", team: "רד בול זלצבורג", league: "אוסטרית ראשונה", teamLogo: "https://images.fotmob.com/image_resources/logo/teamlogo/5624.png", apps: 28, minutes: 2150, goals: 7, assists: 11, shotsOnTarget: 24, conversionRate: 18, passAccuracy: 84, tackles: 12, saves: 0, penaltySaves: 0, avgRating: 7.6, lastWeekRank: 2 },
+            { id: 2, name: "מנור סולומון", position: "חלוץ/כנף", team: "טוטנהאם", league: "פרמייר ליג", teamLogo: "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png", apps: 12, minutes: 640, goals: 2, assists: 3, shotsOnTarget: 10, conversionRate: 15, passAccuracy: 78, tackles: 5, saves: 0, penaltySaves: 0, avgRating: 6.9, lastWeekRank: 4 },
+            { id: 3, name: "עומרי גאנדלמן", position: "קשר/בלם", team: "גנט", league: "בלגית ראשונה", teamLogo: "https://images.fotmob.com/image_resources/logo/teamlogo/9974.png", apps: 25, minutes: 1980, goals: 6, assists: 4, shotsOnTarget: 12, conversionRate: 22, passAccuracy: 81, tackles: 42, saves: 0, penaltySaves: 0, avgRating: 7.3, lastWeekRank: 1 },
+            { id: 4, name: "עומרי גלזר", position: "שוער", team: "הכוכב האדום", league: "סרבית ראשונה", teamLogo: "https://images.fotmob.com/image_resources/logo/teamlogo/10006.png", apps: 30, minutes: 2700, goals: 0, assists: 0, shotsOnTarget: 0, conversionRate: 0, passAccuracy: 65, tackles: 1, saves: 85, penaltySaves: 2, avgRating: 7.4, lastWeekRank: 3 },
+            { id: 5, name: "אלי דסה", position: "מגן", team: "דינמו מוסקבה", league: "רוסית ראשונה", teamLogo: "https://images.fotmob.com/image_resources/logo/teamlogo/10007.png", apps: 24, minutes: 2010, goals: 1, assists: 5, shotsOnTarget: 4, conversionRate: 5, passAccuracy: 82, tackles: 55, saves: 0, penaltySaves: 0, avgRating: 7.1, lastWeekRank: 5 },
+            { id: 6, name: "מונס דאבור", position: "חלוץ", team: "פנאתינייקוס", league: "יוונית ראשונה", teamLogo: "https://images.fotmob.com/image_resources/logo/teamlogo/9860.png", apps: 22, minutes: 1450, goals: 9, assists: 2, shotsOnTarget: 20, conversionRate: 28, passAccuracy: 72, tackles: 8, saves: 0, penaltySaves: 0, avgRating: 7.2, lastWeekRank: 8 }
+        ];
+
+        // פונקציה חכמה לחישוב מדד העוצמה
+        function calculatePowerScore(player) {
+            let score = 0;
+            score += (player.avgRating * 5) + (player.minutes / 100);
+
+            if (player.position === "שוער") {
+                score += (player.saves * 0.5);
+                score += (player.penaltySaves * 5);
+                score += (player.passAccuracy * 0.1);
+            } else {
+                score += (player.goals * 4);
+                score += (player.assists * 3);
+                score += (player.shotsOnTarget * 0.5);
+                score += (player.conversionRate * 0.2); 
+                score += (player.tackles * 0.3); 
+                score += (player.passAccuracy * 0.1);
+            }
+            return Math.round(score);
+        }
+
+        function renderLegionnairesTable() {
+            const tbody = document.getElementById('legionnaires-tbody');
+            if(!tbody) return;
+
+            let rankedPlayers = legionnairesDataFromAPI.map(p => {
+                return { ...p, powerScore: calculatePowerScore(p) };
+            });
+
+            // מיון לפי המדד
+            rankedPlayers.sort((a, b) => b.powerScore - a.powerScore);
+
+            let html = '';
+            rankedPlayers.forEach((player, index) => {
+                let currentRank = index + 1;
+                let trendHtml = '';
+                
+                if (currentRank < player.lastWeekRank) trendHtml = `<div class="trend-icon trend-up">↑</div>`;
+                else if (currentRank > player.lastWeekRank) trendHtml = `<div class="trend-icon trend-down">↓</div>`;
+                else trendHtml = `<div class="trend-icon trend-same">-</div>`;
+
+                // צביעה חכמה: עמעום נתונים שלא רלוונטיים לשוער (ולהיפך)
+                const gkStatsColor = player.position === "שוער" ? "var(--element-navy-gradient)" : "#cbd5e1";
+                const fieldStatsColor = player.position === "שוער" ? "#cbd5e1" : "var(--element-navy-gradient)";
+
+                html += `
+                    <tr>
+                        <td><div class="pantheon-rank-badge ${currentRank <= 3 ? 'rank-' + currentRank : ''}">${currentRank}</div></td>
+                        <td>${trendHtml}</td>
+                        <td>
+                            <div class="player-identity-cell">
+                                <img src="data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3e%3cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3e%3c/svg%3e" class="player-avatar-mini">
+                                <div class="player-name-wrap">
+                                    <span class="player-name-main">${player.name}</span>
+                                    <span style="font-size: 11px; color: #64748b;">${player.position}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="club-league-wrap">
+                                <img src="${player.teamLogo}" alt="${player.team}">
+                                <span>${player.team}</span>
+                                <span style="font-size: 10px; opacity: 0.7;">${player.league}</span>
+                            </div>
+                        </td>
+                        <td class="stat-num">${player.apps}</td>
+                        <td class="stat-num" style="color: #64748b;">${player.minutes}'</td>
+                        <td class="stat-num" style="color: ${fieldStatsColor};">${player.goals > 0 ? player.goals : '-'}</td>
+                        <td class="stat-num" style="color: ${fieldStatsColor};">${player.assists > 0 ? player.assists : '-'}</td>
+                        <td class="stat-num" style="color: ${fieldStatsColor};">${player.shotsOnTarget > 0 ? player.shotsOnTarget : '-'}</td>
+                        <td class="stat-num" style="color: ${fieldStatsColor};">${player.conversionRate > 0 ? player.conversionRate + '%' : '-'}</td>
+                        <td class="stat-num">${player.passAccuracy}%</td>
+                        <td class="stat-num" style="color: ${fieldStatsColor};">${player.tackles > 0 ? player.tackles : '-'}</td>
+                        <td class="stat-num" style="color: ${gkStatsColor}; font-weight: 900;">${player.saves > 0 ? player.saves : '-'}</td>
+                        <td class="stat-num" style="color: ${gkStatsColor}; font-weight: 900;">${player.penaltySaves > 0 ? player.penaltySaves : '-'}</td>
+                        <td class="stat-num" style="color: var(--brand-green); font-size: 15px;">${player.avgRating}</td>
+                        <td><div class="power-score-badge">${player.powerScore}</div></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLegionnairesTable();
+        });
+        
     </script>
     <script src="search.js"></script>
 </body>
