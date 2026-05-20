@@ -403,6 +403,111 @@
         .lb-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--element-navy-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
         .lb-total-points { font-weight: 900; color: var(--brand-green); font-size: 16px; }
         .lb-stat-num { font-weight: 700; color: #64748b; }
+
+        /* =========================================
+           עיצוב מערכת הסקרים (20% ימין, 80% שמאל)
+           ========================================= */
+        .polls-layout {
+            display: flex;
+            gap: 20px;
+            height: 65vh; /* מקבע את הגובה כדי לאפשר גלילה פנימית */
+            margin-top: 15px;
+        }
+
+        /* צד ימין - רשימת הסקרים (כ-25% כדי שהטקסט לא יימעך) */
+        .polls-sidebar {
+            flex: 0 0 25%;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .polls-sidebar-header {
+            background: var(--element-navy-gradient);
+            color: #fff;
+            padding: 15px;
+            font-weight: 900;
+            font-size: 14px;
+            text-align: center;
+            border-bottom: 3px solid var(--brand-green);
+        }
+        .polls-list {
+            flex: 1;
+            overflow-y: auto;
+            direction: ltr; /* פס גלילה משמאל/ימין */
+        }
+        .polls-list-inner { direction: rtl; }
+        
+        .poll-list-item {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .poll-list-item:hover { background: rgba(124, 168, 86, 0.1); }
+        .poll-list-item.active {
+            background: #ffffff;
+            border-right: 4px solid var(--brand-green);
+            box-shadow: -2px 0 10px rgba(0,0,0,0.05);
+        }
+        .poll-item-date { font-size: 11px; color: #94a3b8; font-weight: 600; }
+        .poll-item-title { font-size: 13px; font-weight: 700; color: var(--text-dark); line-height: 1.4; }
+
+        /* צד שמאל - תצוגת הסקר (75%) */
+        .poll-main-area {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            overflow: hidden;
+        }
+        .active-poll-title { font-size: 22px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 10px; }
+        .active-poll-meta { font-size: 13px; color: #64748b; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #f1f5f9; display: flex; justify-content: space-between; }
+
+        /* אזור האפשרויות (נגלל אם יש הרבה אפשרויות) */
+        .poll-options-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-left: 10px; /* מקום לפס גלילה */
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        /* התאמת פס הגלילה */
+        .poll-options-container::-webkit-scrollbar { width: 6px; }
+        .poll-options-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        /* עיצוב כפתור בחירה (טרם הצבעה) */
+        .poll-option-btn {
+            background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px;
+            padding: 16px 20px; font-size: 15px; font-weight: 700; color: var(--text-dark);
+            cursor: pointer; transition: all 0.2s; text-align: right; font-family: inherit;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .poll-option-btn:hover { border-color: var(--brand-green); background: rgba(124, 168, 86, 0.05); transform: translateX(-3px); }
+        .poll-option-btn::after { content: ''; display: block; width: 18px; height: 18px; border: 2px solid #cbd5e1; border-radius: 50%; transition: 0.2s; }
+        .poll-option-btn:hover::after { border-color: var(--brand-green); }
+
+        /* עיצוב גרף תוצאות (אחרי הצבעה) */
+        .poll-result-wrapper { display: flex; flex-direction: column; gap: 6px; }
+        .poll-result-header { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: var(--text-dark); }
+        .poll-result-bar-bg { width: 100%; height: 32px; background: #f1f5f9; border-radius: 6px; position: relative; overflow: hidden; border: 1px solid #e2e8f0; }
+        .poll-result-fill { height: 100%; background: #94a3b8; border-radius: 6px; transition: width 1.2s cubic-bezier(0.25, 0.8, 0.25, 1); width: 0%; display: flex; align-items: center; padding-right: 10px; color: #fff; font-weight: 900; font-size: 13px; }
+        
+        /* צביעת השורה שניצחה עד כה בירוק */
+        .poll-result-wrapper.winner .poll-result-fill { background: var(--brand-green); }
+        /* צביעת השורה שהמשתמש בחר בכחול-נייבי */
+        .poll-result-wrapper.user-choice .poll-result-fill { background: var(--element-navy-gradient); }
+        .poll-result-wrapper.user-choice .poll-result-header::before { content: '✓ בחרת: '; color: var(--brand-green); margin-left: 5px;}
         
     </style>
 </head>
@@ -500,8 +605,28 @@
             
             <div id="tab-2" class="tab-content">
                 <h2 class="content-header-title">סקרים והצבעות</h2>
-                <p class="content-desc">הקול שלכם קובע. הצביעו בסקרים השבועיים שלנו והשפיעו על דירוגי האתר ועל תכנים עתידיים.</p>
-                <div class="placeholder-box">כאן ישולב אזור הסקרים וההצבעות...</div>
+                <p class="content-desc">הקול שלכם קובע. הצביעו בסקרים השבועיים שלנו, צפו בתוצאות בזמן אמת וצברו נקודות על כל הצבעה.</p>
+                
+                <div class="polls-layout">
+                    <div class="polls-sidebar">
+                        <div class="polls-sidebar-header">ארכיון הסקרים</div>
+                        <div class="polls-list">
+                            <div class="polls-list-inner" id="polls-list-container">
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="poll-main-area">
+                        <div class="active-poll-title" id="active-poll-title">טוען סקר...</div>
+                        <div class="active-poll-meta">
+                            <span id="active-poll-date"></span>
+                            <span id="active-poll-total-votes" style="font-weight: 700; color: var(--brand-green);"></span>
+                        </div>
+                        
+                        <div class="poll-options-container" id="poll-options-container">
+                            </div>
+                    </div>
+                </div>
             </div>
             
             <div id="tab-3" class="tab-content">
@@ -943,6 +1068,174 @@
 
         // אתחול התצוגה בעליית הדף
         updateStatsDisplay();
+
+        // ==========================================
+        // מנוע סקרים והצבעות
+        // ==========================================
+
+        // מסד נתונים וירטואלי של סקרים (מעודכן למאי 2026)
+        const pollsDatabase = [
+            {
+                id: 103,
+                title: "מי תזכה באליפות ליגת העל בעונת 2026/2027?",
+                date: "18.05.2026",
+                totalVotes: 1450,
+                options: [
+                    { text: "מכבי תל אביב", votes: 520 },
+                    { text: "מכבי חיפה", votes: 480 },
+                    { text: "הפועל באר שבע", votes: 250 },
+                    { text: "בית\"ר ירושלים", votes: 110 },
+                    { text: "הפועל תל אביב", votes: 50 },
+                    { text: "קבוצה אחרת", votes: 40 }
+                ]
+            },
+            {
+                id: 102,
+                title: "מונדיאל 2026 מתחיל בחודש הבא! מי תניף את הגביע?",
+                date: "10.05.2026",
+                totalVotes: 3200,
+                // סקר מרובה אפשרויות כדי להדגים את הגלילה!
+                options: [
+                    { text: "צרפת", votes: 850 },
+                    { text: "ברזיל", votes: 720 },
+                    { text: "ארגנטינה", votes: 610 },
+                    { text: "אנגליה", votes: 450 },
+                    { text: "ספרד", votes: 210 },
+                    { text: "פורטוגל", votes: 150 },
+                    { text: "גרמניה", votes: 120 },
+                    { text: "איטליה", votes: 40 },
+                    { text: "הולנד", votes: 30 },
+                    { text: "נבחרת אפריקאית מפתיעה", votes: 15 },
+                    { text: "אחר", votes: 5 }
+                ]
+            },
+            {
+                id: 101,
+                title: "האם ערן זהבי צריך לפרוש ממשחק פעיל בסוף העונה הנוכחית?",
+                date: "01.05.2026",
+                totalVotes: 5120,
+                options: [
+                    { text: "כן, הוא עשה את שלו וצריך לפרוש בשיא", votes: 3100 },
+                    { text: "לא, יש לו עוד עונה אחת לפחות לתת", votes: 2020 }
+                ]
+            }
+        ];
+
+        let currentActivePollId = null;
+
+        function initPolls() {
+            renderPollsList();
+            // טוען אוטומטית את הסקר הראשון (הכי חדש)
+            if (pollsDatabase.length > 0) {
+                loadPoll(pollsDatabase[0].id);
+            }
+        }
+
+        function renderPollsList() {
+            const container = document.getElementById('polls-list-container');
+            let html = '';
+            
+            pollsDatabase.forEach(poll => {
+                const isActive = poll.id === currentActivePollId ? 'active' : '';
+                html += `
+                    <div class="poll-list-item ${isActive}" onclick="loadPoll(${poll.id})">
+                        <div class="poll-item-date">${poll.date}</div>
+                        <div class="poll-item-title">${poll.title}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function loadPoll(pollId) {
+            currentActivePollId = pollId;
+            renderPollsList(); // מעדכן את סימון ה-active בתפריט הימני
+            
+            const poll = pollsDatabase.find(p => p.id === pollId);
+            if (!poll) return;
+
+            document.getElementById('active-poll-title').innerText = poll.title;
+            document.getElementById('active-poll-date').innerText = "פורסם ב: " + poll.date;
+            document.getElementById('active-poll-total-votes').innerText = "סה\"כ מצביעים: " + poll.totalVotes.toLocaleString();
+
+            const container = document.getElementById('poll-options-container');
+            container.innerHTML = '';
+
+            // בדיקה האם הגולש כבר הצביע לסקר הזה (נשמר בדפדפן)
+            const userVotedIndex = localStorage.getItem('solibi_poll_voted_' + poll.id);
+
+            if (userVotedIndex !== null) {
+                // המשתמש כבר הצביע -> נציג את תוצאות הסקר (גרפים)
+                let highestVotes = Math.max(...poll.options.map(o => o.votes));
+                let html = '';
+                
+                poll.options.forEach((opt, index) => {
+                    const percentage = poll.totalVotes === 0 ? 0 : Math.round((opt.votes / poll.totalVotes) * 100);
+                    const isWinner = opt.votes === highestVotes ? 'winner' : '';
+                    const isUserChoice = parseInt(userVotedIndex) === index ? 'user-choice' : '';
+                    
+                    // תחילת האנימציה - הרוחב מתחיל מ-0
+                    html += `
+                        <div class="poll-result-wrapper ${isWinner} ${isUserChoice}">
+                            <div class="poll-result-header">
+                                <span>${opt.text}</span>
+                                <span>${percentage}%</span>
+                            </div>
+                            <div class="poll-result-bar-bg">
+                                <div class="poll-result-fill" id="poll-fill-${poll.id}-${index}" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+
+                // הפעלת אנימציית הגרפים
+                setTimeout(() => {
+                    poll.options.forEach((opt, index) => {
+                        const percentage = poll.totalVotes === 0 ? 0 : Math.round((opt.votes / poll.totalVotes) * 100);
+                        const fillEl = document.getElementById(`poll-fill-${poll.id}-${index}`);
+                        if(fillEl) fillEl.style.width = percentage + '%';
+                    });
+                }, 100);
+
+            } else {
+                // המשתמש טרם הצביע -> נציג כפתורי הצבעה
+                let html = '';
+                poll.options.forEach((opt, index) => {
+                    html += `
+                        <button class="poll-option-btn" onclick="submitVote(${poll.id}, ${index})">
+                            ${opt.text}
+                        </button>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+        }
+
+        function submitVote(pollId, optionIndex) {
+            const poll = pollsDatabase.find(p => p.id === pollId);
+            if (!poll) return;
+
+            // עדכון הנתונים (מוסיפים קול אחד לאפשרות שנבחרה ומעדכנים סה"כ)
+            poll.options[optionIndex].votes += 1;
+            poll.totalVotes += 1;
+
+            // עדכון הניקוד של הגולש (בונוס 50 נקודות על הצבעה בסקר)
+            currentUserData.totalPoints += 50;
+            updateStatsDisplay(); // מעדכן למעלה
+            alert("תודה על ההצבעה! קיבלת 50 נקודות לדירוג הקהילה.");
+
+            // שמירה בזיכרון הדפדפן שהמשתמש הזה הצביע
+            localStorage.setItem('solibi_poll_voted_' + poll.id, optionIndex);
+
+            // טעינה מחדש של הסקר כדי להציג את הגרפים
+            loadPoll(pollId);
+        }
+
+        // קריאה לפונקציה בעת טעינת העמוד
+        document.addEventListener('DOMContentLoaded', () => {
+            initPolls();
+        });
     </script>
     <script src="search.js"></script>
 </body>
