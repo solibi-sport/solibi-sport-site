@@ -508,6 +508,95 @@
         /* צביעת השורה שהמשתמש בחר בכחול-נייבי */
         .poll-result-wrapper.user-choice .poll-result-fill { background: var(--element-navy-gradient); }
         .poll-result-wrapper.user-choice .poll-result-header::before { content: '✓ בחרת: '; color: var(--brand-green); margin-left: 5px;}
+
+/* =========================================
+           עיצוב זירת ההגרלות (השורד האחרון - Battle Royale)
+           ========================================= */
+        .lottery-top-bar {
+            display: flex; justify-content: space-between; align-items: center; 
+            background: #ffffff; padding: 15px 20px; border-radius: 12px;
+            border: 1px solid #e2e8f0; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        
+        .lottery-status-text {
+            font-size: 18px; font-weight: 900; color: var(--element-navy-gradient);
+        }
+
+        .lottery-arena {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            gap: 10px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            min-height: 400px;
+            align-content: start;
+        }
+
+        .l-player {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #ffffff; border: 1px solid #cbd5e1; padding: 8px 5px; border-radius: 8px;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .l-player.survivor { border-color: var(--brand-green); box-shadow: 0 0 10px rgba(124,168,86,0.3); transform: scale(1.05); z-index: 2;}
+        
+        .l-player.eliminated {
+            opacity: 0.15;
+            transform: scale(0.85);
+            filter: grayscale(100%);
+            border-color: #e2e8f0;
+            box-shadow: none;
+        }
+
+        .l-avatar {
+            width: 32px; height: 32px; border-radius: 50%; background: var(--element-navy-gradient);
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: bold; margin-bottom: 5px;
+        }
+
+        .l-name {
+            font-size: 10px; color: var(--text-dark); font-weight: 700; text-align: center;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+        }
+
+        /* כרטיס המנצח (FUT Card Style) */
+        .winner-showcase {
+            display: none; /* מוסתר בהתחלה */
+            flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px; background: #ffffff; border-radius: 16px;
+            border: 3px solid #fbbf24;
+            box-shadow: 0 0 40px rgba(251,191,36,0.4);
+            animation: winnerPop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 400px;
+        }
+
+        @keyframes winnerPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .winner-card {
+            width: 220px; height: 320px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 12px; border: 4px solid #fbbf24;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #fbbf24; position: relative; overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(251,191,36,0.2);
+        }
+        .winner-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg); animation: shine 3s infinite linear;
+        }
+        @keyframes shine { 0% { left: -100%; } 100% { left: 100%; } }
+
+        .w-avatar { width: 80px; height: 80px; font-size: 30px; border: 3px solid #fbbf24; background: #fff; color: var(--element-navy-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; margin-bottom: 20px; z-index: 10; }
+        .w-title { font-size: 14px; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; z-index: 10;}
+        .w-name { font-size: 26px; font-weight: 900; color: #fff; z-index: 10;}
         
     </style>
 </head>
@@ -629,10 +718,24 @@
                 </div>
             </div>
             
-            <div id="tab-3" class="tab-content">
-                <h2 class="content-header-title">הגרלות נושאות פרסים</h2>
-                <p class="content-desc">השתתפו בהגרלות הבלעדיות שלנו וזכו בפרסים שווים: ציוד גיימינג, קלפים נדירים, חולצות ועוד.</p>
-                <div class="placeholder-box">כאן ישולב אזור ההגרלות והפרסים...</div>
+           <div id="tab-3" class="tab-content">
+                <h2 class="content-header-title">הגרלות: זירת "השורד האחרון"</h2>
+                <p class="content-desc">צופים בלייב? הנה זה מתחיל! 100 משתתפים, זוכה אחד ב-PlayStation 5. ההגרלה תתבצע במספר שלבי ניפוי מורטי עצבים עד שיישאר השורד האחרון.</p>
+                
+                <div class="lottery-top-bar">
+                    <div class="lottery-status-text" id="lottery-status-title">100 משתתפים ממתינים להגרלה</div>
+                    <button id="lottery-action-btn" class="action-btn" onclick="nextLotteryStage()">התחל את ההגרלה הגדולה!</button>
+                </div>
+
+                <div class="lottery-arena" id="lottery-arena">
+                    </div>
+
+                <div class="winner-showcase" id="lottery-winner-showcase">
+                    <h2 style="font-size: 32px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 30px;">יש לנו מנצח! 🎉</h2>
+                    <div class="winner-card" id="lottery-winner-card">
+                        </div>
+                    <button class="action-btn" style="margin-top: 30px; background: #e2e8f0; color: var(--text-dark);" onclick="resetLottery()">התחל הגרלה חדשה</button>
+                </div>
             </div>
             
             <div id="tab-4" class="tab-content">
@@ -1235,6 +1338,150 @@
         // קריאה לפונקציה בעת טעינת העמוד
         document.addEventListener('DOMContentLoaded', () => {
             initPolls();
+        });
+
+        // ==========================================
+        // מנוע הגרלות - זירת השורד האחרון
+        // ==========================================
+
+        let lotteryPlayers = [];
+        let lotteryStage = 0; // 0=התחלה, 1=50 נשארו, 2=16 נשארו, 3=4 נשארו, 4=מנצח
+
+        // פונקציה לייצור 100 משתתפים פיקטיביים (כולל אותך!)
+        function generateLotteryPlayers() {
+            lotteryPlayers = [];
+            const names = ["Yossi", "Aviv", "Dan", "Eran", "Omer", "Gil", "Ron", "Roy", "Tal", "Gal"];
+            
+            // המשתמש שלך
+            lotteryPlayers.push({ id: 0, name: "המשתמש שלי", initials: "אתה", eliminated: false });
+            
+            for(let i = 1; i < 100; i++) {
+                let randomName = names[Math.floor(Math.random() * names.length)] + "_" + i;
+                lotteryPlayers.push({
+                    id: i,
+                    name: randomName,
+                    initials: randomName.substring(0, 2).toUpperCase(),
+                    eliminated: false
+                });
+            }
+            
+            // נערבב את המערך כדי ש"המשתמש שלי" לא יהיה תמיד ראשון
+            lotteryPlayers.sort(() => Math.random() - 0.5);
+        }
+
+        function renderLotteryArena() {
+            const arena = document.getElementById('lottery-arena');
+            let html = '';
+            
+            lotteryPlayers.forEach(p => {
+                const statusClass = p.eliminated ? 'eliminated' : '';
+                // בשלב 3 (טופ 4) ושלב 4 (מנצח) נרצה להדגיש את הנותרים
+                const survivorClass = (!p.eliminated && lotteryStage >= 3) ? 'survivor' : '';
+                
+                html += `
+                    <div class="l-player ${statusClass} ${survivorClass}" id="player-${p.id}">
+                        <div class="l-avatar">${p.initials}</div>
+                        <div class="l-name">${p.name}</div>
+                    </div>
+                `;
+            });
+            
+            arena.innerHTML = html;
+        }
+
+        function nextLotteryStage() {
+            const btn = document.getElementById('lottery-action-btn');
+            const title = document.getElementById('lottery-status-title');
+            
+            let activePlayers = lotteryPlayers.filter(p => !p.eliminated);
+            
+            if (lotteryStage === 0) {
+                // שלב 1: ניפוי מ-100 ל-50
+                eliminateDownTo(50, activePlayers);
+                title.innerText = "הניפוי הגדול: נשארו 50 שורדים!";
+                btn.innerText = "המשך לשלב רבע הגמר (16 שורדים)";
+                btn.style.background = "#d97706"; // כתום מתח
+                lotteryStage++;
+            } 
+            else if (lotteryStage === 1) {
+                // שלב 2: ניפוי מ-50 ל-16
+                eliminateDownTo(16, activePlayers);
+                title.innerText = "רבע הגמר: נשארו 16 שורדים!";
+                btn.innerText = "המשך לפיינל פור (4 שורדים)";
+                btn.style.background = "#ef4444"; // אדום אזהרה
+                lotteryStage++;
+            }
+            else if (lotteryStage === 2) {
+                // שלב 3: ניפוי מ-16 ל-4 (פיינל פור)
+                eliminateDownTo(4, activePlayers);
+                title.innerText = "הפיינל פור: 4 שורדים אחרונים!";
+                btn.innerText = "רגע האמת: חשוף את המנצח!";
+                btn.style.background = "var(--element-navy-gradient)"; 
+                lotteryStage++;
+            }
+            else if (lotteryStage === 3) {
+                // שלב 4: מנצח אחד!
+                eliminateDownTo(1, activePlayers);
+                title.innerText = "ההגרלה הסתיימה!";
+                btn.style.display = 'none';
+                
+                setTimeout(() => {
+                    showWinner();
+                }, 1000); // השהייה דרמטית של שנייה לפני המסך הגדול
+                
+                lotteryStage++;
+            }
+            
+            renderLotteryArena();
+        }
+
+        // פונקציית עזר לניפוי אקראי
+        function eliminateDownTo(targetNumber, activeArray) {
+            let numToEliminate = activeArray.length - targetNumber;
+            
+            // מערבבים את מי שנשאר וחותכים את מי שצריך לעוף
+            activeArray.sort(() => Math.random() - 0.5);
+            
+            for(let i = 0; i < numToEliminate; i++) {
+                activeArray[i].eliminated = true;
+            }
+        }
+
+        function showWinner() {
+            const winner = lotteryPlayers.find(p => !p.eliminated);
+            
+            document.getElementById('lottery-arena').style.display = 'none';
+            document.getElementById('lottery-winner-showcase').style.display = 'flex';
+            
+            const winnerCard = document.getElementById('lottery-winner-card');
+            winnerCard.innerHTML = `
+                <div class="w-title">השורד האחרון</div>
+                <div class="w-avatar">${winner.initials}</div>
+                <div class="w-name">${winner.name}</div>
+                <div style="margin-top: 15px; font-weight: bold; color: #fff;">זוכה ב-PlayStation 5!</div>
+            `;
+        }
+
+        function resetLottery() {
+            lotteryStage = 0;
+            document.getElementById('lottery-arena').style.display = 'grid';
+            document.getElementById('lottery-winner-showcase').style.display = 'none';
+            
+            const btn = document.getElementById('lottery-action-btn');
+            btn.style.display = 'inline-block';
+            btn.innerText = "התחל את ההגרלה הגדולה!";
+            btn.style.background = "var(--brand-green)";
+            
+            document.getElementById('lottery-status-title').innerText = "100 משתתפים ממתינים להגרלה";
+            
+            generateLotteryPlayers();
+            renderLotteryArena();
+        }
+
+        // אתחול הגרלה בטעינת העמוד
+        document.addEventListener('DOMContentLoaded', () => {
+            generateLotteryPlayers();
+            renderLotteryArena();
         });
     </script>
     <script src="search.js"></script>
