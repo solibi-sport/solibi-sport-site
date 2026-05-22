@@ -482,7 +482,18 @@
         
         /* אזור מרכזי שמאלי (הקלפים) */
         .chk-main { flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; position: relative; }
-        .chk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 15px; flex: 1; align-content: start; overflow-y: auto; padding-bottom: 10px; direction: ltr; }
+        
+        /* הגריד של הקלפים - בדיוק 7 בשורה (מעודכן) */
+        .chk-grid { 
+            display: grid; 
+            grid-template-columns: repeat(7, 1fr); 
+            gap: 15px; 
+            flex: 1; 
+            align-content: start; 
+            overflow-y: auto; 
+            padding-bottom: 10px; 
+            direction: ltr; 
+        }
         .chk-grid > div { direction: rtl; } /* מחזיר את התוכן של הקלף לימין לשמאל */
         
         /* עיצוב מלבן הקלף הספציפי */
@@ -507,12 +518,31 @@
         .chk-page-btn:hover { border-color: var(--brand-green); }
         .chk-page-btn.active { background: var(--brand-green); color: #fff; border-color: var(--brand-green); }
         
-        /* חלון קופץ (Modal) ליצירת צ'קליסט חדש */
-        .new-chk-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 50; border-radius: 12px;}
+        /* חלון קופץ (Modal) ליצירת צ'קליסט חדש - בעיצוב בלו נייבי (מעודכן) */
+        .new-chk-modal { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(6, 33, 65, 0.85); /* רקע נייבי חצי שקוף */
+            backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 50; border-radius: 12px;
+        }
         .new-chk-modal.active { display: flex; animation: fadeIn 0.2s; }
-        .new-chk-content { background: #fff; padding: 30px; border-radius: 16px; width: 320px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .chk-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 14px; outline: none;}
-        .chk-input:focus { border-color: var(--brand-green); }
+        .new-chk-content { 
+            background: var(--element-navy-gradient); /* נייבי עמוק */
+            padding: 30px; border-radius: 16px; width: 340px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); border: 2px solid var(--brand-green); 
+        }
+        .chk-input { 
+            width: 100%; padding: 12px; margin-bottom: 15px; 
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; font-family: inherit; font-size: 14px; outline: none;
+            background: rgba(255,255,255,0.1); color: #fff;
+        }
+        .chk-input::placeholder { color: rgba(255,255,255,0.5); }
+        .chk-input:focus { border-color: var(--brand-green); background: rgba(255,255,255,0.15); }
+        
+        /* כפתורים מיוחדים למודל הנייבי (מעודכן) */
+        .modal-btn-save { background: var(--brand-green); color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: inherit;}
+        .modal-btn-save:hover { background: #6b934a; transform: translateY(-2px); }
+        .modal-btn-cancel { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: inherit;}
+        .modal-btn-cancel:hover { background: rgba(255,255,255,0.1); }
         
     </style>
 </head>
@@ -773,12 +803,12 @@
                         
                         <div class="new-chk-modal" id="newChkModal">
                             <div class="new-chk-content">
-                                <h3 style="margin-bottom: 20px; color: var(--element-navy-gradient); font-weight: 900;">צור צ'קליסט חדש</h3>
+                                <h3 style="margin-bottom: 20px; font-weight: 900; text-align: center; color: #ffffff;">צור צ'קליסט חדש</h3>
                                 <input type="text" id="newChkName" class="chk-input" placeholder="שם הצ'קליסט (לדוג: מונדיאל 2026)" autocomplete="off">
                                 <input type="number" id="newChkCount" class="chk-input" placeholder="כמות קלפים כוללת (לדוג: 450)" min="1">
                                 <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                    <button class="action-btn" style="flex: 1;" onclick="createNewChecklist()">שמור</button>
-                                    <button class="action-btn" style="flex: 1; background: #e2e8f0; color: var(--text-dark);" onclick="document.getElementById('newChkModal').classList.remove('active')">ביטול</button>
+                                    <button class="modal-btn-save" style="flex: 1;" onclick="createNewChecklist()">שמור אלבום</button>
+                                    <button class="modal-btn-cancel" style="flex: 1;" onclick="document.getElementById('newChkModal').classList.remove('active')">ביטול</button>
                                 </div>
                             </div>
                         </div>
@@ -1254,8 +1284,8 @@
         let userChecklists = []; // המערך שישמור את האלבומים שהגולש יצר
         let currentChkId = null;
         let currentChkPage = 1;
-        const CARDS_PER_PAGE = 20; // 20 קלפים בכל דף (כדי לא לעשות גלילה אינסופית)
-
+const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
+        
         function createNewChecklist() {
             const nameInput = document.getElementById('newChkName');
             const countInput = document.getElementById('newChkCount');
