@@ -543,6 +543,44 @@
         .modal-btn-save:hover { background: #6b934a; transform: translateY(-2px); }
         .modal-btn-cancel { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: inherit;}
         .modal-btn-cancel:hover { background: rgba(255,255,255,0.1); }
+
+/* =========================================
+           עיצוב טבלת יומן עסקאות
+           ========================================= */
+        .transactions-table {
+            width: 100%; border-collapse: collapse; font-size: 14px;
+            text-align: center !important; white-space: nowrap; direction: rtl;
+            background: #fff; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .transactions-table th {
+            background: var(--element-navy-gradient); color: #ffffff;
+            font-weight: 700; padding: 15px 12px; position: sticky; top: 0;
+            z-index: 10; border-bottom: 3px solid var(--brand-green);
+        }
+        .transactions-table tbody tr { border-bottom: 1px solid #e2e8f0; transition: 0.2s; }
+        .transactions-table tbody tr:hover { background: rgba(124, 168, 86, 0.05); }
+        .transactions-table td { padding: 14px 12px; color: var(--text-dark); vertical-align: middle; }
+        
+        .tx-type-badge {
+            display: inline-block; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: 900;
+        }
+        .tx-buy { background: rgba(220, 38, 38, 0.1); color: #dc2626; border: 1px solid rgba(220, 38, 38, 0.3); }
+        .tx-sell { background: rgba(22, 163, 74, 0.1); color: #16a34a; border: 1px solid rgba(22, 163, 74, 0.3); }
+        .tx-trade { background: rgba(245, 158, 11, 0.1); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3); }
+        
+        .tx-profit { color: #16a34a; font-weight: 900; }
+        .tx-loss { color: #dc2626; font-weight: 900; }
+        .tx-neutral { color: #64748b; font-weight: 900; }
+        
+        .tx-controls {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+            background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0;
+        }
+        .tx-summary-box { display: flex; gap: 20px; }
+        .tx-summary-item { display: flex; flex-direction: column; align-items: center; background: #fff; padding: 10px 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid #e2e8f0; }
+        .tx-summary-label { font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 3px; }
+        .tx-summary-value { font-size: 18px; font-weight: 900; color: var(--element-navy-gradient); }
         
     </style>
 </head>
@@ -759,10 +797,46 @@
                 <div class="placeholder-box">בקרוב... כלים חדשים בשלבי פיתוח</div>
             </div>
 
-            <div id="tab-5" class="tab-content">
+           <div id="tab-5" class="tab-content">
                 <h2 class="content-header-title">יומן עסקאות אישי</h2>
-                <p class="content-desc">מעקב אחרי כל הקניות, המכירות והרווחים שלך בשוק הקלפים במקום אחד מסודר.</p>
-                <div class="placeholder-box">כאן תשולב טבלת יומן העסקאות האישי...</div>
+                <p class="content-desc">מעקב אחרי כל הקניות, המכירות והרווחים שלך בשוק הקלפים במקום אחד מסודר. המערכת מחשבת אוטומטית את אחוזי הרווח/הפסד שלך.</p>
+                
+                <div class="tx-controls">
+                    <button class="action-btn" onclick="alert('פתיחת חלון רישום עסקה חדשה...')">+ הוסף עסקה חדשה</button>
+                    <div class="tx-summary-box">
+                        <div class="tx-summary-item">
+                            <span class="tx-summary-label">סה"כ השקעה</span>
+                            <span class="tx-summary-value" id="txTotalInvested">$0.00</span>
+                        </div>
+                        <div class="tx-summary-item">
+                            <span class="tx-summary-label">סה"כ פדיון (מכירות)</span>
+                            <span class="tx-summary-value" id="txTotalRevenue">$0.00</span>
+                        </div>
+                        <div class="tx-summary-item" style="border-color: var(--brand-green); background: rgba(124, 168, 86, 0.05);">
+                            <span class="tx-summary-label">רווח נקי</span>
+                            <span class="tx-summary-value tx-profit" id="txNetProfit">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pantheon-table-wrapper" style="border: none; box-shadow: none;">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>תאריך</th>
+                                <th>סוג עסקה</th>
+                                <th>שם הקלף</th>
+                                <th>סדרה / נדירות</th>
+                                <th>מחיר קנייה</th>
+                                <th>מחיר מכירה</th>
+                                <th>רווח / הפסד</th>
+                                <th>סטטוס / הערות</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-tbody">
+                            </tbody>
+                    </table>
+                </div>
             </div>
 
             <div id="tab-6" class="tab-content">
@@ -1459,6 +1533,77 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
         document.addEventListener('DOMContentLoaded', () => {
             renderChecklistsSidebar();
         });
+
+        // ==========================================
+        // מנוע יומן עסקאות אישי
+        // ==========================================
+
+        const myTransactions = [
+            { id: 1, date: "15.05.2026", type: "sell", cardName: "Lionel Messi", set: "2022 Prizm World Cup - Base", buyPrice: 150.00, sellPrice: 345.00, notes: "נמכר באיביי" },
+            { id: 2, date: "10.05.2026", type: "buy", cardName: "Lamine Yamal", set: "2024 Topps Chrome - Refractor", buyPrice: 420.00, sellPrice: null, notes: "השקעה לטווח ארוך" },
+            { id: 3, date: "02.05.2026", type: "sell", cardName: "Erling Haaland", set: "2020 Topps Chrome Rookie", buyPrice: 800.00, sellPrice: 750.00, notes: "נמכר בקבוצת פייסבוק" },
+            { id: 4, date: "28.04.2026", type: "buy", cardName: "Oscar Gloukh", set: "2023 Topps Finest - Auto", buyPrice: 85.00, sellPrice: null, notes: "נקנה מכנס אספנים" },
+            { id: 5, date: "14.04.2026", type: "trade", cardName: "Jude Bellingham", set: "2021 Panini Obsidian", buyPrice: 200.00, sellPrice: 200.00, notes: "הוחלף תמורת 2 קלפי רוקי" }
+        ];
+
+        function renderTransactionsTable() {
+            const tbody = document.getElementById('transactions-tbody');
+            if(!tbody) return;
+
+            let totalInvested = 0;
+            let totalRevenue = 0;
+            let html = '';
+
+            myTransactions.forEach(tx => {
+                let typeHtml = '';
+                if(tx.type === 'buy') typeHtml = '<span class="tx-type-badge tx-buy">קנייה</span>';
+                else if(tx.type === 'sell') typeHtml = '<span class="tx-type-badge tx-sell">מכירה</span>';
+                else if(tx.type === 'trade') typeHtml = '<span class="tx-type-badge tx-trade">טרייד</span>';
+
+                let sellPriceDisplay = tx.sellPrice ? `$${tx.sellPrice.toFixed(2)}` : '-';
+                
+                let profitHtml = '-';
+                if(tx.sellPrice !== null) {
+                    let profit = tx.sellPrice - tx.buyPrice;
+                    if(profit > 0) profitHtml = `<span class="tx-profit">+$${profit.toFixed(2)}</span>`;
+                    else if(profit < 0) profitHtml = `<span class="tx-loss">-$${Math.abs(profit).toFixed(2)}</span>`;
+                    else profitHtml = `<span class="tx-neutral">$0.00</span>`;
+                }
+
+                if(tx.buyPrice) totalInvested += tx.buyPrice;
+                if(tx.sellPrice && tx.type === 'sell') totalRevenue += tx.sellPrice;
+
+                html += `
+                    <tr>
+                        <td style="font-weight: bold; color: #64748b;">${tx.date}</td>
+                        <td>${typeHtml}</td>
+                        <td style="font-weight: 900; color: var(--element-navy-gradient);">${tx.cardName}</td>
+                        <td style="font-size: 12px; color: #64748b;">${tx.set}</td>
+                        <td style="font-weight: bold;">$${tx.buyPrice.toFixed(2)}</td>
+                        <td style="font-weight: bold;">${sellPriceDisplay}</td>
+                        <td>${profitHtml}</td>
+                        <td style="font-size: 12px;">${tx.notes}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+
+            // עדכון הקוביות למעלה
+            document.getElementById('txTotalInvested').innerText = `$${totalInvested.toFixed(2)}`;
+            document.getElementById('txTotalRevenue').innerText = `$${totalRevenue.toFixed(2)}`;
+            
+            let netProfit = totalRevenue - totalInvested;
+            let profitEl = document.getElementById('txNetProfit');
+            
+            if(netProfit >= 0) {
+                profitEl.innerText = `+$${netProfit.toFixed(2)}`;
+                profitEl.className = 'tx-summary-value tx-profit';
+            } else {
+                profitEl.innerText = `-$${Math.abs(netProfit).toFixed(2)}`;
+                profitEl.className = 'tx-summary-value tx-loss';
+            }
+        }
 
     </script>
     <script src="search.js"></script>
