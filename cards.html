@@ -581,6 +581,38 @@
         .tx-summary-item { display: flex; flex-direction: column; align-items: center; background: #fff; padding: 10px 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); border: 1px solid #e2e8f0; }
         .tx-summary-label { font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 3px; }
         .tx-summary-value { font-size: 18px; font-weight: 900; color: var(--element-navy-gradient); }
+
+        
+
+/* עיצוב כפתור יצירת צ'קליסט חדש */
+        .btn-new-checklist {
+            background: var(--element-navy-gradient);
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            margin: 15px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(6, 33, 65, 0.2);
+            transition: 0.3s;
+        }
+        .btn-new-checklist:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(6, 33, 65, 0.3);
+            background: #0d3b6e; /* מבהיר קצת את הנייבי בהובר */
+        }
+        .btn-new-checklist span.plus-icon {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--brand-green);
+        }
         
     </style>
 </head>
@@ -890,8 +922,9 @@
                         <div class="chk-sidebar-header">האלבומים שלי</div>
                         <div class="chk-list" id="myChecklistsList">
                             </div>
-                        <button class="action-btn" style="margin: 15px; border-radius: 8px;" onclick="document.getElementById('newChkModal').classList.add('active')">
-                            + צור צ'קליסט חדש
+                        <button class="btn-new-checklist" onclick="document.getElementById('newChkModal').classList.add('active')">
+                            <span class="plus-icon">+</span>
+                            <span>צור צ'קליסט חדש</span>
                         </button>
                     </div>
                     
