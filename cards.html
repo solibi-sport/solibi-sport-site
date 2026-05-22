@@ -614,36 +614,36 @@
             color: var(--brand-green);
         }
 
+       
         /* עיצוב כפתור הוספת עסקה חדשה ביומן העסקאות */
         .btn-add-transaction {
-            background: #0a2e57; /* נייבי כהה המותג (כמו בדוגמה המקורית) */
-            color: #ffffff; /* כיתוב לבן */
+            background: #0a2e57;
+            color: #ffffff; 
             border: none;
             padding: 12px 20px;
-            margin: 15px; /* מרווח (כמו בצ'קליסט) */
-            border-radius: 8px; /* מלבן עם פינות מעוגלות */
-            font-weight: 900; /* כיתוב מודגש */
+            margin: 15px; 
+            border-radius: 8px; 
+            font-weight: 900; 
             font-size: 14px;
             font-family: inherit;
             cursor: pointer;
-            display: flex; /* Flexbox לשליטה בסדר */
-            flex-direction: row-reverse; /* הפוך את הסדר (כדי שהפלוס יהיה משמאל ב-RTL) */
-            align-items: center; /* מרכז אנכי */
-            justify-content: center; /* מרכז אופקי */
-            gap: 10px; /* רווח בין הפלוס לטקסט */
+            display: flex; 
+            flex-direction: row; /* התיקון: מחזיר את הפלוס לשמאל! */
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
             box-shadow: 0 4px 10px rgba(6, 33, 65, 0.2);
             transition: 0.3s;
         }
         .btn-add-transaction:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(6, 33, 65, 0.3);
-            background: #0d3b6e; /* מבהיר קצת את הנייבי בהובר */
+            background: #0d3b6e;
         }
-        /* עיצוב הפלוס עצמו (כמו בצ'קליסט) */
         .btn-add-transaction span.plus-icon {
             font-size: 18px;
             font-weight: 900;
-            color: #7ca856; /* ירוק המותג המקורי */
+            color: #7ca856; 
         }
         
     </style>
