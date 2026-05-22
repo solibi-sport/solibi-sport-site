@@ -466,6 +466,53 @@
         .sidebar-dropdown-btn.open svg {
             color: var(--brand-green) !important;
         }
+
+        /* =========================================
+           עיצוב מערכת "הצ'קליסטים שלי"
+           ========================================= */
+        .checklist-wrapper { display: flex; gap: 20px; height: 65vh; margin-top: 15px; position: relative;}
+        
+        /* סיידבר ימני (רשימת האלבומים) */
+        .chk-sidebar { flex: 0 0 25%; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+        .chk-sidebar-header { background: var(--element-navy-gradient); color: #fff; padding: 15px; font-weight: 900; text-align: center; }
+        .chk-list { flex: 1; overflow-y: auto; }
+        .chk-item { padding: 15px; border-bottom: 1px solid #e2e8f0; cursor: pointer; transition: 0.2s; font-weight: 700; color: var(--text-dark); }
+        .chk-item:hover { background: rgba(124, 168, 86, 0.1); }
+        .chk-item.active { background: #fff; border-right: 4px solid var(--brand-green); }
+        
+        /* אזור מרכזי שמאלי (הקלפים) */
+        .chk-main { flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; position: relative; }
+        .chk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 15px; flex: 1; align-content: start; overflow-y: auto; padding-bottom: 10px; direction: ltr; }
+        .chk-grid > div { direction: rtl; } /* מחזיר את התוכן של הקלף לימין לשמאל */
+        
+        /* עיצוב מלבן הקלף הספציפי */
+        .chk-card { aspect-ratio: 2.5/3.5; border: 2px dashed #cbd5e1; border-radius: 8px; position: relative; background: #f8fafc; transition: 0.2s; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .chk-card.owned { border: 2px solid var(--brand-green); background: rgba(124, 168, 86, 0.05); }
+        
+        /* אלמנטים בתוך הקלף */
+        .chk-num { position: absolute; top: 5px; right: 8px; font-size: 15px; font-weight: 900; color: var(--element-navy-gradient); z-index: 2; }
+        
+        .chk-img-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--brand-green); color: #fff; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 4px 10px rgba(124, 168, 86, 0.3); transition: transform 0.2s; }
+        .chk-img-btn:hover { transform: scale(1.1); }
+        
+        .chk-checkbox-container { position: absolute; bottom: 8px; left: 8px; z-index: 2; cursor: pointer; }
+        .chk-checkbox-container input { display: none; }
+        .chk-checkmark { width: 24px; height: 24px; border: 2px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: #fff; transition: 0.2s; }
+        .chk-checkbox-container input:checked + .chk-checkmark { background: var(--brand-green); border-color: var(--brand-green); }
+        .chk-checkbox-container input:checked + .chk-checkmark::after { content: '✓'; color: #fff; font-weight: 900; font-size: 16px; }
+        
+        /* שורת דפדוף (Pagination) */
+        .chk-pagination { display: flex; justify-content: center; gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #e2e8f0; flex-wrap: wrap; direction: ltr; }
+        .chk-page-btn { padding: 6px 14px; border: 1px solid #cbd5e1; background: #fff; border-radius: 6px; cursor: pointer; font-weight: 900; color: var(--text-dark); transition: 0.2s; font-family: inherit;}
+        .chk-page-btn:hover { border-color: var(--brand-green); }
+        .chk-page-btn.active { background: var(--brand-green); color: #fff; border-color: var(--brand-green); }
+        
+        /* חלון קופץ (Modal) ליצירת צ'קליסט חדש */
+        .new-chk-modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 50; border-radius: 12px;}
+        .new-chk-modal.active { display: flex; animation: fadeIn 0.2s; }
+        .new-chk-content { background: #fff; padding: 30px; border-radius: 16px; width: 320px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .chk-input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 14px; outline: none;}
+        .chk-input:focus { border-color: var(--brand-green); }
         
     </style>
 </head>
@@ -695,37 +742,46 @@
             </div>
 
             <div id="tab-7" class="tab-content">
-                <h2 class="content-header-title">הצ'קליסטים שלי</h2>
-                <p class="content-desc">נהל את יעדי האיסוף שלך. סמן קלפים שאתה מחפש או סדרות שאתה מנסה להשלים וקבל התראות כשהם עולים לשוק.</p>
-                <div class="placeholder-box">כאן יופיעו רשימות הצ'קליסט האישיות שלך...</div>
-            </div>
-
-            <div id="tab-8" class="tab-content">
-                <h2 class="content-header-title">זירת ההחלפות</h2>
-                <p class="content-desc">הזירה המרכזית להצעות טריידים עם אספנים אחרים בקהילה באופן בטוח ושקוף.</p>
-                <div class="placeholder-box">כאן תנוהל זירת הטריידים של הקהילה...</div>
-            </div>
-
-            <div id="tab-9" class="tab-content">
-                <h2 class="content-header-title">מכירות פומביות</h2>
-                <p class="content-desc">עקוב אחרי מכירות פומביות חיות, הצע בידים, ומצא את ההזדמנויות הטובות ביותר.</p>
-                <div class="placeholder-box">כאן יופיעו מכירות פומביות פעילות ואלרטים...</div>
-            </div>
-        </section>
-
-        <aside class="collapsible-live-panel" id="livePanel">
-            <div class="panel-header-btn" onclick="document.getElementById('livePanel').classList.toggle('expanded')">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span>תוצאות לייב</span>
-                    <span style="color:red; animation: blink 1.5s infinite;">⬤</span>
-                </div>
-                <svg class="toggle-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
-            
-            <div class="panel-content">
-                <div id="live-scroll-wrapper">
-                    <div id="live-content">
-                        <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: var(--text-dark);" id="live-loading">טוען משחקים... ⚽</div>
+                <h2 class="content-header-title">הצ'קליסטים שלי (ניהול אוספים)</h2>
+                <p class="content-desc">נהל את יעדי האיסוף שלך. צור אלבומים, הוסף תמונות של הקלפים שיש לך, וסמן V על מה שהשגת כדי לעקוב אחרי ההתקדמות שלך.</p>
+                
+                <div class="checklist-wrapper">
+                    <div class="chk-sidebar">
+                        <div class="chk-sidebar-header">האלבומים שלי</div>
+                        <div class="chk-list" id="myChecklistsList">
+                            </div>
+                        <button class="action-btn" style="margin: 15px; border-radius: 8px;" onclick="document.getElementById('newChkModal').classList.add('active')">
+                            + צור צ'קליסט חדש
+                        </button>
+                    </div>
+                    
+                    <div class="chk-main">
+                        <div id="chkEmptyState" style="flex:1; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size: 18px; font-weight:bold;">
+                            בחר או צור צ'קליסט חדש כדי להתחיל.
+                        </div>
+                        
+                        <div id="chkActiveState" style="display:none; flex-direction:column; height:100%;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">
+                                <h3 id="chkActiveTitle" style="color:var(--element-navy-gradient); font-weight:900; font-size: 20px;">שם האלבום</h3>
+                                <span id="chkActiveProgress" style="background: rgba(124,168,86,0.1); color: var(--brand-green); padding: 6px 12px; border-radius: 20px; font-weight:900; font-size: 14px;"></span>
+                            </div>
+                            
+                            <div class="chk-grid" id="chkGrid"></div>
+                            
+                            <div class="chk-pagination" id="chkPagination"></div>
+                        </div>
+                        
+                        <div class="new-chk-modal" id="newChkModal">
+                            <div class="new-chk-content">
+                                <h3 style="margin-bottom: 20px; color: var(--element-navy-gradient); font-weight: 900;">צור צ'קליסט חדש</h3>
+                                <input type="text" id="newChkName" class="chk-input" placeholder="שם הצ'קליסט (לדוג: מונדיאל 2026)" autocomplete="off">
+                                <input type="number" id="newChkCount" class="chk-input" placeholder="כמות קלפים כוללת (לדוג: 450)" min="1">
+                                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                    <button class="action-btn" style="flex: 1;" onclick="createNewChecklist()">שמור</button>
+                                    <button class="action-btn" style="flex: 1; background: #e2e8f0; color: var(--text-dark);" onclick="document.getElementById('newChkModal').classList.remove('active')">ביטול</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1191,6 +1247,163 @@
             })
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
 
+// ==========================================
+        // מנוע הצ'קליסטים האישיים (דפדוף, יצירה וסימון V)
+        // ==========================================
+        
+        let userChecklists = []; // המערך שישמור את האלבומים שהגולש יצר
+        let currentChkId = null;
+        let currentChkPage = 1;
+        const CARDS_PER_PAGE = 20; // 20 קלפים בכל דף (כדי לא לעשות גלילה אינסופית)
+
+        function createNewChecklist() {
+            const nameInput = document.getElementById('newChkName');
+            const countInput = document.getElementById('newChkCount');
+            const name = nameInput.value.trim();
+            const count = parseInt(countInput.value);
+
+            if (!name || isNaN(count) || count <= 0) {
+                alert("אנא הזן שם חוקי וכמות קלפים גדולה מ-0.");
+                return;
+            }
+
+            const newChk = {
+                id: Date.now(), // ID ייחודי
+                name: name,
+                totalCards: count,
+                ownedCards: {}, // מילון: שומר איזה מספרי קלפים סומנו ב-V
+                images: {}      // מילון: שומר נתיבי תמונות שהועלו (בעתיד יחובר לשרת)
+            };
+
+            userChecklists.push(newChk);
+            
+            // איפוס טופס וסגירת מודל
+            nameInput.value = '';
+            countInput.value = '';
+            document.getElementById('newChkModal').classList.remove('active');
+            
+            // עדכון סיידבר ובחירה אוטומטית בצ'קליסט החדש
+            renderChecklistsSidebar();
+            selectChecklist(newChk.id);
+        }
+
+        function renderChecklistsSidebar() {
+            const listEl = document.getElementById('myChecklistsList');
+            listEl.innerHTML = '';
+            
+            userChecklists.forEach(chk => {
+                const item = document.createElement('div');
+                item.className = `chk-item ${chk.id === currentChkId ? 'active' : ''}`;
+                item.innerText = chk.name;
+                item.onclick = () => selectChecklist(chk.id);
+                listEl.appendChild(item);
+            });
+        }
+
+        function selectChecklist(id) {
+            currentChkId = id;
+            currentChkPage = 1; // תמיד מחזיר לעמוד הראשון בבחירת אלבום
+            renderChecklistsSidebar();
+            
+            document.getElementById('chkEmptyState').style.display = 'none';
+            document.getElementById('chkActiveState').style.display = 'flex';
+            
+            renderActiveChecklistPage();
+        }
+
+        function renderActiveChecklistPage() {
+            const chk = userChecklists.find(c => c.id === currentChkId);
+            if(!chk) return;
+
+            // עדכון כותרת והתקדמות כללית
+            document.getElementById('chkActiveTitle').innerText = chk.name;
+            const ownedCount = Object.keys(chk.ownedCards).length;
+            document.getElementById('chkActiveProgress').innerText = `${ownedCount} / ${chk.totalCards} הושלמו`;
+
+            // חישוב מספרי הקלפים להצגה בדף הנוכחי
+            const totalPages = Math.ceil(chk.totalCards / CARDS_PER_PAGE);
+            const startIdx = (currentChkPage - 1) * CARDS_PER_PAGE + 1;
+            const endIdx = Math.min(currentChkPage * CARDS_PER_PAGE, chk.totalCards);
+
+            // רינדור 20 המלבנים
+            const grid = document.getElementById('chkGrid');
+            let gridHtml = '';
+            
+            for(let i = startIdx; i <= endIdx; i++) {
+                const isOwned = chk.ownedCards[i] ? 'owned' : '';
+                const isChecked = chk.ownedCards[i] ? 'checked' : '';
+                const imgStyle = chk.images[i] ? `background-image: url('${chk.images[i]}'); background-size: cover; background-position: center; border: none;` : '';
+                
+                // המבנה: מספר למעלה ימין, כפתור פלוס באמצע, צ'קבוקס למטה שמאל
+                gridHtml += `
+                    <div>
+                        <div class="chk-card ${isOwned}" id="chk-card-${i}" style="${imgStyle}">
+                            <div class="chk-num">${i}</div>
+                            <button class="chk-img-btn" onclick="uploadCardImage(${chk.id}, ${i})" title="הוסף תמונה לכרטיס">+</button>
+                            <label class="chk-checkbox-container">
+                                <input type="checkbox" ${isChecked} onchange="toggleCardOwned(${chk.id}, ${i}, this.checked)">
+                                <div class="chk-checkmark"></div>
+                            </label>
+                        </div>
+                    </div>
+                `;
+            }
+            grid.innerHTML = gridHtml;
+
+            // בניית שורת הדפדוף (1, 2, 3...)
+            const pagination = document.getElementById('chkPagination');
+            let pagHtml = '';
+            
+            // חיתוך אופטימלי כדי שלא יהיו 100 כפתורי עמודים
+            let startPage = Math.max(1, currentChkPage - 3);
+            let endPage = Math.min(totalPages, startPage + 6);
+            if(endPage - startPage < 6) startPage = Math.max(1, endPage - 6);
+
+            if(startPage > 1) {
+                pagHtml += `<button class="chk-page-btn" onclick="changeChkPage(1)">1</button>`;
+                if(startPage > 2) pagHtml += `<span style="padding: 8px 4px; color:#64748b;">...</span>`;
+            }
+
+            for(let p = startPage; p <= endPage; p++) {
+                pagHtml += `<button class="chk-page-btn ${p === currentChkPage ? 'active' : ''}" onclick="changeChkPage(${p})">${p}</button>`;
+            }
+
+            if(endPage < totalPages) {
+                if(endPage < totalPages - 1) pagHtml += `<span style="padding: 8px 4px; color:#64748b;">...</span>`;
+                pagHtml += `<button class="chk-page-btn" onclick="changeChkPage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            pagination.innerHTML = pagHtml;
+        }
+
+        function changeChkPage(page) {
+            currentChkPage = page;
+            renderActiveChecklistPage();
+        }
+
+        function toggleCardOwned(chkId, cardNum, isChecked) {
+            const chk = userChecklists.find(c => c.id === chkId);
+            if(!chk) return;
+            
+            // עדכון המילון והעיצוב
+            if(isChecked) {
+                chk.ownedCards[cardNum] = true;
+                document.getElementById(`chk-card-${cardNum}`).classList.add('owned');
+            } else {
+                delete chk.ownedCards[cardNum];
+                document.getElementById(`chk-card-${cardNum}`).classList.remove('owned');
+            }
+            
+            // עדכון שורת הסטטוס (כמה מתוך כמה)
+            const ownedCount = Object.keys(chk.ownedCards).length;
+            document.getElementById('chkActiveProgress').innerText = `${ownedCount} / ${chk.totalCards} הושלמו`;
+        }
+
+        function uploadCardImage(chkId, cardNum) {
+            // בחלק של הפרונטאנד נציג הודעה פשוטה, בהמשך נחבר פה Input מסוג File להעלאה לדאטאבייס
+            alert("מנגנון העלאת תמונה עבור קלף מספר " + cardNum + " יפתח חלון לבחירת קובץ מהגלריה שלך.");
+        }
+        
     </script>
     <script src="search.js"></script>
 </body>
