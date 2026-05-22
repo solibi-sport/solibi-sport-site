@@ -720,7 +720,7 @@
                     </div>
                 </div>
 
-                <div class="card-result-mockup" id="cardResult">
+              <div class="card-result-mockup" id="cardResult">
                     <button id="backToResultsBtn" title="חזור לתוצאות" style="position: absolute; top: 15px; left: 15px; background: var(--brand-green); color: white; border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: 0.3s; z-index: 999;">
                         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                     </button>
@@ -737,10 +737,9 @@
                                 <div style="font-size: 11px; color: #8fa0b3; margin-bottom: 2px;">מחיר שוק (Raw / לא מדורג)</div>
                                 <div class="current-price" id="displayCardPrice">$345.00</div>
                             </div>
-                            <div class="trend-indicator">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                                <span>+ $45.50 (15.2%)</span>
-                            </div>
+                            <button class="action-btn" id="addToPortfolioBtn" style="margin-right: auto; padding: 10px 20px; font-size: 14px; box-shadow: 0 5px 15px rgba(124,168,86,0.4);">
+                                + הוסף למחשבון שווי
+                            </button>
                         </div>
                         <div class="graph-mockup-area">
                             <div class="graph-title">מגמת מחיר - 30 ימים אחרונים</div>
@@ -839,10 +838,47 @@
                 </div>
             </div>
 
-            <div id="tab-6" class="tab-content">
-                <h2 class="content-header-title">מחשבון שווי אוסף</h2>
-                <p class="content-desc">הזן את הקלפים שברשותך וקבל הערכת שווי בזמן אמת, מבוססת על מחירי השוק העדכניים ביותר.</p>
-                <div class="placeholder-box">כאן ישולב מחשבון שווי האוסף הדינאמי...</div>
+           <div id="tab-6" class="tab-content">
+                <h2 class="content-header-title">מחשבון שווי אוסף אישי (Portfolio)</h2>
+                <p class="content-desc">עקוב אחר הערך הכולל של האוסף שלך. המערכת מחשבת את השווי לפי ממוצע המכירות האחרונות בבורסת הקלפים.</p>
+                
+                <div class="portfolio-summary">
+                    <div class="portfolio-box">
+                        <span class="portfolio-label">כמות קלפים באוסף</span>
+                        <span class="portfolio-val" style="color: var(--text-dark);" id="portCardCount">0</span>
+                    </div>
+                    <div class="portfolio-box primary">
+                        <span class="portfolio-label">שווי אוסף מוערך</span>
+                        <span class="portfolio-val" id="portTotalValue">$0.00</span>
+                    </div>
+                    <div class="portfolio-box">
+                        <span class="portfolio-label">מגמה (30 ימים)</span>
+                        <span class="portfolio-val" style="color: #10b981; font-size: 26px;" id="portTrend">+ 0.0%</span>
+                    </div>
+                </div>
+
+                <div class="top-assets-container">
+                    <span class="top-assets-title">היהלומים של האוסף (Top 3)</span>
+                    <div class="top-assets-grid" id="topAssetsGrid">
+                        </div>
+                </div>
+
+                <div class="pantheon-table-wrapper" style="border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px;">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th>שם הקלף</th>
+                                <th>סדרה / נדירות</th>
+                                <th>דירוג (Condition)</th>
+                                <th>שווי שוק עדכני</th>
+                                <th>פעולות</th>
+                            </tr>
+                        </thead>
+                        <tbody id="portfolio-tbody">
+                            </tbody>
+                    </table>
+                </div>
             </div>
 
             <div id="tab-7" class="tab-content">
@@ -1089,9 +1125,84 @@
 }, 100);
         }
 
+// ==========================================
+        // מנוע מחשבון שווי אוסף (Portfolio)
+        // ==========================================
+
+        let myCollection = [];
+
+        function renderPortfolio() {
+            const tbody = document.getElementById('portfolio-tbody');
+            if(!tbody) return;
+
+            if (myCollection.length === 0) {
+                document.getElementById('portCardCount').innerText = "0";
+                document.getElementById('portTotalValue').innerText = "$0.00";
+                document.getElementById('portTrend').innerText = "-";
+                document.getElementById('topAssetsGrid').innerHTML = "<div style='color:#64748b; font-size:14px; text-align:center; width:100%;'>האוסף ריק. חפש קלפים בבורסה והוסף אותם לכאן.</div>";
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; font-weight:bold; color:#64748b;">אין קלפים באוסף כרגע.</td></tr>';
+                return;
+            }
+
+            // חישוב שווי כולל
+            let totalValue = 0;
+            myCollection.forEach(card => {
+                totalValue += parseFloat(card.price || 0);
+            });
+
+            // עדכון הקוביות למעלה
+            document.getElementById('portCardCount').innerText = myCollection.length;
+            document.getElementById('portTotalValue').innerText = `$${totalValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('portTrend').innerText = `+ 2.4%`; 
+
+            // מציאת 3 הקלפים היקרים ביותר
+            let sortedCollection = [...myCollection].sort((a, b) => parseFloat(b.price || 0) - parseFloat(a.price || 0));
+            let top3 = sortedCollection.slice(0, 3);
+            
+            let topAssetsHtml = '';
+            top3.forEach(card => {
+                const imgSrc = (card.image && card.image !== 'no-image') ? card.image : '';
+                const fallbackImg = "this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 24 24\\' fill=\\'%23cbd5e1\\'%3e%3ccircle cx=\\'12\\' cy=\\'12\\' r=\\'10\\'/%3e%3c/svg%3e'";
+                
+                topAssetsHtml += `
+                    <div class="asset-card">
+                        <img src="${imgSrc}" class="asset-img" onerror="${fallbackImg}">
+                        <div class="asset-info">
+                            <span class="asset-name" style="direction:ltr; text-align:left;">${card.name}</span>
+                            <span style="font-size: 10px; color: #8fa0b3; margin-bottom: 5px; direction:ltr; text-align:left; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${card.set || 'ספורט'}</span>
+                            <span class="asset-price">$${parseFloat(card.price || 0).toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('topAssetsGrid').innerHTML = topAssetsHtml;
+
+            // רינדור הטבלה
+            let tableHtml = '';
+            myCollection.forEach((card, idx) => {
+                tableHtml += `
+                    <tr>
+                        <td style="font-weight: bold; color: #cbd5e1;">${idx + 1}</td>
+                        <td style="font-weight: 900; color: var(--element-navy-gradient); text-align: left; direction: ltr;">${card.name}</td>
+                        <td style="font-size: 12px; color: #64748b; text-align: left; direction: ltr;">${card.set || '-'}</td>
+                        <td><span style="background:#f1f5f9; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">Raw</span></td>
+                        <td style="font-weight: 900; color: #16a34a; font-family: sans-serif;">$${parseFloat(card.price || 0).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                        <td><button class="remove-asset-btn" onclick="removeFromPortfolio(${idx})">הסר</button></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = tableHtml;
+        }
+
+        window.removeFromPortfolio = function(index) {
+            myCollection.splice(index, 1);
+            renderPortfolio();
+        };
+        
         document.addEventListener('DOMContentLoaded', () => {
             renderChecklistsSidebar();
-            renderTransactionsTable(); // הוספנו את השורה הזו כדי שהיומן ייטען!
+            renderTransactionsTable();
+            renderPortfolio();
         });
 
 
@@ -1261,6 +1372,19 @@
                 const premiumPlaceholder = "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22200%22%20viewBox%3D%220%200%20150%20200%22%3E%3Crect%20width%3D%22150%22%20height%3D%22200%22%20fill%3D%22%230c1b2e%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20dominant-baseline%3D%22middle%22%20text-anchor%3D%22middle%22%20font-family%3D%22sans-serif%22%20font-size%3D%2214%22%20fill%3D%22%237ca856%22%20font-weight%3D%22bold%22%3ENo%20Image%20Available%3C%2Ftext%3E%3C%2Fsvg%3E";
                 imgEl.onerror = function() { this.onerror = null; this.src = premiumPlaceholder; };
                 imgEl.src = (card.image && card.image !== 'no-image') ? card.image : premiumPlaceholder;
+            }
+
+            // מנקודת הסיום של if (imgEl) {...} הוסף את זה:
+            const addToPortfolioBtn = document.getElementById('addToPortfolioBtn');
+            if (addToPortfolioBtn) {
+                const newBtn = addToPortfolioBtn.cloneNode(true);
+                addToPortfolioBtn.parentNode.replaceChild(newBtn, addToPortfolioBtn);
+                
+                newBtn.addEventListener('click', () => {
+                    myCollection.push(card);
+                    renderPortfolio();
+                    alert(`הקלף נוסף בהצלחה למחשבון האוסף שלך!`);
+                });
             }
         }
 
