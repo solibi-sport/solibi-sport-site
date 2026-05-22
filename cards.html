@@ -1089,8 +1089,9 @@
 }, 100);
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchLiveMatches();
+        document.addEventListener('DOMContentLoaded', () => {
+            renderChecklistsSidebar();
+            renderTransactionsTable(); // הוספנו את השורה הזו כדי שהיומן ייטען!
         });
 
 
