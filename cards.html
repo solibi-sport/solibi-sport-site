@@ -613,6 +613,38 @@
             font-weight: 900;
             color: var(--brand-green);
         }
+
+        /* עיצוב כפתור הוספת עסקה חדשה ביומן העסקאות */
+        .btn-add-transaction {
+            background: #0a2e57; /* נייבי כהה המותג (כמו בדוגמה המקורית) */
+            color: #ffffff; /* כיתוב לבן */
+            border: none;
+            padding: 12px 20px;
+            margin: 15px; /* מרווח (כמו בצ'קליסט) */
+            border-radius: 8px; /* מלבן עם פינות מעוגלות */
+            font-weight: 900; /* כיתוב מודגש */
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex; /* Flexbox לשליטה בסדר */
+            flex-direction: row-reverse; /* הפוך את הסדר (כדי שהפלוס יהיה משמאל ב-RTL) */
+            align-items: center; /* מרכז אנכי */
+            justify-content: center; /* מרכז אופקי */
+            gap: 10px; /* רווח בין הפלוס לטקסט */
+            box-shadow: 0 4px 10px rgba(6, 33, 65, 0.2);
+            transition: 0.3s;
+        }
+        .btn-add-transaction:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(6, 33, 65, 0.3);
+            background: #0d3b6e; /* מבהיר קצת את הנייבי בהובר */
+        }
+        /* עיצוב הפלוס עצמו (כמו בצ'קליסט) */
+        .btn-add-transaction span.plus-icon {
+            font-size: 18px;
+            font-weight: 900;
+            color: #7ca856; /* ירוק המותג המקורי */
+        }
         
     </style>
 </head>
@@ -833,7 +865,10 @@
                 <p class="content-desc">מעקב אחרי כל הקניות, המכירות והרווחים שלך בשוק הקלפים במקום אחד מסודר. המערכת מחשבת אוטומטית את אחוזי הרווח/הפסד שלך.</p>
                 
                 <div class="tx-controls">
-                    <button class="action-btn" onclick="alert('פתיחת חלון רישום עסקה חדשה...')">+ הוסף עסקה חדשה</button>
+                   <button class="btn-add-transaction" onclick="alert('פתיחת חלון רישום עסקה חדשה...')">
+    <span>הוסף עסקה חדשה</span>
+    <span class="plus-icon">+</span>
+</button>
                     <div class="tx-summary-box">
                         <div class="tx-summary-item">
                             <span class="tx-summary-label">סה"כ השקעה</span>
