@@ -1281,8 +1281,29 @@
         // מנוע הצ'קליסטים האישיים (דפדוף, יצירה וסימון V)
         // ==========================================
         
-        let userChecklists = []; // המערך שישמור את האלבומים שהגולש יצר
-        let currentChkId = null;
+let userChecklists = [
+            {
+                id: 101,
+                name: "סופרגול 89/99",
+                totalCards: 450,
+                ownedCards: { 1: true, 4: true, 7: true, 12: true, 15: true, 21: true }, // מדבקות מסומנות לדוגמה בדף הראשון
+                images: {}
+            },
+            {
+                id: 102,
+                name: "סופרגול 2000",
+                totalCards: 608,
+                ownedCards: { 2: true, 8: true, 14: true, 19: true }, // מדבקות מסומנות לדוגמה
+                images: {}
+            },
+            {
+                id: 103,
+                name: "מונדיאל 2026",
+                totalCards: 980,
+                ownedCards: { 5: true, 10: true, 11: true, 20: true }, // מדבקות מסומנות לדוגמה
+                images: {}
+            }
+        ];        let currentChkId = null;
         let currentChkPage = 1;
 const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
         
@@ -1433,7 +1454,12 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
             // בחלק של הפרונטאנד נציג הודעה פשוטה, בהמשך נחבר פה Input מסוג File להעלאה לדאטאבייס
             alert("מנגנון העלאת תמונה עבור קלף מספר " + cardNum + " יפתח חלון לבחירת קובץ מהגלריה שלך.");
         }
-        
+
+        // הפעלת רשימת הצ'קליסטים מיד כשהעמוד עולה
+        document.addEventListener('DOMContentLoaded', () => {
+            renderChecklistsSidebar();
+        });
+
     </script>
     <script src="search.js"></script>
 </body>
