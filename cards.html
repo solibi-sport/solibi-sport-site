@@ -503,9 +503,22 @@
         /* אלמנטים בתוך הקלף */
         .chk-num { position: absolute; top: 5px; right: 8px; font-size: 15px; font-weight: 900; color: var(--element-navy-gradient); z-index: 2; }
         
-        .chk-img-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--brand-green); color: #fff; border: none; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; box-shadow: 0 4px 10px rgba(124, 168, 86, 0.3); transition: transform 0.2s; }
+/* כפתור תמונה במצב רגיל (חסר באוסף) - צבע אדום */
+        .chk-img-btn { 
+            width: 36px; height: 36px; border-radius: 50%; 
+            background: #ef4444; /* אדום */
+            color: #fff; border: none; font-size: 20px; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center; z-index: 2; 
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); 
+            transition: all 0.3s ease; 
+        }
         .chk-img-btn:hover { transform: scale(1.1); }
-        
+
+        /* כפתור תמונה במצב קיים באוסף (מסומן V) - מתחלף לירוק */
+        .chk-card.owned .chk-img-btn {
+            background: var(--brand-green);
+            box-shadow: 0 4px 10px rgba(124, 168, 86, 0.3);
+        }        
         .chk-checkbox-container { position: absolute; bottom: 8px; left: 8px; z-index: 2; cursor: pointer; }
         .chk-checkbox-container input { display: none; }
         .chk-checkmark { width: 24px; height: 24px; border: 2px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; background: #fff; transition: 0.2s; }
