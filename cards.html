@@ -1029,6 +1029,39 @@
             padding: 0 35px 25px 35px !important;
             border-bottom: 3px solid var(--brand-green) !important;
         }
+
+        /* =========================================
+           אילוץ עיצוב צ'קליסטים - כסוף, אדמדם וירקרק
+           ========================================= */
+        
+        /* 1. כותרת בנייבי שלנו */
+        #chkActiveTitle {
+            color: var(--element-navy-gradient) !important;
+            -webkit-text-fill-color: initial !important; /* מבטל את הגרדיאנט הישן שתקע את הצבע */
+            color: #062141 !important; 
+        }
+
+        /* 2. רקע הגריד בכסוף שלנו */
+        .chk-grid { 
+            background: var(--bg-silver-matte) !important; 
+            padding: 15px !important; 
+            border-radius: 8px !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+        
+        /* 3. כרטיס חסר (ללא V) - אדמדם השתקפותי */
+        .chk-card { 
+            background: rgba(239, 68, 68, 0.06) !important; /* אדום שקוף מאוד */
+            border: 2px dashed rgba(239, 68, 68, 0.4) !important; /* מסגרת אדומה מקווקות עדינה */
+            box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.08) !important; /* הילה פנימית אדומה */
+        }
+        
+        /* 4. כרטיס קיים (עם V) - ירוק השתקפותי בהיר */
+        .chk-card.owned { 
+            background: rgba(124, 168, 86, 0.12) !important; /* ירוק שקוף בהיר */
+            border: 2px solid var(--brand-green) !important; /* מסגרת ירוקה מלאה */
+            box-shadow: inset 0 0 20px rgba(124, 168, 86, 0.15) !important; /* הילה פנימית ירוקה */
+        }
         
     </style>
 </head>
