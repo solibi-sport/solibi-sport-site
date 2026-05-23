@@ -558,16 +558,16 @@
         .modal-btn-cancel:hover { background: rgba(255,255,255,0.1); }
 
 /* =========================================
-           עיצוב טבלת יומן עסקאות ואוסף
+           עיצוב טבלת יומן עסקאות ואוסף (נמתח עד למטה)
            ========================================= */
-        /* המעטפת היא זו שנגללת ונמתחת למטה */
         .pantheon-table-wrapper {
             position: relative;
-            flex: 1; /* מותח את הטבלה למטה למילוי המקום הפנוי */
-            min-height: 0; /* חובה כדי שהגלילה תעבוד בתוך הפלקס */
-            margin-bottom: 20px; /* משאיר בדיוק 20 פיקסלים מהתחתית! */
-            overflow-y: auto;
-            direction: rtl; /* פס גלילה בצד ימין */
+            flex: 1; /* לוקח את כל המקום הפנוי עד לתחתית! */
+            display: flex; /* הופך את המעטפת לפלקס כדי למתוח את הטבלה */
+            flex-direction: column;
+            margin-bottom: 20px; /* שוליים קבועים מהתחתית */
+            overflow: hidden; /* מונע גלישה מחוץ לקופסה המעוגלת */
+            direction: rtl; 
             border-radius: 12px;
             background: #fff;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -576,23 +576,63 @@
         .pantheon-table-wrapper .transactions-table {
             width: 100%; border-collapse: collapse; font-size: 14px;
             text-align: center; white-space: nowrap; direction: rtl;
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* הטבלה עצמה תופסת 100% מהמעטפת הגדולה */
         }
 
-        /* כותרות מקובעות למעלה */
+        /* קיבוע הכותרות */
+        .transactions-table thead {
+            flex-shrink: 0; /* מונע מהכותרת להתכווץ */
+        }
+        
+        .transactions-table thead tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed; /* מחלק עמודות שווה בשווה */
+        }
+
         .transactions-table th {
             background: var(--element-navy-gradient); color: #ffffff;
             font-weight: 700; padding: 15px 12px; 
-            position: sticky; top: 0;
-            z-index: 10; border-bottom: 3px solid var(--brand-green);
+            border-bottom: 3px solid var(--brand-green);
         }
-        
-        /* שורת סה"כ מקובעת למטה */
-        .transactions-table tfoot td {
+
+        /* אזור התוכן הנגלל - מתרחב למילוי כל המקום הפנוי! */
+        .transactions-table tbody {
+            flex: 1; /* ממלא את כל הרווח בין הכותרת לסה"כ */
+            overflow-y: auto; /* גלילה פנימית אם יש הרבה קלפים */
+            display: block;
+        }
+
+        .transactions-table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed; /* שומר על סנכרון עם הכותרות */
+            border-bottom: 1px solid #e2e8f0; transition: 0.2s;
+        }
+
+        /* קיבוע שורת הסה"כ בתחתית */
+        .transactions-table tfoot {
+            flex-shrink: 0; /* מונע משורת הסה"כ להתכווץ */
             background: var(--element-navy-gradient);
             border-top: 3px solid var(--brand-green);
-            position: sticky; bottom: -1px; /* נדבק לתחתית הנגללת */
-            z-index: 10;
         }
+
+        .transactions-table tfoot tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed; /* שומר על סנכרון עם הכותרות */
+        }
+
+        .transactions-table tfoot td {
+            padding: 15px 12px; /* מוודא שיש ריווח לשורת הסה"כ */
+        }
+
+        /* עיצוב פס הגלילה */
+        .transactions-table tbody::-webkit-scrollbar { width: 8px; }
+        .transactions-table tbody::-webkit-scrollbar-track { background: #f1f5f9; }
+        .transactions-table tbody::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 10px; }
 
         .remove-asset-btn { 
             background: var(--element-navy-gradient); 
