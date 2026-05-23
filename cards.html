@@ -766,6 +766,43 @@
         }
         .trade-upload-card:hover { background: #f1f5f9; border-color: var(--brand-green); color: var(--brand-green); }
         .trade-upload-card svg { width: 40px; height: 40px; margin-bottom: 15px; opacity: 0.7;}
+
+/* כפתור שמירת מודעה (לב) */
+        .save-ad-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255,255,255,0.8);
+            border: 1px solid #e2e8f0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #cbd5e1;
+            transition: 0.3s;
+            z-index: 10;
+        }
+        .save-ad-btn:hover { background: #fff; color: #ef4444; border-color: #ef4444; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2); }
+        .save-ad-btn.saved { color: #ef4444; background: #fee2e2; border-color: #fca5a5; }
+        .save-ad-btn.saved svg { fill: #ef4444; }
+
+        /* אזורים בתוך פופאפ ההצעה */
+        .offer-section-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        .offer-section-title { font-size: 13px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;}
+        .cash-input-wrapper { display: flex; align-items: center; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; direction: ltr;}
+        .cash-input-wrapper span { background: #f1f5f9; padding: 10px 15px; font-weight: 900; color: #475569; border-right: 1px solid #cbd5e1;}
+        .cash-input-wrapper input { flex: 1; border: none; padding: 10px; outline: none; font-family: inherit; font-size: 16px; font-weight: bold;}
+        .cash-input-wrapper input:focus { background: #f0fdf4; }
         
     </style>
 </head>
@@ -1132,8 +1169,12 @@
                         <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                         מרכז העסקאות (2 חדשות)
                     </button>
+                    <button class="trade-tab-btn" onclick="switchTradeTab('trade-saved', this)">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        מודעות שמורות
+                    </button>
                 </div>
-
+                
                 <div id="trade-market" class="trade-inner-pane active">
                     <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
                         <span style="font-weight:900; color:var(--text-dark);">מודעות אחרונות שעלו:</span>
@@ -1232,12 +1273,21 @@
                     </div>
                 </div>
 
+                <div id="trade-saved" class="trade-inner-pane">
+                    <div id="savedEmptyState" style="text-align: center; padding: 40px; color: #94a3b8; font-weight: bold; font-size: 18px;">
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" stroke-width="2" fill="none" style="margin-bottom: 15px; opacity: 0.5;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg><br>
+                        עדיין לא שמרת מודעות.<br>לחץ על סמל הלב במודעות שמעניינות אותך כדי לשמור אותן כאן.
+                    </div>
+                </div>
+                
             </div>
             
         </aside>
 
     </main>
 
+
+    
     <footer class="footer">
         <div id="ticker-placeholder"></div>
     </footer>
@@ -2086,6 +2136,24 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
             } else {
                 profitEl.innerText = `-$${Math.abs(netProfit).toFixed(2)}`;
                 profitEl.className = 'tx-summary-value tx-loss';
+            }
+        }
+
+        // פתיחת פופאפ הצעה
+        function openOfferModal(cardName, targetUser) {
+            document.getElementById('offerTargetUser').innerText = targetUser;
+            document.getElementById('offerTargetCard').innerText = cardName;
+            document.getElementById('offerModal').classList.add('show');
+        }
+
+        // מנגנון שמירת מודעות (סימון הלב)
+        function toggleSaveAd(btn) {
+            const isSaved = btn.classList.toggle('saved');
+            if (isSaved) {
+                // רק הודעת קונסול שקטה, בלי לעצבן עם Alert
+                console.log("המודעה נשמרה במועדפים!");
+                // אם רוצים שזה באמת יופיע בטאב, צריך לשכפל את ה-HTML של הכרטיסייה לתוך #trade-saved.
+                // כרגע הפכנו את הלב לאדום.
             }
         }
 
