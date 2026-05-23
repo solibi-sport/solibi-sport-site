@@ -803,6 +803,23 @@
         .cash-input-wrapper span { background: #f1f5f9; padding: 10px 15px; font-weight: 900; color: #475569; border-right: 1px solid #cbd5e1;}
         .cash-input-wrapper input { flex: 1; border: none; padding: 10px; outline: none; font-family: inherit; font-size: 16px; font-weight: bold;}
         .cash-input-wrapper input:focus { background: #f0fdf4; }
+
+/* === עיצוב מודל הצעות (Popup) === */
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            background: rgba(6, 33, 65, 0.8); backdrop-filter: blur(5px); 
+            display: none; justify-content: center; align-items: center; 
+            z-index: 2000; opacity: 0; transition: opacity 0.3s ease; 
+        }
+        .modal-overlay.show { display: flex !important; opacity: 1; }
+        .modal-box { 
+            background: #ffffff; padding: 30px; border-radius: 16px; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); 
+            max-width: 500px; width: 95%; transform: scale(0.9); 
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative;
+        }
+        .modal-overlay.show .modal-box { transform: scale(1); }
         
     </style>
 </head>
@@ -1286,7 +1303,45 @@
 
     </main>
 
+<div class="modal-overlay" id="offerModal">
+        <div class="modal-box">
+            <button style="position:absolute; left:20px; top:20px; background:none; border:none; font-size:20px; color:#94a3b8; cursor:pointer;" onclick="document.getElementById('offerModal').classList.remove('show')">✕</button>
+            <h2 style="font-size: 20px; margin-bottom: 20px; color: var(--text-dark);">הגשת הצעה למשתמש <span id="offerTargetUser" style="color:var(--brand-green);"></span></h2>
+            
+            <div class="offer-section-box">
+                <div class="offer-section-title">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    אתה מבקש את הקלף:
+                </div>
+                <div id="offerTargetCard" style="font-weight: 900; font-size: 16px; direction: ltr; text-align: right;"></div>
+            </div>
 
+            <div class="offer-section-box">
+                <div class="offer-section-title">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    מה אתה מציע בתמורה?
+                </div>
+                <label style="font-size: 12px; color: #64748b; margin-bottom: 5px; display: block;">בחר קלף מהאוסף שלך:</label>
+                <select style="width: 100%; margin-bottom: 15px; font-family: inherit; font-weight: bold; direction: ltr; border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px;">
+                    <option value="">-- בחר קלף להצעה --</option>
+                    <option value="1">Oscar Gloukh - 2023 Topps Auto</option>
+                    <option value="2">Bellingham - Obsidian</option>
+                    <option value="none">אני רוצה להציע רק כסף</option>
+                </select>
+
+                <label style="font-size: 12px; color: #64748b; margin-bottom: 5px; display: block;">תוספת תשלום (לאיזון - אופציונלי):</label>
+                <div class="cash-input-wrapper">
+                    <span>$</span>
+                    <input type="number" placeholder="0.00" min="0" step="1">
+                </div>
+            </div>
+
+            <button class="trade-action-btn" style="display:flex; justify-content:center; align-items:center; gap:8px; font-size:16px; padding: 12px;" onclick="alert('ההצעה נשלחה בהצלחה!'); document.getElementById('offerModal').classList.remove('show');">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                שלח הצעה רשמית
+            </button>
+        </div>
+    </div>
     
     <footer class="footer">
         <div id="ticker-placeholder"></div>
