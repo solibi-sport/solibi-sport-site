@@ -2400,9 +2400,9 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
         const ownedCount = Object.keys(chk.ownedCards).length;
         const percent = Math.round((ownedCount / chk.totalCards) * 100);
         
-        // הכנסת הנתונים בסדר הנכון: אחוזים, קו מפריד, והכמות (הכל בלבן)
+       // הכנסת הנתונים בסדר הנכון: אחוזים בירוק, קו מפריד, והכמות
         document.getElementById('chkActiveProgress').innerHTML = `
-            <span style="color: #ffffff; font-weight: 900; margin-left: 10px;">${percent}% השלמה</span>
+            <span style="color: var(--brand-green); font-weight: 900; margin-left: 10px;">${percent}% השלמה</span>
             <span style="color: rgba(255,255,255,0.4); font-weight: 400; margin-left: 10px;">|</span>
             <span style="color: #ffffff; font-weight: 900; direction: ltr; display: inline-block;">${ownedCount} / ${chk.totalCards}</span>
         `;
