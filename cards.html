@@ -1232,47 +1232,68 @@
         .transactions-table tr > :nth-child(8):nth-last-child(1) { width: 14%; text-align: center; } /* הערות */
 
 /* =========================================
-           זירת החלפות - רוחב עמודות וכפתורי פעולה (נקי ומדויק)
+           זירת החלפות - איפוס ותיקון סופי ומוחלט! 
            ========================================= */
         
-        /* חלוקת אחוזים מדויקת (סה"כ 100%) - שומר על יישור מושלם בין כותרת לשורה */
-        #trade-deals .transactions-table th:nth-child(1), #trade-deals .transactions-table td:nth-child(1) { width: 18% !important; text-align: center !important; } 
-        #trade-deals .transactions-table th:nth-child(2), #trade-deals .transactions-table td:nth-child(2) { width: 18% !important; text-align: center !important; } 
-        #trade-deals .transactions-table th:nth-child(3), #trade-deals .transactions-table td:nth-child(3) { width: 16% !important; text-align: center !important; } 
-        #trade-deals .transactions-table th:nth-child(4), #trade-deals .transactions-table td:nth-child(4) { width: 14% !important; text-align: center !important; } 
-        #trade-deals .transactions-table th:nth-child(5), #trade-deals .transactions-table td:nth-child(5) { width: 34% !important; text-align: center !important; }
+        /* 1. ביטול כל התחכמות הגלילה - החזרת הטבלה להתנהגות טבעית ומרותכת */
+        #trade-deals .pantheon-table-wrapper { 
+            overflow: hidden !important; 
+            height: auto !important; 
+        }
+        #trade-deals .transactions-table { 
+            display: table !important; 
+            width: 100% !important; 
+            table-layout: fixed !important; 
+        }
+        #trade-deals .transactions-table thead { display: table-header-group !important; }
+        #trade-deals .transactions-table tbody { display: table-row-group !important; }
+        #trade-deals .transactions-table tr { display: table-row !important; }
+        
+        #trade-deals .transactions-table th, 
+        #trade-deals .transactions-table td {
+            display: table-cell !important;
+            vertical-align: middle !important;
+            text-align: center !important;
+            padding: 15px 5px !important;
+            white-space: normal !important;
+            word-wrap: break-word !important;
+        }
 
-        /* סידור 3 הכפתורים: ימין (אשר), אמצע (מו"מ), שמאל (דחה) - בשורה אחת! */
+        /* 2. חלוקת אחוזים סימטרית מדויקת (סה"כ 100%) */
+        #trade-deals .transactions-table th:nth-child(1), #trade-deals .transactions-table td:nth-child(1) { width: 20% !important; } 
+        #trade-deals .transactions-table th:nth-child(2), #trade-deals .transactions-table td:nth-child(2) { width: 20% !important; } 
+        #trade-deals .transactions-table th:nth-child(3), #trade-deals .transactions-table td:nth-child(3) { width: 15% !important; } 
+        #trade-deals .transactions-table th:nth-child(4), #trade-deals .transactions-table td:nth-child(4) { width: 15% !important; } 
+        #trade-deals .transactions-table th:nth-child(5), #trade-deals .transactions-table td:nth-child(5) { width: 30% !important; }
+
+        /* 3. נעילת הכפתורים: שורה אחת (ימין-אמצע-שמאל), חלוקה שווה, ללא פריצת גבולות */
         .trade-action-wrapper { 
             display: flex !important;
             flex-direction: row !important;
-            gap: 5px !important; 
+            gap: 4px !important; 
             justify-content: center !important; 
             align-items: center !important; 
-            flex-wrap: nowrap !important; /* בשום אופן לא לרדת שורה */
+            width: 100% !important;
         }
         
-        /* עיצוב הכפתורים כדי שייכנסו למקום בלי לשבור כלום */
         .trade-action-wrapper button {
-            padding: 6px 10px !important; 
+            flex: 1 1 0px !important; /* מתחלקים יפה בשטח הפנוי בלי לדחוף החוצה */
+            min-width: 0 !important; /* מונע מהכפתור להתרחב מעבר לעמודה */
+            padding: 8px 2px !important; 
             font-size: 11.5px !important; 
             border-radius: 6px !important; 
             font-weight: bold !important; 
             cursor: pointer !important; 
             transition: 0.2s !important; 
             font-family: inherit !important;
-            white-space: nowrap !important; /* טקסט לא נשבר */
-            flex: 1 1 auto !important; /* מתחלקים יפה בשטח הפנוי */
+            white-space: nowrap !important;
+            overflow: hidden !important; 
+            text-overflow: ellipsis !important; /* במקרה שהמסך ממש צר, יופיעו 3 נקודות ולא חיתוך אדום מגעיל */
         }
 
         .btn-trade-accept { background: var(--brand-green) !important; color: #fff !important; border: none !important; }
-        .btn-trade-accept:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(124, 168, 86, 0.4); }
-        
         .btn-trade-nego { background: #f59e0b !important; color: #fff !important; border: none !important; }
-        .btn-trade-nego:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(245, 158, 11, 0.4); }
-        
         .btn-trade-reject { background: #ef4444 !important; color: #fff !important; border: none !important; }
-        .btn-trade-reject:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4); }
         
     </style>
 </head>
