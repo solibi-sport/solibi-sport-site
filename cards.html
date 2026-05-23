@@ -820,6 +820,47 @@
             position: relative;
         }
         .modal-overlay.show .modal-box { transform: scale(1); }
+
+        /* === עיצוב פופאפ הצעות (רקע נייבי, קוביות כסף) === */
+        #offerModal .modal-box {
+            background: var(--element-navy-gradient);
+            border: 2px solid var(--brand-green); /* מסגרת ירוקה עדינה מסביב */
+        }
+        
+        /* צבע כותרת הפופאפ ללבן */
+        #offerModal h2 {
+            color: #ffffff !important;
+        }
+        
+        /* צבע כפתור ה-X לסגירה ללבן */
+        #offerModal button[onclick*="remove('show')"] {
+            color: #ffffff !important;
+            opacity: 0.7;
+        }
+        #offerModal button[onclick*="remove('show')"]:hover {
+            color: var(--brand-green) !important;
+            opacity: 1;
+        }
+
+        /* הקוביות הפנימיות - אפור כסוף */
+        #offerModal .offer-section-box {
+            background: var(--bg-silver-matte);
+            border: 1px solid #cbd5e1;
+            box-shadow: inset 0 2px 5px rgba(255,255,255,0.5); /* הברקה קטנה לבפנים */
+        }
+        
+        /* הפיכת הטקסטים של ההסברים לכהים יותר כדי שיבלטו על הכסף */
+        #offerModal label {
+            color: var(--text-dark) !important;
+            font-weight: 900;
+        }
+
+        /* הבטחת צבע לבן נקי לשדות הבחירה וההזנה */
+        #offerModal select, 
+        #offerModal .cash-input-wrapper {
+            background: #ffffff !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
         
     </style>
 </head>
