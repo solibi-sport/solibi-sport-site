@@ -500,10 +500,43 @@
         
         /* צבע הכותרת של הצ'קליסט הפעיל */
         #chkActiveTitle {
-            color: var(--element-navy-gradient) !important; /* אילוץ הצבע לנייבי שלנו */
-            background: -webkit-linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; /* נותן אפקט של גרדיאנט על הטקסט עצמו! */
+            color: #0a2e57 !important; /* צבע נייבי סוליד יוקרתי (עוקף חסימות דפדפן) */
+        }
+
+        /* הגריד של הקלפים עם רקע כסוף */
+        .chk-grid { 
+            display: grid; 
+            grid-template-columns: repeat(7, 1fr); 
+            gap: 15px; 
+            flex: 1; 
+            align-content: start; 
+            overflow-y: auto; 
+            padding: 15px; 
+            direction: ltr; 
+            background: var(--bg-silver-matte); 
+            border-radius: 8px; 
+            border: 1px solid #cbd5e1; 
+        }
+        .chk-grid > div { direction: rtl; } 
+        
+        /* כרטיס רגיל (לא מסומן) - רקע אדמדם השתקפותי */
+        .chk-card { 
+            aspect-ratio: 2.5/3.5; 
+            border: 2px dashed #f87171; /* מסגרת אדמדמה עדינה */
+            border-radius: 8px; 
+            position: relative; 
+            background: rgba(239, 68, 68, 0.06); /* רקע אדום שקוף ובהיר מאוד */
+            transition: 0.2s; 
+            display: flex; align-items: center; justify-content: center; 
+            overflow: hidden; 
+            box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.05); /* הילה פנימית אדמדמה */
+        }
+        
+        /* כרטיס מסומן (V) - רקע ירוק השתקפותי */
+        .chk-card.owned { 
+            border: 2px solid var(--brand-green); 
+            background: rgba(124, 168, 86, 0.12) !important; /* ירוק שקוף ובהיר */
+            box-shadow: inset 0 0 20px rgba(124, 168, 86, 0.15); /* הילה פנימית ירקרקה */
         }
 
         /* הגריד של הקלפים עם רקע כסוף */
