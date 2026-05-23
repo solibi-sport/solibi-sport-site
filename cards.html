@@ -2395,11 +2395,17 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
             const chk = userChecklists.find(c => c.id === currentChkId);
             if(!chk) return;
 
-            // עדכון כותרת והתקדמות כללית
-            document.getElementById('chkActiveTitle').innerText = chk.name;
-            const ownedCount = Object.keys(chk.ownedCards).length;
-            document.getElementById('chkActiveProgress').innerText = `${ownedCount} / ${chk.totalCards} הושלמו`;
-
+           // עדכון כותרת והתקדמות כללית
+        document.getElementById('chkActiveTitle').innerText = chk.name;
+        const ownedCount = Object.keys(chk.ownedCards).length;
+        const percent = Math.round((ownedCount / chk.totalCards) * 100);
+        
+        // הכנסת הנתונים בסדר הנכון: אחוזים, קו מפריד, והכמות (הכל בלבן)
+        document.getElementById('chkActiveProgress').innerHTML = `
+            <span style="color: #ffffff; font-weight: 900; margin-left: 10px;">${percent}% השלמה</span>
+            <span style="color: rgba(255,255,255,0.4); font-weight: 400; margin-left: 10px;">|</span>
+            <span style="color: #ffffff; font-weight: 900; direction: ltr; display: inline-block;">${ownedCount} / ${chk.totalCards}</span>
+        `;
             // חישוב מספרי הקלפים להצגה בדף הנוכחי
             const totalPages = Math.ceil(chk.totalCards / CARDS_PER_PAGE);
             const startIdx = (currentChkPage - 1) * CARDS_PER_PAGE + 1;
@@ -2474,9 +2480,15 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
                 document.getElementById(`chk-card-${cardNum}`).classList.remove('owned');
             }
             
-            // עדכון שורת הסטטוס (כמה מתוך כמה)
+           // עדכון שורת הסטטוס (כמה מתוך כמה)
             const ownedCount = Object.keys(chk.ownedCards).length;
-            document.getElementById('chkActiveProgress').innerText = `${ownedCount} / ${chk.totalCards} הושלמו`;
+            const percent = Math.round((ownedCount / chk.totalCards) * 100);
+            
+            document.getElementById('chkActiveProgress').innerHTML = `
+                <span style="color: #ffffff; font-weight: 900; margin-left: 10px;">${percent}% השלמה</span>
+                <span style="color: rgba(255,255,255,0.4); font-weight: 400; margin-left: 10px;">|</span>
+                <span style="color: #ffffff; font-weight: 900; direction: ltr; display: inline-block;">${ownedCount} / ${chk.totalCards}</span>
+            `;
         }
 
         function uploadCardImage(chkId, cardNum) {
