@@ -1062,6 +1062,54 @@
             border: 2px solid var(--brand-green) !important; /* מסגרת ירוקה מלאה */
             box-shadow: inset 0 0 20px rgba(124, 168, 86, 0.15) !important; /* הילה פנימית ירוקה */
         }
+
+        /* =========================================
+           הפיכת המעטפת הכללית של הצ'קליסט לבלו-נייבי
+           ========================================= */
+        
+        /* 1. הקוביה הגדולה שעוטפת הכל */
+        .chk-main {
+            background: var(--element-navy-gradient) !important;
+            border: 2px solid var(--brand-green) !important; /* מסגרת ירוקה תוחמת */
+        }
+
+        /* 2. הכותרת של האלבום (חייבת להיות לבנה עכשיו!) */
+        #chkActiveTitle {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important; /* דורס את הגרדיאנט הקודם */
+        }
+
+        /* 3. הקווים המפרידים למעלה ולמטה (שקופים-לבנים במקום אפורים) */
+        #chkActiveState > div:first-child {
+            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        .chk-pagination {
+            border-top-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* 4. התאמת מספרי העמודים (Pagination) לרקע הנייבי */
+        .chk-page-btn {
+            background: rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        .chk-page-btn:hover {
+            border-color: var(--brand-green) !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+        }
+        .chk-page-btn.active {
+            background: var(--brand-green) !important;
+            border-color: var(--brand-green) !important;
+            color: #ffffff !important;
+        }
+        .chk-pagination span {
+            color: #cbd5e1 !important; /* צבע ה-3 נקודות (...) */
+        }
+
+        /* 5. טקסט מצב ריק (במקרה שלא נבחר אלבום) */
+        #chkEmptyState {
+            color: #cbd5e1 !important;
+        }
         
     </style>
 </head>
