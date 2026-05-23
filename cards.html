@@ -731,13 +731,13 @@
         .trade-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 5px 0; }
         
         .trade-card { 
-            background: var(--element-navy-gradient); /* רקע נייבי כהה */
-            border: 2px solid var(--brand-green); /* מסגרת ירוקה שלנו */
+            background: var(--bg-silver-matte); /* רקע כסוף */
+            border: 2px solid var(--brand-green); /* מסגרת ירוקה */
             border-radius: 12px; padding: 15px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; display: flex; flex-direction: column; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; 
             position: relative;
         }
-        .trade-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(124, 168, 86, 0.3); }
+        .trade-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(6,33,65,0.15); }
         
         /* הקוביה של התמונה בפנים */
         .trade-card-img-wrapper { 
@@ -746,20 +746,25 @@
         }
         .trade-card-img-wrapper img { width: 100%; height: 100%; object-fit: contain; }
         
-        /* טקסטים הופכים ללבנים כדי לבלוט על הנייבי */
-        .trade-card-title { font-size: 16px; font-weight: 900; color: #ffffff; margin-bottom: 5px; text-align: right; }
+        /* טקסטים כהים כי הרקע כסוף */
+        .trade-card-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; text-align: right; }
         
         .trade-user-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 11px; }
-        .trade-user-name { font-weight: 700; color: #e2e8f0; }
+        .trade-user-name { font-weight: 700; color: var(--text-dark); }
         .trade-trust { color: #f59e0b; font-weight: 900; direction: ltr; }
         
         .trade-badge { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; margin-bottom: 8px; width: 100%; }
         
-        /* מלבן 'מציע' - כסוף עם טקסט אדום */
-        .trade-badge.offering { background: var(--bg-silver-matte); color: #ef4444; border: 1px solid #cbd5e1; }
+        /* מלבני המידע - בלו נייבי עם טקסט כללי לבן */
+        .trade-badge.offering, .trade-badge.seeking { 
+            background: var(--element-navy-gradient); 
+            color: #ffffff; 
+            border: 1px solid transparent; 
+        }
         
-        /* מלבן 'מחפש' - כסוף עם טקסט ירוק שלנו */
-        .trade-badge.seeking { background: var(--bg-silver-matte); color: var(--brand-green); border: 1px solid #cbd5e1; }
+        /* צביעת המילים הספציפיות בתוך המלבנים */
+        .trade-badge .condition-label { color: var(--brand-green); } /* "מצב:" בירוק */
+        .trade-badge .seeking-label { color: #ef4444; } /* "מחפש:" באדום */
         
         .trade-action-btn { 
             background: var(--brand-green); color: white; border: none; width: 100%; 
@@ -1263,14 +1268,14 @@
                                 <img src="https://i.ebayimg.com/images/g/sM8AAOSwZXRj8fU0/s-l1200.webp" onerror="this.src='https://via.placeholder.com/150x200?text=Card'">
                             </div>
                             <div class="trade-card-title" style="direction: ltr;">Lionel Messi Base</div>
-                            <div class="trade-badge offering">
-                                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                                מציע (מצב: משומש קל)
-                            </div>
-                            <div class="trade-badge seeking">
-                                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 14 12 9 7 14"></polyline><line x1="12" y1="9" x2="12" y2="21"></line></svg>
-                                מחפש: Haaland או Yamal
-                            </div>
+                           <div class="trade-badge offering">
+    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+    <span class="condition-label">מצב:</span> משומש קל
+</div>
+<div class="trade-badge seeking">
+    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 14 12 9 7 14"></polyline><line x1="12" y1="9" x2="12" y2="21"></line></svg>
+    <span class="seeking-label">מחפש:</span> Haaland או Yamal
+</div>
                            <button class="trade-action-btn" onclick="document.getElementById('offerModal').classList.add('show')">שלח הצעה!</button>
                         </div>
 
