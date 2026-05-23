@@ -1704,43 +1704,42 @@
                 </div>
 
                 <div id="trade-deals" class="trade-inner-pane">
-                    <div class="pantheon-table-wrapper" style="border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-radius: 12px;">
-                        <table class="transactions-table">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: center;">הקלף שלי (מציע)</th>
-                                    <th style="text-align: center;">הקלף של הצד השני (מבקש)</th>
-                                    <th style="text-align: center;">שם משתמש</th>
-                                    <th style="text-align: center;">סטטוס</th>
-                                    <th style="text-align: center;">פעולות</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="font-weight: bold; color: var(--text-dark); direction: ltr;">Gloukh Auto</td>
-                                    <td style="font-weight: bold; color: var(--text-dark); direction: ltr;">Haaland Base + $10</td>
-                                    <td style="font-weight: bold; color: var(--text-dark);">Romi2010 <span style="color:#f59e0b; font-size:11px;">(★4.5)</span></td>
-                                    <td><span style="background:#fef3c7; color:#d97706; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">ממתין לתשובתך</span></td>
-                                    <td>
-<td style="vertical-align: middle;">
-                                        <div class="trade-action-wrapper">
-                                            <button class="btn-trade-accept" onclick="alert('העסקה אושרה! נפתח חלון צ\'אט / וואטסאפ לתיאום משלוח.')">אשר</button>
-                                            <button class="btn-trade-nego" onclick="document.getElementById('offerModal').classList.add('show')">נהל מו"מ</button>
-                                            <button class="btn-trade-reject" onclick="this.closest('tr').remove();">דחה</button>
-                                        </div>
-                                    </td>                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold; color: var(--text-dark); direction: ltr;">Bellingham Obsidian</td>
-                                    <td style="font-weight: bold; color: var(--text-dark); direction: ltr;">Yamal Chrome</td>
-                                    <td style="font-weight: bold; color: var(--text-dark);">Gamer_Card</td>
-                                    <td><span style="background:#e0f2fe; color:#0369a1; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">הצעה נשלחה</span></td>
-                                    <td><span style="font-size:12px; color:#94a3b8; font-weight:bold;">ממתין לתשובת המוכר</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div style="background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+        <table style="width: 100%; border-collapse: collapse; text-align: center; direction: rtl; table-layout: fixed;">
+            <thead style="background: var(--element-navy-gradient); color: #fff; border-bottom: 3px solid var(--brand-green);">
+                <tr>
+                    <th style="width: 20%; padding: 15px 10px;">הקלף שלי (מציע)</th>
+                    <th style="width: 20%; padding: 15px 10px;">הקלף של הצד השני (מבקש)</th>
+                    <th style="width: 15%; padding: 15px 10px;">שם משתמש</th>
+                    <th style="width: 15%; padding: 15px 10px;">סטטוס</th>
+                    <th style="width: 30%; padding: 15px 10px;">פעולות</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px solid #e2e8f0; transition: 0.2s;">
+                    <td style="padding: 15px 10px; font-weight: bold; color: var(--text-dark); direction: ltr; vertical-align: middle;">Gloukh Auto</td>
+                    <td style="padding: 15px 10px; font-weight: bold; color: var(--text-dark); direction: ltr; vertical-align: middle;">Haaland Base + $10</td>
+                    <td style="padding: 15px 10px; font-weight: bold; color: var(--text-dark); vertical-align: middle;">Romi2010 <span style="color:#f59e0b; font-size:11px;">(★4.5)</span></td>
+                    <td style="padding: 15px 10px; vertical-align: middle;"><span style="background:#fef3c7; color:#d97706; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">ממתין לתשובתך</span></td>
+                    <td style="padding: 15px 10px; vertical-align: middle;">
+                        <div style="display: flex; gap: 6px; justify-content: center; align-items: center;">
+                            <button style="flex: 1; background: var(--brand-green); color: #fff; border: none; padding: 8px 0; border-radius: 6px; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 12px;" onclick="alert('העסקה אושרה!')">אשר</button>
+                            <button style="flex: 1; background: #f59e0b; color: #fff; border: none; padding: 8px 0; border-radius: 6px; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 12px;" onclick="document.getElementById('offerModal').classList.add('show')">נהל מו"מ</button>
+                            <button style="flex: 1; background: #ef4444; color: #fff; border: none; padding: 8px 0; border-radius: 6px; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 12px;" onclick="this.closest('tr').remove();">דחה</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #e2e8f0; transition: 0.2s;">
+                    <td style="padding: 15px 10px; font-weight: bold; color: var(--text-dark); direction: ltr; vertical-align: middle;">Bellingham Obsidian</td>
+                    <td style="padding: 15px 10px; font-weight: bold; color: var(--text-dark); direction: ltr; vertical-align: middle;">Yamal Chrome</td>
+                    <td style="padding: 15px 10px; font-weight: bold; color: var(--text-dark); vertical-align: middle;">Gamer_Card</td>
+                    <td style="padding: 15px 10px; vertical-align: middle;"><span style="background:#e0f2fe; color:#0369a1; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">הצעה נשלחה</span></td>
+                    <td style="padding: 15px 10px; vertical-align: middle;"><span style="font-size:12px; color:#94a3b8; font-weight:bold;">ממתין לתשובת המוכר</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
                 <div id="trade-saved" class="trade-inner-pane">
                     <div id="savedEmptyState" style="text-align: center; padding: 40px; color: #94a3b8; font-weight: bold; font-size: 18px;">
