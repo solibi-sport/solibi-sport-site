@@ -1707,9 +1707,13 @@
                                     <td style="font-weight: bold; color: var(--text-dark);">Romi2010 <span style="color:#f59e0b; font-size:11px;">(★4.5)</span></td>
                                     <td><span style="background:#fef3c7; color:#d97706; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">ממתין לתשובתך</span></td>
                                     <td>
-                                        <button style="background:var(--brand-green); color:white; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-family:inherit; font-weight:bold;" onclick="alert('העסקה אושרה! נפתח חלון צ\'אט / וואטסאפ לתיאום משלוח.')">אשר הצעת החלפה</button>
-                                        <button style="background:#f1f5f9; color:#64748b; border:1px solid #cbd5e1; padding:4px 10px; border-radius:4px; cursor:pointer; font-family:inherit; font-weight:bold; margin-right:5px;" onclick="this.closest('tr').remove();">דחה</button>
-                                    </td>
+<td style="vertical-align: middle;">
+                                        <div class="trade-action-wrapper">
+                                            <button class="btn-trade-accept" onclick="alert('העסקה אושרה! נפתח חלון צ\'אט / וואטסאפ לתיאום משלוח.')">אשר</button>
+                                            <button class="btn-trade-nego" onclick="document.getElementById('offerModal').classList.add('show')">נהל מו"מ</button>
+                                            <button class="btn-trade-reject" onclick="this.closest('tr').remove();">דחה</button>
+                                        </div>
+                                    </td>                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight: bold; color: var(--text-dark); direction: ltr;">Bellingham Obsidian</td>
