@@ -1175,6 +1175,18 @@
             align-items: center !important;
             padding: 6px 14px !important;
         }
+
+        /* =========================================
+           תיקון יישור עמודות בטבלת הפורטפוליו (סנכרון רוחב)
+           ========================================= */
+        
+        /* הגדרת רוחב קבוע ומדויק לכל עמודה בטבלה - חל גם על הכותרות וגם על התוכן! */
+        .transactions-table th:nth-child(1), .transactions-table td:nth-child(1) { width: 8%; text-align: center; }  /* עמודת # */
+        .transactions-table th:nth-child(2), .transactions-table td:nth-child(2) { width: 25%; text-align: center; } /* עמודת שם הקלף */
+        .transactions-table th:nth-child(3), .transactions-table td:nth-child(3) { width: 27%; text-align: center; } /* עמודת סדרה/נדירות */
+        .transactions-table th:nth-child(4), .transactions-table td:nth-child(4) { width: 15%; text-align: center; } /* עמודת דירוג */
+        .transactions-table th:nth-child(5), .transactions-table td:nth-child(5) { width: 15%; text-align: center; } /* עמודת שווי עדכני */
+        .transactions-table th:nth-child(6), .transactions-table td:nth-child(6) { width: 10%; text-align: center; } /* עמודת פעולות (הסר) */
         
     </style>
 </head>
