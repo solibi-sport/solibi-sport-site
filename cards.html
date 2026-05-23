@@ -731,34 +731,35 @@
         .trade-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 5px 0; }
         
         .trade-card { 
-            background: var(--bg-silver-matte); /* רקע כסוף-אפור */
-            border: 2px solid var(--text-dark); /* מסגרת בלו נייבי */
+            background: var(--element-navy-gradient); /* רקע נייבי כהה */
+            border: 2px solid var(--brand-green); /* מסגרת ירוקה שלנו */
             border-radius: 12px; padding: 15px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; display: flex; flex-direction: column; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; display: flex; flex-direction: column; 
             position: relative;
         }
-        .trade-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(6,33,65,0.15); border-color: var(--brand-green); }
+        .trade-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(124, 168, 86, 0.3); }
         
-        /* הקוביה של התמונה בפנים (לבנה כדי לבלוט על הכסף) */
+        /* הקוביה של התמונה בפנים */
         .trade-card-img-wrapper { 
             width: 100%; height: 160px; background: #ffffff; border-radius: 8px; 
             margin-bottom: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #cbd5e1;
         }
         .trade-card-img-wrapper img { width: 100%; height: 100%; object-fit: contain; }
         
-        .trade-card-title { font-size: 16px; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; text-align: right; }
+        /* טקסטים הופכים ללבנים כדי לבלוט על הנייבי */
+        .trade-card-title { font-size: 16px; font-weight: 900; color: #ffffff; margin-bottom: 5px; text-align: right; }
         
         .trade-user-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 11px; }
-        .trade-user-name { font-weight: 700; color: var(--text-dark); }
-        .trade-trust { color: #d97706; font-weight: 900; direction: ltr; }
+        .trade-user-name { font-weight: 700; color: #e2e8f0; }
+        .trade-trust { color: #f59e0b; font-weight: 900; direction: ltr; }
         
-        .trade-badge { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 900; margin-bottom: 8px; width: 100%; }
+        .trade-badge { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 900; margin-bottom: 8px; width: 100%; }
         
-        /* מלבן 'מציע' - בלו נייבי עם טקסט לבן */
-        .trade-badge.offering { background: var(--element-navy-gradient); color: #ffffff; border: 1px solid transparent; }
+        /* מלבן 'מציע' - כסוף עם טקסט אדום */
+        .trade-badge.offering { background: var(--bg-silver-matte); color: #ef4444; border: 1px solid #cbd5e1; }
         
-        /* מלבן 'מחפש' - לבן רגיל עם טקסט נייבי ומסגרת עדינה */
-        .trade-badge.seeking { background: #ffffff; color: var(--text-dark); border: 1px solid #cbd5e1; }
+        /* מלבן 'מחפש' - כסוף עם טקסט ירוק שלנו */
+        .trade-badge.seeking { background: var(--bg-silver-matte); color: var(--brand-green); border: 1px solid #cbd5e1; }
         
         .trade-action-btn { 
             background: var(--brand-green); color: white; border: none; width: 100%; 
