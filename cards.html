@@ -1064,30 +1064,37 @@
         }
 
         /* =========================================
-           הפיכת המעטפת הכללית של הצ'קליסט לבלו-נייבי
+           עיצוב צ'קליסט סופי: כותרת כהה, גוף קלפים בהיר
            ========================================= */
         
-        /* 1. הקוביה הגדולה שעוטפת הכל */
+        /* 1. הקוביה הגדולה שעוטפת הכל - גוון נייבי בהיר יותר ונעים לעין */
         .chk-main {
-            background: var(--element-navy-gradient) !important;
-            border: 2px solid var(--brand-green) !important; /* מסגרת ירוקה תוחמת */
+            background: linear-gradient(145deg, #154576 0%, #0d2f54 100%) !important;
+            border: 2px solid var(--brand-green) !important; 
         }
 
-        /* 2. הכותרת של האלבום (חייבת להיות לבנה עכשיו!) */
+        /* 2. אזור הכותרת העליונה (סופרגול) - נייבי כהה ומתיחה לקצוות */
+        #chkActiveState > div:first-child {
+            background: var(--element-navy-gradient) !important;
+            margin: -20px -20px 15px -20px !important; 
+            padding: 20px 20px 15px 20px !important; 
+            border-radius: 10px 10px 0 0 !important; 
+            border-bottom: 2px solid rgba(0, 0, 0, 0.2) !important; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;
+        }
+
+        /* 3. הכותרת עצמה (שם האלבום) בלבן */
         #chkActiveTitle {
             color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important; /* דורס את הגרדיאנט הקודם */
+            -webkit-text-fill-color: #ffffff !important; 
         }
 
-        /* 3. הקווים המפרידים למעלה ולמטה (שקופים-לבנים במקום אפורים) */
-        #chkActiveState > div:first-child {
-            border-bottom-color: rgba(255, 255, 255, 0.1) !important;
-        }
+        /* 4. קו מפריד מעל מספרי העמודים */
         .chk-pagination {
             border-top-color: rgba(255, 255, 255, 0.1) !important;
         }
 
-        /* 4. התאמת מספרי העמודים (Pagination) לרקע הנייבי */
+        /* 5. התאמת מספרי העמודים (Pagination) שייראו טוב על הנייבי הבהיר */
         .chk-page-btn {
             background: rgba(255, 255, 255, 0.1) !important;
             color: #ffffff !important;
@@ -1103,14 +1110,14 @@
             color: #ffffff !important;
         }
         .chk-pagination span {
-            color: #cbd5e1 !important; /* צבע ה-3 נקודות (...) */
+            color: #cbd5e1 !important; 
         }
 
-        /* 5. טקסט מצב ריק (במקרה שלא נבחר אלבום) */
+        /* 6. טקסט מצב ריק (כשלא נבחר אלבום) */
         #chkEmptyState {
             color: #cbd5e1 !important;
         }
-        
+
     </style>
 </head>
 <body>
