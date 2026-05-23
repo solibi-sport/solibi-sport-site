@@ -681,33 +681,35 @@
         }
 
         /* =========================================
-           עיצוב מחשבון שווי אוסף (Portfolio)
+           עיצוב מחשבון שווי אוסף (Portfolio) - קומפקטי
            ========================================= */
-        .portfolio-summary { display: flex; gap: 20px; margin-bottom: 25px; }
+        .portfolio-summary { display: flex; gap: 15px; margin-bottom: 15px; } /* רווחים קטנים יותר מכל הכיוונים */
         .portfolio-box { 
-            flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; 
-            padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
+            flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; 
+            padding: 12px 15px; /* פדינג קוצץ כמעט בחצי */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
         }
         .portfolio-box.primary { 
             background: var(--element-navy-gradient); color: #fff; 
-            border: none; box-shadow: 0 10px 20px rgba(6, 33, 65, 0.2); 
+            border: none; box-shadow: 0 5px 15px rgba(6, 33, 65, 0.15); 
             transform: scale(1.02); z-index: 2;
         }
-        .portfolio-val { font-size: 32px; font-weight: 900; font-family: sans-serif; margin: 5px 0; }
+        .portfolio-val { font-size: 22px; font-weight: 900; font-family: sans-serif; margin: 2px 0; } /* פונט הוקטן מ-32 ל-22 */
         .portfolio-box.primary .portfolio-val { color: var(--brand-green); }
-        .portfolio-label { font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px;}
+        .portfolio-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;} /* פונט הוקטן מ-13 ל-11 */
         .portfolio-box.primary .portfolio-label { color: rgba(255,255,255,0.7); }
         
-        .top-assets-container { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 25px; }
-        .top-assets-title { font-size: 15px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 15px; border-bottom: 2px solid var(--brand-green); display: inline-block; padding-bottom: 5px;}
-        .top-assets-grid { display: flex; gap: 15px; }
-        .asset-card { flex: 1; background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s;}
-        .asset-card:hover { border-color: var(--brand-green); transform: translateY(-3px); }
-        .asset-img { width: 45px; height: 65px; object-fit: contain; border-radius: 4px; background: #f1f5f9; }
+        /* אזור היהלומים (Top 3) */
+        .top-assets-container { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 15px; margin-bottom: 15px; } /* פדינג הוקטן משמעותית */
+        .top-assets-title { font-size: 13px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 10px; border-bottom: 2px solid var(--brand-green); display: inline-block; padding-bottom: 3px;}
+        .top-assets-grid { display: flex; gap: 12px; }
+        .asset-card { flex: 1; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 6px 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); transition: 0.2s;} /* קלף יותר קומפקטי וצר */
+        .asset-card:hover { border-color: var(--brand-green); transform: translateY(-2px); }
+        .asset-img { width: 30px; height: 45px; object-fit: contain; border-radius: 4px; background: #f1f5f9; } /* התמונה הוקטנה */
         .asset-info { display: flex; flex-direction: column; }
-        .asset-name { font-weight: 900; font-size: 13px; color: var(--text-dark); margin-bottom: 3px; direction: ltr; text-align: left;}
-        .asset-price { font-weight: 900; font-size: 16px; color: #16a34a; font-family: sans-serif;}
+        .asset-name { font-weight: 900; font-size: 11.5px; color: var(--text-dark); margin-bottom: 1px; direction: ltr; text-align: left;}
+        .asset-price { font-weight: 900; font-size: 14px; color: #16a34a; font-family: sans-serif;}
 
 /* =========================================
            עיצוב זירת ההחלפות (Trading Zone)
@@ -1148,7 +1150,7 @@
                 <h2 class="content-header-title">מחשבון שווי אוסף אישי (Portfolio)</h2>
                 <p class="content-desc">עקוב אחר הערך הכולל של האוסף שלך. המערכת מחשבת את השווי לפי ממוצע המכירות האחרונות בבורסת הקלפים.</p>
                 
-                <div class="portfolio-summary">
+               <div class="portfolio-summary">
                     <div class="portfolio-box">
                         <span class="portfolio-label">כמות קלפים באוסף</span>
                         <span class="portfolio-val" style="color: var(--text-dark);" id="portCardCount">0</span>
@@ -1159,7 +1161,7 @@
                     </div>
                     <div class="portfolio-box">
                         <span class="portfolio-label">מגמה (30 ימים)</span>
-                        <span class="portfolio-val" style="color: #10b981; font-size: 26px;" id="portTrend">+ 0.0%</span>
+                        <span class="portfolio-val" style="color: #10b981;" id="portTrend">+ 0.0%</span>
                     </div>
                 </div>
 
