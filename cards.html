@@ -1232,26 +1232,40 @@
         .transactions-table tr > :nth-child(8):nth-last-child(1) { width: 14%; text-align: center; } /* הערות */
 
 /* =========================================
-           זירת החלפות - רוחב עמודות וכפתורי פעולה
+           זירת החלפות - רוחב עמודות וכפתורי פעולה (מתוקן)
            ========================================= */
         
-        /* סנכרון רוחב לעמודות בזירת החלפות (זיהוי אוטומטי - 5 עמודות) */
-        .transactions-table tr > :nth-child(1):nth-last-child(5) { width: 20%; text-align: center; } /* הקלף שלי */
-        .transactions-table tr > :nth-child(2):nth-last-child(4) { width: 25%; text-align: center; } /* הקלף של הצד השני */
-        .transactions-table tr > :nth-child(3):nth-last-child(3) { width: 15%; text-align: center; } /* שם משתמש (הוקטן) */
-        .transactions-table tr > :nth-child(4):nth-last-child(2) { width: 15%; text-align: center; } /* סטטוס */
-        .transactions-table tr > :nth-child(5):nth-last-child(1) { width: 25%; text-align: center; } /* פעולות (הוגדל) */
+        /* סנכרון רוחב מדויק ל-5 עמודות כדי למנוע גלישה ובלגן */
+        .transactions-table tr > :nth-child(1):nth-last-child(5) { width: 22%; text-align: center !important; } /* הקלף שלי */
+        .transactions-table tr > :nth-child(2):nth-last-child(4) { width: 22%; text-align: center !important; } /* הקלף של הצד השני */
+        .transactions-table tr > :nth-child(3):nth-last-child(3) { width: 14%; text-align: center !important; } /* שם משתמש */
+        .transactions-table tr > :nth-child(4):nth-last-child(2) { width: 12%; text-align: center !important; } /* סטטוס */
+        .transactions-table tr > :nth-child(5):nth-last-child(1) { width: 30%; text-align: center !important; } /* פעולות */
 
-        /* עיצוב 3 הכפתורים: אשר, נהל מו"מ, דחה */
-        .trade-action-wrapper { display: flex; gap: 8px; justify-content: center; align-items: center; }
+        /* סידור הכפתורים בשורה אחת במרכז ללא שבירת שורות */
+        .trade-action-wrapper { 
+            display: flex !important; 
+            gap: 6px !important; 
+            justify-content: center !important; 
+            align-items: center !important; 
+            flex-wrap: nowrap !important; /* מונע מהכפתורים לברוח לשורה למטה */
+        }
         
-        .btn-trade-accept { background: var(--brand-green); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: inherit;}
+        /* עיצוב אחיד וקומפקטי לכפתורים כדי שייכנסו יפה בפנים */
+        .trade-action-wrapper button {
+            white-space: nowrap !important; /* שומר על "נהל מו"מ" בשורה אחת */
+            padding: 6px 12px !important;
+            font-size: 12.5px !important;
+            border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: inherit;
+        }
+
+        .btn-trade-accept { background: var(--brand-green); color: #fff; border: none; }
         .btn-trade-accept:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(124, 168, 86, 0.4); }
         
-        .btn-trade-nego { background: #f59e0b; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: inherit;}
+        .btn-trade-nego { background: #f59e0b; color: #fff; border: none; }
         .btn-trade-nego:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(245, 158, 11, 0.4); }
         
-        .btn-trade-reject { background: #ef4444; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-family: inherit;}
+        .btn-trade-reject { background: #ef4444; color: #fff; border: none; }
         .btn-trade-reject:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4); }
         
     </style>
