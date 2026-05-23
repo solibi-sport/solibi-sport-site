@@ -2016,7 +2016,7 @@
                     </div>
                 </div>
 
-              <div id="auc-create" class="auc-inner-pane">
+             <div id="auc-create" class="auc-inner-pane">
                     <div class="auc-create-wrapper">
                         
                         <div class="auc-form-side">
@@ -2060,21 +2060,21 @@
                                 </div>
                                 <div class="auc-form-group" id="classicDateGroup" style="flex: 1.5;">
                                     <span class="auc-label">תאריך ושעת סיום</span>
-                                    <input type="datetime-local" class="auc-input-field">
+                                    <input type="datetime-local" id="createEndDate" class="auc-input-field" oninput="updateLivePreview()">
                                 </div>
                             </div>
 
                             <div class="auc-form-row margin-bottom">
                                 <div class="auc-form-group">
-                                    <span class="auc-label">מחיר התחלתי ($)</span>
+                                    <span class="auc-label">מחיר התחלתי (₪)</span>
                                     <input type="number" id="createStartPrice" class="auc-input-field" placeholder="0.00" min="0" oninput="updateLivePreview()" dir="ltr">
                                 </div>
                                 <div class="auc-form-group">
-                                    <span class="auc-label">קפיצה מינימלית ($)</span>
+                                    <span class="auc-label">קפיצה מינימלית (₪)</span>
                                     <input type="number" id="createMinJump" class="auc-input-field" placeholder="לדוג' 5" min="1" oninput="updateLivePreview()" dir="ltr">
                                 </div>
                                 <div class="auc-form-group">
-                                    <span class="auc-label">"קנה עכשיו" ($)</span>
+                                    <span class="auc-label">"קנה עכשיו" (₪)</span>
                                     <input type="number" id="createBinPrice" class="auc-input-field" placeholder="אופציונלי" min="0" oninput="updateLivePreview()" dir="ltr">
                                 </div>
                             </div>
@@ -2100,14 +2100,14 @@
                                 <div class="auc-title" id="prevTitle" style="font-family: 'Times New Roman', Times, serif; font-weight: normal; color: var(--element-navy-gradient); font-size: 14.5px;">שם הקלף והתיאור יופיעו כאן...</div>
                                 <div class="auc-price-box" style="background: var(--element-navy-gradient); border-color: var(--brand-green);">
                                     <div class="auc-price-label" style="color: #cbd5e1;">מחיר פתיחה מבוקש:</div>
-                                    <div class="auc-price-val" id="prevPrice" style="color: var(--brand-green);">$0.00</div>
+                                    <div class="auc-price-val" id="prevPrice" style="color: var(--brand-green);">₪0.00</div>
                                     <div class="auc-leader" style="color: #94a3b8;">היה הראשון להציע!</div>
                                 </div>
                                 <div class="auc-action-row">
-                                    <input type="number" class="auc-input" placeholder="$0.00">
+                                    <input type="number" class="auc-input" placeholder="₪0.00">
                                     <button class="auc-btn">הגש הצעה</button>
                                 </div>
-                                <div class="auc-min-bid" id="prevMinJump">מינימום להצעה הבאה: $0.00</div>
+                                <div class="auc-min-bid" id="prevMinJump">מינימום להצעה הבאה: ₪0.00</div>
                                 <button class="auc-bin-btn" id="prevBinBtn" disabled>
                                     <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                                     <span id="prevBinText">קנה עכשיו (לא מוגדר)</span>
@@ -2146,7 +2146,7 @@
                         }
                     }
 
-                    // פונקציה להצגה/הסתרה של תאריך הסיום לפי סוג המכרז
+                   // פונקציה להצגה/הסתרה של תאריך הסיום לפי סוג המכרז
                     function toggleAuctionType() {
                         const type = document.querySelector('input[name="auctionType"]:checked').value;
                         const dateGroup = document.getElementById('classicDateGroup');
@@ -2158,7 +2158,8 @@
                             dateGroup.style.display = 'block';
                             timerBar.classList.remove('danger');
                             timerIcon.innerText = '⏳';
-                            timerText.innerText = 'מכרז קלאסי';
+                            // נקרא לפונקציית העדכון כדי שתשאב את התאריך אם כבר הוזן
+                            updateLivePreview();
                         } else {
                             dateGroup.style.display = 'none';
                             timerBar.classList.add('danger');
@@ -2177,23 +2178,37 @@
                         const condition = document.getElementById('createCondition').value;
                         document.getElementById('prevCondition').innerText = condition ? condition : 'Raw';
 
-                        // מחיר התחלתי
-                        let price = parseFloat(document.getElementById('createStartPrice').value) || 0;
-                        document.getElementById('prevPrice').innerText = '$' + price.toLocaleString('en-US', {minimumFractionDigits: 2});
+                        // שעת סיום (רק אם אנחנו במכרז קלאסי)
+                        const type = document.querySelector('input[name="auctionType"]:checked').value;
+                        if(type === 'classic') {
+                            const endDateVal = document.getElementById('createEndDate').value;
+                            if(endDateVal) {
+                                // המרת התאריך לפורמט קריא וישראלי
+                                const d = new Date(endDateVal);
+                                const formatted = d.toLocaleDateString('he-IL') + ' ' + d.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                                document.getElementById('prevTimerText').innerText = 'עד ' + formatted;
+                            } else {
+                                document.getElementById('prevTimerText').innerText = 'מכרז קלאסי (לא נקבע זמן)';
+                            }
+                        }
 
-                        // קפיצת מחיר
+                        // מחיר התחלתי בשקלים
+                        let price = parseFloat(document.getElementById('createStartPrice').value) || 0;
+                        document.getElementById('prevPrice').innerText = '₪' + price.toLocaleString('en-US', {minimumFractionDigits: 2});
+
+                        // קפיצת מחיר בשקלים
                         let minJump = parseFloat(document.getElementById('createMinJump').value) || 0;
                         let nextBid = price + minJump;
-                        document.getElementById('prevMinJump').innerText = `מינימום להצעה הבאה: $${nextBid.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+                        document.getElementById('prevMinJump').innerText = `מינימום להצעה הבאה: ₪${nextBid.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
 
-                        // קנה עכשיו
+                        // קנה עכשיו בשקלים
                         const binPrice = parseFloat(document.getElementById('createBinPrice').value);
                         const binBtn = document.getElementById('prevBinBtn');
                         const binText = document.getElementById('prevBinText');
                         
                         if(binPrice > 0) {
                             binBtn.disabled = false;
-                            binText.innerText = `קנה עכשיו ב-$${binPrice.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+                            binText.innerText = `קנה עכשיו ב-₪${binPrice.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
                         } else {
                             binBtn.disabled = true;
                             binText.innerText = 'קנה עכשיו (לא מוגדר)';
