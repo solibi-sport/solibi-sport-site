@@ -1232,54 +1232,37 @@
         .transactions-table tr > :nth-child(8):nth-last-child(1) { width: 14%; text-align: center; } /* הערות */
 
 /* =========================================
-           זירת החלפות - רוחב עמודות וכפתורי פעולה (תיקון ברזל סופי)
+           זירת החלפות - רוחב עמודות וכפתורי פעולה (נקי ומדויק)
            ========================================= */
         
-        /* 1. החזרת הטבלה להתנהגות טבעית כדי שהכותרות לעולם לא יפרדו מהעמודות */
-        #trade-deals .pantheon-table-wrapper { 
-            display: block !important; 
-            height: auto !important; 
-            overflow: visible !important; 
-        }
-        #trade-deals .transactions-table { 
-            display: table !important; 
-            width: 100% !important; 
-            table-layout: auto !important; /* נותן לדפדפן לחשב רוחב חכם שלא חותך כלום */
-        }
-        #trade-deals .transactions-table thead { display: table-header-group !important; }
-        #trade-deals .transactions-table tbody { display: table-row-group !important; }
-        #trade-deals .transactions-table tr { display: table-row !important; }
-        
-        /* 2. מירכוז מוחלט של כל הטקסטים והעמודות */
-        #trade-deals .transactions-table th, 
-        #trade-deals .transactions-table td {
-            text-align: center !important;
-            vertical-align: middle !important;
-            width: auto !important; /* הדפדפן יחלק את המקום לבד בצורה מושלמת */
-            padding: 15px 10px !important;
-        }
+        /* חלוקת אחוזים מדויקת (סה"כ 100%) - שומר על יישור מושלם בין כותרת לשורה */
+        #trade-deals .transactions-table th:nth-child(1), #trade-deals .transactions-table td:nth-child(1) { width: 18% !important; text-align: center !important; } 
+        #trade-deals .transactions-table th:nth-child(2), #trade-deals .transactions-table td:nth-child(2) { width: 18% !important; text-align: center !important; } 
+        #trade-deals .transactions-table th:nth-child(3), #trade-deals .transactions-table td:nth-child(3) { width: 16% !important; text-align: center !important; } 
+        #trade-deals .transactions-table th:nth-child(4), #trade-deals .transactions-table td:nth-child(4) { width: 14% !important; text-align: center !important; } 
+        #trade-deals .transactions-table th:nth-child(5), #trade-deals .transactions-table td:nth-child(5) { width: 34% !important; text-align: center !important; }
 
-        /* 3. הכרחת הכפתורים להישאר בשורה אחת בלבד - ימין, אמצע, שמאל! */
+        /* סידור 3 הכפתורים: ימין (אשר), אמצע (מו"מ), שמאל (דחה) - בשורה אחת! */
         .trade-action-wrapper { 
             display: flex !important;
-            flex-direction: row !important; /* מכריח שורה אחת אופקית */
-            flex-wrap: nowrap !important; /* אוסר על ירידת שורה לחלוטין! */
-            gap: 6px !important; 
+            flex-direction: row !important;
+            gap: 5px !important; 
             justify-content: center !important; 
             align-items: center !important; 
+            flex-wrap: nowrap !important; /* בשום אופן לא לרדת שורה */
         }
         
-        /* 4. עיצוב הכפתורים עצמם כדי שייכנסו מושלם */
+        /* עיצוב הכפתורים כדי שייכנסו למקום בלי לשבור כלום */
         .trade-action-wrapper button {
-            flex-shrink: 0 !important; /* מונע מהכפתורים להימחץ */
-            padding: 6px 12px !important; 
-            font-size: 12.5px !important; 
+            padding: 6px 10px !important; 
+            font-size: 11.5px !important; 
             border-radius: 6px !important; 
             font-weight: bold !important; 
             cursor: pointer !important; 
             transition: 0.2s !important; 
             font-family: inherit !important;
-            white-space: nowrap !important; /* מונע שבירת מילים בתוך הכפתור */
+            white-space: nowrap !important; /* טקסט לא נשבר */
+            flex: 1 1 auto !important; /* מתחלקים יפה בשטח הפנוי */
         }
 
         .btn-trade-accept { background: var(--brand-green) !important; color: #fff !important; border: none !important; }
