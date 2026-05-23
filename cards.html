@@ -141,8 +141,20 @@
         .tab-content.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .content-header-title { color: var(--text-dark); font-weight: 900; font-size: 24px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-        .content-desc { color: #64748b; font-size: 15px; line-height: 1.6; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f0f2f5; }
+       /* =========================================
+           עיצוב הבאנר העליון בכל טאב (בלו נייבי)
+           ========================================= */
+        .tab-header-banner {
+            background: var(--element-navy-gradient);
+            margin: -35px -35px 25px -35px; /* מותח את הבאנר עד לקצוות הקופסה הלבנה */
+            padding: 35px 35px 25px 35px;
+            border-bottom: 3px solid var(--brand-green);
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .content-header-title { color: #ffffff; font-weight: 900; font-size: 24px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .content-desc { color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 0; }
         .placeholder-box { flex: 1; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: bold; font-size: 16px; text-align: center; padding: 20px; line-height: 1.5;}
 
         /* --- פאנל לייב חלון צף (בעיצוב השקוף המבוקש) --- */
@@ -943,6 +955,27 @@
         #offerModal .cash-input-wrapper {
             background: #ffffff !important;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* =========================================
+           הפיכת הכותרת והתיאור לבאנר נייבי - נטו ב-CSS!
+           ========================================= */
+        .content-header-title { 
+            background: var(--element-navy-gradient) !important;
+            color: #ffffff !important; 
+            /* מותח את הכותרת למעלה ולצדדים כדי לכסות את השטח הלבן */
+            margin: -35px -35px 0 -35px !important; 
+            padding: 35px 35px 5px 35px !important; 
+            border-radius: 16px 16px 0 0 !important;
+        }
+        
+        .content-desc { 
+            background: var(--element-navy-gradient) !important;
+            color: #cbd5e1 !important; 
+            /* מותח את התיאור לצדדים כדי שיתחבר לכותרת שמעליו */
+            margin: 0 -35px 25px -35px !important; 
+            padding: 0 35px 25px 35px !important;
+            border-bottom: 3px solid var(--brand-green) !important;
         }
         
     </style>
