@@ -1232,44 +1232,54 @@
         .transactions-table tr > :nth-child(8):nth-last-child(1) { width: 14%; text-align: center; } /* הערות */
 
 /* =========================================
-           זירת החלפות - רוחב עמודות וכפתורי פעולה (תיקון סופי)
+           זירת החלפות - רוחב עמודות וכפתורי פעולה (שורה אחת ישרה!)
            ========================================= */
         
-        /* מטרגט ספציפית את הטבלה של העסקאות בזירה כדי למנוע התנגשויות */
+        /* מטרגט ספציפית את הטבלה של העסקאות בזירה */
         #trade-deals .transactions-table {
             table-layout: fixed !important;
             width: 100% !important;
         }
 
-        /* חלוקת אחוזים מדויקת - נותנים 32% לפעולות כדי שיהיה המון מקום */
-        #trade-deals .transactions-table th:nth-child(1), #trade-deals .transactions-table td:nth-child(1) { width: 19% !important; text-align: center !important; } 
-        #trade-deals .transactions-table th:nth-child(2), #trade-deals .transactions-table td:nth-child(2) { width: 19% !important; text-align: center !important; } 
+        /* חלוקת אחוזים מדויקת - נותנים 33% לעמודת הפעולות כדי שיהיה המון מקום */
+        #trade-deals .transactions-table th:nth-child(1), #trade-deals .transactions-table td:nth-child(1) { width: 20% !important; text-align: center !important; } 
+        #trade-deals .transactions-table th:nth-child(2), #trade-deals .transactions-table td:nth-child(2) { width: 20% !important; text-align: center !important; } 
         #trade-deals .transactions-table th:nth-child(3), #trade-deals .transactions-table td:nth-child(3) { width: 15% !important; text-align: center !important; } 
-        #trade-deals .transactions-table th:nth-child(4), #trade-deals .transactions-table td:nth-child(4) { width: 15% !important; text-align: center !important; } 
-        #trade-deals .transactions-table th:nth-child(5), #trade-deals .transactions-table td:nth-child(5) { width: 32% !important; text-align: center !important; }
+        #trade-deals .transactions-table th:nth-child(4), #trade-deals .transactions-table td:nth-child(4) { width: 12% !important; text-align: center !important; } 
+        #trade-deals .transactions-table th:nth-child(5), #trade-deals .transactions-table td:nth-child(5) { width: 33% !important; text-align: center !important; }
 
-        /* סידור הכפתורים: נאפשר שבירת שורה כדי למנוע חיתוך מחוץ למסך! */
+        /* הכרחת הכפתורים להישאר בשורה אחת בלבד - ימין, אמצע, שמאל! */
         .trade-action-wrapper { 
-            display: flex !important; 
+            display: flex !important;
+            flex-direction: row !important; /* מכריח שורה אחת אופקית */
+            flex-wrap: nowrap !important; /* אוסר על ירידת שורה לחלוטין! */
             gap: 6px !important; 
             justify-content: center !important; 
             align-items: center !important; 
-            flex-wrap: wrap !important; /* קריטי - מונע חיתוך ונותן להם לרדת שורה במידת הצורך */
         }
         
-        /* עיצוב אחיד וקומפקטי לכפתורים */
+        /* עיצוב הכפתורים עצמם כדי שייכנסו מושלם */
         .trade-action-wrapper button {
-            padding: 6px 10px !important; 
+            flex: 0 1 auto !important; /* שומר על הגודל הטבעי של הכפתור */
+            width: auto !important; /* מונע מהם להימתח ל-100% */
+            padding: 6px 12px !important; 
             font-size: 12px !important; 
             border-radius: 6px !important; 
             font-weight: bold !important; 
             cursor: pointer !important; 
             transition: 0.2s !important; 
             font-family: inherit !important;
-            flex: 1 1 auto; /* גורם לכפתורים להסתדר יפה גם כשהם יורדים שורה */
-            white-space: nowrap !important; /* מונע מהמילים בתוך הכפתור עצמו להישבר */
+            white-space: nowrap !important; /* מונע שבירת מילים בתוך הכפתור */
         }
 
+        .btn-trade-accept { background: var(--brand-green) !important; color: #fff !important; border: none !important; }
+        .btn-trade-accept:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(124, 168, 86, 0.4); }
+        
+        .btn-trade-nego { background: #f59e0b !important; color: #fff !important; border: none !important; }
+        .btn-trade-nego:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(245, 158, 11, 0.4); }
+        
+        .btn-trade-reject { background: #ef4444 !important; color: #fff !important; border: none !important; }
+        .btn-trade-reject:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4); }
         .btn-trade-accept { background: var(--brand-green) !important; color: #fff !important; border: none !important; }
         .btn-trade-accept:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(124, 168, 86, 0.4); }
         
