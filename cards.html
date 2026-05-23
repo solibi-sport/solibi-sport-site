@@ -495,7 +495,18 @@
         /* אזור מרכזי שמאלי (הקלפים) */
         .chk-main { flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; position: relative; }
         
-        /* הגריד של הקלפים - בדיוק 7 בשורה (מעודכן) */
+        /* אזור מרכזי שמאלי (הקלפים) */
+        .chk-main { flex: 1; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; position: relative; }
+        
+        /* צבע הכותרת של הצ'קליסט הפעיל */
+        #chkActiveTitle {
+            color: var(--element-navy-gradient) !important; /* אילוץ הצבע לנייבי שלנו */
+            background: -webkit-linear-gradient(145deg, #0a2e57 0%, #062141 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; /* נותן אפקט של גרדיאנט על הטקסט עצמו! */
+        }
+
+        /* הגריד של הקלפים עם רקע כסוף */
         .chk-grid { 
             display: grid; 
             grid-template-columns: repeat(7, 1fr); 
@@ -503,9 +514,17 @@
             flex: 1; 
             align-content: start; 
             overflow-y: auto; 
-            padding-bottom: 10px; 
+            padding: 15px; /* הוספת פדינג פנימי כדי שהכסף יעטוף יפה את הקלפים */
             direction: ltr; 
+            background: var(--bg-silver-matte); /* זה הרקע הכסוף שביקשת */
+            border-radius: 8px; /* קצוות מעוגלים לאזור הכסוף */
+            border: 1px solid #cbd5e1; /* מסגרת עדינה סביב האזור הכסוף */
         }
+        .chk-grid > div { direction: rtl; } 
+        
+        /* עיצוב מלבן הקלף הספציפי - אנחנו משאירים אותו לבן נקי (או עם רקע טיפה שונה) כדי שיבלוט על הכסף */
+        .chk-card { aspect-ratio: 2.5/3.5; border: 2px dashed #94a3b8; border-radius: 8px; position: relative; background: #ffffff; transition: 0.2s; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02);}
+        .chk-card.owned { border: 2px solid var(--brand-green); background: rgba(124, 168, 86, 0.05); }
         .chk-grid > div { direction: rtl; } /* מחזיר את התוכן של הקלף לימין לשמאל */
         
         /* עיצוב מלבן הקלף הספציפי */
