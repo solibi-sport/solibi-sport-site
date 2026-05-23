@@ -1187,6 +1187,49 @@
         .transactions-table th:nth-child(4), .transactions-table td:nth-child(4) { width: 15%; text-align: center; } /* עמודת דירוג */
         .transactions-table th:nth-child(5), .transactions-table td:nth-child(5) { width: 15%; text-align: center; } /* עמודת שווי עדכני */
         .transactions-table th:nth-child(6), .transactions-table td:nth-child(6) { width: 10%; text-align: center; } /* עמודת פעולות (הסר) */
+
+/* =========================================
+           תיקון חכם לכל הטבלאות + עידון פס הגלילה
+           ========================================= */
+        
+        /* 1. מניעת חפיפת טקסטים - מאפשרים לטקסט לרדת שורה בצורה מסודרת */
+        .transactions-table td {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            vertical-align: middle !important;
+        }
+
+        /* 2. עידון פס הגלילה בכל הטבלאות לגודל נקי וסטנדרטי */
+        .pantheon-table-wrapper::-webkit-scrollbar,
+        .transactions-table tbody::-webkit-scrollbar { width: 5px !important; height: 5px !important; }
+        .pantheon-table-wrapper::-webkit-scrollbar-track,
+        .transactions-table tbody::-webkit-scrollbar-track { background: #f1f5f9 !important; border-radius: 10px !important; }
+        .pantheon-table-wrapper::-webkit-scrollbar-thumb,
+        .transactions-table tbody::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.4) !important; border-radius: 10px !important; }
+        .pantheon-table-wrapper::-webkit-scrollbar-thumb:hover,
+        .transactions-table tbody::-webkit-scrollbar-thumb:hover { background: var(--brand-green) !important; }
+
+        /* ---------------------------------------------------
+           סנכרון רוחב לעמודות במחשבון שווי (זיהוי אוטומטי - 6 עמודות) 
+           --------------------------------------------------- */
+        .transactions-table tr > :nth-child(1):nth-last-child(6) { width: 8%; text-align: center; }  /* # */
+        .transactions-table tr > :nth-child(2):nth-last-child(5) { width: 25%; text-align: center; } /* שם הקלף */
+        .transactions-table tr > :nth-child(3):nth-last-child(4) { width: 27%; text-align: center; } /* סדרה/נדירות */
+        .transactions-table tr > :nth-child(4):nth-last-child(3) { width: 15%; text-align: center; } /* דירוג */
+        .transactions-table tr > :nth-child(5):nth-last-child(2) { width: 15%; text-align: center; } /* שווי */
+        .transactions-table tr > :nth-child(6):nth-last-child(1) { width: 10%; text-align: center; } /* פעולות */
+
+        /* ---------------------------------------------------
+           סנכרון רוחב לעמודות ביומן עסקאות (זיהוי אוטומטי - 8 עמודות)
+           --------------------------------------------------- */
+        .transactions-table tr > :nth-child(1):nth-last-child(8) { width: 9%; text-align: center; }  /* תאריך */
+        .transactions-table tr > :nth-child(2):nth-last-child(7) { width: 10%; text-align: center; } /* סוג עסקה */
+        .transactions-table tr > :nth-child(3):nth-last-child(6) { width: 16%; text-align: center; } /* שם הקלף */
+        .transactions-table tr > :nth-child(4):nth-last-child(5) { width: 21%; text-align: center; } /* סדרה */
+        .transactions-table tr > :nth-child(5):nth-last-child(4) { width: 10%; text-align: center; } /* קנייה */
+        .transactions-table tr > :nth-child(6):nth-last-child(3) { width: 10%; text-align: center; } /* מכירה */
+        .transactions-table tr > :nth-child(7):nth-last-child(2) { width: 10%; text-align: center; } /* רווח */
+        .transactions-table tr > :nth-child(8):nth-last-child(1) { width: 14%; text-align: center; } /* הערות */
         
     </style>
 </head>
@@ -2556,7 +2599,7 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
                     <tr>
                         <td style="font-weight: bold; color: #64748b;">${tx.date}</td>
                         <td>${typeHtml}</td>
-                        <td style="font-weight: 900; color: var(--element-navy-gradient);">${tx.cardName}</td>
+                        <td style="font-size: 12px; color: #64748b; text-align: center; direction: ltr;">${tx.cardName}</td>
                         <td style="font-size: 12px; color: #64748b;">${tx.set}</td>
                         <td style="font-weight: bold;">$${tx.buyPrice.toFixed(2)}</td>
                         <td style="font-weight: bold;">${sellPriceDisplay}</td>
