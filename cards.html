@@ -558,62 +558,61 @@
         .modal-btn-cancel:hover { background: rgba(255,255,255,0.1); }
 
 /* =========================================
-           עיצוב טבלת יומן עסקאות
+           עיצוב טבלת יומן עסקאות ואוסף
            ========================================= */
-        .transactions-table {
-            width: 100%; border-collapse: collapse; font-size: 14px;
-            text-align: center !important; white-space: nowrap; direction: rtl;
-            background: #fff; border-radius: 12px; overflow: hidden;
+        /* המעטפת היא זו שנגללת ונמתחת למטה */
+        .pantheon-table-wrapper {
+            position: relative;
+            flex: 1; /* מותח את הטבלה למטה למילוי המקום הפנוי */
+            min-height: 0; /* חובה כדי שהגלילה תעבוד בתוך הפלקס */
+            margin-bottom: 20px; /* משאיר בדיוק 20 פיקסלים מהתחתית! */
+            overflow-y: auto;
+            direction: rtl; /* פס גלילה בצד ימין */
+            border-radius: 12px;
+            background: #fff;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
+
+        .pantheon-table-wrapper .transactions-table {
+            width: 100%; border-collapse: collapse; font-size: 14px;
+            text-align: center; white-space: nowrap; direction: rtl;
+        }
+
+        /* כותרות מקובעות למעלה */
         .transactions-table th {
             background: var(--element-navy-gradient); color: #ffffff;
-            font-weight: 700; padding: 15px 12px; position: sticky; top: 0;
+            font-weight: 700; padding: 15px 12px; 
+            position: sticky; top: 0;
             z-index: 10; border-bottom: 3px solid var(--brand-green);
-            text-align: center; /* ממרכז את כל כותרות הטבלה! */
         }
         
-        /* עיצוב כפתור ההסרה (בלו נייבי וטקסט לבן) */
+        /* שורת סה"כ מקובעת למטה */
+        .transactions-table tfoot td {
+            background: var(--element-navy-gradient);
+            border-top: 3px solid var(--brand-green);
+            position: sticky; bottom: -1px; /* נדבק לתחתית הנגללת */
+            z-index: 10;
+        }
+
         .remove-asset-btn { 
             background: var(--element-navy-gradient); 
-            color: #ffffff; 
-            border: none; 
-            padding: 6px 14px; 
-            border-radius: 6px; 
-            font-size: 12px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            font-family: inherit;
+            color: #ffffff; border: none; padding: 6px 14px; 
+            border-radius: 6px; font-size: 12px; font-weight: 900; 
+            cursor: pointer; transition: 0.3s; font-family: inherit;
             box-shadow: 0 2px 5px rgba(6, 33, 65, 0.2);
         }
         .remove-asset-btn:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(6, 33, 65, 0.4);
-            background: #0d3b6e; 
-        }
-        ./* הוספת גלילה לגוף הטבלה בלבד */
-        .transactions-table tbody { 
-            display: block; 
-            max-height: 250px; /* גובה מקסימלי לטבלה לפני שמתחילה גלילה */
-            overflow-y: auto; /* הוספת גלילה אנכית */
+            transform: translateY(-2px); box-shadow: 0 4px 10px rgba(6, 33, 65, 0.4); background: #0d3b6e; 
         }
         
-        /* דאגה שהשורות, הכותרות ושורת הסה"כ ישמרו על רוחב תואם */
-        .transactions-table thead, .transactions-table tbody tr, .transactions-table tfoot tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed; /* מחלק את העמודות שווה בשווה */
-        }
-
         .transactions-table tbody tr { border-bottom: 1px solid #e2e8f0; transition: 0.2s; }
         .transactions-table tbody tr:hover { background: rgba(124, 168, 86, 0.05); }
-
-        /* עיצוב פס הגלילה שיופיע בצד ימין (בגלל direction: rtl) */
-        .transactions-table tbody::-webkit-scrollbar { width: 6px; }
-        .transactions-table tbody::-webkit-scrollbar-track { background: #f1f5f9; }
-        .transactions-table tbody::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 10px; }
         .transactions-table td { padding: 14px 12px; color: var(--text-dark); vertical-align: middle; }
+
+        /* עיצוב פס הגלילה */
+        .pantheon-table-wrapper::-webkit-scrollbar { width: 8px; }
+        .pantheon-table-wrapper::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 12px; }
+        .pantheon-table-wrapper::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 12px; }
         
         .tx-type-badge {
             display: inline-block; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: 900;
@@ -1717,41 +1716,40 @@
             });
             document.getElementById('topAssetsGrid').innerHTML = topAssetsHtml;
 
-            // רינדור הטבלה
+            // רינדור הטבלה - גוף הטבלה
             let tableHtml = '';
             myCollection.forEach((card, idx) => {
                 tableHtml += `
                     <tr>
-                        <td style="font-weight: bold; color: #cbd5e1; text-align: center; width: 10%;">${idx + 1}</td>
-                        <td style="font-weight: 900; color: var(--element-navy-gradient); text-align: center; direction: ltr; width: 25%;">${card.name}</td>
-                        <td style="font-size: 12px; color: #64748b; text-align: center; direction: ltr; width: 25%;">${card.set || '-'}</td>
-                        <td style="text-align: center; width: 15%;"><span style="background:#f1f5f9; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">Raw</span></td>
-                        <td style="font-weight: 900; color: var(--brand-green); font-family: sans-serif; text-align: center; width: 15%;">$${parseFloat(card.price || 0).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                        <td style="text-align: center; width: 10%;"><button class="remove-asset-btn" onclick="removeFromPortfolio(${idx})">הסר</button></td>
+                        <td style="font-weight: bold; color: #cbd5e1; text-align: center;">${idx + 1}</td>
+                        <td style="font-weight: 900; color: var(--element-navy-gradient); text-align: center; direction: ltr;">${card.name}</td>
+                        <td style="font-size: 12px; color: #64748b; text-align: center; direction: ltr;">${card.set || '-'}</td>
+                        <td style="text-align: center;"><span style="background:#f1f5f9; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">Raw</span></td>
+                        <td style="font-weight: 900; color: var(--brand-green); font-family: sans-serif; text-align: center;">$${parseFloat(card.price || 0).toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                        <td style="text-align: center;"><button class="remove-asset-btn" onclick="removeFromPortfolio(${idx})">הסר</button></td>
                     </tr>
                 `;
             });
             tbody.innerHTML = tableHtml;
 
-            // --- הוספת שורת סה"כ קבועה ל-tfoot כדי שלא תיגלל ---
+            // --- הוספת שורת סה"כ קבועה ל-tfoot ---
             let tfoot = document.getElementById('portfolio-tfoot');
             if (!tfoot) {
-                // אם עדיין אין tfoot בטבלה, ניצור אותו
                 const table = tbody.parentElement;
                 tfoot = document.createElement('tfoot');
                 tfoot.id = 'portfolio-tfoot';
                 table.appendChild(tfoot);
             }
             
-            // הכנסת שורת הסה"כ. שים לב ל-text-align: center בעמודה השלישית
+            // הכנסת שורת הסה"כ. יש פה בדיוק 6 תאים, כדי שהעמודות יהיו מסונכרנות לחלוטין!
             tfoot.innerHTML = `
-                <tr style="background: var(--element-navy-gradient); border-top: 3px solid var(--brand-green);">
-                    <td style="width: 10%;"></td>
-                    <td style="width: 25%;"></td>
-                    <td style="text-align: center; font-weight: 900; color: white; font-size: 14px; padding: 15px; width: 25%;">סה"כ שווי האוסף:</td>
-                    <td style="width: 15%;"></td>
-                    <td style="font-weight: 900; color: var(--brand-green); font-size: 16px; font-family: sans-serif; text-align: center; width: 15%;">$${totalValue.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                    <td style="width: 10%;"></td>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: center; font-weight: 900; color: white; font-size: 14px; padding: 15px;">סה"כ שווי האוסף:</td>
+                    <td></td>
+                    <td style="font-weight: 900; color: var(--brand-green); font-size: 16px; font-family: sans-serif; text-align: center;">$${totalValue.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                    <td></td>
                 </tr>
             `;
         }
