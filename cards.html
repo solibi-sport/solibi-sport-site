@@ -2133,7 +2133,20 @@
                         clickedBtn.classList.add('active');
                     }
 
-// פונקציה להצגה/הסתרה של תאריך הסיום לפי סוג המכרז
+// פונקציה שמקבלת את התמונה מהמחשב ומציגה אותה בכרטיס בצד שמאל
+                    function previewUploadedImage(input) {
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                document.getElementById('prevImg').src = e.target.result;
+                                document.getElementById('uploadText').innerText = 'תמונה נבחרה בהצלחה!';
+                                document.getElementById('uploadText').style.color = 'var(--brand-green)';
+                            };
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
+
+                    // פונקציה להצגה/הסתרה של תאריך הסיום לפי סוג המכרז
                     function toggleAuctionType() {
                         const type = document.querySelector('input[name="auctionType"]:checked').value;
                         const dateGroup = document.getElementById('classicDateGroup');
@@ -2158,11 +2171,7 @@
                     function updateLivePreview() {
                         // כותרת
                         const title = document.getElementById('createTitle').value;
-                        document.getElementById('prevTitle').innerText = title ? title : 'שם הקלף והתיאור יופיעו כאן...';
-
-                        // תמונה
-                        const img = document.getElementById('createImg').value;
-                        document.getElementById('prevImg').src = img ? img : 'https://via.placeholder.com/150x200?text=Card';
+                        document.getElementById('prevTitle').innerHTML = title ? `תיאור: <span dir="ltr">${title}</span>` : 'שם הקלף והתיאור יופיעו כאן...';
 
                         // מצב
                         const condition = document.getElementById('createCondition').value;
