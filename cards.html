@@ -1531,20 +1531,54 @@
         }
 
         /* =========================================
-           תיקון קסם: חילוץ פאנל הלייב לסיידבר שמאלי
+           פאנל תוצאות לייב (סיידבר שמאלי מובנה)
            ========================================= */
         .collapsible-live-panel {
-            position: fixed !important; /* מחלץ את החלון החוצה ממגבלות התוכן */
-            top: 85px !important; /* 65 פיקסלים של ההדר + 20 פיקסלים רווח */
-            left: 20px !important; /* מצמיד לשמאל בדיוק מול הסיידבר הימני */
-            width: var(--sidebar-width) !important; /* שומר על רוחב זהה לסיידבר הימני */
-            z-index: 9999 !important; /* מוודא שהוא תמיד מעל הכל */
-            margin: 0 !important;
+            width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--brand-green);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 60;
+            height: 100%; /* מתחיל פתוח */
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+            margin-right: 0; /* באזור RTL זה יצמד לשמאל אוטומטית */
         }
 
-        .collapsible-live-panel.expanded {
-            height: calc(100vh - 105px) !important; /* מתמתח בדיוק עד למטה (הדר + שוליים) */
+        /* כשהפאנל מקופל */
+        .collapsible-live-panel.collapsed {
+            height: 48px !important;
         }
+
+        /* ביטול המרווח הישן של האזור המרכזי כדי שיפנה מקום לפאנל */
+        .content-area {
+            margin-left: 0 !important; 
+        }
+
+        .panel-header-btn { 
+            position: relative; z-index: 10; 
+            font-size: 14px; font-weight: 900; color: var(--text-dark); 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 20px; height: 48px; flex-shrink: 0; cursor: pointer; 
+            border-bottom: 1px solid rgba(0,0,0,0.05); background: #ffffff;
+        }
+        .toggle-arrow { transition: transform 0.4s; transform: rotate(180deg); }
+        .collapsible-live-panel.collapsed .toggle-arrow { transform: rotate(0deg); }
+        
+        .panel-content { position: relative; flex: 1; padding: 10px 0 0 0; overflow: hidden; display: flex; flex-direction: column; }
+        #live-scroll-wrapper { position: relative; flex: 1; width: 100%; overflow: hidden; }
+        #live-content { position: absolute; top: 0; left: 0; width: 100%; display: flex; flex-direction: column; padding-bottom: 15px; }
+        
+        .live-scrolling { animation: tickerVertical linear infinite; }
+        #live-scroll-wrapper:hover #live-content.live-scrolling,
+        #live-scroll-wrapper:active #live-content.live-scrolling { animation-play-state: paused !important; }
+
+        @keyframes tickerVertical { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
         
     </style>
 </head>
@@ -2784,7 +2818,24 @@
             </div>
             
         </aside>
-
+      <aside class="collapsible-live-panel" id="livePanel">
+            <div class="panel-header-btn" onclick="document.getElementById('livePanel').classList.toggle('collapsed')">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="position: relative; display: flex; align-items: center; justify-content: center;">
+                        <span style="position: absolute; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; animation: blink 1.5s infinite;"></span>
+                        <span style="position: absolute; width: 14px; height: 14px; background: rgba(239, 68, 68, 0.4); border-radius: 50%; animation: blink 1.5s infinite; animation-delay: 0.2s;"></span>
+                    </span>
+                    <span style="margin-right: 18px; color: var(--element-navy-gradient);">תוצאות לייב</span>
+                </div>
+                <svg class="toggle-arrow" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="panel-content">
+                <div id="live-scroll-wrapper">
+                    <div id="live-loading" style="text-align: center; padding: 20px; font-weight: bold; color: var(--brand-green);">טוען נתונים חיים... ⚽</div>
+                    <div id="live-content"></div>
+                </div>
+            </div>
+        </aside>
     </main>
 
 <div class="modal-overlay" id="offerModal">
@@ -3162,6 +3213,7 @@
             renderChecklistsSidebar();
             renderTransactionsTable();
             renderPortfolio();
+            fetchLiveMatches(); // מפעיל את תוצאות הלייב!
         });
 
 
