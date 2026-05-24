@@ -1442,15 +1442,16 @@
             background: var(--element-navy-gradient);
             border: 2px solid var(--brand-green);
             border-radius: 16px;
-            padding: 25px 35px;
+            padding: 30px 35px; /* הגדלתי מעט את הפדינג */
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start; /* התיקון: מצמיד את התוכן למעלה במקום למרכז שחותך אותו */
             margin-bottom: 25px;
             box-shadow: 0 10px 30px rgba(6, 33, 65, 0.15);
             color: #fff;
             position: relative;
             overflow: hidden;
+            min-height: 160px; /* נותן לקופסה גובה מינימלי בטוח */
         }
         
         /* אפקט הברקה עדין ברקע הבאנר */
@@ -1462,12 +1463,22 @@
 
         .hot-banner-content { position: relative; z-index: 2; flex: 1; }
         .hot-banner-subtitle { font-size: 13px; font-weight: 900; color: var(--brand-green); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px;}
-        .hot-player-name { font-size: 32px; font-weight: 900; margin-bottom: 8px; direction: ltr; text-align: right; color: #fff;}
+        
+        .hot-player-name { 
+            font-size: 32px; 
+            font-weight: 900; 
+            margin-bottom: 8px; 
+            margin-top: 5px; /* מרווח מלמעלה למניעת הידבקות */
+            direction: ltr; 
+            text-align: right; 
+            color: #fff;
+            line-height: 1.2; /* מונע חיתוך של החלק העליון של האותיות */
+        }
+        
         .hot-player-reason { font-size: 14px; color: #cbd5e1; margin-bottom: 18px; font-weight: 500; }
         .hot-price-row { display: flex; align-items: center; gap: 15px; }
         .hot-current-price { font-size: 28px; font-weight: 900; font-family: sans-serif; }
-        .hot-trend-badge { background: #10b981; color: #fff; padding: 6px 14px; border-radius: 30px; font-weight: 900; font-size: 15px; display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(16,185,129,0.3); direction: ltr;}
-        
+        .hot-trend-badge { background: #10b981; color: #fff; padding: 6px 14px; border-radius: 30px; font-weight: 900; font-size: 15px; display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(16,185,129,0.3); direction: ltr;}        
         .hot-banner-graph { width: 200px; height: 80px; position: relative; z-index: 2;}
         .hot-banner-graph svg { width: 100%; height: 100%; overflow: visible; }
         .hot-graph-line { fill: none; stroke: #10b981; stroke-width: 4; stroke-linecap: round; filter: drop-shadow(0 5px 10px rgba(16,185,129,0.6)); stroke-dasharray: 500; stroke-dashoffset: 500; animation: drawLine 2s ease-out forwards;}
