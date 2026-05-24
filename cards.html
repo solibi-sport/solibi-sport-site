@@ -3909,6 +3909,41 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
                         }
                     }
 
+        // ==========================================
+        // מנוע אירועי משחק מותאם לדף הנוכחי (מונע קריסות)
+        // ==========================================
+        window.openMatchEvents = function(fixtureId, homeTeam, awayTeam) {
+            try {
+                const modal = document.getElementById('matchEventsModal');
+                if(!modal) return;
+                
+                // 1. פותח את המודל בצורה חלקה
+                modal.classList.add('show');
+                
+                // 2. מעדכן את הכותרת לשמות הקבוצות המשחקות
+                const titleEl = document.getElementById('matchModalTitle');
+                if(titleEl) {
+                    titleEl.innerText = decodeURIComponent(homeTeam) + ' - ' + decodeURIComponent(awayTeam);
+                }
+                
+                // 3. מציג מצב טעינה בטוח
+                const contentEl = document.getElementById('matchModalContent');
+                if(contentEl) {
+                    contentEl.innerHTML = '<div style="text-align:center; padding:40px; font-size:16px; color: var(--text-dark); font-weight: bold;">טוען אירועי משחק משרת הנתונים... ⚽</div>';
+                }
+                
+                // 4. (כאן בעתיד תחבר את שליפת האירועים מה-API שלך. כרגע שמתי טקסט בטוח כדי שלא יקרוס)
+                setTimeout(() => {
+                    if(contentEl) {
+                        contentEl.innerHTML = '<div style="text-align:center; padding:40px; color:#64748b; font-weight: bold;">פירוט האירועים (שערים, כרטיסים) יהיה זמין כאן בקרוב.</div>';
+                    }
+                }, 800);
+                
+            } catch (err) {
+                console.error("שגיאה בפתיחת מודל המשחק:", err);
+            }
+        };
+
     </script>
     <script src="search.js"></script>
 </body>
