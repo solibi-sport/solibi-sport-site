@@ -182,8 +182,8 @@
         }
 
         .collapsible-live-panel.expanded { 
-            height: calc(100% - 40px); /* נפתח עד למטה */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            height: calc(100vh - 145px) !important; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important; 
         }
 
         .panel-header-btn { 
@@ -3052,21 +3052,19 @@
             return name;
         };
 
-        async function fetchLiveMatches() {
+       async function fetchLiveMatches() {
             try {
-                // קריאה ישירה ל-API החיצוני (API-Sports) 
-                const response = await fetch('https://v3.football.api-sports.io/fixtures?live=all', {
-                    method: 'GET',
-                    headers: {
-                        'x-rapidapi-host': 'v3.football.api-sports.io',
-                        // שים כאן את מפתח ה-API האמיתי שלך:
-                        'x-rapidapi-key': 'הכנס_את_מפתח_ה_API_שלך_כאן'
-                    }
-                });
+                // משיכת נתונים אמיתיים מהבקאנד שלך שמחובר ל-API FOOTBALL
+                const response = await fetch('/api/football');
+                
+                if (!response.ok) {
+                    throw new Error("תקלה בחיבור לשרת הנתונים");
+                }
                 
                 const data = await response.json();
                 window.allLiveMatches = data.response || [];
 
+                // סידור הליגות לפי סדר החשיבות
                 window.allLiveMatches.sort((a, b) => {
                     let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
                     let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
@@ -3075,11 +3073,16 @@
                     return idxA - idxB;
                 });
 
+                // הפעלת הרינדור במסך
                 renderLiveTicker();
                 
             } catch (error) { 
-                console.error("שגיאה במשיכת נתונים בלייב:", error); 
-                document.getElementById('live-loading').innerText = "שגיאה בטעינת נתונים ❌";
+                console.error("שגיאה במשיכת נתונים אמיתיים בלייב:", error); 
+                const loader = document.getElementById('live-loading');
+                if (loader) {
+                    loader.innerText = "שגיאה בטעינת נתונים ❌";
+                    loader.style.color = "#ef4444";
+                }
             }
         }
 
