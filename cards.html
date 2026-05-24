@@ -1434,6 +1434,66 @@
             min-height: 55vh !important; /* שומר על גובה מינימלי מעולה ללפטופים */
             margin-bottom: 20px !important; /* מרווח מהתחתית כמו שביקשת */
         }
+
+        /* =========================================
+           טאב 2: מדד השחקנים החמים (דאשבורד מניות)
+           ========================================= */
+        .hot-top-banner {
+            background: var(--element-navy-gradient);
+            border: 2px solid var(--brand-green);
+            border-radius: 16px;
+            padding: 25px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(6, 33, 65, 0.15);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* אפקט הברקה עדין ברקע הבאנר */
+        .hot-top-banner::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(124,168,86,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hot-banner-content { position: relative; z-index: 2; flex: 1; }
+        .hot-banner-subtitle { font-size: 13px; font-weight: 900; color: var(--brand-green); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px;}
+        .hot-player-name { font-size: 32px; font-weight: 900; margin-bottom: 8px; direction: ltr; text-align: right; color: #fff;}
+        .hot-player-reason { font-size: 14px; color: #cbd5e1; margin-bottom: 18px; font-weight: 500; }
+        .hot-price-row { display: flex; align-items: center; gap: 15px; }
+        .hot-current-price { font-size: 28px; font-weight: 900; font-family: sans-serif; }
+        .hot-trend-badge { background: #10b981; color: #fff; padding: 6px 14px; border-radius: 30px; font-weight: 900; font-size: 15px; display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(16,185,129,0.3); direction: ltr;}
+        
+        .hot-banner-graph { width: 200px; height: 80px; position: relative; z-index: 2;}
+        .hot-banner-graph svg { width: 100%; height: 100%; overflow: visible; }
+        .hot-graph-line { fill: none; stroke: #10b981; stroke-width: 4; stroke-linecap: round; filter: drop-shadow(0 5px 10px rgba(16,185,129,0.6)); stroke-dasharray: 500; stroke-dashoffset: 500; animation: drawLine 2s ease-out forwards;}
+
+        /* גריד הטבלאות (2 עמודות) */
+        .lb-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .lb-card { background: var(--bg-silver-matte); border: 1px solid #cbd5e1; border-radius: 12px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .lb-header { font-size: 16px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid var(--brand-green); padding-bottom: 10px; }
+        
+        .lb-row { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 12px 15px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: 0.2s; border: 1px solid transparent; cursor: pointer;}
+        .lb-row:hover { border-color: var(--brand-green); transform: translateX(-4px); box-shadow: 0 5px 12px rgba(124,168,86,0.15); }
+        
+        .lb-player-col { display: flex; align-items: center; gap: 15px; }
+        .lb-rank { font-size: 16px; font-weight: 900; color: #94a3b8; width: 20px; text-align: center; }
+        .lb-row:nth-child(1) .lb-rank { color: #f59e0b; /* זהב למקום ראשון */ }
+        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e2e8f0; background: #f8fafc; }
+        .lb-name-wrap { display: flex; flex-direction: column; }
+        .lb-name { font-size: 13.5px; font-weight: 900; color: var(--text-dark); direction: ltr; text-align: right;}
+        .lb-team { font-size: 11px; color: #64748b; font-weight: bold;}
+        
+        .lb-data-col { display: flex; align-items: center; gap: 15px; }
+        .lb-price { font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); font-family: sans-serif; width: 65px; text-align: left;}
+        .lb-trend { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 900; direction: ltr; width: 65px; text-align: center; display: flex; justify-content: center; align-items: center; gap: 2px;}
+        .lb-trend.up { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .lb-trend.down { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .lb-trend svg { width: 12px; height: 12px; stroke-width: 3;}
         
     </style>
 </head>
@@ -1631,10 +1691,246 @@
 
             </div>
             
-            <div id="tab-2" class="tab-content">
+           <div id="tab-2" class="tab-content">
                 <h2 class="content-header-title">מדד השחקנים החמים</h2>
-                <p class="content-desc">האלגוריתם שמחבר בין הדשא לבורסה. ניתוח נתונים ממשחקים אמיתיים לזיהוי שחקנים בכושר שיא, ואיתור הקלפים שלהם שצפויים לזנק בימים הקרובים.</p>
-                <div class="placeholder-box">כאן תוצג רשימת השחקנים החמים והמגמות בשוק...</div>
+                <p class="content-desc">לוח הבקרה המרכזי של הבורסה. ניתוח נתונים בזמן אמת לאיתור מגמות מחירים, פריצות, והזדמנויות רכישה לפני כולם.</p>
+                
+                <div class="hot-top-banner">
+                    <div class="hot-banner-content">
+                        <div class="hot-banner-subtitle">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            היהלום של השבוע (מקום 1 בדירוג)
+                        </div>
+                        <div class="hot-player-name">Lamine Yamal</div>
+                        <div class="hot-player-reason">זינוק מטורף של עשרות אחוזים בעקבות השער בקלאסיקו וזכייה בתואר שחקן החודש. הביקוש בשיא!</div>
+                        
+                        <div class="hot-price-row">
+                            <div class="hot-current-price">₪1,450.00</div>
+                            <div class="hot-trend-badge">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="3" fill="none"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                +42.5%
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hot-banner-graph">
+                        <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+                            <path class="hot-graph-line" d="M0,70 L30,65 L60,68 L90,40 L120,45 L150,20 L180,25 L200,5"></path>
+                            <circle cx="200" cy="5" r="6" fill="#10b981" stroke="#fff" stroke-width="2"></circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="lb-grid">
+                    
+                    <div class="lb-card">
+                        <div class="lb-header">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--brand-green)" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            הרוקיז (RC) החמים
+                        </div>
+                        
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">1</div>
+                                <img src="https://ui-avatars.com/api/?name=Endrick&background=0a2e57&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Endrick</span>
+                                    <span class="lb-team">Real Madrid</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪1,200</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 18%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">2</div>
+                                <img src="https://ui-avatars.com/api/?name=Pau+Cubarsi&background=0a2e57&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Pau Cubarsi</span>
+                                    <span class="lb-team">FC Barcelona</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪950</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 12%</span>
+                            </div>
+                        </div>
+
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">3</div>
+                                <img src="https://ui-avatars.com/api/?name=Arda+Guler&background=0a2e57&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Arda Guler</span>
+                                    <span class="lb-team">Real Madrid</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪820</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 8%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lb-card">
+                        <div class="lb-header">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--brand-green)" stroke-width="2" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                            פריצות העונה (Breakouts)
+                        </div>
+                        
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">1</div>
+                                <img src="https://ui-avatars.com/api/?name=Cole+Palmer&background=1e3a8a&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Cole Palmer</span>
+                                    <span class="lb-team">Chelsea</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪1,650</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 24%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">2</div>
+                                <img src="https://ui-avatars.com/api/?name=Xavi+Simons&background=1e3a8a&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Xavi Simons</span>
+                                    <span class="lb-team">RB Leipzig</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪1,100</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 15%</span>
+                            </div>
+                        </div>
+
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">3</div>
+                                <img src="https://ui-avatars.com/api/?name=Florian+Wirtz&background=1e3a8a&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Florian Wirtz</span>
+                                    <span class="lb-team">Bayer Leverkusen</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪1,340</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 11%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lb-card">
+                        <div class="lb-header">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--brand-green)" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            אגדות בכושר שיא (Veterans)
+                        </div>
+                        
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">1</div>
+                                <img src="https://ui-avatars.com/api/?name=Lionel+Messi&background=334155&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Lionel Messi</span>
+                                    <span class="lb-team">Inter Miami</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪2,800</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 9%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">2</div>
+                                <img src="https://ui-avatars.com/api/?name=Kevin+De+Bruyne&background=334155&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Kevin De Bruyne</span>
+                                    <span class="lb-team">Man City</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪1,450</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 6%</span>
+                            </div>
+                        </div>
+
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">3</div>
+                                <img src="https://ui-avatars.com/api/?name=Toni+Kroos&background=334155&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Toni Kroos</span>
+                                    <span class="lb-team">Real Madrid (Retired)</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪980</span>
+                                <span class="lb-trend up"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg> 14%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lb-card">
+                        <div class="lb-header">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="var(--brand-green)" stroke-width="2" fill="none"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                            הזדמנויות רכישה (Buy the Dip)
+                        </div>
+                        
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">1</div>
+                                <img src="https://ui-avatars.com/api/?name=Gavi&background=7f1d1d&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Gavi</span>
+                                    <span class="lb-team">FC Barcelona (Injured)</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪650</span>
+                                <span class="lb-trend down"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg> 18%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">2</div>
+                                <img src="https://ui-avatars.com/api/?name=Pedri&background=7f1d1d&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Pedri</span>
+                                    <span class="lb-team">FC Barcelona</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪720</span>
+                                <span class="lb-trend down"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg> 12%</span>
+                            </div>
+                        </div>
+
+                        <div class="lb-row">
+                            <div class="lb-player-col">
+                                <div class="lb-rank">3</div>
+                                <img src="https://ui-avatars.com/api/?name=Reece+James&background=7f1d1d&color=fff" class="lb-avatar">
+                                <div class="lb-name-wrap">
+                                    <span class="lb-name">Reece James</span>
+                                    <span class="lb-team">Chelsea</span>
+                                </div>
+                            </div>
+                            <div class="lb-data-col">
+                                <span class="lb-price">₪450</span>
+                                <span class="lb-trend down"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg> 22%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             
             <div id="tab-3" class="tab-content">
