@@ -157,27 +157,16 @@
         .content-desc { color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 0; }
         .placeholder-box { flex: 1; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: bold; font-size: 16px; text-align: center; padding: 20px; line-height: 1.5;}
 
-       /* --- פאנל לייב חלון צף (בעיצוב השקוף המבוקש) - ממקום כסיידבר שמאלי --- */
+        /* --- פאנל לייב חלון צף (בעיצוב השקוף המבוקש) --- */
         .collapsible-live-panel {
-            /* מיקום קבוע בתוך הלייאאוט, לא אבסולוטי מוחלט */
-            width: var(--sidebar-width);
+            position: absolute; top: 20px; left: 20px; width: var(--sidebar-width);
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px);
             border: 2px solid var(--brand-green); border-radius: 16px;
-            display: flex; flex-direction: column; overflow: hidden; z-index: 60;
+            display: flex; flex-direction: column; overflow: hidden; z-index: 100;
             height: 48px; transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* צל תואם לסיידבר ימין */
-            flex-shrink: 0; /* מונע מהחלון להתכווץ */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        
-        /* כשהפאנל פתוח - הוא תופס את כל הגובה כמו הסיידבר הימני */
-        .collapsible-live-panel.expanded { height: 100%; }
-        
-        /* שינוי רוחב של אזור התוכן כדי לפנות מקום לשני סיידברים (ימין ושמאל) */
-        .content-area {
-            flex: 1; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 35px; position: relative; display: flex; flex-direction: column; overflow-y: auto; 
-            /* הסרנו את ה-margin-left שהיה קודם כי עכשיו הפלקס מנהל את זה */
-        }
+        .collapsible-live-panel.expanded { height: calc(100% - 40px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
         
         .panel-header-btn { 
             position: relative; z-index: 10; 
@@ -1540,23 +1529,6 @@
             background: #fff; border: 1px solid #cbd5e1; 
             border-radius: 6px; padding: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-
-        /* =========================================
-           עיצוב כותרות בלו-נייבי לטאב הקופסאות (טאב 3)
-           ========================================= */
-        #tab-3 .lb-header {
-            background: var(--element-navy-gradient);
-            color: #ffffff;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border-bottom: none; /* מבטל את הקו התחתון הירוק הישן */
-            box-shadow: 0 4px 10px rgba(6, 33, 65, 0.15);
-            margin-bottom: 15px;
-        }
-        
-        #tab-3 .lb-header svg {
-            stroke: var(--brand-green); /* משאיר את האייקון בירוק בוהק כדי שיבלוט על הנייבי */
-        }
         
     </style>
 </head>
@@ -1623,24 +1595,6 @@
         </aside>
 
         <section class="content-area">
-            <div class="collapsible-live-panel" id="livePanel">
-                <div class="panel-header-btn" onclick="document.getElementById('livePanel').classList.toggle('expanded')">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="position: relative; display: flex; align-items: center; justify-content: center;">
-                            <span style="position: absolute; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; animation: blink 1.5s infinite;"></span>
-                            <span style="position: absolute; width: 14px; height: 14px; background: rgba(239, 68, 68, 0.4); border-radius: 50%; animation: blink 1.5s infinite; animation-delay: 0.2s;"></span>
-                        </span>
-                        <span style="margin-right: 18px; color: var(--element-navy-gradient);">תוצאות לייב</span>
-                    </div>
-                    <svg class="toggle-arrow" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </div>
-                <div class="panel-content">
-                    <div id="live-scroll-wrapper">
-                        <div id="live-loading" style="text-align: center; padding: 20px; font-weight: bold; color: var(--brand-green);">טוען נתונים חיים... ⚽</div>
-                        <div id="live-content"></div>
-                    </div>
-                </div>
-            </div>
             
             <div id="tab-intro" class="tab-content active">
                 <h2 class="content-header-title">סקירה כללית: בורסת הקלפים</h2>
@@ -2815,25 +2769,6 @@
             
         </aside>
 
-
-            <aside class="collapsible-live-panel" id="livePanel">
-            <div class="panel-header-btn" onclick="document.getElementById('livePanel').classList.toggle('expanded')">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="position: relative; display: flex; align-items: center; justify-content: center;">
-                        <span style="position: absolute; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; animation: blink 1.5s infinite;"></span>
-                        <span style="position: absolute; width: 14px; height: 14px; background: rgba(239, 68, 68, 0.4); border-radius: 50%; animation: blink 1.5s infinite; animation-delay: 0.2s;"></span>
-                    </span>
-                    <span style="margin-right: 18px; color: var(--element-navy-gradient);">תוצאות לייב</span>
-                </div>
-                <svg class="toggle-arrow" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="panel-content">
-                <div id="live-scroll-wrapper">
-                    <div id="live-loading" style="text-align: center; padding: 20px; font-weight: bold; color: var(--brand-green);">טוען נתונים חיים... ⚽</div>
-                    <div id="live-content"></div>
-                </div>
-            </div>
-        </aside>
     </main>
 
 <div class="modal-overlay" id="offerModal">
@@ -3207,7 +3142,12 @@
             renderPortfolio();
         };
         
-        DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            renderChecklistsSidebar();
+            renderTransactionsTable();
+            renderPortfolio();
+        });
+
 
         // === מנוע חיפוש, סינון ומיון הקלפים (נשאר בשלמותו כפי שביקשת) ===
         function formatPrice(price) {
