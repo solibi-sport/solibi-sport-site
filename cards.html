@@ -1625,38 +1625,21 @@
             height: 48px !important; /* גובה התחלתי סגור */
         }
 
-        /* מצב פתוח לפאנל הלייב - נפתח עד למטה */
-        .collapsible-live-panel.expanded {
-            height: calc(100% - 40px) !important; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important; 
-        }
-
-        /* כפיית פתיחה לפאנל לייב - שובר את הנעילה */
-        .collapsible-live-panel.expanded { 
-            height: calc(100% - 40px) !important; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important; 
-        }
-        
-        .collapsible-live-panel.expanded .toggle-arrow {
-            transform: rotate(180deg) !important;
-        }
-
-        /* פריצת הנעילה של פאנל הלייב */
+       /* הגדרת גובה סגור ופתוח - מדויק וסימטרי */
         .collapsible-live-panel {
             height: 48px !important; 
             transition: height 0.4s ease !important;
         }
-        
+
         .collapsible-live-panel.expanded {
-            /* vh = אחוזים מהגובה הפיזי של המסך שלך. זה עוקף את כל הגריד! */
-            height: calc(100vh - 120px) !important; 
+            height: calc(100% - 40px) !important; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important;
         }
-        
+
         .collapsible-live-panel .toggle-arrow {
             transition: transform 0.4s ease !important;
         }
-        
+
         .collapsible-live-panel.expanded .toggle-arrow {
             transform: rotate(180deg) !important;
         }
