@@ -1529,6 +1529,22 @@
             background: #fff; border: 1px solid #cbd5e1; 
             border-radius: 6px; padding: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
+
+        /* =========================================
+           תיקון קסם: חילוץ פאנל הלייב לסיידבר שמאלי
+           ========================================= */
+        .collapsible-live-panel {
+            position: fixed !important; /* מחלץ את החלון החוצה ממגבלות התוכן */
+            top: 85px !important; /* 65 פיקסלים של ההדר + 20 פיקסלים רווח */
+            left: 20px !important; /* מצמיד לשמאל בדיוק מול הסיידבר הימני */
+            width: var(--sidebar-width) !important; /* שומר על רוחב זהה לסיידבר הימני */
+            z-index: 9999 !important; /* מוודא שהוא תמיד מעל הכל */
+            margin: 0 !important;
+        }
+
+        .collapsible-live-panel.expanded {
+            height: calc(100vh - 105px) !important; /* מתמתח בדיוק עד למטה (הדר + שוליים) */
+        }
         
     </style>
 </head>
