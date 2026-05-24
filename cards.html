@@ -1610,6 +1610,45 @@
             height: calc(100% - 40px) !important; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important; 
         }
+
+        /* =========================================
+           תיקון פריסה מוחלט: 3 עמודות סימטריות
+           ========================================= */
+           
+        /* 1. מבטלים שוליים פנימיים מיותרים מהתוכן המרכזי כדי שישב בול באמצע */
+        .content-area {
+            flex: 1 !important; 
+            margin-left: 0 !important; /* מבוטל, הפלקס מסדר הכל אוטומטית */
+        }
+
+        /* 2. הפיכת פאנל הלייב לסיידבר שמאלי קבוע וסימטרי */
+        .collapsible-live-panel {
+            position: relative !important; /* מבטל את הריחוף - מכניס אותו לגריד */
+            top: 0 !important; 
+            left: 0 !important; 
+            width: var(--sidebar-width) !important; /* בדיוק אותו רוחב כמו הימני */
+            height: 100% !important; /* גובה מלא מאותו קו של הימני ועד למטה */
+            flex-shrink: 0 !important; /* מונע מהחלון להתכווץ */
+            margin: 0 !important; 
+            
+            /* עיצוב החלון */
+            background: rgba(255, 255, 255, 0.95) !important; 
+            backdrop-filter: blur(15px) !important;
+            border: 2px solid var(--brand-green) !important; 
+            border-radius: 16px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+        }
+
+        /* ביטול אפקט הכיווץ (כדי שיישאר סיידבר קבוע ויציב כמו הימני) */
+        .collapsible-live-panel.expanded,
+        .collapsible-live-panel.collapsed {
+            height: 100% !important; 
+        }
+        
+        /* הסתרת חץ הקיפול (אין בו צורך כשהוא סיידבר קבוע) */
+        .collapsible-live-panel .toggle-arrow {
+            display: none !important;
+        }
         
     </style>
 </head>
