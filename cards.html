@@ -1419,6 +1419,21 @@
         .auc-preview-side { flex: 1; position: sticky; top: 20px; display: flex; flex-direction: column; align-items: center; }
         .auc-preview-title { font-size: 14px; font-weight: 900; color: #94a3b8; margin-bottom: 15px; }
         .auc-preview-side .auc-card { width: 100%; max-width: 280px; pointer-events: none; }
+
+/* =========================================
+           תיקון מתיחת הצ'קליסטים עד למטה (לכל המסכים)
+           ========================================= */
+        .tab-content.active {
+            flex: 1 !important;
+            min-height: 0 !important;
+        }
+
+        .checklist-wrapper { 
+            flex: 1 !important; 
+            height: auto !important; /* מבטל סופית את ה-65vh הישן */
+            min-height: 55vh !important; /* שומר על גובה מינימלי מעולה ללפטופים */
+            margin-bottom: 20px !important; /* מרווח מהתחתית כמו שביקשת */
+        }
         
     </style>
 </head>
