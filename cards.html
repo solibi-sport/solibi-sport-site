@@ -1579,6 +1579,37 @@
         #live-scroll-wrapper:active #live-content.live-scrolling { animation-play-state: paused !important; }
 
         @keyframes tickerVertical { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+
+/* =========================================
+           תיקון סופי מוחלט: פאנל לייב וקוביית תוכן (כמו בדף הגיימינג)
+           ========================================= */
+           
+        /* כיווץ קוביית התוכן המרכזית כדי להשאיר מקום לפאנל משמאל */
+        .content-area {
+            flex: 1 !important; 
+            margin-left: calc(var(--sidebar-width) + 20px) !important; 
+        }
+
+        /* הפיכת פאנל הלייב למרחף ונעיצתו בפינה השמאלית */
+        .collapsible-live-panel {
+            position: absolute !important; 
+            top: 20px !important; 
+            left: 20px !important; 
+            width: var(--sidebar-width) !important;
+            background: rgba(255, 255, 255, 0.95) !important; 
+            backdrop-filter: blur(15px) !important;
+            border: 2px solid var(--brand-green) !important; 
+            border-radius: 16px !important;
+            margin: 0 !important;
+            z-index: 100 !important;
+            height: 48px !important; /* גובה התחלתי סגור */
+        }
+
+        /* מצב פתוח לפאנל הלייב - נפתח עד למטה */
+        .collapsible-live-panel.expanded {
+            height: calc(100% - 40px) !important; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2) !important; 
+        }
         
     </style>
 </head>
