@@ -482,8 +482,15 @@
         /* =========================================
            עיצוב מערכת "הצ'קליסטים שלי"
            ========================================= */
-        .checklist-wrapper { display: flex; gap: 20px; height: 65vh; margin-top: 15px; position: relative;}
-        
+.checklist-wrapper { 
+    display: flex; 
+    gap: 20px; 
+    flex: 1; /* מותח את המעטפת על כל המקום הפנוי למטה */
+    margin-top: 15px; 
+    margin-bottom: 20px; /* שומר על 20 פיקסלים רווח מהתחתית */
+    position: relative;
+    min-height: 0; /* קריטי כדי שהגלילה הפנימית תעבוד בצורה חלקה בתוך פלקס */
+}        
         /* סיידבר ימני (רשימת האלבומים) */
         .chk-sidebar { flex: 0 0 25%; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
         .chk-sidebar-header { background: var(--element-navy-gradient); color: #fff; padding: 15px; font-weight: 900; text-align: center; }
