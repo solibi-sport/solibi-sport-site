@@ -3910,37 +3910,70 @@ const CARDS_PER_PAGE = 21; // בדיוק 3 שורות של 7 קלפים
                     }
 
         // ==========================================
-        // מנוע אירועי משחק מותאם לדף הנוכחי (מונע קריסות)
+        // מנוע אירועי משחק - מחובר ל-API האמיתי שלך
         // ==========================================
-        window.openMatchEvents = function(fixtureId, homeTeam, awayTeam) {
+        window.openMatchEvents = async function(fixtureId, homeTeam, awayTeam) {
             try {
                 const modal = document.getElementById('matchEventsModal');
                 if(!modal) return;
                 
-                // 1. פותח את המודל בצורה חלקה
                 modal.classList.add('show');
                 
-                // 2. מעדכן את הכותרת לשמות הקבוצות המשחקות
                 const titleEl = document.getElementById('matchModalTitle');
                 if(titleEl) {
                     titleEl.innerText = decodeURIComponent(homeTeam) + ' - ' + decodeURIComponent(awayTeam);
                 }
                 
-                // 3. מציג מצב טעינה בטוח
                 const contentEl = document.getElementById('matchModalContent');
                 if(contentEl) {
-                    contentEl.innerHTML = '<div style="text-align:center; padding:40px; font-size:16px; color: var(--text-dark); font-weight: bold;">טוען אירועי משחק משרת הנתונים... ⚽</div>';
+                    contentEl.innerHTML = '<div style="text-align:center; padding:40px; font-size:16px; color: var(--brand-green); font-weight: bold;">שואב נתונים חיים מהשרת... ⚽</div>';
                 }
                 
-                // 4. (כאן בעתיד תחבר את שליפת האירועים מה-API שלך. כרגע שמתי טקסט בטוח כדי שלא יקרוס)
-                setTimeout(() => {
-                    if(contentEl) {
-                        contentEl.innerHTML = '<div style="text-align:center; padding:40px; color:#64748b; font-weight: bold;">פירוט האירועים (שערים, כרטיסים) יהיה זמין כאן בקרוב.</div>';
-                    }
-                }, 800);
+                // --- משיכת נתונים מהבקאנד שלך ---
+                // שים לב: אם הראוט שלך לאירועים נקרא אחרת (למשל /api/match-events), שנה אותו פה!
+                const response = await fetch(`/api/events?fixture=${fixtureId}`); 
+                
+                if (!response.ok) throw new Error("שגיאה בתקשורת מול שרת הנתונים");
+                
+                const data = await response.json();
+                const events = data.response || [];
+
+                if (events.length === 0) {
+                    contentEl.innerHTML = '<div style="text-align:center; padding:40px; color:#64748b; font-weight: bold;">אין עדיין אירועים למשחק זה.</div>';
+                    return;
+                }
+
+                // רינדור של שורות האירועים עם אייקונים (שערים, כרטיסים, חילופים)
+                let html = '<div style="display:flex; flex-direction:column; gap:12px; padding: 10px;">';
+                events.forEach(ev => {
+                    let icon = '⏱️';
+                    let color = '#64748b';
+                    
+                    if (ev.type === 'Goal') { icon = '⚽'; color = '#10b981'; }
+                    else if (ev.type === 'Card' && ev.detail.includes('Yellow')) { icon = '🟨'; color = '#f59e0b'; }
+                    else if (ev.type === 'Card' && ev.detail.includes('Red')) { icon = '🟥'; color = '#ef4444'; }
+                    else if (ev.type === 'subst') { icon = '🔄'; color = '#3b82f6'; }
+
+                    let extraTime = ev.time.extra ? `+${ev.time.extra}` : '';
+                    
+                    html += `
+                        <div style="display:flex; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; gap:15px; direction: ltr;">
+                            <div style="font-weight:900; color:${color}; width:45px; text-align:center; font-size: 14px;">${ev.time.elapsed}'${extraTime}</div>
+                            <div style="font-size:20px;">${icon}</div>
+                            <div style="flex:1; text-align: left;">
+                                <div style="font-weight:bold; color:var(--text-dark); font-size: 14px;">${ev.player.name || 'Unknown'}</div>
+                                <div style="font-size:11px; color:#94a3b8; margin-top: 4px;">${ev.team.name} | ${ev.detail}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                
+                contentEl.innerHTML = html;
                 
             } catch (err) {
-                console.error("שגיאה בפתיחת מודל המשחק:", err);
+                console.error("שגיאה במשיכת מודל אירועים:", err);
+                document.getElementById('matchModalContent').innerHTML = '<div style="text-align:center; padding:40px; color:#ef4444; font-weight: bold;">שגיאה בטעינת הנתונים מה-API.</div>';
             }
         };
 
