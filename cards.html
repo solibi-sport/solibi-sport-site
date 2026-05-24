@@ -164,28 +164,26 @@
         .placeholder-box { flex: 1; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: bold; font-size: 16px; text-align: center; padding: 20px; line-height: 1.5;}
 
         .collapsible-live-panel {
-            position: relative; /* יושב בתוך הגריד, לא מרחף */
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
             width: var(--sidebar-width);
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.35); /* שקיפות זכוכית */
+            backdrop-filter: blur(20px);
             border: 2px solid var(--brand-green); 
             border-radius: 16px;
             display: flex; 
             flex-direction: column; 
             overflow: hidden; 
-            z-index: 60;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            flex-shrink: 0;
-            
-            /* מנגנון הקיפול */
-            align-self: flex-start; /* חובה! מונע מהעמודה להימתח אוטומטית */
-            height: 48px; /* גובה התחלתי - סגור */
-            transition: height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 100;
+            height: 48px; /* גובה התחלתי סגור */
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        /* מצב פתוח */
-        .collapsible-live-panel.expanded {
-            height: 100%; /* נמתח עד למטה */
+        .collapsible-live-panel.expanded { 
+            height: calc(100% - 40px); /* נפתח עד למטה */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
         }
 
         .panel-header-btn { 
