@@ -898,7 +898,7 @@
             text-align: center !important;
         }
 
-        /* =========================================
+       /* =========================================
            חלון צף (Modal) לדיון / אשכול
            ========================================= */
         .thread-modal-overlay {
@@ -919,50 +919,50 @@
         }
         .thread-modal-overlay.active .thread-modal-content { transform: translateY(0); }
         
-        /* אזור עליון - כותרת ו-X */
+        /* אזור עליון - כותרת ו-X (הוקטן) */
         .thread-modal-header {
-            background: var(--element-navy-gradient); padding: 15px 50px 15px 20px; /* הקטנתי ריפוד עליון */
+            background: var(--element-navy-gradient); padding: 12px 40px 12px 15px; 
             color: #fff; border-bottom: 3px solid var(--brand-green);
             flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;
         }
-        .thread-modal-title { font-size: 18px; font-weight: 900; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3); font-family: system-ui, -apple-system, sans-serif; }
+        .thread-modal-title { font-size: 16px; font-weight: 900; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3); font-family: system-ui, -apple-system, sans-serif; }
         .thread-modal-close {
-            position: absolute; top: 10px; left: 10px;
+            position: absolute; top: 8px; left: 8px;
             background: rgba(255,255,255,0.2); border: none; color: #fff;
-            width: 28px; height: 28px; border-radius: 50%; font-size: 18px; line-height: 1;
+            width: 24px; height: 24px; border-radius: 50%; font-size: 15px; line-height: 1;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
             transition: 0.2s; z-index: 10; font-weight: bold;
         }
         .thread-modal-close:hover { background: #ef4444; transform: rotate(90deg); }
         
-        /* גוף הדיון (נגלל) */
-        .thread-modal-body { flex: 1; overflow-y: auto; padding: 15px; } /* ריפוד פנימי מוקטן */
-        .thread-modal-body::-webkit-scrollbar { width: 6px; } /* פס גלילה דק יותר */
+        /* גוף הדיון נגלל (מרווחים הוקטנו) */
+        .thread-modal-body { flex: 1; overflow-y: auto; padding: 12px; }
+        .thread-modal-body::-webkit-scrollbar { width: 6px; }
         .thread-modal-body::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 10px; }
         
-        /* עיצוב פוסט (כרטיסיה) */
-        .modal-post { display: flex; background: #fff; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); overflow: hidden; } /* פוסט קומפקטי - מסגרות ושוליים */
-        .modal-post.op-post { border: 2px solid var(--brand-green); box-shadow: 0 4px 10px rgba(124, 168, 86, 0.1); }
+        /* עיצוב פוסט (כרטיסיה סופר-קומפקטית) */
+        .modal-post { display: flex; background: #fff; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; }
+        .modal-post.op-post { border: 2px solid var(--brand-green); box-shadow: 0 3px 8px rgba(124, 168, 86, 0.1); }
         
-        /* סיידבר - צד ימין מוקטן */
-        .modal-post-sidebar { width: 120px; background: #f1f5f9; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; border-left: 1px solid #e2e8f0; flex-shrink: 0; }
-        .modal-post-avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 8px; cursor: pointer; }
-        .modal-post-author { font-size: 13px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 4px; text-align: center; cursor: pointer; }
-        .modal-post-rank { font-size: 10px; background: #e2e8f0; color: #475569; padding: 2px 6px; border-radius: 12px; font-weight: 700; border: 1px solid #cbd5e1; text-align: center; }
+        /* סיידבר - צד ימין הוצר משמעותית */
+        .modal-post-sidebar { width: 95px; background: #f1f5f9; padding: 10px 8px; display: flex; flex-direction: column; align-items: center; border-left: 1px solid #e2e8f0; flex-shrink: 0; }
+        .modal-post-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 6px; cursor: pointer; }
+        .modal-post-author { font-size: 12px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 3px; text-align: center; cursor: pointer; }
+        .modal-post-rank { font-size: 9px; background: #e2e8f0; color: #475569; padding: 2px 4px; border-radius: 12px; font-weight: 700; border: 1px solid #cbd5e1; text-align: center; }
         
-        /* תוכן - צד שמאל מוקטן */
-        .modal-post-content { flex: 1; padding: 12px 15px; display: flex; flex-direction: column; }
-        .modal-post-meta { font-size: 10px; color: #94a3b8; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; font-family: system-ui, -apple-system, sans-serif;}
-        .modal-post-text { font-size: 13px; color: var(--text-dark); line-height: 1.5; flex: 1; }
-        .modal-post-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e2e8f0; }
-        .modal-action-btn { background: none; border: none; color: #64748b; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 12px; font-family: inherit; transition: 0.2s;}
+        /* תוכן - צד שמאל */
+        .modal-post-content { flex: 1; padding: 10px 12px; display: flex; flex-direction: column; }
+        .modal-post-meta { font-size: 10px; color: #94a3b8; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between; font-family: system-ui, -apple-system, sans-serif;}
+        .modal-post-text { font-size: 12px; color: var(--text-dark); line-height: 1.4; flex: 1; }
+        .modal-post-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e2e8f0; }
+        .modal-action-btn { background: none; border: none; color: #64748b; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; font-family: inherit; transition: 0.2s;}
         .modal-action-btn:hover { color: var(--brand-green); transform: translateY(-2px); }
         
-        /* תיבת תגובה מהירה בתחתית */
-        .modal-quick-reply { background: #e2e8f0; padding: 15px; border-top: 3px solid var(--brand-green); flex-shrink: 0; }
-        .modal-reply-textarea { width: 100%; height: 60px; padding: 10px 15px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; resize: none; font-family: inherit; font-size: 13px; margin-bottom: 10px; background: #fff; }
+        /* תיבת תגובה מהירה בתחתית הוקטנה */
+        .modal-quick-reply { background: #e2e8f0; padding: 12px; border-top: 3px solid var(--brand-green); flex-shrink: 0; }
+        .modal-reply-textarea { width: 100%; height: 50px; padding: 8px 12px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; resize: none; font-family: inherit; font-size: 12px; margin-bottom: 8px; background: #fff; }
         .modal-reply-textarea:focus { border-color: var(--brand-green); box-shadow: 0 0 10px rgba(124, 168, 86, 0.2); }
-        .modal-reply-btn { background: var(--element-navy-gradient); color: #fff; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 900; font-size: 13px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(6, 33, 65, 0.3); }
+        .modal-reply-btn { background: var(--element-navy-gradient); color: #fff; border: none; padding: 6px 15px; border-radius: 8px; font-weight: 900; font-size: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(6, 33, 65, 0.3); }
         .modal-reply-btn:hover { transform: translateY(-2px); background: var(--brand-green); }
         
     </style>
