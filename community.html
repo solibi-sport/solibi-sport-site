@@ -586,53 +586,46 @@
            תיקון סופי לטבלת הפורומים: סימטריה, מניעת חיתוך וקו ישר לעיגולים
            ========================================= */
         
-        /* 1. עמודת 'נושא / פורום': כותרת ממורכזת בול באמצע */
-        .forum-table th:nth-child(1) {
-            width: 35% !important;
-            text-align: center !important; 
-            padding-right: 0 !important;
-        }
-        .forum-table td:nth-child(1) {
-            width: 35% !important;
-            text-align: right !important;
-            padding-right: 20px !important;
-        }
-
-        /* 2. עמודות 'נושאים' ו-'הודעות': בדיוק באמצע (כותרות + מספרים) */
-        .forum-table th:nth-child(2), .forum-table td:nth-child(2),
-        .forum-table th:nth-child(3), .forum-table td:nth-child(3) {
-            width: 10% !important;
-            text-align: center !important;
-        }
-
-        /* 3. עמודת 'הודעה אחרונה': כותרת ממורכזת והמון שטח כדי לא להיחתך */
+       /* 3. עמודת 'הודעה אחרונה': כותרת ממורכזת בול באמצע */
         .forum-table th:nth-child(4) {
-            width: 45% !important;
+            width: 43% !important;
             text-align: center !important;
         }
         .forum-table td:nth-child(4) {
-            width: 45% !important;
+            width: 43% !important;
         }
 
-        /* 4. סידור העיגולים בקו ישר (סרגל) ומניעת חיתוך הטקסט */
+        /* 4. סידור העיגולים בקו ישר (סרגל) והזזה שמאלה */
         .last-post-info {
             display: flex !important;
-            justify-content: flex-start !important; /* נועל את העיגולים שמאלה לקו ישר לחלוטין */
             align-items: center !important;
-            gap: 12px !important;
+            gap: 15px !important;
             direction: ltr !important; 
-            padding-left: 15% !important; /* מזיז את הקו הישר קצת פנימה כדי שיהיה מתחת לכותרת */
-            padding-right: 0 !important;
-            width: 100% !important;
+            
+            /* הקסם לזיגזג ולמיקום: נועלים רוחב קבוע ודוחפים שמאלה */
+            width: 250px !important; 
+            margin-right: auto !important; /* דוחף את כל הבלוק שמאלה */
+            margin-left: 40px !important;  /* מרחיק מהקצה השמאלי */
+            justify-content: flex-start !important; /* מצמיד את העיגולים לקו התחלה אחיד */
+        }
+
+        .last-post-avatar {
+            flex-shrink: 0 !important; /* מונע מהעיגול להתכווץ */
         }
 
         .last-post-text {
             text-align: left !important;
+            flex: 1 !important;
         }
 
+        /* ביטול החיתוך לחלוטין ואפשרות לירידת שורה מסודרת */
         .last-post-title {
-            max-width: none !important; /* ביטול הגבלת הרוחב - אין יותר חיתוך עם שלוש נקודות! */
-            white-space: normal !important; /* מאפשר למשפט ארוך לרדת לשורה שנייה יפה */
+            max-width: 100% !important; 
+            white-space: normal !important; 
+            display: -webkit-box !important;
+            -webkit-line-clamp: 2 !important; /* נותן לטקסט עד 2 שורות לפני שלוש נקודות */
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
             line-height: 1.3 !important;
             font-size: 13px !important;
             font-weight: 900 !important;
