@@ -964,7 +964,7 @@
                         </div>
                         
                        <div class="forum-nav-menu">
-                            <div class="forum-nav-item active" onclick="filterForums('all', this)">ראשי (כל הפורומים)</div>
+                            <div class="forum-nav-item active" onclick="goBackToMainForums(); filterForums('all', this)">ראשי (כל הפורומים)</div>
                             <div class="forum-nav-item" onclick="filterForums('my-forums', this)" style="font-weight: 900; color: var(--element-navy-gradient);">הפורומים שלי (פעיל)</div>
                             
                             <div style="margin: 10px 0 10px 0; border-bottom: 1px solid #e2e8f0;"></div>
@@ -1024,6 +1024,7 @@
                     </aside>
 
                     <div class="forum-main-area">
+                        <div id="main-forums-view">
                         <table class="forum-table">
                             <thead>
                                 <tr>
@@ -1057,7 +1058,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="forum-row" data-category="ea-fc">
+                               <tr class="forum-row" data-category="ea-fc" onclick="enterForum('EA SPORTS FC', 'מצב קריירה (Career Mode)')">
                                     <td>
                                         <div class="forum-icon-title">
                                             <div class="forum-icon fc" style="background: rgba(10, 46, 87, 0.05); color: #0a2e57;">🏆</div>
@@ -1130,7 +1131,7 @@
                             </tbody>
                         </table>
                         
-                        <div class="forum-pagination">
+                       <div class="forum-pagination">
                             <button class="forum-page-btn disabled" title="הקודם">&laquo;</button>
                             <button class="forum-page-btn active">1</button>
                             <button class="forum-page-btn">2</button>
@@ -1140,10 +1141,85 @@
                             <button class="forum-page-btn" title="הבא">&raquo;</button>
                         </div>
 
+                    </div> <div id="single-forum-view" style="display: none; padding: 20px;">
+                        
+                        <div class="forum-view-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px;">
+                            <div class="breadcrumbs" style="font-weight: 900; font-size: 14px;">
+                                <span onclick="goBackToMainForums()" style="color: var(--brand-green); cursor: pointer; text-decoration: underline;">ראשי</span>
+                                <span style="color: #94a3b8; margin: 0 8px;">/</span>
+                                <span id="currentCategoryName" style="color: #64748b;">קטגוריה</span>
+                                <span style="color: #94a3b8; margin: 0 8px;">/</span>
+                                <span id="currentForumName" style="color: var(--element-navy-gradient);">שם הפורום</span>
+                            </div>
+                            <button class="btn-back" onclick="goBackToMainForums()" style="background: #f1f5f9; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; color: var(--text-dark);">
+                                🔙 חזרה לפורומים
+                            </button>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <button class="btn-new-thread" style="margin: 0;" onclick="alert('חלון פתיחת אשכול חדש...')">
+                                <span>פתח דיון חדש בפורום זה</span> <span class="plus-icon" style="color: var(--brand-green);">+</span>
+                            </button>
+                        </div>
+
+                        <table class="forum-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 45%; text-align: right; padding-right: 20px;">נושא הדיון</th>
+                                    <th style="width: 15%; text-align: center;">מחבר</th>
+                                    <th style="width: 15%; text-align: center;">תגובות / צפיות</th>
+                                    <th style="width: 25%; text-align: center;">הודעה אחרונה</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="forum-row" style="background: #f8fafc !important; border-right: 4px solid var(--brand-green);">
+                                    <td style="padding-right: 20px; text-align: right;">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <span style="font-size: 18px;">📌</span>
+                                            <div>
+                                                <div style="font-size: 14px; font-weight: 900; color: var(--element-navy-gradient);">חוקי הפורום - חובה לקרוא לפני פתיחת אשכול!</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center; font-weight: bold; color: #ef4444;">Admin</td>
+                                    <td style="text-align: center; font-weight: bold; color: #64748b;">0 / 1.2K</td>
+                                    <td style="text-align: center; font-size: 11px; color: #64748b; font-weight: bold;">לפני שבוע</td>
+                                </tr>
+
+                                <tr class="forum-row">
+                                    <td style="padding-right: 20px; text-align: right;">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <span style="font-size: 18px;">📄</span>
+                                            <div>
+                                                <div style="font-size: 14px; font-weight: 900; color: var(--text-dark);">איזה שחקנים צעירים הכי שווה לקנות בעונה הראשונה?</div>
+                                                <div style="font-size: 10px; background: #e0e7ff; color: #4f46e5; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; font-weight: bold;">עזרה וייעוץ</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center; font-weight: bold; color: var(--text-dark);">Gadi_King</td>
+                                    <td style="text-align: center; font-weight: bold; color: #64748b;">42 / 850</td>
+                                    <td style="text-align: center; font-size: 11px; color: #64748b; font-weight: bold;">היום ב-14:30 ע"י Aviv_C</td>
+                                </tr>
+                                
+                                <tr class="forum-row">
+                                    <td style="padding-right: 20px; text-align: right;">
+                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                            <span style="font-size: 18px;">📄</span>
+                                            <div>
+                                                <div style="font-size: 14px; font-weight: 900; color: var(--text-dark);">הפועל תל אביב זוכה בליגת האלופות 2030 - הסיפור המלא</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center; font-weight: bold; color: var(--text-dark);">Aviv_C</td>
+                                    <td style="text-align: center; font-weight: bold; color: #64748b;">15 / 320</td>
+                                    <td style="text-align: center; font-size: 11px; color: #64748b; font-weight: bold;">לפני שעתיים ע"י Matan_Pro</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-            </div>
-            
+
+                </div> </div> </div> ```
+
             <div id="tab-2" class="tab-content">
                 <h2 class="content-header-title">ליגות חברים פרטיות</h2>
                 <p class="content-desc">נהלו את הליגות שלכם מול החברים, עקבו אחרי הטבלאות, והזמינו שחקנים חדשים להתחרות מולכם.</p>
@@ -1463,6 +1539,32 @@
             if (event.target.id === 'myAreaModal') {
                 document.getElementById('myAreaModal').classList.remove('active');
             }
+        }
+
+        // ==========================================
+        // מנוע ניווט פנימי - מעבר לתוך פורום וחזרה
+        // ==========================================
+        function enterForum(categoryName, forumName) {
+            // 1. מסתיר את הטבלה הראשית
+            document.getElementById('main-forums-view').style.display = 'none';
+            // 2. מציג את טבלת הדיונים
+            document.getElementById('single-forum-view').style.display = 'block';
+            // 3. מעדכן את פירורי הלחם
+            document.getElementById('currentCategoryName').innerText = categoryName;
+            document.getElementById('currentForumName').innerText = forumName;
+            
+            // אפקט גלילה למעלה
+            document.querySelector('.forum-main-area').scrollTop = 0;
+        }
+
+        function goBackToMainForums() {
+            // 1. מסתיר את טבלת הדיונים
+            document.getElementById('single-forum-view').style.display = 'none';
+            // 2. מציג חזרה את הטבלה הראשית
+            document.getElementById('main-forums-view').style.display = 'block';
+            
+            // מוודא שהסיידבר מסומן על 'ראשי'
+            filterForums('all', document.querySelector('.forum-nav-item:first-child'));
         }
         
     </script>
