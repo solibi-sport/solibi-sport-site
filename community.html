@@ -583,17 +583,17 @@
         }
 
        /* =========================================
-           תיקון סימטריה, מרכוז כותרות ומניעת חיתוך טקסט
+           תיקון סופי לטבלת הפורומים: סימטריה, מניעת חיתוך וקו ישר לעיגולים
            ========================================= */
         
-        /* 1. עמודת 'נושא/פורום': כותרת באמצע, התוכן (האייקונים) נשאר מיושר לימין */
+        /* 1. עמודת 'נושא / פורום': כותרת ממורכזת בול באמצע */
         .forum-table th:nth-child(1) {
-            width: 40% !important;
-            text-align: center !important;
+            width: 35% !important;
+            text-align: center !important; 
             padding-right: 0 !important;
         }
         .forum-table td:nth-child(1) {
-            width: 40% !important;
+            width: 35% !important;
             text-align: right !important;
             padding-right: 20px !important;
         }
@@ -601,26 +601,41 @@
         /* 2. עמודות 'נושאים' ו-'הודעות': בדיוק באמצע (כותרות + מספרים) */
         .forum-table th:nth-child(2), .forum-table td:nth-child(2),
         .forum-table th:nth-child(3), .forum-table td:nth-child(3) {
-            width: 12% !important;
+            width: 10% !important;
             text-align: center !important;
         }
 
-        /* 3. עמודת 'הודעה אחרונה': כותרת באמצע, והרחבת השטח על חשבון עמודה 1 */
+        /* 3. עמודת 'הודעה אחרונה': כותרת ממורכזת והמון שטח כדי לא להיחתך */
         .forum-table th:nth-child(4) {
-            width: 36% !important;
+            width: 45% !important;
             text-align: center !important;
         }
         .forum-table td:nth-child(4) {
-            width: 36% !important;
+            width: 45% !important;
         }
 
-        /* 4. ניצול המקום החדש בעמודה השמאלית כדי שהטקסט לא ייחתך לעולם */
+        /* 4. סידור העיגולים בקו ישר (סרגל) ומניעת חיתוך הטקסט */
         .last-post-info {
-            justify-content: center !important; /* ממרכז את התמונות והטקסט בול מתחת לכותרת */
-            padding-right: 0 !important; 
+            display: flex !important;
+            justify-content: flex-start !important; /* נועל את העיגולים שמאלה לקו ישר לחלוטין */
+            align-items: center !important;
+            gap: 12px !important;
+            direction: ltr !important; 
+            padding-left: 15% !important; /* מזיז את הקו הישר קצת פנימה כדי שיהיה מתחת לכותרת */
+            padding-right: 0 !important;
+            width: 100% !important;
         }
+
+        .last-post-text {
+            text-align: left !important;
+        }
+
         .last-post-title {
-            max-width: 250px !important; /* נותן לטקסט כמעט כפול מקום להתפרס לפני שהוא נחתך! */
+            max-width: none !important; /* ביטול הגבלת הרוחב - אין יותר חיתוך עם שלוש נקודות! */
+            white-space: normal !important; /* מאפשר למשפט ארוך לרדת לשורה שנייה יפה */
+            line-height: 1.3 !important;
+            font-size: 13px !important;
+            font-weight: 900 !important;
         }
         
     </style>
