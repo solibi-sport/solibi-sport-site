@@ -440,6 +440,71 @@
         .last-post-text { display: flex; flex-direction: column; text-align: right; }
         .last-post-title { font-size: 12px; font-weight: 900; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; margin-bottom: 2px; }
         .last-post-meta { font-size: 10px; color: #94a3b8; font-weight: bold; }
+
+/* =========================================
+           עיצוב דפדוף (Pagination) לפורומים
+           ========================================= */
+        
+        /* דואג שהטבלה תדחוף את הדפדוף לתחתית גם אם יש מעט פורומים */
+        .forum-main-area {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        .forum-table {
+            margin-bottom: auto !important;
+        }
+
+        .forum-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            background: #ffffff;
+            direction: ltr; /* מחזיק את החצים והמספרים בכיוון הנכון */
+        }
+
+        .forum-page-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: var(--text-dark);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .forum-page-btn:hover:not(.disabled) {
+            border-color: var(--brand-green);
+            color: var(--brand-green);
+            background: rgba(124, 168, 86, 0.05);
+        }
+
+        .forum-page-btn.active {
+            background: var(--brand-green);
+            border-color: var(--brand-green);
+            color: #ffffff;
+        }
+
+        .forum-page-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: #f8fafc;
+        }
+        
+        .forum-page-dots {
+            color: #94a3b8;
+            font-weight: 900;
+            padding: 0 4px;
+        }
         
     </style>
 </head>
@@ -656,6 +721,15 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="forum-pagination">
+                            <button class="forum-page-btn disabled" title="הקודם">&laquo;</button>
+                            <button class="forum-page-btn active">1</button>
+                            <button class="forum-page-btn">2</button>
+                            <button class="forum-page-btn">3</button>
+                            <span class="forum-page-dots">...</span>
+                            <button class="forum-page-btn">10</button>
+                            <button class="forum-page-btn" title="הבא">&raquo;</button>
+                        </div>
                     </div>
                 </div>
             </div>
