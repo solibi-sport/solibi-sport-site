@@ -581,6 +581,41 @@
             background: #ffffff !important;
             border-top: none !important;
         }
+
+        /* =========================================
+           תיקון סימטריה ויישור עמודות בטבלת הפורומים
+           ========================================= */
+        
+        /* עמודת נושא/פורום (הימנית ביותר) - מקטינים מעט */
+        .forum-table th:nth-child(1), .forum-table td:nth-child(1) {
+            width: 45% !important;
+            text-align: right !important;
+            padding-right: 20px !important;
+        }
+
+        /* עמודת "נושאים" - ממרכזים בול מעל המספר */
+        .forum-table th:nth-child(2), .forum-table td:nth-child(2) {
+            width: 12% !important;
+            text-align: center !important;
+        }
+
+        /* עמודת "הודעות" - ממרכזים בול מעל המספר */
+        .forum-table th:nth-child(3), .forum-table td:nth-child(3) {
+            width: 12% !important;
+            text-align: center !important;
+        }
+
+        /* עמודת "הודעה אחרונה" (השמאלית) - נותנים לה הרבה יותר מקום כדי שהטקסט לא ייחתך */
+        .forum-table th:nth-child(4), .forum-table td:nth-child(4) {
+            width: 31% !important;
+            text-align: right !important;
+            padding-left: 20px !important; /* מרחיק מעט את הטקסט מקצה המסך השמאלי */
+        }
+
+        /* מגדילים את השטח המקסימלי לטקסט של כותרת ההודעה כדי שינצל את המקום החדש */
+        .last-post-title {
+            max-width: 220px !important; /* במקום ה-140 המקורי */
+        }
         
     </style>
 </head>
