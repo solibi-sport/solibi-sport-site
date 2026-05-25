@@ -513,6 +513,74 @@
             font-weight: 900;
             padding: 0 4px;
         }
+
+        /* =========================================
+           עדכוני צבעים פרימיום: פורומים וסיידבר
+           ========================================= */
+        
+        /* 1. רקע כסוף פנימי לסיידבר ולטבלה */
+        .forum-sidebar, .forum-main-area {
+            background: var(--bg-silver-matte) !important;
+        }
+
+        /* 2. עיצוב השורות כדי שיבלטו כמו "קלפים" על הרקע הכסוף */
+        .forum-table th {
+            background: transparent !important;
+            border-bottom: 2px solid rgba(0,0,0,0.1) !important;
+        }
+        .forum-row {
+            background: #ffffff !important; /* רקע לבן לשורה */
+            border-bottom: 4px solid #ececec !important; /* מייצר אפקט של רווח כסוף בין השורות */
+            border-radius: 8px;
+        }
+        .forum-row:hover {
+            background: #f8fafc !important;
+        }
+
+        /* 3. קוביית אלופי הקהילה - רקע ירוק ממותג */
+        .forum-leaderboard { 
+            background: var(--brand-green) !important; 
+            border-radius: 10px; 
+            border: none !important; 
+            padding: 15px; 
+            margin-top: auto; /* משאיר אותה למטה */
+            box-shadow: 0 10px 20px rgba(124, 168, 86, 0.3) !important;
+        }
+
+        /* 4. כותרת אלופי הקהילה - טקסט לבן עם פס בלו נייבי */
+        .leaderboard-title { 
+            color: #ffffff !important; 
+            border-bottom: 3px solid #0a2e57 !important; /* הפס בבלו נייבי! */
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        /* 5. התאמת צבעי הטקסט בתוך טבלת האלופים כדי שיבלטו על הירוק */
+        .forum-leaderboard .lb-user-name { color: #ffffff !important; }
+        .forum-leaderboard .lb-user-points { color: rgba(255,255,255,0.85) !important; }
+        .forum-leaderboard .leaderboard-user { border-bottom: 1px solid rgba(255,255,255,0.2) !important; }
+        .forum-leaderboard .lb-user-rank { text-shadow: 0 1px 2px rgba(0,0,0,0.3); } /* הצללה קלה למספרי הדירוג */
+        
+        /* 6. כדי שכפתורי הניווט בסיידבר לא ייבלעו ברקע הכסוף, ניתן להם רקע לבן */
+        .forum-nav-item {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .forum-nav-item.active {
+            background: #ffffff !important;
+            border: 1px solid var(--brand-green) !important;
+            border-right: 4px solid var(--brand-green) !important;
+            box-shadow: 0 4px 10px rgba(124, 168, 86, 0.15);
+        }
+
+        /* 7. מיזוג אזור מספרי הדפים (למטה) עם הרקע הכסוף */
+        .forum-pagination {
+            background: transparent !important;
+            border-top: none !important;
+        }
         
     </style>
 </head>
