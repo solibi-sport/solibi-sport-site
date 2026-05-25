@@ -887,67 +887,6 @@
         .my-tab-content.active { display: block; animation: fadeInTab 0.3s ease; }
         @keyframes fadeInTab { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .empty-state-placeholder { text-align: center; color: #94a3b8; font-size: 14px; font-weight: bold; margin-top: 40px; }
-
-/* --- שדרוג שורת "חוקי הפורום" לבלו נייבי פרימיום --- */
-
-/* סלקטור המזהה את השורה הספציפית הזו */
-.forum-table tbody tr.forum-row[style*="border-right"] {
-    /* 1. רקע בלו נייבי עמוק */
-    background: linear-gradient(145deg, #0a2e57 0%, #062141 100%) !important;
-    
-    /* 2. שינוי צבע הטקסט הבסיסי ללבן */
-    color: #ffffff !important;
-    
-    /* 3. הוספת צל עדין (Premium shadow) לתחושת עומק */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
-    
-    /* 4. הוספת ריפוד (Padding) נוסף כדי ש"הכל יראה טוב" ולא צפוף */
-    padding-top: 15px !important;
-    padding-bottom: 15px !important;
-    
-    /* 5. שיפור התג הירוק בצד שמאל */
-    border-right: 4px solid var(--brand-green) !important;
-    
-    /* 6. ביטול אפקט ה-Hover שעלול לקלקל את המראה הכהה */
-    transition: background 0.3s ease;
-}
-
-/* 7. שיפור קריאות טקסט הכותרת הראשי */
-.forum-table tbody tr.forum-row[style*="border-right"] .last-post-title {
-    color: #ffffff !important;
-    font-weight: 700 !important; /* הדגשה פרימיום */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* צל טקסט עדין לקריאות מושלמת */
-}
-
-/* 8. שינוי צבע טקסט המחבר "Admin" מאדום ללבן/אפור בהיר מאוד (לקריאות על רקע כהה) */
-.forum-table tbody tr.forum-row[style*="border-right"] td[style*="color: #ef4444"] {
-    color: #e2e8f0 !important; /* אפור בהיר מאוד */
-    font-weight: 600 !important;
-}
-
-/* 9. שינוי צבע הסטטיסטיקות (0 / 1.2K) ללבן */
-.forum-table tbody tr.forum-row[style*="border-right"] .forum-stat {
-    color: #ffffff !important;
-    opacity: 0.9; /* עמעום קל כדי לא להסיח את הדעת מהכותרת */
-}
-
-/* 10. שינוי צבע טקסט הזמן (לפני שבוע) לאפור בהיר כדי לשמור על היררכיה */
-.forum-table tbody tr.forum-row[style*="border-right"] td:last-child .last-post-meta {
-    color: #a0aec0 !important;
-}
-
-/* 11. שדרוג אייקון הנעץ (📌) - החלפה באייקון לבן ובוהק */
-.forum-table tbody tr.forum-row[style*="border-right"] .forum-icon.fc {
-    background: transparent !important; /* ביטול הרקע הבהיר המקורי */
-    color: #ffffff !important; /* שינוי הצבע ללבן */
-    font-size: 20px !important; /* הגדלה קלה של האייקון */
-}
-
-/* 12. אפקט Hover עדין בפרימיום (רקע כהה יותר) */
-.forum-table tbody tr.forum-row[style*="border-right"]:hover {
-    background: #031427 !important; /* בלו נייבי כהה עוד יותר */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5) !important;
-}
         
     </style>
 </head>
