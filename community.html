@@ -756,6 +756,80 @@
         .forum-table th:nth-child(4), .forum-table td:nth-child(4) {
             width: 37% !important; 
         }
+
+        /* =========================================
+           עיצוב חלון צף - כרטיס גולש פרימיום
+           ========================================= */
+        .user-card-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(6, 33, 65, 0.4); backdrop-filter: blur(5px);
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s ease;
+        }
+        .user-card-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .user-card-modal {
+            width: 360px; background: #ffffff; border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(6, 33, 65, 0.3);
+            border: 2px solid var(--text-dark); overflow: hidden;
+            position: relative; transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .user-card-overlay.active .user-card-modal { transform: scale(1); }
+
+        .user-card-close {
+            position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.2);
+            border: none; color: #fff; font-size: 22px; cursor: pointer; width: 28px; height: 28px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; transition: 0.2s;
+        }
+        .user-card-close:hover { background: rgba(255,255,255,0.4); transform: rotate(90deg); }
+
+        /* הדר כרטיס שחקן */
+        .user-card-header {
+            background: var(--element-navy-gradient); padding: 30px 20px 20px 20px;
+            text-align: center; border-bottom: 3px solid var(--brand-green);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .user-card-avatar {
+            width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 12px;
+        }
+        .user-card-username { color: #ffffff; font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+        .user-card-badge {
+            background: var(--brand-green); color: #ffffff; font-size: 11px; font-weight: 900;
+            padding: 3px 12px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* גוף הכרטיס */
+        .user-card-body { padding: 20px; }
+        .card-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .card-stat-box {
+            background: var(--bg-silver-matte); border-radius: 8px; padding: 10px;
+            text-align: center; border: 1px solid #e2e8f0;
+        }
+        .stat-num { display: block; font-size: 15px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
+        .stat-label { font-size: 10px; font-weight: bold; color: #64748b; }
+
+        /* מד התקדמות (XP) */
+        .card-xp-wrapper { margin-bottom: 20px; background: #f8fafc; border-radius: 8px; padding: 10px; border: 1px solid #f1f5f9; }
+        .card-xp-text { font-size: 11px; font-weight: 900; color: var(--text-dark); margin-bottom: 6px; }
+        .card-xp-bar { width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-bottom: 4px; }
+        .card-xp-progress { height: 100%; background: var(--brand-green); border-radius: 10px; }
+        .card-xp-meta { font-size: 9px; color: #94a3b8; font-weight: bold; text-align: left; }
+
+        /* תגים */
+        .card-badges-section { display: flex; gap: 6px; justify-content: center; margin-bottom: 5px; }
+        .mini-badge { background: #f1f5f9; font-size: 10px; font-weight: 700; color: #475569; padding: 4px 8px; border-radius: 4px; border: 1px solid #e2e8f0; }
+
+        /* כפתורי פעולה בתחתית */
+        .user-card-footer { display: flex; gap: 10px; padding: 0 20px 20px 20px; }
+        .card-action-btn {
+            flex: 1; padding: 10px; border-radius: 8px; font-family: inherit;
+            font-size: 13px; font-weight: 900; cursor: pointer; transition: 0.2s;
+        }
+        .btn-friend { background: var(--brand-green); color: #fff; border: none; box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
+        .btn-friend:hover { background: #6b9449; transform: translateY(-2px); }
+        .btn-msg { background: #ffffff; color: var(--text-dark); border: 2px solid var(--text-dark); }
+        .btn-msg:hover { background: rgba(6, 33, 65, 0.05); transform: translateY(-2px); }
         
     </style>
 </head>
@@ -846,7 +920,10 @@
                                 </select>
                             
                             <div style="margin: 10px 0 10px 0; border-bottom: 1px solid #e2e8f0;"></div>
-                            
+                            <div class="forum-nav-item" onclick="alert('פתחת את ההתראות שלך...')">
+                                🔔 התראות שלי <span style="background: var(--brand-green); color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; float: left;">5</span>
+                            </div>
+                            <div class="forum-nav-item" onclick="alert('פתחת את המועדפים שלך...')">⭐ המועדפים שלי</div>
                             <div class="forum-nav-item" style="display: flex; justify-content: space-between;">
                                 הודעות פרטיות <span style="background: #ef4444; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold;">2</span>
                             </div>
@@ -855,16 +932,16 @@
                         <div class="forum-leaderboard">
                             <div class="leaderboard-title">🏆 אלופי הקהילה (החודש)</div>
                             
-                            <div class="leaderboard-user">
+                            <div class="leaderboard-user" style="cursor: pointer;" onclick="openUserCard('Gadi_King', 'https://ui-avatars.com/api/?name=Gadi&background=f59e0b&color=fff', 'אגדה', '1,420', '14,250', '1')">
                                 <div class="lb-user-rank" style="color: #f59e0b;">1</div>
                                 <img src="https://ui-avatars.com/api/?name=Gadi&background=f59e0b&color=fff" class="lb-user-avatar">
                                 <div class="lb-user-info">
-                                    <div class="lb-user-name">Gadi_King <span title="משתמש מאומת" style="color: var(--brand-green); font-size: 10px;">✔️</span></div>
+                                    <div class="lb-user-name">Gadi_King <span title="משתמש מאומת" style="color: #ffffff; font-size: 10px;">✔️</span></div>
                                     <div class="lb-user-points">אגדה • 14,250 נק'</div>
                                 </div>
                             </div>
                             
-                            <div class="leaderboard-user">
+                            <div class="leaderboard-user" style="cursor: pointer;" onclick="openUserCard('Aviv_Cards', 'https://ui-avatars.com/api/?name=Aviv&background=0a2e57&color=fff', 'שחקן הרכב', '580', '8,430', '2')">
                                 <div class="lb-user-rank" style="color: #94a3b8;">2</div>
                                 <img src="https://ui-avatars.com/api/?name=Aviv&background=0a2e57&color=fff" class="lb-user-avatar">
                                 <div class="lb-user-info">
@@ -873,7 +950,7 @@
                                 </div>
                             </div>
                             
-                            <div class="leaderboard-user" style="border-bottom: none;">
+                            <div class="leaderboard-user" style="border-bottom: none; cursor: pointer;" onclick="openUserCard('Matan_Pro', 'https://ui-avatars.com/api/?name=Matan&background=64748b&color=fff', 'מחליף', '210', '3,120', '3')">
                                 <div class="lb-user-rank" style="color: #b45309;">3</div>
                                 <img src="https://ui-avatars.com/api/?name=Matan&background=64748b&color=fff" class="lb-user-avatar">
                                 <div class="lb-user-info">
@@ -1282,8 +1359,76 @@
                 }
             });
         }
+
+        // ==========================================
+        // מנוע כרטיס גולש צף (User Profile Modal)
+        // ==========================================
+        function openUserCard(username, avatarUrl, title, posts, points, rank) {
+            document.getElementById('cardName').innerText = username;
+            document.getElementById('cardAvatar').src = avatarUrl;
+            document.getElementById('cardTitle').innerText = title;
+            document.getElementById('cardPosts').innerText = posts;
+            document.getElementById('cardPoints').innerText = points;
+            document.getElementById('cardRank').innerText = 'מקום ' + rank;
+            
+            document.getElementById('userCardModal').classList.add('active');
+        }
+
+        // סגירה בלחיצה מחוץ לכרטיס
+        function closeUserCard(event) {
+            if (event.target.id === 'userCardModal') {
+                document.getElementById('userCardModal').classList.remove('active');
+            }
+        }
         
     </script>
     <script src="search.js"></script>
+    <div id="userCardModal" class="user-card-overlay" onclick="closeUserCard(event)">
+        <div class="user-card-modal">
+            <button class="user-card-close" onclick="document.getElementById('userCardModal').classList.remove('active')">&times;</button>
+            
+            <div class="user-card-header">
+                <img src="" id="cardAvatar" class="user-card-avatar">
+                <h3 id="cardName" class="user-card-username"></h3>
+                <div id="cardTitle" class="user-card-badge"></div>
+            </div>
+            
+            <div class="user-card-body">
+                <div class="card-stats-grid">
+                    <div class="card-stat-box">
+                        <span class="stat-num" id="cardPosts">0</span>
+                        <span class="stat-label">הודעות</span>
+                    </div>
+                    <div class="card-stat-box">
+                        <span class="stat-num" id="cardPoints">0</span>
+                        <span class="stat-label">נקודות XP</span>
+                    </div>
+                    <div class="card-stat-box">
+                        <span class="stat-num" style="color: #f59e0b;">🏆</span>
+                        <span class="stat-label" id="cardRank">#0</span>
+                    </div>
+                </div>
+
+                <div class="card-xp-wrapper">
+                    <div class="card-xp-text">התקדמות לדרגה הבאה (קפטן)</div>
+                    <div class="card-xp-bar">
+                        <div class="card-xp-progress" style="width: 72%;"></div>
+                    </div>
+                    <div class="card-xp-meta">עוד 240 נקודות לשינוי דרגה</div>
+                </div>
+
+                <div class="card-badges-section">
+                    <span class="mini-badge" title="חבר מייסד">🎖️ מייסד</span>
+                    <span class="mini-badge" title="מנצח טורניר חברים">🥇 אלוף ליגה</span>
+                    <span class="mini-badge" title="אהדה">❤️ ריאל מדריד</span>
+                </div>
+            </div>
+            
+            <div class="user-card-footer">
+                <button class="card-action-btn btn-friend" onclick="alert('בקשת חברות נשלחה!')">הוסף כחבר</button>
+                <button class="card-action-btn btn-msg" onclick="alert('פתיחת צ\'אט פרטי...')">שלח הודעה</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
