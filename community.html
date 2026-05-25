@@ -630,6 +630,22 @@
             font-size: 13px !important;
             font-weight: 900 !important;
         }
+
+        /* כפתור "פתח נושא חדש" (משני) */
+        .btn-new-thread.secondary {
+            background: #f8fafc;
+            color: var(--element-navy-gradient);
+            border: 2px solid var(--element-navy-gradient);
+            box-shadow: none;
+            margin-bottom: 0;
+        }
+        .btn-new-thread.secondary:hover {
+            background: rgba(6, 33, 65, 0.05);
+            transform: translateY(-2px);
+        }
+        .btn-new-thread.secondary .plus-icon {
+            color: var(--element-navy-gradient);
+        }
         
     </style>
 </head>
@@ -694,15 +710,30 @@
 
                 <div class="forum-wrapper">
                     <aside class="forum-sidebar">
-                        <button class="btn-new-thread" onclick="alert('פתיחת חלון ליצירת נושא חדש...')">
-                            <span>פתח דיון חדש</span>
-                            <span class="plus-icon">+</span>
-                        </button>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
+                            <button class="btn-new-thread" onclick="alert('פתיחת חלון ליצירת דיון חדש...')">
+                                <span>פתח דיון חדש</span>
+                                <span class="plus-icon">+</span>
+                            </button>
+                            <button class="btn-new-thread secondary" onclick="alert('פתיחת חלון ליצירת קטגוריה/נושא חדש...')">
+                                <span>פתח נושא חדש</span>
+                                <span class="plus-icon">+</span>
+                            </button>
+                        </div>
                         
                         <div class="forum-nav-menu">
-                            <div class="forum-nav-item active">ראשי (כל הפורומים)</div>
-                            <div class="forum-nav-item">הפורומים שלי</div>
-                            <div class="forum-nav-item">דיונים ללא מענה</div>
+                            <div class="forum-nav-item active" onclick="filterForums('all', this)">ראשי (כל הפורומים)</div>
+                            <div class="forum-nav-item" onclick="filterForums('my-forums', this)" style="font-weight: 900; color: var(--element-navy-gradient);">הפורומים שלי (פעיל)</div>
+                            
+                            <div style="margin: 10px 0 5px 0; border-bottom: 1px solid #e2e8f0;"></div>
+                            
+                            <div class="forum-nav-item" onclick="filterForums('ea-fc', this)">EA SPORTS FC</div>
+                            <div class="forum-nav-item" onclick="filterForums('fm', this)">Football Manager</div>
+                            <div class="forum-nav-item" onclick="filterForums('community', this)">קהילה ותמיכה</div>
+                            
+                            <div style="margin: 10px 0 5px 0; border-bottom: 1px solid #e2e8f0;"></div>
+                            
                             <div class="forum-nav-item" style="display: flex; justify-content: space-between;">
                                 הודעות פרטיות <span style="background: #ef4444; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold;">2</span>
                             </div>
@@ -744,15 +775,15 @@
                         <table class="forum-table">
                             <thead>
                                 <tr>
-                                    <th style="width: 50%; text-align: right; padding-right: 20px;">נושא / פורום</th>
-                                    <th style="width: 15%; text-align: center;">נושאים</th>
-                                    <th style="width: 15%; text-align: center;">הודעות</th>
-                                    <th style="width: 20%; text-align: right; padding-right: 20px;">הודעה אחרונה</th>
+                                    <th>נושא / פורום</th>
+                                    <th>נושאים</th>
+                                    <th>הודעות</th>
+                                    <th>הודעה אחרונה</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr class="forum-category-row"><td colspan="4">EA SPORTS FC</td></tr>
-                                <tr class="forum-row">
+                            <tbody id="forumTableBody">
+                                <tr class="forum-category-row" data-category="ea-fc"><td colspan="4">EA SPORTS FC</td></tr>
+                                <tr class="forum-row" data-category="ea-fc" data-my-forum="true">
                                     <td>
                                         <div class="forum-icon-title">
                                             <div class="forum-icon fc">⚽</div>
@@ -774,7 +805,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="forum-row">
+                                <tr class="forum-row" data-category="ea-fc">
                                     <td>
                                         <div class="forum-icon-title">
                                             <div class="forum-icon fc" style="background: rgba(10, 46, 87, 0.05); color: #0a2e57;">🏆</div>
@@ -790,15 +821,15 @@
                                         <div class="last-post-info">
                                             <img src="https://ui-avatars.com/api/?name=GM&background=7ca856&color=fff" class="last-post-avatar">
                                             <div class="last-post-text">
-                                                <div class="last-post-title">לקחתי את הפועל לליגת האל...</div>
+                                                <div class="last-post-title">לקחתי את הפועל לליגת האלופות סוף סוף!</div>
                                                 <div class="last-post-meta">היום ב- 14:30 ע"י Gadi_King</div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
 
-                                <tr class="forum-category-row"><td colspan="4">Football Manager</td></tr>
-                                <tr class="forum-row">
+                                <tr class="forum-category-row" data-category="fm"><td colspan="4">Football Manager</td></tr>
+                                <tr class="forum-row" data-category="fm" data-my-forum="true">
                                     <td>
                                         <div class="forum-icon-title">
                                             <div class="forum-icon fm">📋</div>
@@ -821,8 +852,8 @@
                                     </td>
                                 </tr>
 
-                                <tr class="forum-category-row"><td colspan="4">קהילה ותמיכה</td></tr>
-                                <tr class="forum-row" style="border-bottom: none;">
+                                <tr class="forum-category-row" data-category="community"><td colspan="4">קהילה ותמיכה</td></tr>
+                                <tr class="forum-row" style="border-bottom: none;" data-category="community">
                                     <td>
                                         <div class="forum-icon-title">
                                             <div class="forum-icon general">💬</div>
@@ -838,7 +869,7 @@
                                         <div class="last-post-info">
                                             <img src="https://ui-avatars.com/api/?name=AD&background=ef4444&color=fff" class="last-post-avatar">
                                             <div class="last-post-text">
-                                                <div class="last-post-title">המשחק אתמול של ריאל...</div>
+                                                <div class="last-post-title">המשחק אתמול של ריאל היה פשוט מטורף לגמרי</div>
                                                 <div class="last-post-meta">לפני חצי שעה ע"י Admin</div>
                                             </div>
                                         </div>
@@ -846,6 +877,7 @@
                                 </tr>
                             </tbody>
                         </table>
+                        
                         <div class="forum-pagination">
                             <button class="forum-page-btn disabled" title="הקודם">&laquo;</button>
                             <button class="forum-page-btn active">1</button>
@@ -855,6 +887,7 @@
                             <button class="forum-page-btn">10</button>
                             <button class="forum-page-btn" title="הבא">&raquo;</button>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -1088,6 +1121,47 @@
             })
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
 
+// ==========================================
+        // מנוע סינון פורומים (Categories Filter)
+        // ==========================================
+        function filterForums(category, element) {
+            // 1. מעדכן את מצב ה-Active בסיידבר
+            document.querySelectorAll('.forum-nav-menu .forum-nav-item').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            // 2. עובר על כל השורות בטבלה ומסנן
+            const rows = document.querySelectorAll('#forumTableBody tr');
+            
+            rows.forEach(row => {
+                const rowCategory = row.getAttribute('data-category');
+                const isMyForum = row.getAttribute('data-my-forum') === 'true';
+                const isCategoryHeader = row.classList.contains('forum-category-row');
+
+                if (category === 'all') {
+                    // מציג הכל
+                    row.style.display = '';
+                } 
+                else if (category === 'my-forums') {
+                    // ב"פורומים שלי" אנחנו מסתירים את הכותרות הכחולות הגדולות, ומראים רק שורות שסומנו כ-My Forum
+                    if (isCategoryHeader) {
+                        row.style.display = 'none';
+                    } else if (isMyForum) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                } 
+                else {
+                    // סינון לפי קטגוריה ספציפית (FC, FM, וכו')
+                    if (rowCategory === category) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
     </script>
     <script src="search.js"></script>
 </body>
