@@ -331,7 +331,7 @@
         .forum-sidebar {
             flex: 0 0 260px;
             background: #ffffff;
-            border: 1px solid #cbd5e1;
+            border: 2px solid var(--text-dark) !important; /* מסגרת בלו-נייבי */
             border-radius: 12px;
             display: flex;
             flex-direction: column;
@@ -378,8 +378,14 @@
         .forum-nav-item:hover { background: #f8fafc; color: var(--element-navy-gradient); }
         .forum-nav-item.active { background: rgba(124, 168, 86, 0.1); color: var(--brand-green); border-right: 3px solid var(--brand-green); }
 
-        /* קוביית אלופי הקהילה */
-        .forum-leaderboard { background: var(--bg-silver-matte); border-radius: 10px; border: 1px solid #e2e8f0; padding: 15px; }
+       /* קוביית אלופי הקהילה */
+        .forum-leaderboard { 
+            background: var(--bg-silver-matte); 
+            border-radius: 10px; 
+            border: 1px solid #e2e8f0; 
+            padding: 15px; 
+            margin-top: auto; /* <--- זה הקסם שדוחף אותה לתחתית! */
+        }
         .leaderboard-title { font-size: 12px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 15px; border-bottom: 2px solid var(--brand-green); padding-bottom: 5px; display: inline-block; }
         .leaderboard-user { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px; }
         .lb-user-rank { font-weight: 900; font-size: 14px; width: 12px; text-align: center; }
@@ -388,12 +394,12 @@
         .lb-user-name { font-size: 12px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
         .lb-user-points { font-size: 10px; font-weight: bold; color: #64748b; }
 
-        /* מרכז הפורום (טבלה) */
+       /* מרכז הפורום (טבלה) */
         .forum-main-area {
             flex: 1;
             background: #ffffff;
             border-radius: 12px;
-            border: 2px solid var(--brand-green) !important; /* <--- הנה התיקון */
+            border: 2px solid var(--text-dark) !important; /* מסגרת בלו-נייבי */
             overflow-y: auto;
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
             display: flex !important;
