@@ -731,22 +731,28 @@
         }
 
         /* =========================================
-           הרחקת עמודות 'נושאים' ו-'הודעות' אחת מהשנייה לתצוגה נושמת
+           ריווח עמודות ומרכוז מושלם של הכותרות מעל המספרים
            ========================================= */
         
-        /* עמודת 'נושאים' - מקבלת יותר רוחב ודחיפה קלה ימינה */
+        /* איפוס הדחיפות הצידה כדי שנקודת האמצע תהיה מדויקת על הפיקסל */
+        .forum-table th:nth-child(2), .forum-table td:nth-child(2),
+        .forum-table th:nth-child(3), .forum-table td:nth-child(3) {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            text-align: center !important;
+        }
+
+        /* עמודת 'נושאים' */
         .forum-table th:nth-child(2), .forum-table td:nth-child(2) {
             width: 14% !important;
-            padding-right: 15px !important;
         }
 
-        /* עמודת 'הודעות' - מקבלת יותר רוחב ודחיפה קלה שמאלה */
+        /* עמודת 'הודעות' */
         .forum-table th:nth-child(3), .forum-table td:nth-child(3) {
             width: 14% !important;
-            padding-left: 15px !important;
         }
 
-        /* התאמת העמודה השמאלית ('הודעה אחרונה') כדי שהסך הכל יישאר 100% ולא ישבור את הטבלה */
+        /* עמודת 'הודעה אחרונה' - משלימה את הרוחב שנשאר */
         .forum-table th:nth-child(4), .forum-table td:nth-child(4) {
             width: 37% !important; 
         }
