@@ -729,6 +729,27 @@
             padding-right: 0 !important;
             padding-left: 0 !important;
         }
+
+        /* =========================================
+           הרחקת עמודות 'נושאים' ו-'הודעות' אחת מהשנייה לתצוגה נושמת
+           ========================================= */
+        
+        /* עמודת 'נושאים' - מקבלת יותר רוחב ודחיפה קלה ימינה */
+        .forum-table th:nth-child(2), .forum-table td:nth-child(2) {
+            width: 14% !important;
+            padding-right: 15px !important;
+        }
+
+        /* עמודת 'הודעות' - מקבלת יותר רוחב ודחיפה קלה שמאלה */
+        .forum-table th:nth-child(3), .forum-table td:nth-child(3) {
+            width: 14% !important;
+            padding-left: 15px !important;
+        }
+
+        /* התאמת העמודה השמאלית ('הודעה אחרונה') כדי שהסך הכל יישאר 100% ולא ישבור את הטבלה */
+        .forum-table th:nth-child(4), .forum-table td:nth-child(4) {
+            width: 37% !important; 
+        }
         
     </style>
 </head>
@@ -796,11 +817,11 @@
                         
                         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
                             <button class="btn-new-thread" onclick="alert('פתיחת חלון ליצירת דיון חדש...')">
-                                <span>פתח דיון חדש</span>
+                                <span>פתח נושא חדש</span>
                                 <span class="plus-icon">+</span>
                             </button>
                             <button class="btn-new-thread secondary" onclick="alert('פתיחת חלון ליצירת קטגוריה/נושא חדש...')">
-                                <span>פתח נושא חדש</span>
+                                <span>פתח דיון חדש</span>
                                 <span class="plus-icon">+</span>
                             </button>
                         </div>
