@@ -315,6 +315,131 @@
         .sidebar-item.active svg {
             color: var(--brand-green) !important;
         }
+
+        /* =========================================
+           עיצוב פורטל הפורומים
+           ========================================= */
+        .forum-wrapper {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-height: 0; /* קריטי כדי שהגלילה תעבוד ולא תפרוץ את המסך */
+            margin-bottom: 20px;
+        }
+
+        /* סיידבר ניווט פורומים */
+        .forum-sidebar {
+            flex: 0 0 260px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            padding: 15px;
+        }
+
+        .btn-new-thread {
+            background: var(--element-navy-gradient);
+            color: #ffffff;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(6, 33, 65, 0.2);
+            transition: 0.3s;
+            margin-bottom: 20px;
+        }
+        .btn-new-thread:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(6, 33, 65, 0.3);
+            background: #0d3b6e;
+        }
+        .btn-new-thread .plus-icon { color: var(--brand-green); font-size: 18px; }
+
+        .forum-nav-menu { display: flex; flex-direction: column; gap: 4px; margin-bottom: 25px; }
+        .forum-nav-item {
+            padding: 10px 15px;
+            border-radius: 6px;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .forum-nav-item:hover { background: #f8fafc; color: var(--element-navy-gradient); }
+        .forum-nav-item.active { background: rgba(124, 168, 86, 0.1); color: var(--brand-green); border-right: 3px solid var(--brand-green); }
+
+        /* קוביית אלופי הקהילה */
+        .forum-leaderboard { background: var(--bg-silver-matte); border-radius: 10px; border: 1px solid #e2e8f0; padding: 15px; }
+        .leaderboard-title { font-size: 12px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 15px; border-bottom: 2px solid var(--brand-green); padding-bottom: 5px; display: inline-block; }
+        .leaderboard-user { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 12px; }
+        .lb-user-rank { font-weight: 900; font-size: 14px; width: 12px; text-align: center; }
+        .lb-user-avatar { width: 32px; height: 32px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .lb-user-info { display: flex; flex-direction: column; }
+        .lb-user-name { font-size: 12px; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
+        .lb-user-points { font-size: 10px; font-weight: bold; color: #64748b; }
+
+        /* מרכז הפורום (טבלה) */
+        .forum-main-area {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .forum-main-area::-webkit-scrollbar { width: 6px; }
+        .forum-main-area::-webkit-scrollbar-thumb { background: var(--brand-green); border-radius: 10px; }
+
+        .forum-table { width: 100%; border-collapse: collapse; text-align: right; }
+        .forum-table th {
+            background: #f8fafc;
+            padding: 12px 0;
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 900;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .forum-category-row td {
+            background: var(--element-navy-gradient);
+            color: #ffffff;
+            font-weight: 900;
+            padding: 8px 20px;
+            font-size: 12px;
+            border-bottom: 2px solid var(--brand-green);
+        }
+
+        .forum-row { border-bottom: 1px solid #f1f5f9; transition: 0.2s; cursor: pointer; }
+        .forum-row:hover { background: rgba(124, 168, 86, 0.03); }
+        
+        .forum-icon-title { display: flex; gap: 15px; align-items: center; padding: 15px 20px; }
+        .forum-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .forum-icon.fc { background: rgba(124, 168, 86, 0.15); color: var(--brand-green); }
+        .forum-icon.fm { background: rgba(10, 46, 87, 0.1); color: var(--element-navy-gradient); }
+        .forum-icon.general { background: #f1f5f9; color: #475569; }
+
+        .forum-name { font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 3px; }
+        .forum-sub { font-size: 11px; color: #64748b; font-weight: 500; }
+        .forum-stat { font-size: 13px; font-weight: 900; color: #475569; text-align: center; }
+
+        .last-post-info { display: flex; align-items: center; gap: 10px; padding-right: 20px; direction: ltr; justify-content: flex-end; }
+        .last-post-avatar { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #e2e8f0; }
+        .last-post-text { display: flex; flex-direction: column; text-align: right; }
+        .last-post-title { font-size: 12px; font-weight: 900; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; margin-bottom: 2px; }
+        .last-post-meta { font-size: 10px; color: #94a3b8; font-weight: bold; }
         
     </style>
 </head>
@@ -372,9 +497,167 @@
             </div>
 
             <div id="tab-1" class="tab-content">
-                <h2 class="content-header-title">פורומים ודיונים</h2>
-                <p class="content-desc">הזירה המרכזית לשיח פתוח בין חברי הקהילה. בואו לדבר על המשחקים, לשתף אוספים ולהחליף דעות.</p>
-                <div class="placeholder-box">כאן ישולבו מערכות הפורומים והאשכולות...</div>
+                <div class="tab-header-banner">
+                    <h2 class="content-header-title">פורומים ודיונים</h2>
+                    <p class="content-desc">הזירה המרכזית לשיח פתוח בין חברי הקהילה. בואו לדבר על המשחקים, לשתף טקטיקות, לבקש עזרה ולהחליף דעות.</p>
+                </div>
+
+                <div class="forum-wrapper">
+                    <aside class="forum-sidebar">
+                        <button class="btn-new-thread" onclick="alert('פתיחת חלון ליצירת נושא חדש...')">
+                            <span>פתח דיון חדש</span>
+                            <span class="plus-icon">+</span>
+                        </button>
+                        
+                        <div class="forum-nav-menu">
+                            <div class="forum-nav-item active">ראשי (כל הפורומים)</div>
+                            <div class="forum-nav-item">הנושאים שלי</div>
+                            <div class="forum-nav-item">דיונים ללא מענה</div>
+                            <div class="forum-nav-item" style="display: flex; justify-content: space-between;">
+                                הודעות פרטיות <span style="background: #ef4444; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold;">2</span>
+                            </div>
+                        </div>
+
+                        <div class="forum-leaderboard">
+                            <div class="leaderboard-title">🏆 אלופי הקהילה (החודש)</div>
+                            
+                            <div class="leaderboard-user">
+                                <div class="lb-user-rank" style="color: #f59e0b;">1</div>
+                                <img src="https://ui-avatars.com/api/?name=Gadi&background=f59e0b&color=fff" class="lb-user-avatar">
+                                <div class="lb-user-info">
+                                    <div class="lb-user-name">Gadi_King <span title="משתמש מאומת" style="color: var(--brand-green); font-size: 10px;">✔️</span></div>
+                                    <div class="lb-user-points">אגדה • 14,250 נק'</div>
+                                </div>
+                            </div>
+                            
+                            <div class="leaderboard-user">
+                                <div class="lb-user-rank" style="color: #94a3b8;">2</div>
+                                <img src="https://ui-avatars.com/api/?name=Aviv&background=0a2e57&color=fff" class="lb-user-avatar">
+                                <div class="lb-user-info">
+                                    <div class="lb-user-name">Aviv_Cards</div>
+                                    <div class="lb-user-points">שחקן הרכב • 8,430 נק'</div>
+                                </div>
+                            </div>
+                            
+                            <div class="leaderboard-user" style="border-bottom: none;">
+                                <div class="lb-user-rank" style="color: #b45309;">3</div>
+                                <img src="https://ui-avatars.com/api/?name=Matan&background=64748b&color=fff" class="lb-user-avatar">
+                                <div class="lb-user-info">
+                                    <div class="lb-user-name">Matan_Pro</div>
+                                    <div class="lb-user-points">מחליף • 3,120 נק'</div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <div class="forum-main-area">
+                        <table class="forum-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%; text-align: right; padding-right: 20px;">נושא / פורום</th>
+                                    <th style="width: 15%; text-align: center;">נושאים</th>
+                                    <th style="width: 15%; text-align: center;">הודעות</th>
+                                    <th style="width: 20%; text-align: right; padding-right: 20px;">הודעה אחרונה</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="forum-category-row"><td colspan="4">EA SPORTS FC</td></tr>
+                                <tr class="forum-row">
+                                    <td>
+                                        <div class="forum-icon-title">
+                                            <div class="forum-icon fc">⚽</div>
+                                            <div class="forum-text-wrap">
+                                                <div class="forum-name">אולטימייט טים (Ultimate Team)</div>
+                                                <div class="forum-sub">בניית קבוצות, קלפים, שוק ההעברות וטקטיקות שבועיות.</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="forum-stat">1,240</td>
+                                    <td class="forum-stat">18.5K</td>
+                                    <td>
+                                        <div class="last-post-info">
+                                            <img src="https://ui-avatars.com/api/?name=AC&background=0a2e57&color=fff" class="last-post-avatar">
+                                            <div class="last-post-text">
+                                                <div class="last-post-title">SBC שחקן החודש - שווה?</div>
+                                                <div class="last-post-meta">לפני 5 דקות ע"י Aviv_C</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="forum-row">
+                                    <td>
+                                        <div class="forum-icon-title">
+                                            <div class="forum-icon fc" style="background: rgba(10, 46, 87, 0.05); color: #0a2e57;">🏆</div>
+                                            <div class="forum-text-wrap">
+                                                <div class="forum-name">מצב קריירה (Career Mode)</div>
+                                                <div class="forum-sub">המלצות על כשרונות צעירים (Wonderkids), פיתוח קבוצה.</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="forum-stat">850</td>
+                                    <td class="forum-stat">5.2K</td>
+                                    <td>
+                                        <div class="last-post-info">
+                                            <img src="https://ui-avatars.com/api/?name=GM&background=7ca856&color=fff" class="last-post-avatar">
+                                            <div class="last-post-text">
+                                                <div class="last-post-title">לקחתי את הפועל לליגת האל...</div>
+                                                <div class="last-post-meta">היום ב- 14:30 ע"י Gadi_King</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="forum-category-row"><td colspan="4">Football Manager</td></tr>
+                                <tr class="forum-row">
+                                    <td>
+                                        <div class="forum-icon-title">
+                                            <div class="forum-icon fm">📋</div>
+                                            <div class="forum-text-wrap">
+                                                <div class="forum-name">טקטיקות ואימונים</div>
+                                                <div class="forum-sub">איך לשבור את המנוע, בניית מערכים מנצחים והוראות.</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="forum-stat">3,102</td>
+                                    <td class="forum-stat">22.1K</td>
+                                    <td>
+                                        <div class="last-post-info">
+                                            <img src="https://ui-avatars.com/api/?name=MP&background=64748b&color=fff" class="last-post-avatar">
+                                            <div class="last-post-text">
+                                                <div class="last-post-title">טקטיקת 4-2-3-1 גגנפרס</div>
+                                                <div class="last-post-meta">אתמול ב- 22:15 ע"י Matan_Pro</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="forum-category-row"><td colspan="4">קהילה ותמיכה</td></tr>
+                                <tr class="forum-row" style="border-bottom: none;">
+                                    <td>
+                                        <div class="forum-icon-title">
+                                            <div class="forum-icon general">💬</div>
+                                            <div class="forum-text-wrap">
+                                                <div class="forum-name">אוף-טופיק (Off-Topic)</div>
+                                                <div class="forum-sub">מדברים על הכל - כדורגל אמיתי, ספורט, גיימינג ומה שביניהם.</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="forum-stat">5,410</td>
+                                    <td class="forum-stat">45.8K</td>
+                                    <td>
+                                        <div class="last-post-info">
+                                            <img src="https://ui-avatars.com/api/?name=AD&background=ef4444&color=fff" class="last-post-avatar">
+                                            <div class="last-post-text">
+                                                <div class="last-post-title">המשחק אתמול של ריאל...</div>
+                                                <div class="last-post-meta">לפני חצי שעה ע"י Admin</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             
             <div id="tab-2" class="tab-content">
