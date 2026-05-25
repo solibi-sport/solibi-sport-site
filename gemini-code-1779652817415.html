@@ -1,0 +1,18 @@
+<aside class="collapsible-live-panel" id="livePanel">
+            <div class="panel-header-btn" onclick="document.getElementById('livePanel').classList.toggle('expanded')">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="position: relative; display: flex; align-items: center; justify-content: center;">
+                        <span style="position: absolute; width: 10px; height: 10px; background: #ef4444; border-radius: 50%; animation: blink 1.5s infinite;"></span>
+                        <span style="position: absolute; width: 14px; height: 14px; background: rgba(239, 68, 68, 0.4); border-radius: 50%; animation: blink 1.5s infinite; animation-delay: 0.2s;"></span>
+                    </span>
+                    <span style="margin-right: 18px; color: var(--element-navy-gradient);">תוצאות לייב</span>
+                </div>
+                <svg class="toggle-arrow" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="panel-content">
+                <div id="live-scroll-wrapper">
+                    <div id="live-loading" style="text-align: center; padding: 20px; font-weight: bold; color: var(--brand-green);">טוען נתונים חיים... ⚽</div>
+                    <div id="live-content"></div>
+                </div>
+            </div>
+        </aside>
