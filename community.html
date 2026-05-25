@@ -1143,16 +1143,17 @@
 
                     </div> <div id="single-forum-view" style="display: none; padding: 20px;">
                         
-                        <div class="forum-view-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px;">
-                            <div class="breadcrumbs" style="font-weight: 900; font-size: 14px;">
-                                <span onclick="goBackToMainForums()" style="color: var(--brand-green); cursor: pointer; text-decoration: underline;">ראשי</span>
-                                <span style="color: #94a3b8; margin: 0 8px;">/</span>
-                                <span id="currentCategoryName" style="color: #64748b;">קטגוריה</span>
-                                <span style="color: #94a3b8; margin: 0 8px;">/</span>
-                                <span id="currentForumName" style="color: var(--element-navy-gradient);">שם הפורום</span>
+                        <div class="forum-view-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--element-navy-gradient); padding: 12px 20px; border-radius: 8px; border-bottom: 3px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                            <div class="breadcrumbs" style="font-weight: 900; font-size: 14px; display: flex; align-items: center;">
+                                <span onclick="goBackToMainForums()" style="color: var(--brand-green); cursor: pointer; text-decoration: underline; transition: 0.2s;">ראשי</span>
+                                <span style="color: rgba(255,255,255,0.4); margin: 0 10px;">/</span>
+                                <span id="currentCategoryName" style="color: rgba(255,255,255,0.8);">קטגוריה</span>
+                                <span style="color: rgba(255,255,255,0.4); margin: 0 10px;">/</span>
+                                <span id="currentForumName" style="color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">שם הפורום</span>
                             </div>
-                            <button class="btn-back" onclick="goBackToMainForums()" style="background: #f1f5f9; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; color: var(--text-dark);">
-                                🔙 חזרה לפורומים
+                            <button class="btn-back" onclick="goBackToMainForums()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; color: #ffffff; transition: 0.2s; display: flex; align-items: center; gap: 8px;">
+                                <span>חזרה לפורומים</span>
+                                <span style="font-size: 16px;">🔙</span>
                             </button>
                         </div>
 
@@ -1172,18 +1173,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="forum-row" style="background: var(--element-navy-gradient) !important; border-right: 4px solid var(--brand-green) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                                <tr class="forum-row" style="background: #f8fafc !important; border-right: 4px solid var(--brand-green) !important;">
                                     <td style="padding-right: 20px; text-align: right;">
                                         <div style="display: flex; align-items: center; gap: 10px;">
-                                            <span style="font-size: 18px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">📌</span>
+                                            <span style="font-size: 18px;">📌</span>
                                             <div>
-                                                <div style="font-size: 15px; font-weight: 900; color: #ffffff !important; letter-spacing: 0.5px;">חוקי הפורום - חובה לקרוא לפני פתיחת אשכול!</div>
+                                                <div style="font-size: 14px; font-weight: 900; color: var(--element-navy-gradient);">חוקי הפורום - חובה לקרוא לפני פתיחת אשכול!</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td style="text-align: center; font-weight: 900; color: #f87171 !important;">Admin</td>
-                                    <td style="text-align: center; font-weight: bold; color: #e2e8f0 !important;">0 / 1.2K</td>
-                                    <td style="text-align: center; font-size: 11px; color: #94a3b8 !important; font-weight: bold;">לפני שבוע</td>
+                                    <td style="text-align: center; font-weight: bold; color: #ef4444;">Admin</td>
+                                    <td style="text-align: center; font-weight: bold; color: #64748b;">0 / 1.2K</td>
+                                    <td style="text-align: center; font-size: 11px; color: #64748b; font-weight: bold;">לפני שבוע</td>
                                 </tr>
 
                                 <tr class="forum-row">
