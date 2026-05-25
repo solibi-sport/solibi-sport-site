@@ -897,63 +897,6 @@
             display: table !important; /* עוטף את הטקסט בול כדי שהקו לא יימתח */
             text-align: center !important;
         }
-
-        /* =========================================
-           תצוגת הדיון עצמו (אשכול - Thread)
-           ========================================= */
-        
-        .thread-post {
-            display: flex;
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        }
-
-        /* הפוסט המקורי (פותח הדיון) יקבל מסגרת מיוחדת */
-        .thread-post.op-post {
-            border: 2px solid var(--brand-green);
-            box-shadow: 0 6px 15px rgba(124, 168, 86, 0.1);
-        }
-
-        /* צד ימין - פרופיל הגולש */
-        .post-sidebar {
-            width: 150px;
-            background: #f8fafc;
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-left: 1px solid #e2e8f0;
-            flex-shrink: 0;
-        }
-        .post-avatar { width: 60px; height: 60px; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 10px; }
-        .post-author { font-size: 14px; font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 5px; text-align: center; }
-        .post-rank { font-size: 11px; background: var(--bg-silver-matte); color: var(--text-dark); padding: 3px 8px; border-radius: 12px; font-weight: 700; border: 1px solid #cbd5e1; }
-
-        /* צד שמאל - תוכן ההודעה */
-        .post-content-area {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-        .post-meta { font-size: 11px; color: #94a3b8; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; }
-        .post-text { font-size: 15px; color: var(--text-dark); line-height: 1.6; flex: 1; }
-        
-        /* כפתורי פעולה בפוסט */
-        .post-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #e2e8f0; }
-        .action-icon-btn { background: transparent; border: none; color: #64748b; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px; font-family: inherit; font-size: 13px; }
-        .action-icon-btn:hover { color: var(--brand-green); transform: translateY(-2px); }
-
-        /* תיבת תגובה מהירה */
-        .quick-reply-box { background: var(--element-navy-gradient); border-radius: 12px; padding: 20px; margin-top: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .quick-reply-title { color: #ffffff; font-weight: 900; font-size: 16px; margin-bottom: 15px; }
-        .quick-reply-textarea { width: 100%; height: 100px; padding: 15px; border-radius: 8px; border: none; outline: none; resize: vertical; font-family: inherit; font-size: 14px; margin-bottom: 15px; background: #f8fafc; }
-        .btn-submit-reply { background: var(--brand-green); color: #ffffff; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(124, 168, 86, 0.3); }
-        .btn-submit-reply:hover { transform: translateY(-2px); filter: brightness(1.1); }
         
     </style>
 </head>
@@ -1211,7 +1154,7 @@
                     </div> <div id="single-forum-view" style="display: none; padding: 20px;">
                         
                         <div class="forum-view-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--element-navy-gradient); padding: 12px 20px; border-radius: 8px; border-bottom: 3px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                            <div class="breadcrumbs" style="font-weight: 700; font-size: 12px; display: flex; align-items: center;">
+                            <div class="breadcrumbs" style="font-weight: 900; font-size: 14px; display: flex; align-items: center;">
                                 <span onclick="goBackToMainForums()" style="color: var(--brand-green); cursor: pointer; text-decoration: underline; transition: 0.2s;">ראשי</span>
                                 <span style="color: rgba(255,255,255,0.4); margin: 0 10px;">/</span>
                                 <span id="currentCategoryName" style="color: rgba(255,255,255,0.8);">קטגוריה</span>
@@ -1254,7 +1197,7 @@
                                     <td style="text-align: center; font-size: 12px; font-weight: 600; font-family: system-ui, -apple-system, sans-serif; color: #64748b;">לפני שבוע</td>
                                 </tr>
 
-                                <tr class="forum-row" style="cursor: pointer;" onclick="openThread('איזה שחקנים צעירים הכי שווה לקנות בעונה הראשונה?')">
+                                <tr class="forum-row">
                                     <td style="padding-right: 20px; text-align: right;">
                                         <div style="display: flex; align-items: center; gap: 10px;">
                                             <span style="font-size: 18px;">📄</span>
@@ -1286,109 +1229,6 @@
                         </table>
                     </div>
 
-                      </table>
-                    </div> ```
-
-**ממש מתחת ל-`</div>` הזה, תדביק את הבלוק של האשכול החדש:**
-
-```html
-                    <div id="single-thread-view" style="display: none; padding: 20px;">
-                        
-                        <div class="forum-view-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--element-navy-gradient); padding: 12px 20px; border-radius: 8px; border-bottom: 3px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                            <div class="breadcrumbs" style="font-weight: 700; font-size: 12px; display: flex; align-items: center;">
-                                <span onclick="goBackToMainForums()" style="color: var(--brand-green); cursor: pointer; text-decoration: underline; transition: 0.2s;">ראשי</span>
-                                <span style="color: rgba(255,255,255,0.4); margin: 0 10px;">/</span>
-                                <span id="threadCategoryName" style="color: rgba(255,255,255,0.8);">קטגוריה</span>
-                                <span style="color: rgba(255,255,255,0.4); margin: 0 10px;">/</span>
-                                <span id="threadForumName" onclick="goBackToForum()" style="color: var(--brand-green); cursor: pointer; text-decoration: underline; transition: 0.2s;">שם הפורום</span>
-                                <span style="color: rgba(255,255,255,0.4); margin: 0 10px;">/</span>
-                                <span id="currentThreadName" style="color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">שם הדיון</span>
-                            </div>
-                            <button class="btn-back" onclick="goBackToForum()" style="background: var(--bg-silver-matte); border: 1px solid #cbd5e1; padding: 6px 14px; border-radius: 6px; font-weight: 900; cursor: pointer; color: var(--element-navy-gradient); transition: 0.2s; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">
-                                <span>חזרה לאשכולות</span>
-                                <span style="font-size: 16px;">🔙</span>
-                            </button>
-                        </div>
-
-                        <h1 id="mainThreadTitle" style="color: var(--element-navy-gradient); font-weight: 900; font-size: 22px; margin-bottom: 20px;">כותרת הדיון תופיע כאן</h1>
-
-                        <div class="thread-post op-post">
-                            <div class="post-sidebar">
-                                <img src="https://ui-avatars.com/api/?name=Gadi&background=f59e0b&color=fff" class="post-avatar">
-                                <div class="post-author" style="cursor: pointer; color: #f59e0b;" onclick="openUserCard('Gadi_King', 'https://ui-avatars.com/api/?name=Gadi&background=f59e0b&color=fff', 'אגדה', '1,420', '14,250', '1')">Gadi_King</div>
-                                <div class="post-rank">אגדה</div>
-                            </div>
-                            <div class="post-content-area">
-                                <div class="post-meta">
-                                    <span>היום ב-14:30</span>
-                                    <span>#1</span>
-                                </div>
-                                <div class="post-text">
-                                    היי כולם, אני מתחיל עכשיו עונה ראשונה במצב קריירה עם קבוצה מהליגה האנגלית השנייה.<br><br>
-                                    איזה שחקנים צעירים (Wonderkids) עם פוטנציאל גבוה אתם ממליצים לי לקנות בתקציב נמוך?<br>
-                                    אשמח להמלצות לשחקני התקפה בעיקר.
-                                </div>
-                                <div class="post-actions">
-                                    <button class="action-icon-btn">⚠️ דווח</button>
-                                    <button class="action-icon-btn">💬 ציטוט</button>
-                                    <button class="action-icon-btn" style="color: var(--brand-green);">👍 12 לייקים</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="thread-post">
-                            <div class="post-sidebar">
-                                <img src="https://ui-avatars.com/api/?name=Aviv&background=0a2e57&color=fff" class="post-avatar">
-                                <div class="post-author" style="cursor: pointer;" onclick="openUserCard('Aviv_C', 'https://ui-avatars.com/api/?name=Aviv&background=0a2e57&color=fff', 'שחקן הרכב', '580', '8,430', '2')">Aviv_C</div>
-                                <div class="post-rank">שחקן הרכב</div>
-                            </div>
-                            <div class="post-content-area">
-                                <div class="post-meta">
-                                    <span>היום ב-15:10</span>
-                                    <span>#2</span>
-                                </div>
-                                <div class="post-text">
-                                    יש שחקן בשם Roony Bardghji, הוא יחסית זול בעונה הראשונה והוא צומח להיות פליימייקר מטורף. ממליץ בחום!<br>
-                                    חוץ מזה, תבדוק את האקדמיה שלך, לפעמים יוצאים משם יהלומים שחוסכים לך כסף.
-                                </div>
-                                <div class="post-actions">
-                                    <button class="action-icon-btn">⚠️ דווח</button>
-                                    <button class="action-icon-btn">💬 ציטוט</button>
-                                    <button class="action-icon-btn">👍 לייק</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="quick-reply-box">
-                            <div class="quick-reply-title">הוסף תגובה לדיון:</div>
-                            <textarea class="quick-reply-textarea" placeholder="כתוב את התגובה שלך כאן... (אפשר להשתמש באמוג'י 😊)"></textarea>
-                            <button class="btn-submit-reply" onclick="alert('התגובה פורסמה בהצלחה!')">שלח תגובה</button>
-                        </div>
-
-                    </div> ```
-
-        function openThread(threadTitle) {
-            // 1. מעלים את טבלת האשכולות ומציג את הדיון
-            document.getElementById('single-forum-view').style.display = 'none';
-            document.getElementById('single-thread-view').style.display = 'block';
-            
-            // 2. מושך את שמות הקטגוריה והפורום מהמסך הקודם
-            document.getElementById('threadCategoryName').innerText = document.getElementById('currentCategoryName').innerText;
-            document.getElementById('threadForumName').innerText = document.getElementById('currentForumName').innerText;
-            
-            // 3. מעדכן את שם הדיון בפירורי הלחם ובכותרת הראשית
-            document.getElementById('currentThreadName').innerText = threadTitle;
-            document.getElementById('mainThreadTitle').innerText = threadTitle;
-            
-            // גלילה חלקה למעלה
-            document.querySelector('.forum-main-area').scrollTop = 0;
-        }
-
-        function goBackToForum() {
-            // מסתיר את הדיון וחוזר לטבלת האשכולות
-            document.getElementById('single-thread-view').style.display = 'none';
-            document.getElementById('single-forum-view').style.display = 'block';
-        }  
                 </div> </div> </div> 
 
             <div id="tab-2" class="tab-content">
