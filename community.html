@@ -830,6 +830,63 @@
         .btn-friend:hover { background: #6b9449; transform: translateY(-2px); }
         .btn-msg { background: #ffffff; color: var(--text-dark); border: 2px solid var(--text-dark); }
         .btn-msg:hover { background: rgba(6, 33, 65, 0.05); transform: translateY(-2px); }
+
+/* מרכוז הכותרת של אלופי הקהילה */
+        .leaderboard-title {
+            text-align: center !important;
+        }
+
+        /* =========================================
+           עיצוב הסרגל האישי ודאשבורד "האזור שלי"
+           ========================================= */
+        
+        /* הסרגל האופקי בסיידבר */
+        .personal-action-bar {
+            display: flex; justify-content: space-between; gap: 8px;
+            margin-bottom: 5px; padding: 10px; background: var(--bg-silver-matte); 
+            border-radius: 8px; border: 1px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .action-btn {
+            flex: 1; position: relative; background: #ffffff; border: 1px solid #cbd5e1;
+            padding: 8px 0; border-radius: 6px; cursor: pointer; transition: 0.2s; font-size: 16px;
+        }
+        .action-btn:hover { background: #f8fafc; border-color: var(--brand-green); transform: translateY(-2px); }
+        .action-badge {
+            position: absolute; top: -6px; left: -6px; /* מותאם לעברית */
+            background: var(--brand-green); color: #fff; font-size: 10px; font-weight: bold;
+            padding: 2px 6px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .action-badge.red { background: #ef4444; }
+
+        /* החלון הצף עצמו */
+        .my-area-modal-content {
+            width: 450px; background: #ffffff; border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(6, 33, 65, 0.3); border: 2px solid var(--text-dark);
+            position: relative; transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        #myAreaModal.active .my-area-modal-content { transform: scale(1); }
+        
+        /* אזור הכותרת והטאבים */
+        .my-area-header { background: #f8fafc; padding: 20px 20px 0 20px; border-bottom: 2px solid #e2e8f0; text-align: center; }
+        .my-area-header h2 { margin: 0 0 15px 0; font-size: 18px; color: var(--element-navy-gradient); font-weight: 900; }
+        .my-area-tabs { display: flex; gap: 10px; direction: rtl; }
+        .tab-btn {
+            flex: 1; background: transparent; border: none; padding: 10px;
+            font-family: inherit; font-size: 13px; font-weight: 900; color: #64748b;
+            cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s;
+        }
+        .tab-btn.active { color: var(--element-navy-gradient); border-bottom-color: var(--brand-green); }
+        .tab-btn:hover:not(.active) { color: var(--text-dark); }
+        .tab-badge { background: var(--brand-green); color: #fff; padding: 2px 6px; border-radius: 10px; font-size: 10px; margin-right: 4px; display: inline-block; }
+        .tab-badge.red { background: #ef4444; }
+        
+        /* תוכן הטאבים */
+        .my-area-body { padding: 20px; min-height: 200px; background: #ffffff; }
+        .my-tab-content { display: none; }
+        .my-tab-content.active { display: block; animation: fadeInTab 0.3s ease; }
+        @keyframes fadeInTab { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .empty-state-placeholder { text-align: center; color: #94a3b8; font-size: 14px; font-weight: bold; margin-top: 40px; }
         
     </style>
 </head>
@@ -920,12 +977,17 @@
                                 </select>
                             
                             <div style="margin: 10px 0 10px 0; border-bottom: 1px solid #e2e8f0;"></div>
-                            <div class="forum-nav-item" onclick="alert('פתחת את ההתראות שלך...')">
-                                🔔 התראות שלי <span style="background: var(--brand-green); color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; float: left;">5</span>
-                            </div>
-                            <div class="forum-nav-item" onclick="alert('הודעות פרטיות...')" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                                <span>✉️ הודעות פרטיות</span>
-                                <span style="background: #ef4444; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold;">2</span>
+                            
+                            <div class="personal-action-bar">
+                                <button class="action-btn" onclick="openMyArea('tab-notifications')" title="התראות">
+                                    🔔 <span class="action-badge">5</span>
+                                </button>
+                                <button class="action-btn" onclick="openMyArea('tab-favorites')" title="מועדפים">
+                                    ⭐
+                                </button>
+                                <button class="action-btn" onclick="openMyArea('tab-messages')" title="הודעות פרטיות">
+                                    ✉️ <span class="action-badge red">2</span>
+                                </button>
                             </div>
                         </div>
 
@@ -1380,6 +1442,28 @@
                 document.getElementById('userCardModal').classList.remove('active');
             }
         }
+
+        // ==========================================
+        // מנוע "האזור האישי" - פתיחה חכמה ומעבר טאבים
+        // ==========================================
+        function openMyArea(tabId) {
+            document.getElementById('myAreaModal').classList.add('active');
+            switchMyAreaTab(tabId);
+        }
+
+        function switchMyAreaTab(tabId) {
+            document.querySelectorAll('.my-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`.tab-btn[onclick="switchMyAreaTab('${tabId}')"]`).classList.add('active');
+        }
+
+        function closeMyArea(event) {
+            if (event.target.id === 'myAreaModal') {
+                document.getElementById('myAreaModal').classList.remove('active');
+            }
+        }
         
     </script>
     <script src="search.js"></script>
@@ -1430,5 +1514,42 @@
             </div>
         </div>
     </div>
+
+<div id="myAreaModal" class="user-card-overlay" onclick="closeMyArea(event)">
+        <div class="my-area-modal-content">
+            <button class="user-card-close" style="color: var(--text-dark);" onclick="document.getElementById('myAreaModal').classList.remove('active')">&times;</button>
+            
+            <div class="my-area-header">
+                <h2>האזור האישי שלי</h2>
+                <div class="my-area-tabs">
+                    <button class="tab-btn active" onclick="switchMyAreaTab('tab-notifications')">התראות <span class="tab-badge">5</span></button>
+                    <button class="tab-btn" onclick="switchMyAreaTab('tab-favorites')">מועדפים</button>
+                    <button class="tab-btn" onclick="switchMyAreaTab('tab-messages')">הודעות <span class="tab-badge red">2</span></button>
+                </div>
+            </div>
+
+            <div class="my-area-body">
+                <div id="tab-notifications" class="my-tab-content active">
+                    <div class="empty-state-placeholder">
+                        <div style="font-size: 30px; margin-bottom: 10px;">🔔</div>
+                        אין לך התראות חדשות כרגע.
+                    </div>
+                </div>
+                <div id="tab-favorites" class="my-tab-content">
+                    <div class="empty-state-placeholder">
+                        <div style="font-size: 30px; margin-bottom: 10px;">⭐</div>
+                        עוד לא שמרת דיונים למועדפים שלך.
+                    </div>
+                </div>
+                <div id="tab-messages" class="my-tab-content">
+                    <div class="empty-state-placeholder">
+                        <div style="font-size: 30px; margin-bottom: 10px;">✉️</div>
+                        אין לך הודעות פרטיות חדשות.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>
