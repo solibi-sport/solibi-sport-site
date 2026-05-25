@@ -887,6 +887,16 @@
         .my-tab-content.active { display: block; animation: fadeInTab 0.3s ease; }
         @keyframes fadeInTab { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .empty-state-placeholder { text-align: center; color: #94a3b8; font-size: 14px; font-weight: bold; margin-top: 40px; }
+
+/* --- תיקון: מרכוז מושלם לכותרת אלופי הקהילה כולל הקו התחתון --- */
+        .forum-leaderboard .leaderboard-title { 
+            color: #ffffff !important; 
+            border-bottom: 3px solid #0a2e57 !important; 
+            padding-bottom: 5px !important;
+            margin: 0 auto 15px auto !important; /* זה הקסם שדוחף אותה בדיוק לאמצע */
+            display: table !important; /* עוטף את הטקסט בול כדי שהקו לא יימתח */
+            text-align: center !important;
+        }
         
     </style>
 </head>
@@ -1151,10 +1161,10 @@
                                 <span style="color: rgba(255,255,255,0.4); margin: 0 10px;">/</span>
                                 <span id="currentForumName" style="color: #ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">שם הפורום</span>
                             </div>
-                            <button class="btn-back" onclick="goBackToMainForums()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; color: #ffffff; transition: 0.2s; display: flex; align-items: center; gap: 8px;">
+                           <button class="btn-back" onclick="goBackToMainForums()" style="background: var(--bg-silver-matte); border: 1px solid #cbd5e1; padding: 6px 14px; border-radius: 6px; font-weight: 900; cursor: pointer; color: var(--element-navy-gradient); transition: 0.2s; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">
                                 <span>חזרה לפורומים</span>
                                 <span style="font-size: 16px;">🔙</span>
-                            </button>
+                            </button>>
                         </div>
 
                         <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
