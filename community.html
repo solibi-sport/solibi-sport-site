@@ -677,6 +677,51 @@
             box-shadow: 0 4px 10px rgba(124,168,86,0.15);
             color: var(--brand-green);
         }
+
+        /* =========================================
+           תיקוני קומפקטיות, כפתור משני ורשימה נפתחת בסיידבר
+           ========================================= */
+        
+        /* 1. כיווץ מרווחים פנימיים בסיידבר למניעת גלילה (Scroll) במסכים גדולים */
+        .forum-sidebar { padding: 12px !important; }
+        .forum-sidebar > div:first-child { margin-bottom: 12px !important; gap: 8px !important; }
+        .btn-new-thread { padding: 10px 15px !important; margin-bottom: 0 !important; }
+        .forum-nav-menu { margin-bottom: 12px !important; }
+        .forum-nav-item { padding: 8px 12px !important; font-size: 13px !important; margin-bottom: 4px !important; }
+        .forum-leaderboard { padding: 12px !important; margin-top: auto !important; }
+        .leaderboard-title { margin-bottom: 10px !important; }
+        .leaderboard-user { margin-bottom: 8px !important; padding-bottom: 8px !important; }
+
+        /* 2. כפתור 'פתח נושא חדש' - בלו נייבי עם פלוס אדום */
+        .btn-new-thread.secondary {
+            background: var(--element-navy-gradient) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+        .btn-new-thread.secondary .plus-icon {
+            color: #ef4444 !important; /* הפלוס האדום! */
+            font-weight: 900 !important;
+            text-shadow: 0 0 5px rgba(239, 68, 68, 0.4); /* נותן לאדום קצת הילה שייראה פרימיום */
+        }
+
+        /* 3. רשימת הסינון - רקע כסוף ממותג וחץ פרימיום עבה */
+        .forum-category-select {
+            /* השילוב החכם בין החץ החדש לגרדיאנט הכסוף שלנו */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a2e57' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"), var(--bg-silver-matte) !important;
+            background-repeat: no-repeat, no-repeat !important;
+            background-position: left 12px center, center !important;
+            background-size: 15px, auto !important; /* הגדלתי והדגשתי את החץ */
+            
+            border: 1px solid #cbd5e1 !important;
+            padding: 8px 12px 8px 35px !important; /* מרווח מדויק לחץ משמאל */
+            font-size: 13px !important;
+            border-radius: 6px !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important;
+        }
+        .forum-category-select:hover, .forum-category-select:focus {
+            border-color: var(--brand-green) !important;
+            box-shadow: 0 4px 10px rgba(124, 168, 86, 0.15) !important;
+        }
         
     </style>
 </head>
