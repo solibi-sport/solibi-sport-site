@@ -646,6 +646,37 @@
         .btn-new-thread.secondary .plus-icon {
             color: var(--element-navy-gradient);
         }
+
+/* עיצוב רשימה נפתחת (Dropdown) לפורומים */
+        .forum-category-select {
+            width: 100%;
+            padding: 10px 15px;
+            background: var(--bg-silver-matte);
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--text-dark);
+            cursor: pointer;
+            outline: none;
+            transition: 0.2s ease;
+            appearance: none; /* מסתיר את החץ המכוער של הדפדפן */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            /* חץ פרימיום מותאם אישית משמאל */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23062141' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: left 10px center;
+            background-size: 14px;
+            padding-left: 30px; 
+        }
+
+        .forum-category-select:focus, .forum-category-select:hover {
+            background: #ffffff;
+            border-color: var(--brand-green);
+            box-shadow: 0 4px 10px rgba(124,168,86,0.15);
+            color: var(--brand-green);
+        }
         
     </style>
 </head>
@@ -722,17 +753,20 @@
                             </button>
                         </div>
                         
-                        <div class="forum-nav-menu">
+                       <div class="forum-nav-menu">
                             <div class="forum-nav-item active" onclick="filterForums('all', this)">ראשי (כל הפורומים)</div>
                             <div class="forum-nav-item" onclick="filterForums('my-forums', this)" style="font-weight: 900; color: var(--element-navy-gradient);">הפורומים שלי (פעיל)</div>
                             
-                            <div style="margin: 10px 0 5px 0; border-bottom: 1px solid #e2e8f0;"></div>
+                            <div style="margin: 10px 0 10px 0; border-bottom: 1px solid #e2e8f0;"></div>
                             
-                            <div class="forum-nav-item" onclick="filterForums('ea-fc', this)">EA SPORTS FC</div>
-                            <div class="forum-nav-item" onclick="filterForums('fm', this)">Football Manager</div>
-                            <div class="forum-nav-item" onclick="filterForums('community', this)">קהילה ותמיכה</div>
+                            <select class="forum-category-select" onchange="filterForums(this.value, this)">
+                                <option value="" disabled selected>סינון לפי נושא / קטגוריה...</option>
+                                <option value="ea-fc">EA SPORTS FC</option>
+                                <option value="fm">Football Manager</option>
+                                <option value="community">קהילה ותמיכה</option>
+                                </select>
                             
-                            <div style="margin: 10px 0 5px 0; border-bottom: 1px solid #e2e8f0;"></div>
+                            <div style="margin: 10px 0 10px 0; border-bottom: 1px solid #e2e8f0;"></div>
                             
                             <div class="forum-nav-item" style="display: flex; justify-content: space-between;">
                                 הודעות פרטיות <span style="background: #ef4444; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold;">2</span>
@@ -1122,14 +1156,25 @@
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
 
 // ==========================================
-        // מנוע סינון פורומים (Categories Filter)
+        // מנוע סינון פורומים (Categories Filter) - מעודכן לרשימה נפתחת
         // ==========================================
         function filterForums(category, element) {
-            // 1. מעדכן את מצב ה-Active בסיידבר
+            // 1. הסרת מצב פעיל (Active) מהכפתורים הרגילים
             document.querySelectorAll('.forum-nav-menu .forum-nav-item').forEach(el => el.classList.remove('active'));
-            if(element) element.classList.add('active');
+            
+            const selectEl = document.querySelector('.forum-category-select');
 
-            // 2. עובר על כל השורות בטבלה ומסנן
+            // בדיקה: מי הפעיל את הסינון?
+            if (element && element.tagName !== 'SELECT') {
+                // אם לחצו על כפתור רגיל (ראשי / שלי), נדגיש אותו ונאפס את ה-Dropdown
+                element.classList.add('active');
+                if (selectEl) selectEl.selectedIndex = 0;
+            } else if (element && element.tagName === 'SELECT') {
+                // אם בחרו מהרשימה הנפתחת, נצבע אותה כדי לסמן שהיא מסננת
+                element.style.borderColor = 'var(--brand-green)';
+            }
+
+            // 2. סינון השורות בטבלה
             const rows = document.querySelectorAll('#forumTableBody tr');
             
             rows.forEach(row => {
@@ -1138,11 +1183,9 @@
                 const isCategoryHeader = row.classList.contains('forum-category-row');
 
                 if (category === 'all') {
-                    // מציג הכל
                     row.style.display = '';
                 } 
                 else if (category === 'my-forums') {
-                    // ב"פורומים שלי" אנחנו מסתירים את הכותרות הכחולות הגדולות, ומראים רק שורות שסומנו כ-My Forum
                     if (isCategoryHeader) {
                         row.style.display = 'none';
                     } else if (isMyForum) {
@@ -1152,7 +1195,6 @@
                     }
                 } 
                 else {
-                    // סינון לפי קטגוריה ספציפית (FC, FM, וכו')
                     if (rowCategory === category) {
                         row.style.display = '';
                     } else {
