@@ -268,15 +268,25 @@
 
         .mystery-showcase {
             flex: 1; /* לוקח את כל שאר המקום הפנוי (צד שמאל) */
-            background: #ffffff;
+            background: var(--bg-silver-matte) !important; /* רקע כסוף שלנו */
             border-radius: 14px;
             padding: 25px;
-            border: 2px solid rgba(124, 168, 86, 0.3);
+            border: 2px solid var(--text-dark) !important; /* מסגרת כחול נייבי שלנו */
             margin-right: 20px; /* רווח מהקופסה שבימין */
             display: none; /* מוסתר כברירת מחדל */
             flex-direction: column;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+            box-shadow: 0 10px 25px rgba(6, 33, 65, 0.1);
             animation: fadeInTab 0.4s ease;
+        }
+
+        .showcase-info-box {
+            background: #ffffff !important; /* רקע לבן נקי כדי לבלוט על הכסוף */
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: var(--text-dark);
+            line-height: 1.6;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
 
         .showcase-header-title {
@@ -308,14 +318,6 @@
             object-fit: cover;
         }
 
-        .showcase-info-box {
-            background: #f8fafc;
-            padding: 15px 20px;
-            border-radius: 12px;
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
         .showcase-info-box h3 {
             font-size: 16px;
             color: var(--brand-green);
@@ -339,6 +341,14 @@
             .product-grid.mystery-mode { flex-direction: column; }
             .mystery-showcase { margin-right: 0; margin-top: 20px; }
         }
+
+/* צביעת קוביית המכירה (צד ימין) במצב מיסטרי */
+        .product-grid.mystery-mode .product-card {
+            background: var(--bg-silver-matte) !important;
+            border: 2px solid var(--text-dark) !important;
+            box-shadow: 0 10px 25px rgba(6, 33, 65, 0.1) !important;
+        }
+        
     </style>
 </head>
 <body>
