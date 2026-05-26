@@ -574,9 +574,13 @@
             }
         }
 
-        // --- החזרת כפתורי התצוגה ---
+       // --- החזרת כפתורי התצוגה ---
         function setView(viewType) {
             const container = document.getElementById('productContainer');
+            
+            // חסימה: אם אנחנו בטאב המיסטרי, צא מהפונקציה ואל תעשה כלום!
+            if (container.classList.contains('mystery-mode')) return;
+
             const arrowR = document.getElementById('arrowRight');
             const arrowL = document.getElementById('arrowLeft');
             const wrapper = document.getElementById('carouselWrapper');
@@ -593,44 +597,52 @@
                 arrowR.style.display = 'flex';
                 arrowL.style.display = 'flex';
                 wrapper.style.padding = '0 60px'; 
-                wrapper.classList.add('centered-view'); // ממרכז רק בקרוסלה
+                wrapper.classList.add('centered-view');
             } else {
                 arrowR.style.display = 'none';
                 arrowL.style.display = 'none';
                 wrapper.style.padding = '0'; 
-                wrapper.classList.remove('centered-view'); // מצמיד למעלה ברשת/רשימה
+                wrapper.classList.remove('centered-view');
             }
         }
 
         function filterStore(category, element) {
-            // מעדכן את הכפתור הפעיל למעלה
             document.querySelectorAll('.cat-pill').forEach(pill => pill.classList.remove('active'));
             element.classList.add('active');
 
             const products = document.querySelectorAll('.product-card');
             const showcase = document.getElementById('mysteryShowcase');
             const container = document.getElementById('productContainer');
+            const viewToggles = document.querySelector('.view-toggles'); // תופס את אזור הכפתורים
             
             let visibleCount = 0;
 
-            // בדיקה: האם לחצו על מיסטרי?
             if(category === 'mystery') {
                 container.classList.add('mystery-mode');
                 if(showcase) showcase.style.display = 'flex';
-                // מסתיר את החצים של הקרוסלה
                 document.getElementById('arrowRight').style.display = 'none';
                 document.getElementById('arrowLeft').style.display = 'none';
+                
+                // משקיף וחוסם את כפתורי התצוגה
+                if(viewToggles) {
+                    viewToggles.style.opacity = '0.4';
+                    viewToggles.style.pointerEvents = 'none';
+                }
             } else {
                 container.classList.remove('mystery-mode');
                 if(showcase) showcase.style.display = 'none';
-                // מחזיר את החצים אם זה קרוסלה
                 if (container.classList.contains('view-carousel')) {
                     document.getElementById('arrowRight').style.display = 'flex';
                     document.getElementById('arrowLeft').style.display = 'flex';
                 }
+                
+                // מחזיר את כפתורי התצוגה לפעולה
+                if(viewToggles) {
+                    viewToggles.style.opacity = '1';
+                    viewToggles.style.pointerEvents = 'auto';
+                }
             }
 
-            // סינון המוצרים
             products.forEach(product => {
                 if (category === 'all' || product.dataset.category === category) {
                     product.style.display = 'flex';
