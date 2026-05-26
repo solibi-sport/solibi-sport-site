@@ -253,6 +253,92 @@
             .product-grid.view-list .product-img { margin: 15px auto; }
             .product-grid.view-list .price-and-btn { flex-direction: column; width: 100%; margin-top: 10px; }
         }
+
+        /* =========================================
+           תצוגת חלון שיווקי (Showcase) לקופסאות מיסטרי
+           ========================================= */
+        .product-grid.mystery-mode {
+            display: flex !important;
+            flex-direction: row;
+            width: 100%;
+            overflow: hidden !important; /* מבטל גלילה במצב הזה */
+            gap: 0; /* מרווח ינוהל דרך השואוקייס */
+            align-items: stretch;
+        }
+
+        .mystery-showcase {
+            flex: 1; /* לוקח את כל שאר המקום הפנוי (צד שמאל) */
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 25px;
+            border: 2px solid rgba(124, 168, 86, 0.3);
+            margin-right: 20px; /* רווח מהקופסה שבימין */
+            display: none; /* מוסתר כברירת מחדל */
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+            animation: fadeInTab 0.4s ease;
+        }
+
+        .showcase-header-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--element-navy-gradient);
+            border-bottom: 3px solid var(--brand-green);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .showcase-image-wrapper {
+            width: 100%;
+            height: 180px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .showcase-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .showcase-info-box {
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .showcase-info-box h3 {
+            font-size: 16px;
+            color: var(--brand-green);
+            margin-bottom: 10px;
+        }
+
+        .showcase-info-box ul {
+            list-style: none;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .showcase-info-box li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .product-grid.mystery-mode { flex-direction: column; }
+            .mystery-showcase { margin-right: 0; margin-top: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -365,6 +451,24 @@
                                 </div>
                             </div>
 
+<div id="mysteryShowcase" class="mystery-showcase">
+                                <div class="showcase-header-title">תוכן חבילות המיסטרי הנוכחי</div>
+                                
+                                <div class="showcase-image-wrapper">
+                                    <img src="mystery-content.jpg" alt="תוכן קופסאות מיסטרי סוליבי">
+                                </div>
+                                
+                                <div class="showcase-info-box">
+                                    <h3>מה מקבלים בפנים? (אחוזי פגיעה)</h3>
+                                    <ul>
+                                        <li>📦 <strong>מובטח:</strong> לפחות 20 קלפים שונים מכל העולם.</li>
+                                        <li>✨ <strong>סיכוי של 1:5:</strong> לשלוף קלף חתימה (Autograph) או קלף מדורג (Graded).</li>
+                                        <li>🔥 <strong>קלפי נוסטלגיה:</strong> סיכוי מוגבר לקלפי כדורגל ישראלי נוסטלגי.</li>
+                                        <li>👕 <strong>מרצ'נדייז:</strong> 10% מהקופסאות מכילות קופון לחולצה חינם!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
                         </div>
                         
                         <button class="nav-arrow arrow-left" id="arrowLeft" onclick="scrollCarousel('left')">❯</button>
@@ -491,12 +595,34 @@
         }
 
         function filterStore(category, element) {
+            // מעדכן את הכפתור הפעיל למעלה
             document.querySelectorAll('.cat-pill').forEach(pill => pill.classList.remove('active'));
             element.classList.add('active');
 
             const products = document.querySelectorAll('.product-card');
+            const showcase = document.getElementById('mysteryShowcase');
+            const container = document.getElementById('productContainer');
+            
             let visibleCount = 0;
 
+            // בדיקה: האם לחצו על מיסטרי?
+            if(category === 'mystery') {
+                container.classList.add('mystery-mode');
+                if(showcase) showcase.style.display = 'flex';
+                // מסתיר את החצים של הקרוסלה
+                document.getElementById('arrowRight').style.display = 'none';
+                document.getElementById('arrowLeft').style.display = 'none';
+            } else {
+                container.classList.remove('mystery-mode');
+                if(showcase) showcase.style.display = 'none';
+                // מחזיר את החצים אם זה קרוסלה
+                if (container.classList.contains('view-carousel')) {
+                    document.getElementById('arrowRight').style.display = 'flex';
+                    document.getElementById('arrowLeft').style.display = 'flex';
+                }
+            }
+
+            // סינון המוצרים
             products.forEach(product => {
                 if (category === 'all' || product.dataset.category === category) {
                     product.style.display = 'flex';
