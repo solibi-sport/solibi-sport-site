@@ -1032,45 +1032,46 @@
             border-color: var(--brand-green);
         }
 
-        /* השורה המרכזית של המשחק: קבוצה - תוצאה - קבוצה */
-        .chat-match-main-row {
+        /* הקופסה הלבנה שעוטפת את הקבוצות והתוצאה יחד */
+        .chat-match-white-box {
+            background: #fff;
+            border-radius: 6px;
+            padding: 8px 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            color: #fff;
-            font-size: 13px;
-            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .chat-team-name {
             flex: 1;
+            color: var(--text-dark); /* טקסט כהה כי הרקע עכשיו לבן */
+            font-size: 13px;
+            font-weight: 900;
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis; /* מוסיף 3 נקודות אם השם ארוך מדי */
+            text-overflow: ellipsis;
         }
         
-        .chat-team-name:first-child { text-align: right; }
-        .chat-team-name:last-child { text-align: left; }
+        .chat-team-name:first-child { text-align: right; } /* קבוצת בית - ימין */
+        .chat-team-name:last-child { text-align: left; } /* קבוצת חוץ - שמאל */
 
         .chat-match-score {
-            background: #fff;
-            color: var(--text-dark);
+            color: var(--element-navy-gradient);
             font-weight: 900;
-            font-size: 14px;
-            padding: 4px 10px;
-            border-radius: 6px;
-            min-width: 50px;
+            font-size: 16px;
+            padding: 0 10px;
             text-align: center;
-            margin: 0 10px;
-            flex-shrink: 0; /* מונע מהתוצאה להתכווץ */
+            flex-shrink: 0;
         }
 
         .chat-match-viewers {
-            font-size: 10px;
+            font-size: 11px;
             color: var(--brand-green);
             font-weight: bold;
             text-align: center;
+            margin-top: 2px;
         }
 
         /* אזור שמאלי: הצ'אט המרכזי */
@@ -1523,40 +1524,32 @@
                         <div class="chat-sidebar-header">
                             <span class="live-dot">⬤</span> משחקים חיים
                         </div>
-                        <div class="chat-matches-list">
-                            <div class="chat-match-card active">
-                                <div>
-                                    <div class="chat-match-teams">
-                                        <span>ריאל מדריד</span>
-                                        <span>ברצלונה</span>
-                                    </div>
-                                    <div class="chat-match-viewers">👁️ 1,240 בצ'אט</div>
+                        <div class="chat-match-card active">
+                                <div class="chat-match-white-box">
+                                    <span class="chat-team-name">ריאל מדריד</span>
+                                    <div class="chat-match-score">2 - 1</div>
+                                    <span class="chat-team-name">ברצלונה</span>
                                 </div>
-                                <div class="chat-match-score">2 - 1</div>
+                                <div class="chat-match-viewers">👁️ 1,240 בצ'אט</div>
                             </div>
                             
                             <div class="chat-match-card">
-                                <div>
-                                    <div class="chat-match-teams">
-                                        <span>מנצ'סטר סיטי</span>
-                                        <span>ארסנל</span>
-                                    </div>
-                                    <div class="chat-match-viewers">👁️ 850 בצ'אט</div>
+                                <div class="chat-match-white-box">
+                                    <span class="chat-team-name">מנצ'סטר סיטי</span>
+                                    <div class="chat-match-score">0 - 0</div>
+                                    <span class="chat-team-name">ארסנל</span>
                                 </div>
-                                <div class="chat-match-score">0 - 0</div>
+                                <div class="chat-match-viewers">👁️ 850 בצ'אט</div>
                             </div>
 
                             <div class="chat-match-card">
-                                <div>
-                                    <div class="chat-match-teams">
-                                        <span>מכבי חיפה</span>
-                                        <span>הפועל ת"א</span>
-                                    </div>
-                                    <div class="chat-match-viewers">👁️ 3,420 בצ'אט</div>
+                                <div class="chat-match-white-box">
+                                    <span class="chat-team-name">מכבי חיפה</span>
+                                    <div class="chat-match-score">1 - 0</div>
+                                    <span class="chat-team-name">הפועל ת"א</span>
                                 </div>
-                                <div class="chat-match-score">1 - 0</div>
+                                <div class="chat-match-viewers">👁️ 3,420 בצ'אט</div>
                             </div>
-                        </div>
                     </div>
 
                     <div class="chat-main-area">
