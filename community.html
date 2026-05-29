@@ -1521,10 +1521,10 @@
                 <div class="live-chat-container">
                     
                     <div class="chat-matches-sidebar">
-                        <div class="chat-sidebar-header">
-                            <span class="live-dot">⬤</span> משחקים חיים
+                       <div class="chat-sidebar-header">
+                            משחקים בלייב <span class="live-dot">⬤</span>
                         </div>
-                        <div class="chat-match-card active">
+                       <div class="chat-match-card" onclick="selectChatMatch(this)">
                                 <div class="chat-match-white-box">
                                     <span class="chat-team-name">ריאל מדריד</span>
                                     <div class="chat-match-score">2 - 1</div>
@@ -1533,7 +1533,7 @@
                                 <div class="chat-match-viewers">👁️ 1,240 בצ'אט</div>
                             </div>
                             
-                            <div class="chat-match-card">
+                            <div class="chat-match-card" onclick="selectChatMatch(this)">
                                 <div class="chat-match-white-box">
                                     <span class="chat-team-name">מנצ'סטר סיטי</span>
                                     <div class="chat-match-score">0 - 0</div>
@@ -1542,7 +1542,7 @@
                                 <div class="chat-match-viewers">👁️ 850 בצ'אט</div>
                             </div>
 
-                            <div class="chat-match-card">
+                            <div class="chat-match-card" onclick="selectChatMatch(this)">
                                 <div class="chat-match-white-box">
                                     <span class="chat-team-name">מכבי חיפה</span>
                                     <div class="chat-match-score">1 - 0</div>
@@ -1916,6 +1916,20 @@
             if (event.target.id === 'threadModal') {
                 document.getElementById('threadModal').classList.remove('active');
             }
+        }
+
+        // פונקציה להחלפת משחק פעיל בצ'אט לייב
+        function selectChatMatch(selectedCard) {
+            // מסיר את הקלאס 'active' (המסגרת הירוקה) מכל המשחקים ברשימה
+            document.querySelectorAll('.chat-match-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // מוסיף את הקלאס 'active' רק למשחק שלחצו עליו
+            selectedCard.classList.add('active');
+            
+            // כאן בהמשך אפשר להוסיף קוד שמשנה את הכותרת בחדר הצ'אט עצמו (צד שמאל) 
+            // לפי המשחק שנבחר
         }
         
     </script>
