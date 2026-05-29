@@ -1015,16 +1015,16 @@
         .chat-matches-list::-webkit-scrollbar { width: 4px; }
         .chat-matches-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        .chat-match-card {
+      .chat-match-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            padding: 10px;
+            padding: 12px 10px;
             cursor: pointer;
             transition: 0.2s;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column; /* מסדר את המשחק למעלה והצופים למטה */
+            gap: 8px;
         }
 
         .chat-match-card:hover, .chat-match-card.active {
@@ -1032,31 +1032,45 @@
             border-color: var(--brand-green);
         }
 
-        .chat-match-teams {
+        /* השורה המרכזית של המשחק: קבוצה - תוצאה - קבוצה */
+        .chat-match-main-row {
             display: flex;
-            flex-direction: column;
-            gap: 4px;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
             color: #fff;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
         }
+
+        .chat-team-name {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* מוסיף 3 נקודות אם השם ארוך מדי */
+        }
+        
+        .chat-team-name:first-child { text-align: right; }
+        .chat-team-name:last-child { text-align: left; }
 
         .chat-match-score {
             background: #fff;
             color: var(--text-dark);
             font-weight: 900;
-            font-size: 13px;
-            padding: 4px 8px;
+            font-size: 14px;
+            padding: 4px 10px;
             border-radius: 6px;
-            min-width: 40px;
+            min-width: 50px;
             text-align: center;
+            margin: 0 10px;
+            flex-shrink: 0; /* מונע מהתוצאה להתכווץ */
         }
 
         .chat-match-viewers {
             font-size: 10px;
             color: var(--brand-green);
-            margin-top: 5px;
             font-weight: bold;
+            text-align: center;
         }
 
         /* אזור שמאלי: הצ'אט המרכזי */
