@@ -1343,6 +1343,85 @@
             color: #64748b;
             line-height: 1.5;
         }
+
+        /* =========================================
+           דאשבורד VIP (SPA בתוך SPA)
+           ========================================= */
+        .vip-dashboard-wrapper {
+            display: flex;
+            gap: 20px;
+            height: 100%; /* תופס את כל הגובה של הטאב */
+            align-items: stretch;
+        }
+
+        .vip-sidebar {
+            width: 250px;
+            background: #ffffff;
+            border: 2px solid var(--text-dark); /* מסגרת נייבי תואמת */
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            overflow-y: auto;
+        }
+
+        .vip-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-right: 3px solid transparent;
+        }
+
+        .vip-menu-item:hover {
+            background: #f8fafc;
+            color: var(--element-navy-gradient);
+        }
+
+        .vip-menu-item.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold-solid);
+            border-right-color: var(--gold-solid);
+        }
+
+        .vip-content-area {
+            flex: 1;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .vip-pane {
+            display: none;
+            animation: fadeInTab 0.3s ease;
+        }
+
+        .vip-pane.active {
+            display: block;
+        }
+
+        .vip-pane-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--element-navy-gradient);
+            border-bottom: 2px solid var(--gold-solid);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
         
     </style>
 </head>
@@ -1684,75 +1763,84 @@
             </div>
             
             <div id="tab-3" class="tab-content">
-                <div class="vip-container">
+                <div class="vip-dashboard-wrapper">
                     
-                    <div class="vip-hero-card">
-                        <div class="vip-hero-content">
-                            <div class="vip-hero-title">מועדון הזהב של סוליבי</div>
-                            <div class="vip-hero-desc">
-                                המקום שבו ההשקעה מחזירה את עצמה. גישה מוקדמת, הנחות בלעדיות, תוכן פרימיום וכלים מקצועיים שיקחו את המשחק והאוסף שלך רמה אחת מעל כולם.
-                            </div>
-                            <button class="vip-join-btn">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                פתח גישת VIP עכשיו
-                            </button>
+                    <div class="vip-sidebar">
+                        <div class="vip-menu-item active" onclick="switchVipTab('vip-overview', this)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                            סקירת מועדון
                         </div>
-                        <div class="vip-card-visual">
-                            <div class="vip-card-chip"></div>
-                            </div>
+                        <div class="vip-menu-item" onclick="switchVipTab('vip-early-access', this)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            גישה מוקדמת בחנות
+                        </div>
+                        <div class="vip-menu-item" onclick="switchVipTab('vip-discounts', this)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
+                            הנחות וקופונים
+                        </div>
+                        <div class="vip-menu-item" onclick="switchVipTab('vip-lottery', this)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            הגרלת הענק החודשית
+                        </div>
+                        <div class="vip-menu-item" onclick="switchVipTab('vip-trading', this)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+                            סיגנלים למסחר
+                        </div>
+                        <div class="vip-menu-item" onclick="switchVipTab('vip-lounge', this)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                            טרקלין הזהב (Lounge)
+                        </div>
                     </div>
 
-                    <div class="vip-features-grid">
+                    <div class="vip-content-area">
                         
-                        <div class="vip-feature-box">
-                            <div class="vip-feature-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        <div id="vip-overview" class="vip-pane active">
+                            <div class="vip-hero-card" style="margin-bottom: 20px;">
+                                <div class="vip-hero-content">
+                                    <div class="vip-hero-title">מועדון הזהב של סוליבי</div>
+                                    <div class="vip-hero-desc">ברוך הבא לאזור האישי שלך. מכאן תוכל לממש את כל ההטבות, ההנחות והתוכן הבלעדי השמור לחברי מועדון הזהב בלבד.</div>
+                                </div>
+                                <div class="vip-card-visual">
+                                    <div class="vip-card-chip"></div>
+                                </div>
                             </div>
-                            <div class="vip-feature-title">גישה מוקדמת (Early Access)</div>
-                            <div class="vip-feature-desc">הראשונים לדעת, הראשונים לקנות. קבלו גישה למלאי קופסאות וקלפים נדירים 24 שעות לפני כולם.</div>
+                            <div style="text-align: center; color: #64748b; font-weight: bold; margin-top: 40px;">
+                                השתמש בתפריט מימין כדי לנווט בין ההטבות שלך.
+                            </div>
                         </div>
 
-                        <div class="vip-feature-box">
-                            <div class="vip-feature-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
-                            </div>
-                            <div class="vip-feature-title">15% הנחה קבועה בחנות</div>
-                            <div class="vip-feature-desc">משתלם מהרגע הראשון. נהנים מהנחה גורפת של 15% על כל המוצרים, המעטפות ואביזרי התצוגה באתר.</div>
+                        <div id="vip-early-access" class="vip-pane">
+                            <div class="vip-pane-title">גישה מוקדמת למלאי (Early Access)</div>
+                            <p style="color: #64748b; margin-bottom: 20px;">כאן יופיעו קופסאות ומוצרים חדשים שאפשר לרכוש לפני שאר הקהילה.</p>
+                            <div class="placeholder-box">אין מוצרים בגישה מוקדמת כרגע...</div>
                         </div>
 
-                        <div class="vip-feature-box">
-                            <div class="vip-feature-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                            </div>
-                            <div class="vip-feature-title">הגרלת הענק החודשית</div>
-                            <div class="vip-feature-desc">כניסה אוטומטית להגרלת פרסי פרימיום סגורה (קלפים חתומים, עותקי משחקים, קופסאות עלית).</div>
+                        <div id="vip-discounts" class="vip-pane">
+                            <div class="vip-pane-title">הנחות וקופונים אישיים</div>
+                            <p style="color: #64748b; margin-bottom: 20px;">הקופונים השמורים לך כחבר מועדון לשימוש בחנות האתר.</p>
+                            <div class="placeholder-box">טוען קופונים...</div>
                         </div>
 
-                        <div class="vip-feature-box">
-                            <div class="vip-feature-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
-                            </div>
-                            <div class="vip-feature-title">סיגנלים וטיפים למסחר</div>
-                            <div class="vip-feature-desc">המלצות מסחר לבורסת הקלפים ולשוק של Ultimate Team כדי להגדיל רווחים ולנצל הזדמנויות.</div>
+                        <div id="vip-lottery" class="vip-pane">
+                            <div class="vip-pane-title">הגרלת הענק החודשית</div>
+                            <p style="color: #64748b; margin-bottom: 20px;">אתה רשום אוטומטית! בדוק כאן את הסטטוס ואת הפרסים לחודש הנוכחי.</p>
+                            <div class="placeholder-box">הגרלת חודש יוני תיפתח בקרוב...</div>
                         </div>
 
-                        <div class="vip-feature-box">
-                            <div class="vip-feature-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                            </div>
-                            <div class="vip-feature-title">סטטוס זהב בקהילה</div>
-                            <div class="vip-feature-desc">השם שלך ייצבע בזהב בכל הפורומים וצ'אט הלייב, בשילוב תג שחקן VIP בולט ומועצם.</div>
+                        <div id="vip-trading" class="vip-pane">
+                            <div class="vip-pane-title">סיגנלים וטיפים למסחר</div>
+                            <p style="color: #64748b; margin-bottom: 20px;">טיפים חמים בזמן אמת לבורסת הקלפים ולשוק של EA FC.</p>
+                            <div class="placeholder-box">מנתח נתוני שוק...</div>
                         </div>
 
-                        <div class="vip-feature-box">
-                            <div class="vip-feature-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                            </div>
-                            <div class="vip-feature-title">גישה לטרקלין (Lounge)</div>
-                            <div class="vip-feature-desc">כניסה לפורום סגור, נקי מספאם, להתייעצויות ישירות עם המנהלים ושיח מקצועי עם חברי מועדון נוספים.</div>
+                        <div id="vip-lounge" class="vip-pane">
+                            <div class="vip-pane-title">טרקלין הזהב (Lounge)</div>
+                            <p style="color: #64748b; margin-bottom: 20px;">הפורום הסגור לחברי ה-VIP בלבד.</p>
+                            <div class="placeholder-box">טוען דיונים אחרונים מטרקלין הזהב...</div>
                         </div>
 
                     </div>
+
                 </div>
             </div>
             
@@ -2169,6 +2257,17 @@
             
             // כאן בהמשך אפשר להוסיף קוד שמשנה את הכותרת בחדר הצ'אט עצמו (צד שמאל) 
             // לפי המשחק שנבחר
+        }
+
+        // פונקציה להחלפת טאבים בתוך דאשבורד ה-VIP
+        function switchVipTab(paneId, element) {
+            // הסתרת כל המסכים ואיפוס הכפתורים
+            document.querySelectorAll('.vip-pane').forEach(pane => pane.classList.remove('active'));
+            document.querySelectorAll('.vip-menu-item').forEach(item => item.classList.remove('active'));
+            
+            // הצגת המסך המבוקש והדגשת הכפתור שלו בזהב
+            document.getElementById(paneId).classList.add('active');
+            element.classList.add('active');
         }
         
     </script>
