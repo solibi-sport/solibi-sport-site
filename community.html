@@ -1422,6 +1422,247 @@
             margin-bottom: 20px;
             display: inline-block;
         }
+
+        /* =========================================
+           ליגות חברים פרטיות (The Arena)
+           ========================================= */
+        .leagues-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+        }
+
+        /* שורת הכרטיסיות (הליגות שלי) */
+        .leagues-cards-row {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            flex-shrink: 0;
+        }
+        
+        .leagues-cards-row::-webkit-scrollbar { height: 6px; }
+        .leagues-cards-row::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .league-card {
+            background: var(--element-navy-gradient);
+            color: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            min-width: 220px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .league-card.active {
+            border-color: var(--brand-green);
+            box-shadow: 0 5px 15px rgba(124,168,86,0.3);
+            background: #0a2e57;
+        }
+
+        .league-card:hover:not(.active) {
+            transform: translateY(-3px);
+        }
+
+        .league-card-title { font-size: 15px; font-weight: 900; margin-bottom: 5px; }
+        .league-card-rank { font-size: 12px; color: var(--brand-green); font-weight: bold; margin-bottom: 10px; }
+        .league-card-meta { font-size: 11px; color: rgba(255,255,255,0.6); }
+
+        .league-card.add-new {
+            background: transparent;
+            border: 2px dashed #cbd5e1;
+            color: var(--element-navy-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: none;
+        }
+
+        .league-card.add-new:hover {
+            border-color: var(--brand-green);
+            color: var(--brand-green);
+            background: rgba(124,168,86,0.05);
+        }
+
+        /* זירת הליגה (החצי התחתון) */
+        .league-arena {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-height: 0; /* קריטי לגלילה פנימית */
+        }
+
+        /* טבלת הליגה (אזור מרכזי) */
+        .league-standings-panel {
+            flex: 2; /* תופס 2/3 מהרוחב */
+            background: #fff;
+            border: 2px solid var(--text-dark);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .league-standings-header {
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 900;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .standings-table-wrap {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .standings-table th {
+            background: #fff;
+            color: #64748b;
+            font-size: 11px;
+            padding: 12px 10px;
+            border-bottom: 2px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .standings-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .standings-table tr:hover { background: #f8fafc; }
+
+        .team-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: right;
+            padding-right: 15px;
+        }
+
+        .team-cell img { width: 26px; height: 26px; border-radius: 50%; border: 1px solid #e2e8f0; }
+
+        /* מדד כושר (Form) */
+        .form-indicator { display: flex; gap: 4px; justify-content: center; direction: ltr; }
+        .form-circle {
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            color: #fff;
+            font-weight: bold;
+        }
+        .form-w { background: var(--brand-green); } /* ניצחון */
+        .form-l { background: #ef4444; } /* הפסד */
+        .form-d { background: #94a3b8; } /* תיקו */
+
+        /* קיר הטראש טוק (צד שמאל) */
+        .league-chat-panel {
+            flex: 1; /* תופס 1/3 מהרוחב */
+            background: var(--bg-silver-matte);
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .league-chat-header {
+            background: #ffffff;
+            padding: 15px;
+            color: var(--element-navy-gradient);
+            font-weight: 900;
+            border-bottom: 2px solid var(--brand-green);
+            text-align: center;
+        }
+
+        .league-chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .l-msg {
+            background: #fff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            border: 1px solid #e2e8f0;
+            border-right: 3px solid var(--text-dark);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .l-msg.system {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            text-align: center;
+            color: #64748b;
+            font-weight: bold;
+            font-size: 11px;
+            margin: 5px 0;
+        }
+
+        .l-msg-author { font-weight: 900; color: var(--element-navy-gradient); margin-bottom: 4px; font-size: 11px; }
+
+        .league-chat-input {
+            padding: 12px;
+            background: #fff;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .league-chat-input input {
+            flex: 1;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .league-chat-input input:focus { border-color: var(--brand-green); }
+
+        .league-chat-input button {
+            background: var(--element-navy-gradient);
+            color: #fff;
+            border: none;
+            padding: 0 15px;
+            border-radius: 6px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .league-chat-input button:hover { background: var(--brand-green); }
         
     </style>
 </head>
@@ -1757,9 +1998,150 @@
                 </div> </div> </div> 
 
             <div id="tab-2" class="tab-content">
-                <h2 class="content-header-title">ליגות חברים פרטיות</h2>
-                <p class="content-desc">נהלו את הליגות שלכם מול החברים, עקבו אחרי הטבלאות, והזמינו שחקנים חדשים להתחרות מולכם.</p>
-                <div class="placeholder-box">כאן יופיע לוח ניהול הליגות והטבלאות...</div>
+                <div class="leagues-wrapper">
+                    
+                    <div class="leagues-cards-row">
+                        
+                        <div class="league-card active">
+                            <div class="league-card-title">ליגת פנטזי - החבר'ה מהצבא</div>
+                            <div class="league-card-rank">🏆 מקום 1 מתוך 12</div>
+                            <div class="league-card-meta">מחזור קרוב: מחר ב-20:00</div>
+                        </div>
+
+                        <div class="league-card">
+                            <div class="league-card-title">טורניר FIFA סופ"ש</div>
+                            <div class="league-card-rank">⭐ מקום 3 מתוך 8</div>
+                            <div class="league-card-meta">שלב הבתים - מחזור 4</div>
+                        </div>
+
+                        <div class="league-card add-new" onclick="alert('פתיחת חלון ליצירת ליגה או הזנת קוד הצטרפות...')">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <span style="font-weight: 900; font-size: 14px;">הקם/הצטרף לליגה</span>
+                        </div>
+
+                    </div>
+
+                    <div class="league-arena">
+                        
+                        <div class="league-standings-panel">
+                            <div class="league-standings-header">
+                                <span>טבלת הליגה: החבר'ה מהצבא</span>
+                                <button style="background:transparent; border:1px solid #cbd5e1; padding:4px 10px; border-radius:4px; font-family:inherit; font-size:11px; font-weight:bold; cursor:pointer;">הגדרות ליגה ⚙️</button>
+                            </div>
+                            <div class="standings-table-wrap">
+                                <table class="standings-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50px;">מקום</th>
+                                            <th style="text-align: right; padding-right: 15px;">קבוצה / שחקן</th>
+                                            <th title="משחקים">מש'</th>
+                                            <th title="ניצחונות">נ'</th>
+                                            <th title="תיקו">ת'</th>
+                                            <th title="הפסדים">ה'</th>
+                                            <th>כושר (Form)</th>
+                                            <th>נקודות</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="background: rgba(124, 168, 86, 0.05);">
+                                            <td style="color: var(--brand-green);">1</td>
+                                            <td>
+                                                <div class="team-cell">
+                                                    <img src="https://ui-avatars.com/api/?name=GD&background=7ca856&color=fff">
+                                                    <span>Gadi_King (אתה)</span>
+                                                </div>
+                                            </td>
+                                            <td>10</td>
+                                            <td>8</td>
+                                            <td>1</td>
+                                            <td>1</td>
+                                            <td>
+                                                <div class="form-indicator">
+                                                    <div class="form-circle form-w">W</div>
+                                                    <div class="form-circle form-w">W</div>
+                                                    <div class="form-circle form-d">D</div>
+                                                    <div class="form-circle form-w">W</div>
+                                                    <div class="form-circle form-l">L</div>
+                                                </div>
+                                            </td>
+                                            <td style="color: var(--brand-green); font-size: 15px;">25</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>
+                                                <div class="team-cell">
+                                                    <img src="https://ui-avatars.com/api/?name=AV&background=0a2e57&color=fff">
+                                                    <span>Aviv_Cards</span>
+                                                </div>
+                                            </td>
+                                            <td>10</td>
+                                            <td>7</td>
+                                            <td>2</td>
+                                            <td>1</td>
+                                            <td>
+                                                <div class="form-indicator">
+                                                    <div class="form-circle form-w">W</div>
+                                                    <div class="form-circle form-d">D</div>
+                                                    <div class="form-circle form-w">W</div>
+                                                    <div class="form-circle form-w">W</div>
+                                                    <div class="form-circle form-d">D</div>
+                                                </div>
+                                            </td>
+                                            <td style="color: var(--element-navy-gradient); font-size: 15px;">23</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>
+                                                <div class="team-cell">
+                                                    <img src="https://ui-avatars.com/api/?name=MT&background=64748b&color=fff">
+                                                    <span>Matan_Pro</span>
+                                                </div>
+                                            </td>
+                                            <td>10</td>
+                                            <td>5</td>
+                                            <td>1</td>
+                                            <td>4</td>
+                                            <td>
+                                                <div class="form-indicator">
+                                                    <div class="form-circle form-l">L</div>
+                                                    <div class="form-circle form-w">W</div>
+                                                    <div class="form-circle form-l">L</div>
+                                                    <div class="form-circle form-d">D</div>
+                                                    <div class="form-circle form-l">L</div>
+                                                </div>
+                                            </td>
+                                            <td style="color: var(--element-navy-gradient); font-size: 15px;">16</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="league-chat-panel">
+                            <div class="league-chat-header">
+                                💬 קיר הליגה (Trash Talk)
+                            </div>
+                            <div class="league-chat-messages">
+                                <div class="l-msg system">מחזור 10 הסתיים! הטבלה עודכנה.</div>
+                                
+                                <div class="l-msg">
+                                    <div class="l-msg-author">Aviv_Cards</div>
+                                    גדי, עשיתי תיקו מבאס אבל מחזור הבא אנחנו ראש בראש, תתכונן!
+                                </div>
+
+                                <div class="l-msg" style="border-right-color: var(--brand-green);">
+                                    <div class="l-msg-author" style="color: var(--brand-green);">Gadi_King</div>
+                                    חחחחחח תמשיך לחלום אביב, אני פותח פער בצמרת! 🏆
+                                </div>
+                            </div>
+                            <div class="league-chat-input">
+                                <input type="text" placeholder="זרוק להם מילה...">
+                                <button>שלח</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
             
             <div id="tab-3" class="tab-content">
