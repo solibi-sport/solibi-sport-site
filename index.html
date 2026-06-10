@@ -1128,6 +1128,38 @@
     </script>
     
 <script src="search.js"></script>
-    
+   <script type="module">
+    import { supabase } from './supabaseClient.js';
+
+    async function checkAuthAndUpdateHeader() {
+        // 1. מבקש מסופאבייס לדעת אם יש משתמש מחובר כרגע
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        // 2. בגלל שההדר נטען בדיליי (Fetch), אנחנו מחפשים את הכפתור במחזוריות קצרה עד שנמצא אותו
+        const checkInterval = setInterval(() => {
+            const authBtn = document.getElementById('auth-btn');
+            const authText = document.getElementById('auth-text');
+            
+            if (authBtn && authText) {
+                clearInterval(checkInterval); // מצאנו את הכפתור! אפשר להפסיק לחפש
+                
+                // 3. אם יש משתמש מחובר, משנים את הכפתור
+                if (user) {
+                    authText.innerText = 'התנתק'; // משנה את הטקסט
+                    authBtn.href = '#'; // מבטל את המעבר לדף ההתחברות
+                    
+                    // 4. מוסיף פעולת התנתקות בלחיצה על הכפתור
+                    authBtn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        await supabase.auth.signOut(); // מנתק אותו מסופאבייס
+                        window.location.reload(); // מרענן את הדף (ואז הכפתור יחזור להיות "לאזור האישי")
+                    });
+                }
+            }
+        }, 100); // הבדיקה רצה כל עשירית שנייה עד שההדר מופיע
+    }
+
+    checkAuthAndUpdateHeader();
+</script> 
 </body>
 </html>

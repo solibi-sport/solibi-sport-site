@@ -9169,5 +9169,29 @@ window.switchTeamTab = function(tabId, btnElement) {
 </script>
     
 <script src="search.js"></script>
+<script type="module">
+  import { supabase } from './supabaseClient.js';
+
+  async function fetchPlayers() {
+    console.log("מתחיל למשוך שחקנים מהשרת...");
+    
+    // משיכת 10 שחקנים לבדיקה. 
+    const { data, error } = await supabase
+      .from('master_players')
+      .select('*')
+      .limit(10); 
+
+    if (error) {
+      console.error("אופס, יש שגיאה:", error);
+      return;
+    }
+
+    console.log("השחקנים נמשכו בהצלחה! הנה הנתונים שלהם:");
+    console.log(data);
+  }
+
+  // הפעלת הפונקציה ברגע שהדף נטען
+  fetchPlayers();
+</script>
 </body>
 </html>

@@ -286,33 +286,33 @@
                 </div>
 
                 <form id="form-login" class="form-container active" onsubmit="event.preventDefault();">
-                    <div class="input-group">
-                        <label>אימייל</label>
-                        <input type="email" placeholder="name@example.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label>סיסמה</label>
-                        <input type="password" placeholder="••••••••" required>
-                    </div>
-                    <a href="#" class="forgot-password">שכחת סיסמה?</a>
-                    <button type="submit" class="submit-btn">היכנס לחשבון</button>
-                </form>
+    <div class="input-group">
+        <label>אימייל</label>
+        <input type="email" id="login-email" placeholder="name@example.com" required>
+    </div>
+    <div class="input-group">
+        <label>סיסמה</label>
+        <input type="password" id="login-password" placeholder="••••••••" required>
+    </div>
+    <a href="#" class="forgot-password">שכחת סיסמה?</a>
+    <button type="submit" class="submit-btn">היכנס לחשבון</button>
+</form>
 
                 <form id="form-register" class="form-container" onsubmit="event.preventDefault();">
-                    <div class="input-group">
-                        <label>שם מלא או כינוי</label>
-                        <input type="text" placeholder="איך לקרוא לך בפורום?" required>
-                    </div>
-                    <div class="input-group">
-                        <label>אימייל</label>
-                        <input type="email" placeholder="name@example.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label>סיסמה</label>
-                        <input type="password" placeholder="לפחות 6 תווים" required>
-                    </div>
-                    <button type="submit" class="submit-btn">צור חשבון חדש</button>
-                </form>
+    <div class="input-group">
+        <label>שם מלא או כינוי</label>
+        <input type="text" id="reg-name" placeholder="איך לקרוא לך בפורום?" required>
+    </div>
+    <div class="input-group">
+        <label>אימייל</label>
+        <input type="email" id="reg-email" placeholder="name@example.com" required>
+    </div>
+    <div class="input-group">
+        <label>סיסמה</label>
+        <input type="password" id="reg-password" placeholder="לפחות 6 תווים" required>
+    </div>
+    <button type="submit" class="submit-btn">צור חשבון חדש</button>
+</form>
             </div>
 
 <div class="auth-info-section">
@@ -397,5 +397,74 @@
             }
         }
     </script>
+    <script type="module">
+    // 1. קריאה לצינור הראשי שלנו
+    import { supabase } from './supabaseClient.js';
+
+    // 2. תפיסת טופס ההרשמה
+    const registerForm = document.getElementById('form-register');
+
+    // 3. מה קורה כשלוחצים על שליחה?
+    registerForm.addEventListener('submit', async (e) => {
+        
+        // משיכת הנתונים שהמשתמש הקליד לשדות
+        const nameValue = document.getElementById('reg-name').value;
+        const emailValue = document.getElementById('reg-email').value;
+        const passwordValue = document.getElementById('reg-password').value;
+
+        console.log("שולח בקשת הרשמה לשרת עבור:", emailValue);
+
+        // 4. הפקודה הקסומה של סופאבייס ליצירת משתמש!
+        const { data, error } = await supabase.auth.signUp({
+            email: emailValue,
+            password: passwordValue,
+            options: {
+                data: {
+                    display_name: nameValue // שומרים גם את הכינוי שהוא בחר
+                }
+            }
+        });
+
+        // 5. בדיקה אם הצלחנו או קיבלנו שגיאה
+        if (error) {
+            console.error("שגיאה בהרשמה:", error.message);
+            alert("אופס, השגיאה מהשרת: " + error.message);
+        } else {
+            console.log("הרשמה הצליחה!", data);
+            alert("מזל טוב! החשבון נוצר בהצלחה. המשתמש הראשון שלך באוויר!");
+            registerForm.reset(); // מנקה את הטופס
+        }
+    });
+    // ===== התחברות משתמש קיים =====
+    const loginForm = document.getElementById('form-login');
+
+    loginForm.addEventListener('submit', async (e) => {
+        
+        // משיכת הנתונים שהמשתמש הקליד
+        const emailValue = document.getElementById('login-email').value;
+        const passwordValue = document.getElementById('login-password').value;
+
+        console.log("מנסה להתחבר עם המייל:", emailValue);
+
+        // הפקודה של סופאבייס להתחברות
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: emailValue,
+            password: passwordValue
+        });
+
+       // בדיקה אם הצלחנו או קיבלנו שגיאה //
+        if (error) {
+            console.error("שגיאה בהתחברות:", error.message);
+            alert("אופס! פרטי ההתחברות שגויים, או שעדיין לא אישרת את המייל שלך.");
+        } else {
+            console.log("התחברות הצליחה!", data);
+            alert("ברוך הבא חזרה! התחברת בהצלחה למערכת של סוליבי.");
+            loginForm.reset(); // מנקה את הטופס
+            
+            // השורה החדשה שלנו: מעבר אוטומטי לדף הבית
+            window.location.href = 'index.html'; 
+        }
+    });
+</script>
 </body>
 </html>
