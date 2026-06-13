@@ -128,8 +128,13 @@
             width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: absolute;
             transition: 0.3s; font-size: 18px; font-weight: bold; z-index: 10;
+            top: 50%; 
+            transform: translateY(-50%); 
         }
-        .nav-arrow:hover { background: var(--brand-green); color: #fff; border-color: var(--brand-green); transform: scale(1.1); }
+        .nav-arrow:hover { 
+            background: var(--brand-green); color: #fff; border-color: var(--brand-green); 
+            transform: translateY(-50%) scale(1.1); 
+        }
         .arrow-right { right: 0; } 
         .arrow-left { left: 0; }
 
@@ -144,14 +149,14 @@
         .product-grid.view-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
         .product-grid.view-grid .product-card { width: 100%; text-align: center; padding: 25px 15px 15px 15px; }
         
-        /* רשימה */
-        .product-grid.view-list { display: flex; flex-direction: column; }
-        .product-grid.view-list .product-card { flex-direction: row; text-align: right; align-items: center; padding: 15px 20px; }
-        .product-grid.view-list .product-img { order: 1; width: 60px; height: 60px; margin-bottom: 0; margin-left: 20px; flex-shrink: 0; }
-        .product-grid.view-list .product-info { order: 2; flex-grow: 0; display: flex; flex-direction: column; justify-content: center; text-align: right; }
-        .product-grid.view-list .product-badge { order: 3; position: static; width: auto; border-radius: 6px; padding: 4px 10px; margin-right: 15px; margin-left: 0; }
-        .product-grid.view-list .price-and-btn { order: 4; flex-direction: row; padding-top: 0; border-top: none; gap: 20px; align-items: center; margin-right: auto; margin-top: 0;}
-        .product-grid.view-list .add-to-cart-btn { width: auto; padding: 8px 15px; font-size: 12px; margin-top: 0; }
+        /* רשימה - מוגן לחלוטין ולא משפיע על המיסטרי */
+        .product-grid.view-list:not(.mystery-mode) { display: flex; flex-direction: column; }
+        .product-grid.view-list:not(.mystery-mode) .product-card { flex-direction: row !important; text-align: right; align-items: center; padding: 15px 20px !important; height: auto !important; }
+        .product-grid.view-list:not(.mystery-mode) .product-img { order: 1; width: 80px !important; height: 80px !important; margin: 0 0 0 20px !important; flex-shrink: 0 !important; }
+        .product-grid.view-list:not(.mystery-mode) .product-info { order: 2; flex-grow: 1 !important; display: flex; flex-direction: column; justify-content: center; text-align: right; }
+        .product-grid.view-list:not(.mystery-mode) .product-badge { order: 3; position: static; width: auto; border-radius: 6px; padding: 4px 10px; margin-right: 15px; margin-left: 0; }
+        .product-grid.view-list:not(.mystery-mode) .price-and-btn { order: 4; flex-direction: row !important; padding-top: 0 !important; border-top: none !important; gap: 20px !important; align-items: center !important; margin-right: auto !important; margin-top: 0 !important;}
+        .product-grid.view-list:not(.mystery-mode) .add-to-cart-btn { width: auto; padding: 8px 15px; font-size: 13px; margin-top: 0; }
 
         /* עיצוב כרטיסייה - שדרוג פרימיום */
         .product-card {
@@ -201,7 +206,19 @@
             transform: scale(1.02);
         }
 
-        .no-products-msg { display: none; width: 100%; text-align: center; color: var(--text-gray); font-size: 16px; padding: 40px 0; font-weight: 500; }
+        .no-products-msg { 
+            display: none; 
+            position: absolute !important; 
+            top: 55% !important; 
+            left: 0 !important; 
+            right: 0 !important; 
+            margin: 0 auto !important; 
+            text-align: center !important; 
+            color: var(--text-gray) !important; 
+            font-size: 18px !important; 
+            font-weight: 500 !important;
+            z-index: 20 !important;
+        }
 
         /* סרגל אמון */
         .trust-badges { 
@@ -247,81 +264,138 @@
             gap: 20px; align-items: stretch; overflow: hidden !important;
         }
         
+        /* מעטפת שקופה לחלוטין שתופסת את כל הצד השמאלי */
         .mystery-showcase {
             flex: 1; 
-            min-width: 0; 
-            background: var(--bg-silver-matte) !important; border-radius: 14px; 
-            padding: 8px 15px 15px 15px; /* התיקון פה: רק 8 פיקסלים רווח מלמעלה */
-            border: 2px solid var(--text-dark) !important; 
-            display: none; flex-direction: column;
-            box-shadow: 0 10px 25px rgba(6, 33, 65, 0.1); 
-            min-height: 0; overflow: hidden;
+            background: transparent !important; 
+            border: none !important; 
+            box-shadow: none !important; 
+            padding: 0 !important; 
+            display: none; 
+            position: relative; 
             margin: 0; 
         }
 
-        .showcase-header-title { 
-            font-size: 16px; font-weight: 900; color: var(--brand-green); 
-            border-bottom: 3px solid var(--text-dark); padding-bottom: 4px; 
-            margin-bottom: 8px; /* התיקון פה: 8 פיקסלים מלמטה. עכשיו הכותרת בדיוק באמצע! */
-            display: inline-block; align-self: flex-start; flex-shrink: 0;
-        }
-        
-        .showcase-image-wrapper { 
-            width: 100%; flex: 1; min-height: 0; 
-            display: flex; align-items: center; justify-content: center; 
-            margin-bottom: 5px; /* פה גנבנו 5 פיקסלים מהרווח שמתחת לתמונה */
-            border-radius: 8px; overflow: hidden; background: transparent;
-        }
-        
-        .showcase-info-box { 
-            width: 100%; background: #ffffff !important; 
-            padding: 8px 15px; /* פה גנבנו עוד כמה פיקסלים מהשוליים של הקופסה הלבנה */
-            border-radius: 12px; 
-            color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02); flex-shrink: 0; 
+        /* 4. קוביית התוכן (צד שמאל - מתחברת לימין) */
+        .mystery-info-card {
+            align-self: flex-start !important; 
+            height: 420px !important; 
+            background: var(--bg-silver-matte) !important;
+            border: 2px solid var(--text-dark) !important;
+            border-radius: 16px 0 0 16px !important; 
+            border-right: 1px dashed rgba(6, 33, 65, 0.2) !important; 
+            box-shadow: 0 10px 25px rgba(6, 33, 65, 0.1) !important;
+            margin: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-start;
+            padding: 20px 15px !important; /* הקטנו קצת את הריווח העליון והתחתון */
+            gap: 15px !important; /* הקטנו את המרווח בין שתי הרשימות */
         }
 
-        .showcase-info-box { 
-            background: #ffffff !important; padding: 10px 15px; border-radius: 12px; 
-            color: var(--text-dark); border: 1px solid rgba(0,0,0,0.05); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02); flex-shrink: 0; /* נועל את הטקסט שלא ימעך */
+        /* עיצוב כותרות הרשימות */
+        .info-section h4 {
+            font-size: 14px; /* טיפה קטן יותר */
+            font-weight: 900; 
+            margin-bottom: 8px; /* פחות רווח מתחת לכותרת */
+            border-bottom: 2px solid rgba(0,0,0,0.05); 
+            padding-bottom: 6px;
         }
-        
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .info-column { display: flex; flex-direction: column; }
-        
-        .col-title { font-size: 13px; font-weight: 900; margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .col-title.guaranteed { color: var(--brand-green); }
-        .col-title.chasers { color: #ff3b30; }
-        
-        .showcase-info-box ul { list-style: none; font-size: 11px; font-weight: 500; }
-        .showcase-info-box li { margin-bottom: 4px; display: flex; align-items: flex-start; gap: 4px; line-height: 1.2;}
-        .showcase-info-box li::before { content: '•'; color: var(--text-gray); font-weight: bold; }
-        
-        /* נועלים את הקובייה מימין ומיישרים לקו העליון */
-        .product-grid.mystery-mode .product-card { 
-            background: var(--bg-silver-matte) !important; border: 2px solid var(--text-dark) !important; 
-            box-shadow: 0 10px 25px rgba(6, 33, 65, 0.1) !important; 
-            height: fit-content; 
-            align-self: flex-start; /* זה מה שמדביק אותה לקו העליון בדיוק ממול */
-            flex: 0 0 220px; 
-            margin: 0; /* מיישר קו מול התוכן */
-            padding: 20px 15px; 
+
+        /* עיצוב תוכן הרשימות עצמן */
+        .info-section ul {
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            font-size: 12px; /* מאוזן יותר */
+            line-height: 1.6; /* פחות אוויר בין השורות כדי שלא יגלוש למטה */
+            color: var(--text-dark);
+            font-weight: 500;
         }
-        
-        @media (max-width: 900px) {
-            .carousel-wrapper { padding: 0; margin-top: 20px;}
-            .nav-arrow { display: none; }
-            .product-grid.view-list .product-card { flex-direction: column; text-align: center; }
-            .product-grid.view-list .product-badge { order: -1; margin: 0 0 10px 0; width: 100%; border-radius: 14px 14px 0 0; position: absolute; top: 0; left: 0; }
-            .product-grid.view-list .product-img { margin: 15px auto; }
-            .product-grid.view-list .price-and-btn { flex-direction: column; width: 100%; margin-top: 10px; }
-            .product-grid.mystery-mode { flex-direction: column; }
-            .mystery-showcase { margin-right: 0; margin-top: 20px; }
-            .info-grid { grid-template-columns: 1fr; gap: 10px; }
-            .product-grid.mystery-mode, .mystery-showcase { height: auto; overflow: visible !important; }
-            .showcase-image-wrapper { min-height: 200px; }
+
+        .hover-trigger {
+            text-align: center; color: var(--text-dark);
+            font-weight: 900; font-size: 13px; cursor: pointer;
+            padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.1);
+            margin-top: auto; /* ה-קסם! דוחף את שורת הצפייה הכי למטה שאפשר */
+            padding-bottom: 5px;
+            transition: 0.2s;
         }
+
+        .hover-trigger:hover { color: var(--brand-green); }
+
+        /* התמונה השקופה שמופיעה בחלל הריק משמאל */
+        .popup-content-img {
+            position: absolute;
+            right: 230px; /* נשאר באותו מרחק מהקובייה */
+            top: 50%;
+            transform: translateY(-50%) scale(0.8); /* מתחילה קטנה יותר */
+            transform-origin: right center;
+            width: calc(100% - 260px); /* נותן לה עוד קצת אוויר בצד שמאל */
+            max-height: 75vh; /* מגביל את הגובה כדי שלא תחתך למעלה ולמטה במסכים קטנים */
+            object-fit: contain;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            z-index: 10;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.15));
+        }
+
+        /* מופעל רק כשיש עליה הובר */
+        .popup-content-img.show {
+            opacity: 1; 
+            visibility: visible; 
+            transform: translateY(-50%) scale(1.05); /* הגדלה עדינה ומדויקת שלא קורעת את המסך */
+        }
+
+        /* ----- עיצוב משודרג: קוביית פרימיום מחוברת בטאב מיסטרי ----- */
+        /* 1. החזרת הבאנר הכחול */
+        .store-scroll-wrapper.lock-scroll .store-hero { 
+            display: block !important; 
+        }
+
+        /* 2. ביטול הרווח כדי לחבר את הקוביות פיזית */
+        .product-grid.mystery-mode { 
+            gap: 0 !important; 
+        }
+
+        /* 3. קוביית המכירה (צד ימין - מתחברת לשמאל) */
+        .product-grid.mystery-mode .product-card[data-category="mystery"] {
+            align-self: flex-start !important; 
+            height: 420px !important; 
+            background: var(--bg-silver-matte) !important;
+            border: 2px solid var(--text-dark) !important;
+            border-radius: 0 16px 16px 0 !important; /* מעוגל רק בצד ימין */
+            border-left: none !important; /* מחיקת הקיר הפנימי כדי להתחבר */
+            box-shadow: none !important; 
+        }
+
+        /* מניעת "קפיצה" של חצי קובייה כששמים עליה עכבר בטאב הזה */
+        .product-grid.mystery-mode .product-card[data-category="mystery"]:hover {
+            transform: none !important; 
+        }
+
+        /* 4. קוביית התוכן (צד שמאל - מתחברת לימין) */
+        .mystery-info-card {
+            align-self: flex-start !important; 
+            height: 420px !important; 
+            background: var(--bg-silver-matte) !important;
+            border: 2px solid var(--text-dark) !important;
+            border-radius: 16px 0 0 16px !important; 
+            border-right: 1px dashed rgba(6, 33, 65, 0.2) !important; 
+            box-shadow: 0 10px 25px rgba(6, 33, 65, 0.1) !important;
+            margin: 0 !important;
+            /* הפקודות שמותחות את התוכן על כל הגובה */
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-start;
+        }
+
+       /* דחיפת אזור הצ'ייסרים למטה (כדי שיתיישר עם התמונה) */
+        .mystery-info-card .info-section:nth-child(2) {
+            margin-top: 25px; /* מגדיל את הרווח רק מעל הצ'ייסרים */
+        } 
         
     </style>
 </head>
@@ -330,10 +404,7 @@
     <div id="header-placeholder"></div>
 
     <main class="main-content">
-        <div class="premium-title-wrapper">
-            <h1 class="page-title"><span class="title-navy">חנות</span> <span class="title-green">סוליבי</span></h1>
-        </div>
-
+       
         <div class="store-window">
             
             <div class="store-scroll-wrapper">
@@ -346,7 +417,7 @@
 
                     <div class="store-controls-bar">
                         <div class="category-nav">
-                            <<div class="cat-pill active" onclick="filterStore('all', this)">הכל</div>
+                            <div class="cat-pill active" onclick="filterStore('all', this)">הכל</div>
 <div class="cat-pill" onclick="filterStore('mystery', this)">מיסטרי בוקס</div>
 <div class="cat-pill" onclick="filterStore('packs', this)">מעטפות ואלבומים</div>
 <div class="cat-pill" onclick="filterStore('singles', this)">סינגלים</div>
@@ -384,37 +455,40 @@
                                     <button class="add-to-cart-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> הוסף לעגלה</button>
                                 </div>
                             </div>
-
-                            <div id="mysteryShowcase" class="mystery-showcase">
-                                <div class="showcase-header-title">תוכן חבילות המיסטרי הנוכחי</div>
-                                <div class="showcase-image-wrapper">
-                              <img src="mystery-content.jpg.jpeg.png" alt="תוכן קופסאות מיסטרי סוליבי" style="width: 100%; height: 100%; object-fit: cover; object-position: center 58%; transform: scale(0.9);">
-                                </div>
-                                <div class="showcase-info-box">
-    <div class="info-grid">
-        <!-- טור ימין: מובטח -->
-        <div class="info-column">
-            <div class="col-title guaranteed">📦 מה מובטח בפנים?</div>
+<div id="mysteryShowcase" class="mystery-showcase">
+    
+    <div class="mystery-info-card">
+        <div class="info-section">
+            <h4 style="color: #689f38;">📦 מה מובטח בפנים?</h4>
             <ul>
-                <li>מעטפה רנדומלית סגורה</li>
-                <li>5 קלפי בסיס (Base)</li>
-                <li>2 קלפי אינסרט מיוחדים</li>
-                <li>5 קלפי אדרנלין / Match Attax</li>
-                <li>5-10 מדבקות משלל אוספים</li>
+                <li>• מעטפה רנדומלית סגורה</li>
+                <li>• 5 קלפי בייס </li>
+                <li>• 2 קלפי אינסרט</li>
+                <li>• 5 קלפי מאצ' אטאקס/אדרנלין</li>
+                <li>• 5-10 מדבקות</li>
             </ul>
         </div>
-        <!-- טור שמאל: צ'ייסרים -->
-        <div class="info-column">
-            <div class="col-title chasers">🔥 צ'ייסרים אפשריים (לא מובטח)</div>
+        
+        <div class="info-section">
+            <h4 style="color: #e53935;">🔥 צ'ייסרים (לא מובטח)</h4>
             <ul>
-                <li>מדבקת מפציצים 97 נדירה</li>
-                <li>מדבקות סופרגול שנת 2000</li>
-                <li>קלף מדורג (Graded)</li>
-                <li>קלף ממוספר (Numbered)</li>
-                <li>קלף חתימה מקורית (Auto)</li>
+                <li>• מדבקות מפציצים 97</li>
+                <li>• מדבקות סופרגול 2000</li>
+                <li>• קלף מדורג</li>
+                <li>• קלף ממוספר </li>
+                <li>• קלף חתימה </li>
             </ul>
+        </div>
+
+        <div class="hover-trigger" 
+             onmouseenter="document.getElementById('popImg').classList.add('show')" 
+             onmouseleave="document.getElementById('popImg').classList.remove('show')">
+            🔍 העבר עכבר לצפייה בתוכן
         </div>
     </div>
+
+    <img id="popImg" src="mystery-content.jpg.jpeg.png?v=3" alt="תוכן המיסטרי" class="popup-content-img">
+
 </div>
                         <button class="nav-arrow arrow-left" id="arrowLeft" onclick="scrollCarousel('left')">❯</button>
                     </div>
