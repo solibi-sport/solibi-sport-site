@@ -6,11 +6,22 @@ async function checkAuthAndUpdateHeader() {
     const checkInterval = setInterval(() => {
         const authBtn = document.getElementById('auth-btn');
         const authText = document.getElementById('auth-text');
+        // חיפוש המקום שהכנו לברכה
+        const greetingEl = document.getElementById('user-greeting'); 
         
         if (authBtn && authText) {
             clearInterval(checkInterval);
             
             if (user) {
+                // שולפים את השם. אם אין שם מוגדר, ניקח את החלק שלפני ה-@ באימייל
+                const userName = user.user_metadata?.full_name || user.email.split('@')[0];
+                
+                // כותבים את הברכה
+                if (greetingEl) {
+                    greetingEl.innerText = `שלום, ${userName} | `;
+                }
+
+                // משנים את הכפתור להתנתקות
                 authText.innerText = 'התנתק';
                 authBtn.href = '#';
                 
