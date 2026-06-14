@@ -21,9 +21,6 @@
 
         .main-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; overflow: hidden; }
         
-        .premium-title-wrapper { margin-bottom: 25px; flex-shrink: 0; }
-        .page-title { background: #ffffff; padding: 10px 50px; border-radius: 40px; font-size: 28px; font-weight: 900; color: var(--text-dark); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-
         /* חלון העגלה */
         .cart-window {
             width: 95%; max-width: 1000px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px);
@@ -39,34 +36,48 @@
             display: flex; align-items: center; background: #fff; padding: 15px; border-radius: 15px;
             margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); transition: 0.3s;
         }
-        .cart-item:hover { transform: translateX(-5px); border-color: var(--brand-green); }
-        .item-img { width: 70px; height: 70px; background: #f8f9fa; border-radius: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: center; }
-        .item-info { flex: 1; }
-        .item-title { font-weight: 900; color: var(--text-dark); font-size: 16px; }
+        .cart-item:hover { transform: translateX(-5px); border-color: var(--brand-green); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .item-img { width: 70px; height: 70px; background: #f8f9fa; border-radius: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+        .item-img img { width: 100%; height: 100%; object-fit: cover; }
+        .item-img svg { width: 40px; height: 40px; color: var(--text-gray); opacity: 0.3; }
+        
+        .item-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .item-title { font-weight: 900; color: var(--text-dark); font-size: 16px; margin-bottom: 5px; }
         .item-price { color: var(--brand-green); font-weight: 700; }
         
-        .quantity-controls { display: flex; align-items: center; gap: 12px; margin: 0 20px; }
-        .q-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: #fff; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .q-btn:hover { background: var(--brand-green); color: #fff; border-color: var(--brand-green); }
+        /* כפתורי כמות מעוצבים */
+        .quantity-controls { display: flex; align-items: center; gap: 12px; margin: 0 20px; background: #f5f5f5; padding: 5px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.05); }
+        .q-btn { width: 28px; height: 28px; border-radius: 50%; border: none; background: #fff; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; color: var(--text-dark); }
+        .q-btn:hover { background: var(--text-dark); color: #fff; }
+        .q-num { font-weight: 700; width: 20px; text-align: center; color: var(--text-dark); }
         
-        .remove-item { color: #ff3b30; cursor: pointer; font-size: 18px; margin-right: 15px; opacity: 0.6; transition: 0.3s; }
-        .remove-item:hover { opacity: 1; transform: scale(1.2); }
+        /* כפתור מחיקה */
+        .remove-item { color: #ffb3b0; cursor: pointer; font-size: 18px; margin-right: 15px; transition: 0.3s; font-weight: bold; background: none; border: none; padding: 10px; }
+        .remove-item:hover { color: #ff3b30; transform: scale(1.1); }
 
         /* סיכום הזמנה (צד שמאל) */
         .cart-summary-side { flex: 1; background: var(--element-navy-gradient); padding: 35px; color: #fff; display: flex; flex-direction: column; }
-        .summary-title { font-size: 22px; font-weight: 900; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 15px; }
-        .total-row { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; font-size: 20px; font-weight: 900; }
+        .summary-title { font-size: 22px; font-weight: 900; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; color: rgba(255,255,255,0.8); font-weight: 500; }
+        .free-shipping { color: var(--brand-green); font-weight: 900; }
+        
+        .total-row { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 25px; font-size: 22px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; }
         
         .checkout-btn {
             background: var(--brand-green); color: #fff; border: none; padding: 18px; border-radius: 12px;
-            font-size: 18px; font-weight: 900; cursor: pointer; margin-top: 25px; transition: 0.3s; width: 100%;
+            font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 25px; transition: 0.3s; width: 100%;
+            box-shadow: 0 5px 15px rgba(124, 168, 86, 0.3);
         }
-        .checkout-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(124, 168, 86, 0.3); }
+        .checkout-btn:hover { background: #6b9449; transform: translateY(-3px); }
+        .checkout-btn:disabled { opacity: 0.5; pointer-events: none; }
 
+        /* מצב עגלה ריקה */
         .empty-cart-msg { text-align: center; padding: 50px; display: none; }
+        .empty-cart-msg a { display: inline-block; margin-top: 15px; background: var(--text-dark); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: bold; transition: 0.3s; }
+        .empty-cart-msg a:hover { background: var(--brand-green); }
 
-        /* --- טיקר תחתון (מתוקן) --- */
+        /* --- טיקר תחתון --- */
         .footer { 
             background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); 
             width: 100%; height: 45px; flex-shrink: 0; 
@@ -79,10 +90,27 @@
         .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 15px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
+        /* ==============================================
+           רספונסיביות - שומר על העיצוב בכל המסכים!
+           ============================================== */
+        
+        /* התאמה ללפטופים/מסכים בינוניים (סימטרי ומכווץ יפה) */
+        @media (max-width: 1024px) {
+            .cart-window { width: 98%; }
+            .cart-items-side { padding: 20px; }
+            .cart-summary-side { padding: 25px; }
+            .item-img { width: 60px; height: 60px; margin-left: 15px; }
+        }
+
+        /* התאמה למובייל (סידור בטור במקום שורה) */
         @media (max-width: 800px) {
             .cart-window { flex-direction: column; overflow-y: auto; }
             .cart-summary-side { flex: none; }
             html, body { overflow-y: auto; height: auto; }
+            .main-content { padding: 20px 10px; }
+            .cart-item { flex-wrap: wrap; }
+            .quantity-controls { margin: 10px 0 0 0; width: fit-content; }
+            .remove-item { margin-left: auto; margin-right: 0; }
         }
     </style>
 </head>
@@ -91,26 +119,22 @@
     <div id="header-placeholder"></div>
 
     <main class="main-content">
-        <div class="premium-title-wrapper">
-            <h1 class="page-title">סל <span style="color: var(--brand-green);">הקניות</span> שלי</h1>
-        </div>
-
         <div class="cart-window">
             <div class="cart-items-side">
                 <div class="cart-items-inner" id="cart-items-list">
                     </div>
                 <div id="empty-msg" class="empty-cart-msg">
                     <h2 style="color: var(--text-gray);">העגלה שלך ריקה...</h2>
-                    <p style="margin-top:15px;"><a href="store.html" style="color: var(--brand-green); font-weight: 700;">חזור לחנות לרכישות</a></p>
+                    <a href="store.html">חזור לחנות לרכישות</a>
                 </div>
             </div>
 
             <div class="cart-summary-side">
                 <h2 class="summary-title">סיכום הזמנה</h2>
                 <div class="summary-row"><span>פריטים:</span> <span id="items-count">0</span></div>
-                <div class="summary-row"><span>משלוח:</span> <span>חינם!</span></div>
+                <div class="summary-row"><span>משלוח:</span> <span class="free-shipping">חינם!</span></div>
                 <div class="total-row"><span>סה"כ:</span> <span id="total-price">0 ₪</span></div>
-                <button class="checkout-btn" onclick="goToCheckout()">המשך לתשלום</button>
+                <button class="checkout-btn" id="checkout-btn" onclick="goToCheckout()">המשך לתשלום</button>
             </div>
         </div>
     </main>
@@ -123,69 +147,87 @@
         fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
-        // פונקציה להצגת המוצרים מהזיכרון
+       // הפונקציה המעודכנת שעובדת עם אובייקטים אמיתיים מהחנות של סוליבי
         function renderCart() {
+            let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
             const list = document.getElementById('cart-items-list');
-            const count = parseInt(localStorage.getItem('solibiCartCount')) || 0;
-
-            if (count === 0) {
-                document.getElementById('empty-msg').style.display = 'block';
-                return;
-            }
+            const emptyMsg = document.getElementById('empty-msg');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            let totalItems = 0;
+            let totalPrice = 0;
 
             list.innerHTML = '';
-            for(let i=0; i<count; i++) {
-                list.innerHTML += `
-                    <div class="cart-item">
-                        <div class="item-img">📦</div>
-                        <div class="item-info">
-                            <div class="item-title">מוצר סוליבי פרימיום</div>
-                            <div class="item-price">99 ₪</div>
+
+            if (cart.length === 0) {
+                emptyMsg.style.display = 'block';
+                checkoutBtn.disabled = true;
+            } else {
+                emptyMsg.style.display = 'none';
+                checkoutBtn.disabled = false;
+
+                cart.forEach((item, index) => {
+                    totalItems += item.quantity;
+                    totalPrice += (item.price * item.quantity);
+
+                    // תמיכה בתמונה רגילה או באייקון SVG 
+                    let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img || 'mystery-box.jpg.png'}" alt="${item.name}">`;
+
+                    list.innerHTML += `
+                        <div class="cart-item">
+                            <div class="item-img">${imageHTML}</div>
+                            <div class="item-info">
+                                <div class="item-title">${item.name}</div>
+                                <div class="item-price">${item.price} ₪</div>
+                            </div>
+                            <div class="quantity-controls">
+                                <button class="q-btn" onclick="updateItemQuantity(${index}, 1)">+</button>
+                                <span class="q-num">${item.quantity}</span>
+                                <button class="q-btn" onclick="updateItemQuantity(${index}, -1)">-</button>
+                            </div>
+                            <button class="remove-item" onclick="removeFromCart(${index})" title="הסר פריט">✕</button>
                         </div>
-                        <div class="quantity-controls">
-                            <button class="q-btn" onclick="updateItemQuantity(this, -1)">-</button>
-                            <span>1</span>
-                            <button class="q-btn" onclick="updateItemQuantity(this, 1)">+</button>
-                        </div>
-                        <div class="remove-item" onclick="removeFromCart()">✕</div>
-                    </div>
-                `;
+                    `;
+                });
             }
-            updateSummary(count);
+            
+            updateSummary(totalItems, totalPrice);
         }
 
-        function updateSummary(count) {
+        function updateSummary(count, price) {
             document.getElementById('items-count').innerText = count;
-            document.getElementById('total-price').innerText = (count * 99) + ' ₪';
+            document.getElementById('total-price').innerText = price + ' ₪';
+            
+            // עדכון כמות העגלה למעלה בהדר
+            try { 
+                if(typeof updateCartDisplay === 'function') updateCartDisplay(); 
+            } catch(e) {}
         }
 
-        // פונקציה ראשונית לעדכון כמות פריט בודד
-        function updateItemQuantity(btn, change) {
-             const quantitySpan = btn.parentElement.querySelector('span');
-             let currentQuantity = parseInt(quantitySpan.innerText);
-             let newQuantity = currentQuantity + change;
-             
-             if (newQuantity > 0) {
-                 quantitySpan.innerText = newQuantity;
-             } else if (newQuantity === 0) {
-                 // אם הכמות יורדת ל-0, נסיר את המוצר מהעגלה
-                 removeFromCart();
-             }
-        }
-
-        function removeFromCart() {
-            let count = parseInt(localStorage.getItem('solibiCartCount')) || 0;
-            if (count > 0) {
-                localStorage.setItem('solibiCartCount', count - 1);
+        // שינוי כמות מתוך העגלה בזמן אמת
+        function updateItemQuantity(index, change) {
+            let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
+            if (cart[index]) {
+                cart[index].quantity += change;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+                localStorage.setItem('solibiCart', JSON.stringify(cart));
                 renderCart();
             }
         }
 
-        // התיקון הקריטי: לא משתמשים בפונקציה חיצונית, אלא בודקים את הזיכרון ישירות
+        // מחיקת מוצר לגמרי
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('solibiCart', JSON.stringify(cart));
+            renderCart();
+        }
+
         function goToCheckout() {
-            const count = parseInt(localStorage.getItem('solibiCartCount')) || 0;
-            
-            if (count > 0) {
+            let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
+            if (cart.length > 0) {
                 window.location.href = 'checkout.html';
             } else {
                 alert("העגלה שלך ריקה. אנא הוסף מוצרים לפני המעבר לתשלום.");
