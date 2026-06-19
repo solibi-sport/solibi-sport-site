@@ -592,8 +592,31 @@ if (parseInt(LEAGUE_ID) === 128 || parseInt(LEAGUE_ID) === 239) {
             }
 
             let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;">`;
+            
+            // המוח החדש: ספירת כמות הפעמים שכל שם מופיע כדי לזהות כפילויות
+            let nameCounts = {};
+            window.allStandingsData.forEach(group => {
+                let name = translateGroupName(group[0].group);
+                nameCounts[name] = (nameCounts[name] || 0) + 1;
+            });
+
+            let currentCounts = {};
             window.allStandingsData.forEach((group, index) => {
-                uiHtml += `<option value="${index}">${translateGroupName(group[0].group)}</option>`;
+                let name = translateGroupName(group[0].group);
+                currentCounts[name] = (currentCounts[name] || 0) + 1;
+
+                let displayName = name;
+                // אם השם (כמו "אפרטורה") מופיע בדיוק פעמיים, נחלק לבית א' ובית ב'
+                if (nameCounts[name] === 2) {
+                    displayName = currentCounts[name] === 1 ? name + " - בית א'" : name + " - בית ב'";
+                } 
+                // אם יש יותר מ-2 בתים עם אותו שם, נוסיף אותיות אוטומטית (א', ב', ג'...)
+                else if (nameCounts[name] > 2) {
+                    let letter = String.fromCharCode(1488 + currentCounts[name] - 1); 
+                    displayName = name + " - בית " + letter + "'";
+                }
+
+                uiHtml += `<option value="${index}">${displayName}</option>`;
             });
             uiHtml += `</select></div><div id="standings-render-area"></div>`;
             container.innerHTML = uiHtml;
