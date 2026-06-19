@@ -423,7 +423,11 @@
             if (lowerName.includes('championship')) return "פלייאוף עליון";
             if (lowerName.includes('relegation')) return "פלייאוף תחתון";
             if (lowerName.includes('regular') || lowerName.includes('premier league') || lowerName.includes('ligat ha\'al') || lowerName.includes('pro league') || lowerName.includes('1st phase') || lowerName.includes('premiership') || lowerName.includes('super liga')) return "עונה סדירה";
-
+if (lowerName.includes('zona a') || lowerName.includes('zone a')) return "בית א'";
+            if (lowerName.includes('zona b') || lowerName.includes('zone b')) return "בית ב'";
+            if (lowerName.includes('anual')) return "טבלה שנתית";
+            if (lowerName.includes('apertura')) return "אפרטורה";
+            if (lowerName.includes('clausura')) return "קלאוסורה";
             if (lowerName.includes('group')) {
                 let gName = name.replace(/Group/i, 'בית').trim();
                 gName = gName.replace('A', "א'").replace('B', "ב'").replace('C', "ג'").replace('D', "ד'");
@@ -458,14 +462,15 @@
 
                 let standings = data.response[0].league.standings;
 
-                // ניקוי טבלאות מיותרות מארגנטינה / קולומביה
-                if (parseInt(LEAGUE_ID) === 128 || parseInt(LEAGUE_ID) === 239) {
-                    standings = standings.filter(group => {
-                        let groupName = (group[0].group || "").toLowerCase();
-                        return !groupName.includes('anual') && !groupName.includes('promedio') && !groupName.includes('clausura');
-                    });
-                }
-
+                // תיקון ליגת ארגנטינה (128) וקולומביה (239) - הצגת בתים וטבלה שנתית
+if (parseInt(LEAGUE_ID) === 128 || parseInt(LEAGUE_ID) === 239) {
+    standings = standings.filter(group => {
+        let groupName = (group[0].group || "").toLowerCase();
+        // אנחנו מסננים החוצה רק את טבלת הממוצעים (promedio) של הירידות.
+        // משאירים את הבתים (Zona A/B), הקלאוסורה והטבלה השנתית (Anual).
+        return !groupName.includes('promedio');
+    });
+}
                 let hasMultipleGroups = standings.length > 1;
 
                 if (hasMultipleGroups) {
@@ -532,9 +537,10 @@
                     });
                 }
 
-                const orderPriority = {
-                    "טבלה כללית": 1, "עונה סדירה": 2, "פלייאוף עליון": 3, "פלייאוף אמצעי": 4,
-                    "פלייאוף תחתון": 5, "מזרח": 6, "מערב": 7, "בית א'": 8, "בית ב'": 9, "בית ג'": 10, "בית ד'": 11
+               const orderPriority = {
+                    "בית א'": 1, "בית ב'": 2, "טבלה שנתית": 3, "טבלה כללית": 4, "עונה סדירה": 5,
+                    "אפרטורה": 6, "קלאוסורה": 7, "פלייאוף עליון": 8, "פלייאוף אמצעי": 9,
+                    "פלייאוף תחתון": 10, "מזרח": 11, "מערב": 12, "בית ג'": 13, "בית ד'": 14
                 };
 
                 standings.sort((a, b) => {

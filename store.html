@@ -242,7 +242,7 @@
 @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         /* עוגן שנועל את המסך ומונע גלילה */
-        .store-scroll-wrapper.lock-scroll { overflow: hidden !important; }
+        .store-scroll-wrapper.lock-scroll { overflow-y: auto !important; overflow-x: hidden !important; }
         .store-scroll-wrapper.lock-scroll .store-inner-content { height: 100%; min-height: 0; padding-bottom: 15px; }
         .store-scroll-wrapper.lock-scroll .store-hero { display: none; }
         
@@ -396,7 +396,39 @@
         .mystery-info-card .info-section:nth-child(2) {
             margin-top: 25px; /* מגדיל את הרווח רק מעל הצ'ייסרים */
         } 
-        
+
+        /* =========================================
+           רספונסיביות - התאמה חכמה ללפטופים ולמסכים קטנים
+           ========================================= */
+        @media (max-height: 850px), (max-width: 1200px) {
+            
+            /* נותן יותר אוויר לחלון הראשי כדי שיהיה מקום למיסטרי בוקס */
+            .main-content { padding: 10px 10px 15px 10px !important; }
+            .premium-title-wrapper { margin-bottom: 10px !important; }
+            .store-inner-content { padding: 15px 20px !important; }
+            
+            /* מאלץ את הקוביות להיות גמישות לפי גובה המסך של הגולש (vh) במקום פיקסלים קשיחים */
+.product-grid.mystery-mode .product-card[data-category="mystery"],
+.mystery-info-card {
+    height: auto !important; 
+    min-height: 45vh !important; /* מינימום 45% מגובה המסך של הגולש */
+    padding-bottom: 25px !important;
+}
+
+/* התאמת התמונה הקופצת לגודל המסך */
+.popup-content-img {
+    max-height: 60vh !important; /* התמונה לא תעבור לעולם 60% מגובה המסך */
+    width: auto !important;
+    max-width: 40vw !important; /* התמונה לא תעבור 40% מרוחב המסך */
+}
+
+/* שחרור הגלילה הכללית לכל סוגי המסכים */
+.main-content, .store-inner-content, .store-scroll-wrapper {
+    overflow-y: auto !important;
+    height: auto !important;
+}
+
+
     </style>
 </head>
 <body>
