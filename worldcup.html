@@ -160,8 +160,17 @@
         .stat-player img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);}
         .stat-value { font-weight: 900; color: #d4af37; font-size: 18px;}
 
-        /* טיקר */
-        .footer { flex-shrink: 0; background: #061224; padding: 0; border-top: 2px solid #d4af37; overflow: hidden; width: 100%; position: relative; z-index: 1000; color: var(--white); }
+        /* =========================================
+           עיצוב הטיקר (מחובר לאנימציה ולצבע הזהב)
+           ========================================= */
+        .footer {
+            flex-shrink: 0; background: #061224; padding: 8px 0; border-top: 2px solid #d4af37;
+            overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; position: relative; z-index: 1000;
+        }
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: #d4af37; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
         #ticker-placeholder { width: 100%; }
 
         @media (max-width: 1024px) {
@@ -215,9 +224,7 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div id="ticker-placeholder"></div>
-    </footer>
+    <div id="ticker-placeholder"></div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
@@ -228,19 +235,12 @@
         let allFixturesData = [];
         let statsLoaded = false;
 
-        // פונקציית תרגום חכמה שמתאימה את עצמה למילון שלך!
         function getHebrewName(englishName) {
             if (!englishName) return "";
-            
-            // בודק אם המילון שלך מוגדר כפונקציה
             if (typeof translateName === 'function') return translateName(englishName);
             if (typeof translateTeam === 'function') return translateTeam(englishName);
             if (typeof translate === 'function') return translate(englishName);
-            
-            // בודק אם המילון שלך מוגדר כאובייקט (למשל translations["Brazil"])
             if (typeof translations !== 'undefined' && translations[englishName]) return translations[englishName];
-            
-            // אם לא מצא שום דבר במילון, יחזיר באנגלית
             return englishName;
         }
 
@@ -306,7 +306,7 @@
                 
                 group.forEach(team => {
                     let rankClass = team.rank <= 2 ? 'rank-promote' : 'rank-normal';
-                    let tName = getHebrewName(team.team.name); // שימוש בפונקציית התרגום שלנו
+                    let tName = getHebrewName(team.team.name);
                     html += `
                         <tr>
                             <td class="${rankClass}">${team.rank}</td>
@@ -359,7 +359,7 @@
                     return;
                 }
                 data.slice(0, 10).forEach((item, idx) => {
-                    let pName = getHebrewName(item.player.name); // תרגום שם שחקן
+                    let pName = getHebrewName(item.player.name);
                     let photo = item.player.photo;
                     let teamLogo = item.statistics[0].team.logo;
                     
@@ -415,7 +415,7 @@
             group.forEach(team => {
                 teamIdsInGroup.push(team.team.id);
                 let rankClass = team.rank <= 2 ? 'rank-promote' : 'rank-normal';
-                let tName = getHebrewName(team.team.name); // תרגום נבחרת
+                let tName = getHebrewName(team.team.name);
                 tableHtml += `
                     <tr>
                         <td class="${rankClass}">${team.rank}</td>
@@ -447,8 +447,8 @@
                 fixHtml = "<div style='text-align:center; padding: 20px;'>טרם פורסמו משחקים לבית זה</div>";
             } else {
                 groupFixtures.forEach(m => {
-                    let hName = getHebrewName(m.teams.home.name); // תרגום בית
-                    let aName = getHebrewName(m.teams.away.name); // תרגום חוץ
+                    let hName = getHebrewName(m.teams.home.name);
+                    let aName = getHebrewName(m.teams.away.name);
                     let dateObj = new Date(m.fixture.date);
                     let dateStr = dateObj.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit'});
                     let timeStr = dateObj.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
@@ -476,27 +476,25 @@
             document.getElementById('sg-fixtures-container').innerHTML = "";
         }
 
-        fetch('header.html').then(res => res.text()).then(data => {
-            let el = document.getElementById('header-placeholder');
-            if(el) el.innerHTML = data;
-        });
-
-        // טעינת הטיקר מחדש עם סקריפטים תומכים
-        fetch('ticker.html').then(res => res.text()).then(data => {
-            let el = document.getElementById('ticker-placeholder');
-            if(el) {
-                el.innerHTML = data;
-                let scripts = el.getElementsByTagName('script');
-                for (let i = 0; i < scripts.length; i++) {
-                    let script = document.createElement('script');
-                    if (scripts[i].src) script.src = scripts[i].src;
-                    script.innerHTML = scripts[i].innerHTML;
-                    document.body.appendChild(script);
-                }
-            }
-        });
-
         initWorldCup();
+
+        // --- הטיקר מקובץ חיצוני כמו בשאר הדפים ---
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('ticker-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
+
+        // --- טעינת ההדר ---
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('header-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+
     </script>
 </body>
 </html>
