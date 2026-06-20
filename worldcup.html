@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי - מונדיאל 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="translations.js"></script>
+    
+    <link rel="stylesheet" href="header-style.css">
+    
+    <style>
+        :root {
+            /* צבעי מונדיאל יוקרתיים */
+            --wc-gold: #d4af37;
+            --wc-gold-glow: rgba(212, 175, 55, 0.4);
+            --wc-bg: linear-gradient(135deg, #100a1c 0%, #1a1025 50%, #061224 100%);
+            --wc-card: rgba(255, 255, 255, 0.05);
+            --wc-card-hover: rgba(255, 255, 255, 0.08);
+            --text-light: #e2e8f0;
+            --text-dark: #0b1221;
+            --white: #ffffff;
+            --border-wc: rgba(212, 175, 55, 0.2);
+            --brand-green: #7ca856; /* נשמר לטובת הטיקר וההדר */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            font-family: 'Rubik', sans-serif; 
+            background: var(--wc-bg); 
+            height: 100vh; width: 100%;
+            overflow: hidden; 
+            display: flex; flex-direction: column;
+            color: var(--white);
+        }
+
+        /* ----- תפריט עליון זהה לאתר ----- */
+        #header-placeholder { flex-shrink: 0; }
+        
+        .main-content {
+            flex: 1; min-height: 0; 
+            display: flex; flex-direction: column;
+            width: 100%;
+            padding: clamp(15px, 2vh, 30px) 20px; 
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .dashboard-wrapper {
+            width: 100%; max-width: 1600px; margin: 0 auto;
+            display: flex; flex-direction: column;
+        }
+
+        .page-header {
+            flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+            margin-bottom: clamp(20px, 3vh, 30px); text-align: center;
+        }
+
+        .wc-title {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 900;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+        }
+
+        .wc-controls {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--border-wc);
+            display: flex; gap: 15px; align-items: center;
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap; justify-content: center;
+        }
+
+        .wc-select {
+            background: var(--wc-gold);
+            color: var(--text-dark);
+            padding: 8px 20px 8px 40px;
+            border-radius: 30px;
+            font-size: clamp(14px, 1.5vw, 16px);
+            font-weight: 900;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b1221' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: left 15px center; background-size: 14px;
+            transition: 0.3s;
+        }
+        .wc-select:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--wc-gold-glow); }
+        .wc-select option { background: var(--text-dark); color: var(--wc-gold); font-weight: bold; }
+
+        /* ----- תצוגת כל הבתים (Overview Grid) ----- */
+        .all-groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: clamp(15px, 2vw, 25px);
+            width: 100%;
+        }
+
+        .mini-group-card {
+            background: var(--wc-card);
+            border: 1px solid var(--border-wc);
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .mini-group-card:hover {
+            transform: translateY(-5px);
+            background: var(--wc-card-hover);
+            border-color: var(--wc-gold);
+            box-shadow: 0 12px 40px var(--wc-gold-glow);
+        }
+
+        .mini-group-title {
+            text-align: center; font-weight: 900; font-size: 18px; color: var(--wc-gold);
+            margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;
+        }
+
+        /* עיצוב משותף לטבלאות */
+        table { width: 100%; border-collapse: collapse; font-size: clamp(12px, 1.2vw, 14px); }
+        th { color: #a0aec0; padding: 8px 2px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: normal; }
+        td { padding: 8px 2px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        
+        .team-identity { display: flex; align-items: center; gap: 8px; direction: rtl; text-align: right; justify-content: flex-start; }
+        .team-name-text { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 120px;} 
+        .team-logo { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+        .points { color: var(--wc-gold); font-weight: 900; font-size: 16px; }
+
+        /* חיווי מיקומי עליה (1-2 עולים) */
+        .rank-promote { color: #4ade80; font-weight: bold; }
+        .rank-normal { color: #94a3b8; font-weight: bold; }
+
+        /* ----- תצוגת בית ספציפי (Split View) ----- */
+        .single-group-view {
+            display: flex;
+            gap: clamp(20px, 2vw, 30px);
+            width: 100%;
+            display: none; /* מוסתר כברירת מחדל */
+            align-items: stretch;
+        }
+
+        .sg-table-side, .sg-fixtures-side {
+            background: var(--wc-card);
+            border: 1px solid var(--border-wc);
+            border-radius: 20px;
+            padding: clamp(15px, 2vw, 25px);
+            display: flex; flex-direction: column;
+        }
+        
+        .sg-table-side { flex: 1.2; }
+        .sg-fixtures-side { flex: 1; }
+
+        .section-title {
+            color: var(--wc-gold); font-size: clamp(18px, 1.5vw, 22px); font-weight: 900;
+            margin-bottom: 20px; text-align: center; padding-bottom: 10px; border-bottom: 1px solid var(--border-wc);
+        }
+
+        /* עיצוב שורת משחק בצד ימין */
+        .wc-match-row {
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.2); border-radius: 10px; margin-bottom: 8px;
+            transition: 0.2s; cursor: pointer;
+        }
+        .wc-match-row:hover { background: rgba(212, 175, 55, 0.1); }
+        .match-team { flex: 1; display: flex; align-items: center; font-weight: 600; font-size: 14px;}
+        .team-home { justify-content: flex-end; gap: 8px; }
+        .team-away { justify-content: flex-start; gap: 8px; }
+        .match-center { 
+            display: flex; flex-direction: column; align-items: center; 
+            margin: 0 15px; background: rgba(0,0,0,0.4); padding: 5px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .match-score { font-size: 18px; font-weight: 900; color: var(--wc-gold); letter-spacing: 2px;}
+        .match-status { font-size: 10px; color: #a0aec0; font-weight: bold; margin-bottom: 2px;}
+
+        /* טיקר תחתון */
+        .footer {
+            flex-shrink: 0; background: #061224; padding: 8px 0; border-top: 2px solid var(--wc-gold);
+            overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; position: relative; z-index: 1000;
+        }
+
+        /* רספונסיביות */
+        @media (max-width: 1024px) {
+            .single-group-view { flex-direction: column; }
+            .team-name-text { max-width: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <div class="dashboard-wrapper">
+            
+            <div class="page-header">
+                <div class="wc-title" id="tournament-title">מונדיאל 2026 🏆</div>
+                <div class="wc-controls">
+                    <select id="group-selector" class="wc-select" onchange="toggleViewMode(this.value)">
+                        <option value="all">🌐 צפה בכל הבתים</option>
+                        <option value="knockout">⚔️ שלבי נוקאאוט</option>
+                        </select>
+                </div>
+            </div>
+
+            <div id="all-groups-view" class="all-groups-grid">
+                <div style="text-align:center; grid-column: 1/-1; padding: 40px; color: var(--wc-gold);">
+                    <h2>שואב נתונים מפיפ"א... ⏳</h2>
+                </div>
+            </div>
+
+            <div id="single-group-view" class="single-group-view">
+                
+                <div class="sg-table-side">
+                    <div class="section-title" id="sg-title">בית נבחר</div>
+                    <div id="sg-table-container"></div>
+                </div>
+
+                <div class="sg-fixtures-side">
+                    <div class="section-title">לוח משחקים ותוצאות</div>
+                    <div id="sg-fixtures-container" style="overflow-y: auto; max-height: 400px; padding-right: 5px;"></div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div id="ticker-placeholder"></div>
+    </footer>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const LEAGUE_ID = urlParams.get('id') || 1; // 1 = World Cup in API-Football
+        const SEASON = urlParams.get('season') || 2026;
+
+        let allGroupsData = [];
+        let allFixturesData = [];
+
+        // פונקציית תרגום קיימת מהקוד שלך
+        function translateGroupName(name) {
+            if (!name) return "";
+            let lowerName = name.toLowerCase();
+            if (lowerName.includes('group')) {
+                let gName = name.replace(/Group/i, 'בית').trim();
+                gName = gName.replace('A', "א'").replace('B', "ב'").replace('C', "ג'").replace('D', "ד'")
+                             .replace('E', "ה'").replace('F', "ו'").replace('G', "ז'").replace('H', "ח'")
+                             .replace('I', "ט'").replace('J', "י'").replace('K', "יא'").replace('L', "יב'");
+                return gName;
+            }
+            return name;
+        }
+
+        async function initWorldCup() {
+            try {
+                // משיכת טבלאות
+                const stdRes = await fetch(`/api/football-standings?league=${LEAGUE_ID}&season=${SEASON}`);
+                const stdData = await stdRes.json();
+                
+                if (stdData.response && stdData.response.length > 0) {
+                    allGroupsData = stdData.response[0].league.standings;
+                }
+
+                // משיכת משחקים
+                const fixRes = await fetch(`/api/football-fixtures?league=${LEAGUE_ID}&season=${SEASON}`);
+                const fixData = await fixRes.json();
+                if (fixData.response) {
+                    allFixturesData = fixData.response;
+                }
+
+                buildDropdown();
+                renderAllGroupsGrid();
+
+            } catch (err) {
+                console.error("שגיאה במשיכת נתוני מונדיאל:", err);
+                document.getElementById('all-groups-view').innerHTML = "<h2 style='text-align:center; grid-column:1/-1;'>שגיאה בטעינת הנתונים</h2>";
+            }
+        }
+
+        function buildDropdown() {
+            const select = document.getElementById('group-selector');
+            allGroupsData.forEach((group, index) => {
+                let hebrewName = translateGroupName(group[0].group);
+                // סינון שלבי נוקאאוט מהתפריט (כדי שיופיעו רק בתים)
+                if (hebrewName.includes("בית")) {
+                    select.innerHTML += `<option value="${index}">${hebrewName}</option>`;
+                }
+            });
+        }
+
+        function renderAllGroupsGrid() {
+            const container = document.getElementById('all-groups-view');
+            let html = '';
+
+            allGroupsData.forEach((group, index) => {
+                let hebrewName = translateGroupName(group[0].group);
+                if (!hebrewName.includes("בית")) return; // רק שלבי בתים יוצגו בגריד
+
+                html += `
+                <div class="mini-group-card" onclick="document.getElementById('group-selector').value = '${index}'; toggleViewMode('${index}');">
+                    <div class="mini-group-title">${hebrewName}</div>
+                    <table>
+                        <tr><th></th><th style="text-align:right">נבחרת</th><th>מש'</th><th>הפרש</th><th>נק'</th></tr>`;
+                
+                group.forEach(team => {
+                    let rankClass = team.rank <= 2 ? 'rank-promote' : 'rank-normal';
+                    let tName = typeof translateName === 'function' ? translateName(team.team.name) : team.team.name;
+                    
+                    html += `
+                        <tr>
+                            <td class="${rankClass}">${team.rank}</td>
+                            <td>
+                                <div class="team-identity">
+                                    <img src="${team.team.logo}" class="team-logo">
+                                    <span class="team-name-text">${tName}</span>
+                                </div>
+                            </td>
+                            <td>${team.all.played}</td>
+                            <td dir="ltr">${team.goalsDiff}</td>
+                            <td><strong class="points">${team.points}</strong></td>
+                        </tr>`;
+                });
+                html += `</table></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleViewMode(value) {
+            const allView = document.getElementById('all-groups-view');
+            const singleView = document.getElementById('single-group-view');
+
+            if (value === 'all') {
+                allView.style.display = 'grid';
+                singleView.style.display = 'none';
+            } else if (value === 'knockout') {
+                allView.style.display = 'none';
+                singleView.style.display = 'flex';
+                renderKnockoutView();
+            } else {
+                allView.style.display = 'none';
+                singleView.style.display = 'flex';
+                renderSingleGroup(parseInt(value));
+            }
+        }
+
+        function renderSingleGroup(groupIndex) {
+            const group = allGroupsData[groupIndex];
+            const hebrewName = translateGroupName(group[0].group);
+            document.getElementById('sg-title').innerText = hebrewName;
+
+            // 1. בניית הטבלה המלאה לצד ימין
+            let tableHtml = `<table>
+                <tr><th></th><th style="text-align:right">נבחרת</th><th>מש'</th><th>נצ'</th><th>תיקו</th><th>הפ'</th><th>ש.ז</th><th>ש.ח</th><th>הפרש</th><th>נק'</th></tr>`;
+            
+            let teamIdsInGroup = []; // נשמור את ה-IDs כדי לסנן משחקים
+
+            group.forEach(team => {
+                teamIdsInGroup.push(team.team.id);
+                let rankClass = team.rank <= 2 ? 'rank-promote' : 'rank-normal';
+                let tName = typeof translateName === 'function' ? translateName(team.team.name) : team.team.name;
+                
+                tableHtml += `
+                    <tr>
+                        <td class="${rankClass}">${team.rank}</td>
+                        <td>
+                            <div class="team-identity">
+                                <img src="${team.team.logo}" class="team-logo" style="width:24px; height:24px;">
+                                <span class="team-name-text" style="font-size:15px;">${tName}</span>
+                            </div>
+                        </td>
+                        <td>${team.all.played}</td>
+                        <td>${team.all.win}</td>
+                        <td>${team.all.draw}</td>
+                        <td>${team.all.lose}</td>
+                        <td>${team.all.goals.for}</td>
+                        <td>${team.all.goals.against}</td>
+                        <td dir="ltr">${team.goalsDiff}</td>
+                        <td><strong class="points" style="font-size:18px;">${team.points}</strong></td>
+                    </tr>`;
+            });
+            tableHtml += `</table>`;
+            document.getElementById('sg-table-container').innerHTML = tableHtml;
+
+            // 2. סינון משחקים שקשורים רק לבית הזה והצגתם בצד שמאל
+            const groupFixtures = allFixturesData.filter(m => 
+                teamIdsInGroup.includes(m.teams.home.id) && teamIdsInGroup.includes(m.teams.away.id)
+            ).sort((a, b) => a.fixture.timestamp - b.fixture.timestamp);
+
+            let fixHtml = '';
+            if (groupFixtures.length === 0) {
+                fixHtml = "<div style='text-align:center; padding: 20px;'>טרם פורסמו משחקים לבית זה</div>";
+            } else {
+                groupFixtures.forEach(m => {
+                    let hName = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
+                    let aName = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
+                    
+                    let dateObj = new Date(m.fixture.date);
+                    let dateStr = dateObj.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit'});
+                    let timeStr = dateObj.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                    
+                    let shortStatus = m.fixture.status.short;
+                    let statusDisplay = timeStr;
+                    let scoreDisplay = 'VS';
+
+                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) { statusDisplay = 'הסתיים'; scoreDisplay = `${m.goals.home} - ${m.goals.away}`; }
+                    else if (['1H', '2H', 'HT'].includes(shortStatus)) { statusDisplay = `${m.fixture.status.elapsed}'`; scoreDisplay = `${m.goals.home} - ${m.goals.away}`; }
+
+                    fixHtml += `
+                    <div class="wc-match-row">
+                        <div class="match-team team-home">
+                            <span>${hName}</span>
+                            <img src="${m.teams.home.logo}" style="width:22px;">
+                        </div>
+                        <div class="match-center">
+                            <span class="match-status">${dateStr} | ${statusDisplay}</span>
+                            <span class="match-score">${scoreDisplay}</span>
+                        </div>
+                        <div class="match-team team-away">
+                            <img src="${m.teams.away.logo}" style="width:22px;">
+                            <span>${aName}</span>
+                        </div>
+                    </div>`;
+                });
+            }
+            document.getElementById('sg-fixtures-container').innerHTML = fixHtml;
+        }
+
+        function renderKnockoutView() {
+            document.getElementById('sg-title').innerText = "שלבי נוקאאוט";
+            document.getElementById('sg-table-container').innerHTML = "<div style='padding:40px; text-align:center;'>תצוגת עץ נוקאאוט תתעדכן ברגע שיקבעו העולות!</div>";
+            document.getElementById('sg-fixtures-container').innerHTML = "";
+            // פה תוכל לשלב בעתיד עץ טורניר מרהיב או קריאה לפונקציית הנוקאאוט הרגילה
+        }
+
+        // טעינת רכיבים גלובליים
+        fetch('header.html').then(res => res.text()).then(data => {
+            let el = document.getElementById('header-placeholder');
+            if(el) el.innerHTML = data;
+        });
+        fetch('ticker.html').then(res => res.text()).then(data => {
+            let el = document.getElementById('ticker-placeholder');
+            if(el) el.innerHTML = data;
+        });
+
+        initWorldCup();
+    </script>
+</body>
+</html>
