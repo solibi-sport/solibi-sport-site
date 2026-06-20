@@ -376,7 +376,7 @@
                     <div class="stat-row">
                         <div class="stat-player">
                             <span style="color:#a0aec0; font-size:12px; width:15px;">${idx+1}</span>
-                            <img src="${photo}">
+                            <img src="${photo}" onerror="this.src='https://media.api-sports.io/football/players/1.png'">
                             <div style="display:flex; flex-direction:column;">
                                 <span style="font-size:14px; font-weight:600;">${pName}</span>
                                 <img src="${teamLogo}" style="width:16px; margin-top:2px;">
@@ -389,11 +389,12 @@
             };
 
             try {
+                // התיקון: קריאה ל-API בנתיבים המדויקים שיש לך בשרת!
                 const [scorers, assists, yellow, red] = await Promise.all([
-                    fetch(`/api/football-topscorers?league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
-                    fetch(`/api/football-topassists?league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
-                    fetch(`/api/football-topyellowcards?league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
-                    fetch(`/api/football-topredcards?league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null)
+                    fetch(`/api/football-players?endpoint=topscorers&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
+                    fetch(`/api/football-players?endpoint=topassists&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
+                    fetch(`/api/football-players?endpoint=topyellowcards&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
+                    fetch(`/api/football-players?endpoint=topredcards&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null)
                 ]);
 
                 renderList('stats-scorers', scorers?.response, 'goals.total');
