@@ -235,13 +235,18 @@
         let allFixturesData = [];
         let statsLoaded = false;
 
+       // פונקציה ששואבת נתונים ישירות מהמילון שלך (myDictionary)
         function getHebrewName(englishName) {
             if (!englishName) return "";
-            if (typeof translateName === 'function') return translateName(englishName);
-            if (typeof translateTeam === 'function') return translateTeam(englishName);
-            if (typeof translate === 'function') return translate(englishName);
-            if (typeof translations !== 'undefined' && translations[englishName]) return translations[englishName];
-            return englishName;
+            const cleanName = englishName.trim();
+            
+            // בודק אם המילון שלך קיים ויש בו את המילה
+            if (typeof myDictionary !== 'undefined' && myDictionary[cleanName]) {
+                return myDictionary[cleanName];
+            }
+            
+            // אם לא מצא תרגום, משאיר באנגלית
+            return cleanName;
         }
 
         function translateGroupName(name) {
