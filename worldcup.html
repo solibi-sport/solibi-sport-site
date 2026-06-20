@@ -477,8 +477,11 @@
                     if (['FT', 'AET', 'PEN'].includes(shortStatus)) { statusDisplay = 'הסתיים'; scoreDisplay = `${m.goals.home} - ${m.goals.away}`; }
                     else if (['1H', '2H', 'HT'].includes(shortStatus)) { statusDisplay = `${m.fixture.status.elapsed}'`; scoreDisplay = `${m.goals.home} - ${m.goals.away}`; }
 
+                    let safeHome = encodeURIComponent(m.teams.home.name);
+                    let safeAway = encodeURIComponent(m.teams.away.name);
+
                     fixHtml += `
-                    <div class="wc-match-row">
+                    <div class="wc-match-row" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${m.fixture.id}, '${safeHome}', '${safeAway}')">
                         <div class="match-team team-home"><span>${hName}</span><img src="${m.teams.home.logo}" style="width:22px;"></div>
                         <div class="match-center"><span class="match-status">${dateStr} | ${statusDisplay}</span><span class="match-score">${scoreDisplay}</span></div>
                         <div class="match-team team-away"><img src="${m.teams.away.logo}" style="width:22px;"><span>${aName}</span></div>
@@ -514,5 +517,6 @@
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
 
     </script>
+ <script src="matchEvents.js"></script>
 </body>
 </html>
