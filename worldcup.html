@@ -34,7 +34,19 @@
             color: var(--white);
         }
 
-        #header-placeholder { flex-shrink: 0; }
+       /* עיצוב מפריד להדר - תואם לטיקר */
+        #header-placeholder { 
+            flex-shrink: 0; 
+            background: #061224; 
+            border-bottom: 2px solid #d4af37; 
+            position: relative; 
+            z-index: 1000;
+        }
+        /* מבטל רקעים מתנגשים מהעיצוב הכללי של ההדר */
+        #header-placeholder .header {
+            background: transparent !important;
+            border-bottom: none !important;
+        }
         
         .main-content {
             flex: 1; min-height: 0; 
@@ -392,7 +404,7 @@
                 // התיקון: קריאה ל-API בנתיבים המדויקים שיש לך בשרת!
                 const [scorers, assists, yellow, red] = await Promise.all([
                     fetch(`/api/football-players?endpoint=topscorers&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
-                    fetch(`/api/football-players?endpoint=topassists&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
+                    fetch(`/api/football-players?endpoint=topassists&lague=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
                     fetch(`/api/football-players?endpoint=topyellowcards&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
                     fetch(`/api/football-players?endpoint=topredcards&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null)
                 ]);
