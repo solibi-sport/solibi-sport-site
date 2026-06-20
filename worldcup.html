@@ -60,6 +60,7 @@
         .wc-title {
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             font-size: clamp(28px, 4vw, 42px);
             font-weight: 900;
@@ -290,8 +291,8 @@
             const select = document.getElementById('group-selector');
             allGroupsData.forEach((group, index) => {
                 let hebrewName = translateGroupName(group[0].group);
-                // סינון שלבי נוקאאוט מהתפריט (כדי שיופיעו רק בתים)
-                if (hebrewName.includes("בית")) {
+                // מציג רק בתים אמיתיים (שאין בהם את המילה Stage ויש בהם בדיוק עד 4 קבוצות)
+                if (hebrewName.includes("בית") && !group[0].group.includes("Stage") && group.length <= 4) {
                     select.innerHTML += `<option value="${index}">${hebrewName}</option>`;
                 }
             });
@@ -303,7 +304,9 @@
 
             allGroupsData.forEach((group, index) => {
                 let hebrewName = translateGroupName(group[0].group);
-                if (!hebrewName.includes("בית")) return; // רק שלבי בתים יוצגו בגריד
+                
+                // מסנן את טבלת הסיכום הכללית של ה-API
+                if (!hebrewName.includes("בית") || group[0].group.includes("Stage") || group.length > 4) return;
 
                 html += `
                 <div class="mini-group-card" onclick="document.getElementById('group-selector').value = '${index}'; toggleViewMode('${index}');">
@@ -446,9 +449,19 @@
             let el = document.getElementById('header-placeholder');
             if(el) el.innerHTML = data;
         });
-        fetch('ticker.html').then(res => res.text()).then(data => {
+       fetch('ticker.html').then(res => res.text()).then(data => {
             let el = document.getElementById('ticker-placeholder');
-            if(el) el.innerHTML = data;
+            if(el) {
+                el.innerHTML = data;
+                // טריק כדי להכריח את הסקריפט של הטיקר לרוץ גם כשהוא נטען מבחוץ
+                let scripts = el.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    let script = document.createElement('script');
+                    if (scripts[i].src) script.src = scripts[i].src;
+                    script.innerHTML = scripts[i].innerHTML;
+                    document.body.appendChild(script);
+                }
+            }
         });
 
         initWorldCup();
