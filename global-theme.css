@@ -44,7 +44,7 @@ ul { list-style: none; }
 }
 .header-container {
     display: flex;
-    justify-content: center; /* ממרכז את הבלוק האמצעי לחלוטין */
+    justify-content: center; 
     align-items: center;
     max-width: 100%;
     padding: 0 40px;
@@ -59,32 +59,36 @@ ul { list-style: none; }
 }
 .gold-text, .white-text { color: #000; }
 
-/* קבוצה אחת שיושבת בדיוק באמצע של כל האתר */
 .header-center-group {
     display: flex;
     align-items: center;
 }
 
-/* התפריט האחיד (ריווח של 20 פיקסלים בין הכותרות) */
 .main-nav { 
     display: flex; 
     align-items: center; 
-    gap: 20px; 
+    gap: 15px; 
 }
 
-/* כותרות רגילות ללא רקע (בית, עגלה וכו') */
+/* כותרות ניווט רגילות - עם אפקט רקע לבן מושלם בריחוף */
 .main-nav > a:not(.login-btn-header) {
     color: #000;
     font-weight: 700;
     font-size: 16px;
-    transition: color 0.3s;
+    padding: 6px 14px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
     background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 .main-nav > a:not(.login-btn-header):hover {
-    color: #fff; /* צבע טקסט לבן במעבר עכבר - ללא רקע */
+    background-color: #fff; /* רקע לבן מלא בריחוף עכבר */
+    color: #000 !important;
 }
 
-/* הכפתור היחיד עם רקע שחור (כניסה / חבר מועדון) */
+/* כפתור כניסה קבוע שחור */
 .login-btn-header {
     background: #000;
     color: var(--brand-gold);
@@ -101,35 +105,41 @@ ul { list-style: none; }
 
 /* הפרדת "עוד באתר" שמאלה מהשאר */
 .dropdown.push-left {
-    margin-right: 35px; /* דוחף שמאלה מעבר למרווח הרגיל */
+    margin-right: 35px; 
 }
 
-/* תפריט נפתח */
+/* תפריט נפתח מתוקן ויציב */
 .dropdown { position: relative; display: inline-block; }
 .dropbtn {
     background-color: transparent; color: #000;
     font-size: 16px; font-weight: 700;
     font-family: 'Rubik', sans-serif; border: none; cursor: pointer;
-    transition: all 0.3s;
+    padding: 6px 14px; border-radius: 4px;
+    transition: all 0.2s;
 }
-.dropdown:hover .dropbtn { color: #fff; }
+.dropdown:hover .dropbtn { background-color: #fff; color: #000; }
+
 .dropdown-content {
     display: none; position: absolute; background-color: #000;
-    min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    min-width: 210px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
     z-index: 101; border: 1px solid var(--brand-gold); border-radius: 6px;
-    top: 150%; right: 0; overflow: hidden;
+    top: 100%; /* הצמדה מלאה ל-100% מונעת סגירה בטעות */
+    right: 0; overflow: hidden;
 }
 .dropdown-content a {
     color: var(--text-white); padding: 12px 16px; text-decoration: none;
-    display: block; font-weight: 400; font-size: 15px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 500; font-size: 15px; text-align: right;
     border-bottom: 1px solid #1a1a1a; transition: 0.2s;
 }
-.dropdown-content a i { color: var(--brand-gold); margin-left: 8px; width: 20px; text-align: center; }
+.dropdown-content a i { color: var(--brand-gold); width: 20px; text-align: left; }
 .dropdown-content a:hover { background-color: #1a1a1a; color: var(--brand-gold); }
 .dropdown:hover .dropdown-content { display: block; }
 
+.num-ltr { direction: ltr; display: inline-block; }
+
 /* ---------------------------------
-   מבנה דאשבורד
+   מבנה דאשבורד ומירכוז כותרות
 --------------------------------- */
 .site-layout {
     display: grid;
@@ -148,12 +158,28 @@ ul { list-style: none; }
     height: 100%;
     overflow-y: auto; 
 }
+
+/* מירכוז מושלם של כותרות הסיידברים */
 .sidebar-header h3 {
     color: var(--brand-gold); font-size: 17px; margin-bottom: 15px;
     border-bottom: 1px solid var(--border-gold); padding-bottom: 10px;
     position: sticky; top: 0; background: var(--bg-card); z-index: 10;
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+    text-align: center; width: 100%;
 }
 .placeholder-widget { color: var(--text-gray); font-size: 14px; text-align: center; padding: 20px 0; }
+
+/* 🔴 עיגול אדום מהבהב ללייב */
+.live-dot {
+    width: 10px; height: 10px; background-color: #ff3b30; border-radius: 50%;
+    display: inline-block; box-shadow: 0 0 10px #ff3b30;
+    animation: pulse-live 1.2s infinite ease-in-out;
+}
+@keyframes pulse-live {
+    0% { opacity: 0.3; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0.3; transform: scale(0.9); }
+}
 
 .main-content { height: 100%; overflow-y: auto; padding-right: 5px; }
 
@@ -171,11 +197,12 @@ ul { list-style: none; }
 
 .section-title {
     color: var(--text-white); font-size: 20px; margin-bottom: 15px;
-    text-align: right; border-right: 4px solid var(--brand-gold); padding-right: 15px;
+    text-align: center; border-bottom: 2px solid var(--brand-gold); 
+    padding-bottom: 8px; display: block; width: fit-content; margin-left: auto; margin-right: auto;
 }
 
 /* ---------------------------------
-   מנגנון הקרוסלה (Carousel)
+   קרוסלת מארזים
 --------------------------------- */
 .carousel-container {
     position: relative; display: flex; align-items: center; margin-bottom: 35px; width: 100%;
@@ -223,7 +250,7 @@ ul { list-style: none; }
 }
 .add-to-cart-btn:hover { background: var(--brand-gold); color: #000; }
 
-.product-card.premium-gold-card {
+.premium-gold-card {
     background: linear-gradient(135deg, var(--brand-gold-dark) 0%, var(--brand-gold-light) 50%, var(--brand-gold-dark) 100%);
     border: 1px solid #fff;
 }
