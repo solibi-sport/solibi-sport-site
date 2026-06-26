@@ -3,1131 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - פרימיום סימטרי 8 קוביות</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            /* הירוק של סוליבי ספורט - נשאר בדיוק אותו דבר! */
-            --brand-green: #7ca856;
-            --brand-green-glow: rgba(124, 168, 86, 0.6);
-            
-            /* הרקע מותאם ב-100% לסוליבי עסקים */
-            --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
-            
-            /* הכחול נייבי מותאם ב-100% לסוליבי עסקים (מוחל על ההדר, הקוביות והפאנלים) */
-            --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-            
-            --text-light: #ffffff;
-            --text-dark: #062141; /* מותאם לנייבי החדש */
-            
-            /* שונה ל-300px כדי שיהיה זהה לחלוטין לדף הפנתיאון ולייצר סימטריה מושלמת בהדר */
-            --sidebar-width: clamp(240px, 20vw, 300px); 
-            
-            /* שורת החיפוש הוגדלה לאזור הסימון האדום */
-            --search-width: clamp(380px, 28vw, 480px);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html, body {
-            font-family: 'Rubik', sans-serif;
-            background: var(--bg-silver-matte);
-            width: 100%;
-            height: 100vh; 
-            overflow: hidden; 
-            display: flex;
-            flex-direction: column;
-        }
-
-/* === הדר עליון (מיושר וסימטרי בהתחייבות מוחלטת) === */
-        .header {
-            height: 65px;
-            background: var(--element-navy-gradient);
-            border-bottom: 2px solid var(--brand-green);
-            position: relative;
-            z-index: 1000;
-            display: flex;
-            justify-content: center; /* ממרכז את התפריט האמצעי */
-            align-items: center;
-            width: 100%;
-            flex-shrink: 0;
-        }
-
-        .header-right-col { 
-            position: absolute; right: 20px; width: var(--sidebar-width); height: 100%; 
-            display: flex; justify-content: center; align-items: center; 
-        }
-        
-        .header-center-col { 
-            display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); 
-        }
-        
-        .header-left-col { 
-            position: absolute; left: 20px; width: var(--sidebar-width); height: 100%; 
-            display: flex; justify-content: center; align-items: center; 
-        }
-        
-        .logo-wrapper {
-            background-color: #ffffff; padding: 0 28px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s;
-            height: 52px; display: flex; align-items: center; justify-content: center; text-decoration: none;
-        }
-        .logo-wrapper:hover { transform: scale(1.05); }
-        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
-
-        .personal-area-btn {
-            background: transparent; border: 1.5px solid var(--brand-green);
-            color: #ffffff; padding: 6px 16px; border-radius: 30px; text-decoration: none;
-            font-weight: 700; font-size: clamp(12px, 1vw, 14px); transition: 0.3s;
-            display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
-        }
-        .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; border-color: var(--brand-green); transform: scale(1.05); }
-
-        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); margin: 0; padding: 0; align-items: center; }
-        .header-nav a { text-decoration: none; color: var(--text-light); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
-        .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
-
-        .header-search { 
-            width: 65%; /* יושבת בול באמצע כי ההורה ממורכז */
-            height: 34px; 
-            transition: width 0.4s ease; 
-            position: relative; 
-        }
-        .header-search input { width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit; box-shadow: none; transition: 0.4s ease; }
-        
-        /* מתרחבת בלחיצה בדיוק לגבולות הקופסה שלה, שהיא בגודל הסיידבר */
-        .header-search:focus-within { width: 100%; } 
-        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
-        
-        /* === גוף הדף === */
-        .main-content {
-            display: flex; flex: 1; overflow: hidden; position: relative;
-        }
-
-        /* === פאנלים צידיים משודרגים === */
-        .side-panel {
-            position: absolute; top: 20px; width: var(--sidebar-width);
-            background: rgba(255, 255, 255, 0.4); /* שקוף ויוקרתי כמו האמצע */
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 24px; /* עגלנו יותר שיתאים לאמצע */
-            display: flex; flex-direction: column; overflow: hidden;
-            z-index: 50; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05); /* צל עמוק ורך */
-            height: calc(100% - 40px);
-        }
-
-        .panel-left { left: 20px; }
-        .panel-right { right: 20px; }
-
-        .panel-header {
-            font-size: 14px; font-weight: 900; color: var(--text-dark); 
-            display: flex; align-items: center; justify-content: center;
-            gap: 8px; padding: 0 20px; height: 48px; flex-shrink: 0;
-            border-bottom: 2px solid var(--brand-green); background: rgba(255,255,255,0.5); z-index: 10;
-        }
-
-        .ticker-control-btn {
-            background: rgba(6, 33, 65, 0.1);
-            border: none;
-            color: var(--text-dark);
-            border-radius: 6px;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-            /* מחקנו את ה-margin כדי לאפשר מירכוז כותרת */
-        }
-        
-        .ticker-control-btn:hover {
-            background: var(--brand-green);
-            color: #fff;
-        }
-        
-        /* מחלקה שמוענקת לטיקר כשהמשתמש עוצר אותו ידנית */
-        .live-track.paused-manually {
-            animation-play-state: paused !important;
-        }
-
-        /* === עיצוב פאנל עדכונים חמים === */
-        #updates-container { position: relative; flex: 1; display: flex; flex-direction: column; padding: 10px 0; overflow: hidden; }
-        
-      .updates-item { 
-            margin: 5px 15px; 
-            padding: 10px 12px; 
-            gap: 12px; 
-            background: #ffffff; 
-            border: none; /* הורדנו את המסגרת המיושנת */
-            border-right: 4px solid var(--brand-green); 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: flex-start; 
-            text-decoration: none; 
-            color: var(--text-dark); 
-            position: relative; 
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            flex: 1; 
-            min-height: 0;
-            /* צל רך שמרים את ההתראה מהרקע */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
-            animation: flipInX 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
-
-        .updates-item:hover { 
-            transform: translateY(-2px) translateX(-2px); /* ריחוף אלגנטי */
-            box-shadow: 0 8px 20px rgba(6, 33, 65, 0.12);
-        }
-        
-        .updates-icon { 
-            background: rgba(124, 168, 86, 0.15); /* רקע ירוק עדין לאייקון */
-            width: 28px; height: 28px; 
-            border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; 
-            color: var(--brand-green);
-        }
-        .updates-icon svg { width: 14px; height: 14px; } /* הוקטן בהתאמה */
-        
-        .updates-text { text-align: right; display: flex; flex-direction: column; justify-content: center;} 
-        .updates-label { font-size: 9px; font-weight: 700; color: var(--brand-green); display: block; margin-bottom: 2px;}
-        .updates-title { font-size: clamp(10px, 0.8vw, 12px); font-weight: 700; line-height: 1.2;}
-        @keyframes flipInX {
-            0% { opacity: 0; transform: perspective(400px) rotateX(90deg) translateY(-10px); }
-            100% { opacity: 1; transform: perspective(400px) rotateX(0deg) translateY(0); }
-        }
-
-        /* === עיצוב פאנל תוצאות הלייב החדש (טיקר אנכי) === */
-        #live-container {
-            position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column; padding: 10px 0;
-        }
-        
-        .live-track {
-            display: flex; flex-direction: column; width: 100%;
-        }
-        
-        /* האנימציה שמופעלת רק אם יש הרבה משחקים */
-        .live-track.scrolling {
-            animation: tickerVertical linear infinite;
-        }
-        .live-track:hover {
-            animation-play-state: paused !important; /* עוצר את הגלילה במעבר עכבר/לחיצה */
-        }
-        
-        @keyframes tickerVertical {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); } /* גולל חצי, כי החצי השני זה השכפול */
-        }
-
-        /* החזרנו את כותרות הליגה לעיצוב החיצוני הסטנדרטי והיפה! */
-        .live-league-header { 
-            display: flex; align-items: center; gap: 8px; 
-            background: var(--element-navy-gradient); /* 👈 הרקע עכשיו בלו נייבי יוקרתי! */
-            color: #ffffff; /* 👈 הטקסט הפך ללבן כדי לבלוט מעולה על הנייבי */
-            padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 900; 
-            margin: 0 10px 6px 10px; border-right: 3px solid var(--brand-green); flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* הוספנו טיפ-טיפה צל כדי שזה יקפוץ החוצה מהפאנל */
-        }
-        .live-league-header img { width: 14px; height: 14px; object-fit: contain; }
-
-        .live-match-card-light {
-            background: #fff; border: 1px solid rgba(0,0,0,0.05); border-right: 4px solid transparent;
-            border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center;
-            text-decoration: none; color: var(--text-dark); transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); direction: rtl;
-            margin: 0 10px 8px 10px; flex-shrink: 0; /* ללא מתיחה בכלל! שומר על גודל קבוע וטבעי */
-        }
-        .live-match-card-light:hover { transform: translateY(-2px); border-right-color: var(--brand-green); box-shadow: 0 4px 10px rgba(124,168,86,0.2); }
-        
-        .match-teams-col { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; flex: 1; min-width: 0; }
-        .team-line { display: flex; align-items: center; gap: 8px; height: 16px; }
-        .team-line img { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0;}
-        .team-line span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; max-width: 105px; }
-
-        .match-score-col { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 40px; flex-shrink: 0; background: #f0f4f8; padding: 4px 8px; border-radius: 6px; position: relative;}
-        .match-score-col .score-num { font-size: 13px; font-weight: 700; height: 16px; display: flex; align-items: center; }
-        .match-score-col .minute { font-size: 10px; color: #7ca856; font-weight: bold; height: 14px; display: flex; align-items: center; margin-bottom: 4px;}
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-
-/* === מרכז העמוד והגריד === */
-        .center-wrapper {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; /* 👈 הנה הקסם! זה ממרכז אותם אנכית */
-            flex: 1; /* לוקח את כל המקום הפנוי בין ההדר לטיקר */
-            width: 100%; 
-            padding: 0 calc(var(--sidebar-width) + 40px);
-        }
-
-       /* === כותרת סוליבי ספורט היי-טקית === */
-        .premium-title-wrapper {
-            display: flex; align-items: center; justify-content: center;
-            width: 100%; max-width: 920px; 
-            margin-top: 15px; /* 👈 זה מה שמרחיק אותה מהתקרה */
-            margin-bottom: 40px; /* 👈 וזה מרחיק אותה קצת מהקוביות למטה */
-            flex-shrink: 0;
-            position: relative; z-index: 20;
-        }
-
-        .page-title {
-            color: var(--text-dark); 
-            font-size: clamp(24px, 2.8vw, 32px); /* הגדלתי טיפה את הפונט */
-            font-weight: 900; letter-spacing: 2px;
-            background: rgba(255, 255, 255, 0.4); 
-            backdrop-filter: blur(12px); /* אפקט זכוכית מאחורי הטקסט */
-            padding: 10px 40px; 
-            border-radius: 50px;
-            /* מסגרת היי-טק ירוקה עם גוונים הדרגתיים */
-            border: 2px solid transparent;
-            background-clip: padding-box;
-            box-shadow: 
-                0 10px 30px rgba(0,0,0,0.1), /* צל טבעי */
-                inset 0 0 20px rgba(255,255,255,0.5), /* הילה לבנה פנימית */
-                0 0 15px rgba(124, 168, 86, 0.3); /* הילה ירוקה חיצונית */
-            margin: 0; white-space: nowrap; 
-            position: relative;
-        }
-
-        /* מילוי הטקסט במעבר צבעים (Gradient Text) יוקרתי */
-        .page-title span.s-sport {
-            background: linear-gradient(135deg, var(--brand-green) 0%, #4a6a30 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(124, 168, 86, 0.4); /* זוהר ירוק עדין סביב הטקסט */
-        }
-        
-        .title-line { height: 2px; flex: 1; background: linear-gradient(90deg, transparent, var(--text-dark)); border-radius: 2px; }
-        .title-line.left { background: linear-gradient(270deg, transparent, var(--text-dark)); }
-
-       /* === מעטפת ענן זכוכית מאחורי כל הקוביות === */
-        .cards-glass-wrapper {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 25px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.8);
-            width: 100%;
-            max-width: min(1000px, calc((100vh - 280px) * 2.4));
-            margin: auto; /* 👈 הקסם! דוחף את הקוביות בדיוק לאמצע השטח שנותר */
-        }
-
-        .cards-grid { 
-            display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); 
-            gap: 18px; width: 100%;
-        }
-
-        /* === עיצוב קוביות פרימיום === */
-        .square-box {
-            aspect-ratio: 1 / 1.05; background: var(--element-navy-gradient); border-radius: 16px;
-            display: flex; flex-direction: column; justify-content: flex-start; align-items: center; 
-            padding: 25px 15px 15px 15px; text-align: center; text-decoration: none; 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255,255,255,0.15); position: relative; overflow: hidden;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        }
-
-        /* אפקט הריחוף - הקוביה קופצת ומוארת */
-        .square-box:hover { 
-            transform: translateY(-8px) scale(1.02); 
-            border-color: rgba(255,255,255,0.4); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 25px rgba(124, 168, 86, 0.3); 
-            z-index: 10; 
-        }
-
-        /* תמונת הרקע הכהה בפנים */
-        .square-box::before { 
-            content: ""; position: absolute; inset: 0; 
-            background-image: var(--box-bg); background-size: cover; background-position: center; 
-            opacity: 0.15; /* רואים את התמונה תמיד בעדינות */
-            transition: opacity 0.4s ease, transform 0.6s ease; 
-            z-index: 1; mix-blend-mode: overlay; 
-        }
-        
-        .square-box:hover::before { 
-            opacity: 0.4; /* התמונה מתחזקת בריחוף */
-            transform: scale(1.1); /* אפקט זום אין לתמונה */
-        }
-        
-        .square-box > * { position: relative; z-index: 2; }
-
-       /* 🎬 אפקט נטפליקס לקוביית הפנטזי - קריאות מקסימלית */
-        .fantasy-highlight { 
-            background: linear-gradient(135deg, var(--brand-green) 0%, #4a6a30 100%) !important; 
-            border: 2px solid #ffffff !important; 
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* שכבת הצללה בתחתית הקובייה - עכשיו רק למטה כדי לא ללכלך את הירוק! */
-        .fantasy-highlight::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(6, 33, 65, 0.95) 0%, rgba(6, 33, 65, 0.1) 35%, transparent 100%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* מוודא שהטקסט והאייקון מעל שכבת הצל */
-        .fantasy-highlight > * {
-            position: relative;
-            z-index: 2;
-        }
-
-        .fantasy-highlight .box-title {
-            color: #ffffff !important;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
-            font-weight: 900 !important; /* 👈 החזרנו להדגשה מקסימלית כמו שאר הקוביות */
-        }
-
-        .fantasy-highlight .box-desc {
-            color: #ffffff !important;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
-            font-weight: 500 !important; /* 👈 החזרנו את התיאור למשקל העדין והנקי שלו */
-        }
-
-        .fantasy-highlight .box-tag {
-            color: #ffffff !important;
-            background: var(--brand-green) !important;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .fantasy-highlight .box-icon-wrap {
-            border-color: #ffffff !important;
-            background: rgba(255,255,255,0.1);
-        }
-
-        .fantasy-highlight .box-icon-wrap svg {
-            stroke: #ffffff !important;
-        }
-
-        /* אפקט הובר משודרג */
-        .fantasy-highlight:hover .box-icon-wrap {
-            background: #ffffff !important;
-        }
-        .fantasy-highlight:hover .box-icon-wrap svg {
-            stroke: var(--brand-green) !important;
-        }
-        
-        .hot-badge {
-            position: absolute; top: 12px; right: -28px; background: #ef4444; color: #fff; font-size: 10px; font-weight: 900;
-            padding: 4px 30px; transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.3); z-index: 20; letter-spacing: 1px;
-        }
-
-        @keyframes premiumPulse { 0% { box-shadow: 0 0 10px rgba(124, 168, 86, 0.3); } 100% { box-shadow: 0 0 25px rgba(124, 168, 86, 0.7); } }
-
-        /* אייקונים וטקסט */
-        .box-icon-wrap {
-            width: 42px; height: 42px; border-radius: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center; margin-bottom: 12px; transition: 0.4s;
-        }
-        .box-icon-wrap svg { width: 22px; height: 22px; stroke: #fff; fill: none; }
-        .square-box:hover .box-icon-wrap { background: var(--brand-green); border-color: #fff; transform: translateY(-3px); }
-
-        .box-title { color: #fff; font-size: clamp(14px, 1.2vw, 18px); font-weight: 900; margin-bottom: 6px; line-height: 1.1; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
-        .box-tag { color: var(--brand-green); font-size: 10px; font-weight: 900; letter-spacing: 0.5px; margin-bottom: 6px; text-transform: uppercase;}
-        .box-desc { color: #cbd5e1; font-size: clamp(10px, 0.9vw, 12px); line-height: 1.3; padding: 0 4px; font-weight: 500;}
-        .box-title { color: #fff; font-size: clamp(10px, 12cqi, 17px); font-weight: 900; margin: 2px 0 15px 0; line-height: 1.1; min-height: 38px; display: flex; align-items: center; justify-content: center; }
-        .box-tag { color: var(--brand-green); font-size: clamp(8px, 8.5cqi, 11.5px); font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px;}
-        .box-desc { color: #e2e8f0; font-size: clamp(8px, 9cqi, 12.5px); line-height: 1.25; padding: 0 2px;}
-        
-        .tech-bars { position: absolute; top: 10px; left: 10px; display: flex; gap: 3px; align-items: flex-end; opacity: 0.15; transition: 0.4s; height: 14px; } .tech-bars span { width: 2px; background: #fff; border-radius: 2px; } .square-box:hover .tech-bars { opacity: 0.8; gap: 4px; } .square-box:hover .tech-bars span { background: var(--brand-green); }
-        .tech-dots { position: absolute; top: 10px; left: 10px; opacity: 0.15; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5px; transition: 0.4s; } .tech-dots span { width: 3px; height: 3px; background: #fff; border-radius: 50%; } .square-box:hover .tech-dots { opacity: 0.8; gap: 4px; } .square-box:hover .tech-dots span { background: var(--brand-green); }
-        .tech-dollar-only { position: absolute; top: 8px; left: 10px; font-size: 16px; font-weight: 900; color: #fff; opacity: 0.25; transition: 0.4s; font-family: sans-serif; line-height: 1; } .square-box:hover .tech-dollar-only { opacity: 0.9; color: var(--brand-green); transform: scale(1.1); }
-        .tech-tactic { position: absolute; top: 10px; left: 10px; width: 16px; height: 12px; opacity: 0.15; transition: 0.4s; border: 1.5px solid #fff; border-radius: 3px; } .tech-tactic span { position: absolute; width: 2px; height: 2px; background: #fff; border-radius: 50%; } .tech-tactic .dot1 { top: 1px; left: 50%; transform: translateX(-50%); } .tech-tactic .dot2 { bottom: 1px; left: 1.5px; } .tech-tactic .dot3 { bottom: 1px; right: 1.5px; } .square-box:hover .tech-tactic { opacity: 0.8; border-color: var(--brand-green); } .square-box:hover .tech-tactic span { background: var(--brand-green); }
-        .tech-star { position: absolute; top: 10px; left: 10px; width: 14px; height: 14px; opacity: 0.15; transition: 0.4s; } .tech-star span { position: absolute; background: #fff; transition: 0.4s; } .tech-star .v-line { width: 1.5px; height: 100%; left: 50%; transform: translateX(-50%); } .tech-star .h-line { height: 1.5px; width: 100%; top: 50%; transform: translateY(-50%); } .square-box:hover .tech-star { opacity: 0.8; transform: rotate(90deg); } .square-box:hover .tech-star span { background: var(--brand-green); }
-        .tech-target { position: absolute; top: 10px; left: 10px; width: 14px; height: 14px; opacity: 0.15; transition: 0.4s; border: 1.5px solid #fff; border-radius: 50%; } .tech-target::after { content: ""; position: absolute; top: 50%; left: 50%; width: 2.5px; height: 2.5px; background: #fff; border-radius: 50%; transform: translate(-50%, -50%); } .square-box:hover .tech-target { opacity: 0.8; border-color: var(--brand-green); transform: scale(1.2); } .square-box:hover .tech-target::after { background: var(--brand-green); }
-        .tech-activity { position: absolute; top: 10px; left: 10px; opacity: 0.15; transition: 0.4s; width: 16px; height: 16px; } .tech-activity svg { width: 100%; height: 100%; stroke: #fff; } .square-box:hover .tech-activity { opacity: 0.8; transform: rotate(180deg); } .square-box:hover .tech-activity svg { stroke: var(--brand-green); }
-        .tech-chat { position: absolute; top: 10px; left: 10px; opacity: 0.15; transition: 0.4s; width: 14px; height: 14px; } .tech-chat svg { width: 100%; height: 100%; stroke: #fff; } .square-box:hover .tech-chat { opacity: 0.8; transform: scale(1.1); } .square-box:hover .tech-chat svg { stroke: var(--brand-green); }
-
-/* === מרכז העמוד והגריד === */
-        .center-wrapper {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            /* 👈 שינינו מ-center ל-flex-start כדי שהקפסולה לא תברח לאמצע המסך */
-            justify-content: flex-start; 
-            flex: 1; 
-            width: 100%; 
-            /* 👈 100 פיקסלים של רווח מדויק מההדר למעלה! */
-            padding: 100px calc(var(--sidebar-width) + 40px) 0;
-        }
-
-       /* === מרכז העמוד והגריד === */
-        .center-wrapper {
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: flex-start; /* שומר שהכל יתחיל מלמעלה */
-            flex: 1; 
-            width: 100%; 
-            padding: 50px calc(var(--sidebar-width) + 40px) 0; /* 70 פיקסלים מההדר למעלה */
-        }
-
-        /* =========================================
-           שורת מדדים (KPI Bar) - קומפקטי ואלגנטי עם כבלים
-           ========================================= */
-        .home-kpi-bar {
-            background: rgba(6, 33, 65, 0.85);
-            backdrop-filter: blur(15px);
-            border-radius: 40px; 
-            padding: 8px 30px; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            
-            margin-top: 0; 
-            margin-bottom: 25px; /* מרווח בין ה-KPI לענן הזכוכית של הקוביות */
-            
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(124, 168, 86, 0.4);
-            width: 100%;
-            max-width: 820px; /* קפסולה קטנה ואלגנטית */
-            position: relative;
-            z-index: 20;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* הכבלים התלויים - אורכם בדיוק 70 פיקסלים כדי לגעת בהדר! */
-        .home-kpi-bar::before,
-        .home-kpi-bar::after {
-            content: '';
-            position: absolute;
-            bottom: 100%;
-            width: 2px;
-            height: 70px; /* 👈 נוגע בדיוק בהדר העליון */
-            background: linear-gradient(0deg, var(--brand-green) 0%, transparent 100%);
-            opacity: 0.5;
-            transition: 0.4s;
-            pointer-events: none;
-        }
-
-        .home-kpi-bar::before { right: 15%; }
-        .home-kpi-bar::after { left: 15%; }
-
-        .home-kpi-bar:hover {
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25), inset 0 0 10px rgba(124, 168, 86, 0.5);
-            transform: translateY(-2px);
-        }
-        
-        .home-kpi-bar:hover::before,
-        .home-kpi-bar:hover::after {
-            height: 68px; /* מתקצר ב-2 פיקסלים כי הקפסולה עולה ב-2 פיקסלים */
-            opacity: 0.9;
-            box-shadow: 0 0 8px var(--brand-green-glow);
-        }
-
-        .kpi-item {
-            display: flex;
-            align-items: center;
-            flex-direction: row-reverse; /* 👈 הקסם שמעביר את האייקון שמאלה! */
-            gap: 10px;
-            flex: 1;
-            justify-content: center;
-            position: relative;
-        }
-        
-        /* מפריד קצר ועדין יותר */
-        .kpi-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 20px; 
-            width: 1px;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .kpi-icon-wrap {
-            font-size: 16px; 
-            color: var(--brand-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            filter: drop-shadow(0 0 5px rgba(124,168,86,0.4));
-        }
-
-        .kpi-text-col {
-            display: flex;
-            flex-direction: column;
-            text-align: right; 
-        }
-
-        .kpi-val {
-            font-size: 15px; 
-            font-weight: 900;
-            color: #ffffff;
-            line-height: 1;
-            margin-bottom: 2px;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-            display: inline-block;
-        }
-
-        .kpi-val.updated {
-            color: var(--brand-green);
-            text-shadow: 0 0 10px var(--brand-green-glow);
-            transform: scale(1.1) translateY(-1px);
-        }
-
-        .kpi-lbl {
-            font-size: 10px; 
-            color: #94a3b8;
-            font-weight: 600;
-        }
-
-        .live-dot {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background-color: #2ecc71;
-            border-radius: 50%;
-            box-shadow: 0 0 6px #2ecc71;
-            animation: pulse-dot 1.5s infinite;
-        }
-
-        @keyframes pulse-dot {
-            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70% { transform: scale(1.2); box-shadow: 0 0 0 5px rgba(46, 204, 113, 0); }
-            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-        }
-
-        @media (max-width: 900px) {
-            .center-wrapper { padding-top: 80px; }
-            .home-kpi-bar {
-                flex-wrap: wrap;
-                border-radius: 20px;
-                padding: 15px;
-                gap: 15px;
-            }
-            .home-kpi-bar::before,
-            .home-kpi-bar::after {
-                display: none; /* מסתיר כבלים במובייל */
-            }
-            .kpi-item {
-                min-width: 40%;
-                justify-content: flex-start;
-            }
-            .kpi-item:not(:last-child)::after {
-                display: none;
-            }
-        }
-        
-        /* === שורת פוטר === */
-        .footer { background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green); overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; flex-shrink: 0; z-index: 1000;}
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 45s linear infinite; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
-
-        /* === רספונסיביות === */
-       @media (max-width: 1600px) and (min-width: 1201px) { 
-            .center-wrapper, .side-panel, .header-left-col, .header-right-col, .header-center-col { zoom: 0.85; } 
-        }
-        @media (max-width: 1200px) { .center-wrapper { padding: 0; padding-top: 300px; } .panel-left, .panel-right { position: relative; left: auto; right: auto; top: auto; width: 100%; max-width: 600px; margin: 0 auto; height: 250px; margin-bottom: 20px;} .cards-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px;} }
-        @media (max-width: 768px) { .cards-grid { grid-template-columns: 1fr; } .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; } .header-center-col { flex-direction: column; } }
-
-/* --- עיצוב כפתור חנות סוליבי (עגלת קניות) --- */
-        .header-nav a.store-nav-link {
-            transition: 0.3s;
-        }
-        .header-nav a.store-nav-link svg {
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .header-nav a.store-nav-link:hover {
-            background: rgba(124, 168, 86, 0.1); 
-            color: var(--brand-green) !important;
-            border-radius: 8px;
-        }
-        .header-nav a.store-nav-link:hover svg {
-            transform: translateX(-4px) scale(1.1); /* מסיע את העגלה שמאלה */
-        }
-        
-    </style>
+    <title>סוליבי ספורט | Solibi Sport - חנות מארזי פרימיום</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global-theme.css">
 </head>
 <body>
 
-   <div id="header-placeholder"></div>
-    
-    <main class="main-content">
-        
-        <aside class="side-panel panel-right">
-            <div class="panel-header">
-                <span>עידכונים חמים</span>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-green)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <span class="gold-text">SOLIBI</span> <span class="white-text">SPORT</span>
             </div>
-            <div id="updates-container">
-                </div>
-        </aside>
-
-        <aside class="side-panel panel-left">
-            <div class="panel-header" style="position: relative; display: flex; align-items: center; justify-content: center;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span>תוצאות לייב</span>
-                    <span style="color:red; font-size:14px; animation: blink 1.5s infinite;">⬤</span>
-                </div>
-                
-                <button id="ticker-toggle-btn" class="ticker-control-btn" onclick="toggleLiveTicker()" title="עצור/הפעל גלילה" style="position: absolute; left: 20px;">
-                    <svg id="ticker-pause-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-                    <svg id="ticker-play-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" style="display:none;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                </button>
-            </div>
-            <div id="live-container">
-                <div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;" id="live-loading">טוען משחקים... ⚽</div>
-            </div>
-        </aside>
-
-        <div class="center-wrapper">
-            
-        <div class="home-kpi-bar">
-    
-    <div class="kpi-item">
-        <div class="kpi-icon-wrap">
-            <span class="live-dot"></span>
-        </div>
-        <div class="kpi-text-col">
-            <span class="kpi-val" id="kpi-online-users">1,248</span>
-            <span class="kpi-lbl">מחוברים באתר</span>
-        </div>
-    </div>
-
-    <div class="kpi-item">
-        <div class="kpi-icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            </svg>
-        </div>
-        <div class="kpi-text-col">
-            <span class="kpi-val" id="kpi-total-users">15,420</span>
-            <span class="kpi-lbl">חברי קהילת סוליבי</span>
-        </div>
-    </div>
-
-    <div class="kpi-item">
-        <div class="kpi-icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-            </svg>
-        </div>
-        <div class="kpi-text-col">
-            <span class="kpi-val" id="kpi-active-forums">42</span>
-            <span class="kpi-lbl">פורומים פעילים</span>
-        </div>
-    </div>
-
-    <div class="kpi-item">
-        <div class="kpi-icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 2a14.5 15.5 0 0 0 0 20"></path>
-                <path d="M2 12h20"></path>
-            </svg>
-        </div>
-        <div class="kpi-text-col">
-            <span class="kpi-val" id="kpi-live-matches">0</span>
-            <span class="kpi-lbl">משחקים בלייב</span>
-        </div>
-    </div>
-
-</div>
-            <div class="cards-glass-wrapper">
-                <div class="cards-grid">
-                    
-                   <a href="tables.html" id="cube-live" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1762013315117-1c8005ad2b41?q=80&w=686&auto=format&fit=crop');">
-                        <div class="box-icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
-                        <div class="box-tag">עדכונים לייב</div>
-                        <div class="box-title">טבלאות, תוצאות וסטטיסטיקות</div>
-                        <div class="box-desc">כל הטבלאות, התוצאות והסטטיסטיקות של השחקנים מתעדכנים בזמן אמת.</div>
-                    </a>
-
-                    <a href="pantheon.html" id="cube-pantheon" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=1170&auto=format&fit=crop')">
-                        <div class="box-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div>
-                        <div class="box-tag">פרויקט הדגל</div>
-                        <div class="box-title">פנתיאון הכדורגל הישראלי</div>
-                        <div class="box-desc">דירוג 100 הישראלים הגדולים, מאגר שיאים אישיים והרכבי כל הזמנים.</div>
-                    </a>
-
-                    <a href="cards.html" id="cube-store" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1599873265732-4511510f0908?q=80&w=1170&auto=format&fit=crop');">
-                        <div class="box-icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
-                        <div class="box-tag">אספנות</div>
-                        <div class="box-title">בורסת הקלפים</div>
-                        <div class="box-desc">חיפוש קלפים חכם, מחירי שוק בזמן אמת, והמלצות השקעה יומיות.</div>
-                    </a>
-
-                    <a href="gaming.html" id="cube-gaming" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1585757318177-0570a997dc3a?q=80&w=1170&auto=format&fit=crop');">
-                        <div class="box-icon-wrap"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="17" cy="12" r="1"/><circle cx="7" cy="12" r="1"/><path d="M12 12h.01"/></svg></div>
-                        <div class="box-tag">גיימינג</div>
-                        <div class="box-title">המגרש הווירטואלי</div>
-                        <div class="box-desc">סיקורים, טקטיקות מנצחות, והמלצות ל-EA FC, ו-Football Manager.</div>
-                    </a>
-
-                    <a href="fantasy.html" id="cube-fantasy" class="square-box fantasy-highlight" style="--box-bg: url('https://images.unsplash.com/photo-1587648811400-1e4843181271?q=80&w=1331&auto=format&fit=crop');">
-                        <div class="hot-badge">HOT 🔥</div>
-                        <div class="box-icon-wrap" style="border-color: var(--brand-green);"><svg viewBox="0 0 24 24" stroke="var(--brand-green)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-                        <div class="box-tag">פנטזי</div>
-                        <div class="box-title">ליגת סוליבי</div>
-                        <div class="box-desc">משחק פנטזי מבוסס מציאות עם טוויסט ייחודי שיהפוך אתכם למכורים.</div>
-                    </a>
-
-                    <a href="scouting.html" id="cube-scouting" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1741795990628-7ec99d7d2044?q=80&w=1332&auto=format&fit=crop');">
-                        <div class="box-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-                        <div class="box-tag">סקאוטינג</div>
-                        <div class="box-title">ניתוח שחקנים</div>
-                        <div class="box-desc">ניתוח אנליסטי מקיף של שחקנים, בעזרת מודל סקאוטינג ייחודי שלנו.</div>
-                    </a>
-
-                    <a href="activity.html" id="cube-activity" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=1170&auto=format&fit=crop');">
-                        <div class="box-icon-wrap"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-                        <div class="box-tag">פנאי</div>
-                        <div class="box-title">מרכז הפעילות</div>
-                        <div class="box-desc">טריוויה, חידונים, סקרים והצבעות. בואו להפגין ידע, לטפס בדירוג ולזכות בפרסים שווים.</div>
-                    </a>
-
-                    <a href="community.html" id="cube-community" class="square-box" style="--box-bg: url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1170&auto=format&fit=crop');">
-                        <div class="box-icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-                        <div class="box-tag">קהילה</div>
-                        <div class="box-title">פורומים וליגות</div>
-                        <div class="box-desc">פתחו ליגות חברים פרטיות, קראו טורי אוהדים, והצטרפו לדיונים הסוערים ולצ'אט הלייב בזמן משחקים.</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <div id="ticker-placeholder"></div>
-
-   <script src="translations.js"></script>
-   <script src="matchEvents.js"></script>
-
-    <script>
-        if (!document.getElementById('goal-animations-style')) {
-            const style = document.createElement('style');
-            style.id = 'goal-animations-style';
-            style.innerHTML = `@keyframes goalAlertPulse { 0% { transform: scale(0.95); background: rgba(122, 153, 102, 0.85); box-shadow: 0 0 5px rgba(122,153,102,0.5); } 100% { transform: scale(1.05); background: rgba(122, 153, 102, 1); box-shadow: 0 0 15px rgba(122,153,102,1); } }`;
-            document.head.appendChild(style);
-        }
-
-        window.translateName = function(name) {
-            if (!name) return name;
-            if (typeof myDictionary !== 'undefined' && myDictionary[name]) { return myDictionary[name]; }
-            return name;
-        };
-
-        const LEAGUE_NAMES_MAP = {
-            383: "ליגת העל", 384: "ליגה לאומית", 39: "פרמייר ליג", 140: "ספרדית ראשונה", 135: "איטלקית ראשונה", 78: "גרמנית ראשונה", 61: "צרפתית ראשונה",
-            40: "אנגלית שנייה", 41: "אנגלית שלישית", 42: "אנגלית רביעית", 141: "ספרדית שנייה", 136: "איטלקית שנייה", 79: "גרמנית שנייה", 62: "צרפתית שנייה",
-            88: "הולנדית ראשונה", 144: "בלגית ראשונה", 94: "פורטוגלית ראשונה", 203: "טורקית ראשונה", 179: "סקוטית ראשונה", 119: "דנית ראשונה",
-            113: "שבדית ראשונה", 106: "שווייצרית ראשונה", 218: "אוסטרית ראשונה", 172: "בולגרית ראשונה", 286: "סרבית ראשונה", 271: "הונגרית ראשונה",
-            332: "סלובקית ראשונה", 373: "סלובנית ראשונה", 288: "דרום אפריקאית ראשונה", 362: "גיאורגית ראשונה", 343: "אסטונית ראשונה",
-            345: "אזרבייג'אנית", 71: "ברזילאית ראשונה", 72: "ברזילאית שנייה", 128: "ארגנטינאית ראשונה", 239: "קולומביאנית ראשונה",
-            268: "אורוגוואית ראשונה", 253: "אמריקאית ראשונה", 307: "סעודית ראשונה", 301: "ליגת האמירויות", 2: "ליגת האלופות",
-            3: "הליגה האירופית", 848: "ליגת הקונפרנס", 13: "ליברטדורס", 11: "סודאמריקנה", 1: "מונדיאל",
-            283: "רומנית ראשונה", 197: "יוונית ראשונה", 318: "קפריסאית ראשונה", 333: "אוקראינית ראשונה", 235: "רוסית ראשונה",
-            107: "פולנית ראשונה", 262: "מקסיקנית ראשונה", 98: "יפנית ראשונה", 292: "דרום קוריאנית", 169: "סינית ראשונה",
-            233: "מצרית ראשונה", 200: "מרוקאית ראשונה", 188: "אוסטרלית ראשונה", 5: "ליגת האומות", 4: "יורו", 9: "קופה אמריקה", 17: "אליפות אסיה", 6: "אליפות אפריקה"
-        };
-
-        const ORDERED_LEAGUES = [
-            383, 384, 39, 140, 135, 78, 61,
-            40, 41, 42, 141, 136, 79, 62, 88, 144, 94, 203, 179, 119, 113, 106, 218, 107, 345, 332, 271, 286, 373,
-            283, 172, 197, 318, 333, 235, 362, 343, 71, 72, 128, 268, 239, 265, 253, 262, 307, 301, 98, 292, 169, 288, 233, 200, 188,
-            2, 3, 848, 5, 4, 13, 11, 9, 17, 6, 1
-        ];
-
-        window.matchGoalTracker = window.matchGoalTracker || {};
-        window.allLiveMatches = []; 
-
-        // פונקציה לעצירה והפעלה של גלילת הלייב
-        window.toggleLiveTicker = function() {
-            const track = document.getElementById('live-track');
-            const pauseIcon = document.getElementById('ticker-pause-icon');
-            const playIcon = document.getElementById('ticker-play-icon');
-            
-            if (!track) return;
-
-            if (track.classList.contains('paused-manually')) {
-                // אם כרגע במצב מושהה -> החזר לפעולה
-                track.classList.remove('paused-manually');
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-            } else {
-                // אם כרגע פועל -> השהה
-                track.classList.add('paused-manually');
-                pauseIcon.style.display = 'none';
-                playIcon.style.display = 'block';
-            }
-        };
-
-        async function fetchLiveMatches() {
-            try {
-                const response = await fetch('/api/football');
-                const data = await response.json();
-                window.allLiveMatches = data.response || [];
-
-                window.allLiveMatches.sort((a, b) => {
-                    let idxA = ORDERED_LEAGUES.indexOf(a.league.id);
-                    let idxB = ORDERED_LEAGUES.indexOf(b.league.id);
-                    if (idxA === -1) idxA = 999;
-                    if (idxB === -1) idxB = 999;
-                    return idxA - idxB;
-                });
-
-                renderLiveTicker();
-                
-            } catch (error) { console.error("שגיאה במשיכת נתונים בלייב:", error); }
-        }
-
-        function renderLiveTicker() {
-            const container = document.getElementById('live-container');
-            const loader = document.getElementById('live-loading');
-            if(loader) loader.style.display = 'none';
-
-            if (!window.allLiveMatches || window.allLiveMatches.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding: 40px 10px; font-weight: bold; color: #112845;">אין כרגע משחקים חיים בעולם ⚽</div>';
-                return;
-            }
-
-            // לוקח עד 20 משחקים לטיקר כדי לא להעמיס את הדפדפן
-            const matchesToShow = window.allLiveMatches.slice(0, 20);
-            
-            const grouped = {};
-            matchesToShow.forEach(m => {
-                let leagueName = LEAGUE_NAMES_MAP[m.league.id];
-                if (!leagueName) leagueName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
-                if(!grouped[leagueName]) grouped[leagueName] = { logo: m.league.logo, matches: [] };
-                grouped[leagueName].matches.push(m);
-            });
-
-            let allHtml = '';
-
-            Object.keys(grouped).forEach(leagueName => {
-                const leagueData = grouped[leagueName];
-                
-                // כותרת הליגה החיצונית שביקשת להשאיר - היא כעת נגללת יחד עם כל התוכן למעלה
-                allHtml += `
-                    <div class="live-league-header">
-                        <img src="${leagueData.logo}">
-                        <span>${leagueName}</span>
-                    </div>
-                `;
-                
-                leagueData.matches.forEach(m => {
-                    const homeTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.home.name) : m.teams.home.name;
-                    const awayTeam = typeof window.translateName === 'function' ? window.translateName(m.teams.away.name) : m.teams.away.name;
-                    const fixId = m.fixture.id;
-                    const currentHome = m.goals.home !== null ? m.goals.home : 0;
-                    const currentAway = m.goals.away !== null ? m.goals.away : 0;
-                    
-                    if (window.matchGoalTracker[fixId]) {
-                        const prev = window.matchGoalTracker[fixId];
-                        if (currentHome > prev.home || currentAway > prev.away) window.matchGoalTracker[fixId].goalTime = Date.now();
-                        window.matchGoalTracker[fixId].home = currentHome;
-                        window.matchGoalTracker[fixId].away = currentAway;
-                    } else {
-                        window.matchGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
-                    }
-
-                    let matchStatus = '';
-                    const shortStatus = m.fixture.status.short;
-                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) matchStatus = 'סיום';
-                    else if (shortStatus === 'HT') matchStatus = 'מחצית';
-                    else if (m.fixture.status.elapsed) matchStatus = `${m.fixture.status.elapsed}'`;
-                    else matchStatus = 'לא התחיל';
-                    
-                    const isGoalRecent = (Date.now() - window.matchGoalTracker[fixId].goalTime) < 15000;
-                    const goalOverlay = isGoalRecent ? `<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #7a9966; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; border-radius: 6px; z-index: 10; animation: goalAlertPulse 0.6s infinite alternate;">שער!</div>` : '';
-
-                    const safeHomeName = encodeURIComponent(m.teams.home.name);
-                    const safeAwayName = encodeURIComponent(m.teams.away.name);
-
-                    allHtml += `
-                        <a href="#" onclick="if(typeof openMatchEvents==='function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}'); return false;" class="live-match-card-light">
-                            <div class="match-teams-col">
-                                <div class="team-line"><img src="${m.teams.home.logo}"> <span>${homeTeam}</span></div>
-                                <div class="team-line"><img src="${m.teams.away.logo}"> <span>${awayTeam}</span></div>
-                            </div>
-                            <div class="match-score-col">
-                                ${goalOverlay}
-                                <span class="minute">${matchStatus}</span>
-                                <div style="display: flex; flex-direction: column; gap: 6px; align-items: center;">
-                                    <span class="score-num">${currentHome}</span>
-                                    <span class="score-num">${currentAway}</span>
-                                </div>
-                            </div>
-                        </a>
-                    `;
-                });
-            });
-
-            // יצירת הטיקר הגולל
-            container.innerHTML = `<div class="live-track" id="live-track">${allHtml}</div>`;
-            const track = document.getElementById('live-track');
-            
-            // בדיקה האם יש מספיק משחקים בשביל הפעלת הגלילה. אם יש מעט, הם ישארו סטטיים במקום.
-            if (track.scrollHeight > container.clientHeight) {
-                track.innerHTML += track.innerHTML; // שכפול התוכן כדי ליצור לופ אינסופי וחלק
-                track.classList.add('scrolling');
-                
-                // חישוב מהירות גלילה קבועה ונעימה לעין לפי גובה התוכן (איטי יותר כדי שיוכלו לקרוא)
-                const duration = (track.scrollHeight / 2) * 0.05; 
-                track.style.animationDuration = `${duration}s`;
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchLiveMatches();
-            setInterval(fetchLiveMatches, 60000); 
-        });
-  
-    </script>
-<script>
-    fetch('ticker.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('ticker-placeholder').innerHTML = data;
-        })
-        .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
-
-// טעינת השורה העליונה (הדר)
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                const placeholder = document.getElementById('header-placeholder');
-                if(placeholder) placeholder.innerHTML = data;
-            })
-            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
-    
-</script>
-
-    <script>
-        // שתי נגלות של 10 פריטים כל אחת, עם קישורים ישירים לדפים!
-        const updatesBatches = [
-            [
-                { link: 'fantasy.html', tag: 'פנטזי', title: 'ליגת סוליבי: עדכוני הרכבים למחזור', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>' },
-                { link: 'cards.html', tag: 'אספנות', title: 'בורסת הקלפים: מארזים חדשים נחתו', icon: '<circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>' },
-                { link: 'tables.html', tag: 'עדכונים לייב', title: 'צפו בתוצאות, טבלאות וסטטיסטיקות', icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>' },
-                { link: 'pantheon.html', tag: 'פרויקט הדגל', title: 'פנתיאון הכדורגל: דירוג 100 הגדולים', icon: '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>' },
-                { link: 'community.html', tag: 'קהילה', title: 'דיוני האוהדים לקראת משחקי העונה', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' },
-                { link: 'scouting.html', tag: 'סקאוטינג', title: 'ניתוח אנליטי: הכישרון הבא נחשף', icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>' },
-                { link: 'gaming.html', tag: 'גיימינג', title: 'מדריך טקטיקה מנצחת ל-EA FC', icon: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="17" cy="12" r="1"/><circle cx="7" cy="12" r="1"/><path d="M12 12h.01"/>' },
-                { link: 'activity.html', tag: 'פנאי', title: 'חידון טריוויה: בואו לזכות בפרסים', icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
-                { link: 'store.html', tag: 'חנות סוליבי', title: 'מבצע מיוחד: 10% הנחה על הכל', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/>' },
-                { link: 'fantasy.html', tag: 'טיפים', title: 'מי יהיה ה-MVP של המחזור?', icon: '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>' }
-            ],
-            [
-                { link: 'fantasy.html', tag: 'פנטזי', title: 'קפטן המחזור: מי יביא הכי הרבה נקודות?', icon: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>' },
-                { link: 'cards.html', tag: 'אספנות', title: 'קלף נדיר במיוחד הוצע למכירה בבורסה', icon: '<circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>' },
-                { link: 'tables.html', tag: 'עדכונים לייב', title: 'דרמה בדקות הסיום: עדכון תוצאות חי', icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>' },
-                { link: 'pantheon.html', tag: 'פרויקט הדגל', title: 'השחקן ששבר את כל השיאים נכנס לפנתיאון', icon: '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>' },
-                { link: 'community.html', tag: 'קהילה', title: 'סקר אוהדים: מי תיקח אליפות העונה?', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' },
-                { link: 'scouting.html', tag: 'סקאוטינג', title: 'דו"ח סקאוט מקיף על פריצת העונה בצרפת', icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>' },
-                { link: 'gaming.html', tag: 'גיימינג', title: 'המערך שמשגע את שחקני הרשת בפיפ"א', icon: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="17" cy="12" r="1"/><circle cx="7" cy="12" r="1"/><path d="M12 12h.01"/>' },
-                { link: 'activity.html', tag: 'פנאי', title: 'הצבעת השבוע: בחרו את שער המחזור!', icon: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>' },
-                { link: 'store.html', tag: 'חנות סוליבי', title: 'חולצות רטרו אקסקלוסיביות חזרו למלאי', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/>' },
-                { link: 'tables.html', tag: 'סיכום מחזור', title: 'כל מה שקרה הערב: הטבלה המעודכנת', icon: '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>' }
-            ]
-        ];
-
-        let currentUpdateBatch = 0;
-        
-        function renderUpdates() {
-            const container = document.getElementById('updates-container');
-            if(!container) return;
-
-            const batch = updatesBatches[currentUpdateBatch];
-
-            // שים לב: אנחנו משתמשים בתגית <a> במקום <div> כדי שזו תהיה לחיצה שמעבירה דף!
-            container.innerHTML = batch.map((item, index) => `
-                <a href="${item.link}" class="updates-item" style="animation-delay: ${index * 0.05}s">
-                    <div class="updates-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">${item.icon}</svg>
-                    </div>
-                    <div class="updates-text">
-                        <span class="updates-label">${item.tag}</span>
-                        <span class="updates-title">${item.title}</span>
-                    </div>
+            <nav class="main-nav">
+                <a href="index.html" class="active">בית</a>
+                <a href="store.html">חנות</a>
+                <a href="fantasy.html">פנטזי</a>
+                <a href="cards.html">קלפים</a>
+                <a href="league.html">תוצאות</a>
+            </nav>
+            <div class="header-actions">
+                <a href="cart.html" class="cart-btn">
+                    <i class="fa-solid fa-basket-shopping"></i> עגלה
                 </a>
-            `).join('');
+                <a href="login.html" class="login-btn">חבר מועדון / כניסה</a>
+            </div>
+        </div>
+    </header>
 
-            currentUpdateBatch = (currentUpdateBatch + 1) % updatesBatches.length;
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderUpdates();
-            // מתחלף כל 10 שניות (10000 אלפיות שנייה)
-            setInterval(renderUpdates, 10000); 
-        });
-
-        // ==========================================
-        // מנוע עדכון מדדים (KPIs) - דף הבית הראשי
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            const onlineUsersEl = document.getElementById('kpi-online-users');
-            const totalUsersEl = document.getElementById('kpi-total-users');
-            const activeForumsEl = document.getElementById('kpi-active-forums');
-            const liveMatchesEl = document.getElementById('kpi-live-matches');
-
-            if (!onlineUsersEl) return;
-
-            // פונקציית עזר למספרים עם פסיקים, אם הפונקציה הגלובלית לא קיימת
-            const formatNum = (num) => window.formatNumberWithCommas ? window.formatNumberWithCommas(num) : num.toLocaleString();
-
-            function updateKpiValue(element, newValue) {
-                if (!element) return;
-                element.innerText = formatNum(newValue);
-                element.classList.add('updated');
-                setTimeout(() => {
-                    element.classList.remove('updated');
-                }, 300);
-            }
-
-            // נתוני התחלה לסימולציה
-            let currentOnline = 1248;
-            let currentTotalUsers = 15420;
-            let currentForums = 42;
-
-            // 1. עדכון כמות מחוברים ומשתמשים חדשים
-            setInterval(() => {
-                const change = Math.floor(Math.random() * 9) - 3; 
-                currentOnline += change;
-                if (currentOnline < 1000) currentOnline = 1000; 
-                updateKpiValue(onlineUsersEl, currentOnline);
-
-                if (Math.random() > 0.85) {
-                    currentTotalUsers += 1;
-                    updateKpiValue(totalUsersEl, currentTotalUsers);
-                }
-            }, 4000);
-
-            // 2. עדכון פורומים פעילים 
-            setInterval(() => {
-                if (Math.random() > 0.9) { 
-                    currentForums += 1;
-                    updateKpiValue(activeForumsEl, currentForums);
-                }
-            }, 12000);
-            
-            // 3. חיבור אמיתי למנוע ה-Live Score
-            setInterval(() => {
-                if(window.allLiveMatches && liveMatchesEl) {
-                    const realLiveCount = window.allLiveMatches.length;
-                    const currentDisplayed = parseInt(liveMatchesEl.innerText.replace(/,/g, ''));
-                    if(currentDisplayed !== realLiveCount && !isNaN(realLiveCount)) {
-                        updateKpiValue(liveMatchesEl, realLiveCount);
-                    }
-                }
-            }, 5000); 
-        });
+    <div class="site-layout">
         
-    </script>
-    
-<script src="search.js"></script>
- <script type="module" src="auth.js"></script>   
+        <aside class="sidebar sidebar-left">
+            <div class="sidebar-header">
+                <h3><i class="fa-solid fa-satellite-dish"></i> תוצאות לייב</h3>
+            </div>
+            <div class="sidebar-content">
+                <div class="placeholder-widget">ווידג'ט תוצאות לייב פעיל...</div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <section class="hero-banner">
+                <h1>קולקציית מארזי הפרימיום 2026</h1>
+                <p>רמה אחרת של איסוף חווייתי - מהדורה מוגבלת</p>
+            </section>
+
+            <section class="store-section">
+                <h2 class="section-title">המוצרים שלנו</h2>
+                
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-badge">נמכר ביותר</div>
+                        <div class="product-image">
+                            <i class="fa-solid fa-box-open box-icon"></i>
+                        </div>
+                        <h3>מארז כוכבי ישראל</h3>
+                        <p class="product-desc">מארז כוכבי ישראל מבית סוליבי ספורט הכולל קלפים נדירים וחתימות.</p>
+                        <div class="product-footer">
+                            <span class="price">₪29.00</span>
+                            <button class="add-to-cart-btn">הוסף לעגלה</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-badge gold-badge">פרימיום</div>
+                        <div class="product-image">
+                            <i class="fa-solid fa-gifts box-icon gold-text"></i>
+                        </div>
+                        <h3>קופסת ההפתעה הזהובה</h3>
+                        <p class="product-desc">מיסטרי בוקס יוקרתי המכיל קלפי אספנות, מרצ'נדייז וחוויה בלתי נשכחת.</p>
+                        <div class="product-footer">
+                            <span class="price">₪59.00</span>
+                            <button class="add-to-cart-btn">הוסף לעגלה</button>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fa-solid fa-shirt box-icon"></i>
+                        </div>
+                        <h3>מארז הפרמייר ליג</h3>
+                        <p class="product-desc">מארז מפואר המוקדש כולו לליגה האנגלית הטובה בעולם.</p>
+                        <div class="product-footer">
+                            <span class="price">₪39.00</span>
+                            <button class="add-to-cart-btn">הוסף לעגלה</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tools-section">
+                <h2 class="section-title">זירת המשחקים והכלים</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <i class="fa-solid fa-trophy tool-icon"></i>
+                        <h3>פנטזי סוליבי</h3>
+                        <p>בנה את נבחרת החלומות שלך, התחרה מול חברים ותפוס את הפסגה.</p>
+                        <a href="fantasy.html" class="tool-link">כניסה למשחק</a>
+                    </div>
+                    <div class="tool-card">
+                        <i class="fa-solid fa-chart-line tool-icon"></i>
+                        <h3>בורסת הקלפים</h3>
+                        <p>עקוב אחרי שווי הקלפים שלך בלייב, נתח שוק וסחר חכם.</p>
+                        <a href="cards.html" class="tool-link">לבורסת הקלפים</a>
+                    </div>
+                    <div class="tool-card">
+                        <i class="fa-solid fa-list-ol tool-icon"></i>
+                        <h3>תוצאות וטבלאות</h3>
+                        <p>סטטיסטיקות מלאות, לוחות משחקים וטבלאות מכל הליגות בעולם.</p>
+                        <a href="league.html" class="tool-link">למרכז התוצאות</a>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <aside class="sidebar sidebar-right">
+            <div class="sidebar-header">
+                <h3><i class="fa-solid fa-fire"></i> עדכונים חמים</h3>
+            </div>
+            <div class="sidebar-content">
+                <div class="placeholder-widget">הודעות מערכת ומבצעים רצים...</div>
+            </div>
+        </aside>
+
+    </div>
+
+    <div class="bottom-ticker">
+        <div class="ticker-wrap">
+            <div class="ticker-items">
+                <span class="ticker-item">🔥 המכירה המוקדמת של מארזי המונדיאל החלה!</span>
+                <span class="ticker-item">🏆 שחקן השבוע בפנטזי: עומרי גאנדלמן!</span>
+                <span class="ticker-item">⚡ קלף זהב של ליאל עבדה נמכר במחיר שיא בבורסה!</span>
+                <span class="ticker-item">📦 משלוחים חינם בקנייה מעל ₪199!</span>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <p>SOLIBI SPORT &copy; 2026 | כל הזכויות שמורות לחנות מארזי הספורט המובילה בישראל</p>
+    </footer>
+
 </body>
 </html>
