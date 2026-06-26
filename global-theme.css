@@ -48,11 +48,11 @@ ul { list-style: none; }
     align-items: center;
     max-width: 100%;
     padding: 0 40px;
-    position: relative; /* מאפשר הצמדה אבסולוטית של הלוגו */
+    position: relative; 
 }
 .logo-area { 
     position: absolute;
-    right: 40px; /* מקבע את הלוגו תמיד בצד ימין */
+    right: 40px; 
     font-size: 26px; 
     font-weight: 900; 
     letter-spacing: 1px; 
@@ -63,37 +63,61 @@ ul { list-style: none; }
 .header-center-group {
     display: flex;
     align-items: center;
-    gap: 30px; 
 }
 
-.main-nav { display: flex; align-items: center; }
-.main-nav > a {
+/* התפריט האחיד (ריווח של 20 פיקסלים בין הכותרות) */
+.main-nav { 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+}
+
+/* כותרות רגילות ללא רקע (בית, עגלה וכו') */
+.main-nav > a:not(.login-btn-header) {
     color: #000;
-    margin: 0 8px;
     font-weight: 700;
     font-size: 16px;
-    transition: all 0.3s;
-    padding: 5px 12px;
-    border-radius: 4px;
+    transition: color 0.3s;
+    background: transparent;
 }
-.main-nav > a:hover, .main-nav > a.active {
-    color: var(--brand-gold);
-    background-color: #000;
+.main-nav > a:not(.login-btn-header):hover {
+    color: #fff; /* צבע טקסט לבן במעבר עכבר - ללא רקע */
 }
 
+/* הכפתור היחיד עם רקע שחור (כניסה / חבר מועדון) */
+.login-btn-header {
+    background: #000;
+    color: var(--brand-gold);
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.login-btn-header:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+}
+
+/* הפרדת "עוד באתר" שמאלה מהשאר */
+.dropdown.push-left {
+    margin-right: 35px; /* דוחף שמאלה מעבר למרווח הרגיל */
+}
+
+/* תפריט נפתח */
 .dropdown { position: relative; display: inline-block; }
 .dropbtn {
     background-color: transparent; color: #000;
-    padding: 5px 12px; font-size: 16px; font-weight: 700;
+    font-size: 16px; font-weight: 700;
     font-family: 'Rubik', sans-serif; border: none; cursor: pointer;
-    border-radius: 4px; transition: all 0.3s; margin: 0 8px;
+    transition: all 0.3s;
 }
-.dropdown:hover .dropbtn { background-color: #000; color: var(--brand-gold); }
+.dropdown:hover .dropbtn { color: #fff; }
 .dropdown-content {
     display: none; position: absolute; background-color: #000;
     min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
     z-index: 101; border: 1px solid var(--brand-gold); border-radius: 6px;
-    top: 100%; right: 0; overflow: hidden;
+    top: 150%; right: 0; overflow: hidden;
 }
 .dropdown-content a {
     color: var(--text-white); padding: 12px 16px; text-decoration: none;
@@ -103,21 +127,6 @@ ul { list-style: none; }
 .dropdown-content a i { color: var(--brand-gold); margin-left: 8px; width: 20px; text-align: center; }
 .dropdown-content a:hover { background-color: #1a1a1a; color: var(--brand-gold); }
 .dropdown:hover .dropdown-content { display: block; }
-
-.header-actions { display: flex; gap: 10px; }
-.header-actions a {
-    background: #000; color: var(--brand-gold);
-    padding: 8px 15px; border-radius: 6px; font-weight: 700;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: inline-block;
-}
-.header-actions a:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
-
-/* תיקון היפוך הפלוס בעברית */
-.num-ltr {
-    direction: ltr;
-    display: inline-block;
-}
 
 /* ---------------------------------
    מבנה דאשבורד
@@ -189,7 +198,7 @@ ul { list-style: none; }
 .arrow-left { left: -15px; }
 
 .product-card {
-    flex: 0 0 calc(33.333() - 14px); min-width: 230px;
+    flex: 0 0 calc(33.333% - 14px); min-width: 230px;
     background-color: var(--bg-card); border: 1px solid var(--border-gold);
     border-radius: 8px; padding: 20px 15px; text-align: center;
     position: relative; transition: transform 0.3s, border-color 0.3s;
