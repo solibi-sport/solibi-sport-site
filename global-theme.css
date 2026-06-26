@@ -20,7 +20,7 @@ body {
     background-color: var(--bg-black);
     color: var(--text-white);
     height: 100vh;
-    overflow: hidden; /* נועל כל גלילה עודפת */
+    overflow: hidden; 
     display: flex;
     flex-direction: column;
 }
@@ -29,13 +29,13 @@ a { text-decoration: none; }
 ul { list-style: none; }
 
 /* פסי גלילה פנימיים */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-black); }
 ::-webkit-scrollbar-thumb { background: var(--brand-gold-dark); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--brand-gold-light); }
 
 /* ---------------------------------
-   הדר וניווט (כולל תפריט נפתח)
+   הדר וניווט
 --------------------------------- */
 .main-header {
     background-color: var(--brand-gold);
@@ -43,7 +43,6 @@ ul { list-style: none; }
     padding: 10px 0;
     z-index: 100;
 }
-
 .header-container {
     display: flex;
     justify-content: space-between;
@@ -51,7 +50,6 @@ ul { list-style: none; }
     max-width: 100%;
     padding: 0 40px;
 }
-
 .logo-area { font-size: 26px; font-weight: 900; letter-spacing: 1px; }
 .gold-text, .white-text { color: #000; }
 
@@ -70,95 +68,50 @@ ul { list-style: none; }
     background-color: #000;
 }
 
-/* עיצוב התפריט הנפתח */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
+/* תפריט נפתח */
+.dropdown { position: relative; display: inline-block; }
 .dropbtn {
-    background-color: transparent;
-    color: #000;
-    padding: 5px 12px;
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'Rubik', sans-serif;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.3s;
-    margin: 0 10px;
+    background-color: transparent; color: #000;
+    padding: 5px 12px; font-size: 16px; font-weight: 700;
+    font-family: 'Rubik', sans-serif; border: none; cursor: pointer;
+    border-radius: 4px; transition: all 0.3s; margin: 0 10px;
 }
-.dropdown:hover .dropbtn {
-    background-color: #000;
-    color: var(--brand-gold);
-}
+.dropdown:hover .dropbtn { background-color: #000; color: var(--brand-gold); }
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #000;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-    z-index: 101;
-    border: 1px solid var(--brand-gold);
-    border-radius: 6px;
-    top: 100%;
-    right: 0;
-    overflow: hidden;
+    display: none; position: absolute; background-color: #000;
+    min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    z-index: 101; border: 1px solid var(--brand-gold); border-radius: 6px;
+    top: 100%; right: 0; overflow: hidden;
 }
 .dropdown-content a {
-    color: var(--text-white);
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-weight: 400;
-    font-size: 15px;
-    border-bottom: 1px solid #1a1a1a;
-    transition: 0.2s;
+    color: var(--text-white); padding: 12px 16px; text-decoration: none;
+    display: block; font-weight: 400; font-size: 15px;
+    border-bottom: 1px solid #1a1a1a; transition: 0.2s;
 }
-.dropdown-content a i {
-    color: var(--brand-gold);
-    margin-left: 8px;
-    width: 20px;
-    text-align: center;
-}
-.dropdown-content a:hover {
-    background-color: #1a1a1a;
-    color: var(--brand-gold);
-}
-.dropdown:hover .dropdown-content {
-    display: block;
-}
+.dropdown-content a i { color: var(--brand-gold); margin-left: 8px; width: 20px; text-align: center; }
+.dropdown-content a:hover { background-color: #1a1a1a; color: var(--brand-gold); }
+.dropdown:hover .dropdown-content { display: block; }
 
 .header-actions a {
-    background: #000;
-    color: var(--brand-gold);
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-weight: 700;
-    margin-right: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    background: #000; color: var(--brand-gold);
+    padding: 8px 15px; border-radius: 6px; font-weight: 700;
+    margin-right: 10px; transition: transform 0.2s, box-shadow 0.2s;
     display: inline-block;
 }
-.header-actions a:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
+.header-actions a:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); }
 
 /* ---------------------------------
-   מבנה דאשבורד רספונסיבי ודינמי
+   מבנה דאשבורד
 --------------------------------- */
 .site-layout {
     display: grid;
-    /* ה-clamp מאפשר גדילה וכיווץ לפי גודל המסך מ-220px ועד 320px */
     grid-template-columns: clamp(220px, 18vw, 320px) 1fr clamp(220px, 18vw, 320px);
     gap: clamp(15px, 2vw, 25px);
     margin: 20px;
     flex: 1;
-    /* מחשב גובה מדויק: 100% פחות גובה ההדר, הטיקר והמרווחים */
     height: calc(100vh - 145px); 
     min-height: 0;
 }
-
 .sidebar {
     background-color: var(--bg-card);
     border: 1px solid var(--border-gold);
@@ -168,65 +121,85 @@ ul { list-style: none; }
     overflow-y: auto; 
 }
 .sidebar-header h3 {
-    color: var(--brand-gold);
-    font-size: 17px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid var(--border-gold);
-    padding-bottom: 10px;
-    position: sticky;
-    top: 0;
-    background: var(--bg-card);
-    z-index: 10;
+    color: var(--brand-gold); font-size: 17px; margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-gold); padding-bottom: 10px;
+    position: sticky; top: 0; background: var(--bg-card); z-index: 10;
 }
-.placeholder-widget {
-    color: var(--text-gray);
-    font-size: 14px;
-    text-align: center;
-    padding: 20px 0;
-}
+.placeholder-widget { color: var(--text-gray); font-size: 14px; text-align: center; padding: 20px 0; }
 
-.main-content {
-    height: 100%;
-    overflow-y: auto;
-    padding-right: 5px;
-}
+.main-content { height: 100%; overflow-y: auto; padding-right: 5px; }
 
 /* ---------------------------------
-   תוכן מרכזי - החנות
+   באנר חנות
 --------------------------------- */
 .hero-banner {
     background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
-    text-align: center;
-    padding: clamp(30px, 4vw, 50px) 20px;
-    border-radius: 8px;
-    border: 1px solid var(--brand-gold);
-    margin-bottom: 30px;
-    box-shadow: inset 0 0 50px rgba(212, 175, 55, 0.1);
+    text-align: center; padding: clamp(25px, 3vw, 40px) 20px;
+    border-radius: 8px; border: 1px solid var(--brand-gold);
+    margin-bottom: 25px; box-shadow: inset 0 0 50px rgba(212, 175, 55, 0.1);
 }
-.hero-banner h1 {
-    color: var(--brand-gold);
-    font-size: clamp(24px, 2.5vw, 36px);
-    margin-bottom: 10px;
-}
-.hero-banner p { color: var(--text-white); font-size: clamp(14px, 1.5vw, 18px); }
+.hero-banner h1 { color: var(--brand-gold); font-size: clamp(22px, 2.3vw, 34px); margin-bottom: 8px; }
+.hero-banner p { color: var(--text-white); font-size: clamp(13px, 1.3vw, 17px); }
 
 .section-title {
-    color: var(--text-white);
-    font-size: 22px;
-    margin-bottom: 20px;
-    text-align: right;
-    border-right: 4px solid var(--brand-gold);
-    padding-right: 15px;
+    color: var(--text-white); font-size: 20px; margin-bottom: 15px;
+    text-align: right; border-right: 4px solid var(--brand-gold); padding-right: 15px;
 }
 
-/* גריד מוצרים מתכווץ */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    padding-bottom: 20px;
+/* ---------------------------------
+   מנגנון הקרוסלה (Carousel)
+--------------------------------- */
+.carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 35px;
+    width: 100%;
 }
+.products-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    white-space: nowrap;
+    padding: 10px 5px;
+    width: 100%;
+    /* מסתיר את פס הגלילה הדיפולטיבי של הדפדפן לנוחות מירבית */
+    scrollbar-width: none; 
+}
+.products-carousel::-webkit-scrollbar { display: none; }
+
+/* חצי שליטה של הקרוסלה */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--brand-gold);
+    color: var(--brand-gold);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.2s;
+}
+.carousel-arrow:hover {
+    background-color: var(--brand-gold);
+    color: #000;
+    box-shadow: 0 0 15px var(--brand-gold-dark);
+}
+.arrow-right { right: -15px; }
+.arrow-left { left: -15px; }
+
+/* כרטיס מוצר רגיל קרוסלה */
 .product-card {
+    flex: 0 0 calc(33.333% - 14px); /* שלוש קוביות בדיוק מוצגות בו זמנית */
+    min-width: 230px;
     background-color: var(--bg-card);
     border: 1px solid var(--border-gold);
     border-radius: 8px;
@@ -238,23 +211,16 @@ ul { list-style: none; }
 .product-card:hover {
     transform: translateY(-5px);
     border-color: var(--brand-gold);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
 .product-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #333;
-    color: #fff;
-    padding: 3px 8px;
-    font-size: 11px;
-    border-radius: 4px;
+    position: absolute; top: 12px; right: 12px;
+    background: #333; color: #fff; padding: 3px 8px;
+    font-size: 11px; border-radius: 4px;
 }
-.gold-badge { background: var(--brand-gold); color: #000; font-weight: bold; }
-.box-icon { font-size: 50px; color: #444; margin: 20px 0; transition: color 0.3s; }
+.box-icon { font-size: 50px; color: #444; margin: 15px 0; transition: color 0.3s; }
 .product-card:hover .box-icon { color: var(--brand-gold-light); }
-.product-card h3 { margin-bottom: 8px; font-size: 17px; }
-.product-desc { font-size: 13px; color: var(--text-gray); margin-bottom: 20px; height: 38px; }
+.product-card h3 { margin-bottom: 8px; font-size: 17px; white-space: normal; }
+.product-desc { font-size: 13px; color: var(--text-gray); margin-bottom: 20px; height: 38px; white-space: normal; }
 .product-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #333; padding-top: 15px; }
 .price { color: var(--brand-gold); font-size: 20px; font-weight: bold; }
 .add-to-cart-btn {
@@ -265,19 +231,74 @@ ul { list-style: none; }
 }
 .add-to-cart-btn:hover { background: var(--brand-gold); color: #000; }
 
+/* 🔥 עיצוב מיוחד: מארז הפרימיום המוזהב (הפוך) 🔥 */
+.product-card.premium-gold-card {
+    background: linear-gradient(135deg, var(--brand-gold-dark) 0%, var(--brand-gold-light) 50%, var(--brand-gold-dark) 100%);
+    border: 1px solid #fff;
+}
+.premium-gold-card h3, 
+.premium-gold-card .product-desc,
+.premium-gold-card .price {
+    color: #000 !important;
+    font-weight: 700;
+}
+.premium-gold-card .box-icon { color: #222; }
+.premium-gold-card .product-badge { background: #000; color: var(--brand-gold); font-weight: bold; }
+.premium-gold-card .add-to-cart-btn {
+    background: #000;
+    color: var(--brand-gold);
+    border: 1px solid #000;
+}
+.premium-gold-card .add-to-cart-btn:hover {
+    background: #222;
+    color: #fff;
+}
+.premium-gold-card .product-footer { border-top: 1px solid rgba(0, 0, 0, 0.15); }
+
+/* ---------------------------------
+   מדור מיסטרי בוקס (מלבן רחב)
+--------------------------------- */
+.mystery-showcase-box {
+    width: 100%;
+    background-color: var(--bg-card);
+    border: 2px dashed var(--border-gold);
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
+}
+.mystery-placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+.placeholder-icon {
+    font-size: 55px;
+    color: #333;
+}
+.mystery-placeholder-content p {
+    color: var(--text-gray);
+    font-size: 15px;
+}
+.price-tag-large {
+    background-color: #000;
+    color: var(--brand-gold);
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    border: 1px solid var(--border-gold);
+}
+
 /* ---------------------------------
    טיקר רץ למטה
 --------------------------------- */
 .bottom-ticker {
-    background-color: var(--brand-gold);
-    color: #000;
-    padding: 10px 0;
-    width: 100%;
-    overflow: hidden;
-    font-weight: bold;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
-    z-index: 100;
-    flex-shrink: 0;
+    background-color: var(--brand-gold); color: #000;
+    padding: 10px 0; width: 100%; overflow: hidden;
+    font-weight: bold; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+    z-index: 100; flex-shrink: 0;
 }
 .ticker-wrap { width: 100%; overflow: hidden; white-space: nowrap; }
 .ticker-items { display: inline-block; animation: ticker 30s linear infinite; }
@@ -287,8 +308,8 @@ ul { list-style: none; }
     100% { transform: translateX(100%); }
 }
 
-/* רספונסיביות - שבירה במצב טאבלט קטן כדי לא למעוך את המסך לגמרי */
 @media (max-width: 900px) {
     .site-layout { grid-template-columns: 1fr; height: auto; }
     body { overflow: auto; height: auto; }
+    .product-card { flex: 0 0 100%; }
 }
