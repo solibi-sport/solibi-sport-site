@@ -266,13 +266,25 @@ ul { list-style: none; }
     display: none;
 }
 
-/* הקוביה השחורה של המשחק */
+/* הקוביה השחורה של המשחק - עם עומק והפרדה מהרקע */
 .match-card {
-    background-color: #000000; border: 1px solid #333333; border-radius: 8px;
-    padding: 12px; margin-bottom: 12px; cursor: pointer; transition: 0.2s;
-    position: relative; /* התיקון: יוצר מסגרת לאלמנטים צפים בתוכו */
+    background-color: #1A1A1A; /* אפור-פחם עמוק שבולט מעל הרקע */
+    border: 1px solid rgba(214, 185, 83, 0.2); /* מסגרת זהב עדינה ושקופה */
+    border-radius: 8px;
+    padding: 12px; 
+    margin-bottom: 12px; 
+    cursor: pointer; 
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* צל שחור ליצירת ריחוף */
 }
-.match-card:hover { border-color: var(--brand-gold); box-shadow: 0 0 12px rgba(212,175,55,0.3); }
+
+/* אפקט כשהעכבר עובר על הקוביה */
+.match-card:hover { 
+    border-color: var(--brand-gold); 
+    box-shadow: 0 6px 15px rgba(214, 185, 83, 0.15); 
+    transform: translateY(-2px); /* הקפצה קטנה למעלה */
+}
 
 /* כותרת הליגה - רקע זהב וכתב שחור */
 .match-info { 
