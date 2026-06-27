@@ -234,7 +234,7 @@ ul { list-style: none; }
 /* ---------------------------------
    עיצוב תוצאות הלייב
 --------------------------------- */
-/* רקע פחם-זהוב כהה ויוקרתי לסיידברים */
+/* רקע זהוב-שחור לסיידבר השמאלי */
 .sidebar, .sidebar-left, .sidebar-right { 
     background-color: #17140B; 
 }
@@ -246,10 +246,31 @@ ul { list-style: none; }
     font-weight: normal; 
 }
 
+/* הגדרת גובה וגלילה עצמאית לתוצאות הלייב */
+.sidebar-left {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* המיכל של המשחקים - הכרחי לאנימציה */
+#matches-container {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+    position: relative; /* הכרחי כדי שהאנימציה תהיה כלואה בתוך המיכל */
+}
+
+#matches-container::-webkit-scrollbar { 
+    display: none;
+}
+
 /* הקוביה השחורה של המשחק */
 .match-card {
     background-color: #000000; border: 1px solid #333333; border-radius: 8px;
     padding: 12px; margin-bottom: 12px; cursor: pointer; transition: 0.2s;
+    position: relative; /* התיקון: יוצר מסגרת לאלמנטים צפים בתוכו */
 }
 .match-card:hover { border-color: var(--brand-gold); box-shadow: 0 0 12px rgba(212,175,55,0.3); }
 
@@ -285,7 +306,7 @@ ul { list-style: none; }
     font-size: 16px; font-weight: 900; color: var(--brand-gold); line-height: 1; 
 }
 
-/* אנימציית שער צפה מעל קוביית המשחק */
+/* אנימציית שער צפה מעל קוביית המשחק בסיידבר */
 .sidebar-goal-flash {
     position: absolute; 
     top: 50%; 
@@ -302,6 +323,30 @@ ul { list-style: none; }
 @keyframes flashSidebarGoal {
     0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
     100% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+}
+
+/* Modal Goal Animation and Scoring */
+@keyframes bannerGoalPulse { 
+    0% { box-shadow: inset 0 0 10px rgba(212,175,55,0.2); } 
+    100% { box-shadow: inset 0 0 40px rgba(212,175,55,0.9); } 
+}
+@keyframes textGoalPop { 
+    0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; } 
+    100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 
+}
+.score-banner.goal-active { animation: bannerGoalPulse 0.8s infinite alternate; }
+.modal-goal-flash { 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    font-size: 50px; 
+    font-weight: 900; 
+    color: rgba(255,255,255,0.95); 
+    text-shadow: 0 0 20px #d4af37, 0 0 40px #d4af37; 
+    pointer-events: none; 
+    z-index: 20; 
+    animation: textGoalPop 0.8s infinite alternate; 
 }
 
 /* Modal */
