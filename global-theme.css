@@ -315,10 +315,22 @@ ul { list-style: none; }
 }
 .ticker-item:last-child { border-right: none; } /* מוריד את הקו מהאחרון */
 
-/* הסתרת פס הגלילה בסיידבר כדי שיהיה גלגול נקי */
-#matches-container {
-    overflow-y: auto; scrollbar-width: none;
+/* הגדרת גובה וגלילה עצמאית לתוצאות הלייב */
+.sidebar-left {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
-#matches-container::-webkit-scrollbar { display: none; }
+
+#matches-container {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-bottom: 20px;
+}
+
+#matches-container::-webkit-scrollbar { 
+    display: none;
+}
 
 @media (max-width: 900px) { .site-layout { grid-template-columns: 1fr; height: auto; } body { overflow: auto; height: auto; } .product-card { flex: 0 0 100%; } }
