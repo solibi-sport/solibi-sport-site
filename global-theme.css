@@ -36,34 +36,60 @@ ul { list-style: none; }
 /* ---------------------------------
    הדר וניווט
 --------------------------------- */
-.main-header {
-    background-color: var(--brand-gold);
-    border-bottom: 2px solid #000;
-    padding: 10px 0;
-    z-index: 100;
-}
-.header-container {
+.site-header {
     display: flex;
-    justify-content: center; 
+    justify-content: space-between;
     align-items: center;
-    max-width: 100%;
-    padding: 0 40px;
-    position: relative; 
+    background-color: var(--brand-gold);
+    height: 70px; /* החזרנו את ההדר לגובה צר ואלגנטי */
+    padding: 0 20px; /* הרווח המדויק מהצדדים */
+    border-bottom: 2px solid #000;
+    z-index: 1000;
 }
-.logo-area { 
-    position: absolute;
-    right: 40px; 
-    font-size: 26px; 
-    font-weight: 900; 
-    letter-spacing: 1px; 
+
+.header-right, .header-left {
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.gold-text, .white-text { color: #000; }
 
-.header-center-group { display: flex; align-items: center; }
+.header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-.main-nav { display: flex; align-items: center; gap: 15px; }
+/* התיקון שהחזיר את הקישורים לשורה אופקית! */
+.main-nav { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 15px; 
+}
 
-/* כותרות ניווט רגילות - עם אפקט רקע לבן מושלם בריחוף */
+/* עיצוב הלוגו - קוביה שחורה עדינה */
+.site-logo {
+    height: 48px; /* גובה פרופורציונלי שלא מנפח את ההדר */
+    width: auto;
+    object-fit: contain;
+    border-radius: 6px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); 
+    border: 1px solid rgba(0, 0, 0, 0.8); 
+    transition: all 0.3s ease;
+    margin-right: 30px; /* תוסיף את זה כדי לדחוף אותו שמאלה */
+    margin-left: 20px; /* תוסיף את זה כדי לדחוף אותו ימינה */
+    margin-top: 5px; /* דוחף את הלוגו 5 פיקסלים כלפי מטה */
+}
+
+
+.site-logo:hover {
+    transform: translateY(-2px) scale(1.03); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+/* כותרות ניווט רגילות - עם אפקט רקע לבן בריחוף */
 .main-nav > a:not(.login-btn-header):not(.tables-btn-header) {
     color: #000;
     font-weight: 700;
@@ -90,6 +116,7 @@ ul { list-style: none; }
     font-weight: 700;
     font-size: 15px;
     transition: transform 0.2s, box-shadow 0.2s;
+    margin-left: 25px;
 }
 .login-btn-header:hover { 
     background: #fff;
@@ -110,6 +137,8 @@ ul { list-style: none; }
     align-items: center;
     gap: 6px;
     transition: all 0.3s ease;
+    cursor: pointer; /* מוסיף את סמן כף היד! */
+    margin-left: 20px; /* כדי לדחוף אותו ימינה */
 }
 .tables-btn-header:hover {
     background: #fff;
@@ -118,11 +147,7 @@ ul { list-style: none; }
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4); 
 }
 
-/* הפרדת הכפתור השמאלי */
-.push-left { margin-right: 35px; }
-
 .num-ltr { direction: ltr; display: inline-block; }
-
 /* ---------------------------------
    מבנה דאשבורד ומירכוז כותרות
 --------------------------------- */
@@ -190,12 +215,38 @@ ul { list-style: none; }
 .products-carousel { display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth; white-space: nowrap; padding: 10px 5px; width: 100%; scrollbar-width: none; }
 .products-carousel::-webkit-scrollbar { display: none; }
 
+/* חיצים של הקרוסלה - רקע זהב עם חץ שחור */
 .carousel-arrow {
-    position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.8); border: 1px solid var(--brand-gold);
-    color: var(--brand-gold); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 5; display: flex; align-items: center; justify-content: center;
-    font-size: 18px; transition: all 0.2s;
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background-color: var(--brand-gold); /* רקע זהב יוקרתי */
+    color: #000; /* חץ בצבע שחור לקונטרסט מלא */
+    border: 2px solid #000; /* מסגרת שחורה שמפרידה אותו מושלם מהרקע */
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    z-index: 5; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-size: 18px; 
+    font-weight: 900; /* חץ מודגש יותר */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* צל שחור עמוק שיבליט אותו */
 }
-.carousel-arrow:hover { background-color: var(--brand-gold); color: #000; box-shadow: 0 0 15px var(--brand-gold-dark); }
+
+/* אפקט ריחוף (Hover) - הופך ללבן מואר */
+.carousel-arrow:hover { 
+    background-color: #fff; /* רקע לבן בולט */
+    color: #000; 
+    border-color: var(--brand-gold); /* המסגרת הופכת לזהב */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* הילת אור עדינה */
+    transform: translateY(-50%) scale(1.1); /* מגדיל את הכפתור ממש בקטנה לחיות */
+}
+
+/* מיקומים של החצים (לשמור על אלו אם הם עבדו לך טוב) */
 .arrow-right { right: -15px; }
 .arrow-left { left: -15px; }
 
@@ -410,3 +461,58 @@ ul { list-style: none; }
 }
 
 @media (max-width: 900px) { .site-layout { grid-template-columns: 1fr; height: auto; } body { overflow: auto; height: auto; } .product-card { flex: 0 0 100%; } }
+/* --- פצצת אטום להעלמת הקו הזהב מעל הטיקר סופית --- */
+.site-layout, 
+.bottom-ticker, 
+.main-content,
+.mystery-container {
+    border-bottom: none !important;
+    border-top: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* העלמת אלמנטים וירטואליים (למקרה שהקו נוצר דרכם) */
+.site-layout::after, 
+.site-layout::before,
+.bottom-ticker::after, 
+.bottom-ticker::before,
+.main-content::after, 
+.main-content::before {
+    display: none !important;
+}
+/* חיסול הקו - ניסיון אחרון על האלמנטים הפנימיים */
+.ticker-wrap,
+.ticker-items,
+.mystery-section {
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+/* ביטול פס הגלילה האופקי שהתחפש לקו זהב */
+.site-layout, 
+.main-content {
+    overflow-x: hidden !important;
+}
+/* --- מתיחת המיסטרי בוקס עד לתחתית הסיידברים --- */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mystery-section {
+    flex-grow: 1; /* אומר לסקשן לתפוס את כל המקום הפנוי שנותר */
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+}
+
+.mystery-showcase-box {
+    flex-grow: 1; /* אומר לקופסה המקווקות להימתח על כל הסקשן */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* שומר על התוכן (התמונה והטקסט) באמצע הקופסה */
+    margin-bottom: 0;
+}
