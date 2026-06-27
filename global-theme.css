@@ -34,7 +34,7 @@ ul { list-style: none; }
 ::-webkit-scrollbar-thumb:hover { background: var(--brand-gold-light); }
 
 /* ---------------------------------
-   הדר וניווט ממורכזים סימטרית
+   הדר וניווט
 --------------------------------- */
 .main-header {
     background-color: var(--brand-gold);
@@ -59,19 +59,12 @@ ul { list-style: none; }
 }
 .gold-text, .white-text { color: #000; }
 
-.header-center-group {
-    display: flex;
-    align-items: center;
-}
+.header-center-group { display: flex; align-items: center; }
 
-.main-nav { 
-    display: flex; 
-    align-items: center; 
-    gap: 15px; 
-}
+.main-nav { display: flex; align-items: center; gap: 15px; }
 
 /* כותרות ניווט רגילות - עם אפקט רקע לבן מושלם בריחוף */
-.main-nav > a:not(.login-btn-header) {
+.main-nav > a:not(.login-btn-header):not(.tables-btn-header) {
     color: #000;
     font-weight: 700;
     font-size: 16px;
@@ -83,8 +76,8 @@ ul { list-style: none; }
     align-items: center;
     gap: 6px;
 }
-.main-nav > a:not(.login-btn-header):hover {
-    background-color: #fff; /* רקע לבן מלא בריחוף עכבר */
+.main-nav > a:not(.login-btn-header):not(.tables-btn-header):hover {
+    background-color: #fff;
     color: #000 !important;
 }
 
@@ -105,38 +98,28 @@ ul { list-style: none; }
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); 
 }
 
-/* הפרדת "עוד באתר" שמאלה מהשאר */
-.dropdown.push-left {
-    margin-right: 35px; 
+/* כפתור טבלאות מיוחד - רקע לבן הופך לשחור-זהב */
+.tables-btn-header {
+    background: #fff;
+    color: #000;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+.tables-btn-header:hover {
+    background: #000;
+    color: var(--brand-gold);
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
 }
 
-/* תפריט נפתח מתוקן ויציב */
-.dropdown { position: relative; display: inline-block; }
-.dropbtn {
-    background-color: transparent; color: #000;
-    font-size: 16px; font-weight: 700;
-    font-family: 'Rubik', sans-serif; border: none; cursor: pointer;
-    padding: 6px 14px; border-radius: 4px;
-    transition: all 0.2s;
-}
-.dropdown:hover .dropbtn { background-color: #fff; color: #000; }
-
-.dropdown-content {
-    display: none; position: absolute; background-color: #000;
-    min-width: 210px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-    z-index: 101; border: 1px solid var(--brand-gold); border-radius: 6px;
-    top: 100%; /* הצמדה מלאה ל-100% מונעת סגירה בטעות */
-    right: 0; overflow: hidden;
-}
-.dropdown-content a {
-    color: var(--text-white); padding: 12px 16px; text-decoration: none;
-    display: flex; justify-content: space-between; align-items: center;
-    font-weight: 500; font-size: 15px; text-align: right;
-    border-bottom: 1px solid #1a1a1a; transition: 0.2s;
-}
-.dropdown-content a i { color: var(--brand-gold); width: 20px; text-align: left; }
-.dropdown-content a:hover { background-color: #1a1a1a; color: var(--brand-gold); }
-.dropdown:hover .dropdown-content { display: block; }
+/* הפרדת הכפתור השמאלי */
+.push-left { margin-right: 35px; }
 
 .num-ltr { direction: ltr; display: inline-block; }
 
@@ -160,8 +143,6 @@ ul { list-style: none; }
     height: 100%;
     overflow-y: auto; 
 }
-
-/* מירכוז מושלם של כותרות הסיידברים */
 .sidebar-header h3 {
     color: var(--brand-gold); font-size: 17px; margin-bottom: 15px;
     border-bottom: 1px solid var(--border-gold); padding-bottom: 10px;
@@ -171,7 +152,6 @@ ul { list-style: none; }
 }
 .placeholder-widget { color: var(--text-gray); font-size: 14px; text-align: center; padding: 20px 0; }
 
-/* 🔴 עיגול אדום מהבהב ללייב */
 .live-dot {
     width: 10px; height: 10px; background-color: #ff3b30; border-radius: 50%;
     display: inline-block; box-shadow: 0 0 10px #ff3b30;
@@ -206,20 +186,13 @@ ul { list-style: none; }
 /* ---------------------------------
    קרוסלת מארזים
 --------------------------------- */
-.carousel-container {
-    position: relative; display: flex; align-items: center; margin-bottom: 35px; width: 100%;
-}
-.products-carousel {
-    display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth;
-    white-space: nowrap; padding: 10px 5px; width: 100%; scrollbar-width: none; 
-}
+.carousel-container { position: relative; display: flex; align-items: center; margin-bottom: 35px; width: 100%; }
+.products-carousel { display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth; white-space: nowrap; padding: 10px 5px; width: 100%; scrollbar-width: none; }
 .products-carousel::-webkit-scrollbar { display: none; }
 
 .carousel-arrow {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.8); border: 1px solid var(--brand-gold);
-    color: var(--brand-gold); width: 40px; height: 40px; border-radius: 50%;
-    cursor: pointer; z-index: 5; display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.8); border: 1px solid var(--brand-gold);
+    color: var(--brand-gold); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 5; display: flex; align-items: center; justify-content: center;
     font-size: 18px; transition: all 0.2s;
 }
 .carousel-arrow:hover { background-color: var(--brand-gold); color: #000; box-shadow: 0 0 15px var(--brand-gold-dark); }
@@ -227,38 +200,22 @@ ul { list-style: none; }
 .arrow-left { left: -15px; }
 
 .product-card {
-    flex: 0 0 calc(33.333% - 14px); min-width: 230px;
-    background-color: var(--bg-card); border: 1px solid var(--border-gold);
-    border-radius: 8px; padding: 20px 15px; text-align: center;
-    position: relative; transition: transform 0.3s, border-color 0.3s;
+    flex: 0 0 calc(33.333% - 14px); min-width: 230px; background-color: var(--bg-card); border: 1px solid var(--border-gold);
+    border-radius: 8px; padding: 20px 15px; text-align: center; position: relative; transition: transform 0.3s, border-color 0.3s;
 }
 .product-card:hover { transform: translateY(-5px); border-color: var(--brand-gold); }
-.product-badge {
-    position: absolute; top: 12px; right: 12px;
-    background: #333; color: #fff; padding: 3px 8px;
-    font-size: 11px; border-radius: 4px;
-}
+.product-badge { position: absolute; top: 12px; right: 12px; background: #333; color: #fff; padding: 3px 8px; font-size: 11px; border-radius: 4px; }
 .box-icon { font-size: 50px; color: #444; margin: 15px 0; transition: color 0.3s; }
 .product-card:hover .box-icon { color: var(--brand-gold-light); }
 .product-card h3 { margin-bottom: 8px; font-size: 17px; white-space: normal; }
 .product-desc { font-size: 13px; color: var(--text-gray); margin-bottom: 20px; height: 38px; white-space: normal; }
 .product-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #333; padding-top: 15px; }
 .price { color: var(--brand-gold); font-size: 20px; font-weight: bold; }
-.add-to-cart-btn {
-    background: transparent; color: var(--brand-gold);
-    border: 1px solid var(--brand-gold); padding: 6px 14px;
-    border-radius: 4px; cursor: pointer; font-family: inherit;
-    font-weight: bold; transition: all 0.3s;
-}
+.add-to-cart-btn { background: transparent; color: var(--brand-gold); border: 1px solid var(--brand-gold); padding: 6px 14px; border-radius: 4px; cursor: pointer; font-family: inherit; font-weight: bold; transition: all 0.3s; }
 .add-to-cart-btn:hover { background: var(--brand-gold); color: #000; }
 
-.premium-gold-card {
-    background: linear-gradient(135deg, var(--brand-gold-dark) 0%, var(--brand-gold-light) 50%, var(--brand-gold-dark) 100%);
-    border: 1px solid #fff;
-}
-.premium-gold-card h3, 
-.premium-gold-card .product-desc,
-.premium-gold-card .price { color: #000 !important; font-weight: 700; }
+.premium-gold-card { background: linear-gradient(135deg, var(--brand-gold-dark) 0%, var(--brand-gold-light) 50%, var(--brand-gold-dark) 100%); border: 1px solid #fff; }
+.premium-gold-card h3, .premium-gold-card .product-desc, .premium-gold-card .price { color: #000 !important; font-weight: 700; }
 .premium-gold-card .box-icon { color: #222; }
 .premium-gold-card .product-badge { background: #000; color: var(--brand-gold); font-weight: bold; }
 .premium-gold-card .add-to-cart-btn { background: #000; color: var(--brand-gold); border: 1px solid #000; }
@@ -268,58 +225,37 @@ ul { list-style: none; }
 /* ---------------------------------
    מדור מיסטרי בוקס
 --------------------------------- */
-.mystery-showcase-box {
-    width: 100%; background-color: var(--bg-card);
-    border: 2px dashed var(--border-gold); border-radius: 8px;
-    padding: 40px 20px; text-align: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
-}
+.mystery-showcase-box { width: 100%; background-color: var(--bg-card); border: 2px dashed var(--border-gold); border-radius: 8px; padding: 40px 20px; text-align: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.6); }
 .mystery-placeholder-content { display: flex; flex-direction: column; align-items: center; gap: 15px; }
 .placeholder-icon { font-size: 55px; color: #333; }
 .mystery-placeholder-content p { color: var(--text-gray); font-size: 15px; }
-.price-tag-large {
-    background-color: #000; color: var(--brand-gold); padding: 8px 25px;
-    border-radius: 20px; font-weight: bold; font-size: 18px; border: 1px solid var(--border-gold);
-}
+.price-tag-large { background-color: #000; color: var(--brand-gold); padding: 8px 25px; border-radius: 20px; font-weight: bold; font-size: 18px; border: 1px solid var(--border-gold); }
 
 /* ---------------------------------
-   עיצוב תוצאות הלייב וחלון Modal
+   עיצוב תוצאות הלייב
 --------------------------------- */
 .match-card {
-    background-color: #111; border: 1px solid #333; border-radius: 6px;
-    padding: 10px; margin-bottom: 10px; cursor: pointer; transition: 0.2s;
+    background-color: #000; border: 1px solid #333; border-radius: 6px;
+    padding: 12px 10px; margin-bottom: 12px; cursor: pointer; transition: 0.2s;
 }
-.match-card:hover { border-color: var(--brand-gold); background-color: #1a1a1a; }
-.match-info { font-size: 12px; color: var(--brand-gold); text-align: center; margin-bottom: 5px; }
-.match-teams { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-.match-score { font-weight: bold; font-size: 16px; background: #000; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--brand-gold); }
+.match-card:hover { border-color: var(--brand-gold); background-color: #111; }
+.match-info { font-size: 11px; color: var(--brand-gold); text-align: center; margin-bottom: 8px; }
+.match-teams { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: bold; }
+.match-score { background: #222; color: #fff; padding: 3px 10px; border-radius: 4px; border: 1px solid var(--brand-gold); font-size: 15px; }
 
-.modal {
-    display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-}
-.modal-content {
-    background-color: var(--bg-card); margin: 10% auto; padding: 20px;
-    border: 1px solid var(--brand-gold); border-radius: 8px; width: 90%; max-width: 500px;
-    color: var(--text-white); position: relative;
-}
+/* Modal */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+.modal-content { background-color: var(--bg-card); margin: 10% auto; padding: 20px; border: 1px solid var(--brand-gold); border-radius: 8px; width: 90%; max-width: 500px; color: var(--text-white); position: relative; }
 .close-btn { color: var(--brand-gold); float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
 .close-btn:hover { color: #fff; }
 
 /* ---------------------------------
-   טיקר רץ למטה
+   טיקר רץ
 --------------------------------- */
-.bottom-ticker {
-    background-color: var(--brand-gold); color: #000;
-    padding: 10px 0; width: 100%; overflow: hidden;
-    font-weight: bold; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); z-index: 100; flex-shrink: 0;
-}
+.bottom-ticker { background-color: var(--brand-gold); color: #000; padding: 10px 0; width: 100%; overflow: hidden; font-weight: bold; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); z-index: 100; flex-shrink: 0; }
 .ticker-wrap { width: 100%; overflow: hidden; white-space: nowrap; }
 .ticker-items { display: inline-block; animation: ticker 30s linear infinite; }
 .ticker-item { margin: 0 40px; font-size: 15px; }
 @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
 
-@media (max-width: 900px) {
-    .site-layout { grid-template-columns: 1fr; height: auto; }
-    body { overflow: auto; height: auto; }
-    .product-card { flex: 0 0 100%; }
-}
+@media (max-width: 900px) { .site-layout { grid-template-columns: 1fr; height: auto; } body { overflow: auto; height: auto; } .product-card { flex: 0 0 100%; } }
