@@ -59,34 +59,34 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
         const modalHTML = `
         <div id="eventsModalWrapper">
             <style>
-                .modal-overlay { display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(6, 12, 20, 0.85) !important; z-index: 999999 !important; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; backdrop-filter: blur(3px); }
-                .modal-box { background: #111926 !important; color: #ffffff !important; width: 95%; max-width: 500px; border-radius: 12px; box-shadow: 0 15px 50px rgba(0,0,0,0.9); border: 1px solid #2a3b4c; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; height: 620px; max-height: 85vh; will-change: transform; touch-action: none; position: relative; font-family: sans-serif; }
-                .modal-header { background: #0d131d; padding: 12px 15px; text-align: center; position: relative; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; border-bottom: 1px solid #1f2d40; }
+                .modal-overlay { display: none; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(0, 0, 0, 0.85) !important; z-index: 999999 !important; justify-content: center; align-items: center; direction: rtl; animation: fadeIn 0.2s ease-out; backdrop-filter: blur(3px); }
+                .modal-box { background: #141414 !important; color: #ffffff !important; width: 95%; max-width: 500px; border-radius: 12px; box-shadow: 0 15px 50px rgba(0,0,0,0.9); border: 1px solid #d4af37; overflow: hidden; transform: scale(0.95); animation: scaleUp 0.2s ease-out forwards; display: flex; flex-direction: column; height: 620px; max-height: 85vh; will-change: transform; touch-action: none; position: relative; font-family: 'Rubik', sans-serif; }
+                .modal-header { background: #000000; padding: 12px 15px; text-align: center; position: relative; flex-shrink: 0; cursor: grab; user-select: none; touch-action: none; z-index: 10; border-bottom: 1px solid #d4af37; }
                 .modal-header:active { cursor: grabbing; }
-                .modal-header h2 { margin: 0; font-size: 14px; font-weight: bold; color: #8fa0b3; pointer-events: none; letter-spacing: 0.5px;}
-                .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #7a9966; transition: 0.2s; pointer-events: auto; }
+                .modal-header h2 { margin: 0; font-size: 15px; font-weight: bold; color: #d4af37; pointer-events: none; letter-spacing: 0.5px;}
+                .close-modal { position: absolute; top: 50%; transform: translateY(-50%); left: 15px; font-size: 20px; cursor: pointer; color: #d4af37; transition: 0.2s; pointer-events: auto; }
                 .close-modal:hover { color: #ffffff; }
-                @keyframes bannerGoalPulse { 0% { box-shadow: inset 0 0 10px rgba(122,153,102,0.2); } 100% { box-shadow: inset 0 0 40px rgba(122,153,102,0.9); } }
+                @keyframes bannerGoalPulse { 0% { box-shadow: inset 0 0 10px rgba(212,175,55,0.2); } 100% { box-shadow: inset 0 0 40px rgba(212,175,55,0.9); } }
                 @keyframes textGoalPop { 0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
-                .score-banner { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle at center, #1e4266 0%, #112845 100%); padding: 15px; border-bottom: 2px solid #7a9966; color: #fff; flex-shrink: 0; position: relative; z-index: 5; transition: box-shadow 0.3s; }
+                .score-banner { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%); padding: 15px; border-bottom: 2px solid #d4af37; color: #fff; flex-shrink: 0; position: relative; z-index: 5; transition: box-shadow 0.3s; }
                 .score-banner.goal-active { animation: bannerGoalPulse 0.8s infinite alternate; }
-                .modal-goal-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; font-weight: 900; color: rgba(255,255,255,0.95); text-shadow: 0 0 20px #7a9966, 0 0 40px #7a9966; pointer-events: none; z-index: 20; animation: textGoalPop 0.8s infinite alternate; }
+                .modal-goal-flash { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 50px; font-weight: 900; color: rgba(255,255,255,0.95); text-shadow: 0 0 20px #d4af37, 0 0 40px #d4af37; pointer-events: none; z-index: 20; animation: textGoalPop 0.8s infinite alternate; }
                 .score-team { font-size: 15px; font-weight: 900; flex: 1; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1.2; position: relative; z-index: 2;}
-                .score-box { display: flex; align-items: center; gap: 12px; background: #060c14; padding: 8px 20px; border-radius: 12px; border: 1px solid rgba(122, 153, 102, 0.4); position: relative; box-shadow: inset 0 3px 10px rgba(0,0,0,0.6); margin: 0 10px; z-index: 2;}
+                .score-box { display: flex; align-items: center; gap: 12px; background: #000000; padding: 8px 20px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.4); position: relative; box-shadow: inset 0 3px 10px rgba(0,0,0,0.6); margin: 0 10px; z-index: 2;}
                 .score-val { font-size: 26px; font-weight: 900; color: #ffffff; line-height: 1; }
-                .score-divider { font-size: 18px; color: #7a9966; font-weight: bold; line-height: 1; transform: translateY(-2px); }
-                .score-minute { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #7a9966; color: #111926; font-size: 11px; font-weight: 900; padding: 2px 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); white-space: nowrap; border: 1px solid #fff; }
-                .modal-tabs { display: flex; justify-content: space-between; background: #0d131d; border-bottom: 1px solid #1f2d40; flex-shrink: 0; }
+                .score-divider { font-size: 18px; color: #d4af37; font-weight: bold; line-height: 1; transform: translateY(-2px); }
+                .score-minute { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000000; font-size: 11px; font-weight: 900; padding: 2px 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); white-space: nowrap; border: 1px solid #000; }
+                .modal-tabs { display: flex; justify-content: space-between; background: #000000; border-bottom: 1px solid #333333; flex-shrink: 0; }
                 .modal-tab-btn { flex: 1; background: transparent; border: none; color: #8fa0b3; padding: 12px 0; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; border-bottom: 3px solid transparent; font-family: inherit; outline: none; }
-                .modal-tab-btn.active { color: #7a9966; border-bottom: 3px solid #7a9966; background: rgba(255,255,255,0.02); }
+                .modal-tab-btn.active { color: #d4af37; border-bottom: 3px solid #d4af37; background: rgba(255,255,255,0.02); }
                 .modal-tab-btn:hover { color: #ffffff; }
                 .tab-content { display: none; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 10px; }
                 .tab-content.active { display: flex; }
-                .sub-tabs { display: flex; justify-content: center; gap: 20px; border-bottom: 1px solid #1f2d40; margin-bottom: 15px; }
+                .sub-tabs { display: flex; justify-content: center; gap: 20px; border-bottom: 1px solid #333333; margin-bottom: 15px; }
                 .sub-tab-btn { background: transparent; border: none; color: #8fa0b3; padding: 10px 20px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.3s; border-bottom: 3px solid transparent; font-family: inherit; outline: none; }
-                .sub-tab-btn.active { color: #7a9966; border-bottom: 3px solid #7a9966; }
+                .sub-tab-btn.active { color: #d4af37; border-bottom: 3px solid #d4af37; }
                 .sub-tab-btn:hover { color: #ffffff; }
-                .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 5px 0; overflow: visible; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+                .pitch-wrapper { background: repeating-linear-gradient(90deg, #1a432b, #1a432b 10%, #1e4d32 10%, #1e4d32 20%); border: 2px solid rgba(212, 175, 55, 0.4); border-radius: 8px; position: relative; height: 380px; width: 100%; margin: 5px 0; overflow: visible; display: flex; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
                 .pitch-line-center { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.4); transform: translateX(-50%); z-index: 1;}
                 .pitch-circle { position: absolute; left: 50%; top: 50%; width: 80px; height: 80px; border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; transform: translate(-50%, -50%); z-index: 1;}
                 .pitch-box-left { position: absolute; left: -2px; top: 20%; height: 60%; width: 16%; border: 2px solid rgba(255,255,255,0.4); border-left: none; z-index: 1;}
@@ -98,37 +98,37 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 .pitch-player-num { border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; border: 1.5px solid rgba(255,255,255,0.9); box-shadow: 0 4px 6px rgba(0,0,0,0.6), inset 0 -3px 5px rgba(0,0,0,0.3); z-index: 4; position: relative;}
                 .pitch-player-name { color: #ffffff; font-size: 10px; font-weight: bold; margin-top: 3px; text-align: center; text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000, 0 3px 5px rgba(0,0,0,0.9); z-index: 3; max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr;}
                 .bench-view { width: 100%; display: flex; gap: 15px; margin-top: 5px; }
-                .bench-col { flex: 1; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid #1f2d40; padding: 10px; }
-                .bench-title { text-align: center; font-weight: bold; color: #fff; padding-bottom: 8px; border-bottom: 1px solid #2a3b4c; margin-bottom: 10px; font-size: 13px; }
+                .bench-col { flex: 1; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid #333333; padding: 10px; }
+                .bench-title { text-align: center; font-weight: bold; color: #d4af37; padding-bottom: 8px; border-bottom: 1px solid #333333; margin-bottom: 10px; font-size: 13px; }
                 .bench-item { display: flex; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; }
-                .bench-num { font-weight: 900; color: #7a9966; background: rgba(122,153,102,0.1); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-left: 8px; font-size: 11px; flex-shrink: 0; }
+                .bench-num { font-weight: 900; color: #d4af37; background: rgba(212, 175, 55, 0.1); width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-left: 8px; font-size: 11px; flex-shrink: 0; }
                 .bench-name { color: #d1d5db; flex: 1; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
                 .bench-sub-badge { color: #10b981; font-size: 10px; font-weight: bold; background: rgba(16,185,129,0.1); padding: 2px 6px; border-radius: 12px; border: 1px solid rgba(16,185,129,0.3); margin-right: 5px; flex-shrink: 0; }
                 .modal-mini-table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: center; margin-top: 5px; }
-                .modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #1f2d40; }
+                .modal-mini-table th { color: #8fa0b3; font-weight: normal; padding: 6px; border-bottom: 1px solid #333333; }
                 .modal-mini-table td { padding: 8px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-                .modal-mini-table tr.highlight { background: rgba(122,153,102,0.15); font-weight: bold; }
+                .modal-mini-table tr.highlight { background: rgba(212, 175, 55, 0.15); font-weight: bold; }
                 .modal-mini-table td .team-name-text { display: flex; align-items: center; justify-content: flex-start; gap: 6px; direction: rtl; }
                 .modal-mini-table td .team-logo { width: 14px; height: 14px; }
                 .modal-mini-table td .live-dot { color: #ef4444; font-size: 9px; animation: blink 1.5s infinite; margin-right: 2px; vertical-align: middle; }
-                .stats-container { padding: 10px 15px; flex-shrink: 0; background: #0f1620; border-bottom: 1px solid #1f2d40; }
+                .stats-container { padding: 10px 15px; flex-shrink: 0; background: #141414; border-bottom: 1px solid #333333; }
                 .possession-labels { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; color: #fff; }
-                .possession-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: #1f2d40; margin-bottom: 10px;}
-                .possession-home { background: #7a9966; height: 100%; transition: width 1s ease-out; }
-                .possession-away { background: #4a90e2; height: 100%; transition: width 1s ease-out; }
+                .possession-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: #333333; margin-bottom: 10px;}
+                .possession-home { background: #d4af37; height: 100%; transition: width 1s ease-out; }
+                .possession-away { background: #ffffff; height: 100%; transition: width 1s ease-out; }
                 .extra-stats { display: flex; flex-direction: column; gap: 3px; }
                 .stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; background: rgba(255,255,255,0.015); padding: 4px 8px; border-radius: 4px; }
                 .stat-val { font-weight: bold; width: 35px; text-align: center; font-size: 12px; }
-                .home-val { color: #7a9966; }
-                .away-val { color: #4a90e2; }
+                .home-val { color: #d4af37; }
+                .away-val { color: #ffffff; }
                 .stat-name { flex-grow: 1; text-align: center; color: #a0aec0; }
                 .events-wrapper { padding: 10px 15px; display: flex; gap: 15px; align-items: stretch; overflow-y: auto; flex: 1; min-height: 0; }
-                .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #1f2d40; min-height: max-content;}
-                .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #2a3b4c; color: #fff; }
+                .team-col { flex: 1; background: rgba(255,255,255,0.01); border-radius: 6px; padding: 10px; border: 1px solid #333333; min-height: max-content;}
+                .team-title { text-align: center; font-size: 13px; font-weight: bold; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #333333; color: #fff; }
                 .event-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 11px; line-height: 1.3; }
                 .event-home { justify-content: flex-start; text-align: right; } 
                 .event-away { justify-content: flex-end; text-align: left; flex-direction: row-reverse; }
-                .event-time { font-weight: bold; color: #7a9966; min-width: 25px; text-align: center; font-size: 11px; background: rgba(122, 153, 102, 0.1); padding: 2px 4px; border-radius: 3px; margin: 0 6px; }
+                .event-time { font-weight: bold; color: #d4af37; min-width: 25px; text-align: center; font-size: 11px; background: rgba(212, 175, 55, 0.1); padding: 2px 4px; border-radius: 3px; margin: 0 6px; }
                 .event-icon { font-size: 14px; margin: 0 4px; }
                 .event-text { color: #d1d5db; }
                 .event-subtext { color: #888; font-size: 9px; display: block; margin-top: 1px; }
@@ -136,7 +136,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                 .event-subtext.var-cancelled-sub { color: #ef4444; text-decoration: none; font-weight: bold; font-size: 10px; display: block; margin-top: 2px; }
                 ::-webkit-scrollbar { width: 4px; }
                 ::-webkit-scrollbar-track { background: transparent; }
-                ::-webkit-scrollbar-thumb { background: #2a3b4c; border-radius: 10px; }
+                ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
                 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
                 @keyframes scaleUp { from { transform: scale(0.9); } to { transform: scale(1); } }
                 @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
@@ -444,14 +444,14 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         <div class="pitch-circle"></div>
                         
                         <div id="home-pitch" class="pitch-team" style="display:block;">${renderPlayersSnapToGrid(hL, true)}</div>
-                        <div id="home-bench" class="bench-col" style="display:none; position:absolute; top:0; right:0; width:50%; height:100%; background:rgba(13,19,29,0.95); z-index:20; overflow-y:auto; border-left:2px solid #2a3b4c; padding:10px; box-sizing:border-box;">
-                            <div class="bench-title" style="color:#fff; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #1f2d40;">${tHome} (ספסל)</div>
+                        <div id="home-bench" class="bench-col" style="display:none; position:absolute; top:0; right:0; width:50%; height:100%; background:rgba(0,0,0,0.95); z-index:20; overflow-y:auto; border-left:2px solid #d4af37; padding:10px; box-sizing:border-box;">
+                            <div class="bench-title" style="color:#d4af37; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #333333;">${tHome} (ספסל)</div>
                             ${hL.substitutes.map(p => renderBenchPlayer(p, events, homeId)).join('')}
                         </div>
                         
                         <div id="away-pitch" class="pitch-team" style="display:block;">${renderPlayersSnapToGrid(aL, false)}</div>
-                        <div id="away-bench" class="bench-col" style="display:none; position:absolute; top:0; left:0; width:50%; height:100%; background:rgba(13,19,29,0.95); z-index:20; overflow-y:auto; border-right:2px solid #2a3b4c; padding:10px; box-sizing:border-box;">
-                            <div class="bench-title" style="color:#fff; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #1f2d40;">${tAway} (ספסל)</div>
+                        <div id="away-bench" class="bench-col" style="display:none; position:absolute; top:0; left:0; width:50%; height:100%; background:rgba(0,0,0,0.95); z-index:20; overflow-y:auto; border-right:2px solid #d4af37; padding:10px; box-sizing:border-box;">
+                            <div class="bench-title" style="color:#d4af37; text-align:center; font-weight:bold; margin-bottom:10px; padding-bottom:5px; border-bottom:1px solid #333333;">${tAway} (ספסל)</div>
                             ${aL.substitutes.map(p => renderBenchPlayer(p, events, awayId)).join('')}
                         </div>
                     </div>
@@ -504,12 +504,10 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                     
                    let icon = '', mainText = '', subText = '', isGoalCancelled = false;
 
-                    // הגדרות SVG לאייקונים החדשים
                     const iconGoal = '⚽';
                     const iconYellow = '🟨';
                     const iconRed = '🟥';
                     
-                    // כדורגל אדום ופרימיום לשער עצמי
                     const iconOwnGoal = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="12" cy="12" r="10"/><polygon points="12 6 16 10 14.5 15 9.5 15 8 10"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="22" y1="12" x2="16" y2="10"/><line x1="2" y1="12" x2="8" y2="10"/><line x1="6" y1="20" x2="9.5" y2="15"/><line x1="18" y1="20" x2="14.5" y2="15"/></svg>`;
                     
                     const iconSub = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><path d="M5 10l-3 3 3 3" stroke="#ef4444"/><path d="M2 13h10" stroke="#ef4444"/><path d="M19 14l3-3-3-3" stroke="#10b981"/><path d="M22 11H12" stroke="#10b981"/></svg>`;
@@ -563,8 +561,6 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
             if (stdData.response && stdData.response.length > 0) {
                 const standings = stdData.response[0].league.standings;
                 
-                // התיקון: מסנן ושולף אך ורק את קבוצת הטבלה הספציפית שבה נמצאות שתי הקבוצות במדויק (למשל פלייאוף עליון)
-                // ע"י מיון טבלאות מהקטנה ביותר (פלייאוף) לגדולה ביותר (עונה סדירה)
                 let validGroups = standings.filter(g => g.some(t => t.team.id === homeId || t.team.id === awayId));
                 validGroups.sort((a, b) => a.length - b.length); 
                 
@@ -641,7 +637,7 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                                 <td>${t.all.goals.for}</td>
                                 <td>${t.all.goals.against}</td>
                                 <td dir="ltr">${t.goalsDiff}</td>
-                                <td style="color:#7a9966;">${t.points}</td>
+                                <td style="color:#d4af37; font-weight:bold;">${t.points}</td>
                             </tr>`;
                         }).join('')}
                     </table>
@@ -667,10 +663,10 @@ async function openMatchEvents(fixtureId, paramHome, paramAway) {
                         let lName = typeof window.translateName === 'function' ? window.translateName(m.league.name) : m.league.name;
                         
                         return `
-                        <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; display:flex; align-items: center; font-size: 11px; border: 1px solid #1f2d40; margin-bottom: 5px;">
+                        <div style="background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 6px; display:flex; align-items: center; font-size: 11px; border: 1px solid #333333; margin-bottom: 5px;">
                             <div style="width: 30%; color:#8fa0b3; text-align:right; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 5px;">
                                 <div style="font-weight:bold;">${new Date(m.fixture.date).toLocaleDateString('he-IL')}</div>
-                                <div style="font-size: 9px; margin-top:2px; color:#7a9966; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${lName}</div>
+                                <div style="font-size: 9px; margin-top:2px; color:#d4af37; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${lName}</div>
                             </div>
                             <div style="width: 70%; display:flex; justify-content:space-between; align-items:center; padding-right: 10px;">
                                 <span style="flex:1; text-align:left; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${hName}</span>
