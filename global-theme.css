@@ -98,10 +98,10 @@ ul { list-style: none; }
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); 
 }
 
-/* כפתור טבלאות מיוחד - רקע לבן הופך לשחור-זהב */
+/* כפתור טבלאות מיוחד - שחור-זהב שהופך ללבן */
 .tables-btn-header {
-    background: #fff;
-    color: #000;
+    background: #000;
+    color: var(--brand-gold);
     padding: 8px 18px;
     border-radius: 6px;
     font-weight: 700;
@@ -112,10 +112,10 @@ ul { list-style: none; }
     transition: all 0.3s ease;
 }
 .tables-btn-header:hover {
-    background: #000;
-    color: var(--brand-gold);
+    background: #fff;
+    color: #000;
     transform: translateY(-2px); 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4); 
 }
 
 /* הפרדת הכפתור השמאלי */
@@ -291,13 +291,34 @@ ul { list-style: none; }
 .close-btn { color: var(--brand-gold); float: left; font-size: 28px; font-weight: bold; cursor: pointer; }
 .close-btn:hover { color: #fff; }
 
-/* ---------------------------------
+/*/* ---------------------------------
    טיקר רץ
 --------------------------------- */
-.bottom-ticker { background-color: var(--brand-gold); color: #000; padding: 10px 0; width: 100%; overflow: hidden; font-weight: bold; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); z-index: 100; flex-shrink: 0; }
-.ticker-wrap { width: 100%; overflow: hidden; white-space: nowrap; }
-.ticker-items { display: inline-block; animation: ticker 30s linear infinite; }
-.ticker-item { margin: 0 40px; font-size: 15px; }
-@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
+.bottom-ticker { 
+    background-color: var(--brand-gold); color: #000; padding: 10px 0; width: 100%; overflow: hidden; font-weight: bold; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); z-index: 100; flex-shrink: 0; 
+}
+.ticker-wrap { 
+    width: 100%; overflow: hidden; direction: ltr; /* מכריח כיוון שמאל-לימין לאנימציה */
+    position: relative; height: 22px;
+}
+.ticker-items { 
+    position: absolute; display: flex; white-space: nowrap;
+    animation: scrollLeftToRight 25s linear infinite; 
+}
+@keyframes scrollLeftToRight { 
+    0% { left: -100%; }       /* מתחיל מחוץ למסך בצד שמאל */
+    100% { left: 100vw; }     /* מסיים מחוץ למסך בצד ימין */
+}
+.ticker-item { 
+    display: inline-block; direction: rtl; /* הטקסט עצמו נשאר מימין לשמאל */
+    padding: 0 25px; font-size: 15px; border-right: 2px solid #000; 
+}
+.ticker-item:last-child { border-right: none; } /* מוריד את הקו מהאחרון */
+
+/* הסתרת פס הגלילה בסיידבר כדי שיהיה גלגול נקי */
+#matches-container {
+    overflow-y: auto; scrollbar-width: none;
+}
+#matches-container::-webkit-scrollbar { display: none; }
 
 @media (max-width: 900px) { .site-layout { grid-template-columns: 1fr; height: auto; } body { overflow: auto; height: auto; } .product-card { flex: 0 0 100%; } }

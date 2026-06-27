@@ -140,10 +140,13 @@
                 </div>
             </section>
         </main>
-
-        <aside class="sidebar sidebar-left">
-            <div class="sidebar-header">
-                <h3>תוצאות לייב <span class="live-dot"></span></h3>
+<aside class="sidebar sidebar-left">
+            <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-gold); padding-bottom: 10px; margin-bottom: 15px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="playLiveBtn" style="display: none; background: none; border: none; color: var(--brand-gold); cursor: pointer; font-size: 16px;"><i class="fa-solid fa-play"></i></button>
+                    <button id="pauseLiveBtn" style="background: none; border: none; color: var(--brand-gold); cursor: pointer; font-size: 16px;"><i class="fa-solid fa-pause"></i></button>
+                </div>
+                <h3 style="margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 10px;">תוצאות לייב <span class="live-dot"></span></h3>
             </div>
             <div class="sidebar-content" id="matches-container">
                 <div class="placeholder-widget">טוען תוצאות לייב...</div>
@@ -155,10 +158,10 @@
     <div class="bottom-ticker">
         <div class="ticker-wrap">
             <div class="ticker-items">
-                <span class="ticker-item">🔥 המכירה המוקדמת של מארזי המונדיאל החלה!</span>
-                <span class="ticker-item">⚽ עקבו אחרי תוצאות הלייב של סוליבי בזמן אמת!</span>
-                <span class="ticker-item">📦 משלוחים חינם בקנייה מעל ₪199!</span>
-                <span class="ticker-item">⭐ מארזי הפרימיום החדשים זמינים כעת במלאי!</span>
+                <span class="ticker-item">המכירה המוקדמת של מארזי המונדיאל החלה!</span>
+                <span class="ticker-item">עקבו אחרי תוצאות הלייב של סוליבי בזמן אמת</span>
+                <span class="ticker-item">משלוחים חינם בקנייה מעל ₪199</span>
+                <span class="ticker-item">מארזי הפרימיום החדשים זמינים כעת במלאי</span>
             </div>
         </div>
     </div>
@@ -175,6 +178,28 @@
         const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
         const API_URL = 'https://v3.football.api-sports.io/fixtures?live=all';
 
+        let liveScrollInterval;
+        let isLiveScrollingPaused = false;
+
+        // פונקציית הגלילה האוטומטית
+        function startLiveScroll() {
+            const container = document.getElementById('matches-container');
+            if (!container) return;
+            
+            if (liveScrollInterval) clearInterval(liveScrollInterval);
+            
+            liveScrollInterval = setInterval(() => {
+                if (isLiveScrollingPaused) return;
+                
+                container.scrollTop += 1; // גולל פיקסל אחד למטה (מזיז תוכן למעלה)
+                
+                // כשהגענו לסוף הדיב - חזור להתחלה כדי ליצור לולאה
+                if (Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight) {
+                    container.scrollTop = 0;
+                }
+            }, 35); // מהירות גלילה - מספר קטן יותר = מהיר יותר
+        }
+
         async function loadSidebarLiveMatches() {
             const container = document.getElementById('matches-container');
             if (!container) return;
@@ -188,16 +213,15 @@
                 const data = await response.json();
                 
                 if (data.response && data.response.length > 0) {
+                    const prevScroll = container.scrollTop; // שומר מיקום גלילה נוכחי
                     container.innerHTML = ''; 
                     
-                    // מציג 10 משחקים
-                    const matches = data.response.slice(0, 10);
+                    const matches = data.response.slice(0, 15); // מציג עד 15 משחקים
                     
                     matches.forEach(match => {
                         const div = document.createElement('div');
                         div.className = 'match-card';
                         
-                        // כאן החיבור לחלון שלך: לחיצה תפעיל את openMatchEvents
                         div.onclick = () => {
                             if (typeof openMatchEvents === 'function') {
                                 openMatchEvents(match.fixture.id, match.teams.home.name, match.teams.away.name);
@@ -205,20 +229,24 @@
                         };
                         
                         div.innerHTML = `
-    <div class="match-info">${match.league.name} - דקה ${match.fixture.status.elapsed}'</div>
-    <div class="match-content">
-        <div class="match-teams">
-            <span class="team-name">${match.teams.home.name}</span>
-            <span class="team-name">${match.teams.away.name}</span>
-        </div>
-        <div class="match-scores">
-            <span class="score-num">${match.goals.home}</span>
-            <span class="score-num">${match.goals.away}</span>
-        </div>
-    </div>
-`;
+                            <div class="match-info">${match.league.name} - דקה ${match.fixture.status.elapsed}'</div>
+                            <div class="match-content">
+                                <div class="match-teams">
+                                    <span class="team-name">${match.teams.home.name}</span>
+                                    <span class="team-name">${match.teams.away.name}</span>
+                                </div>
+                                <div class="match-scores">
+                                    <span class="score-num">${match.goals.home}</span>
+                                    <span class="score-num">${match.goals.away}</span>
+                                </div>
+                            </div>
+                        `;
                         container.appendChild(div);
                     });
+
+                    container.scrollTop = prevScroll; // מחזיר לאותו מיקום רציף
+                    if (!liveScrollInterval) startLiveScroll(); // מתחיל את הגלילה
+
                 } else {
                     container.innerHTML = '<div class="placeholder-widget">אין משחקים בשידור חי כרגע.</div>';
                 }
@@ -228,11 +256,26 @@
             }
         }
         
-        // הפעלה מיידית וריענון כל דקה
-        loadSidebarLiveMatches();
-        setInterval(loadSidebarLiveMatches, 60000);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSidebarLiveMatches();
+            setInterval(loadSidebarLiveMatches, 60000);
+
+            // הפעלת כפתורי פליי/פאוס
+            const btnPlay = document.getElementById('playLiveBtn');
+            const btnPause = document.getElementById('pauseLiveBtn');
+
+            btnPause.addEventListener('click', () => {
+                isLiveScrollingPaused = true;
+                btnPause.style.display = 'none';
+                btnPlay.style.display = 'block';
+            });
+            
+            btnPlay.addEventListener('click', () => {
+                isLiveScrollingPaused = false;
+                btnPlay.style.display = 'none';
+                btnPause.style.display = 'block';
+            });
+        });
     </script>
-</body>
-</html>
 </body>
 </html>
