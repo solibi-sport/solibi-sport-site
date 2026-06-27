@@ -3,14 +3,14 @@
    ========================================== */
 
 :root {
-    --brand-gold: #d4af37;
-    --brand-gold-light: #fbf5b7;
-    --brand-gold-dark: #b38728;
+    --brand-gold: #FFD700; /* זהב פרימיום בוהק וחי */
+    --brand-gold-light: #FFF0A8;
+    --brand-gold-dark: #CCAA00;
     --bg-black: #0a0a0a;
     --bg-card: #141414;
     --text-white: #f5f5f5;
     --text-gray: #a0a0a0;
-    --border-gold: rgba(212, 175, 55, 0.3);
+    --border-gold: rgba(255, 215, 0, 0.3);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -234,10 +234,17 @@ ul { list-style: none; }
 /* ---------------------------------
    עיצוב תוצאות הלייב
 --------------------------------- */
-/* רקע לבן לסיידבר השמאלי */
-.sidebar-left { background-color: #ffffff; }
-.sidebar-left .sidebar-header h3 { background-color: #ffffff; }
-.sidebar-left .placeholder-widget { color: #000000; font-weight: bold; }
+/* רקע פחם-זהוב כהה ויוקרתי לסיידברים */
+.sidebar, .sidebar-left, .sidebar-right { 
+    background-color: #17140B; 
+}
+.sidebar-header h3, .sidebar-left .sidebar-header h3, .sidebar-right .sidebar-header h3 { 
+    background-color: #17140B; 
+}
+.sidebar-left .placeholder-widget, .sidebar-right .placeholder-widget { 
+    color: var(--text-gray); 
+    font-weight: normal; 
+}
 
 /* הקוביה השחורה של המשחק */
 .match-card {
