@@ -180,8 +180,10 @@
 
         let liveScrollInterval;
         let isLiveScrollingPaused = false;
+        
+        // הזיכרון הגלובלי של המערכת לבדיקת שערים חדשים
+        window.matchGoalTracker = window.matchGoalTracker || {}; 
 
-        // פונקציית הגלילה האוטומטית
         function startLiveScroll() {
             const container = document.getElementById('matches-container');
             if (!container) return;
@@ -191,13 +193,12 @@
             liveScrollInterval = setInterval(() => {
                 if (isLiveScrollingPaused) return;
                 
-                container.scrollTop += 1; // גולל פיקסל אחד למטה (מזיז תוכן למעלה)
+                container.scrollTop += 1;
                 
-                // כשהגענו לסוף הדיב - חזור להתחלה כדי ליצור לולאה
                 if (Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight) {
                     container.scrollTop = 0;
                 }
-            }, 35); // מהירות גלילה - מספר קטן יותר = מהיר יותר
+            }, 35); 
         }
 
         async function loadSidebarLiveMatches() {
@@ -213,12 +214,33 @@
                 const data = await response.json();
                 
                 if (data.response && data.response.length > 0) {
-                    const prevScroll = container.scrollTop; // שומר מיקום גלילה נוכחי
+                    const prevScroll = container.scrollTop; 
                     container.innerHTML = ''; 
                     
-                    const matches = data.response.slice(0, 15); // מציג עד 15 משחקים
+                    const matches = data.response.slice(0, 15); 
                     
                     matches.forEach(match => {
+                        const fixtureId = match.fixture.id;
+                        const hGoals = match.goals.home !== null ? match.goals.home : 0;
+                        const aGoals = match.goals.away !== null ? match.goals.away : 0;
+                        const totalGoalsNow = hGoals + aGoals;
+
+                        // מערכת זיהוי השערים
+                        if (window.matchGoalTracker[fixtureId] !== undefined) {
+                            if (totalGoalsNow > window.matchGoalTracker[fixtureId].totalGoals) {
+                                // גול חדש זוהה! שומרים את הזמן המדויק
+                                window.matchGoalTracker[fixtureId].goalTime = Date.now();
+                            }
+                        } else {
+                            window.matchGoalTracker[fixtureId] = { goalTime: 0 };
+                        }
+                        // מעדכנים את הזיכרון לתוצאה הנוכחית
+                        window.matchGoalTracker[fixtureId].totalGoals = totalGoalsNow;
+
+                        // בודקים אם עברו פחות מ-30 שניות (30000 מילישניות) מאז הגול
+                        let isRecentGoal = (Date.now() - window.matchGoalTracker[fixtureId].goalTime) < 30000;
+                        let goalHtml = isRecentGoal ? '<div class="sidebar-goal-flash">שער!</div>' : '';
+
                         const div = document.createElement('div');
                         div.className = 'match-card';
                         
@@ -229,6 +251,7 @@
                         };
                         
                         div.innerHTML = `
+                            ${goalHtml}
                             <div class="match-info">${match.league.name} - דקה ${match.fixture.status.elapsed}'</div>
                             <div class="match-content">
                                 <div class="match-teams">
@@ -244,8 +267,8 @@
                         container.appendChild(div);
                     });
 
-                    container.scrollTop = prevScroll; // מחזיר לאותו מיקום רציף
-                    if (!liveScrollInterval) startLiveScroll(); // מתחיל את הגלילה
+                    container.scrollTop = prevScroll; 
+                    if (!liveScrollInterval) startLiveScroll(); 
 
                 } else {
                     container.innerHTML = '<div class="placeholder-widget">אין משחקים בשידור חי כרגע.</div>';
@@ -260,7 +283,6 @@
             loadSidebarLiveMatches();
             setInterval(loadSidebarLiveMatches, 60000);
 
-            // הפעלת כפתורי פליי/פאוס
             const btnPlay = document.getElementById('playLiveBtn');
             const btnPause = document.getElementById('pauseLiveBtn');
 
