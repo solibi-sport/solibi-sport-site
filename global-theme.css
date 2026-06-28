@@ -552,3 +552,75 @@ ul { list-style: none; }
     justify-content: center; /* שומר על התוכן (התמונה והטקסט) באמצע הקופסה */
     margin-bottom: 0;
 }
+
+/* =========================================
+   הגדרות הפוטר והטיקר - הגרסה הסופית והחסינה
+   ========================================= */
+.footer { 
+    background: #D6B953 !important; /* צבע זהב מוחלט */
+    padding: 0 !important; 
+    border-top: 2px solid #000 !important; 
+    overflow: hidden !important; 
+    white-space: nowrap !important; 
+    width: 100% !important; 
+    direction: ltr !important; 
+    flex-shrink: 0 !important; 
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 45px !important; 
+    position: relative !important;
+}
+
+#ticker-placeholder { 
+    width: 100% !important; 
+    display: flex !important; 
+    align-items: center !important; 
+    height: 100% !important;
+}
+
+.ticker-wrap { 
+    display: inline-flex !important; 
+    align-items: center !important;
+    white-space: nowrap !important; 
+    animation: ticker 35s linear infinite !important; 
+    direction: ltr !important;
+    height: 100% !important;
+}
+
+/* --- חיסול קווים כפולים וכפיית טקסט שחור --- */
+.ticker-item, .ticker-separator {
+    color: #000000 !important; /* כופה טקסט שחור בלבד! */
+    border: none !important;   /* מוחק מסגרות ישנות */
+}
+
+/* מוחק את "קוויי הרפאים" מהקוד הישן */
+.ticker-item::after, .ticker-item::before,
+.ticker-separator::after, .ticker-separator::before {
+    display: none !important;
+    content: none !important;
+}
+
+.ticker-item { 
+    font-weight: 700 !important; 
+    font-size: 14px !important; 
+    display: inline-flex !important;
+    align-items: center !important;
+    margin: 0 15px !important; 
+    direction: rtl !important; 
+    line-height: 1 !important;
+}
+
+.ticker-separator { 
+    font-weight: 900 !important; 
+    margin: 0 15px !important; 
+    font-size: 15px !important; 
+    display: inline-flex !important; 
+    align-items: center !important;
+    transform: translateY(-1px) !important; 
+}
+
+@keyframes ticker { 
+    0% { transform: translateX(-100%); } 
+    100% { transform: translateX(100vw); } 
+}

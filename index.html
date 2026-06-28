@@ -159,16 +159,9 @@
 
     </div>
 
-    <div class="bottom-ticker">
-        <div class="ticker-wrap">
-            <div class="ticker-items">
-                <span class="ticker-item">המכירה המוקדמת של מארזי המונדיאל החלה!</span>
-                <span class="ticker-item">עקבו אחרי תוצאות הלייב של סוליבי בזמן אמת</span>
-                <span class="ticker-item">משלוחים חינם בקנייה מעל ₪199</span>
-                <span class="ticker-item">מארזי הפרימיום החדשים זמינים כעת במלאי</span>
-            </div>
-        </div>
-    </div>
+    <footer class="footer">
+        <div id="ticker-placeholder"></div>
+    </footer>
 
     <div id="matchModal" class="modal">
         <div class="modal-content">
@@ -303,5 +296,15 @@
             });
         });
     </script>
+    <script>
+    // טעינת הטיקר מתוך הקובץ החיצוני
+    fetch('ticker.html')
+        .then(response => response.text())
+        .then(data => {
+            const placeholder = document.getElementById('ticker-placeholder');
+            if(placeholder) placeholder.innerHTML = data;
+        })
+        .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
+</script>
 </body>
 </html>
