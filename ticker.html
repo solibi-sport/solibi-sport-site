@@ -1,92 +1,10 @@
-<style>
-    /* דורס את המהירות בכל הדפים וקובע 45 שניות */
-    .ticker-wrap {
-        animation: ticker 45s linear infinite !important;
-    }
-</style>
-<footer class="footer">
-    <div class="ticker-wrap">
-        <span class="ticker-item">ספורט ישראלי: אין יותר הגבלת קהל במגרשים</span>
-        <span class="ticker-separator">|</span>
-        <span class="ticker-item">בתום 7 שנים: ביבראס נאתכו מודיע שיעזוב את פרטיזן בלגרד בתום העונה</span>
-        <span class="ticker-separator">|</span>
-        <span class="ticker-item">פרמיירליג: קובנטרי חוזרת לליגה הבכירה לאחר היעדרות של 25 שנים</span>
-        <span class="ticker-separator">|</span>
-        <span class="ticker-item">העברות: באסטוני שחקנה של אינטר סיכם את תנאיו בברצלונה</span>
-        <span class="ticker-separator">|</span>
-        <span class="ticker-item">שמועות: צ'אבי הרננדז המועמד המוביל לאימון אינטר מיאמי</span>
-        <span class="ticker-separator">|</span>
-        <span class="ticker-item">ברק יצחקי: אליפות זאת לא מילה גסה</span>
+<div class="bottom-ticker">
+        <div class="ticker-wrap">
+            <div class="ticker-items">
+                <span class="ticker-item">המכירה המוקדמת של מארזי המונדיאל החלה!</span>
+                <span class="ticker-item">עקבו אחרי תוצאות הלייב של סוליבי בזמן אמת</span>
+                <span class="ticker-item">משלוחים חינם בקנייה מעל ₪199</span>
+                <span class="ticker-item">מארזי הפרימיום החדשים זמינים כעת במלאי</span>
+            </div>
+        </div>
     </div>
-</footer>
-
-<style>
-/* === תיקון גלובלי: הצמדת הטיקר/פוטר לרצפה === */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* אזור התוכן המרכזי יתמתח אוטומטית וידחוף את הפוטר למטה */
-.main-content {
-    flex: 1; 
-}
-
-/* הפוטר יישאר תמיד דבוק לתחתית */
-.footer {
-    margin-top: auto; 
-    width: 100%;
-}
-
-/* === רספונסיביות גלובלית לכל האתר (לפטופים עד 1440px) === */
-@media (max-width: 1440px) {
-    /* הקטנת פונטים כללית כדי למנוע צפיפות */
-    html {
-        font-size: 14px;
-    }
-
-    /* כיווץ אזור התוכן הראשי */
-    .main-content, .fm-content-area, .content-wrapper {
-        padding: 10px !important;
-        gap: 10px !important;
-    }
-
-    /* התאמת תפריטי צד (Sidebar) */
-    .sidebar, .fm-sidebar, aside {
-        min-width: 200px !important;
-        max-width: 220px !important;
-    }
-
-    /* כיווץ כותרות */
-    h1, .content-header-title {
-        font-size: 20px !important;
-        margin-bottom: 10px !important;
-    }
-
-    /* התאמה לסמלים ותמונות שעלולים לחרוג */
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-    
-    /* כיווץ אלמנטים ספציפיים (כמו כרטיסיות, שחקנים בפנטזי, הודעות) */
-    .msg-row, .card, .player-slot {
-        transform: scale(0.95);
-        transform-origin: right top;
-    }
-}
-
-/* === התאמה למסכים קטנים מאוד (טאבלטים/מסכים צרים) === */
-@media (max-width: 1100px) {
-    .squad-layout, .main-layout {
-        flex-direction: column !important; /* הופך את הטורים לשורות כדי שלא ימחצו */
-    }
-}
-</style>
