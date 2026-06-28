@@ -460,12 +460,17 @@ ul { list-style: none; }
     position: relative; height: 22px;
 }
 .ticker-items { 
-    position: absolute; display: flex; white-space: nowrap;
+    position: absolute; 
+    left: 0; /* מצמיד את נקודת ההתחלה לשמאל */
+    display: flex; 
+    white-space: nowrap;
+    width: max-content; /* מכריח את הדפדפן לחשב את כל רוחב הטקסט ברצף */
     animation: scrollLeftToRight 35s linear infinite; 
 }
+
 @keyframes scrollLeftToRight { 
-    0% { left: -100%; }       /* מתחיל מחוץ למסך בצד שמאל */
-    100% { left: 100vw; }     /* מסיים מחוץ למסך בצד ימין */
+    0% { transform: translateX(-100%); }   /* הטקסט נדחף שמאלה מחוץ למסך לפי הרוחב של עצמו */
+    100% { transform: translateX(100vw); } /* הטקסט זורם ימינה עד שהוא יוצא לגמרי מרוחב המסך */
 }
 .ticker-item { 
     display: inline-block; direction: rtl; /* הטקסט עצמו נשאר מימין לשמאל */

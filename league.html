@@ -3,302 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי - דאשבורד ליגה (Live Fixtures)</title>
+    <title>סוליבי ספורט - מרכז ליגות</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script src="translations.js"></script>
+    
+    <link rel="stylesheet" href="global-theme.css">
     
     <style>
+        /* === פלטת הצבעים החדשה: זהב ושחור === */
         :root {
-    --brand-green: #7ca856;
-    --brand-green-glow: rgba(124, 168, 86, 0.6);
-    /* 👇 הנה הרקע הכסוף-אפור */
-    --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
-    /* 👇 הנה הנייבי העמוק לדף הבית */
-    --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-    --card-bg: #062141;     /* התאמה של הקוביות לנייבי */
-    --card-hover: rgba(124, 168, 86, 0.1);  
-    --text-light: #cbd5e1;
-    --text-dark: #062141; /* מותאם לנייבי */
-    --white: #ffffff;
-    --border-dark: rgba(255, 255, 255, 0.08);
-    
-    --sidebar-width: clamp(240px, 20vw, 320px); 
-    --search-width: clamp(380px, 28vw, 480px);
-}
+            --brand-gold: #D6B953; 
+            --brand-gold-light: #FDF3C6; 
+            --brand-gold-dark: #A88D31; 
+            --bg-black: #0a0a0a;
+            --bg-card: #141414;
+            --text-white: #f5f5f5;
+            --text-gray: #a0a0a0;
+            --border-gold: rgba(214, 185, 83, 0.3);
+
+            /* סמלי רקע מיוחדים ליבשות מזהב */
+            --bg-am: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D6B953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg>');
+            --bg-world: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D6B953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>');
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
-    font-family: 'Rubik', sans-serif; 
-    background: var(--bg-silver-matte); /* 👈 קריטי שזה יהיה var(--bg-silver-matte) */
-    height: 100vh; width: 100%;
-    overflow: hidden; 
-    display: flex; flex-direction: column;
-}
-        /* =========================================
-           תפריט ניווט עליון חדש! זהה לדף הבית
-           ========================================= */
-        .header {
-            height: 65px;
-            background: var(--element-navy-gradient);
-            border-bottom: 2px solid var(--brand-green);
-            position: relative;
-            z-index: 1000;
+            font-family: 'Rubik', sans-serif;
+            background: var(--bg-black);
+            color: var(--text-white);
+            width: 100%;
+            height: 100vh; 
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            overflow: hidden; 
+        }
+
+        /* === אזור מרכזי: קונטיינר גמיש === */
+        .inner-page-main {
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 0 20px; 
+            justify-content: center; 
+            padding: 2.5vh 20px;
+            overflow: hidden; 
+            min-height: 0; 
+        }
+
+        .content-container {
+            width: 100%;
+            max-width: min(1450px, calc((100vh - 200px) * 2.6)); 
+            aspect-ratio: 2.3 / 1; 
+            height: auto; 
+            max-height: 88vh; 
+            background: rgba(20, 20, 20, 0.85); /* רקע כהה חצי שקוף */
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-gold);
+            border-radius: 20px;
+            padding: clamp(15px, 3vh, 30px) clamp(20px, 3vw, 40px); 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        }
+
+        /* === סרגל עליון בתוך הקונטיינר === */
+        .leagues-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            position: relative; 
             width: 100%;
             flex-shrink: 0;
+            margin-bottom: clamp(15px, 3vh, 35px); 
         }
 
-        .header-right-col { 
-            width: var(--sidebar-width); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        
-        .logo-wrapper {
-            background-color: #ffffff; padding: 0 28px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s;
-            height: 52px; display: flex; align-items: center; justify-content: center;
-        }
-        .logo-wrapper:hover { transform: scale(1.05); }
-        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
-
-        .header-center-col { display: flex; justify-content: center; align-items: center; gap: clamp(15px, 2vw, 30px); flex: 1;}
-        
-        .personal-area-btn {
-            background: transparent; border: 1.5px solid var(--brand-green);
-            color: #ffffff; padding: 6px 16px; border-radius: 30px; text-decoration: none;
-            font-weight: 700; font-size: clamp(12px, 1vw, 14px); transition: 0.3s;
-            display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
-        }
-        .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; border-color: var(--brand-green); transform: scale(1.05); }
-
-        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); margin: 0; padding: 0; align-items: center; }
-       .header-nav a { text-decoration: none; color: var(--white); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
-        .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
-
-        .header-left-col { 
-            width: var(--sidebar-width); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        
-        .header-search { 
-            width: 65%; 
-            height: 34px; 
-            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            position: relative;
-        }
-        .header-search input {
-            width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit;
-            box-shadow: none; transition: 0.4s ease;
-        }
-        .header-search:focus-within { width: 100%; }
-        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
-
-        /* =========================================
-           2. תוכן מרכזי - המנגנון החכם והדינמי
-           ========================================= */
-        .main-content { 
-            flex: 1; 
-            min-height: 0; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center; 
-            width: 100%;
-            padding: clamp(15px, 2vh, 40px) 20px; 
-        }
-
-        .dashboard-wrapper {
-            width: 100%;
+        .premium-title-wrapper {
             display: flex;
-            flex-direction: column;
-            max-width: min(1600px, calc((100vh - 180px) * 2.5));
-            height: 100%;
-            max-height: 85vh; 
+            align-items: center;
+            gap: 15px;
         }
 
-        .page-header {
-            flex-shrink: 0; display: flex; justify-content: center; align-items: center;
-            position: relative; 
-            margin-bottom: clamp(15px, 2.5vh, 30px); 
-        }
-        .page-header::before {
-            content: ''; position: absolute; width: 60%; max-width: 800px; height: 2px;
-            background: linear-gradient(to right, transparent, var(--brand-green), transparent);
-        }
-        .title-pill {
-            background: var(--white); border: 2px solid var(--brand-green); border-radius: 50px;
-            padding: clamp(6px, 1.2vh, 10px) clamp(25px, 4vw, 40px);
-            font-size: clamp(18px, 2vw, 26px); 
-            font-weight: 900; position: relative; z-index: 2;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); display: flex; gap: 8px;
+        .page-title {
+            color: var(--text-white);
+            font-size: clamp(16px, 1.8vw, 24px); 
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--bg-card);
+            padding: 8px 30px;
+            border-radius: 30px;
+            border: 1px solid var(--brand-gold);
+            box-shadow: inset 0 0 15px rgba(214, 185, 83, 0.1);
+            margin: 0;
             white-space: nowrap;
         }
-        .title-dark { color: var(--card-bg); }
-        .title-green { color: var(--brand-green); }
+        .page-title span { color: var(--brand-gold); }
 
-        .dashboard {
-            flex: 1; 
-            min-height: 0; 
-            width: 100%; 
-            display: grid;
-            grid-template-columns: 34fr 41fr 25fr; 
-            gap: clamp(10px, 1.5vh, 20px); 
+        .title-line {
+            height: 2px;
+            width: clamp(50px, 8vw, 100px); 
+            background: linear-gradient(90deg, transparent, var(--brand-gold));
+            border-radius: 2px;
+        }
+        .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-gold)); }
+
+        .internal-search {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(160px, 18vw, 250px); 
+            height: 38px;
+        }
+        .internal-search input {
+            width: 100%; height: 100%;
+            border: 1px solid var(--border-gold);
+            border-radius: 20px;
+            padding: 0 35px 0 15px; 
+            font-family: inherit; font-size: 13px;
+            outline: none; transition: 0.3s;
+            background: #000;
+            color: var(--text-white);
+        }
+        .internal-search input:focus {
+            border-color: var(--brand-gold);
+            box-shadow: 0 0 10px rgba(214, 185, 83, 0.3);
+        }
+        .internal-search input::placeholder { color: #666; }
+        
+        .internal-search svg {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            width: 16px; height: 16px; stroke: var(--brand-gold); pointer-events: none; opacity: 0.7;
         }
 
-        .widget {
-    height: 100%; 
-    /* 👇 עדכן פה שיקבל את גרדיאנט הנייבי החדש */
-    background: var(--element-navy-gradient); 
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); 
-    padding: clamp(10px, 1.5vh, 20px);
-    display: flex; flex-direction: column; color: var(--white); overflow: hidden;
-    box-sizing: border-box;
-}
-        .widget-header-wrapper { flex-shrink: 0; text-align: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border-dark); }
-        .widget-header-pill { display: inline-block; background-color: var(--white); color: var(--card-bg); padding: 6px clamp(15px, 2vw, 22px); border-radius: 50px; font-size: clamp(12px, 1.2vw, 15px); font-weight: 800; border: 2px solid var(--brand-green); box-shadow: 0 4px 10px rgba(0,0,0,0.3); white-space: nowrap;}
-
-        .stat-dropdown-pill {
-            display: inline-block; background-color: var(--white); color: var(--card-bg);
-            padding: 6px 15px 6px 35px; border-radius: 50px; font-size: clamp(12px, 1.2vw, 15px);
-            font-weight: 900; border: 2px solid var(--brand-green); appearance: none; cursor: pointer;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23192a45' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat; background-position: left 12px center; background-size: 14px;
-            outline: none; direction: rtl; font-family: inherit; text-align: center; transition: 0.2s;
-        }
-        .stat-dropdown-pill:hover { transform: scale(1.02); }
-        .stat-dropdown-pill option { background-color: var(--card-bg); color: var(--white); font-weight: bold; }
-
-       /* === הגדרות גלילה - מעביר את פס הגלילה ימינה === */
-        .table-container, .stats-list-container, #api-fixtures-list { 
+        /* === גלילה פנימית מותאמת === */
+        .leagues-scroll-area {
             flex: 1; 
             overflow-y: auto; 
-            overflow-x: auto; 
-            padding-left: 5px; 
-            direction: ltr; /* 👈 זורק את פס הגלילה לצד ימין */
+            padding-right: clamp(10px, 2vw, 25px); 
+            padding-bottom: 20px;
+            direction: ltr; 
         }
-        
-        /* 👈 מחזיר את התוכן עצמו לעברית (מימין לשמאל) */
-        .table-container > *, .stats-list-container > *, #api-fixtures-list > * { 
+
+        .leagues-scroll-area::-webkit-scrollbar { width: 8px; }
+        .leagues-scroll-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .leagues-scroll-area::-webkit-scrollbar-thumb { background: rgba(214,185,83,0.3); border-radius: 10px; }
+        .leagues-scroll-area::-webkit-scrollbar-thumb:hover { background: var(--brand-gold); }
+
+        /* === גריד הקוביות החכם === */
+        .leagues-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr); 
+            column-gap: clamp(10px, 1.5vw, 20px); 
+            row-gap: clamp(15px, 2.5vh, 35px); 
+            width: 100%;
             direction: rtl; 
         }
 
-        .table-container::-webkit-scrollbar, .stats-list-container::-webkit-scrollbar, #api-fixtures-list::-webkit-scrollbar { width: 6px; height: 6px; }
-        .table-container::-webkit-scrollbar-track, .stats-list-container::-webkit-scrollbar-track, #api-fixtures-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        .table-container::-webkit-scrollbar-thumb, .stats-list-container::-webkit-scrollbar-thumb, #api-fixtures-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-        /* =========================================
-           עיצוב אחיד לכל 3 העמודות (טבלה, משחקים, שחקנים)
-           ========================================= */
-        table { width: 100%; border-collapse: collapse; font-size: clamp(11.5px, 1.1vh, 14px); }
-        th { color: var(--text-light); padding: 10px 2px; text-align: center; position: sticky; top: 0; background-color: var(--card-bg); z-index: 10; border-bottom: 1px solid var(--border-dark); font-weight: normal; font-size: clamp(12px, 1vh, 14px); }
-        td { padding: clamp(6px, 1vh, 12px) 2px; border-bottom: 1px solid var(--border-dark); text-align: center; }
-        tr:hover td { background-color: var(--card-hover); }
-        
-        .team-identity { display: flex; align-items: center; gap: 8px; direction: rtl; text-align: right; justify-content: flex-start; }
-        .team-name-text { unicode-bidi: isolate; font-weight: 600; font-size: clamp(13px, 1.2vh, 15px); } 
-        .team-logo { width: clamp(18px, 1.5vw, 22px); height: clamp(18px, 1.5vw, 22px); object-fit: contain; flex-shrink: 0; }
-        .points { color: var(--brand-green); font-weight: 900; font-size: clamp(15px, 1.5vh, 17px); } 
-        
-        .trend-up { color: var(--brand-green); font-size: 12px; }
-        .trend-down { color: #ef4444; font-size: 12px; }
-        .trend-same { color: #64748b; font-size: 12px; }
-
-        .fixtures-nav { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); border-radius: 8px; padding: clamp(6px, 1vh, 10px) 15px; margin-bottom: 15px; flex-shrink: 0;}
-        .nav-btn { background: none; border: none; color: var(--brand-green); font-size: 18px; cursor: pointer; transition: 0.2s;}
-        .nav-btn:hover { transform: scale(1.3); }
-        .nav-btn:disabled { color: #555; cursor: not-allowed; transform: none; }
-        .matchday-title { font-weight: bold; font-size: clamp(13px, 1.2vh, 15px); text-align: center; }
-
-        .match-row { display: flex; justify-content: space-between; align-items: center; padding: clamp(10px, 1.5vh, 14px); border-bottom: 1px solid var(--border-dark); min-width: 300px; }
-        .match-row:hover { background-color: rgba(255,255,255,0.05); border-radius: 8px; }
-        .match-team { flex: 1; font-weight: 600; display: flex; align-items: center; font-size: clamp(13px, 1.2vh, 15px);} 
-        .team-home { justify-content: flex-end; }
-        .team-away { justify-content: flex-start; }
-        .match-center { display: flex; flex-direction: column; align-items: center; margin: 0 clamp(10px, 1.5vw, 35px); }
-        .match-score-box { background: var(--card-bg); border: 1px solid var(--border-dark); padding: 5px 12px; border-radius: 6px; font-weight: bold; text-align: center; min-width: 50px; font-size: clamp(15px, 1.5vh, 17px);} 
-        .live-match { border-color: var(--brand-green); color: var(--brand-green); }
-        .live-minute { font-size: 12px; color: var(--brand-green); animation: blink 1.5s infinite; font-weight: bold; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-        .fixture-logo { width: clamp(18px, 1.5vw, 22px); height: clamp(18px, 1.5vw, 22px); max-width: 24px; max-height: 24px; object-fit: contain; flex-shrink: 0; }
-        
-        .date-separator {
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--brand-green);
-            font-size: clamp(12px, 1vh, 14px);
-            font-weight: 900;
-            padding: 4px 15px;
-            border-radius: 6px;
-            margin: 10px 15px 5px 15px;
-            text-align: center;
-            border: 1px solid rgba(124, 168, 86, 0.2);
+        .league-cube {
+            width: 100%;
+            aspect-ratio: 1/1.05; 
+            background: var(--bg-card); /* שחור עמוק לכל קוביה */
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-gold);
+            position: relative;
+            overflow: hidden;
+            padding: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            container-type: inline-size; 
         }
 
-        .player-row { display: flex; align-items: center; justify-content: space-between; padding: clamp(8px, 1.2vh, 12px) 5px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-        .player-rank { color: #94a3b8; font-weight: bold; width: 20px; font-size: clamp(13px, 1.2vh, 15px); }
-        .player-info { flex: 1; display: flex; align-items: center; gap: 10px; }
-        .player-photo { width: clamp(28px, 2.5vw, 36px); height: clamp(28px, 2.5vw, 36px); border-radius: 50%; border: 1px solid var(--brand-green); object-fit: cover; background: #fff;}
-        .player-name { font-size: clamp(13px, 1.2vh, 15px); font-weight: 600; color: var(--white); } 
-        .player-stat { font-weight: 900; color: var(--brand-green); font-size: clamp(15px, 1.5vh, 17px); } 
-
-        /* =========================================
-           3. שורת עדכונים רצה למטה
-           ========================================= */
-        .footer {
-            flex-shrink: 0; background: var(--element-navy-gradient); padding: 8px 0; border-top: 2px solid var(--brand-green);
-            overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; position: relative; z-index: 1000;
-        }
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
-
-        /* =========================================
-           4. רספונסיביות למסכים קטנים
-           ========================================= */
-        @media (max-width: 1250px) {
-            .dashboard { grid-template-columns: 1fr 1fr; }
-            .dashboard > .widget:nth-child(3) { grid-column: 1 / -1; }
+        .league-cube:hover {
+            transform: translateY(-6px);
+            border-color: var(--brand-gold);
+            box-shadow: 0 8px 25px rgba(214, 185, 83, 0.2);
+            background: #000;
         }
 
-        @media (max-width: 1100px) {
-            body { height: auto; overflow-y: auto; display: block; }
-            .main-content { display: block; height: auto; }
-            .dashboard-wrapper { max-height: none; max-width: 100%;}
-            .dashboard { display: grid; height: auto; }
-            .widget { min-height: 400px; margin-bottom: 20px;}
-            .header { height: auto; padding: 15px 0; flex-direction: column; gap: 15px; }
-            .header-right-col, .header-center-col, .header-left-col { width: 100%; padding: 10px 0; justify-content: center; }
-            .header-search { display: none; }
-            .footer { position: fixed; bottom: 0; left: 0; } 
-        }
-
-        @media (max-width: 850px) {
-            .dashboard { grid-template-columns: 1fr; }
-        }
-
-/* --- עיצוב כפתור חנות סוליבי (עגלת קניות) --- */
-        .header-nav a.store-nav-link {
+        .league-icon-modern {
+            width: clamp(24px, 35cqi, 40px); 
+            height: clamp(24px, 35cqi, 40px);
+            border: 1.5px solid var(--border-gold);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: clamp(4px, 8cqi, 8px);
+            background: #000;
             transition: 0.3s;
+            position: relative;
+            z-index: 2; 
+            overflow: hidden;
         }
-        .header-nav a.store-nav-link svg {
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        .league-icon-modern img { width: 100%; height: 100%; object-fit: cover; }
+        .league-icon-modern.svg-icon { padding: 6px; border-color: var(--brand-gold); }
+        .league-icon-modern.svg-icon svg { width: 100%; height: 100%; fill: var(--brand-gold); }
+
+        .league-cube:hover .league-icon-modern {
+            border-color: var(--brand-gold);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3);
         }
-        .header-nav a.store-nav-link:hover {
-            background: rgba(124, 168, 86, 0.1); 
-            color: var(--brand-green) !important;
-            border-radius: 8px;
+
+        /* === טקסטים דינמיים (cqi) === */
+        .league-name {
+            color: var(--text-white);
+            font-size: clamp(9px, 12.5cqi, 13px); 
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.15;
+            position: relative;
+            z-index: 2; 
         }
-        .header-nav a.store-nav-link:hover svg {
-            transform: translateX(-4px) scale(1.1); /* מסיע את העגלה שמאלה */
+        
+        .sub-league {
+            display: block;
+            font-size: clamp(7.5px, 9cqi, 10.5px);
+            font-weight: 400;
+            color: var(--brand-gold); /* טקסט משני בזהב */
+            margin-top: clamp(2px, 4cqi, 5px);
+        }
+
+        /* תמונת הדגל הגדולה שמופיעה ברקע */
+        .league-cube::before {
+            content: ""; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--bg-image); 
+            background-size: cover; 
+            background-position: center;
+            opacity: 0.15; 
+            transition: opacity 0.5s ease; 
+            z-index: 1; 
+            mix-blend-mode: overlay; 
+            pointer-events: none;
+        }
+
+        .league-cube:hover::before { opacity: 0.4; }
+        .league-cube.svg-bg::before { background-size: 60%; background-repeat: no-repeat; mix-blend-mode: normal; opacity: 0.05; }
+        .league-cube.svg-bg:hover::before { opacity: 0.15; }
+
+        /* מנגנון סינון קוביות דרך JS */
+        .league-cube.hidden { display: none; }
+
+        /* === התאמה רספונסיבית === */
+        @media (max-width: 1100px) {
+            body { height: auto; overflow-y: auto; }
+            .content-container { height: auto; overflow: visible; }
+            .leagues-scroll-area { overflow-y: visible; max-height: none; }
+            .leagues-grid { grid-template-columns: repeat(6, 1fr); } 
+        }
+
+        @media (max-width: 768px) {
+            .leagues-top-bar { flex-direction: column; gap: 15px; }
+            .internal-search { position: static; transform: none; width: 100%; max-width: 300px;}
+            .leagues-grid { grid-template-columns: repeat(4, 1fr); } 
+            .title-line { display: none; }
+        }
+        @media (max-width: 480px) {
+            .leagues-grid { grid-template-columns: repeat(3, 1fr); } 
         }
         
     </style>
@@ -307,967 +278,152 @@
 
     <div id="header-placeholder"></div>
 
-    <main class="main-content">
-        <div class="dashboard-wrapper">
-            <div class="page-header">
-                <div class="title-pill" id="dynamic-title-container">
-                    <span class="title-dark">טוען</span>
-                    <span class="title-green">ליגה...</span>
-                </div>
-            </div>
-
-            <div class="dashboard">
+    <main class="inner-page-main">
+        <div class="content-container">
+            
+            <div class="leagues-top-bar">
                 
-                <div class="widget">
-                    <div class="widget-header-wrapper">
-                        <div class="widget-header-pill">טבלת הליגה</div>
-                    </div>
-                    <div class="table-container" id="api-table">
-                        <div style="text-align:center; padding: 30px;">טוען טבלה... ⚽</div>
-                    </div>
+                <div class="internal-search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="leagueSearchInput" placeholder="חפש ליגה / תחרות...">
                 </div>
 
-                <div class="widget">
-                    <div class="widget-header-wrapper">
-                        <div class="widget-header-pill">לוח משחקים ותוצאות</div>
-                    </div>
-                    <div class="fixtures-nav">
-                        <button class="nav-btn" onclick="changeDate(-1)" id="btn-prev">▶</button>
-                        <div class="matchday-title" id="matchday-title">טוען משחקים...</div>
-                        <button class="nav-btn" onclick="changeDate(1)" id="btn-next">◀</button>
-                    </div>
-                    <div style="flex: 1; overflow-y: auto;" id="api-fixtures-list">
-                        <div style="text-align:center; padding: 30px;">טוען נתונים... ⏳</div>
-                    </div>
+                <div class="premium-title-wrapper">
+                    <div class="title-line"></div>
+                    <h1 class="page-title">מרכז <span>הליגות</span></h1>
+                    <div class="title-line left"></div>
                 </div>
 
-                <div class="widget">
-                    <div class="widget-header-wrapper">
-                        <select id="stat-selector" class="stat-dropdown-pill" onchange="loadPlayerStats(this.value)">
-                            <option value="topscorers">מלך השערים</option>
-                            <option value="topassists">מלך הבישולים</option>
-                            <option value="topyellowcards">כרטיסים צהובים</option>
-                            <option value="topredcards">כרטיסים אדומים</option>
-                        </select>
-                    </div>
-                    <div class="stats-list-container" id="api-stats-list">
-                        <div style="text-align:center; padding: 30px; color: var(--text-light);">טוען נתונים... ⏳</div>
-                    </div>
-                </div>
+            </div>
+            
+            <div class="leagues-scroll-area">
+                <div class="leagues-grid" id="leaguesGrid">
+                    
+                    <a href="league.html?id=383&name=ליגת העל" class="league-cube" data-name="ישראל" style="--bg-image: url('https://flagcdn.com/w640/il.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/il.png"></div><span class="league-name">ליגת העל</span></a>
+                    <a href="league.html?id=384&name=ליגה לאומית" class="league-cube" data-name="ישראל" style="--bg-image: url('https://flagcdn.com/w640/il.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/il.png"></div><span class="league-name">ליגה לאומית</span></a>
+                    
+                    <a href="league.html?id=39&name=פרמייר ליג" class="league-cube" data-name="אנגליה" style="--bg-image: url('https://flagcdn.com/w640/gb-eng.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/gb-eng.png"></div><span class="league-name">אנגלית ראשונה<br><span class="sub-league">(פרמייר ליג)</span></span></a>
+                    <a href="league.html?id=40&name=צ'מפיונשיפ" class="league-cube" data-name="אנגליה" style="--bg-image: url('https://flagcdn.com/w640/gb-eng.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/gb-eng.png"></div><span class="league-name">אנגלית שניה<br><span class="sub-league">(צ'מפיונשיפ)</span></span></a>
+                    <a href="league.html?id=41&name=ליג 1 אנגליה" class="league-cube" data-name="אנגליה" style="--bg-image: url('https://flagcdn.com/w640/gb-eng.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/gb-eng.png"></div><span class="league-name">אנגלית שלישית<br><span class="sub-league">(ליג 1)</span></span></a>
+                    <a href="league.html?id=42&name=ליג 2 אנגליה" class="league-cube" data-name="אנגליה" style="--bg-image: url('https://flagcdn.com/w640/gb-eng.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/gb-eng.png"></div><span class="league-name">אנגלית רביעית<br><span class="sub-league">(ליג 2)</span></span></a>
 
+                    <a href="league.html?id=140&name=לה ליגה" class="league-cube" data-name="ספרד" style="--bg-image: url('https://flagcdn.com/w640/es.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/es.png"></div><span class="league-name">ספרדית ראשונה<br><span class="sub-league">(לה ליגה)</span></span></a>
+                    <a href="league.html?id=141&name=סגונדה" class="league-cube" data-name="ספרד" style="--bg-image: url('https://flagcdn.com/w640/es.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/es.png"></div><span class="league-name">ספרדית שנייה<br><span class="sub-league">(סגונדה)</span></span></a>
+                    <a href="league.html?id=135&name=סרייה א" class="league-cube" data-name="איטליה" style="--bg-image: url('https://flagcdn.com/w640/it.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/it.png"></div><span class="league-name">איטלקית ראשונה<br><span class="sub-league">(סרייה א')</span></span></a>
+                    <a href="league.html?id=136&name=סרייה ב" class="league-cube" data-name="איטליה" style="--bg-image: url('https://flagcdn.com/w640/it.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/it.png"></div><span class="league-name">איטלקית שנייה<br><span class="sub-league">(סרייה ב')</span></span></a>
+                    <a href="league.html?id=78&name=בונדסליגה" class="league-cube" data-name="גרמניה" style="--bg-image: url('https://flagcdn.com/w640/de.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/de.png"></div><span class="league-name">גרמנית ראשונה<br><span class="sub-league">(בונדסליגה)</span></span></a>
+                    <a href="league.html?id=79&name=בונדסליגה 2" class="league-cube" data-name="גרמניה" style="--bg-image: url('https://flagcdn.com/w640/de.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/de.png"></div><span class="league-name">גרמנית שנייה<br><span class="sub-league">(בונדסליגה 2)</span></span></a>
+                    <a href="league.html?id=61&name=ליג 1" class="league-cube" data-name="צרפת" style="--bg-image: url('https://flagcdn.com/w640/fr.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/fr.png"></div><span class="league-name">צרפתית ראשונה<br><span class="sub-league">(ליג 1)</span></span></a>
+                    <a href="league.html?id=62&name=ליג 2" class="league-cube" data-name="צרפת" style="--bg-image: url('https://flagcdn.com/w640/fr.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/fr.png"></div><span class="league-name">צרפתית שנייה<br><span class="sub-league">(ליג 2)</span></span></a>
+
+                    <a href="league.html?id=88&name=ארדיוויזיה" class="league-cube" data-name="הולנד" style="--bg-image: url('https://flagcdn.com/w640/nl.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/nl.png"></div><span class="league-name">הולנדית ראשונה<br><span class="sub-league">(ארדיוויזיה)</span></span></a>
+                    <a href="league.html?id=144&name=בלגית ראשונה" class="league-cube" data-name="בלגיה" style="--bg-image: url('https://flagcdn.com/w640/be.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/be.png"></div><span class="league-name">בלגית ראשונה<br><span class="sub-league">(פרו ליג)</span></span></a>
+                    <a href="league.html?id=94&name=פרימיירה ליגה" class="league-cube" data-name="פורטוגל" style="--bg-image: url('https://flagcdn.com/w640/pt.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/pt.png"></div><span class="league-name">פורטוגלית ראשונה<br><span class="sub-league">(פרימיירה)</span></span></a>
+                    <a href="league.html?id=203&name=סופר ליג" class="league-cube" data-name="טורקיה" style="--bg-image: url('https://flagcdn.com/w640/tr.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/tr.png"></div><span class="league-name">טורקית ראשונה<br><span class="sub-league">(סופר ליג)</span></span></a>
+
+                    <a href="league.html?id=179&name=סקוטית ראשונה" class="league-cube" data-name="סקוטלנד פרמיירשיפ סלטיק ריינגרס" style="--bg-image: url('https://flagcdn.com/w640/gb-sct.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/gb-sct.png"></div><span class="league-name">סקוטית ראשונה<br><span class="sub-league">(פרמיירשיפ)</span></span></a>
+                    <a href="league.html?id=357&name=אירית ראשונה" class="league-cube" data-name="אירלנד" style="--bg-image: url('https://flagcdn.com/w640/ie.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ie.png"></div><span class="league-name">אירית ראשונה<br><span class="sub-league">(פרמייר דיוויז'ן)</span></span></a>
+                    <a href="league.html?id=103&name=אליטסריין" class="league-cube" data-name="נורבגיה אליטסריין" style="--bg-image: url('https://flagcdn.com/w640/no.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/no.png"></div><span class="league-name">נורבגית ראשונה<br><span class="sub-league">(אליטסריין)</span></span></a>
+                    <a href="league.html?id=113&name=אלסוונסקאן" class="league-cube" data-name="שבדיה" style="--bg-image: url('https://flagcdn.com/w640/se.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/se.png"></div><span class="league-name">שבדית ראשונה<br><span class="sub-league">(אלסוונסקאן)</span></span></a>
+                    <a href="league.html?id=119&name=סופרליגה" class="league-cube" data-name="דנמרק" style="--bg-image: url('https://flagcdn.com/w640/dk.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/dk.png"></div><span class="league-name">דנית ראשונה<br><span class="sub-league">(סופרליגה)</span></span></a>
+
+                    <a href="league.html?id=207&name=שוויצרית ראשונה" class="league-cube" data-name="שוויץ" style="--bg-image: url('https://flagcdn.com/w640/ch.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ch.png"></div><span class="league-name">שוויצרית ראשונה<br><span class="sub-league">(סופר ליג)</span></span></a>
+                    <a href="league.html?id=218&name=אוסטרית ראשונה" class="league-cube" data-name="אוסטריה" style="--bg-image: url('https://flagcdn.com/w640/at.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/at.png"></div><span class="league-name">אוסטרית ראשונה<br><span class="sub-league">(בונדסליגה)</span></span></a>
+                    <a href="league.html?id=106&name=אקסטרקלאסה" class="league-cube" data-name="פולין" style="--bg-image: url('https://flagcdn.com/w640/pl.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/pl.png"></div><span class="league-name">פולנית ראשונה<br><span class="sub-league">(אקסטרקלאסה)</span></span></a>
+                    <a href="league.html?id=345&name=צ'כית ראשונה" class="league-cube" data-name="צכיה צ'כיה" style="--bg-image: url('https://flagcdn.com/w640/cz.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/cz.png"></div><span class="league-name">צ'כית ראשונה<br><span class="sub-league">(ליגת העל)</span></span></a>
+                    <a href="league.html?id=332&name=סלובקית ראשונה" class="league-cube" data-name="סלובקיה" style="--bg-image: url('https://flagcdn.com/w640/sk.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/sk.png"></div><span class="league-name">סלובקית ראשונה<br><span class="sub-league">(סופר ליגה)</span></span></a>
+                    <a href="league.html?id=271&name=הונגרית ראשונה" class="league-cube" data-name="הונגריה פרנצווארוש" style="--bg-image: url('https://flagcdn.com/w640/hu.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/hu.png"></div><span class="league-name">הונגרית ראשונה<br><span class="sub-league">(NB I)</span></span></a>
+
+                    <a href="league.html?id=286&name=סרבית ראשונה" class="league-cube" data-name="סרביה הכוכב האדום פרטיזן" style="--bg-image: url('https://flagcdn.com/w640/rs.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/rs.png"></div><span class="league-name">סרבית ראשונה<br><span class="sub-league">(סופר ליגה)</span></span></a>
+                    <a href="league.html?id=210&name=קרואטית ראשונה" class="league-cube" data-name="קרואטיה" style="--bg-image: url('https://flagcdn.com/w640/hr.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/hr.png"></div><span class="league-name">קרואטית ראשונה<br><span class="sub-league">(ליגת העל)</span></span></a>
+                    <a href="league.html?id=373&name=סלובנית ראשונה" class="league-cube" data-name="סלובניה" style="--bg-image: url('https://flagcdn.com/w640/si.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/si.png"></div><span class="league-name">סלובנית ראשונה<br><span class="sub-league">(פרווה ליגה)</span></span></a>
+                    <a href="league.html?id=283&name=רומנית ראשונה" class="league-cube" data-name="רומניה" style="--bg-image: url('https://flagcdn.com/w640/ro.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ro.png"></div><span class="league-name">רומנית ראשונה<br><span class="sub-league">(ליגה 1)</span></span></a>
+                    <a href="league.html?id=172&name=בולגרית ראשונה" class="league-cube" data-name="בולגריה לודוגורץ" style="--bg-image: url('https://flagcdn.com/w640/bg.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/bg.png"></div><span class="league-name">בולגרית ראשונה<br><span class="sub-league">(ליגה 1)</span></span></a>
+                    <a href="league.html?id=197&name=יוונית ראשונה" class="league-cube" data-name="יוון" style="--bg-image: url('https://flagcdn.com/w640/gr.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/gr.png"></div><span class="league-name">יוונית ראשונה<br><span class="sub-league">(סופרליג)</span></span></a>
+                    <a href="league.html?id=318&name=קפריסאית ראשונה" class="league-cube" data-name="קפריסין אומניה אפואל" style="--bg-image: url('https://flagcdn.com/w640/cy.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/cy.png"></div><span class="league-name">קפריסאית ראשונה<br><span class="sub-league">(ליגת העל)</span></span></a>
+                    <a href="league.html?id=333&name=אוקראינית ראשונה" class="league-cube" data-name="אוקראינה שחטאר דינמו" style="--bg-image: url('https://flagcdn.com/w640/ua.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ua.png"></div><span class="league-name">אוקראינית ראשונה<br><span class="sub-league">(ליגת העל)</span></span></a>
+                    <a href="league.html?id=235&name=רוסית ראשונה" class="league-cube" data-name="רוסיה" style="--bg-image: url('https://flagcdn.com/w640/ru.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ru.png"></div><span class="league-name">רוסית ראשונה<br><span class="sub-league">(פרמייר ליג)</span></span></a>
+                    <a href="league.html?id=124&name=גיאורגית ראשונה" class="league-cube" data-name="גיאורגיה" style="--bg-image: url('https://flagcdn.com/w640/ge.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ge.png"></div><span class="league-name">גיאורגית ראשונה<br><span class="sub-league">(ארובנולי)</span></span></a>
+                    <a href="league.html?id=118&name=אזרבייג'אן ראשונה" class="league-cube" data-name="אזרבייגן" style="--bg-image: url('https://flagcdn.com/w640/az.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/az.png"></div><span class="league-name">אזרית ראשונה<br><span class="sub-league">(ליגת העל)</span></span></a>
+                    <a href="league.html?id=122&name=אסטונית ראשונה" class="league-cube" data-name="אסטוניה" style="--bg-image: url('https://flagcdn.com/w640/ee.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ee.png"></div><span class="league-name">אסטונית ראשונה<br><span class="sub-league">(מייסטרליגה)</span></span></a>
+
+                    <a href="league.html?id=71&name=ברזילאית ראשונה" class="league-cube" data-name="ברזיל" style="--bg-image: url('https://flagcdn.com/w640/br.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/br.png"></div><span class="league-name">ברזילאית ראשונה<br><span class="sub-league">(סרייה א')</span></span></a>
+                    <a href="league.html?id=72&name=ברזילאית שנייה" class="league-cube" data-name="ברזיל" style="--bg-image: url('https://flagcdn.com/w640/br.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/br.png"></div><span class="league-name">ברזילאית שנייה<br><span class="sub-league">(סרייה ב')</span></span></a>
+                    <a href="league.html?id=128&name=ארגנטינאית ראשונה" class="league-cube" data-name="ארגנטינה" style="--bg-image: url('https://flagcdn.com/w640/ar.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ar.png"></div><span class="league-name">ארגנטינאית ראשונה<br><span class="sub-league">(ליגת העל)</span></span></a>
+                    <a href="league.html?id=268&name=אורוגוואית ראשונה" class="league-cube" data-name="אורוגוואי פניארול נסיונל" style="--bg-image: url('https://flagcdn.com/w640/uy.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/uy.png"></div><span class="league-name">אורוגוואית ראשונה<br><span class="sub-league">(פרימרה דיוויסיון)</span></span></a>
+                    <a href="league.html?id=239&name=קולומביאנית ראשונה" class="league-cube" data-name="קולומביה" style="--bg-image: url('https://flagcdn.com/w640/co.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/co.png"></div><span class="league-name">קולומביאנית ראשונה<br><span class="sub-league">(פרימרה A)</span></span></a>
+                    <a href="league.html?id=265&name=צ'יליאנית ראשונה" class="league-cube" data-name="צילה צ'ילה" style="--bg-image: url('https://flagcdn.com/w640/cl.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/cl.png"></div><span class="league-name">צ'יליאנית ראשונה<br><span class="sub-league">(ליגת העל)</span></span></a>
+                    <a href="league.html?id=253&name=MLS" class="league-cube" data-name="ארהב ארצות הברית אמריקה" style="--bg-image: url('https://flagcdn.com/w640/us.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/us.png"></div><span class="league-name">אמריקאית ראשונה<br><span class="sub-league">(MLS)</span></span></a>
+                    <a href="league.html?id=262&name=מקסיקנית ראשונה" class="league-cube" data-name="מקסיקו" style="--bg-image: url('https://flagcdn.com/w640/mx.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/mx.png"></div><span class="league-name">מקסיקנית ראשונה<br><span class="sub-league">(ליגה MX)</span></span></a>
+
+                    <a href="league.html?id=307&name=סעודית ראשונה" class="league-cube" data-name="ערב הסעודית סעודיה" style="--bg-image: url('https://flagcdn.com/w640/sa.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/sa.png"></div><span class="league-name">סעודית ראשונה<br><span class="sub-league">(ליגת העל)</span></span></a>
+                    <a href="league.html?id=301&name=אמירויות ראשונה" class="league-cube" data-name="איחוד האמירויות" style="--bg-image: url('https://flagcdn.com/w640/ae.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ae.png"></div><span class="league-name">ליגת האמירויות<br><span class="sub-league">(פרו ליג)</span></span></a>
+                    <a href="league.html?id=98&name=יפנית ראשונה" class="league-cube" data-name="יפן" style="--bg-image: url('https://flagcdn.com/w640/jp.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/jp.png"></div><span class="league-name">יפנית ראשונה<br><span class="sub-league">(J-League)</span></span></a>
+                    <a href="league.html?id=292&name=דרום קוריאנית" class="league-cube" data-name="קוריאה דרום קוריאה" style="--bg-image: url('https://flagcdn.com/w640/kr.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/kr.png"></div><span class="league-name">דרום קוריאנית<br><span class="sub-league">(K-League)</span></span></a>
+                    <a href="league.html?id=169&name=סינית ראשונה" class="league-cube" data-name="סין" style="--bg-image: url('https://flagcdn.com/w640/cn.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/cn.png"></div><span class="league-name">סינית ראשונה<br><span class="sub-league">(סופר ליג)</span></span></a>
+
+                    <a href="league.html?id=288&name=דרום אפריקאית" class="league-cube" data-name="דרום אפריקה" style="--bg-image: url('https://flagcdn.com/w640/za.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/za.png"></div><span class="league-name">דרום אפריקאית<br><span class="sub-league">(פרמיירשיפ)</span></span></a>
+                    <a href="league.html?id=233&name=מצרית ראשונה" class="league-cube" data-name="מצרים" style="--bg-image: url('https://flagcdn.com/w640/eg.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/eg.png"></div><span class="league-name">מצרית ראשונה<br><span class="sub-league">(פרמייר ליג)</span></span></a>
+                    <a href="league.html?id=200&name=מרוקאית ראשונה" class="league-cube" data-name="מרוקו" style="--bg-image: url('https://flagcdn.com/w640/ma.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/ma.png"></div><span class="league-name">מרוקאית ראשונה<br><span class="sub-league">(בוטולה)</span></span></a>
+                    <a href="league.html?id=188&name=אוסטרלית ראשונה" class="league-cube" data-name="אוסטרליה" style="--bg-image: url('https://flagcdn.com/w640/au.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/au.png"></div><span class="league-name">אוסטרלית ראשונה<br><span class="sub-league">(A-League)</span></span></a>
+
+                    <a href="league.html?id=2&name=ליגת האלופות" class="league-cube svg-bg" data-name="אירופה צמפיונס ליג" style="--bg-image: url('https://flagcdn.com/w640/eu.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png"></div><span class="league-name">ליגת האלופות</span></a>
+                    <a href="league.html?id=3&name=הליגה האירופית" class="league-cube svg-bg" data-name="אירופה" style="--bg-image: url('https://flagcdn.com/w640/eu.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png"></div><span class="league-name">הליגה האירופית</span></a>
+                    <a href="league.html?id=848&name=ליגת הקונפרנס" class="league-cube svg-bg" data-name="אירופה" style="--bg-image: url('https://flagcdn.com/w640/eu.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png"></div><span class="league-name">ליגת הקונפרנס</span></a>
+                    <a href="league.html?id=5&name=ליגת האומות" class="league-cube svg-bg" data-name="אירופה נבחרות" style="--bg-image: url('https://flagcdn.com/w640/eu.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png"></div><span class="league-name">ליגת האומות</span></a>
+                    <a href="league.html?id=4&name=יורו" class="league-cube svg-bg" data-name="אירופה נבחרות אליפות אירופה" style="--bg-image: url('https://flagcdn.com/w640/eu.png');"><div class="league-icon-modern"><img src="https://flagcdn.com/w80/eu.png"></div><span class="league-name">יורו</span></a>
+                    <a href="league.html?id=13&name=ליברטדורס" class="league-cube svg-bg" data-name="דרום אמריקה" style="--bg-image: var(--bg-am);"><div class="league-icon-modern svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg></div><span class="league-name">ליברטדורס</span></a>
+                    <a href="league.html?id=11&name=סודאמריקנה" class="league-cube svg-bg" data-name="דרום אמריקה" style="--bg-image: var(--bg-am);"><div class="league-icon-modern svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg></div><span class="league-name">סודאמריקנה</span></a>
+                    <a href="league.html?id=9&name=קופה אמריקה" class="league-cube svg-bg" data-name="דרום אמריקה נבחרות" style="--bg-image: var(--bg-am);"><div class="league-icon-modern svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg></div><span class="league-name">קופה אמריקה</span></a>
+                    <a href="league.html?id=17&name=אלופות אסיה" class="league-cube svg-bg" data-name="אסיה" style="--bg-image: var(--bg-world);"><div class="league-icon-modern svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div><span class="league-name">אלופות אסיה</span></a>
+                    <a href="league.html?id=6&name=אליפות אפריקה" class="league-cube svg-bg" data-name="אפריקה נבחרות" style="--bg-image: var(--bg-world);"><div class="league-icon-modern svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div><span class="league-name">אליפות אפריקה</span></a>
+                    <a href="worldcup.html?id=1&name=מונדיאל" class="league-cube svg-bg" data-name="מונדיאל גביע העולם נבחרות" style="--bg-image: var(--bg-world);"><div class="league-icon-modern svg-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div><span class="league-name">מונדיאל</span></a>
+
+                </div>
             </div>
         </div>
     </main>
 
     <div id="ticker-placeholder"></div>
-
-      <script>
-        
-      const urlParams = new URLSearchParams(window.location.search);
-        const LEAGUE_ID = urlParams.get('id') || 39;
-        const LEAGUE_NAME = urlParams.get('name') || "הליגה האנגלית";
-
-        function getCalculatedSeason(leagueId) {
-         const summerLeagues = [253, 128, 71, 72, 254, 255, 122, 124];
-            const date = new Date();
-            const year = date.getFullYear();
-            const month = date.getMonth() + 1;
-
-            if (summerLeagues.includes(parseInt(leagueId))) {
-                return year;
-            } else {
-                return month >= 7 ? year : year - 1;
-            }
-        }
-        const SEASON = getCalculatedSeason(LEAGUE_ID);
-
-        const titleContainer = document.getElementById('dynamic-title-container');
-        if (titleContainer) {
-            titleContainer.innerHTML = colorizeTitle(LEAGUE_NAME);
-        }
-
-        function colorizeTitle(text) {
-            if (!text) return "";
-            const words = text.split(' ');
-            const coloredWords = words.map((word, index) => {
-                const color = (index % 2 === 0) ? '#112845' : '#7ca856';
-                return `<span style="color: ${color};">${word}</span>`;
-            });
-            return coloredWords.join(' ');
-        }
-
-        function translateName(englishName) {
-            if (!englishName) return "";
-            const cleanName = englishName.trim();
-
-            if (typeof myDictionary !== 'undefined' && myDictionary[cleanName]) {
-                return myDictionary[cleanName];
-            } else {
-                let missing = JSON.parse(localStorage.getItem('missingTranslations') || '[]');
-                if (!missing.includes(cleanName) && isNaN(cleanName)) {
-                    missing.push(cleanName);
-                    localStorage.setItem('missingTranslations', JSON.stringify(missing));
-                }
-                return cleanName;
-            }
-        }
-
-        function translateGroupName(name) {
-            if (!name) return "טבלה כללית";
-            if (name === "טבלה כללית") return name;
-            let lowerName = name.toLowerCase();
-
-            if (lowerName.includes('western')) return "מערב";
-            if (lowerName.includes('eastern')) return "מזרח";
-            if (lowerName.includes('conference') || lowerName.includes('qualifying') || lowerName.includes('europe')) return "פלייאוף אמצעי";
-            if (lowerName.includes('championship')) return "פלייאוף עליון";
-            if (lowerName.includes('relegation')) return "פלייאוף תחתון";
-            if (lowerName.includes('regular') || lowerName.includes('premier league') || lowerName.includes('ligat ha\'al') || lowerName.includes('pro league') || lowerName.includes('1st phase') || lowerName.includes('premiership') || lowerName.includes('super liga')) return "עונה סדירה";
-if (lowerName.includes('zona a') || lowerName.includes('zone a')) return "בית א'";
-            if (lowerName.includes('zona b') || lowerName.includes('zone b')) return "בית ב'";
-            if (lowerName.includes('anual')) return "טבלה שנתית";
-            if (lowerName.includes('apertura')) return "אפרטורה";
-            if (lowerName.includes('clausura')) return "קלאוסורה";
-            if (lowerName.includes('group')) {
-                let gName = name.replace(/Group/i, 'בית').trim();
-                gName = gName.replace('A', "א'").replace('B', "ב'").replace('C', "ג'").replace('D', "ד'");
-                return gName;
-            }
-            return name;
-        }
-
-        let allStandingsData = [];
-        let allMatches = [];
-        let allDates = [];
-        let currentDateIndex = 0;
-        window.leagueGoalTracker = window.leagueGoalTracker || {};
-
-        async function getStandings() {
-            const container = document.getElementById('api-table');
-
-            if (parseInt(LEAGUE_ID) === 384) {
-                getStandingsFromWikipedia();
-                return;
-            }
-
-            try {
-                // 👇 הפנייה המאובטחת לשרת שלנו 👇
-                const response = await fetch(`/api/football-standings?league=${LEAGUE_ID}&season=${SEASON}`);
-                const data = await response.json();
-
-                if (data.errors && Object.keys(data.errors).length > 0 || !data.response || data.response.length === 0) {
-                    container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני טבלה זמינים</div>';
-                    return;
-                }
-
-                let standings = data.response[0].league.standings;
-
-                // תיקון ליגת ארגנטינה (128) וקולומביה (239) - הצגת בתים וטבלה שנתית
-if (parseInt(LEAGUE_ID) === 128 || parseInt(LEAGUE_ID) === 239) {
-    standings = standings.filter(group => {
-        let groupName = (group[0].group || "").toLowerCase();
-        // אנחנו מסננים החוצה רק את טבלת הממוצעים (promedio) של הירידות.
-        // משאירים את הבתים (Zona A/B), הקלאוסורה והטבלה השנתית (Anual).
-        return !groupName.includes('promedio');
-    });
-}
-                let hasMultipleGroups = standings.length > 1;
-
-                if (hasMultipleGroups) {
-                        let teamMap = new Map();
-                        
-                        // בדיקה חכמה: האם הליגה הזו כבר נכנסה לשלבי פלייאוף?
-                        let hasPlayoffs = standings.some(g => translateGroupName(g[0].group).includes("פלייאוף"));
-
-                        standings.forEach(group => {
-                            let gName = translateGroupName(group[0].group);
-                            let isPlayoffGroup = gName.includes("פלייאוף");
-
-                            // השינוי הקריטי: אם יש פלייאוף בליגה, אנחנו לא ממזגים את הנקודות שלו לטבלה הכללית!
-                            // ככה הטבלה הכללית קופאת לנצח על נתוני העונה הסדירה המקוריים.
-                            if (hasPlayoffs && isPlayoffGroup) return;
-
-                            group.forEach(item => {
-                                const teamId = item.team.id;
-
-                                if (!teamMap.has(teamId)) {
-                                    teamMap.set(teamId, JSON.parse(JSON.stringify(item)));
-                                } else {
-                                    let existing = teamMap.get(teamId);
-                                    if (item.all.played > existing.all.played || (item.all.played === existing.all.played && item.points > existing.points)) {
-                                        teamMap.set(teamId, JSON.parse(JSON.stringify(item)));
-                                    }
-                                }
-                            });
-                        });
-
-                        let combined = Array.from(teamMap.values());
-
-                    if (parseInt(LEAGUE_ID) !== 144) {
-                        if (combined.length > 0) {
-                            combined.sort((a, b) => {
-                                if (b.points !== a.points) return b.points - a.points;
-                                if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
-                                return b.all.goals.for - a.all.goals.for;
-                            });
-
-                            let combinedWithRanks = combined.map((item, index) => {
-                                let newItem = JSON.parse(JSON.stringify(item));
-                                newItem.rank = index + 1; newItem.group = "טבלה כללית";
-                                return newItem;
-                            });
-
-                            let hideRegularLeagues = [383, 390, 218, 332, 179, 119];
-                            if (hideRegularLeagues.includes(parseInt(LEAGUE_ID)) || data.response[0].league.country === "Israel") {
-                                standings = standings.filter(group => translateGroupName(group[0].group) !== "עונה סדירה");
-                            }
-
-                            standings.unshift(combinedWithRanks);
-                        }
-                    }
-                }
-
-                if (standings.length > 1) {
-                    standings = standings.filter(group => {
-                        let gName = translateGroupName(group[0].group);
-                        if (/[a-zA-Z]/.test(gName) || (parseInt(LEAGUE_ID) === 144 && gName === "טבלה כללית")) {
-                            return false;
-                        }
-                        return true;
-                    });
-                }
-
-               const orderPriority = {
-                    "בית א'": 1, "בית ב'": 2, "טבלה שנתית": 3, "טבלה כללית": 4, "עונה סדירה": 5,
-                    "אפרטורה": 6, "קלאוסורה": 7, "פלייאוף עליון": 8, "פלייאוף אמצעי": 9,
-                    "פלייאוף תחתון": 10, "מזרח": 11, "מערב": 12, "בית ג'": 13, "בית ד'": 14
-                };
-
-                standings.sort((a, b) => {
-                    let weightA = orderPriority[translateGroupName(a[0].group)] || 99;
-                    let weightB = orderPriority[translateGroupName(b[0].group)] || 99;
-                    return weightA - weightB;
-                });
-
-               window.originalStandingsData = JSON.parse(JSON.stringify(standings));
-                window.allStandingsData = JSON.parse(JSON.stringify(standings));
-                buildStandingsUI();
-
-            } catch (error) {
-                console.error("שגיאה במשיכת נתוני טבלה:", error);
-                container.innerHTML = '<div style="text-align:center; padding: 30px;">שגיאה בטעינת הטבלה</div>';
-            }
-        }
-
-        function buildStandingsUI() {
-            const container = document.getElementById('api-table');
-            if (!window.allStandingsData || window.allStandingsData.length === 0) return;
-
-            const currentLeagueId = parseInt(LEAGUE_ID);
-            const euroLeagues = [2, 3, 848];
-
-            if (euroLeagues.includes(currentLeagueId)) {
-                let uiHtml = `
-                    <div style="margin-bottom: 15px; text-align: center;">
-                        <select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;">
-                            <option value="0">שלב הליגה (טבלה)</option>
-                            <option value="knockout">שלבי נוקאאוט</option>
-                        </select>
-                    </div>
-                    <div id="standings-render-area"></div>
-                `;
-                container.innerHTML = uiHtml;
-                document.getElementById('group-selector').addEventListener('change', function(e) {
-                    if (e.target.value === 'knockout') fetchAndRenderKnockouts();
-                    else renderStandingsTable(0);
-                });
-                renderStandingsTable(0);
-                return;
-            }
-
-            if (window.allStandingsData.length <= 1) {
-                container.innerHTML = '<div id="standings-render-area"></div>';
-                renderStandingsTable(0);
-                return;
-            }
-
-            let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="group-selector" class="stat-dropdown-pill" style="padding-left:40px; padding-right:15px;">`;
-            
-            // המוח החדש: ספירת כמות הפעמים שכל שם מופיע כדי לזהות כפילויות
-            let nameCounts = {};
-            window.allStandingsData.forEach(group => {
-                let name = translateGroupName(group[0].group);
-                nameCounts[name] = (nameCounts[name] || 0) + 1;
-            });
-
-            let currentCounts = {};
-            window.allStandingsData.forEach((group, index) => {
-                let name = translateGroupName(group[0].group);
-                currentCounts[name] = (currentCounts[name] || 0) + 1;
-
-                let displayName = name;
-                // אם השם (כמו "אפרטורה") מופיע בדיוק פעמיים, נחלק לבית א' ובית ב'
-                if (nameCounts[name] === 2) {
-                    displayName = currentCounts[name] === 1 ? name + " - בית א'" : name + " - בית ב'";
-                } 
-                // אם יש יותר מ-2 בתים עם אותו שם, נוסיף אותיות אוטומטית (א', ב', ג'...)
-                else if (nameCounts[name] > 2) {
-                    let letter = String.fromCharCode(1488 + currentCounts[name] - 1); 
-                    displayName = name + " - בית " + letter + "'";
-                }
-
-                uiHtml += `<option value="${index}">${displayName}</option>`;
-            });
-            uiHtml += `</select></div><div id="standings-render-area"></div>`;
-            container.innerHTML = uiHtml;
-
-            document.getElementById('group-selector').addEventListener('change', function(e) {
-                renderStandingsTable(parseInt(e.target.value));
-            });
-
-            renderStandingsTable(0);
-        }
-
-        function renderStandingsTable(groupIndex) {
-            const standingsArray = window.allStandingsData[groupIndex];
-            if (!standingsArray) return;
-            let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
-            
-            standingsArray.forEach(item => {
-                const hebrewName = typeof translateName === 'function' ? translateName(item.team.name) : item.team.name;
-                let trendHtml = item.status === 'up' ? '<span class="trend-up">▲</span>' : (item.status === 'down' ? '<span class="trend-down">▼</span>' : '<span class="trend-same">-</span>');
-                
-                let liveClass = item.isLiveUpdated ? 'background: rgba(124, 168, 86, 0.15);' : '';
-                let liveDot = item.isLiveUpdated ? '<span style="color:#ef4444; font-size:9px; animation: blink 1.5s infinite; margin-right:6px; vertical-align: middle;">⬤</span>' : '';
-
-                html += `<tr style="${liveClass}">
-                    <td>${trendHtml}</td>
-                    <td style="color: #94a3b8; font-weight: bold;">${item.rank}</td>
-                    <td>
-                        <div class="team-identity">
-                            <img src="${item.team.logo}" class="team-logo">
-                            <span class="team-name-text">${hebrewName}${liveDot}</span>
-                        </div>
-                    </td>
-                    <td>${item.all.played}</td>
-                    <td>${item.all.win}</td>
-                    <td>${item.all.draw}</td>
-                    <td>${item.all.lose}</td>
-                    <td>${item.all.goals.for}</td>
-                    <td>${item.all.goals.against}</td>
-                    <td dir="ltr" style="text-align:center;">${item.goalsDiff}</td>
-                    <td><strong class="points">${item.points}</strong></td>
-                </tr>`;
-            });
-            document.getElementById('standings-render-area').innerHTML = html + `</table>`;
-        }
-
-        async function fetchAndRenderKnockouts() {
-            const container = document.getElementById('standings-render-area');
-            container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold; color:#cbd5e1;">טוען שלבי נוקאאוט... 🏆</div>';
-
-            try {
-                // 👇 הפנייה המאובטחת לשרת שלנו (נוקאאוט/משחקים) 👇
-                const response = await fetch(`/api/football-fixtures?league=${LEAGUE_ID}&season=${SEASON}`);
-                const data = await response.json();
-                const allFixtures = data.response || [];
-
-                const knockoutFixtures = allFixtures.filter(f => {
-                    const r = f.league.round.toLowerCase();
-                    return r.includes('knockout') || r.includes('16') || r.includes('quarter') || r.includes('semi') || r.includes('final') || r.includes('play-off');
-                });
-
-                if (knockoutFixtures.length === 0) {
-                    container.innerHTML = '<div style="text-align:center; padding:30px; font-weight:bold;">טרם שוחקו משחקי נוקאאוט העונה.</div>';
-                    return;
-                }
-
-                const rounds = {};
-                knockoutFixtures.forEach(m => {
-                    let roundName = typeof translateName === 'function' ? translateName(m.league.round) : m.league.round;
-                    if (m.league.round.toLowerCase().includes('knockout round play-offs')) roundName = "פלייאוף נוקאאוט";
-
-                    if (!rounds[roundName]) rounds[roundName] = {};
-                    let tieKey = [m.teams.home.id, m.teams.away.id].sort().join('-');
-                    if (!rounds[roundName][tieKey]) rounds[roundName][tieKey] = [];
-                    rounds[roundName][tieKey].push(m);
-                });
-
-                let html = '<div style="display:flex; flex-direction:column; gap:8px; margin-top:5px; direction:rtl;">';
-
-                Object.keys(rounds).forEach(round => {
-                    html += `<div class="date-separator" style="color: #8fa0b3; font-size: 13px; font-weight: bold; text-align: center; margin: 15px 0 5px; border-bottom: 1px solid #1f2d40; padding-bottom: 4px;">${round}</div>`;
-
-                    Object.values(rounds[round]).forEach(tieMatches => {
-                        tieMatches.sort((a,b) => a.fixture.timestamp - b.fixture.timestamp);
-
-                        let t1Id = tieMatches[0].teams.home.id;
-                        let t1Name = typeof translateName === 'function' ? translateName(tieMatches[0].teams.home.name) : tieMatches[0].teams.home.name;
-                        let t1Logo = tieMatches[0].teams.home.logo;
-
-                        let t2Id = tieMatches[0].teams.away.id;
-                        let t2Name = typeof translateName === 'function' ? translateName(tieMatches[0].teams.away.name) : tieMatches[0].teams.away.name;
-                        let t2Logo = tieMatches[0].teams.away.logo;
-
-                        let t1Goals = 0, t2Goals = 0, playedCount = 0;
-                        let pensText = '', legsHTML = '';
-
-                        tieMatches.forEach((m, idx) => {
-                            let homeIsT1 = m.teams.home.id === t1Id;
-                            let hGoals = m.goals.home, aGoals = m.goals.away;
-
-                            if (hGoals !== null && aGoals !== null) {
-                                playedCount++;
-                                if (homeIsT1) { t1Goals += hGoals; t2Goals += aGoals; }
-                                else { t2Goals += hGoals; t1Goals += aGoals; }
-                            }
-
-                            if (m.score && m.score.penalty && m.score.penalty.home !== null) {
-                                let pHome = m.score.penalty.home, pAway = m.score.penalty.away;
-                                pensText = homeIsT1 ? `(פנדלים: ${pHome}-${pAway})` : `(פנדלים: ${pAway}-${pHome})`;
-                            }
-
-                            let legDate = new Date(m.fixture.date).toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit'});
-                            let legHomeName = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
-                            let legAwayName = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
-                            let legHScore = hGoals !== null ? hGoals : '-';
-                            let legAScore = aGoals !== null ? aGoals : '-';
-                            let safeHome = encodeURIComponent(m.teams.home.name);
-                            let safeAway = encodeURIComponent(m.teams.away.name);
-
-                            let shortStatus = m.fixture.status.short, timeOrStatus = '';
-                            if (['NS', 'TBD'].includes(shortStatus)) timeOrStatus = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
-                            else if (['FT', 'AET', 'PEN'].includes(shortStatus)) timeOrStatus = 'סיום';
-                            else if (shortStatus === 'HT') timeOrStatus = 'מחצית';
-                            else if (m.fixture.status.elapsed) timeOrStatus = `${m.fixture.status.elapsed}'`;
-
-                            let legTitle = tieMatches.length > 1 ? `משחק ${idx + 1}` : 'משחק יחיד';
-
-                            legsHTML += `
-                            <div onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${m.fixture.id}, '${safeHome}', '${safeAway}')" style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-top: 1px solid #1f2d40; cursor: pointer; color: #cbd5e1; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
-                                <div style="width: 25%; text-align: right; color: #8fa0b3; display: flex; flex-direction: column; line-height: 1.2;">
-                                    <span style="font-weight:bold; font-size:10px;">${legTitle}</span>
-                                    <span style="font-size:9px;">${legDate} | ${timeOrStatus}</span>
-                                </div>
-                                <div style="width: 50%; display: flex; align-items: center; font-weight: bold; font-size: 11px;">
-                                    <div style="flex: 1; text-align: left; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${legHomeName}</div>
-                                    <div style="color:#fff; background:#192a45; padding:2px 8px; border-radius:4px; border:1px solid #2a3b4c; min-width: 45px; text-align: center; flex-shrink: 0; direction: ltr;">${legHScore} - ${legAScore}</div>
-                                    <div style="flex: 1; text-align: right; padding-right: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${legAwayName}</div>
-                                </div>
-                                <div style="width: 25%; text-align: left; color: #7ca856; font-weight: bold; font-size: 10px;">
-                                    זירה 📊
-                                </div>
-                            </div>`;
-                        });
-
-                        let aggScoreDisplay = playedCount > 0 ? `${t1Goals} - ${t2Goals}` : '-';
-                        let aggLabel = tieMatches.length > 1 ? 'סיכום' : 'תוצאה';
-
-                        html += `
-                        <div style="background: #0b121c; border-radius: 8px; margin-bottom: 5px; border: 1px solid #1f2d40; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
-                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: radial-gradient(circle at center, #152438 0%, #0b121c 100%);">
-                                <div style="flex: 1; display: flex; align-items: center; gap: 8px; justify-content: flex-end;">
-                                    <span style="font-weight: 700; font-size: 13px; color: #fff;">${t1Name}</span>
-                                    <img src="${t1Logo}" style="width: 22px; height: 22px; object-fit: contain;">
-                                </div>
-                                
-                                <div style="width: 80px; text-align: center; display: flex; flex-direction: column; justify-content: center; line-height: 1.1;">
-                                    <span style="font-size: 9px; color: #8fa0b3; font-weight: bold;">${aggLabel}</span>
-                                    <span style="font-size: 18px; font-weight: 900; color: #7ca856;">${aggScoreDisplay}</span>
-                                    ${pensText ? `<span style="font-size: 9px; color: #ff4d4d; font-weight: bold;">${pensText}</span>` : ''}
-                                </div>
-                                
-                                <div style="flex: 1; display: flex; align-items: center; gap: 8px; justify-content: flex-start;">
-                                    <img src="${t2Logo}" style="width: 22px; height: 22px; object-fit: contain;">
-                                    <span style="font-weight: 700; font-size: 13px; color: #fff;">${t2Name}</span>
-                                </div>
-                            </div>
-                            <div style="display: flex; flex-direction: column; background: #060a10;">
-                               ${legsHTML}
-                            </div>
-                        </div>`;
-                    });
-                });
-
-                html += '</div>';
-                container.innerHTML = html;
-
-            } catch (error) {
-                console.error("שגיאה במשיכת נתוני נוקאאוט:", error);
-                container.innerHTML = '<div style="text-align:center; padding:30px;">שגיאה בטעינת משחקי נוקאאוט</div>';
-            }
-        }
-
-function updateLiveStandings() {
-            if (!window.originalStandingsData || window.originalStandingsData.length === 0) return;
-            if (!allMatches || allMatches.length === 0) return;
-
-            const liveStatuses = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'];
-            const liveMatches = allMatches.filter(m => liveStatuses.includes(m.fixture.status.short));
-
-            const selector = document.getElementById('group-selector');
-            const isKnockout = selector && selector.value === 'knockout';
-
-            if (liveMatches.length === 0) {
-                window.allStandingsData = JSON.parse(JSON.stringify(window.originalStandingsData));
-                if (!isKnockout) renderStandingsTable(selector ? parseInt(selector.value) : 0);
-                return;
-            }
-
-            let liveStandings = JSON.parse(JSON.stringify(window.originalStandingsData));
-
-            liveStandings.forEach(group => {
-                let gName = translateGroupName(group[0].group);
-
-                group.forEach(teamStats => {
-                    const teamId = teamStats.team.id;
-                    
-                    const match = liveMatches.find(m => {
-                        // חובה: הקבוצה חייבת לשחק במשחק הזה
-                        if (m.teams.home.id !== teamId && m.teams.away.id !== teamId) return false;
-                        
-                        let matchRoundStr = (m.league.round || "").toLowerCase();
-                        let isPlayoffMatch = matchRoundStr.includes("championship") || matchRoundStr.includes("relegation") || matchRoundStr.includes("play") || matchRoundStr.includes("conference");
-                        let isRegularMatch = matchRoundStr.includes("regular");
-                        
-                        // זיהוי משחקי נוקאאוט של מפעלים אירופיים וליגות גביע
-                        let isKnockoutMatch = matchRoundStr.includes("knockout") || matchRoundStr.includes("16") || matchRoundStr.includes("quarter") || matchRoundStr.includes("semi") || matchRoundStr.includes("final");
-
-                        // חסימה: לא לעדכן את "שלב הליגה" או "טבלה כללית" במשחקי נוקאאוט! (קריטי לליגת האלופות)
-                        if (isKnockoutMatch && (gName === "שלב הליגה" || gName === "טבלה כללית" || gName === "עונה סדירה")) {
-                            return false;
-                        }
-
-                        // חסימה גורפת: אם זה משחק פלייאוף - אל תעדכן את הטבלה הכללית או העונה הסדירה!
-                        if (isPlayoffMatch && (gName === "עונה סדירה" || gName === "טבלה כללית")) {
-                            return false; 
-                        }
-                        
-                        // ואם זה משחק ליגה רגיל שמשוחק - אל תעדכן את הפלייאוף בטעות
-                        if (gName.includes("פלייאוף") && isRegularMatch) {
-                            return false;
-                        }
-
-                        return true;
-                    });
-                    if (match) {
-                        const isHome = match.teams.home.id === teamId;
-                        const goalsFor = isHome ? (match.goals.home || 0) : (match.goals.away || 0);
-                        const goalsAgainst = isHome ? (match.goals.away || 0) : (match.goals.home || 0);
-
-                        teamStats.all.played += 1;
-                        teamStats.all.goals.for += goalsFor;
-                        teamStats.all.goals.against += goalsAgainst;
-                        teamStats.goalsDiff = teamStats.all.goals.for - teamStats.all.goals.against;
-
-                        if (goalsFor > goalsAgainst) {
-                            teamStats.all.win += 1;
-                            teamStats.points += 3;
-                        } else if (goalsFor === goalsAgainst) {
-                            teamStats.all.draw += 1;
-                            teamStats.points += 1;
-                        } else {
-                            teamStats.all.lose += 1;
-                        }
-                        
-                        teamStats.isLiveUpdated = true;
-                    }
-                });
-
-                group.sort((a, b) => {
-                    if (b.points !== a.points) return b.points - a.points;
-                    if (b.goalsDiff !== a.goalsDiff) return b.goalsDiff - a.goalsDiff;
-                    return b.all.goals.for - a.all.goals.for;
-                });
-                
-                group.forEach((t, idx) => { t.rank = idx + 1; });
-            });
-
-            window.allStandingsData = liveStandings;
-            if (!isKnockout) renderStandingsTable(selector ? parseInt(selector.value) : 0);
-        }
-          
-        async function getFixtures() {
-            try {
-                if (parseInt(LEAGUE_ID) === 384) {
-                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#8fa0b3;">אין נתונים זמינים</div>';
-                    if (document.getElementById('matchday-title')) document.getElementById('matchday-title').innerText = "אין נתונים";
-                    return;
-                }
-
-                // 👇 הפנייה המאובטחת לשרת שלנו (משחקים) 👇
-                const response = await fetch(`/api/football-fixtures?league=${LEAGUE_ID}&season=${SEASON}`);
-                const data = await response.json();
-
-                if(!data.response || data.response.length === 0) {
-                    document.getElementById('api-fixtures-list').innerHTML = '<div style="text-align:center; padding: 30px;">אין נתוני משחקים כרגע</div>';
-                    if (document.getElementById('matchday-title')) document.getElementById('matchday-title').innerText = "אין נתונים";
-                    return;
-                }
-
-                allMatches = data.response;
-                renderFixturesByDate();
-                updateLiveStandings();
-
-            } catch (error) {
-                console.error("שגיאה במשיכת המשחקים:", error);
-                document.getElementById('api-fixtures-list').innerHTML = "שגיאה בטעינת משחקים";
-            }
-        }
-
-        function getLocalYYYYMMDD(utcString) {
-            const d = new Date(utcString);
-            d.setHours(d.getHours() - 6);
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        function formatHebrewDate(dateString) {
-            const days = ['יום א\'', 'יום ב\'', 'יום ג\'', 'יום ד\'', 'יום ה\'', 'יום ו\'', 'שבת'];
-            const dateObj = new Date(dateString);
-            const dayName = days[dateObj.getDay()];
-            const parts = dateString.split('-');
-            const formatted = `${parts[2]}/${parts[1]}/${parts[0].substring(2)}`;
-            return `${formatted} ${dayName}`;
-        }
-
-        function changeDate(step) {
-            currentDateIndex += step;
-            if (currentDateIndex < 0) currentDateIndex = 0;
-            if (currentDateIndex >= allDates.length) currentDateIndex = allDates.length - 1;
-            renderFixturesByDate();
-        }
-
-        function translateFixtureRound(roundStr) {
-            if (!roundStr) return "";
-            let lower = roundStr.toLowerCase();
-            if (lower.includes('western')) return "מערב";
-            if (lower.includes('eastern')) return "מזרח";
-            if (lower.includes('conference') || lower.includes('qualifying')) return "פלייאוף אמצעי";
-
-            let translated = roundStr;
-            translated = translated.replace(/Regular Season/i, 'עונה סדירה');
-            translated = translated.replace(/1st Phase/i, 'שלב ראשון');
-            translated = translated.replace(/2nd Phase/i, 'שלב שני');
-            translated = translated.replace(/Group Stage/i, 'שלב הבתים');
-            translated = translated.replace(/Championship Round/i, 'פלייאוף עליון');
-            translated = translated.replace(/Relegation Round/i, 'פלייאוף תחתון');
-            translated = translated.replace(' - ', ' - מחזור ');
-            return translated;
-        }
-
-        function renderFixturesByDate() {
-            const fixturesContainer = document.getElementById('api-fixtures-list');
-
-            if (!allMatches || allMatches.length === 0) {
-                fixturesContainer.innerHTML = '<div style="text-align:center; padding:20px;">אין משחקים זמינים</div>';
-                return;
-            }
-
-            if (allDates.length === 0) {
-                const datesSet = new Set();
-                allMatches.forEach(m => datesSet.add(getLocalYYYYMMDD(m.fixture.date)));
-                allDates = Array.from(datesSet).sort((a, b) => new Date(a) - new Date(b));
-
-                const todayStr = getLocalYYYYMMDD(new Date().toISOString());
-                let closestIdx = allDates.findIndex(d => d >= todayStr);
-
-                if (closestIdx === -1) {
-                    closestIdx = allDates.length - 1;
-                }
-                currentDateIndex = closestIdx;
-            }
-
-            const selectedDateStr = allDates[currentDateIndex];
-            if (document.getElementById('matchday-title')) {
-                document.getElementById('matchday-title').innerText = typeof formatHebrewDate === 'function' ? formatHebrewDate(selectedDateStr) : selectedDateStr;
-            }
-
-            const dailyMatches = allMatches.filter(m => getLocalYYYYMMDD(m.fixture.date) === selectedDateStr);
-
-            const matchesByRound = {};
-            dailyMatches.forEach(m => {
-                let roundName = translateFixtureRound(m.league.round) || "משחק";
-                if (!matchesByRound[roundName]) matchesByRound[roundName] = [];
-                matchesByRound[roundName].push(m);
-            });
-
-            let html = '';
-            for (const [roundName, matches] of Object.entries(matchesByRound)) {
-                html += `<div class="date-separator" style="color: #8fa0b3; font-size: 13px; font-weight: bold; text-align: center; margin: 15px 0 10px; border-bottom: 1px solid #1f2d40; padding-bottom: 5px;">${roundName}</div>`;
-                matches.forEach(m => {
-                    const homeTeam = typeof translateName === 'function' ? translateName(m.teams.home.name) : m.teams.home.name;
-                    const awayTeam = typeof translateName === 'function' ? translateName(m.teams.away.name) : m.teams.away.name;
-
-                    const fixId = m.fixture.id;
-                    const currentHome = m.goals.home !== null ? m.goals.home : 0;
-                    const currentAway = m.goals.away !== null ? m.goals.away : 0;
-
-                    if (window.leagueGoalTracker[fixId]) {
-                        const prev = window.leagueGoalTracker[fixId];
-                        if (currentHome > prev.home || currentAway > prev.away) { window.leagueGoalTracker[fixId].goalTime = Date.now(); }
-                        window.leagueGoalTracker[fixId].home = currentHome;
-                        window.leagueGoalTracker[fixId].away = currentAway;
-                    } else {
-                        window.leagueGoalTracker[fixId] = { home: currentHome, away: currentAway, goalTime: 0 };
-                    }
-
-                    const isGoalRecent = (Date.now() - window.leagueGoalTracker[fixId].goalTime) < 15000;
-                    const shortStatus = m.fixture.status.short;
-                    let displayStatus = '';
-
-                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) displayStatus = 'הסתיים';
-                    else if (shortStatus === 'HT') displayStatus = 'מחצית';
-                    else if (m.fixture.status.elapsed) displayStatus = `${m.fixture.status.elapsed}'`;
-
-                    let centerHtml = '';
-                    if (['NS', 'TBD'].includes(shortStatus)) {
-                        const time = new Date(m.fixture.date).toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
-                        centerHtml = `<div style="font-size: 14px; font-weight: bold; background: rgba(255,255,255,0.05); padding: 3px 10px; border-radius: 6px;">${time}</div>`;
-                    } else {
-                        const goalClass = isGoalRecent ? 'animation: goalAlertPulse 0.6s infinite alternate; background: #7a9966; color: #fff; border-radius: 4px; padding: 2px 4px;' : 'color: #fff;';
-                        const statusClass = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'SUSP', 'INT'].includes(shortStatus) ? 'color: #ff4d4d;' : 'color: #8fa0b3;';
-                        centerHtml = `<div style="font-size: 11px; font-weight: bold; margin-bottom: 2px; ${statusClass}">${displayStatus}</div><div style="font-size: 16px; font-weight: bold; ${goalClass}">${isGoalRecent ? 'שער!' : `${m.goals.home} - ${m.goals.away}`}</div>`;
-                    }
-
-                    const safeHomeName = encodeURIComponent(m.teams.home.name);
-                    const safeAwayName = encodeURIComponent(m.teams.away.name);
-
-                    html += `<div class="match-row" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${m.fixture.id}, '${safeHomeName}', '${safeAwayName}')" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03);">
-                        <div class="team team-home" style="flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 12px; width: 40%;">
-                            <span class="team-name-text" style="text-align: right; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${homeTeam}</span>
-                            <img src="${m.teams.home.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
-                        </div>
-                        <div class="score-wrapper" style="width: 20%; min-width: 70px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; flex-shrink: 0;">${centerHtml}</div>
-                        <div class="team team-away" style="flex: 1; display: flex; align-items: center; justify-content: flex-start; gap: 12px; width: 40%;">
-                            <img src="${m.teams.away.logo}" class="fixture-logo" style="width: 26px; height: 26px; object-fit: contain; flex-shrink: 0;">
-                            <span class="team-name-text" style="text-align: left; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${awayTeam}</span>
-                        </div>
-                    </div>`;
-                });
-            }
-            fixturesContainer.innerHTML = html;
-        }
-
-        async function loadPlayerStats(endpoint) {
-            const container = document.getElementById('api-stats-list');
-            container.innerHTML = '<div style="text-align:center; padding: 30px; color: var(--text-light);">מעדכן נתונים... ⏳</div>';
-            try {
-                // 👇 הפנייה המאובטחת לשרת שלנו (שחקנים) 👇
-                const response = await fetch(`/api/football-players?endpoint=${endpoint}&league=${LEAGUE_ID}&season=${SEASON}`);
-                const data = await response.json();
-                if (!data.response || data.response.length === 0) { container.innerHTML = '<div style="text-align:center; padding: 30px;">אין נתונים זמינים</div>'; return; }
-
-                let html = '';
-                const topPlayers = data.response.slice(0, 10);
-                topPlayers.forEach((item, index) => {
-                    const player = item.player, primaryTeamLogo = item.statistics[0].team.logo, primaryTeamName = item.statistics[0].team.name;
-                    const hebrewPlayerName = typeof translateName === 'function' ? translateName(player.name) : player.name;
-                    const hebrewTeamName = typeof translateName === 'function' ? translateName(primaryTeamName) : primaryTeamName;
-
-                    let statValue = 0;
-                    item.statistics.forEach(stat => {
-                        if(endpoint === 'topscorers') statValue += stat.goals.total || 0;
-                        if(endpoint === 'topassists') statValue += stat.goals.assists || 0;
-                        if(endpoint === 'topyellowcards') statValue += stat.cards.yellow || 0;
-                        if(endpoint === 'topredcards') statValue += stat.cards.red || 0;
-                    });
-
-                    const manualGoalsOverride = { "דן ביטון": 15 };
-                    if (endpoint === 'topscorers' && manualGoalsOverride[hebrewPlayerName] !== undefined) statValue = manualGoalsOverride[hebrewPlayerName];
-
-                    html += `<div class="player-row">
-                        <div class="player-rank">${index + 1}</div>
-                        <div class="player-info">
-                            <img src="${player.photo}" class="player-photo" onerror="this.src='https://media.api-sports.io/football/players/1.png'">
-                            <div style="display: flex; flex-direction: column; gap: 2px;">
-                                <span class="player-name">${hebrewPlayerName}</span>
-                                <img src="${primaryTeamLogo}" class="team-logo" style="width:14px; height:14px; margin:0;" title="${hebrewTeamName}">
-                            </div>
-                        </div>
-                        <div class="player-stat">${statValue}</div>
-                    </div>`;
-                });
-                container.innerHTML = html;
-            } catch(e) { container.innerHTML = '<div style="color:red; text-align:center; padding:20px;">שגיאה בטעינת נתונים</div>'; }
-        }
-
-        async function getStandingsFromWikipedia() {
-            const container = document.getElementById('api-table');
-            container.innerHTML = '<div style="text-align:center; padding: 30px;">מושך נתונים מויקיפדיה... ⏳</div>';
-
-            const leumitLogos = {
-                "פתחתקו": "https://upload.wikimedia.org/wikipedia/en/thumb/d/dd/Maccabi_Petah_Tikva_FC.svg/64px-Maccabi_Petah_Tikva_FC.svg.png",
-                "הרצליה": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e0/Maccabi_Herzliya.svg/64px-Maccabi_Herzliya.svg.png",
-                "רמתגן": "https://upload.wikimedia.org/wikipedia/he/thumb/3/30/Hapoel_Ramat_Gan_logo.svg/64px-Hapoel_Ramat_Gan_logo.svg.png",
-                "ראשוןלציון": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Rishon_LeZion_logo.svg/64px-Hapoel_Rishon_LeZion_logo.svg.png",
-                "ראשלצ": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Rishon_LeZion_logo.svg/64px-Hapoel_Rishon_LeZion_logo.svg.png",
-                "כפרשלם": "https://upload.wikimedia.org/wikipedia/he/thumb/d/dd/Hapoel_Kfar_Shalem_logo.svg/64px-Hapoel_Kfar_Shalem_logo.svg.png",
-                "בנייהודה": "https://upload.wikimedia.org/wikipedia/he/thumb/c/c5/Bnei_Yehuda_logo.svg/64px-Bnei_Yehuda_logo.svg.png",
-                "קריתים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
-                "קרייתים": "https://upload.wikimedia.org/wikipedia/he/2/23/MS_Kiryat_Yam.png",
-                "כפרסבא": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e7/Hapoel_Kfar_Saba_logo.svg/64px-Hapoel_Kfar_Saba_logo.svg.png",
-                "רעננה": "https://upload.wikimedia.org/wikipedia/en/9/91/Hapoel_Ra%27anana_FC_logo.png",
-                "יפו": "https://upload.wikimedia.org/wikipedia/he/thumb/c/c8/Maccabi_Jaffa_FC_logo.svg/64px-Maccabi_Jaffa_FC_logo.svg.png",
-                "עפולה": "https://upload.wikimedia.org/wikipedia/he/thumb/9/9c/Hapoel_Afula_logo.svg/64px-Hapoel_Afula_logo.svg.png",
-                "כפרקאסם": "https://upload.wikimedia.org/wikipedia/he/thumb/6/64/FC_Kafr_Qasim_logo.svg/64px-FC_Kafr_Qasim_logo.svg.png",
-                "כפרקסם": "https://upload.wikimedia.org/wikipedia/he/thumb/6/64/FC_Kafr_Qasim_logo.svg/64px-FC_Kafr_Qasim_logo.svg.png",
-                "נופהגליל": "https://upload.wikimedia.org/wikipedia/he/thumb/a/af/Hapoel_Nof_HaGalil_logo.svg/64px-Hapoel_Nof_HaGalil_logo.svg.png",
-                "מודיעין": "https://upload.wikimedia.org/wikipedia/he/0/07/Ironi_Modiin_logo.png",
-                "עכו": "https://upload.wikimedia.org/wikipedia/he/thumb/1/11/Hapoel_Acre_logo.svg/64px-Hapoel_Acre_logo.svg.png",
-                "חדרה": "https://upload.wikimedia.org/wikipedia/he/thumb/e/e9/Hapoel_Hadera_logo.svg/64px-Hapoel_Hadera_logo.svg.png",
-                "טבריה": "https://upload.wikimedia.org/wikipedia/he/thumb/f/fd/Ironi_Tiberias_logo.svg/64px-Ironi_Tiberias_logo.svg.png"
-            };
-
-            try {
-                const nextYear = parseInt(SEASON) + 1;
-                // נסה למצוא את הדף של העונה הספציפית
-                let pageTitle = encodeURIComponent(`עונת_${SEASON}/${nextYear}_בליגה_הלאומית`);
-                let wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
-
-                let res = await fetch(wikiUrl);
-                let data = await res.json();
-
-                // אם אין דף לעונה הספציפית, חפש בדף הכללי של הליגה הלאומית
-                if (data.error) {
-                    pageTitle = encodeURIComponent("ליגה_לאומית_(כדורגל)");
-                    wikiUrl = `https://he.wikipedia.org/w/api.php?action=parse&page=${pageTitle}&prop=text&format=json&origin=*`;
-                    res = await fetch(wikiUrl);
-                    data = await res.json();
-                }
-
-                if (data.error) throw new Error("לא נמצא דף בויקיפדיה");
-
-                const htmlContent = data.parse.text["*"];
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(htmlContent, 'text/html');
-                const tables = doc.querySelectorAll('table.wikitable');
-                window.wikiTablesData = []; 
-                
-                // זיהוי גמיש יותר של טבלאות
-                tables.forEach(t => {
-                    const text = t.innerText;
-                    // מחפש טבלה שכוללת מילות מפתח קלאסיות של טבלת כדורגל
-                    if (text.includes("קבוצה") && text.includes("נקודות") && (text.includes("ניצחונות") || text.includes("נצ'") || text.includes("שערי זכות"))) {
-                        window.wikiTablesData.push(t);
-                    }
-                });
-
-                if (window.wikiTablesData.length === 0) throw new Error("לא נמצאה טבלה תואמת");
-
-                let uiHtml = `<div style="margin-bottom: 15px; text-align: center;"><select id="wiki-group-selector" style="padding: 8px 15px; border-radius: 8px; font-family: inherit; font-weight: bold; background: #112845; color: #fff; border: 2px solid #7ca856; cursor: pointer; outline: none; text-align: center;">`;
-                const tableNames = ["עונה סדירה", "פלייאוף עליון", "פלייאוף תחתון"];
-                window.wikiTablesData.forEach((t, index) => {
-                    let name = tableNames[index] || `טבלה ${index + 1}`;
-                    uiHtml += `<option value="${index}">${name}</option>`;
-                });
-                uiHtml += `</select></div><div id="wiki-render-area"></div>`;
-                container.innerHTML = uiHtml;
-
-                const cleanWikiText = (text) => text.replace(/\n/g, '').replace(/\[\d+\]/g, '').trim();
-
-                window.renderWikiTable = function(index) {
-                    const standingsTable = window.wikiTablesData[index];
-                    const renderArea = document.getElementById('wiki-render-area');
-                    const headerRow = standingsTable.querySelectorAll('tr')[0].querySelectorAll('th, td');
-                    let colMap = {};
-                    
-                    // מיפוי חכם של עמודות לפי שם
-                    headerRow.forEach((h, idx) => {
-                        const text = h.innerText.trim();
-                        if (text.includes('מיקום') || text === 'מקום' || text === '#') colMap.rank = idx;
-                        if (text.includes('קבוצה') || text.includes('שם')) colMap.team = idx;
-                        if (text.includes('משחקים') || text.includes('משחק') || text === 'מש') colMap.played = idx;
-                        if (text.includes('ניצחונות') || text.includes('נצחון') || text === 'נצ') colMap.win = idx;
-                        if (text.includes('תיקו')) colMap.draw = idx;
-                        if (text.includes('הפסדים') || text.includes('הפסד') || text === 'הפ') colMap.lose = idx;
-                        if (text.includes('זכות') || text.includes('שערי זכות') || text === 'שז') colMap.goalsFor = idx;
-                        if (text.includes('חובה') || text.includes('שערי חובה') || text === 'שח') colMap.goalsAgainst = idx;
-                        if (text.includes('הפרש')) colMap.diff = idx;
-                        if (text.includes('נקודות') || text.includes('נקודה') || text === 'נק') colMap.points = idx;
-                    });
-
-                    // גיבוי למיפוי במקרה שהויקיפדיה ממש שבורה
-                    if (Object.keys(colMap).length < 5) {
-                         colMap = { rank:0, team:1, played:2, win:3, draw:4, lose:5, goalsFor:6, goalsAgainst:7, diff:8, points:9 };
-                    }
-
-                    const rows = standingsTable.querySelectorAll('tr');
-                    let html = `<table><tr><th></th><th title="מיקום">#</th><th style="text-align:right">קבוצה</th><th title="משחקים ששוחקו">מש'</th><th title="ניצחונות">נצ'</th><th title="תיקו">תיקו</th><th title="הפסדים">הפ'</th><th title="שערי זכות">ש.ז</th><th title="שערי חובה">ש.ח</th><th title="הפרש שערים">הפרש</th><th title="נקודות">נק'</th></tr>`;
-
-                    rows.forEach((row, rowIdx) => {
-                        // דילוג על שורת הכותרת (או שורות מיותרות בויקיפדיה שמכילות th בלבד)
-                        if (rowIdx === 0 || row.querySelectorAll('td').length === 0) return;
-                        
-                        const cols = row.querySelectorAll('td, th');
-                        // מוודא שיש מספיק עמודות בשורה הזו כדי למנוע קריסה
-                        if (cols.length >= 7) {
-                            const rank = cols[colMap.rank] ? cleanWikiText(cols[colMap.rank].innerText) : '-';
-                            const points = cols[colMap.points] ? cleanWikiText(cols[colMap.points].innerText) : '-';
-                            const teamCell = cols[colMap.team];
-                            let teamName = '-', teamLogo = 'https://media.api-sports.io/football/leagues/384.png'; 
-                            
-                            if (teamCell) {
-                                teamName = cleanWikiText(teamCell.innerText);
-                                let pureHebrew = teamName.replace(/[^א-ת]/g, '');
-                                for (const [key, url] of Object.entries(leumitLogos)) {
-                                    if (pureHebrew.includes(key)) { teamLogo = url; break; }
-                                }
-                            }
-                            
-                            // בודק שהנקודות הן אכן מספר ושהשם קיים
-                            if(points !== '-' && points !== '' && teamName !== '-' && teamName !== '') {
-                                html += `<tr>
-                                    <td>-</td><td style="color: #94a3b8; font-weight: bold;">${rank}</td>
-                                    <td><div class="team-identity" style="display: flex; align-items: center; gap: 8px;"><img src="${teamLogo}" alt="logo" style="width: 20px; height: 20px; object-fit: contain;" onerror="this.src='https://media.api-sports.io/football/leagues/384.png'"><span class="team-name-text">${teamName}</span></div></td>
-                                    <td>${cols[colMap.played] ? cleanWikiText(cols[colMap.played].innerText) : '-'}</td>
-                                    <td>${cols[colMap.win] ? cleanWikiText(cols[colMap.win].innerText) : '-'}</td>
-                                    <td>${cols[colMap.draw] ? cleanWikiText(cols[colMap.draw].innerText) : '-'}</td>
-                                    <td>${cols[colMap.lose] ? cleanWikiText(cols[colMap.lose].innerText) : '-'}</td>
-                                    <td>${cols[colMap.goalsFor] ? cleanWikiText(cols[colMap.goalsFor].innerText) : '-'}</td>
-                                    <td>${cols[colMap.goalsAgainst] ? cleanWikiText(cols[colMap.goalsAgainst].innerText) : '-'}</td>
-                                    <td dir="ltr" style="text-align:center;">${cols[colMap.diff] ? cleanWikiText(cols[colMap.diff].innerText) : '-'}</td>
-                                    <td><strong style="color: var(--brand-green);">${points}</strong></td>
-                                </tr>`;
-                            }
-                        }
-                    });
-
-                    html += `</table><div style="font-size:10px; text-align:center; margin-top:10px; color:#8fa0b3;">מקור נתונים: ויקיפדיה עברית</div>`;
-                    renderArea.innerHTML = html;
-                };
-
-                document.getElementById('wiki-group-selector').addEventListener('change', function(e) { window.renderWikiTable(e.target.value); });
-                window.renderWikiTable(0); 
-
-            } catch (error) {
-                console.error("Wikipedia Scrape Error:", error);
-                container.innerHTML = '<div style="text-align:center; padding: 30px;">נתוני הליגה הלאומית אינם זמינים כרגע</div>';
-            }
-        }
-          
-        getStandings();
-        loadPlayerStats('topscorers');
-        getFixtures();
-
-        // מרענן את המשחקים כל דקה
-        setInterval(getFixtures, 60000);
-        // מרענן את הטבלה הרשמית כל 3 דקות (כדי לתפוס משחקים שהסתיימו, בלי לבזבז לך סתם מלא קריאות API)
-        setInterval(getStandings, 180000);  
-    </script>
-    <script src="matchEvents.js"></script> 
+    
     <script>
-    // פונקציה שטוענת את הטיקר מקובץ חיצוני
-    fetch('ticker.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('ticker-placeholder').innerHTML = data;
-        })
-        .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('leagueSearchInput');
+            const leagueCubes = document.querySelectorAll('.league-cube');
 
-// טעינת השורה העליונה (הדר)
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase().trim();
+
+                leagueCubes.forEach(cube => {
+                    const searchableText = (cube.getAttribute('data-name') || '') + ' ' + cube.textContent;
+                    if (searchableText.toLowerCase().includes(searchTerm)) {
+                        cube.classList.remove('hidden');
+                    } else {
+                        cube.classList.add('hidden');
+                    }
+                });
+            });
+
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const visibleCubes = document.querySelectorAll('.league-cube:not(.hidden)');
+                    if (visibleCubes.length === 1) {
+                        window.location.href = visibleCubes[0].getAttribute('href');
+                    }
+                }
+            });
+        });
+    </script>
+    <script>
+        // פונקציה שטוענת את הטיקר מקובץ חיצוני
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('ticker-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
+
+        // טעינת השורה העליונה (הדר)
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -1275,8 +431,7 @@ function updateLiveStandings() {
                 if(placeholder) placeholder.innerHTML = data;
             })
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
-        
-</script>
+    </script>
     <script src="search.js"></script>
     <script type="module" src="auth.js"></script>
 </body>

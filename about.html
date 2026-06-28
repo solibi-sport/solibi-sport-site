@@ -6,25 +6,30 @@
     <title>סוליבי ספורט - אודות</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="header-style.css">
+    <link rel="stylesheet" href="global-theme.css">
     
     <style>
+        /* === פלטת הצבעים החדשה: זהב ושחור === */
         :root {
-            --brand-green: #7ca856;
-            --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
-            --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-            --text-dark: #062141;
-            --text-gray: #475569;
+            --brand-gold: #D6B953; 
+            --brand-gold-light: #FDF3C6; 
+            --brand-gold-dark: #A88D31; 
+            --bg-black: #0a0a0a;
+            --bg-card: #141414;
+            --text-white: #f5f5f5;
+            --text-gray: #a0a0a0;
+            --border-gold: rgba(214, 185, 83, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
             font-family: 'Rubik', sans-serif;
-            background: var(--bg-silver-matte);
+            background: var(--bg-black);
+            color: var(--text-white);
             width: 100%;
             height: 100vh; 
-            overflow: hidden; /* חוסם גלילה חיצונית של כל הדף */
+            overflow: hidden; 
             display: flex;
             flex-direction: column;
         }
@@ -35,61 +40,61 @@
             flex-direction: column;
             align-items: center;
             padding: 0 20px 40px 20px;
-            overflow: hidden; /* חוסם גלילה ברמת התוכן הראשי */
+            overflow: hidden; 
         }
 
-        /* --- כותרת פרימיום מעודכנת בשלושה צבעים --- */
+        /* --- כותרת פרימיום --- */
         .premium-title-wrapper { 
             display: flex; align-items: center; justify-content: center; 
             margin-top: 50px; 
             margin-bottom: 35px; 
             width: 100%;
-            flex-shrink: 0; /* שומר על הכותרת יציבה */
+            flex-shrink: 0; 
         }
         .page-title {
-            background: #ffffff; 
+            background: var(--bg-card); 
             padding: 12px 60px; 
             border-radius: 40px;
             font-size: clamp(22px, 2.5vw, 32px); 
             font-weight: 900; 
-            color: var(--text-dark);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+            color: var(--text-white);
+            border: 1px solid var(--brand-gold);
+            box-shadow: inset 0 0 20px rgba(214, 185, 83, 0.1); 
             text-align: center;
         }
         
-        .title-navy { color: var(--text-dark); }
-        .title-green { color: var(--brand-green); }
+        .title-navy { color: var(--text-white); }
+        .title-green { color: var(--brand-gold); }
 
-        /* --- מעטפת הגלילה המרכזית (שולטת על פס הגלילה מימין) --- */
+        /* --- מעטפת הגלילה המרכזית --- */
         .about-scroll-wrapper {
             width: 100%;
             max-width: 900px;
-            flex: 0 1 auto; /* מאפשר לקוביה להתכווץ עד לגובה הזמין ולא להיבלע בטיקר */
+            flex: 0 1 auto; 
             min-height: 0;
             overflow-y: auto; 
-            direction: ltr; /* מעביר את פס הגלילה לצד ימין */
+            direction: ltr; 
             
-            /* עיצוב המלבן הלבן */
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(20, 20, 20, 0.8);
             backdrop-filter: blur(15px);
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-gold);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
 
             /* תמיכה בפס גלילה לפיירפוקס */
             scrollbar-width: thin;
-            scrollbar-color: rgba(124, 168, 86, 0.5) rgba(0,0,0,0.02);
+            scrollbar-color: rgba(214, 185, 83, 0.4) rgba(0,0,0,0.02);
         }
 
         /* עיצוב פס הגלילה (כרום, ספארי, אדג') */
         .about-scroll-wrapper::-webkit-scrollbar { width: 8px; }
-        .about-scroll-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); border-radius: 10px; margin: 20px 0; }
-        .about-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(124, 168, 86, 0.4); border-radius: 10px; }
-        .about-scroll-wrapper::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+        .about-scroll-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; margin: 20px 0; }
+        .about-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
+        .about-scroll-wrapper::-webkit-scrollbar-thumb:hover { background: var(--brand-gold); }
 
-        /* --- התוכן הפנימי (מחזיר את העברית למצב תקין) --- */
+        /* --- התוכן הפנימי --- */
         .about-inner-content {
-            direction: rtl; /* מחזיר לעברית (מימין לשמאל) */
+            direction: rtl; 
             text-align: right;
             padding: 45px;
             display: flex;
@@ -106,7 +111,7 @@
         .section-title {
             font-size: 22px;
             font-weight: 900;
-            color: var(--text-dark);
+            color: var(--brand-gold);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -117,7 +122,7 @@
             display: block;
             width: 6px;
             height: 24px;
-            background: var(--brand-green);
+            background: var(--brand-gold);
             border-radius: 4px;
         }
 
@@ -130,55 +135,53 @@
         }
 
         .section-text strong {
-            color: var(--text-dark);
+            color: var(--text-white);
             font-weight: 700;
         }
 
-       /* --- קוביות הערכים למטה --- */
+        /* --- קוביות הערכים למטה --- */
         .values-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             
-            /* העיצוב הבלו-נייבי החדש */
-            background: var(--element-navy-gradient);
-            border-top: 3px solid var(--brand-green);
+            /* רקע שחור עם פסי זהב לקוביות למטה */
+            background: #000;
+            border-top: 3px solid var(--brand-gold);
             
-            /* מותח את האזור מקצה לקצה על ידי קיזוז הפדינג של ההורה */
             margin: 20px -45px -45px -45px; 
             padding: 45px 45px 50px 45px;
             
-            /* מעגל את הפינות התחתונות שיתאימו לקופסה הלבנה */
             border-bottom-left-radius: 23px;
             border-bottom-right-radius: 23px;
         }
 
         .value-card {
-            background: #ffffff;
+            background: var(--bg-card);
             border-radius: 16px;
             padding: 25px 20px;
             text-align: center;
-            border: 1px solid rgba(0,0,0,0.03);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-gold);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6);
             transition: 0.3s ease;
         }
 
         .value-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(124, 168, 86, 0.15);
-            border-color: rgba(124, 168, 86, 0.3);
+            box-shadow: 0 10px 25px rgba(214, 185, 83, 0.15);
+            border-color: var(--brand-gold);
         }
 
         .value-icon {
             width: 40px; height: 40px;
-            color: var(--brand-green);
+            color: var(--brand-gold);
             margin-bottom: 15px;
         }
 
         .value-title {
             font-size: 16px;
             font-weight: 900;
-            color: var(--text-dark);
+            color: var(--text-white);
             margin-bottom: 8px;
         }
 
@@ -188,11 +191,11 @@
             line-height: 1.5;
         }
 
-        /* === פוטר וטיקר === */
+        /* === פוטר וטיקר קבוע === */
         .footer { 
-            background: var(--element-navy-gradient); 
+            background: var(--brand-gold); 
             padding: 8px 0; 
-            border-top: 2px solid var(--brand-green); 
+            border-top: 2px solid #000; 
             overflow: hidden; 
             white-space: nowrap; 
             width: 100%; 
@@ -207,14 +210,13 @@
         #ticker-placeholder { width: 100%; }
         
         .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        .ticker-item { color: #000 !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: #000; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 900px) {
             .values-grid { 
                 grid-template-columns: 1fr; 
-                /* מותח את הבלו-נייבי גם במסכים קטנים */
                 margin: 20px -20px -30px -20px; 
                 padding: 40px 20px 40px 20px;
             }

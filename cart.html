@@ -5,96 +5,192 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - עגלת קניות</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="header-style.css">
+    
+    <link rel="stylesheet" href="global-theme.css">
     
     <style>
+        /* === פלטת הצבעים החדשה: זהב ושחור === */
         :root {
-            --brand-green: #7ca856;
-            --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
-            --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-            --text-dark: #062141;
-            --text-gray: #475569;
+            --brand-gold: #D6B953; 
+            --brand-gold-light: #FDF3C6; 
+            --brand-gold-dark: #A88D31; 
+            --bg-black: #0a0a0a;
+            --bg-card: #141414;
+            --text-white: #f5f5f5;
+            --text-gray: #a0a0a0;
+            --border-gold: rgba(214, 185, 83, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { font-family: 'Rubik', sans-serif; background: var(--bg-silver-matte); width: 100%; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        
+        html, body { 
+            font-family: 'Rubik', sans-serif; 
+            background: var(--bg-black); 
+            color: var(--text-white);
+            width: 100%; 
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+        }
 
-        .main-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; overflow: hidden; }
+        .main-content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 40px 20px; 
+            overflow: hidden; 
+        }
         
         /* חלון העגלה */
         .cart-window {
-            width: 95%; max-width: 1000px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px);
-            border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: 0 15px 40px rgba(0,0,0,0.04);
-            display: flex; flex-direction: row; overflow: hidden; flex: 1;
+            width: 95%; 
+            max-width: 1000px; 
+            background: rgba(20, 20, 20, 0.85); 
+            backdrop-filter: blur(15px);
+            border-radius: 24px; 
+            border: 1px solid var(--border-gold); 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            display: flex; 
+            flex-direction: row; 
+            overflow: hidden; 
+            flex: 1;
         }
 
         /* רשימת המוצרים (צד ימין) */
-        .cart-items-side { flex: 2; padding: 30px; overflow-y: auto; direction: ltr; }
+        .cart-items-side { 
+            flex: 2; 
+            padding: 30px; 
+            overflow-y: auto; 
+            direction: ltr; 
+            
+            /* עיצוב פס הגלילה */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(214, 185, 83, 0.4) rgba(0,0,0,0.2);
+        }
+        
+        .cart-items-side::-webkit-scrollbar { width: 6px; }
+        .cart-items-side::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        .cart-items-side::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
+        .cart-items-side::-webkit-scrollbar-thumb:hover { background: var(--brand-gold); }
+
         .cart-items-inner { direction: rtl; }
 
         .cart-item {
-            display: flex; align-items: center; background: #fff; padding: 15px; border-radius: 15px;
-            margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.05); transition: 0.3s;
+            display: flex; align-items: center; 
+            background: var(--bg-card); 
+            padding: 15px; 
+            border-radius: 15px;
+            margin-bottom: 15px; 
+            border: 1px solid var(--border-gold); 
+            transition: 0.3s;
         }
-        .cart-item:hover { transform: translateX(-5px); border-color: var(--brand-green); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .cart-item:hover { 
+            transform: translateX(-5px); 
+            border-color: var(--brand-gold); 
+            box-shadow: 0 5px 15px rgba(214, 185, 83, 0.15); 
+        }
         
-        .item-img { width: 70px; height: 70px; background: #f8f9fa; border-radius: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+        .item-img { 
+            width: 70px; height: 70px; 
+            background: #000; 
+            border: 1px solid var(--border-gold);
+            border-radius: 10px; 
+            margin-left: 20px; 
+            display: flex; align-items: center; justify-content: center; 
+            overflow: hidden; flex-shrink: 0; 
+        }
         .item-img img { width: 100%; height: 100%; object-fit: cover; }
-        .item-img svg { width: 40px; height: 40px; color: var(--text-gray); opacity: 0.3; }
+        .item-img svg { width: 40px; height: 40px; color: var(--brand-gold); opacity: 0.5; }
         
         .item-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .item-title { font-weight: 900; color: var(--text-dark); font-size: 16px; margin-bottom: 5px; }
-        .item-price { color: var(--brand-green); font-weight: 700; }
+        .item-title { font-weight: 900; color: var(--text-white); font-size: 16px; margin-bottom: 5px; }
+        .item-price { color: var(--brand-gold); font-weight: 700; }
         
         /* כפתורי כמות מעוצבים */
-        .quantity-controls { display: flex; align-items: center; gap: 12px; margin: 0 20px; background: #f5f5f5; padding: 5px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.05); }
-        .q-btn { width: 28px; height: 28px; border-radius: 50%; border: none; background: #fff; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; color: var(--text-dark); }
-        .q-btn:hover { background: var(--text-dark); color: #fff; }
-        .q-num { font-weight: 700; width: 20px; text-align: center; color: var(--text-dark); }
+        .quantity-controls { 
+            display: flex; align-items: center; gap: 12px; margin: 0 20px; 
+            background: #000; padding: 5px; border-radius: 30px; 
+            border: 1px solid var(--border-gold); 
+        }
+        .q-btn { 
+            width: 28px; height: 28px; border-radius: 50%; border: none; 
+            background: var(--bg-card); cursor: pointer; font-weight: bold; font-size: 16px; 
+            transition: 0.2s; display: flex; align-items: center; justify-content: center; 
+            color: var(--text-white); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .q-btn:hover { background: var(--brand-gold); color: #000; border-color: var(--brand-gold); }
+        .q-num { font-weight: 700; width: 20px; text-align: center; color: var(--text-white); }
         
         /* כפתור מחיקה */
-        .remove-item { color: #ffb3b0; cursor: pointer; font-size: 18px; margin-right: 15px; transition: 0.3s; font-weight: bold; background: none; border: none; padding: 10px; }
-        .remove-item:hover { color: #ff3b30; transform: scale(1.1); }
+        .remove-item { 
+            color: #ff6b6b; cursor: pointer; font-size: 18px; margin-right: 15px; 
+            transition: 0.3s; font-weight: bold; background: none; border: none; padding: 10px; 
+        }
+        .remove-item:hover { color: #ff3b30; transform: scale(1.2); }
 
         /* סיכום הזמנה (צד שמאל) */
-        .cart-summary-side { flex: 1; background: var(--element-navy-gradient); padding: 35px; color: #fff; display: flex; flex-direction: column; }
-        .summary-title { font-size: 22px; font-weight: 900; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; color: rgba(255,255,255,0.8); font-weight: 500; }
-        .free-shipping { color: var(--brand-green); font-weight: 900; }
+        .cart-summary-side { 
+            flex: 1; 
+            background: #000; 
+            border-right: 1px solid var(--border-gold);
+            padding: 35px; color: #fff; display: flex; flex-direction: column; 
+        }
+        .summary-title { font-size: 22px; font-weight: 900; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; color: var(--brand-gold); }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; color: var(--text-gray); font-weight: 500; }
+        .free-shipping { color: var(--brand-gold); font-weight: 900; }
         
-        .total-row { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 25px; font-size: 22px; font-weight: 900; display: flex; justify-content: space-between; align-items: center; }
+        .total-row { 
+            margin-top: auto; border-top: 1px solid #333; 
+            padding-top: 25px; font-size: 22px; font-weight: 900; 
+            display: flex; justify-content: space-between; align-items: center; 
+            color: var(--text-white);
+        }
         
         .checkout-btn {
-            background: var(--brand-green); color: #fff; border: none; padding: 18px; border-radius: 12px;
+            background: var(--brand-gold); color: #000; border: none; padding: 18px; border-radius: 12px;
             font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 25px; transition: 0.3s; width: 100%;
-            box-shadow: 0 5px 15px rgba(124, 168, 86, 0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .checkout-btn:hover { background: #6b9449; transform: translateY(-3px); }
-        .checkout-btn:disabled { opacity: 0.5; pointer-events: none; }
+        .checkout-btn:hover { background: var(--brand-gold-light); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(214, 185, 83, 0.3); }
+        .checkout-btn:disabled { opacity: 0.5; pointer-events: none; background: #333; color: #666; }
 
         /* מצב עגלה ריקה */
         .empty-cart-msg { text-align: center; padding: 50px; display: none; }
-        .empty-cart-msg a { display: inline-block; margin-top: 15px; background: var(--text-dark); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: bold; transition: 0.3s; }
-        .empty-cart-msg a:hover { background: var(--brand-green); }
+        .empty-cart-msg a { 
+            display: inline-block; margin-top: 15px; background: var(--brand-gold); 
+            color: #000; padding: 10px 20px; border-radius: 10px; 
+            text-decoration: none; font-weight: bold; transition: 0.3s; 
+        }
+        .empty-cart-msg a:hover { background: var(--brand-gold-light); transform: translateY(-2px); }
 
         /* --- טיקר תחתון --- */
         .footer { 
-            background: var(--element-navy-gradient); border-top: 2px solid var(--brand-green); 
-            width: 100%; height: 45px; flex-shrink: 0; 
-            display: flex; align-items: center; overflow: hidden;
+            background: var(--brand-gold); 
+            padding: 8px 0; 
+            border-top: 2px solid #000; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            width: 100%; 
+            direction: ltr; 
+            flex-shrink: 0; 
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            height: 40px;
         }
-        #ticker-placeholder { width: 100%; display: flex; align-items: center; }
         
-        .ticker-wrap { display: inline-flex; white-space: nowrap; animation: ticker 30s linear infinite; direction: ltr !important; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: 14px; display: inline-block; margin: 0 15px; vertical-align: middle; direction: rtl !important; }
-        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 15px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        #ticker-placeholder { width: 100%; }
+        
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #000 !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: #000; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
         @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         /* ==============================================
-           רספונסיביות - שומר על העיצוב בכל המסכים!
+           רספונסיביות
            ============================================== */
-        
-        /* התאמה ללפטופים/מסכים בינוניים (סימטרי ומכווץ יפה) */
         @media (max-width: 1024px) {
             .cart-window { width: 98%; }
             .cart-items-side { padding: 20px; }
@@ -102,10 +198,9 @@
             .item-img { width: 60px; height: 60px; margin-left: 15px; }
         }
 
-        /* התאמה למובייל (סידור בטור במקום שורה) */
         @media (max-width: 800px) {
             .cart-window { flex-direction: column; overflow-y: auto; }
-            .cart-summary-side { flex: none; }
+            .cart-summary-side { flex: none; border-right: none; border-top: 1px solid var(--border-gold); }
             html, body { overflow-y: auto; height: auto; }
             .main-content { padding: 20px 10px; }
             .cart-item { flex-wrap: wrap; }
@@ -125,7 +220,7 @@
                     </div>
                 <div id="empty-msg" class="empty-cart-msg">
                     <h2 style="color: var(--text-gray);">העגלה שלך ריקה...</h2>
-                    <a href="store.html">חזור לחנות לרכישות</a>
+                    <a href="index.html">חזור לחנות לרכישות</a>
                 </div>
             </div>
 

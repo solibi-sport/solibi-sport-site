@@ -3,35 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - אזור אישי</title>
+    <title>סוליבי ספורט - התחברות לחשבון</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="global-theme.css">
+
     <style>
-        :root {
-            --brand-green: #7ca856;
-            --brand-green-glow: rgba(124, 168, 86, 0.4);
-            --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
-            --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-            --text-light: #ffffff;
-            --text-dark: #062141;
-            --sidebar-width: clamp(240px, 20vw, 300px); 
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        /* === הגדרות מיוחדות רק לדף ההתחברות === */
         html, body {
-            font-family: 'Rubik', sans-serif;
-            background: var(--bg-silver-matte);
-            width: 100%;
-            height: 100vh; 
             overflow: hidden; 
             display: flex;
             flex-direction: column;
+            height: 100vh;
         }
 
-        /* שומרים על ההדר המקורי שיהיה זמין גם פה */
-        #header-placeholder { flex-shrink: 0; z-index: 1000; }
-
-        /* === מעטפת האזור האישי === */
         .auth-wrapper {
             display: flex;
             align-items: center;
@@ -46,13 +31,12 @@
             width: 100%;
             max-width: 950px;
             height: 550px;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(20, 20, 20, 0.85);
             backdrop-filter: blur(15px);
             border-radius: 24px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--border-gold);
             overflow: hidden;
-            /* אפקט כניסה רך */
             animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -67,7 +51,7 @@
             padding: 50px;
             display: flex;
             flex-direction: column;
-            background: rgba(255, 255, 255, 0.4);
+            background: var(--bg-card); 
             position: relative;
         }
 
@@ -75,13 +59,13 @@
             display: flex;
             gap: 30px;
             margin-bottom: 40px;
-            border-bottom: 2px solid rgba(6, 33, 65, 0.1);
+            border-bottom: 2px solid #333; 
         }
 
         .auth-tab {
             font-size: 20px;
             font-weight: 700;
-            color: #94a3b8;
+            color: var(--text-gray); 
             padding-bottom: 10px;
             cursor: pointer;
             position: relative;
@@ -89,7 +73,7 @@
         }
 
         .auth-tab.active {
-            color: var(--text-dark);
+            color: var(--brand-gold); 
         }
 
         .auth-tab::after {
@@ -99,7 +83,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: var(--brand-green);
+            background: var(--brand-gold); 
             border-radius: 3px 3px 0 0;
             transform: scaleX(0);
             transition: transform 0.3s ease;
@@ -134,41 +118,41 @@
         .input-group label {
             font-size: 13px;
             font-weight: 700;
-            color: var(--text-dark);
+            color: var(--text-white); 
         }
 
         .input-group input {
             height: 48px;
             padding: 0 15px;
             border-radius: 12px;
-            border: 2px solid rgba(6, 33, 65, 0.1);
-            background: #ffffff;
+            border: 2px solid #333; 
+            background: #000; 
             font-family: 'Rubik', sans-serif;
             font-size: 15px;
-            color: var(--text-dark);
+            color: var(--text-white);
             transition: all 0.3s ease;
             outline: none;
         }
 
         .input-group input:focus {
-            border-color: var(--brand-green);
-            box-shadow: 0 0 0 4px var(--brand-green-glow);
+            border-color: var(--brand-gold);
+            box-shadow: 0 0 0 2px rgba(214, 185, 83, 0.3); 
         }
 
         .forgot-password {
             font-size: 12px;
-            color: var(--brand-green);
+            color: var(--brand-gold);
             font-weight: 600;
             text-decoration: none;
             align-self: flex-end;
             margin-top: -10px;
         }
 
-        .forgot-password:hover { text-decoration: underline; }
+        .forgot-password:hover { text-decoration: underline; color: var(--brand-gold-light); }
 
         .submit-btn {
-            background: linear-gradient(135deg, var(--brand-green) 0%, #4a6a30 100%);
-            color: #ffffff;
+            background: var(--brand-gold); 
+            color: #000;
             border: none;
             height: 52px;
             border-radius: 12px;
@@ -176,21 +160,23 @@
             font-weight: 900;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(124, 168, 86, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             margin-top: 10px;
         }
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(124, 168, 86, 0.5);
+            background: var(--brand-gold-light);
+            box-shadow: 0 6px 15px rgba(214, 185, 83, 0.4);
         }
 
         /* === צד שמאל: פאנל מידע שיווקי === */
         .auth-info-section {
             flex: 0.8;
-            background: var(--element-navy-gradient);
+            background: linear-gradient(135deg, #111 0%, #000 100%); 
+            border-right: 1px solid var(--border-gold);
             padding: 50px 40px;
-            color: #ffffff;
+            color: var(--text-white);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -198,12 +184,11 @@
             overflow: hidden;
         }
 
-        /* לוגו רקע ענק ושקוף */
         .auth-info-section::before {
             content: '⚽';
             position: absolute;
             font-size: 300px;
-            opacity: 0.03;
+            opacity: 0.03; 
             left: -50px;
             bottom: -50px;
             pointer-events: none;
@@ -214,11 +199,12 @@
             font-weight: 900;
             margin-bottom: 10px;
             line-height: 1.2;
+            color: var(--brand-gold); 
         }
         
         .info-subtitle {
             font-size: 14px;
-            color: #94a3b8;
+            color: var(--text-gray);
             margin-bottom: 40px;
             line-height: 1.5;
         }
@@ -239,33 +225,57 @@
         .benefit-icon {
             width: 40px;
             height: 40px;
-            background: rgba(124, 168, 86, 0.15);
-            border: 1px solid rgba(124, 168, 86, 0.3);
+            background: #000;
+            border: 1px solid var(--border-gold);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--brand-green);
+            color: var(--brand-gold); 
             flex-shrink: 0;
+            box-shadow: inset 0 0 10px rgba(214, 185, 83, 0.1);
         }
 
         .benefit-text {
             font-size: 15px;
             font-weight: 700;
-            color: #e2e8f0;
+            color: var(--text-white);
         }
 
         .guest-notice {
             margin-top: auto;
             padding-top: 30px;
             font-size: 12px;
-            color: #64748b;
-            border-top: 1px dashed rgba(255,255,255,0.1);
+            color: var(--text-gray);
+            border-top: 1px dashed #333;
         }
+
+        /* === פוטר וטיקר === */
+        .footer { 
+            background: var(--brand-gold); 
+            padding: 8px 0; 
+            border-top: 2px solid #000; 
+            overflow: hidden; 
+            white-space: nowrap; 
+            width: 100%; 
+            direction: ltr; 
+            flex-shrink: 0; 
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+        
+        #ticker-placeholder { width: 100%; }
+        
+        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
+        .ticker-item { color: #000 !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
+        .ticker-separator { color: #000; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
+        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 900px) {
             .auth-glass-container { flex-direction: column; height: auto; max-height: 90vh; overflow-y: auto;}
-            .auth-info-section { padding: 40px 20px; flex: none;}
+            .auth-info-section { padding: 40px 20px; flex: none; border-right: none; border-top: 1px solid var(--border-gold);}
             .auth-form-section { padding: 30px 20px; }
             .info-title { font-size: 24px; }
             .benefits-list { gap: 15px; }
@@ -286,36 +296,36 @@
                 </div>
 
                 <form id="form-login" class="form-container active" onsubmit="event.preventDefault();">
-    <div class="input-group">
-        <label>אימייל</label>
-        <input type="email" id="login-email" placeholder="name@example.com" required>
-    </div>
-    <div class="input-group">
-        <label>סיסמה</label>
-        <input type="password" id="login-password" placeholder="••••••••" required>
-    </div>
-    <a href="#" class="forgot-password">שכחת סיסמה?</a>
-    <button type="submit" class="submit-btn">היכנס לחשבון</button>
-</form>
+                    <div class="input-group">
+                        <label>אימייל</label>
+                        <input type="email" id="login-email" placeholder="name@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>סיסמה</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+                    <a href="#" class="forgot-password">שכחת סיסמה?</a>
+                    <button type="submit" class="submit-btn">היכנס לחשבון</button>
+                </form>
 
                 <form id="form-register" class="form-container" onsubmit="event.preventDefault();">
-    <div class="input-group">
-        <label>שם מלא או כינוי</label>
-        <input type="text" id="reg-name" placeholder="איך לקרוא לך בפורום?" required>
-    </div>
-    <div class="input-group">
-        <label>אימייל</label>
-        <input type="email" id="reg-email" placeholder="name@example.com" required>
-    </div>
-    <div class="input-group">
-        <label>סיסמה</label>
-        <input type="password" id="reg-password" placeholder="לפחות 6 תווים" required>
-    </div>
-    <button type="submit" class="submit-btn">צור חשבון חדש</button>
-</form>
+                    <div class="input-group">
+                        <label>שם מלא או כינוי</label>
+                        <input type="text" id="reg-name" placeholder="איך לקרוא לך בפורום?" required>
+                    </div>
+                    <div class="input-group">
+                        <label>אימייל</label>
+                        <input type="email" id="reg-email" placeholder="name@example.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>סיסמה</label>
+                        <input type="password" id="reg-password" placeholder="לפחות 6 תווים" required>
+                    </div>
+                    <button type="submit" class="submit-btn">צור חשבון חדש</button>
+                </form>
             </div>
 
-<div class="auth-info-section">
+            <div class="auth-info-section">
                 <h2 class="info-title">הצטרפו למגרש של הגדולים</h2>
                 <p class="info-subtitle">פתיחת חשבון בסוליבי לוקחת פחות מדקה ופותחת בפניכם עולם שלם של אפשרויות אקסקלוסיביות.</p>
 
@@ -367,9 +377,15 @@
                     * אורחים (ללא חשבון) יוכלו להמשיך ליהנות מקריאה בפורומים, צפייה בתוצאות לייב, טבלאות הפנתיאון וניתוחי סקאוטינג בלבד.
                 </div>
             </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div id="ticker-placeholder"></div>
+    </footer>
 
     <script>
-        // טעינת ההדר כדי שהדף ייראה מחובר לשאר האתר
+        // טעינת ההדר
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -378,16 +394,23 @@
             })
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
 
+        // טעינת הטיקר שהוספנו עכשיו
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('ticker-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
+
         // פונקציה להחלפה בין טופס הרשמה לטופס התחברות
         function switchTab(tabName) {
             const tabs = document.querySelectorAll('.auth-tab');
             const forms = document.querySelectorAll('.form-container');
 
-            // איפוס כל הטאבים והטפסים
             tabs.forEach(tab => tab.classList.remove('active'));
             forms.forEach(form => form.classList.remove('active'));
 
-            // הפעלת הטאב והטופס המבוקש
             if (tabName === 'login') {
                 tabs[0].classList.add('active');
                 document.getElementById('form-login').classList.add('active');
@@ -398,70 +421,54 @@
         }
     </script>
     <script type="module">
-    // 1. קריאה לצינור הראשי שלנו
     import { supabase } from './supabaseClient.js';
 
-    // 2. תפיסת טופס ההרשמה
     const registerForm = document.getElementById('form-register');
 
-    // 3. מה קורה כשלוחצים על שליחה?
     registerForm.addEventListener('submit', async (e) => {
-        
-        // משיכת הנתונים שהמשתמש הקליד לשדות
         const nameValue = document.getElementById('reg-name').value;
         const emailValue = document.getElementById('reg-email').value;
         const passwordValue = document.getElementById('reg-password').value;
 
-        console.log("שולח בקשת הרשמה לשרת עבור:", emailValue);
-
-        // 4. הפקודה הקסומה של סופאבייס ליצירת משתמש!
         const { data, error } = await supabase.auth.signUp({
             email: emailValue,
             password: passwordValue,
             options: {
                 data: {
-                    display_name: nameValue // שומרים גם את הכינוי שהוא בחר
+                    display_name: nameValue 
                 }
             }
         });
 
-        // 5. בדיקה אם הצלחנו או קיבלנו שגיאה
         if (error) {
             console.error("שגיאה בהרשמה:", error.message);
             alert("אופס, השגיאה מהשרת: " + error.message);
         } else {
             console.log("הרשמה הצליחה!", data);
             alert("מזל טוב! החשבון נוצר בהצלחה. המשתמש הראשון שלך באוויר!");
-            registerForm.reset(); // מנקה את הטופס
+            registerForm.reset(); 
         }
     });
-    // ===== התחברות משתמש קיים =====
+
     const loginForm = document.getElementById('form-login');
 
     loginForm.addEventListener('submit', async (e) => {
-        
-        // משיכת הנתונים שהמשתמש הקליד
         const emailValue = document.getElementById('login-email').value;
         const passwordValue = document.getElementById('login-password').value;
 
-        console.log("מנסה להתחבר עם המייל:", emailValue);
-
-        // הפקודה של סופאבייס להתחברות
         const { data, error } = await supabase.auth.signInWithPassword({
             email: emailValue,
             password: passwordValue
         });
 
-       // בדיקה אם הצלחנו או קיבלנו שגיאה //
         if (error) {
             console.error("שגיאה בהתחברות:", error.message);
             alert("אופס! פרטי ההתחברות שגויים, או שעדיין לא אישרת את המייל שלך.");
         } else {
             console.log("התחברות הצליחה!", data);
             alert("ברוך הבא חזרה! התחברת בהצלחה למערכת של סוליבי.");
-            loginForm.reset(); // מנקה את הטופס
+            loginForm.reset(); 
             
-            // השורה החדשה שלנו: מעבר אוטומטי לדף הבית
             window.location.href = 'index.html'; 
         }
     });

@@ -5,119 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - מרכז ליגות</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="global-theme.css">
+    
     <style>
+        /* === פלטת הצבעים החדשה: זהב ושחור === */
         :root {
-            --brand-green: #7ca856;
-            --brand-green-glow: rgba(124, 168, 86, 0.6);
-            
-            /* עודכן לרקע הכסוף והנייבי העמוק של דף הבית */
-            --bg-silver-matte: linear-gradient(145deg, #f5f5f5 0%, #e0e0e0 100%);
-            --element-navy-gradient: linear-gradient(145deg, #0a2e57 0%, #062141 100%);
-            
-            --text-light: #ffffff;
-            --text-dark: #062141; /* מותאם לנייבי החדש */
-            
-            /* משתני הרוחב הסימטריים */
-            --sidebar-width: clamp(240px, 20vw, 320px); 
-            --search-width: clamp(380px, 28vw, 480px);
+            --brand-gold: #D6B953; 
+            --brand-gold-light: #FDF3C6; 
+            --brand-gold-dark: #A88D31; 
+            --bg-black: #0a0a0a;
+            --bg-card: #141414;
+            --text-white: #f5f5f5;
+            --text-gray: #a0a0a0;
+            --border-gold: rgba(214, 185, 83, 0.3);
 
-            /* סמלי רקע מיוחדים */
-            --bg-am: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg>');
-            --bg-world: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,1)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>');
+            /* סמלי רקע מיוחדים ליבשות מזהב */
+            --bg-am: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D6B953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.3.04-.59.08-.88l4.42 4.42c.4.4.9.59 1.41.59H12v2.5c0 .76.62 1.37 1.38 1.37.58 0 1.08-.36 1.28-.88zM18.8 15c-.21.94-.74 1.77-1.42 2.4l-2.07-2.07c-.15-.15-.35-.23-.56-.23H14v-2h1c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-2v-1c0-.55-.45-1-1-1h-1V6.26c.26-.06.52-.11.79-.11 2.37 0 4.48 1.05 5.92 2.72l-1.93 1.93c-.15.15-.23.35-.23.56v1.38c0 .35.2.68.51.84l1.74.87v.55z"/></svg>');
+            --bg-world: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23D6B953"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>');
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
             font-family: 'Rubik', sans-serif;
-            background: var(--bg-silver-matte);
+            background: var(--bg-black);
+            color: var(--text-white);
             width: 100%;
-            height: 100vh; /* נעילת גלילה ברמת הדף */
+            height: 100vh; 
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* אין גלילה במסך הראשי! */
+            overflow: hidden; 
         }
 
-       /* === הדר עליון (מיושר וסימטרי בהתחייבות מוחלטת) === */
-        .header {
-            height: 65px;
-            background: var(--element-navy-gradient);
-            border-bottom: 2px solid var(--brand-green);
-            position: relative;
-            z-index: 1000;
-            display: flex;
-            justify-content: center; /* ממרכז את התפריט האמצעי */
-            align-items: center;
-            width: 100%;
-        }
-
-        /* נועל את הלוגו בדיוק באותן קואורדינטות של הסיידבר הימני */
-        .header-right-col { 
-            position: absolute;
-            right: 20px; 
-            width: var(--sidebar-width); 
-            height: 100%;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-
-        .header-center-col { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: clamp(15px, 2vw, 30px); 
-        }
-
-        /* נועל את שורת החיפוש בדיוק באותן קואורדינטות של הסיידבר השמאלי */
-        .header-left-col { 
-            position: absolute;
-            left: 20px; 
-            width: var(--sidebar-width); 
-            height: 100%;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        
-        .logo-wrapper {
-            background-color: #ffffff; padding: 0 28px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25); transition: 0.3s;
-            height: 52px; display: flex; align-items: center; justify-content: center; text-decoration: none;
-        }
-        .logo-wrapper:hover { transform: scale(1.05); }
-        .actual-logo-img { height: 38px; transform: scale(1.7); display: block; object-fit: contain; }
-
-        .personal-area-btn {
-            background: transparent; border: 1.5px solid var(--brand-green);
-            color: #ffffff; padding: 6px 16px; border-radius: 30px; text-decoration: none;
-            font-weight: 700; font-size: clamp(12px, 1vw, 14px); transition: 0.3s;
-            display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
-        }
-        .personal-area-btn:hover { background: var(--brand-green); color: #ffffff; border-color: var(--brand-green); transform: scale(1.05); }
-
-        .header-nav ul { list-style: none; display: flex; gap: clamp(8px, 1vw, 20px); margin: 0; padding: 0; align-items: center; }
-        .header-nav a { text-decoration: none; color: var(--text-light); font-weight: 700; font-size: clamp(13px, 1.1vw, 15px); padding: 6px 14px; border-radius: 8px; transition: 0.3s; }
-        .header-nav a:hover { background: #ffffff; color: var(--brand-green); }
-
-        .header-search { 
-            width: 65%; /* יושבת בול באמצע כי ההורה ממורכז */
-            height: 34px; 
-            transition: width 0.4s ease; 
-            position: relative; 
-        }
-        .header-search input { width: 100%; height: 100%; border: none; background: rgba(255, 255, 255, 0.95); border-radius: 30px; font-size: 13px; padding: 0 20px; outline: none; font-family: inherit; box-shadow: none; transition: 0.4s ease; }
-        
-        /* מתרחבת בלחיצה בדיוק לגבולות הקופסה שלה, שהיא בגודל הסיידבר */
-        .header-search:focus-within { width: 100%; } 
-        .header-search input:focus { box-shadow: 0 0 15px var(--brand-green-glow); background: #fff; z-index: 10; }
-/* === אזור מרכזי: קונטיינר גמיש שמתמרכז אוטומטית === */
+        /* === אזור מרכזי: קונטיינר גמיש === */
         .inner-page-main {
             flex: 1; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* פלס באמצע המוחלט בכל מסך! */
+            justify-content: center; 
             padding: 2.5vh 20px;
             overflow: hidden; 
             min-height: 0; 
@@ -125,20 +52,19 @@
 
         .content-container {
             width: 100%;
-            /* המנגנון החכם: מתכווץ בלפטופ וגדל במסך ענק בהתאם לגובה הפנוי */
             max-width: min(1450px, calc((100vh - 200px) * 2.6)); 
-            /* הפרופורציה שנועלת את הראות ל-3 שורות בדיוק ומונעת מהשורה ה-4 להציץ */
             aspect-ratio: 2.3 / 1; 
             height: auto; 
-            max-height: 88vh; /* מגן מפני פריצת גבולות המסך */
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            max-height: 88vh; 
+            background: rgba(20, 20, 20, 0.85); /* רקע כהה חצי שקוף */
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-gold);
             border-radius: 20px;
             padding: clamp(15px, 3vh, 30px) clamp(20px, 3vw, 40px); 
             display: flex;
             flex-direction: column;
             overflow: hidden; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
         }
 
         /* === סרגל עליון בתוך הקונטיינר === */
@@ -149,7 +75,7 @@
             position: relative; 
             width: 100%;
             flex-shrink: 0;
-            margin-bottom: clamp(15px, 3vh, 35px); /* רווח דינמי ונושם מהקוביות */
+            margin-bottom: clamp(15px, 3vh, 35px); 
         }
 
         .premium-title-wrapper {
@@ -159,75 +85,78 @@
         }
 
         .page-title {
-            color: var(--text-dark);
-            font-size: clamp(16px, 1.8vw, 24px); /* טקסט גמיש בהתאם למסך */
+            color: var(--text-white);
+            font-size: clamp(16px, 1.8vw, 24px); 
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.6);
+            background: var(--bg-card);
             padding: 8px 30px;
             border-radius: 30px;
-            border: 1px solid rgba(124, 168, 86, 0.3);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--brand-gold);
+            box-shadow: inset 0 0 15px rgba(214, 185, 83, 0.1);
             margin: 0;
             white-space: nowrap;
         }
-        .page-title span { color: var(--brand-green); }
+        .page-title span { color: var(--brand-gold); }
 
         .title-line {
             height: 2px;
-            width: clamp(50px, 8vw, 100px); /* קו צדדי גמיש */
-            background: linear-gradient(90deg, transparent, var(--brand-green));
+            width: clamp(50px, 8vw, 100px); 
+            background: linear-gradient(90deg, transparent, var(--brand-gold));
             border-radius: 2px;
         }
-        .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-green)); }
+        .title-line.left { background: linear-gradient(270deg, transparent, var(--brand-gold)); }
 
         .internal-search {
             position: absolute;
             right: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: clamp(160px, 18vw, 250px); /* תיבת חיפוש גמישה */
+            width: clamp(160px, 18vw, 250px); 
             height: 38px;
         }
         .internal-search input {
             width: 100%; height: 100%;
-            border: 1.5px solid rgba(17, 40, 69, 0.2);
+            border: 1px solid var(--border-gold);
             border-radius: 20px;
             padding: 0 35px 0 15px; 
             font-family: inherit; font-size: 13px;
             outline: none; transition: 0.3s;
-            background: rgba(255,255,255,0.7);
+            background: #000;
+            color: var(--text-white);
         }
         .internal-search input:focus {
-            border-color: var(--brand-green); background: #fff;
-            box-shadow: 0 0 10px rgba(124, 168, 86, 0.2);
+            border-color: var(--brand-gold);
+            box-shadow: 0 0 10px rgba(214, 185, 83, 0.3);
         }
+        .internal-search input::placeholder { color: #666; }
+        
         .internal-search svg {
             position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-            width: 16px; height: 16px; stroke: #a0aec0; pointer-events: none;
+            width: 16px; height: 16px; stroke: var(--brand-gold); pointer-events: none; opacity: 0.7;
         }
 
         /* === גלילה פנימית מותאמת === */
         .leagues-scroll-area {
             flex: 1; 
             overflow-y: auto; 
-            padding-right: clamp(10px, 2vw, 25px); /* רווח גלילה גמיש ליצירת אוויר */
+            padding-right: clamp(10px, 2vw, 25px); 
             padding-bottom: 20px;
             direction: ltr; 
         }
 
         .leagues-scroll-area::-webkit-scrollbar { width: 8px; }
-        .leagues-scroll-area::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
-        .leagues-scroll-area::-webkit-scrollbar-thumb { background: rgba(17, 40, 69, 0.3); border-radius: 10px; }
-        .leagues-scroll-area::-webkit-scrollbar-thumb:hover { background: var(--brand-green); }
+        .leagues-scroll-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .leagues-scroll-area::-webkit-scrollbar-thumb { background: rgba(214,185,83,0.3); border-radius: 10px; }
+        .leagues-scroll-area::-webkit-scrollbar-thumb:hover { background: var(--brand-gold); }
 
         /* === גריד הקוביות החכם === */
         .leagues-grid {
             display: grid;
             grid-template-columns: repeat(8, 1fr); 
             column-gap: clamp(10px, 1.5vw, 20px); 
-            row-gap: clamp(15px, 2.5vh, 35px); /* הרווחים בין השורות גם הם גמישים! */
+            row-gap: clamp(15px, 2.5vh, 35px); 
             width: 100%;
             direction: rtl; 
         }
@@ -235,7 +164,7 @@
         .league-cube {
             width: 100%;
             aspect-ratio: 1/1.05; 
-            background: var(--element-navy-gradient);
+            background: var(--bg-card); /* שחור עמוק לכל קוביה */
             border-radius: 14px;
             display: flex;
             flex-direction: column;
@@ -243,31 +172,31 @@
             align-items: center;
             text-decoration: none;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--border-gold);
             position: relative;
             overflow: hidden;
             padding: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            /* הפעולה החשובה שמאפשרת לטקסט להקטין את עצמו ביחס לקוביה! */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             container-type: inline-size; 
         }
 
         .league-cube:hover {
             transform: translateY(-6px);
-            border-color: var(--brand-green);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            border-color: var(--brand-gold);
+            box-shadow: 0 8px 25px rgba(214, 185, 83, 0.2);
+            background: #000;
         }
 
         .league-icon-modern {
-            width: clamp(24px, 35cqi, 40px); /* אייקון גמיש שיורד בגודל בלפטופ */
+            width: clamp(24px, 35cqi, 40px); 
             height: clamp(24px, 35cqi, 40px);
-            border: 1.5px solid rgba(255,255,255,0.2);
+            border: 1.5px solid var(--border-gold);
             border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: clamp(4px, 8cqi, 8px);
-            background: rgba(255,255,255,0.05);
+            background: #000;
             transition: 0.3s;
             position: relative;
             z-index: 2; 
@@ -275,19 +204,19 @@
         }
 
         .league-icon-modern img { width: 100%; height: 100%; object-fit: cover; }
-        .league-icon-modern.svg-icon { padding: 6px; }
-        .league-icon-modern.svg-icon svg { width: 100%; height: 100%; fill: #ffffff; }
+        .league-icon-modern.svg-icon { padding: 6px; border-color: var(--brand-gold); }
+        .league-icon-modern.svg-icon svg { width: 100%; height: 100%; fill: var(--brand-gold); }
 
         .league-cube:hover .league-icon-modern {
-            border-color: var(--brand-green);
+            border-color: var(--brand-gold);
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3);
         }
 
         /* === טקסטים דינמיים (cqi) === */
         .league-name {
-            color: #fff;
-            font-size: clamp(9px, 12.5cqi, 13px); /* נמתח ומתכווץ בול לפי הקוביה */
+            color: var(--text-white);
+            font-size: clamp(9px, 12.5cqi, 13px); 
             font-weight: 700;
             text-align: center;
             line-height: 1.15;
@@ -299,7 +228,7 @@
             display: block;
             font-size: clamp(7.5px, 9cqi, 10.5px);
             font-weight: 400;
-            color: #a0aec0;
+            color: var(--brand-gold); /* טקסט משני בזהב */
             margin-top: clamp(2px, 4cqi, 5px);
         }
 
@@ -311,58 +240,29 @@
             background-image: var(--bg-image); 
             background-size: cover; 
             background-position: center;
-            opacity: 0.15; /* 👈 כל הקסם פה: שינינו מ-0 ל-0.15 כדי שתמיד תהיה השתקפות עדינה */
+            opacity: 0.15; 
             transition: opacity 0.5s ease; 
             z-index: 1; 
-            mix-blend-mode: overlay; /* 👈 השארנו overlay, זה מה שנותן את המראה של דף הבית */
+            mix-blend-mode: overlay; 
             pointer-events: none;
         }
 
         .league-cube:hover::before { opacity: 0.4; }
         .league-cube.svg-bg::before { background-size: 60%; background-repeat: no-repeat; mix-blend-mode: normal; opacity: 0.05; }
-        .league-cube.svg-bg:hover::before { opacity: 0.12; }
+        .league-cube.svg-bg:hover::before { opacity: 0.15; }
 
         /* מנגנון סינון קוביות דרך JS */
         .league-cube.hidden { display: none; }
 
-        /* === שורת עדכונים רצה (Footer) === */
-        .footer {
-            background: var(--element-navy-gradient); 
-            padding: 8px 0; 
-            border-top: 2px solid var(--brand-green);
-            overflow: hidden; 
-            white-space: nowrap; 
-            width: 100%; 
-            direction: ltr; 
-            flex-shrink: 0; 
-            position: relative;
-            z-index: 1000;
-        }
-
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: var(--brand-green); font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        
-        @keyframes ticker { 
-            0% { transform: translateX(-100%); } 
-            100% { transform: translateX(100vw); } 
-        }
-
-        
         /* === התאמה רספונסיבית === */
         @media (max-width: 1100px) {
             body { height: auto; overflow-y: auto; }
-            .header { height: auto; padding: 15px 0; flex-direction: column; gap: 15px; }
-            .header-right-col, .header-center-col, .header-left-col { width: 100%; justify-content: center; }
-            .header-search { display: none; }
             .content-container { height: auto; overflow: visible; }
             .leagues-scroll-area { overflow-y: visible; max-height: none; }
             .leagues-grid { grid-template-columns: repeat(6, 1fr); } 
         }
 
         @media (max-width: 768px) {
-            .header-nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
-            .header-nav a { font-size: 14px; padding: 5px 8px; }
             .leagues-top-bar { flex-direction: column; gap: 15px; }
             .internal-search { position: static; transform: none; width: 100%; max-width: 300px;}
             .leagues-grid { grid-template-columns: repeat(4, 1fr); } 
@@ -370,22 +270,6 @@
         }
         @media (max-width: 480px) {
             .leagues-grid { grid-template-columns: repeat(3, 1fr); } 
-        }
-
-/* --- עיצוב כפתור חנות סוליבי (עגלת קניות) --- */
-        .header-nav a.store-nav-link {
-            transition: 0.3s;
-        }
-        .header-nav a.store-nav-link svg {
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .header-nav a.store-nav-link:hover {
-            background: rgba(124, 168, 86, 0.1); 
-            color: var(--brand-green) !important;
-            border-radius: 8px;
-        }
-        .header-nav a.store-nav-link:hover svg {
-            transform: translateX(-4px) scale(1.1); /* מסיע את העגלה שמאלה */
         }
         
     </style>
@@ -500,7 +384,7 @@
         </div>
     </main>
 
-<div id="ticker-placeholder"></div>
+    <div id="ticker-placeholder"></div>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -530,16 +414,16 @@
             });
         });
     </script>
-<script>
-    // פונקציה שטוענת את הטיקר מקובץ חיצוני
-    fetch('ticker.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('ticker-placeholder').innerHTML = data;
-        })
-        .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
+    <script>
+        // פונקציה שטוענת את הטיקר מקובץ חיצוני
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('ticker-placeholder').innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
 
-// טעינת השורה העליונה (הדר)
+        // טעינת השורה העליונה (הדר)
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -547,8 +431,7 @@
                 if(placeholder) placeholder.innerHTML = data;
             })
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
-    
-</script>
+    </script>
     <script src="search.js"></script>
     <script type="module" src="auth.js"></script>
 </body>
