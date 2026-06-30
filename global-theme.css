@@ -967,3 +967,13 @@ ul { list-style: none; }
 .store-section {
     min-height: 363px !important;
 }
+/* --- איפוס דפדפנים למניעת גלילות סמויות --- */
+* {
+    box-sizing: border-box !important;
+}
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important; /* רוצח סופית כל גלילה אופקית (ימינה-שמאלה) */
+}
