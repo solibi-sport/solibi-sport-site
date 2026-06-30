@@ -642,47 +642,328 @@ ul { list-style: none; }
 .mystery-showcase-box:hover .price-tag-large {
     transform: scale(1.08);
 }
-/* === קופסת המיסטרי בוקס - גודל מקורי וקומפקטי === */
+/* =======================================================
+   עיצוב קופסת מיסטרי בוקס חצויה (ימין תמונה, שמאל טקסט)
+   ======================================================= */
 .mystery-showcase-box {
-    height: 220px !important; /* חזרנו לגובה המקורי שמונע גלילה במסך */
+    display: flex !important;
+    flex-direction: row !important;
+    height: 270px !important; /* גובה מושלם וקומפקטי למנוע גלילה במסך */
     width: 100% !important;
-    background: #141414 !important; 
-    border: 1px dashed var(--border-gold) !important;
+    background: #111111 !important; /* רקע כהה פרימיום המשתלב עם האתר */
+    border: 1px solid var(--border-gold) !important;
     border-radius: 16px !important;
     position: relative !important;
-    overflow: hidden !important; /* חותך את השחור העודף של התמונה */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7) !important;
     padding: 0 !important;
-    display: block !important;
+    direction: rtl !important;
+}
+
+/* --- חלוקה מחדש: 50% תמונה, 50% טקסט --- */
+.mystery-image-side {
+    width: 50% !important; 
+    height: 100% !important;
+    background: #090909 !important; 
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important; 
+    box-sizing: border-box !important;
+    overflow: hidden !important; /* קריטי כדי שהזום לא יפלוש לטקסט */
 }
 
 .mystery-main-img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain !important; /* שינינו מ-cover ל-contain כדי שלא יעשה זום ויחתוך את הקלפים */
-    object-position: bottom center !important; /* מצמיד את הקלפים לתחתית המלבן */
+    object-fit: contain !important; 
+    /* 50% זה בדיוק באמצע. 
+       מספר נמוך יותר (למשל 20%) יעלה את התמונה למעלה. 
+       מספר גבוה יותר (למשל 80%) יוריד אותה למטה. */
+    object-position: center 10% !important; 
     display: block !important;
-    border: none !important;
-    border-radius: 0 !important;
+    
+    /* === כאן אתה משחק עם הגודל! === */
+    /* 1.5 = הגדלה של 50% */
+    /* 1.7 = הגדלה של 70% */
+    /* 1.9 = הגדלה של 90% */
+   /* השלט הרחוק המשודרג: */
+    /* 1. scale - שולט על הגודל (2.0 זה ענק) */
+    /* 2. translateY - שולט על למעלה ולמטה (מינוס עולה למעלה, פלוס יורד למטה) */
+    transform: scale(2.2) translateY(-5%) !important;
 }
 
-/* המחיר הצף */
+/* הצד השמאלי - הקטנו את הריווח העליון כדי שהכותרת תעלה למעלה */
+.mystery-text-side {
+    width: 50% !important; 
+    height: 100% !important;
+    padding: 10px 25px 20px 25px !important; /* שינינו פה: רק 10px מלמעלה */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    text-align: right !important;
+}
+
+/* הכותרת עצמה - הגדלנו את הרווח מתחתיה */
+.mystery-text-side h3 {
+    margin: 0 0 25px 0 !important; /* ה-25px זה הרווח שדוחף את הרשימות למטה */
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: var(--brand-gold) !important; 
+    border-bottom: 1px solid rgba(214, 185, 83, 0.2) !important;
+    padding-bottom: 5px !important;
+}
+
+/* --- סידור הרשימות חזרה אחת ליד השנייה (טורים) --- */
+.mystery-lists-container {
+    display: flex !important;
+    flex-direction: row !important; /* מחזיר לסידור אופקי - ימין ושמאל */
+    gap: 15px !important;
+    height: calc(100% - 40px) !important;
+    overflow: hidden !important; /* מבטל את פס הגלילה המעצבן */
+}
+
+.mystery-list-block {
+    flex: 1 !important;
+}
+
+/* החזרת הקו המפריד בין טור "מובטח" לטור "צ'ייס" */
+.mystery-internal-divider {
+    display: block !important;
+    width: 1px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    height: 80% !important;
+    align-self: center !important;
+}
+
+.mystery-list-block li {
+    font-size: 12.5px !important; 
+    margin-bottom: 6px !important;
+}
+
+.mystery-list-block h4 {
+    margin: 0 0 10px 0 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+/* עיצוב כותרות הרשימה לפי קטגוריה */
+.guaranteed-block h4 {
+    color: #4caf50 !important; /* ירוק חלק וספורטיבי ל"מובטח" */
+}
+
+.chase-block h4 {
+    color: #ff9800 !important; /* כתום אש/זהב בוער ל"צ'ייס" */
+}
+
+.mystery-list-block ul {
+    margin: 0 !important;
+    padding-right: 18px !important;
+    list-style-type: square !important;
+}
+
+.mystery-list-block li {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: #e0e0e0 !important;
+    margin-bottom: 7px !important;
+}
+
+/* קו מפריד פנימי דק בין הרשימות */
+.mystery-internal-divider {
+    width: 1px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    height: 75% !important;
+    align-self: center !important;
+}
+
+/* תג המחיר הצף - ממוקם קבוע בשמאל למטה */
 .price-tag-large {
     position: absolute !important;
-    bottom: 25px !important; 
-    left: 25px !important;   
-    background: var(--brand-gold) !important; 
-    color: #000000 !important; 
-    padding: 12px 24px !important; 
-    font-size: 18px !important;
-    font-weight: 900 !important; 
-    border-radius: 50px !important; 
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important; 
-    z-index: 10 !important; 
-    transition: transform 0.3s ease !important;
+    bottom: 15px !important;
+    left: 20px !important;
+    background: var(--brand-gold) !important;
+    color: #000000 !important;
+    padding: 8px 20px !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    border-radius: 50px !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5) !important;
+    z-index: 10 !important;
+    transition: transform 0.2s ease !important;
     border: none !important;
 }
 
 .mystery-showcase-box:hover .price-tag-large {
-    transform: scale(1.08) !important;
+    transform: scale(1.06) !important;
+}
+/* החלף את '.your-center-content' בשם הקלאס האמיתי של אזור התוכן המרכזי שלך
+  (האזור שאותו בעצם גוללים) 
+*/
+.your-center-content {
+    direction: ltr !important; /* זורק את פס הגלילה לצד ימין */
+    overflow-y: auto !important; /* מוודא שיש גלילה אנכית */
+    
+    /* יצירת "השטח המת" בין הסיידבר לפס הגלילה */
+    margin-right: 30px !important; /* מרחיק את המיכל (ואת הפס) מהסיידבר הימני */
+    padding-right: 15px !important; /* מרווח נשימה פנימי בין הטקסט לפס הגלילה */
+}
+
+/* מחזיר את כל התוכן הפנימי לעברית תקינה (מימין לשמאל) */
+.your-center-content > * {
+    direction: rtl !important;
+}
+
+/* עיצוב פס הגלילה עצמו (בהנחה שזה הפס הצהוב שרואים בצילום) */
+.your-center-content::-webkit-scrollbar {
+    width: 6px !important; /* עובי הפס - שנה לפי הצורך */
+}
+
+.your-center-content::-webkit-scrollbar-track {
+    background: transparent !important; /* רקע שקוף שישתלב בשטח המת */
+}
+
+.your-center-content::-webkit-scrollbar-thumb {
+    background-color: var(--brand-gold, #ffd700) !important; /* צבע הפס */
+    border-radius: 10px !important;
+}
+/* כאן תחליף את .main-content בשם האמיתי של הקלאס של התוכן שלך */
+.main-content {
+    direction: ltr !important; /* זה מה שיזרוק את פס הגלילה לצד ימין! */
+    padding-right: 15px !important; /* עושה רווח בין התוכן עצמו לפס הגלילה */
+    
+    /* אם אתה רוצה שהפס לא יידבק לסיידבר הימני אלא "ירחף" באמצע: */
+    margin-right: 10px !important; 
+}
+
+/* זה קריטי! זה מחזיר את כל הטקסטים והעיצובים לעברית תקינה */
+.main-content > * {
+    direction: rtl !important;
+}
+/* התאמה למסכי לפטופ קטנים וטאבלטים */
+@media (max-width: 1200px) {
+    .mystery-lists-container {
+        /* במקום שהרשימות יהיו ימין ושמאל, הן ירדו אחת מתחת לשנייה ויהיה להן מרווח נשימה */
+        flex-direction: column !important; 
+    }
+    .mystery-internal-divider {
+        display: none !important; /* מעלים את הקו המפריד כי הרשימות עכשיו אחת מתחת לשנייה */
+    }
+}
+/* --- עיצוב הטאבים (כותרות) - גרסה מוקטנת וממורכזת --- */
+.packages-tabs {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 30px !important; /* הקטנו מעט את הרווח בין שתי הכותרות למראה מהודק יותר */
+    margin-top: 10px !important; /* דחיפה קלה מלמעלה כדי לייצר סימטריה */
+    margin-bottom: 15px !important; /* חתכנו חצי מהרווח התחתון כדי למנוע את הגלילה! */
+}
+
+.package-tab {
+    font-size: 19px !important; /* הקטנו את גודל הפונט (היה 24) */
+    font-weight: 700 !important; /* שומרים על מראה מודגש כדי שיישאר קריא וברור */
+    color: #666 !important; 
+    cursor: pointer !important;
+    padding-bottom: 5px !important; /* הקטנו את המרחק בין הטקסט לקו הזהב התחתון */
+    border-bottom: 3px solid transparent !important;
+    transition: all 0.3s ease !important;
+    margin: 0 !important;
+}
+
+.package-tab:hover {
+    color: #fff !important;
+}
+
+.package-tab.active {
+    color: #ffffff !important; /* הופך את צבע הטקסט של הטאב הפעיל ללבן */
+    border-bottom: 3px solid #ffffff !important; /* הופך גם את הפס התחתון ללבן */
+}
+
+/* --- ניהול התצוגות (מה מוסתר ומה גלוי) --- */
+.packages-view {
+    display: none !important; /* מעלים הכל כברירת מחדל */
+}
+
+/* חשוב: אם המארזים שלך היו מסודרים ב-flex או grid במקור, 
+   תשנה את ה-flex פה למה שהיה לך (למשל display: grid) */
+.packages-view.active-view {
+    display: flex !important; 
+    justify-content: center !important;
+    gap: 20px !important;
+}
+
+/* --- המלבן הפנורמי החדש להרכבת מארז --- */
+.build-custom-box {
+    background: #111 !important;
+    border: 1px dashed var(--brand-gold, #ffd700) !important;
+    border-radius: 16px !important;
+    width: 100% !important; 
+    max-width: 100% !important; 
+    
+    /* הנה התיקון: הגובה הוקטן משמעותית כדי להתאים לקוביות ולחסל את הגלילה */
+    height: 253px !important; 
+    
+   margin: 0 auto !important;
+    padding: 15px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.build-custom-box:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 25px rgba(214, 185, 83, 0.15) !important;
+}
+
+.build-custom-box i {
+    font-size: 45px !important; /* הוקטן מעט בהתאם לגובה החדש */
+    color: var(--brand-gold, #ffd700) !important;
+    margin-bottom: 15px !important;
+}
+
+.build-custom-box h3 {
+    font-size: 26px !important;
+    color: #fff !important;
+    margin-bottom: 10px !important;
+}
+
+.build-custom-box p {
+    color: #aaa !important;
+    font-size: 15px !important;
+    margin-bottom: 20px !important;
+}
+
+.btn-build-now {
+    background: var(--brand-gold, #ffd700) !important;
+    color: #000 !important;
+    padding: 12px 30px !important;
+    border: none !important;
+    border-radius: 50px !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+}
+
+.btn-build-now:hover {
+    transform: scale(1.05) !important;
+}
+
+/* הרמה ויזואלית של כותרת המיסטרי בוקס בלבד, מבלי לשבור את מבנה העמוד */
+.mystery-section .section-title {
+    transform: translateY(-20px) !important; 
+}
+
+/* נעילת הגובה של אזור המארזים למניעת קפיצות במעבר טאבים */
+.store-section {
+    min-height: 363px !important;
 }

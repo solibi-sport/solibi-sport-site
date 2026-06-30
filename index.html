@@ -53,93 +53,145 @@
             </section>
 
             <section class="store-section">
-                <h2 class="section-title">המארזים שלנו</h2>
-                <div class="carousel-container">
-                    <button class="carousel-arrow arrow-right" onclick="document.getElementById('product-slider').scrollLeft += 250">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
+                <div class="packages-tabs">
+                    <h2 id="tab-ready" class="package-tab active" onclick="switchPackage('ready')">מארזים מוכנים</h2>
+                    <h2 id="tab-custom" class="package-tab" onclick="switchPackage('custom')">הרכבת מארז</h2>
+                </div>
 
-                    <div class="products-carousel" id="product-slider">
-                        <div class="product-card">
-                            <div class="product-badge">גילאי <bdi>+7</bdi></div>
-                            <div class="product-image"><i class="fa-solid fa-child box-icon"></i></div>
-                            <h3>מארז ילדים</h3>
-                            <p class="product-desc">בובת סוקרסטארז בקופסא מקורית, מעטפות אדרנלין, כדור לחיצה ועוד.</p>
-                            <div class="product-footer">
-                                <span class="price">₪99</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
+                <div class="packages-content">
+                    
+                    <div id="view-ready" class="packages-view active-view">
+                        <div class="carousel-container">
+                            <button class="carousel-arrow arrow-right" onclick="document.getElementById('product-slider').scrollLeft += 250">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
 
-                        <div class="product-card">
-                            <div class="product-badge">גילאי <bdi>+14</bdi></div>
-                            <div class="product-image"><i class="fa-solid fa-users box-icon"></i></div>
-                            <h3>מארז קבוצה</h3>
-                            <p class="product-desc">בובת מיניקס/פופ, קלף מדורג/ממוספר, גאדג'ט סלולר וסיכת דש של הקבוצה.</p>
-                            <div class="product-footer">
-                                <span class="price">₪129</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
+                            <div class="products-carousel" id="product-slider">
+                                <div class="product-card">
+                                    <div class="product-badge">גילאי <bdi>+7</bdi></div>
+                                    <div class="product-image"><i class="fa-solid fa-child box-icon"></i></div>
+                                    <h3>מארז ילדים</h3>
+                                    <p class="product-desc">בובת סוקרסטארז בקופסא מקורית, מעטפות אדרנלין, כדור לחיצה ועוד.</p>
+                                    <div class="product-footer">
+                                        <span class="price">₪99</span>
+                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
+                                    </div>
+                                </div>
 
-                        <div class="product-card">
-                            <div class="product-badge">גילאי <bdi>+14</bdi></div>
-                            <div class="product-image"><i class="fa-solid fa-user-astronaut box-icon"></i></div>
-                            <h3>מארז שחקן</h3>
-                            <p class="product-desc">בובת מיניקס/פופ, קלף מדורג, גאדג'ט סלולר וסיכת דש של שחקן ספציפי.</p>
-                            <div class="product-footer">
-                                <span class="price">₪129</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
+                                <div class="product-card">
+                                    <div class="product-badge">גילאי <bdi>+14</bdi></div>
+                                    <div class="product-image"><i class="fa-solid fa-users box-icon"></i></div>
+                                    <h3>מארז קבוצה</h3>
+                                    <p class="product-desc">בובת מיניקס/פופ, קלף מדורג/ממוספר, גאדג'ט סלולר וסיכת דש של הקבוצה.</p>
+                                    <div class="product-footer">
+                                        <span class="price">₪129</span>
+                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
+                                    </div>
+                                </div>
 
-                        <div class="product-card premium-gold-card">
-                            <div class="product-badge gold-badge">פרימיום</div>
-                            <div class="product-image"><i class="fa-solid fa-crown box-icon dark-icon"></i></div>
-                            <h3>מארז פרימיום</h3>
-                            <p class="product-desc">בובת מיניקס מקורית, מעטפת קלפים פאניני, מחזיק מפתחות מתכת יוקרתי.</p>
-                            <div class="product-footer">
-                                <span class="price">₪179</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
+                                <div class="product-card">
+                                    <div class="product-badge">גילאי <bdi>+14</bdi></div>
+                                    <div class="product-image"><i class="fa-solid fa-user-astronaut box-icon"></i></div>
+                                    <h3>מארז שחקן</h3>
+                                    <p class="product-desc">בובת מיניקס/פופ, קלף מדורג, גאדג'ט סלולר וסיכת דש של שחקן ספציפי.</p>
+                                    <div class="product-footer">
+                                        <span class="price">₪129</span>
+                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
+                                    </div>
+                                </div>
 
-                        <div class="product-card">
-                            <div class="product-badge">גילאי <bdi>+14</bdi></div>
-                            <div class="product-image"><i class="fa-solid fa-history box-icon"></i></div>
-                            <h3>מארז רטרו</h3>
-                            <p class="product-desc">בובת מיניקס/פופ בקופסא, קלף מדורג/ממוספר או חתימה רטרו.</p>
-                            <div class="product-footer">
-                                <span class="price">₪159</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
+                                <div class="product-card premium-gold-card">
+                                    <div class="product-badge gold-badge">פרימיום</div>
+                                    <div class="product-image"><i class="fa-solid fa-crown box-icon dark-icon"></i></div>
+                                    <h3>mארז פרימיום</h3>
+                                    <p class="product-desc">בובת מיניקס מקורית, מעטפת קלפים פאניני, מחזיק מפתחות מתכת יוקרתי.</p>
+                                    <div class="product-footer">
+                                        <span class="price">₪179</span>
+                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
+                                    </div>
+                                </div>
 
-                        <div class="product-card">
-                            <div class="product-badge">גילאי <bdi>+14</bdi></div>
-                            <div class="product-image"><i class="fa-solid fa-clone box-icon"></i></div>
-                            <h3>מארז קלפים</h3>
-                            <p class="product-desc">קלף מדורג, מעטפת קלפים פאניני, מארז 100 סליבים ומגן יחיד 35pt.</p>
-                            <div class="product-footer">
-                                <span class="price">₪159</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
+                                <div class="product-card">
+                                    <div class="product-badge">גילאי <bdi>+14</bdi></div>
+                                    <div class="product-image"><i class="fa-solid fa-history box-icon"></i></div>
+                                    <h3>מארז רטרו</h3>
+                                    <p class="product-desc">בובת מיניקס/פופ בקופסא, קלף מדורג/ממוספר או חתימה רטרו.</p>
+                                    <div class="product-footer">
+                                        <span class="price">₪159</span>
+                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
+                                    </div>
+                                </div>
+
+                                <div class="product-card">
+                                    <div class="product-badge">גילאי <bdi>+14</bdi></div>
+                                    <div class="product-image"><i class="fa-solid fa-clone box-icon"></i></div>
+                                    <h3>מארז קלפים</h3>
+                                    <p class="product-desc">קלף מדורג, מעטפת קלפים פאניני, מארז 100 סליבים ומגן יחיד 35pt.</p>
+                                    <div class="product-footer">
+                                        <span class="price">₪159</span>
+                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
+                                    </div>
+                                </div>
                             </div>
+
+                            <button class="carousel-arrow arrow-left" onclick="document.getElementById('product-slider').scrollLeft -= 250">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <button class="carousel-arrow arrow-left" onclick="document.getElementById('product-slider').scrollLeft -= 250">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
+                    <div id="view-custom" class="packages-view">
+                        <div class="build-custom-box">
+                            <i class="fa-solid fa-boxes-packing"></i>
+                            <h3>להרכבת מארז לחץ פה</h3>
+                            <p>בחר את הפריטים שאתה הכי אוהב ובנה מארז ספורט אישי משלך!</p>
+                            <button class="btn-build-now">התחל להרכיב</button>
+                        </div>
+                    </div>
+
                 </div>
             </section>
 
             <section class="mystery-section">
     <h2 class="section-title">סוליבי מיסטרי בוקס</h2>
-    <div class="mystery-showcase-box" style="position: relative; overflow: hidden;">
+    <div class="mystery-showcase-box">
         
-        <img src="mystery-cards-transparent.png" alt="פירוט תוכן מיסטרי בוקס" class="mystery-main-img">
-        
-        <span class="price-tag-large">₪79</span>
+        <div class="mystery-image-side">
+            <img src="mystery-cards-transparent.png" alt="פריטי מיסטרי בוקס" class="mystery-main-img">
+        </div>
+
+        <div class="mystery-main-divider"></div>
+
+        <div class="mystery-text-side">
+            <h3>פירוט תוכן המיסטרי</h3>
+            
+            <div class="mystery-lists-container">
+                <div class="mystery-list-block guaranteed-block">
+                    <h4><i class="fa-solid fa-circle-check"></i> מובטח בכל חבילה:</h4>
+                    <ul>
+                        <li>מעטפת מדבקות מקורית</li>
+                        <li>5 קלפי אדרנלין/מאצ' אטאקס</li>
+                        <li>7-10 קלפי בייס+אינסרטים</li>
+                        <li>7-10 מדבקות ממגוון אוספים</li>
+                        <li>כרטיס הגרלה שיכול לזכות בפרסים / הנחות באתר</li>
+                    </ul>
+                </div>
+                
+                <div class="mystery-internal-divider"></div>
+                
+                <div class="mystery-list-block chase-block">
+                    <h4><i class="fa-solid fa-fire"></i> לא מובטח (צ'ייס):</h4>
+                    <ul>
+                        <li>קלף מדורג PSA</li>
+                        <li>קלף ממוספר</li>
+                        <li>קלף חתימה</li>
+                        <li>מדבקות רטרו ישראלי  (מפציצים 97 / סופרגול 2000)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <span class="price-tag-large">₪49</span>
+        </div>
         
     </div>
 </section>
@@ -296,6 +348,21 @@
             });
         });
     </script>
+    <script>
+    function switchPackage(type) {
+        // מסיר את הסימון (active) משני הטאבים
+        document.getElementById('tab-ready').classList.remove('active');
+        document.getElementById('tab-custom').classList.remove('active');
+        
+        // מסתיר את שתי התצוגות
+        document.getElementById('view-ready').classList.remove('active-view');
+        document.getElementById('view-custom').classList.remove('active-view');
+        
+        // מדליק רק את הטאב והתצוגה שלחצו עליהם
+        document.getElementById('tab-' + type).classList.add('active');
+        document.getElementById('view-' + type).classList.add('active-view');
+    }
+</script>
     <script>
     // טעינת הטיקר מתוך הקובץ החיצוני
     fetch('ticker.html')
