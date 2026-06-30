@@ -304,11 +304,9 @@ ul { list-style: none; }
 /* ---------------------------------
    מדור מיסטרי בוקס
 --------------------------------- */
-.mystery-showcase-box { width: 100%; background-color: var(--bg-card); border: 2px dashed var(--border-gold); border-radius: 8px; padding: 40px 20px; text-align: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.6); }
 .mystery-placeholder-content { display: flex; flex-direction: column; align-items: center; gap: 15px; }
 .placeholder-icon { font-size: 55px; color: #333; }
 .mystery-placeholder-content p { color: var(--text-gray); font-size: 15px; }
-.price-tag-large { background-color: #000; color: var(--brand-gold); padding: 8px 25px; border-radius: 20px; font-weight: bold; font-size: 18px; border: 1px solid var(--border-gold); }
 
 /* ---------------------------------
    עיצוב תוצאות הלייב
@@ -623,4 +621,68 @@ ul { list-style: none; }
 @keyframes ticker { 
     0% { transform: translateX(-100%); } 
     100% { transform: translateX(100vw); } 
+}
+
+.price-tag-large {
+    position: absolute !important;
+    bottom: 25px; /* מרחק של 25 פיקסלים מהתחתית */
+    left: 25px;   /* מרחק של 25 פיקסלים מצד שמאל (מובלט ויפה) */
+    background: var(--brand-gold) !important; /* רקע זהב מטורף */
+    color: #000000 !important; /* טקסט שחור בולט */
+    padding: 12px 24px !important; /* ריווח פנימי שנותן נפח */
+    font-size: 18px !important;
+    font-weight: 900 !important; /* טקסט עבה וברור */
+    border-radius: 50px !important; /* הופך את זה לקפסולה מושלמת */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important; /* צל עמוק שגורם למחיר לקפוץ קדימה */
+    z-index: 10 !important; /* מוודא שהמחיר תמיד יהיה בשכבה מעל התמונה */
+    transition: transform 0.3s ease !important;
+}
+
+/* אפקט הובר קטן - כשיעברו עם העכבר על קופסת המיסטרי, המחיר יגדל טיפה */
+.mystery-showcase-box:hover .price-tag-large {
+    transform: scale(1.08);
+}
+/* === קופסת המיסטרי בוקס - גודל מקורי וקומפקטי === */
+.mystery-showcase-box {
+    height: 220px !important; /* חזרנו לגובה המקורי שמונע גלילה במסך */
+    width: 100% !important;
+    background: #141414 !important; 
+    border: 1px dashed var(--border-gold) !important;
+    border-radius: 16px !important;
+    position: relative !important;
+    overflow: hidden !important; /* חותך את השחור העודף של התמונה */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.mystery-main-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important; /* שינינו מ-cover ל-contain כדי שלא יעשה זום ויחתוך את הקלפים */
+    object-position: bottom center !important; /* מצמיד את הקלפים לתחתית המלבן */
+    display: block !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+/* המחיר הצף */
+.price-tag-large {
+    position: absolute !important;
+    bottom: 25px !important; 
+    left: 25px !important;   
+    background: var(--brand-gold) !important; 
+    color: #000000 !important; 
+    padding: 12px 24px !important; 
+    font-size: 18px !important;
+    font-weight: 900 !important; 
+    border-radius: 50px !important; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important; 
+    z-index: 10 !important; 
+    transition: transform 0.3s ease !important;
+    border: none !important;
+}
+
+.mystery-showcase-box:hover .price-tag-large {
+    transform: scale(1.08) !important;
 }
