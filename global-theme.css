@@ -1074,24 +1074,60 @@ body {
     padding-right: 15px !important; /* נותן מרווח נשימה פנימי זהה משני הצדדים */
 }
 /* =========================================
-   תיקון דפים פנימיים - דחיפת הטיקר לתחתית והחלת כיווץ 5%
+   תיקון 5.0 - חישוב אוטומטי של שטח המסך הנותר
    ========================================= */
-body > .main-content,
-body > .auth-wrapper {
-    flex-grow: 1 !important; /* מתפקד כמו קפיץ שדוחף את הטיקר למטה */
+
+/* 1. הופכים את המסך הראשי לעמודה גמישה */
+body { 
+    direction: rtl !important; 
     display: flex !important;
     flex-direction: column !important;
-    
-    zoom: 0.95 !important; /* על הדרך, מחיל את הזום היפה גם על הדפים האלו! */
-    height: auto !important;
-}
-/* =========================================
-   תיקון מיקום הטיקר (הפוטר) בכל האתר
-   ========================================= */
-.footer {
-    order: 99 !important; /* מכריח את הטיקר להיות תמיד האלמנט האחרון למטה */
+    height: 100vh !important; /* גובה המסך נטו (מתעדכן אוטומטית אם סרגל נפתח/נסגר) */
+    overflow: hidden !important; 
+    margin: 0 !important;
 }
 
-#header-placeholder {
-    order: -1 !important; /* מוודא שההדר יישאר תמיד ראשון למעלה */
+/* 2. מכריחים את ההדר והטיקר לשמור על הגודל המקורי שלהם ולא להתכווץ */
+.site-header, .footer {
+    flex-shrink: 0 !important;
+}
+
+/* 3. האמצע תופס בדיוק את המקום שנשאר! */
+.site-layout,
+body > .main-content,
+body > .auth-wrapper {
+    flex: 1 !important; /* פקודת הקסם: קח את כל מה שנשאר בין ההדר לטיקר */
+    min-height: 0 !important; /* פקודה קריטית: מונעת מהתוכן הפנימי "לפרוץ" החוצה ולדחוף את הטיקר */
+    height: auto !important; 
+    overflow: hidden !important;
+    
+    /* החזרתי לך ל-0.95 (5% הקטנה) כי עכשיו כבר לא צריך לכווץ חזק מדי! */
+    zoom: 0.95 !important; 
+}
+/* =========================================
+   תיקון 6.0 - פס גלילה ימני קיצוני וחיסול גלילות רפאים
+   ========================================= */
+
+/* 1. המעטפת הראשית - היא זו שתגלול עכשיו, ולכן הפס יהיה הכי ימינה שאפשר! */
+.site-layout {
+    overflow-y: auto !important; /* מעביר את הגלילה למעטפת כולה */
+    overflow-x: hidden !important; /* מונע גלילה ימינה-שמאלה בטעות */
+    align-items: start !important; /* פקודה קריטית כדי שהסיידברים יוכלו להידבק ולא יימתחו */
+    padding-bottom: 2px !important; /* משחרר את הלחץ של גלילת הרפאים */
+}
+
+/* 2. התוכן המרכזי - שוללים ממנו את פס הגלילה הפנימי */
+.main-content {
+    overflow-y: visible !important; 
+    height: auto !important;
+    margin-bottom: 0 !important; /* הורג שוליים סמויים שדוחפים את האתר למטה */
+}
+
+/* 3. הסיידברים - מדביקים אותם למקום כדי שלא יברחו כשהאתר נגלל */
+.sidebar-left, .sidebar-right {
+    position: sticky !important;
+    top: 0 !important;
+    height: max-content !important; 
+    max-height: 100% !important; /* לא נותן להם להיות גבוהים יותר מהמסך */
+    overflow-y: auto !important; /* שומר על הגלילה הפנימית העצמאית של הלייב אם יש הרבה משחקים */
 }
