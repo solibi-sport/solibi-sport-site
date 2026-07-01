@@ -1105,29 +1105,14 @@ body > .auth-wrapper {
     zoom: 0.95 !important; 
 }
 /* =========================================
-   תיקון 6.0 - פס גלילה ימני קיצוני וחיסול גלילות רפאים
+   תיקון 6.1 - חיסול גלילת רפאים בטוח
    ========================================= */
-
-/* 1. המעטפת הראשית - היא זו שתגלול עכשיו, ולכן הפס יהיה הכי ימינה שאפשר! */
-.site-layout {
-    overflow-y: auto !important; /* מעביר את הגלילה למעטפת כולה */
-    overflow-x: hidden !important; /* מונע גלילה ימינה-שמאלה בטעות */
-    align-items: start !important; /* פקודה קריטית כדי שהסיידברים יוכלו להידבק ולא יימתחו */
-    padding-bottom: 2px !important; /* משחרר את הלחץ של גלילת הרפאים */
+html, body {
+    overflow: hidden !important; /* נועל את המסך הראשי מתזוזות כפולות */
 }
 
-/* 2. התוכן המרכזי - שוללים ממנו את פס הגלילה הפנימי */
 .main-content {
-    overflow-y: visible !important; 
-    height: auto !important;
-    margin-bottom: 0 !important; /* הורג שוליים סמויים שדוחפים את האתר למטה */
-}
-
-/* 3. הסיידברים - מדביקים אותם למקום כדי שלא יברחו כשהאתר נגלל */
-.sidebar-left, .sidebar-right {
-    position: sticky !important;
-    top: 0 !important;
-    height: max-content !important; 
-    max-height: 100% !important; /* לא נותן להם להיות גבוהים יותר מהמסך */
-    overflow-y: auto !important; /* שומר על הגלילה הפנימית העצמאית של הלייב אם יש הרבה משחקים */
+    /* הטריק שבולע את ה-2 פיקסלים של הגלילה המיותרת */
+    margin-bottom: -5px !important; 
+    padding-bottom: 5px !important;
 }
