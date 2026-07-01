@@ -1,7 +1,7 @@
 /* ==========================================
    סגנון גלובלי פרימיום - סוליבי ספורט 2026
    ========================================== */
-
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 :root {
     --brand-gold: #D6B953; /* צבע האמצע מתוך כרטיסיית הפרימיום - זהב מתכתי ואלגנטי */
     --brand-gold-light: #FDF3C6; /* הברק הבהיר של הכרטיסייה */
@@ -15,12 +15,18 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+    direction: ltr !important; 
+}
+
+body {
+    direction: rtl !important; 
+}
+
 body {
     font-family: 'Rubik', sans-serif;
     background-color: var(--bg-black);
     color: var(--text-white);
-    height: 100vh;
-    overflow: hidden; 
     display: flex;
     flex-direction: column;
 }
@@ -648,7 +654,7 @@ ul { list-style: none; }
 .mystery-showcase-box {
     display: flex !important;
     flex-direction: row !important;
-    height: 270px !important; /* גובה מושלם וקומפקטי למנוע גלילה במסך */
+    height: 300px !important; /* גובה מושלם וקומפקטי למנוע גלילה במסך */
     width: 100% !important;
     background: #111111 !important; /* רקע כהה פרימיום המשתלב עם האתר */
     border: 1px solid var(--border-gold) !important;
@@ -690,7 +696,7 @@ ul { list-style: none; }
    /* השלט הרחוק המשודרג: */
     /* 1. scale - שולט על הגודל (2.0 זה ענק) */
     /* 2. translateY - שולט על למעלה ולמטה (מינוס עולה למעלה, פלוס יורד למטה) */
-    transform: scale(2.2) translateY(-5%) !important;
+    transform: scale(2.1) translateY(-5%) !important;
 }
 
 /* הצד השמאלי - הקטנו את הריווח העליון כדי שהכותרת תעלה למעלה */
@@ -976,4 +982,116 @@ html, body {
     margin: 0 !important;
     padding: 0 !important;
     overflow-x: hidden !important; /* רוצח סופית כל גלילה אופקית (ימינה-שמאלה) */
+}
+/* --- חיסול 20 הפיקסלים של הגלילה בכרום --- */
+.main-content {
+    margin-bottom: -20px !important; 
+}
+
+/* --- פתרון "טבלאות עולה" וחיסול הרווח בתחתית --- */
+html, body {
+    height: 100% !important; /* נועל את גובה ה-html/body */
+}
+/* --- תיקון גובה העמוד ומניעת קריסה בלחיצה על טבלאות --- */
+html, body {
+    height: 100% !important;
+}
+
+.main-content {
+    /* מותח את התוכן על כל גובה המסך מינוס הבר העליון (שחק עם ה-100px אם צריך) */
+    min-height: calc(100vh - 100px) !important; 
+    
+    /* נועל קפיצות וגלילות פנימיות */
+    overflow-y: hidden !important; 
+    overflow-x: hidden !important;
+}
+
+.mystery-showcase-box {
+    /* נועל את הגובה מכל כיוון אפשרי שלא ימתח ולא יתכווץ */
+    height: 325px !important;
+    min-height: 325px !important; 
+    max-height: 325px !important;
+    
+    overflow: hidden !important; 
+}
+
+/* שומר על התמונה בפרופורציה בתוך המלבן החדש */
+.mystery-main-img {
+    height: 100% !important;
+    max-height: 100% !important;
+    width: auto !important;
+    object-fit: contain !important;
+}
+
+
+/* =========================================
+   תיקון 4.0 - כיווץ 5% רק לאמצע (ללא פגיעה בהדר ובטיקר)
+   ========================================= */
+
+/* 1. הגדרת כיוונים ונעילת המסך הראשי (ללא זום כאן!) */
+html { 
+    direction: ltr !important; 
+}
+body { 
+    direction: rtl !important; 
+    height: 100vh !important; /* נועל את המסך שלא תימתח גלילה כפולה */
+    overflow: hidden !important; 
+}
+
+/* 2. המעטפת של הגריד - פה אנחנו שמים את הכיווץ! */
+.site-layout {
+    direction: ltr !important; 
+    flex-grow: 1 !important; /* מבטיח שהאמצע תמיד יימתח עד לטיקר */
+    height: auto !important; 
+    overflow: hidden !important;
+    zoom: 0.95 !important; /* הנה הכיווץ - עכשיו הוא חל רק על האמצע! */
+}
+.site-layout > * {
+    direction: rtl !important;
+}
+
+/* 3. נעילת העמודות במקומן המקורי */
+.sidebar-left { order: 1 !important; }
+.main-content { order: 2 !important; }
+.sidebar-right { order: 3 !important; }
+
+/* 4. גלילה פנימית בימין לעמודות שמצריכות את זה */
+.sidebar, .main-content {
+    overflow-y: auto !important; 
+    direction: ltr !important; 
+}
+.sidebar > *, .main-content > * {
+    direction: rtl !important; 
+}
+
+/* =========================================
+   תיקון סימטריה - מירכוז מושלם של התוכן הראשי
+   ========================================= */
+.main-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important; /* מבטל את הדחיפה הלא-שוויונית */
+    padding-left: 15px !important;
+    padding-right: 15px !important; /* נותן מרווח נשימה פנימי זהה משני הצדדים */
+}
+/* =========================================
+   תיקון דפים פנימיים - דחיפת הטיקר לתחתית והחלת כיווץ 5%
+   ========================================= */
+body > .main-content,
+body > .auth-wrapper {
+    flex-grow: 1 !important; /* מתפקד כמו קפיץ שדוחף את הטיקר למטה */
+    display: flex !important;
+    flex-direction: column !important;
+    
+    zoom: 0.95 !important; /* על הדרך, מחיל את הזום היפה גם על הדפים האלו! */
+    height: auto !important;
+}
+/* =========================================
+   תיקון מיקום הטיקר (הפוטר) בכל האתר
+   ========================================= */
+.footer {
+    order: 99 !important; /* מכריח את הטיקר להיות תמיד האלמנט האחרון למטה */
+}
+
+#header-placeholder {
+    order: -1 !important; /* מוודא שההדר יישאר תמיד ראשון למעלה */
 }
