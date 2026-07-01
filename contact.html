@@ -44,33 +44,15 @@
             overflow-y: auto;
         }
 
-        /* --- כותרת פרימיום --- */
-        .premium-title-wrapper { 
-            display: flex; align-items: center; justify-content: center; 
-            margin-bottom: 30px; 
-        }
-        .page-title {
-            background: var(--bg-card); 
-            padding: 12px 50px; 
-            border-radius: 40px;
-            font-size: clamp(22px, 2.5vw, 32px); 
-            font-weight: 900; 
-            color: var(--text-white);
-            border: 1px solid var(--brand-gold);
-            box-shadow: inset 0 0 20px rgba(214, 185, 83, 0.1); 
-            text-align: center;
-        }
-        .page-title span { color: var(--brand-gold); }
-
-        /* --- ענן התוכן המרכזי --- */
+        /* --- ענן התוכן המרכזי (מוגדל וממורכז) --- */
         .contact-cloud {
             width: 100%;
-            max-width: 900px;
+            max-width: 1050px; /* הוגדל מ-900 */
             background: rgba(20, 20, 20, 0.8);
             backdrop-filter: blur(15px);
             border-radius: 25px;
             border: 1px solid var(--border-gold);
-            padding: 40px;
+            padding: 60px 50px; /* הוגדל הריווח הפנימי */
             box-shadow: 0 15px 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
@@ -78,26 +60,27 @@
         }
 
         .contact-subtitle {
-            font-size: 16px;
+            font-size: 18px; /* הוגדל מעט */
             color: var(--text-gray);
             font-weight: 500;
-            margin-bottom: 35px;
+            margin-bottom: 45px;
             text-align: center;
+            line-height: 1.5;
         }
 
         /* --- גריד קוביות הקשר --- */
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 25px; /* רווח טיפה יותר גדול בין הקוביות */
             width: 100%;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .contact-card {
             background: var(--bg-card);
             border-radius: 16px;
-            padding: 25px 15px;
+            padding: 30px 15px; /* יותר גובה לקוביות */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -118,21 +101,21 @@
         }
 
         .contact-icon {
-            width: 45px; height: 45px;
+            width: 50px; height: 50px;
             color: var(--brand-gold);
             margin-bottom: 15px;
             transition: 0.3s;
         }
         .contact-card:hover .contact-icon { transform: scale(1.15); color: var(--brand-gold-light); }
 
-        .contact-method { font-size: 18px; font-weight: 900; margin-bottom: 5px; }
-        .contact-detail { font-size: 14px; font-weight: 500; color: var(--text-gray); direction: ltr; }
+        .contact-method { font-size: 20px; font-weight: 900; margin-bottom: 5px; }
+        .contact-detail { font-size: 15px; font-weight: 500; color: var(--text-gray); direction: ltr; }
 
         /* קו הפרדה אלגנטי */
         .divider {
             width: 100%; height: 1px;
             background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
-            margin: 0 0 30px 0;
+            margin: 0 0 40px 0;
         }
 
         /* --- רשתות חברתיות ואתר נוסף --- */
@@ -151,7 +134,7 @@
         }
 
         .social-btn {
-            width: 45px; height: 45px;
+            width: 50px; height: 50px;
             border-radius: 50%;
             background: #000;
             border: 1px solid var(--border-gold);
@@ -161,19 +144,19 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         .social-btn:hover { background: var(--brand-gold); color: #000; transform: translateY(-3px); border-color: var(--brand-gold); }
-        .social-btn svg { width: 20px; height: 20px; }
+        .social-btn svg { width: 22px; height: 22px; }
 
         .business-link-card {
             background: rgba(214, 185, 83, 0.1);
             border: 1px solid var(--brand-gold);
-            padding: 12px 25px;
+            padding: 15px 30px;
             border-radius: 30px;
             display: flex;
             align-items: center;
             text-decoration: none;
             color: var(--text-white);
             transition: 0.3s;
-            min-width: 200px;
+            min-width: 220px;
         }
         .business-link-card:hover { background: var(--brand-gold); color: #000; transform: scale(1.02); }
 
@@ -195,12 +178,6 @@
         
         #ticker-placeholder { width: 100%; }
         
-        /* הערה: אם הטיקר נטען מקובץ חיצוני עם עיצוב משלו, ההגדרות האלו משמשות כגיבוי */
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #000 !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: #000; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
-
         @media (max-width: 900px) {
             .contact-grid { grid-template-columns: repeat(2, 1fr); }
             .social-section { flex-direction: column; justify-content: center; }
@@ -217,10 +194,6 @@
 
     <main class="main-content">
         
-        <div class="premium-title-wrapper">
-            <h1 class="page-title">יצירת <span>קשר</span></h1>
-        </div>
-
         <div class="contact-cloud">
             <div class="contact-subtitle">
                 יש לך שאלה? הצעה לשיתוף פעולה? או סתם בא לך לדבר על כדורגל?<br>
@@ -260,16 +233,16 @@
             <div class="social-section">
                 
                 <div class="social-links">
-                    <a href="#" target="_blank" class="social-btn" title="יוטיוב">
+                    <a href=https://www.youtube.com/@SolibiSport" target="_blank" class="social-btn" title="יוטיוב">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.54 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.54-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>
                     </a>
-                    <a href="#" target="_blank" class="social-btn" title="פייסבוק">
+                    <a href=https://www.facebook.com/profile.php?id=61590342757556" target="_blank" class="social-btn" title="פייסבוק">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
                     </a>
-                    <a href="#" target="_blank" class="social-btn" title="אינסטגרם">
+                    <a href=https://www.instagram.com/solibi_sport/" target="_blank" class="social-btn" title="אינסטגרם">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <a href="#" target="_blank" class="social-btn" title="טיקטוק">
+                    <a href=https://www.tiktok.com/@solibi_sport" target="_blank" class="social-btn" title="טיקטוק">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
                     </a>
                 </div>
@@ -294,7 +267,6 @@
     </footer>
 
     <script>
-        // טעינת ההדר
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -303,7 +275,6 @@
             })
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
 
-        // טעינת הטיקר - שואב את הקובץ החיצוני!
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {

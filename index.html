@@ -19,12 +19,14 @@
         </div>
 
         <div class="header-center">
-          <a href="login.html" class="login-btn-header">כניסה / חבר מועדון</a>
+          <div id="dynamic-auth-btn">
+    <a href="login.html" class="login-btn-header">כניסה / חבר מועדון</a>
+</div>
             <nav class="main-nav">
                <a href="index.html" class="home-btn-header">דף הבית</a>
                 <a href="about.html">אודות</a>
                 <a href="contact.html">צור קשר</a>
-                <a href="credits.html">קטלוג מוצרים</a>
+                <a href="catalog.html">קטלוג מוצרים</a>
                 <a href="cart.html">עגלה <i class="fa-solid fa-cart-shopping"></i></a>
             </nav>
         </div>
@@ -73,28 +75,6 @@
                                     <h3>מארז ילדים</h3>
                                     <p class="product-desc">בובת סוקרסטארז בקופסא מקורית, מעטפות אדרנלין, כדור לחיצה ועוד.</p>
                                     <div class="product-footer">
-                                        <span class="price">₪99</span>
-                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
-                                    </div>
-                                </div>
-
-                                <div class="product-card">
-                                    <div class="product-badge">גילאי <bdi>+14</bdi></div>
-                                    <div class="product-image"><i class="fa-solid fa-users box-icon"></i></div>
-                                    <h3>מארז קבוצה</h3>
-                                    <p class="product-desc">בובת מיניקס/פופ, קלף מדורג/ממוספר, גאדג'ט סלולר וסיכת דש של הקבוצה.</p>
-                                    <div class="product-footer">
-                                        <span class="price">₪129</span>
-                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
-                                    </div>
-                                </div>
-
-                                <div class="product-card">
-                                    <div class="product-badge">גילאי <bdi>+14</bdi></div>
-                                    <div class="product-image"><i class="fa-solid fa-user-astronaut box-icon"></i></div>
-                                    <h3>מארז שחקן</h3>
-                                    <p class="product-desc">בובת מיניקס/פופ, קלף מדורג, גאדג'ט סלולר וסיכת דש של שחקן ספציפי.</p>
-                                    <div class="product-footer">
                                         <span class="price">₪129</span>
                                         <button class="add-to-cart-btn">הוסף לעגלה</button>
                                     </div>
@@ -103,7 +83,7 @@
                                 <div class="product-card premium-gold-card">
                                     <div class="product-badge gold-badge">פרימיום</div>
                                     <div class="product-image"><i class="fa-solid fa-crown box-icon dark-icon"></i></div>
-                                    <h3>mארז פרימיום</h3>
+                                    <h3>מארז פרימיום</h3>
                                     <p class="product-desc">בובת מיניקס מקורית, מעטפת קלפים פאניני, מחזיק מפתחות מתכת יוקרתי.</p>
                                     <div class="product-footer">
                                         <span class="price">₪179</span>
@@ -114,8 +94,8 @@
                                 <div class="product-card">
                                     <div class="product-badge">גילאי <bdi>+14</bdi></div>
                                     <div class="product-image"><i class="fa-solid fa-history box-icon"></i></div>
-                                    <h3>מארז רטרו</h3>
-                                    <p class="product-desc">בובת מיניקס/פופ בקופסא, קלף מדורג/ממוספר או חתימה רטרו.</p>
+                                    <h3>מארז אימונים</h3>
+                                    <p class="product-desc">2 זוגות גרבי גריפ, סט 10 קונוסים עגולים, רצועת אימון כדורגל אלסטית, סולם קואורדינציהץ</p>
                                     <div class="product-footer">
                                         <span class="price">₪159</span>
                                         <button class="add-to-cart-btn">הוסף לעגלה</button>
@@ -190,7 +170,7 @@
                 </div>
             </div>
             
-            <span class="price-tag-large">₪49</span>
+            <span class="price-tag-large">₪79</span>
         </div>
         
     </div>
@@ -373,5 +353,6 @@
         })
         .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
 </script>
+<script type="module" src="auth.js"></script>
 </body>
 </html>

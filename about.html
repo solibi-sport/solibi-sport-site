@@ -39,32 +39,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 20px 40px 20px;
+            justify-content: center; /* מרכוז אנכי מושלם */
+            padding: 20px;
             overflow: hidden; 
         }
-
-        /* --- כותרת פרימיום --- */
-        .premium-title-wrapper { 
-            display: flex; align-items: center; justify-content: center; 
-            margin-top: 50px; 
-            margin-bottom: 35px; 
-            width: 100%;
-            flex-shrink: 0; 
-        }
-        .page-title {
-            background: var(--bg-card); 
-            padding: 12px 60px; 
-            border-radius: 40px;
-            font-size: clamp(22px, 2.5vw, 32px); 
-            font-weight: 900; 
-            color: var(--text-white);
-            border: 1px solid var(--brand-gold);
-            box-shadow: inset 0 0 20px rgba(214, 185, 83, 0.1); 
-            text-align: center;
-        }
-        
-        .title-navy { color: var(--text-white); }
-        .title-green { color: var(--brand-gold); }
 
         /* --- מעטפת הגלילה המרכזית --- */
         .about-scroll-wrapper {
@@ -208,11 +186,6 @@
         }
         
         #ticker-placeholder { width: 100%; }
-        
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #000 !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: #000; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 900px) {
             .values-grid { 
@@ -231,59 +204,51 @@
 
     <main class="main-content">
         
-        <div class="premium-title-wrapper">
-            <h1 class="page-title">
-                <span class="title-navy">אודות</span> 
-                <span class="title-green">סוליבי</span> 
-                <span class="title-navy">ספורט</span>
-            </h1>
-        </div>
-
         <div class="about-scroll-wrapper">
             <div class="about-inner-content">
                 
                 <div class="about-section">
-                    <h2 class="section-title">הסיפור שלנו</h2>
+                    <h2 class="section-title">איך הכל התחיל</h2>
                     <div class="section-text">
-                        הכל התחיל מאהבה טהורה ועמוקה לספורט בכלל, ולכדורגל בפרט. לא רק ל-90 הדקות שעל הדשא, אלא לכל היקום העשיר שמקיף את עולם הספורט והכדורגל. ממעקב הדוק אחר טבלאות הליגה וניתוח סטטיסטיקות שחקנים, דרך איסוף קלפים וצפייה אדוקה במשחקים, ועד לשעות הארוכות שהושקעו במשחקי ניהול כמו פוטבול מנג'ר ופיפ"א. האהבה הזו תמיד תורגמה גם להשתתפות בליגות פנטזי, לפתרון חידוני טריוויה, ולחיפוש מתמיד אחר הידע הבא. עבורנו, ספורט – והכדורגל בראשו – הוא לא רק תחביב, הוא דרך חיים.
+                        הכל התחיל מאהבה טהורה ועמוקה לספורט בכלל, ולכדורגל בפרט. לאורך השנים, התשוקה העזה למשחק ול-90 הדקות שעל הדשא התחברה באופן טבעי לאהבה נוספת – עולם האספנות. ההתרגשות שבפתיחת חבילת קלפים חדשה, החיפוש הבלתי פוסק אחר הפריט הנדיר והערך הנוסטלגי שכל מוצר נושא איתו, הפכו עבורי להרבה יותר מסתם תחביב. הם הפכו לדרך חיים של ממש.
                     </div>
                 </div>
 
                 <div class="about-section">
-                    <h2 class="section-title">החזון: הכל במקום אחד</h2>
+                    <h2 class="section-title">החזון: חוויה שעוד לא נראתה בישראל</h2>
                     <div class="section-text">
-                        לאורך השנים, חיפשנו פלטפורמה ישראלית אחת שתרכז את כל העולמות האלו תחת קורת גג אחת, מקום שיעניק חוויה הוליסטית ועוטפת לאוהד הכדורגל המושבע – <strong>ולא מצאנו</strong>. החסך הזה הוא שהוליד את החזון מאחורי סוליבי ספורט. החלטנו להפסיק לחפש, ולהתחיל לבנות. המטרה שלנו היא ליצור מרחב ייחודי וראשון מסוגו בישראל, שמאגד את כל התשוקות הללו לכדי פלטפורמה טכנולוגית, מקצועית ומתקדמת.
+                        כחובב אספנות מושבע, חיפשתי פלטפורמה שמבינה את הערך האמיתי של הפריטים האלו. חיפשתי מקום שמאגד את התשוקה לספורט עם סטנדרט חסר פשרות של יוקרה ואיכות – <strong>ולא מצאנו</strong>. זה היה הרגע שבו נולד החזון מאחורי סוליבי ספורט: הרצון לפתוח חנות בוטיק יוקרתית לאספנות וספורט, משהו שונה, ייחודי ואקסקלוסיבי שפשוט לא קיים בישראל. מקום שבו כל פריט נבחר בפינצטה ומציע חוויית קנייה ברמה בינלאומית.
                     </div>
                 </div>
 
                 <div class="about-section">
-                    <h2 class="section-title">הקהילה במרכז</h2>
+                    <h2 class="section-title">הסטנדרט של סוליבי</h2>
                     <div class="section-text">
-                        החזון שלנו לא מסתכם רק בנתונים, קוד וסטטיסטיקה. הלב הפועם של סוליבי ספורט הוא <strong>האנשים</strong>. אנו שואפים לבנות קהילה גדולה, פעילה ותוססת של אוהדים שחולקים את אותה התשוקה. קהילה שמתחרה יחד בליגות הפנטזי, משתתפת בפעילויות סביב המשחקים החמים, ונהנית מחוויות משותפות. אנו מאמינים בלתת בחזרה לקהל שלנו, ומתחייבים להשקיע בקהילה באמצעות תחרויות ופרסים, תוך בניית פרויקט גדול וחסר תקדים בנוף הספורט הישראלי.
+                        אנחנו כאן כדי להגדיר מחדש את תרבות האספנות בארץ. סוליבי ספורט מציעה קולקציות מוקפדות, מארזי מיסטרי ייחודיים שמרכיבים בעבודת יד, קלפים נדירים מכל העולם ופריטי אספנות המיועדים למי שמעריך איכות ללא פשרות. עבורנו, זה לא רק למכור מוצרים, אלא להעניק חוויית פרימיום כוללת, ולייצר בית חם ואקסקלוסיבי לקהילת האספנים וחובבי הספורט שמחפשים את הדבר האמיתי.
                     </div>
                 </div>
 
                 <div class="values-grid">
                     <div class="value-card">
                         <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 20v-6M6 20V10M18 20V4"></path>
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
                         </svg>
-                        <div class="value-title">דאטה וניתוח</div>
-                        <div class="value-desc">מעטפת סטטיסטית מלאה, ציוני שחקנים ונתונים חיים בזמן אמת.</div>
+                        <div class="value-title">פריטים נדירים</div>
+                        <div class="value-desc">אוסף קפדני של קלפים ומוצרי אספנות מבוקשים מכל העולם.</div>
                     </div>
                     <div class="value-card">
                         <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
                         </svg>
-                        <div class="value-title">חוויית גיימינג</div>
-                        <div class="value-desc">מערכות פנטזי מתקדמות, ניהול קבוצה וכלים אסטרטגיים.</div>
+                        <div class="value-title">חוויית בוטיק</div>
+                        <div class="value-desc">שירות יוקרתי, חבילות מיסטרי איכותיות ואריזה ברמה הגבוהה ביותר.</div>
                     </div>
                     <div class="value-card">
                         <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg>
-                        <div class="value-title">קהילה מנצחת</div>
-                        <div class="value-desc">תחרויות, ליגות משותפות, פרסים ופעילויות עשירות לקהל שלנו.</div>
+                        <div class="value-title">קהילה אקסקלוסיבית</div>
+                        <div class="value-desc">מועדון חברים לאספנים שמעריכים יוקרה וחיים את עולם הספורט.</div>
                     </div>
                 </div>
 
@@ -297,7 +262,6 @@
     </footer>
 
     <script>
-        // טעינת ההדר
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -306,7 +270,6 @@
             })
             .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
 
-        // טעינת הטיקר
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {

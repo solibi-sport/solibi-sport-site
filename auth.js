@@ -4,32 +4,26 @@ async function checkAuthAndUpdateHeader() {
     const { data: { user } } = await supabase.auth.getUser();
     
     const checkInterval = setInterval(() => {
-        const authBtn = document.getElementById('auth-btn');
-        const authText = document.getElementById('auth-text');
-        // חיפוש המקום שהכנו לברכה
-        const greetingEl = document.getElementById('user-greeting'); 
+        const authContainer = document.getElementById('dynamic-auth-btn');
         
-        if (authBtn && authText) {
-            clearInterval(checkInterval);
+        if (authContainer) {
+            clearInterval(checkInterval); 
             
             if (user) {
-                // שולפים את השם. אם אין שם מוגדר, ניקח את החלק שלפני ה-@ באימייל
-                const userName = user.user_metadata?.full_name || user.email.split('@')[0];
+                // שולפים את השם של המשתמש
+                const userName = user.user_metadata?.display_name || user.user_metadata?.full_name || user.email.split('@')[0];
                 
-                // כותבים את הברכה
-                if (greetingEl) {
-                    greetingEl.innerText = `שלום, ${userName} | `;
-                }
-
-                // משנים את הכפתור להתנתקות
-                authText.innerText = 'התנתק';
-                authBtn.href = '#';
-                
-                authBtn.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    await supabase.auth.signOut();
-                    window.location.reload();
-                });
+                // הזרקת הכפתור עם קלאסים נקיים ל-CSS
+                authContainer.innerHTML = `
+                    <a href="profile.html" class="profile-dynamic-btn">
+                        <span class="profile-btn-title">
+                            אזור אישי <i class="fa-regular fa-user" style="margin-right: 3px;"></i>
+                        </span>
+                        <span class="profile-btn-subtitle">
+                            היי, ${userName}
+                        </span>
+                    </a>
+                `;
             }
         }
     }, 100);

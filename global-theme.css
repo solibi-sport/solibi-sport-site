@@ -1104,3 +1104,105 @@ body > .auth-wrapper {
     /* החזרתי לך ל-0.95 (5% הקטנה) כי עכשיו כבר לא צריך לכווץ חזק מדי! */
     zoom: 0.95 !important; 
 }
+/* =========================================
+   סידור מבנה גלובלי - הדר, תוכן גמיש, וטיקר למטה
+   ========================================= */
+body {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    overflow: hidden !important; 
+}
+
+/* =========================================
+   תיקון פרימיום סופי - יציבות מוחלטת לכל האתר
+   ========================================= */
+
+/* 1. הגדרת בסיס אחידה לגוף האתר */
+body {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+/* 2. קביעת סדר קשיח - מונע מהרכיבים להתההפך או לקפוץ למעלה */
+#header-placeholder {
+    order: 1 !important;
+    flex-shrink: 0 !important;
+}
+
+/* התוכן המרכזי (גם של דף הבית וגם של הדפים הפנימיים) */
+.site-layout, 
+body > .main-content, 
+body > .auth-wrapper, 
+body > .profile-wrapper {
+    order: 2 !important;
+    /* הגובה המושלם שמפנה מקום מדויק להדר ולטיקר בכל האתר ומחזיר את הסיידברים למצב מושלם */
+    height: calc(100vh - 120px) !important; 
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+}
+
+/* הטיקר התחתון */
+.footer {
+    order: 3 !important;
+    flex-shrink: 0 !important;
+    height: 40px !important;
+}
+/* =========================================
+   עיצוב כפתור אזור אישי בהדר (כולל Hover ומרווח)
+   ========================================= */
+.profile-dynamic-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    border: 1px solid var(--brand-gold);
+    border-radius: 8px;
+    padding: 4px 18px;
+    text-decoration: none;
+    min-width: 90px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    
+    /* הרווח שמרחיק אותו מדף הבית כדי שייראה כמו שאר התפריט */
+    margin-left: 25px; 
+}
+
+/* עיצוב הטקסטים במצב רגיל */
+.profile-btn-title {
+    color: var(--brand-gold);
+    font-size: 14px;
+    font-weight: 900;
+    transition: color 0.3s ease;
+}
+
+.profile-btn-subtitle {
+    color: #aaa;
+    font-size: 11px;
+    font-weight: 400;
+    margin-top: 2px;
+    transition: color 0.3s ease;
+}
+
+/* =========================================
+   אפקט מעבר עכבר (Hover) - היפוך ללבן ושחור
+   ========================================= */
+.profile-dynamic-btn:hover {
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+.profile-dynamic-btn:hover .profile-btn-title {
+    color: #000;
+}
+
+.profile-dynamic-btn:hover .profile-btn-subtitle {
+    color: #000;
+    font-weight: 700; /* הופך את השם לקצת יותר בולט במעבר עכבר */
+}
