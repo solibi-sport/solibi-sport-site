@@ -1283,3 +1283,47 @@ body > .profile-wrapper {
     justify-content: space-between !important; 
     flex-direction: row-reverse !important; /* הפקודה שהופכת את הצדדים */
 }
+
+/* =========================================
+   עיצוב תגית מחיר (זהב) בקוביות המוצרים
+   ========================================= */
+.product-bottom .price, 
+.product-footer .price {
+    background-color: var(--brand-gold) !important;
+    color: #000000 !important;
+    padding: 4px 14px !important;
+    border-radius: 20px !important; /* יוצר את צורת האליפסה/עיגול */
+    font-weight: 900 !important;
+    font-size: 15px !important;
+    display: inline-block !important;
+    box-shadow: 0 4px 10px rgba(214, 185, 83, 0.2) !important; /* הילה קלה של זהב */
+}
+/* =========================================
+   עיצוב מיוחד לתגית המחיר בכרטיסיית הפרימיום (זהב/שחור)
+   ========================================= */
+.premium-gold-card .price {
+    background-color: #000000 !important; /* רקע שחור */
+    color: var(--brand-gold) !important; /* טקסט זהב */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important; /* הילה שחורה עדינה */
+}
+/* =========================================
+   עיצוב תגית מחיר (זהב) - תופס גם קטלוג וגם דף בית
+   ========================================= */
+.product-price, /* תופס את המחיר בקטלוג */
+.product-footer .price /* תופס את המחיר בדף הבית */ {
+    background-color: var(--brand-gold) !important;
+    color: #000000 !important;
+    padding: 4px 14px !important;
+    border-radius: 20px !important; /* אליפסת זהב */
+    font-weight: 900 !important;
+    font-size: 15px !important;
+    display: inline-block !important;
+    box-shadow: 0 4px 10px rgba(214, 185, 83, 0.2) !important;
+}
+
+/* שומר על הפרימיום בצבע שחור וזהב */
+.premium-gold-card .price {
+    background-color: #000000 !important;
+    color: var(--brand-gold) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
+}

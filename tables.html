@@ -38,29 +38,49 @@
             overflow: hidden; 
         }
 
-        /* === אזור מרכזי: קונטיינר גמיש === */
+        /* הפקודה שמקבעת את ההדר תמיד למעלה, מחוץ לכל שיקולי flex של העמוד */
+#header-placeholder {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important; /* מוודא שהוא תמיד יהיה מעל התוכן */
+}
+
+/* מוסיף מרווח פנימי לכל העמוד מלמעלה כדי שההדר הקבוע לא יכסה את התוכן המרכזי */
+body {
+    padding-top: 70px !important; /* בדיוק הגובה של ההדר שלך (70 פיקסלים) */
+}
+        
+        /* קיבוע הפוטר לחלק התחתון של העמוד */
+        .footer { 
+            flex-shrink: 0; 
+            width: 100%; 
+            z-index: 100; 
+        }
+
+        /* 2. הקונטיינר המרכזי שדוחף את הכל למקום הנכון */
         .inner-page-main {
             flex: 1; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center; 
-            padding: 2.5vh 20px;
+            padding: 20px;
             overflow: hidden; 
-            min-height: 0; 
+            width: 100%;
         }
 
         .content-container {
             width: 100%;
-            max-width: min(1450px, calc((100vh - 200px) * 2.6)); 
-            aspect-ratio: 2.3 / 1; 
-            height: auto; 
-            max-height: 88vh; 
-            background: rgba(20, 20, 20, 0.85); /* רקע כהה חצי שקוף */
+            max-width: 1450px; 
+            height: 100%; /* תופס בדיוק את המקום שנשאר בלי לפרוץ החוצה */
+            max-height: 85vh; 
+            background: rgba(20, 20, 20, 0.85); 
             backdrop-filter: blur(15px);
             border: 1px solid var(--border-gold);
             border-radius: 20px;
-            padding: clamp(15px, 3vh, 30px) clamp(20px, 3vw, 40px); 
+            padding: 25px clamp(20px, 3vw, 40px); 
             display: flex;
             flex-direction: column;
             overflow: hidden; 
@@ -75,7 +95,7 @@
             position: relative; 
             width: 100%;
             flex-shrink: 0;
-            margin-bottom: clamp(15px, 3vh, 35px); 
+            margin-bottom: 25px; 
         }
 
         .premium-title-wrapper {
@@ -164,7 +184,7 @@
         .league-cube {
             width: 100%;
             aspect-ratio: 1/1.05; 
-            background: var(--bg-card); /* שחור עמוק לכל קוביה */
+            background: var(--bg-card);
             border-radius: 14px;
             display: flex;
             flex-direction: column;
@@ -213,7 +233,7 @@
             box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3);
         }
 
-        /* === טקסטים דינמיים (cqi) === */
+        /* === טקסטים דינמיים === */
         .league-name {
             color: var(--text-white);
             font-size: clamp(9px, 12.5cqi, 13px); 
@@ -228,11 +248,10 @@
             display: block;
             font-size: clamp(7.5px, 9cqi, 10.5px);
             font-weight: 400;
-            color: var(--brand-gold); /* טקסט משני בזהב */
+            color: var(--brand-gold);
             margin-top: clamp(2px, 4cqi, 5px);
         }
 
-        /* תמונת הדגל הגדולה שמופיעה ברקע */
         .league-cube::before {
             content: ""; 
             position: absolute; 
@@ -251,7 +270,6 @@
         .league-cube.svg-bg::before { background-size: 60%; background-repeat: no-repeat; mix-blend-mode: normal; opacity: 0.05; }
         .league-cube.svg-bg:hover::before { opacity: 0.15; }
 
-        /* מנגנון סינון קוביות דרך JS */
         .league-cube.hidden { display: none; }
 
         /* === התאמה רספונסיבית === */
@@ -384,7 +402,9 @@
         </div>
     </main>
 
-    <div id="ticker-placeholder"></div>
+    <footer class="footer">
+        <div id="ticker-placeholder"></div>
+    </footer>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {

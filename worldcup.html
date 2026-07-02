@@ -7,8 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="translations.js"></script>
-    
-    <link rel="stylesheet" href="header-style.css">
+    <link rel="stylesheet" href="global-theme.css">
     
     <style>
         :root {
@@ -25,48 +24,90 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* =========================================
+           1. הגדרות המסך: נעול לחלוטין (בדיוק כמו בדף הטבלאות)
+           ========================================= */
         html, body {
             font-family: 'Rubik', sans-serif; 
             background: var(--wc-bg); 
-            height: 100vh; width: 100%;
-            overflow: hidden; 
-            display: flex; flex-direction: column;
             color: var(--white);
+            width: 100%;
+            height: 100vh; /* נעול לגובה המסך */
+            overflow: hidden; /* מונע גלילה כפולה החוצה */
+            display: flex;
+            flex-direction: column;
         }
 
-       /* עיצוב מפריד להדר - תואם לטיקר */
+        /* 2. הדר וטיקר: לא מתכווצים, שומרים על גובה קבוע */
         #header-placeholder { 
-            flex-shrink: 0; 
+            flex-shrink: 0;
+            width: 100%;
+            height: 70px;
             background: #061224; 
             border-bottom: 2px solid #d4af37; 
-            position: relative; 
-            z-index: 1000;
-        }
-        /* מבטל רקעים מתנגשים מהעיצוב הכללי של ההדר */
-        #header-placeholder .header {
-            background: transparent !important;
-            border-bottom: none !important;
-        }
-        
-        .main-content {
-            flex: 1; min-height: 0; 
-            display: flex; flex-direction: column;
-            width: 100%;
-            padding: clamp(15px, 2vh, 30px) 20px; 
-            overflow-y: auto;
-            overflow-x: hidden;
+            z-index: 100;
         }
 
+        .footer {
+            flex-shrink: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* 3. האזור המרכזי שבין ההדר לטיקר */
+        .main-content {
+            flex: 1; /* דוחף את הטיקר למטה ולוקח את כל האמצע */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* קריטי כדי שהגלילה תקרה רק בפנים! */
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* 4. עטיפת התוכן */
         .dashboard-wrapper {
-            width: 100%; max-width: 1600px; margin: 0 auto;
-            display: flex; flex-direction: column;
+            width: 100%; 
+            max-width: 1600px; 
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden; /* מעביר את האחריות פנימה */
         }
 
         .page-header {
-            flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
-            margin-bottom: clamp(20px, 3vh, 30px); text-align: center;
+            flex-shrink: 0; /* הכותרת תמיד נשארת במקום */
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            margin-bottom: 20px; 
+            text-align: center;
         }
 
+        /* =========================================
+           5. הקסם שלך: אזור הגלילה הפנימי בלבד!
+           ========================================= */
+        .wc-scroll-area {
+            flex: 1; /* תופס את שאר המקום מתחת לכותרת */
+            overflow-y: auto; /* מפעיל את פס הגלילה רק כאן! */
+            overflow-x: hidden;
+            padding-right: 10px;
+            padding-bottom: 20px;
+            direction: ltr; /* מעביר את פס הגלילה לימין */
+        }
+
+        .wc-scroll-area > * {
+            direction: rtl; /* מחזיר את התוכן לעברית */
+        }
+
+        /* עיצוב פס הגלילה הפנימי */
+        .wc-scroll-area::-webkit-scrollbar { width: 8px; }
+        .wc-scroll-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .wc-scroll-area::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+
+        /* =========================================
+           עיצובי התוכן (בדיוק כמו שהיו)
+           ========================================= */
         .wc-title {
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7);
             -webkit-background-clip: text;
@@ -85,25 +126,16 @@
             border: 1px solid var(--border-wc);
             display: flex; gap: 15px; align-items: center;
             backdrop-filter: blur(10px);
-            flex-wrap: wrap; justify-content: center;
         }
 
         .wc-select {
-            background: #d4af37;
-            color: var(--text-dark);
-            padding: 8px 20px 8px 40px;
-            border-radius: 30px;
-            font-size: clamp(14px, 1.5vw, 16px);
-            font-weight: 900;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            appearance: none;
+            background: #d4af37; color: var(--text-dark);
+            padding: 8px 20px 8px 40px; border-radius: 30px;
+            font-size: clamp(14px, 1.5vw, 16px); font-weight: 900;
+            border: none; outline: none; cursor: pointer; appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b1221' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat; background-position: left 15px center; background-size: 14px;
-            transition: 0.3s;
         }
-        .wc-select:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--wc-gold-glow); }
 
         .all-groups-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -116,8 +148,7 @@
             transition: 0.3s; cursor: pointer;
         }
         .mini-group-card:hover {
-            transform: translateY(-5px); background: var(--wc-card-hover);
-            border-color: #d4af37; box-shadow: 0 12px 40px var(--wc-gold-glow);
+            transform: translateY(-5px); border-color: #d4af37; background: var(--wc-card-hover);
         }
 
         .mini-group-title {
@@ -144,8 +175,8 @@
             border-radius: 20px; padding: clamp(15px, 2vw, 25px); display: flex; flex-direction: column;
         }
         
-        .sg-table-side { flex: 1.2; }
-        .sg-fixtures-side { flex: 1; }
+        .sg-table-side { flex: 1.2; transition: 0.3s; }
+        .sg-fixtures-side { flex: 1; transition: 0.3s; }
 
         .section-title {
             color: #d4af37; font-size: clamp(18px, 1.5vw, 22px); font-weight: 900;
@@ -165,25 +196,12 @@
         .match-score { font-size: 18px; font-weight: 900; color: #d4af37; letter-spacing: 2px;}
         .match-status { font-size: 10px; color: #a0aec0; font-weight: bold; margin-bottom: 2px;}
 
-        .stats-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; padding-bottom: 30px; }
+        .stats-grid { display: none; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; }
         .stat-card { background: var(--wc-card); border: 1px solid var(--border-wc); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
         .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .stat-player { display: flex; align-items: center; gap: 12px; }
         .stat-player img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);}
         .stat-value { font-weight: 900; color: #d4af37; font-size: 18px;}
-
-        /* =========================================
-           עיצוב הטיקר (מחובר לאנימציה ולצבע הזהב)
-           ========================================= */
-        .footer {
-            flex-shrink: 0; background: #061224; padding: 8px 0; border-top: 2px solid #d4af37;
-            overflow: hidden; white-space: nowrap; width: 100%; direction: ltr; position: relative; z-index: 1000;
-        }
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #ffffff !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: #d4af37; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
-        #ticker-placeholder { width: 100%; }
 
         @media (max-width: 1024px) {
             .single-group-view { flex-direction: column; }
@@ -209,55 +227,59 @@
                 </div>
             </div>
 
-            <div id="all-groups-view" class="all-groups-grid">
-                <div style="text-align:center; grid-column: 1/-1; padding: 40px; color: #d4af37;">
-                    <h2>שואב נתונים מפיפ"א... ⏳</h2>
+            <div class="wc-scroll-area">
+                
+                <div id="all-groups-view" class="all-groups-grid">
+                    <div style="text-align:center; grid-column: 1/-1; padding: 40px; color: #d4af37;">
+                        <h2>שואב נתונים מפיפ"א... ⏳</h2>
+                    </div>
                 </div>
-            </div>
 
-            <div id="single-group-view" class="single-group-view">
-                <div class="sg-table-side">
-                    <div class="section-title" id="sg-title">בית נבחר</div>
-                    <div id="sg-table-container"></div>
+                <div id="single-group-view" class="single-group-view">
+                    <div class="sg-table-side">
+                        <div class="section-title" id="sg-title">בית נבחר</div>
+                        <div id="sg-table-container"></div>
+                    </div>
+                    <div class="sg-fixtures-side">
+                        <div class="section-title">לוח משחקים ותוצאות</div>
+                        <div id="sg-fixtures-container" style="overflow-y: auto; max-height: 400px; padding-right: 5px;"></div>
+                    </div>
                 </div>
-                <div class="sg-fixtures-side">
-                    <div class="section-title">לוח משחקים ותוצאות</div>
-                    <div id="sg-fixtures-container" style="overflow-y: auto; max-height: 400px; padding-right: 5px;"></div>
+
+                <div id="stats-view" class="stats-grid">
+                    <div class="stat-card"><div class="section-title">⚽ מלך השערים</div><div id="stats-scorers">מחפש נתונים...</div></div>
+                    <div class="stat-card"><div class="section-title">👟 בישולים</div><div id="stats-assists">מחפש נתונים...</div></div>
+                    <div class="stat-card"><div class="section-title">🟨 כרטיסים צהובים</div><div id="stats-yellow">מחפש נתונים...</div></div>
+                    <div class="stat-card"><div class="section-title">🟥 כרטיסים אדומים</div><div id="stats-red">מחפש נתונים...</div></div>
                 </div>
-            </div>
 
-            <div id="stats-view" class="stats-grid">
-                <div class="stat-card"><div class="section-title">⚽ מלך השערים</div><div id="stats-scorers">מחפש נתונים...</div></div>
-                <div class="stat-card"><div class="section-title">👟 בישולים</div><div id="stats-assists">מחפש נתונים...</div></div>
-                <div class="stat-card"><div class="section-title">🟨 כרטיסים צהובים</div><div id="stats-yellow">מחפש נתונים...</div></div>
-                <div class="stat-card"><div class="section-title">🟥 כרטיסים אדומים</div><div id="stats-red">מחפש נתונים...</div></div>
-            </div>
-
-        </div>
+            </div> </div>
     </main>
 
-    <div id="ticker-placeholder"></div>
+    <footer class="footer">
+        <div id="ticker-placeholder"></div>
+    </footer>
 
     <script>
+        const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
+        const BASE_URL = 'https://v3.football.api-sports.io';
+        
         const urlParams = new URLSearchParams(window.location.search);
         const LEAGUE_ID = urlParams.get('id') || 1; 
+        
+        // הגדרת עונה 2026 
         const SEASON = urlParams.get('season') || 2026;
 
         let allGroupsData = [];
         let allFixturesData = [];
         let statsLoaded = false;
 
-       // פונקציה ששואבת נתונים ישירות מהמילון שלך (myDictionary)
         function getHebrewName(englishName) {
             if (!englishName) return "";
             const cleanName = englishName.trim();
-            
-            // בודק אם המילון שלך קיים ויש בו את המילה
             if (typeof myDictionary !== 'undefined' && myDictionary[cleanName]) {
                 return myDictionary[cleanName];
             }
-            
-            // אם לא מצא תרגום, משאיר באנגלית
             return cleanName;
         }
 
@@ -276,14 +298,18 @@
 
         async function initWorldCup() {
             try {
-                const stdRes = await fetch(`/api/football-standings?league=${LEAGUE_ID}&season=${SEASON}`);
+                const stdRes = await fetch(`${BASE_URL}/standings?league=${LEAGUE_ID}&season=${SEASON}`, {
+                    headers: { 'x-apisports-key': API_KEY }
+                });
                 const stdData = await stdRes.json();
                 
                 if (stdData.response && stdData.response.length > 0) {
                     allGroupsData = stdData.response[0].league.standings;
                 }
 
-                const fixRes = await fetch(`/api/football-fixtures?league=${LEAGUE_ID}&season=${SEASON}`);
+                const fixRes = await fetch(`${BASE_URL}/fixtures?league=${LEAGUE_ID}&season=${SEASON}`, {
+                    headers: { 'x-apisports-key': API_KEY }
+                });
                 const fixData = await fixRes.json();
                 if (fixData.response) {
                     allFixturesData = fixData.response;
@@ -294,6 +320,7 @@
 
             } catch (err) {
                 console.error("שגיאה במשיכת נתוני מונדיאל:", err);
+                document.getElementById('all-groups-view').innerHTML = '<div style="text-align:center; grid-column: 1/-1; padding: 40px; color: #ff4a4a;"><h2>שגיאה במשיכת הנתונים. נסה שוב מאוחר יותר.</h2></div>';
             }
         }
 
@@ -309,8 +336,13 @@
 
         function renderAllGroupsGrid() {
             const container = document.getElementById('all-groups-view');
-            let html = '';
+            
+            if (allGroupsData.length === 0) {
+                 container.innerHTML = '<div style="text-align:center; grid-column: 1/-1; padding: 40px; color: #a0aec0;"><h2>אין נתונים זמינים כרגע או שהמשחקים טרם נקבעו סופית.</h2></div>';
+                 return;
+            }
 
+            let html = '';
             allGroupsData.forEach((group, index) => {
                 let hebrewName = translateGroupName(group[0].group);
                 if (!hebrewName.includes("בית") || group[0].group.includes("Stage") || group.length > 4) return;
@@ -351,6 +383,10 @@
             allView.style.display = 'none';
             singleView.style.display = 'none';
             statsView.style.display = 'none';
+            
+            // איפוס עיצוב במקרה שחזרנו מנוקאאוט
+            document.querySelector('.sg-fixtures-side').style.display = 'flex';
+            document.querySelector('.sg-table-side').style.flex = '1.2';
 
             if (value === 'all') {
                 allView.style.display = 'grid';
@@ -372,7 +408,7 @@
             const renderList = (containerId, data, valKey) => {
                 let html = '';
                 if(!data || data.length === 0) {
-                    document.getElementById(containerId).innerHTML = '<div style="text-align:center; color:#a0aec0; padding: 20px;">אין נתונים זמינים כרגע.</div>';
+                    document.getElementById(containerId).innerHTML = '<div style="text-align:center; color:#a0aec0; padding: 20px;">טרם נקבעו נתונים סטטיסטיים בטורניר.</div>';
                     return;
                 }
                 data.slice(0, 10).forEach((item, idx) => {
@@ -401,12 +437,12 @@
             };
 
             try {
-                // התיקון: קריאה ל-API בנתיבים המדויקים שיש לך בשרת!
+                const reqOpts = { headers: { 'x-apisports-key': API_KEY } };
                 const [scorers, assists, yellow, red] = await Promise.all([
-                    fetch(`/api/football-players?endpoint=topscorers&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
-                    fetch(`/api/football-players?endpoint=topassists&lague=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
-                    fetch(`/api/football-players?endpoint=topyellowcards&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null),
-                    fetch(`/api/football-players?endpoint=topredcards&league=${LEAGUE_ID}&season=${SEASON}`).then(r=>r.json()).catch(()=>null)
+                    fetch(`${BASE_URL}/players/topscorers?league=${LEAGUE_ID}&season=${SEASON}`, reqOpts).then(r=>r.json()).catch(()=>null),
+                    fetch(`${BASE_URL}/players/topassists?league=${LEAGUE_ID}&season=${SEASON}`, reqOpts).then(r=>r.json()).catch(()=>null),
+                    fetch(`${BASE_URL}/players/topyellowcards?league=${LEAGUE_ID}&season=${SEASON}`, reqOpts).then(r=>r.json()).catch(()=>null),
+                    fetch(`${BASE_URL}/players/topredcards?league=${LEAGUE_ID}&season=${SEASON}`, reqOpts).then(r=>r.json()).catch(()=>null)
                 ]);
 
                 renderList('stats-scorers', scorers?.response, 'goals.total');
@@ -491,30 +527,100 @@
             document.getElementById('sg-fixtures-container').innerHTML = fixHtml;
         }
 
+        // --- שאיבת הנוקאאוט ישירות מה-API ---
         function renderKnockoutView() {
             document.getElementById('sg-title').innerText = "שלבי נוקאאוט";
-            document.getElementById('sg-table-container').innerHTML = "<div style='padding:40px; text-align:center;'>תצוגת עץ נוקאאוט תתעדכן ברגע שיקבעו העולות!</div>";
-            document.getElementById('sg-fixtures-container').innerHTML = "";
+            
+            // מעלים את צד הלוח משחקים ומותח את צד הטבלה שיתפוס את כל הרוחב
+            document.querySelector('.sg-fixtures-side').style.display = 'none';
+            document.querySelector('.sg-table-side').style.flex = '1';
+
+            // מפלטר רק את המשחקים שהם *לא* שלב בתים
+            const knockoutFixtures = allFixturesData.filter(m => {
+                let r = m.league.round || "";
+                return !r.toLowerCase().includes("group") && !r.toLowerCase().includes("regular");
+            }).sort((a, b) => a.fixture.timestamp - b.fixture.timestamp);
+
+            if (knockoutFixtures.length === 0) {
+                document.getElementById('sg-table-container').innerHTML = "<div style='padding:40px; text-align:center;'>טרם נקבעו משחקי נוקאאוט בטורניר.</div>";
+                return;
+            }
+
+            // מקבץ את המשחקים לפי שלב (שמינית, רבע וכו')
+            let roundsObj = {};
+            knockoutFixtures.forEach(m => {
+                let r = m.league.round;
+                let hebrewRound = r;
+                if(r.includes('16')) hebrewRound = 'שמינית גמר';
+                else if(r.includes('Quarter')) hebrewRound = 'רבע גמר';
+                else if(r.includes('Semi')) hebrewRound = 'חצי גמר';
+                else if(r.includes('3rd') || r.includes('Third')) hebrewRound = 'משחק על המקום השלישי';
+                else if(r.includes('Final')) hebrewRound = 'גמר מונדיאל';
+                
+                if(!roundsObj[hebrewRound]) roundsObj[hebrewRound] = [];
+                roundsObj[hebrewRound].push(m);
+            });
+
+            let html = `<div style="display: flex; flex-direction: column; gap: 30px; padding-bottom: 20px;">`;
+            
+            for (let roundName in roundsObj) {
+                html += `<div>
+                    <h3 style="color: var(--wc-gold); text-align: center; margin-bottom: 15px; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 10px;">${roundName}</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px;">`;
+                
+                roundsObj[roundName].forEach(m => {
+                    let hName = getHebrewName(m.teams.home.name);
+                    let aName = getHebrewName(m.teams.away.name);
+                    let dateObj = new Date(m.fixture.date);
+                    let dateStr = dateObj.toLocaleDateString('he-IL', {day:'2-digit', month:'2-digit'});
+                    let timeStr = dateObj.toLocaleTimeString('he-IL', {hour: '2-digit', minute:'2-digit'});
+                    let shortStatus = m.fixture.status.short;
+                    let statusDisplay = timeStr;
+                    let scoreDisplay = 'VS';
+
+                    // מציג תוצאות כולל פנדלים והארכה אם היו
+                    if (['FT', 'AET', 'PEN'].includes(shortStatus)) { 
+                        statusDisplay = 'הסתיים'; 
+                        scoreDisplay = `${m.goals.home} - ${m.goals.away}`; 
+                        if (shortStatus === 'PEN') {
+                            scoreDisplay = `${m.score.penalty.home} - ${m.score.penalty.away} (פ)`;
+                        } else if (shortStatus === 'AET') {
+                            scoreDisplay += ' (ה)';
+                        }
+                    } else if (['1H', '2H', 'HT', 'ET', 'P'].includes(shortStatus)) { 
+                        statusDisplay = `${m.fixture.status.elapsed}'`; 
+                        scoreDisplay = `${m.goals.home} - ${m.goals.away}`; 
+                    }
+
+                    let safeHome = encodeURIComponent(m.teams.home.name);
+                    let safeAway = encodeURIComponent(m.teams.away.name);
+
+                    html += `
+                    <div class="wc-match-row" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${m.fixture.id}, '${safeHome}', '${safeAway}')" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(212, 175, 55, 0.1);">
+                        <div class="match-team team-home"><span>${hName}</span><img src="${m.teams.home.logo}" style="width:28px;"></div>
+                        <div class="match-center"><span class="match-status">${dateStr} | ${statusDisplay}</span><span class="match-score" style="font-size: 16px;">${scoreDisplay}</span></div>
+                        <div class="match-team team-away"><img src="${m.teams.away.logo}" style="width:28px;"><span>${aName}</span></div>
+                    </div>`;
+                });
+                
+                html += `</div></div>`;
+            }
+            
+            html += `</div>`;
+            document.getElementById('sg-table-container').innerHTML = html;
         }
 
         initWorldCup();
 
-        // --- הטיקר מקובץ חיצוני כמו בשאר הדפים ---
-        fetch('ticker.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('ticker-placeholder').innerHTML = data;
-            })
-            .catch(error => console.error('שגיאה בטעינת הטיקר:', error));
+        fetch('ticker.html').then(response => response.text()).then(data => {
+            const placeholder = document.getElementById('ticker-placeholder');
+            if(placeholder) placeholder.innerHTML = data;
+        });
 
-        // --- טעינת ההדר ---
-        fetch('header.html')
-            .then(response => response.text())
-            .then(data => {
-                const placeholder = document.getElementById('header-placeholder');
-                if(placeholder) placeholder.innerHTML = data;
-            })
-            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+        fetch('header.html').then(response => response.text()).then(data => {
+            const placeholder = document.getElementById('header-placeholder');
+            if(placeholder) placeholder.innerHTML = data;
+        });
 
     </script>
  <script src="matchEvents.js"></script>
