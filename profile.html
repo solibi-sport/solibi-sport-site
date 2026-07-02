@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - אזור אישי</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="global-theme.css">
 
@@ -23,13 +24,15 @@
             justify-content: center;
             flex: 1;
             padding: 20px;
+            min-height: 0; /* קריטי כדי שהפלקס לא יגלוש החוצה */
         }
 
         .dashboard-container {
             display: flex;
             width: 100%;
             max-width: 1150px;
-            height: 680px;
+            height: 100%; /* לוקח את כל הגובה הזמין */
+            max-height: 680px; /* אבל לא עובר את ה-680 במסכים גדולים */
             background: rgba(20, 20, 20, 0.85);
             backdrop-filter: blur(15px);
             border-radius: 24px;
@@ -40,7 +43,7 @@
 
         /* --- סיידבר הניווט (צד ימין) --- */
         .dashboard-sidebar {
-            flex: 0.35;
+            flex: 0 0 280px; /* רוחב קבוע שלא נמעך */
             background: linear-gradient(135deg, #111 0%, #000 100%);
             border-left: 1px solid var(--border-gold);
             padding: 30px 20px;
@@ -149,7 +152,40 @@
         }
 
         /* === עיצובי פרימיום בתוך הטאבים === */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        .input-group input {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            color: #fff;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--brand-gold);
+            outline: none;
+            box-shadow: 0 0 10px rgba(214, 185, 83, 0.1);
+        }
         
         /* כרטיס חבר דיגיטלי */
         .membership-card-mockup {
@@ -198,16 +234,53 @@
         .coupon-code-badge { background: var(--bg-card); border: 1px solid #333; padding: 6px 15px; border-radius: 6px; font-family: monospace; font-weight: 900; color: var(--brand-gold); font-size: 15px; cursor: pointer; transition: 0.2s;}
         .coupon-code-badge:hover { background: #000; border-color: var(--brand-gold); }
 
-        /* כפתור שמירה קטן לעומת כפתורי ענק */
+        /* כפתור שמירה */
         .save-btn { background: var(--brand-gold); color: #000; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 900; cursor: pointer; transition: 0.3s; width: fit-content; align-self: flex-start; margin-top: 10px;}
         .save-btn:hover { background: var(--brand-gold-light); transform: translateY(-2px); }
 
+        /* =========================================
+           התאמה למחשבים ניידים (עד 1400px)
+           ========================================= */
+        @media (max-width: 1400px) {
+            .profile-wrapper {
+                padding: 10px 20px; /* 10 פיקסלים בול מלמעלה ומלמטה! */
+            }
+
+            .dashboard-container {
+                max-height: none; /* ביטול הגבלת הגובה כדי שהפלקס יעבוד חופשי */
+            }
+
+            .dashboard-sidebar {
+                flex: 0 0 220px; /* צמצום הסיידבר קצת */
+                padding: 20px 15px;
+            }
+
+            .dashboard-content-pane {
+                padding: 25px;
+            }
+
+            /* שבירת הטופס לטור אחד בלפטופים */
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .input-group input {
+                max-width: 400px;
+            }
+        }
+
+        /* =========================================
+           התאמה למובייל וטאבלטים (עד 900px)
+           ========================================= */
         @media (max-width: 900px) {
-            .dashboard-container { flex-direction: column; height: auto; max-height: 90vh; overflow-y: auto;}
-            .dashboard-sidebar { flex: none; border-left: none; border-bottom: 1px solid var(--border-gold); }
+            .dashboard-container { flex-direction: column; height: auto; max-height: none; overflow-y: auto;}
+            .dashboard-sidebar { flex: none; width: 100%; border-left: none; border-bottom: 1px solid var(--border-gold); }
             .form-grid, .wallet-flex, .coupons-grid { grid-template-columns: 1fr; flex-direction: column; }
             .credit-card-graphic { width: 100%; }
+            .profile-wrapper { overflow-y: auto; padding: 10px; display: block; }
         }
+
     </style>
 </head>
 <body>
@@ -277,7 +350,9 @@
                             <label>מספר טלפון</label>
                             <input type="tel" id="profile-phone" placeholder="הכנס מספר טלפון">
                         </div>
-                        <button class="save-btn" type="button" onclick="alert('הפרטים נשמרו בהצלחה!')">שמור שינויים</button>
+                        <div class="input-group" style="justify-content: flex-end;">
+                            <button class="save-btn" type="button" onclick="alert('הפרטים נשמרו בהצלחה!')">שמור שינויים</button>
+                        </div>
                     </form>
                 </div>
 
@@ -370,7 +445,8 @@
                             <label>סיסמה נוכחית</label>
                             <input type="password" placeholder="••••••••">
                         </div>
-                        <div></div> <div class="input-group">
+                        <div class="input-group"></div>
+                        <div class="input-group">
                             <label>סיסמה חדשה</label>
                             <input type="password" placeholder="לפחות 6 תווים">
                         </div>
@@ -378,7 +454,9 @@
                             <label>אימות סיסמה חדשה</label>
                             <input type="password" placeholder="הכנס שוב את הסיסמה">
                         </div>
-                        <button class="save-btn" type="button" onclick="alert('הסיסמה עודכנה בהצלחה!')">עדכן סיסמה</button>
+                        <div class="input-group" style="justify-content: flex-end;">
+                            <button class="save-btn" type="button" onclick="alert('הסיסמה עודכנה בהצלחה!')">עדכן סיסמה</button>
+                        </div>
                     </form>
                 </div>
 
@@ -397,15 +475,12 @@
 
         // פונקציית ה-SPA למעבר חלק בין טאבים
         function switchProfileTab(tabId) {
-            // 1. כיבוי כל הטאבים הפעילים בתפריט
             const buttons = document.querySelectorAll('.sidebar-menu-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
 
-            // 2. הסתרת כל קוביות התוכן
             const panes = document.querySelectorAll('.pane-inner');
             panes.forEach(pane => pane.classList.remove('active'));
 
-            // 3. הדלקת הכפתור שנבחר והקובייה שלו
             event.currentTarget.classList.add('active');
             document.getElementById('pane-' + tabId).classList.add('active');
         }
@@ -415,30 +490,25 @@
     <script type="module">
         import { supabase } from './supabaseClient.js';
 
-        // סקריפט זמני שמנסה למשוך את נתוני המשתמש האמיתיים
         async function loadUserProfile() {
             const { data: { user }, error } = await supabase.auth.getUser();
             if (user) {
                 const displayName = user.user_metadata?.display_name || user.email.split('@')[0];
                 
-                // עדכון השם בסיידבר, בכרטיס המועדון ובארנק
                 document.getElementById('sidebar-user-name').innerText = displayName;
                 document.getElementById('card-holder-name').innerText = displayName;
                 document.getElementById('cc-name').innerText = displayName;
                 
-                // מילוי השדות בטופס
                 document.getElementById('profile-name').value = displayName;
                 document.getElementById('profile-email').value = user.email;
                 if(user.user_metadata?.phone) {
                     document.getElementById('profile-phone').value = user.user_metadata.phone;
                 }
             } else {
-                // אם מישהו מנסה להיכנס לדף בלי להתחבר - נזרוק אותו לדף הבית/כניסה
                 window.location.href = 'login.html';
             }
         }
 
-        // פונקציית התנתקות מהחשבון
         window.handleLogout = async function() {
             if(confirm("האם אתה בטוח שברצונך להתנתק מהחשבון?")) {
                 const { error } = await supabase.auth.signOut();

@@ -75,6 +75,26 @@ ul { list-style: none; }
     gap: 15px; 
 }
 
+/* =========================================
+   אפקט ריחוף לכפתור "אזור אישי" / "כניסה" בהדר
+   ========================================= */
+#dynamic-auth-btn a:hover, 
+.login-btn-header:hover {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    transform: translateY(-3px) !important; /* אנימציית הריחוף הקטנה למעלה */
+    border-color: #ffffff !important; /* מעלים את מסגרת הזהב/שחור אם יש */
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2) !important; /* הילה לבנה עדינה להדגשה */
+    transition: all 0.3s ease !important; /* מעבר חלק ולא קופצני */
+}
+
+/* מוודא שגם האייקון של האיש והטקסט הקטן בפנים ("היי, מוטי") יהפכו לשחור */
+#dynamic-auth-btn a:hover *, 
+.login-btn-header:hover * {
+    color: #000000 !important;
+    transition: all 0.3s ease !important;
+}
+
 /* עיצוב הלוגו - קוביה שחורה עדינה */
 .site-logo {
     height: 48px; /* גובה פרופורציונלי שלא מנפח את ההדר */
@@ -1190,19 +1210,76 @@ body > .profile-wrapper {
 }
 
 /* =========================================
-   אפקט מעבר עכבר (Hover) - היפוך ללבן ושחור
+   עיצוב פסי גלילה (Scrollbars) - סופר דק וחזק על כל האתר
    ========================================= */
-.profile-dynamic-btn:hover {
-    background: #fff;
-    border-color: #fff;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+*::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
 }
 
-.profile-dynamic-btn:hover .profile-btn-title {
-    color: #000;
+*::-webkit-scrollbar-track {
+    background: transparent !important;
 }
 
-.profile-dynamic-btn:hover .profile-btn-subtitle {
-    color: #000;
-    font-weight: 700; /* הופך את השם לקצת יותר בולט במעבר עכבר */
+*::-webkit-scrollbar-thumb {
+    background: rgba(214, 185, 83, 0.4) !important;
+    border-radius: 10px !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #D6B953 !important;
+}
+
+/* =========================================
+   התאמות מיסטרי בוקס למחשבים ניידים (עד 1500px) - "דיאטת רווחים"
+   ========================================= */
+@media (max-width: 1500px) {
+    /* 1. מקצצים את הרווחים מעל המיסטרי בוקס ומתחתיו */
+    .mystery-section {
+        margin-top: 10px !important;
+        padding-top: 10px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* 2. מצמצמים את הרווח מתחת לכותרת הראשית */
+    .mystery-section .section-title {
+        margin-bottom: 10px !important;
+        font-size: 24px !important;
+    }
+
+    /* 3. מקטינים קצת את הריפוד (Padding) בתוך מלבן התוכן כדי לחסוך גובה */
+    .mystery-showcase-box {
+        padding: 15px !important;
+    }
+
+    /* 4. מסדרים את התמונה - שומרים אותה שלמה ומגבילים את הגובה שלה */
+    .mystery-image-side {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .mystery-main-img {
+        object-fit: contain !important;
+        width: 100% !important;
+        height: auto !important;
+        max-height: 220px !important; /* מבטיח שהתמונה לא תתנפח ותחתוך את עצמה */
+    }
+
+    /* 5. צמצום רווחים קל ברשימת התוכן כדי להרוויח עוד קצת מקום */
+    .mystery-lists-container {
+        gap: 10px !important;
+    }
+    
+    .mystery-list-block ul li {
+        margin-bottom: 5px !important;
+        font-size: 13px !important;
+    }
+}
+/* היפוך מיקומים במארזים (דף הבית): עגלה מימין, מחיר משמאל */
+.product-footer { 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: space-between !important; 
+    flex-direction: row-reverse !important; /* הפקודה שהופכת את הצדדים */
 }

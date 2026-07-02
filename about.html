@@ -196,6 +196,18 @@
             .about-inner-content { padding: 30px 20px; }
             html, body { overflow-y: auto; height: auto; } 
         }
+
+/* מכריח את הקובייה הנגללת לשים את פס הגלילה בימין */
+.about-container, .about-scroll-wrapper, .about-content { 
+    direction: ltr !important; 
+}
+
+/* מחזיר את כל הטקסט והתוכן שבתוך הקובייה בחזרה לעברית ולימין */
+.about-container > *, .about-scroll-wrapper > *, .about-content > * {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
     </style>
 </head>
 <body>
