@@ -7,6 +7,199 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="global-theme.css">
+    
+    <style>
+        /* =========================================
+           סמלי הריחוף של המיסטרי
+           ========================================= */
+        .mystery-icon-btn {
+            font-size: 22px; 
+            color: #a0aec0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.5); 
+            padding: 5px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mystery-icon-btn:hover {
+            color: #d4af37;
+            background: rgba(0,0,0,0.8);
+            transform: scale(1.15);
+        }
+
+        /* מודל גלובלי שמופיע באמצע המסך */
+        .global-mystery-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: #0b1221;
+            border: 2px solid #d4af37;
+            padding: 30px;
+            border-radius: 16px;
+            z-index: 999999; 
+            opacity: 0;
+            pointer-events: none; 
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            color: #fff;
+            width: 90vw;
+            max-width: 900px; 
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .global-mystery-modal.show-modal {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-text-side { flex: 1.2; }
+        .modal-img-side { flex: 1; display: flex; justify-content: center; }
+        .modal-img-side img { 
+            max-width: 100%; 
+            max-height: 400px; 
+            object-fit: contain; 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); 
+        }
+
+        /* =========================================
+           שליטה ידנית בגובה של קוביות המיסטרי בלבד!
+           ========================================= */
+        #mystery-slider .product-card {
+            min-height: auto !important;
+        }
+
+        #mystery-slider .product-image {
+            height: 76px !important; 
+            min-height: 76px !important;
+            margin-top: 0 !important;
+        }
+
+        #mystery-slider .product-image img {
+            max-height: 70px !important; 
+        }
+
+        /* =========================================
+           הפיתרון המוחלט: ביטול גלילה ויישור קו תחתון אגרסיבי
+           ========================================= */
+        @media (min-width: 1200px) {
+            /* השמדת הגלילה לחלוטין */
+            html, body {
+                height: 100vh !important;
+                overflow: hidden !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            body {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            .site-header { flex-shrink: 0 !important; }
+            .footer { flex-shrink: 0 !important; }
+
+            .site-layout {
+                flex-grow: 1 !important;
+                margin-top: 30px !important; 
+                margin-bottom: 30px !important; 
+                min-height: 0 !important;
+                display: flex !important;
+                align-items: stretch !important; /* מותח את האמצע והסיידברים לאותו קו */
+            }
+
+            .sidebar {
+                width: 320px !important; 
+                flex: 0 0 320px !important;
+                height: 100% !important;
+                margin: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            .sidebar-content {
+                flex-grow: 1 !important;
+                overflow-y: auto !important; /* גלילה פנימית לתוצאות הלייב בלבד */
+            }
+
+            .main-content {
+                flex: 1 !important;
+                padding-left: 40px !important;
+                padding-right: 40px !important;
+                max-width: calc(100% - 640px) !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important; /* זה מה שמדביק את הבאנר למעלה ואת המיסטרי למטה! */
+                min-height: 0 !important;
+                height: 100% !important;
+            }
+
+            .hero-banner {
+                margin: 0 !important;
+                padding-top: 10px !important;
+                padding-bottom: 10px !important;
+                flex-shrink: 0;
+            }
+
+            .store-section {
+                margin: 0 !important;
+                flex-shrink: 0;
+            }
+
+            /* הדבקת המיסטרי לתחתית ודריסת כל השוליים הנסתרים */
+            .mystery-section {
+                margin: 0 !important;
+                padding-top: 15px !important;
+                padding-bottom: 0 !important; /* אפס רווח תחתון לאזור */
+                flex-shrink: 0;
+            }
+
+            .mystery-section .carousel-container,
+            .mystery-section .products-carousel,
+            #mystery-slider {
+                margin-bottom: 0 !important; /* דריסת שוליים מהעיצוב הכללי */
+                padding-bottom: 0 !important; /* דריסת שוליים מהעיצוב הכללי */
+            }
+
+            #mystery-slider .product-card {
+                margin-bottom: 0 !important; /* הבעיה הייתה פה! דריסת השוליים התחתונים של הקוביות עצמן */
+                align-self: flex-end !important; /* מבטיח שהקובייה תרד הכי למטה שאפשר */
+            }
+        }
+
+/* =========================================
+           הג'ויסטיק שלך: שליטה ידנית על כל הגוש המרכזי
+           ========================================= */
+        
+        /* 1. מבטל את הפיזור האוטומטי כדי שהשליטה תהיה 100% שלך */
+        .main-content {
+            justify-content: flex-start !important; 
+        }
+
+        /* 2. זה השלט שלך: מוריד או מעלה את הכל (מהטאבים ומטה) */
+        .store-section {
+            margin-top: 67px !important; /* תגדיל את המספר כדי לדחוף את הכל למטה, תקטין כדי להעלות */
+        }
+
+        /* 3. שולט במרחק הפנימי שבין המארזים הרגילים למיסטרי בוקס */
+        .mystery-section {
+            margin-top: 30px !important; /* תגדיל או תקטין כדי לפתוח/לסגור את הרווח באמצע */
+            margin-bottom: 0 !important;
+        }
+
+        
+
+    </style>
 </head>
 <body>
 
@@ -19,9 +212,9 @@
         </div>
 
         <div class="header-center">
-          <div id="dynamic-auth-btn">
-    <a href="login.html" class="login-btn-header">כניסה / חבר מועדון</a>
-</div>
+            <div id="dynamic-auth-btn">
+                <a href="login.html" class="login-btn-header">כניסה / חבר מועדון</a>
+            </div>
             <nav class="main-nav">
                <a href="index.html" class="home-btn-header">דף הבית</a>
                 <a href="about.html">אודות</a>
@@ -132,51 +325,85 @@
                 </div>
             </section>
 
-            <section class="mystery-section">
-    <h2 class="section-title">סוליבי מיסטרי בוקס</h2>
-    <div class="mystery-showcase-box">
-        
-        <div class="mystery-image-side">
-            <img src="mystery-cards-transparent.png" alt="פריטי מיסטרי בוקס" class="mystery-main-img">
-        </div>
+            <section class="mystery-section" style="border-top: 1px solid rgba(212, 175, 55, 0.2);">                
+                <div class="packages-tabs" style="margin-bottom: 15px; justify-content: center;">                    
+                    <h2 class="package-tab active" style="cursor: default; pointer-events: none;">סוליבי מיסטרי בוקס</h2>
+                </div>
+                
+                <div class="carousel-container">
+                    <button class="carousel-arrow arrow-right" onclick="document.getElementById('mystery-slider').scrollLeft += 250">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
 
-        <div class="mystery-main-divider"></div>
+                    <div class="products-carousel" id="mystery-slider">
 
-        <div class="mystery-text-side">
-            <h3>פירוט תוכן המיסטרי</h3>
+                        <div class="product-card">
+                            <div class="product-badge gold-badge">14+</div>
+                            
+                            <div class="product-image" style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 110px; margin-top: 10px;">
+                                <div style="position: absolute; top: 0; left: 0; display: flex; gap: 8px; z-index: 10;">
+                                    <i class="fa-solid fa-circle-question mystery-icon-btn" onmouseenter="showGlobalModal('adult', 'text')" onmouseleave="hideGlobalModal()"></i>
+                                </div>
+                                <img src="8fc86687-0961-41f4-b97a-77a7c1793fff.jpg" alt="מארז מיסטרי בוגרים" style="max-width: 60%; max-height: 100px; border-radius: 8px;">
+                            </div>
+                            
+                            <h3 style="margin-top: 15px;">מיסטרי בוגרים</h3>
+                            <p class="product-desc">מארז הפתעה מטורף עם קלפים, מדבקות, ואפשרות לזכות בקלפים מדורגים וחתימות נדירות!</p>
+
+                            <div class="product-footer" style="display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; margin-top: auto !important; direction: rtl !important; flex-direction: row !important;">
+    <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
+    <span class="price" style="margin: 0 !important;">₪79</span>
+</div>
+                        </div>
+
+                        <div class="product-card">
+                            <div class="product-badge">7+</div>
+                            
+                            <div class="product-image" style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 110px; margin-top: 10px;">
+                                <div style="position: absolute; top: 0; left: 0; display: flex; gap: 8px; z-index: 10;">
+                                    <i class="fa-solid fa-circle-question mystery-icon-btn" onmouseenter="showGlobalModal('kids', 'text')" onmouseleave="hideGlobalModal()"></i>
+                                </div>
+                                <img src="8fc86687-0961-41f4-b97a-77a7c1793fff.jpg" alt="מארז מיסטרי ילדים" style="max-width: 60%; max-height: 100px; border-radius: 8px;">
+                            </div>
+                            
+                            <h3 style="margin-top: 15px;">מיסטרי ילדים</h3>
+                            <p class="product-desc">מארז מושלם ומרגש לילדים עם קלפים, מדבקות והפתעות מיוחדות לאספנים מתחילים!</p>
+
+                            <div class="product-footer" style="display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; margin-top: auto !important; direction: rtl !important; flex-direction: row !important;">
+    <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
+    <span class="price" style="margin: 0 !important;">₪49</span>
+</div>
+                        </div>
+
+                        <div class="product-card" style="opacity: 0.6;">
+                            <div class="product-image" style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 110px;">
+                                <i class="fa-solid fa-box box-icon" style="color: rgba(255,255,255,0.1); font-size: 60px;"></i>
+                            </div>
+                            <h3 style="margin-top: 15px; visibility: hidden;">ריק</h3>
+                            <p class="product-desc" style="visibility: hidden;">שורת תיאור מוצר לא קיימת עדיין</p>
+                            
+                            <div class="product-footer" style="display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; margin-top: auto !important; direction: rtl !important; flex-direction: row !important; visibility: hidden;">
+    <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
+    <span class="price" style="margin: 0 !important;">₪0</span>
+</div>
+                        </div>
+
+                    </div>
+
+                    <button class="carousel-arrow arrow-left" onclick="document.getElementById('mystery-slider').scrollLeft -= 250">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                </div>
+            </section>
             
-            <div class="mystery-lists-container">
-                <div class="mystery-list-block guaranteed-block">
-                    <h4><i class="fa-solid fa-circle-check"></i> מובטח בכל חבילה:</h4>
-                    <ul>
-                        <li>מעטפת מדבקות מקורית</li>
-                        <li>5 קלפי אדרנלין/מאצ' אטאקס</li>
-                        <li>7-10 קלפי בייס+אינסרטים</li>
-                        <li>7-10 מדבקות ממגוון אוספים</li>
-                        <li>כרטיס הגרלה שיכול לזכות בפרסים / הנחות באתר</li>
-                    </ul>
-                </div>
-                
-                <div class="mystery-internal-divider"></div>
-                
-                <div class="mystery-list-block chase-block">
-                    <h4><i class="fa-solid fa-fire"></i> לא מובטח (צ'ייס):</h4>
-                    <ul>
-                        <li>קלף מדורג PSA</li>
-                        <li>קלף ממוספר</li>
-                        <li>קלף חתימה</li>
-                        <li>מדבקות רטרו ישראלי  (מפציצים 97 / סופרגול 2000)</li>
-                    </ul>
-                </div>
+            <div id="global-mystery-box" class="global-mystery-modal">
+                <div class="modal-text-side" id="global-modal-text"></div>
+                <div class="modal-img-side" id="global-modal-img"></div>
             </div>
-            
-            <span class="price-tag-large">₪79</span>
-        </div>
-        
-    </div>
-</section>
+
         </main>
-<aside class="sidebar sidebar-left">
+        
+        <aside class="sidebar sidebar-left">
             <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-gold); padding-bottom: 10px; margin-bottom: 15px;">
                 <div style="display: flex; gap: 10px;">
                     <button id="playLiveBtn" style="display: none; background: none; border: none; color: var(--brand-gold); cursor: pointer; font-size: 16px;"><i class="fa-solid fa-play"></i></button>
@@ -202,6 +429,77 @@
         </div>
     </div>
 
+    <script>
+        const mysteryData = {
+            'adult': {
+                title: 'תוכן מיסטרי בוגרים',
+                img: 'mystery-cards-transparent.png',
+                text: `
+                    <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> מובטח בכל חבילה:</p>
+                    <ul style="margin-right: 25px; margin-bottom: 20px; color: #e2e8f0;">
+                        <li>מעטפת מדבקות מקורית</li>
+                        <li>5 קלפי אדרנלין/מאצ' אטאקס</li>
+                        <li>7-10 קלפי בייס+אינסרטים</li>
+                        <li>7-10 מדבקות ממגוון אוספים</li>
+                        <li>כרטיס הגרלה שיכול לזכות בפרסים</li>
+                    </ul>
+                    <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> לא מובטח (צ'ייס):</p>
+                    <ul style="margin-right: 25px; color: #e2e8f0;">
+                        <li>קלף מדורג PSA</li>
+                        <li>קלף ממוספר / חתימה</li>
+                        <li>מדבקות רטרו ישראלי (מפציצים / סופרגול)</li>
+                    </ul>
+                `
+            },
+            'kids': {
+                title: 'תוכן מיסטרי ילדים',
+                img: 'mystery-cards-transparent.png',
+                text: `
+                    <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> מובטח בכל חבילה:</p>
+                    <ul style="margin-right: 25px; margin-bottom: 20px; color: #e2e8f0;">
+                        <li>2 מעטפות מדבקות</li>
+                        <li>10 קלפי אדרנלין בסיסיים</li>
+                        <li>בובת מיניקס קטנה</li>
+                    </ul>
+                    <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> הפתעות מיוחדות:</p>
+                    <ul style="margin-right: 25px; color: #e2e8f0;">
+                        <li>מדבקה נוצצת נדירה</li>
+                        <li>קלף מיוחד (Limited Edition)</li>
+                    </ul>
+                `
+            }
+        };
+
+        function showGlobalModal(type, hoverType) {
+            const data = mysteryData[type];
+            const modalBox = document.getElementById('global-mystery-box');
+            
+            if (hoverType === 'image') {
+                document.getElementById('global-modal-text').style.display = 'none';
+                document.getElementById('global-modal-img').innerHTML = `<img src="${data.img}" alt="${data.title}">`;
+                modalBox.style.maxWidth = 'max-content';
+                modalBox.style.background = 'transparent';
+                modalBox.style.border = 'none';
+            } else {
+                document.getElementById('global-modal-text').style.display = 'block';
+                document.getElementById('global-modal-text').innerHTML = `
+                    <h3 style="color: #d4af37; margin-bottom: 20px; font-size: 28px;">${data.title}</h3>
+                    <div style="font-size: 16px; line-height: 1.8;">${data.text}</div>
+                `;
+                document.getElementById('global-modal-img').innerHTML = `<img src="${data.img}" alt="${data.title}">`;
+                modalBox.style.maxWidth = '900px';
+                modalBox.style.background = '#0b1221';
+                modalBox.style.border = '2px solid #d4af37';
+            }
+            
+            modalBox.classList.add('show-modal');
+        }
+
+        function hideGlobalModal() {
+            document.getElementById('global-mystery-box').classList.remove('show-modal');
+        }
+    </script>
+
     <script src="matchEvents.js"></script>
     <script>
         const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
@@ -210,7 +508,6 @@
         let liveScrollInterval;
         let isLiveScrollingPaused = false;
         
-        // הזיכרון הגלובלי של המערכת לבדיקת שערים חדשים
         window.matchGoalTracker = window.matchGoalTracker || {}; 
 
         function startLiveScroll() {
@@ -221,9 +518,7 @@
             
             liveScrollInterval = setInterval(() => {
                 if (isLiveScrollingPaused) return;
-                
                 container.scrollTop += 1;
-                
                 if (Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight) {
                     container.scrollTop = 0;
                 }
@@ -245,7 +540,6 @@
                 if (data.response && data.response.length > 0) {
                     const prevScroll = container.scrollTop; 
                     container.innerHTML = ''; 
-                    
                     const matches = data.response.slice(0, 15); 
                     
                     matches.forEach(match => {
@@ -254,19 +548,15 @@
                         const aGoals = match.goals.away !== null ? match.goals.away : 0;
                         const totalGoalsNow = hGoals + aGoals;
 
-                        // מערכת זיהוי השערים
                         if (window.matchGoalTracker[fixtureId] !== undefined) {
                             if (totalGoalsNow > window.matchGoalTracker[fixtureId].totalGoals) {
-                                // גול חדש זוהה! שומרים את הזמן המדויק
                                 window.matchGoalTracker[fixtureId].goalTime = Date.now();
                             }
                         } else {
                             window.matchGoalTracker[fixtureId] = { goalTime: 0 };
                         }
-                        // מעדכנים את הזיכרון לתוצאה הנוכחית
                         window.matchGoalTracker[fixtureId].totalGoals = totalGoalsNow;
 
-                        // בודקים אם עברו פחות מ-30 שניות (30000 מילישניות) מאז הגול
                         let isRecentGoal = (Date.now() - window.matchGoalTracker[fixtureId].goalTime) < 30000;
                         let goalHtml = isRecentGoal ? '<div class="sidebar-goal-flash">שער!</div>' : '';
 
@@ -330,21 +620,15 @@
     </script>
     <script>
     function switchPackage(type) {
-        // מסיר את הסימון (active) משני הטאבים
         document.getElementById('tab-ready').classList.remove('active');
         document.getElementById('tab-custom').classList.remove('active');
-        
-        // מסתיר את שתי התצוגות
         document.getElementById('view-ready').classList.remove('active-view');
         document.getElementById('view-custom').classList.remove('active-view');
-        
-        // מדליק רק את הטאב והתצוגה שלחצו עליהם
         document.getElementById('tab-' + type).classList.add('active');
         document.getElementById('view-' + type).classList.add('active-view');
     }
-</script>
+    </script>
     <script>
-    // טעינת הטיקר מתוך הקובץ החיצוני
     fetch('ticker.html')
         .then(response => response.text())
         .then(data => {
@@ -352,7 +636,8 @@
             if(placeholder) placeholder.innerHTML = data;
         })
         .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
-</script>
+    </script>
+
 <script type="module" src="auth.js"></script>
 </body>
 </html>

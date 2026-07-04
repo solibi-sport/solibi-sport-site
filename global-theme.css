@@ -1327,3 +1327,38 @@ body > .profile-wrapper {
     color: var(--brand-gold) !important;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
 }
+/* עיצוב טאבים של סקשן המיסטרי - מוקטן ולבן */
+.mystery-tabs-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.mystery-tab {
+    color: #a0aec0; /* אפור ללא פעיל */
+    cursor: pointer;
+    font-size: 18px; /* מוקטן כמו הטאבים העליונים */
+    font-weight: 500; /* פחות מודגש */
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.mystery-tab:hover {
+    color: #fff;
+}
+
+.mystery-tab.active {
+    color: #fff; /* צבע לבן לטאב פעיל */
+    border-bottom: 2px solid #fff; /* פס לבן תחתון */
+}
+
+.mystery-panel {
+    animation: fadeInMystery 0.4s ease-in-out;
+}
+
+@keyframes fadeInMystery {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
