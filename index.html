@@ -119,8 +119,8 @@
             }
 
             .sidebar {
-                width: 320px !important; 
-                flex: 0 0 320px !important;
+                width: 355px !important; /* הוגדל מ-340 ל-355 */
+                flex: 0 0 350px !important; /* הוגדל מ-340 ל-355 */
                 height: 100% !important;
                 margin: 0 !important;
                 display: flex !important;
@@ -129,19 +129,20 @@
 
             .sidebar-content {
                 flex-grow: 1 !important;
-                overflow-y: auto !important; /* גלילה פנימית לתוצאות הלייב בלבד */
+                overflow-y: auto !important;
             }
 
             .main-content {
                 flex: 1 !important;
                 padding-left: 40px !important;
                 padding-right: 40px !important;
-                max-width: calc(100% - 640px) !important;
+                max-width: calc(100% - 710px) !important; /* עודכן מ-680 ל-710 (355 פיקסלים כפול 2 סיידברים) */
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: space-between !important; /* זה מה שמדביק את הבאנר למעלה ואת המיסטרי למטה! */
+                justify-content: flex-start !important; 
                 min-height: 0 !important;
                 height: 100% !important;
+                overflow-y: auto !important; 
             }
 
             .hero-banner {
@@ -214,12 +215,12 @@
         /* =========================================
            סליידר קבוצות מוצרים - גרסת ריבועים גדולים ותוויות פרימיום
            ========================================= */
-        .sidebar-slider {
+       .sidebar-slider {
             position: relative;
             width: 100%;
-            height: 880px; /* הגדלנו עוד את הגובה כדי לתת לריבועים הגדולים מקום לנשום */
+            height: 830px; /* התאמנו לגובה החדש כדי להכיל את התוספת בלי שייחתך למטה */
             overflow: hidden;
-            padding-top: 10px; /* נותן מרווח קטן מלמעלה כדי שהתווית לא תיחתך */
+            padding-top: 10px;
         }
 
         .sidebar-slide {
@@ -229,9 +230,9 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 20px; /* מרווח גדול ומכובד יותר בין הריבועים */
+            gap: 22px; /* חזרנו לרווח המקורי והטוב */
             
-            /* אנימציית קבוצה */
+            /* האנימציה נשארת אותו דבר */
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
@@ -244,16 +245,15 @@
             pointer-events: auto;
         }
 
-        /* הריבוע הראשי של המוצר - הוגדל משמעותית */
         .mini-product-card {
-            position: relative; /* חובה בשביל מיקום התווית */
+            position: relative;
             display: flex;
             align-items: center; 
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(212, 175, 55, 0.15);
-            border-radius: 14px; /* פינות קצת יותר מעוגלות ויפות */
-            padding: 16px 18px; /* ריפוד פנימי גדול יותר - עושה את הריבוע שמנמן ויוקרתי */
-            gap: 18px; /* רווח גדול יותר בין התמונה לטקסט */
+            border-radius: 14px;
+            padding: 26px 18px; /* הוספנו עוד 2 פיקסלים עדינים למעלה ולמטה */
+            gap: 18px;
             transition: all 0.3s ease;
         }
 
@@ -337,6 +337,32 @@
         .sidebar-content::-webkit-scrollbar {
             display: none; /* לכרום, ספארי ואדג' החדש */
         }
+        
+        /* =========================================
+           אפקט הבהוב זהוב למוצרים (Highlight Glow)
+           ========================================= */
+        @keyframes goldGlow {
+            0% { 
+                box-shadow: 0 0 0 rgba(212, 175, 55, 0); 
+                border-color: rgba(212, 175, 55, 0.2); 
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(212, 175, 55, 0.9); 
+                border-color: #d4af37; 
+                transform: scale(1.03); 
+            }
+            100% { 
+                box-shadow: 0 0 0 rgba(212, 175, 55, 0); 
+                border-color: rgba(212, 175, 55, 0.2); 
+                transform: scale(1); 
+            }
+        }
+
+        .highlight-glow {
+            animation: goldGlow 1.5s ease-out;
+            z-index: 50; /* מקפיץ את המוצר מעל השאר בזמן ההבהוב */
+            position: relative;
+        }
 
     </style>
 </head>
@@ -379,8 +405,7 @@
                 <div class="sidebar-slider">
                     
                     <div class="sidebar-slide active">
-                        
-                        <div class="mini-product-card">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-soccerwe')">
                             <div class="mini-badge hot-badge">מוצר חם <i class="fa-solid fa-fire"></i></div>
                             <img src="images/soccerwe-mistery-pack.jpg.png" alt="מארז הפתעה soccerwe">
                             <div class="mini-info">
@@ -390,91 +415,109 @@
                             </div>
                         </div>
                         
-<div class="mini-product-card">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-squeeze-ball')">                            
                             <img src="images/button-decompression-ball.jpg.png" alt="כדור לחיץ נבחרות">
                             <div class="mini-info">
                                 <h4>כדור לחיץ נבחרות</h4>
                                 <p class="mini-desc">מחזיק מפתחות כדורגל גמיש ולחיץ להפגת מתחים לכל גיל.</p>
-                                <span class="mini-price">₪29</span>
+                                <span class="mini-price">₪25</span>
                             </div>
                         </div>
 
-                        <div class="mini-product-card">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-hover-ball')">                            
                             <img src="images/hover-ball.jpg.png" alt="כדור לד מרחף">
                             <div class="mini-info">
                                 <h4>כדור לד מרחף</h4>
                                 <p class="mini-desc">כדורגל רחפת עם תאורת לד צבעונית למשחק בטוח בתוך הבית.</p>
-                                <span class="mini-price">₪29</span>
+                                <span class="mini-price">₪25</span>
                             </div>
                         </div>
         
-                        <div class="mini-product-card">
-                            <img src="images/agiliti-ladder.jpg.png" alt="מוצר רביעי">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-agility-ladder')">                            
+                            <img src="images/agiliti-ladder.jpg.png" alt="סולם זריזות">
                             <div class="mini-info">
                                 <h4>סולם זריזות</h4>
-                                <p class="mini-desc">מסלול רצועות ושלבים גמישים המונח על הרצפה, המיועד לתרגול צעדים מהירים, קורדינציה ומהירות רגליים.</p>
+                                <p class="mini-desc">מסלול רצועות ושלבים גמישים המונח על הרצפה, המיועד לתרגול צעדים מהירים.</p>
                                 <span class="mini-price">₪49</span>
                             </div>
                         </div>
 
-                        <div class="mini-product-card">
-                            <img src="images/soccer-bubble-belt.jpg.png" alt="מוצר חמישי">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-training-belt')">                            
+                            <img src="images/soccer-bubble-belt.jpg.png" alt="חגורת אימון">
                             <div class="mini-info">
-                                <h4>חגורת אימון כדורגל אישי</h4>
-                                <p class="mini-desc">רצועה אלסטית המחברת בין המותן לכדור ומאפשרת לתרגל בעיטות ושליטה ברצף בלי לרוץ אחריו.</p>
+                                <h4>חגורת אימון כדורגל</h4>
+                                <p class="mini-desc">רצועה אלסטית המחברת בין המותן לכדור ומאפשרת לתרגל בעיטות ושליטה ברצף.</p>
                                 <span class="mini-price">₪39</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="sidebar-slide">
-                        
-                        <div class="mini-product-card">
-                            <img src="images/sport-training-cones.jpg.png" alt="מוצר שישי">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-cones')">
+                            <img src="images/sport-training-cones.jpg.png" alt="כיפות סימון">
                             <div class="mini-info">
-                                <h4>סט 10 קונוסים-כיפות סימון</h4>
+                                <h4>סט 10 כיפות סימון</h4>
                                 <p class="mini-desc">מוצר בסיסי וחיוני לסימון גבולות מגרש, יצירת מסלולי סלאלום ותרגול זריזות.</p>
                                 <span class="mini-price">₪29</span>
                             </div>
                         </div>
 
-                        <div class="mini-product-card">
-                            <img src="images/grip-sock.jpg.png" alt="מוצר שביעי">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-grip-socks')">
+                            <img src="images/grip-sock.jpg.png" alt="גרבי גריפ">
                             <div class="mini-info">
                                 <h4>זוג גרבי גריפ</h4>
-                                <p class="mini-desc">גרבי ספורט עם כריות סיליקון בתחתית המונעות החלקה בתוך הנעל ומגבירות את היציבות והאחיזה בזמן שינויי כיוון.</p>
-                                <span class="mini-price">₪69</span>
+                                <p class="mini-desc">גרבי ספורט עם כריות סיליקון בתחתית המונעות החלקה בתוך הנעל.</p>
+                                <span class="mini-price">₪29</span>
                             </div>
                         </div>
 
-                        <div class="mini-product-card">
-                            <img src="images/שם-תמונה-8.png" alt="מוצר שמיני">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-ucl-pack-2010')">
+                            <img src="images/pack-ucl-2010.jpg" alt="מעטפת ליגת האלופות 2010/2011">
                             <div class="mini-info">
-                                <h4>שם המוצר השמיני</h4>
-                                <p class="mini-desc">כאן כותבים תיאור קצר וקולע של המוצר השמיני שלך בסיידבר.</p>
+                                <h4>מעטפת צ'מפיונס 10/11</h4>
+                                <p class="mini-desc">מעטפת פאניני מקורית ונדירה מעונת 2010/2011 נוסטלגיה אמיתית.</p>
+                                <span class="mini-price">₪7</span>
+                            </div>
+                        </div>
+
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-funko-xavi')">
+                            <img src="images/funko-pop-xavi-coach.jpg.png" alt="פונקו פופ צ'אבי">
+                            <div class="mini-info">
+                                <h4>פונקו פופ צ'אבי</h4>
+                                <p class="mini-desc">בובת Pop Funko רשמית של צ'אבי כמאמן ברצלונה.</p>
                                 <span class="mini-price">₪79</span>
                             </div>
                         </div>
 
-                        <div class="mini-product-card">
-                            <img src="images/שם-תמונה-9.png" alt="מוצר תשיעי">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-national-coins')">
+                            <img src="images/coins-national.jpg" alt="מטבעות נבחרות">
                             <div class="mini-info">
-                                <h4>שם המוצר התשיעי</h4>
-                                <p class="mini-desc">כאן כותבים תיאור קצר וקולע של המוצר התשיעי שלך בסיידבר.</p>
-                                <span class="mini-price">₪89</span>
+                                <h4>מטבעות נבחרות</h4>
+                                <p class="mini-desc">מטבעות אספנות מהודרים עם דגלי הנבחרות.</p>
+                                <span class="mini-price">₪20</span>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <div class="sidebar-slide">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-national-bracelets')">
+                            <img src="images/bracelets-national.jpg" alt="צמידי נבחרות">
+                            <div class="mini-info">
+                                <h4>צמידי נבחרות</h4>
+                                <p class="mini-desc">צמידי סיליקון ומתכת בעיצוב דגלי מדינות, מתכווננים ונוחים.</p>
+                                <span class="mini-price">₪15</span>
                             </div>
                         </div>
 
-                        <div class="mini-product-card">
-                            <img src="images/שם-תמונה-10.png" alt="מוצר עשירי">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-metal-keychain')">
+                            <img src="images/keychain-shoe.jpg.png" alt="מחזיק מפתחות מתכתי">
                             <div class="mini-info">
-                                <h4>שם המוצר העשירי</h4>
-                                <p class="mini-desc">כאן כותבים תיאור קצר וקולע של המוצר העשירי שלך בסיידבר.</p>
-                                <span class="mini-price">₪99</span>
+                                <h4>מחזיק מפתחות מתכתי</h4>
+                                <p class="mini-desc">מחזיק מפתחות יוקרתי וחזק בצורת נעל כדורגל וכדור.</p>
+                                <span class="mini-price">₪10</span>
                             </div>
                         </div>
-
-                    </div>
+                    </div> 
 
                 </div>
             </div>
@@ -878,23 +921,58 @@
 <script type="module" src="auth.js"></script>
 <script>
         let currentSlide = 0;
+        let sidebarInterval; // משתנה שישמור את הזמן
 
         function rotateSidebar() {
             const slides = document.querySelectorAll('.sidebar-slide');
             if (slides.length <= 1) return;
 
-            // הסרת המצב הפעיל מהקבוצה הנוכחית
             slides[currentSlide].classList.remove('active');
-            
-            // מעבר לקבוצה הבאה (או חזרה לראשונה)
             currentSlide = (currentSlide + 1) % slides.length;
-            
-            // הפעלת הקבוצה החדשה
             slides[currentSlide].classList.add('active');
         }
 
-        // הפעלה אוטומטית כל 5 שניות
-        setInterval(rotateSidebar, 15000);
+        // פונקציה שמתחילה את הטיימר (13 שניות)
+        function startSidebarTimer() {
+            sidebarInterval = setInterval(rotateSidebar, 10000);
+        }
+
+        // הפעלה ראשונית כשהאתר נטען
+        startSidebarTimer();
+
+        // =========================================
+        // מנגנון עצירה חכמה בזמן ריחוף עכבר (Hover)
+        // =========================================
+        const sidebarSliderArea = document.querySelector('.sidebar-right .sidebar-slider');
+
+        // כשהעכבר נכנס לקוביות - עוצרים את הזמן
+        sidebarSliderArea.addEventListener('mouseenter', () => {
+            clearInterval(sidebarInterval);
+        });
+
+        // כשהעכבר יוצא החוצה - מתחילים את הזמן מחדש
+        sidebarSliderArea.addEventListener('mouseleave', () => {
+            startSidebarTimer();
+        });
+
+        // =========================================
+        // מנגנון העברה חכמה מהסיידבר לדף הקטלוג
+        // =========================================
+        function scrollToProduct(productId) {
+            // אם אנחנו כבר נמצאים בתוך דף הקטלוג
+            if (window.location.pathname.includes('catalog.html')) {
+                const productElement = document.getElementById(productId);
+                if (productElement) {
+                    productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    productElement.classList.add('highlight-glow');
+                    setTimeout(() => productElement.classList.remove('highlight-glow'), 1500);
+                }
+            } else {
+                // אם אנחנו בדף הבית, נעביר את הגולש לדף הקטלוג יחד עם המזהה של המוצר בכתובת (Hash)
+                window.location.href = 'catalog.html#' + productId;
+            }
+        }
+
     </script>
 </body>
 </html>

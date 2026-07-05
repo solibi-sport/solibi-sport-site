@@ -304,6 +304,18 @@
     flex-direction: row-reverse !important; /* זה מה שעושה את הקסם */
 }
 
+/* אפקט הבהוב זהוב למוצר שנבחר מהסיידבר */
+        @keyframes goldGlow {
+            0% { box-shadow: 0 0 0 rgba(212, 175, 55, 0); border-color: rgba(212, 175, 55, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.9); border-color: #d4af37; transform: scale(1.03); }
+            100% { box-shadow: 0 0 0 rgba(212, 175, 55, 0); border-color: rgba(212, 175, 55, 0.2); transform: scale(1); }
+        }
+        .highlight-glow {
+            animation: goldGlow 1.5s ease-out;
+            z-index: 50;
+            position: relative;
+        }
+
     </style>
 </head>
 <body>
@@ -329,6 +341,7 @@
                     <button class="sub-btn" onclick="filterSub('figures', 'minix', this)">Minix</button>
                     <button class="sub-btn" onclick="filterSub('figures', 'pop', this)">Pop Funko</button>
                     <button class="sub-btn" onclick="filterSub('figures', 'soccerstarz', this)">SoccerStarz</button>
+                    <button class="sub-btn" onclick="filterSub('figures', 'soccerwe', this)">Soccerwe</button>
                 </div>
             </div>
 
@@ -351,6 +364,8 @@
                 <div class="sub-tabs" id="sub-training">
                     <button class="sub-btn" onclick="filterSub('training', 'fitness', this)">כושר</button>
                     <button class="sub-btn" onclick="filterSub('training', 'coordination', this)">קואורדינציה</button>
+                    <button class="sub-btn" onclick="filterSub('training', 'clothing', this)">לבוש</button>
+                    
                 </div>
             </div>
 
@@ -375,58 +390,129 @@
                         <i class="fa-solid fa-box-open" style="font-size: 32px; display: block; margin-bottom: 10px; opacity: 0.3;"></i>
                         לא נמצאו מוצרים בקטגוריה זו.
                     </div>
-
-                    <div class="product-card" data-category="figures" data-sub="pop">
-                        <span class="product-badge">HOT</span>
-                        <div class="product-img-wrapper">
-                            <i class="fa-solid fa-user-astronaut placeholder-icon"></i>
+                    
+                    <div class="product-card" id="prod-soccerwe" data-category="figures" data-sub="soccerwe">
+                        <span class="product-badge" style="background: #ff4a4a; color: #fff; border: none;">חם</span>
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/soccerwe-mistery-pack.jpg.png" alt="מארז הפתעה soccerwe" style="display: block; width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat">בובות אספנות - Pop Funko</span>
-                            <div class="product-title">פונקו פופ רונאלדו מהדורה מוגבלת</div>
+                            <span class="product-cat" style="margin-bottom: 2px;">בובות אספנות - Soccerwe</span>
+                            <div class="product-title" style="margin-bottom: 6px;">מארז הפתעה soccerwe</div>
                             <div class="product-bottom">
-                                <span class="product-price">149 ₪</span>
+                                <span class="product-price">25 ₪</span>
                                 <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="product-card" data-category="cards" data-sub="boxes">
-                        <span class="product-badge">חדש</span>
-                        <div class="product-img-wrapper">
-                            <i class="fa-solid fa-box-archive placeholder-icon"></i>
+                    <div class="product-card" id="prod-squeeze-ball" data-category="more" data-sub="none">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/button-decompression-ball.jpg.png" alt="כדור לחיץ" style="display: block; width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat">קלפים ומדבקות - קופסאות</span>
-                            <div class="product-title">מארז פרימיום ליגת האלופות 2026</div>
+                            <span class="product-cat" style="margin-bottom: 2px;">מוצרים נוספים</span>
+                            <div class="product-title" style="margin-bottom: 6px;">כדור לחיץ נבחרות</div>
                             <div class="product-bottom">
-                                <span class="product-price">199 ₪</span>
+                                <span class="product-price">25 ₪</span>
                                 <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="product-card" data-category="cards" data-sub="packs">
-                        <div class="product-img-wrapper">
-                            <i class="fa-solid fa-envelope placeholder-icon"></i>
+                    <div class="product-card" id="prod-hover-ball" data-category="toys" data-sub="none">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/hover-ball.jpg.png" alt="כדור מרחף" style="display: block; width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat">קלפים ומדבקות - מעטפות</span>
-                            <div class="product-title">מעטפת בוסטר פרמייר ליג מיוחדת</div>
+                            <span class="product-cat" style="margin-bottom: 2px;">צעצועים</span>
+                            <div class="product-title" style="margin-bottom: 6px;">כדור לד מרחף</div>
                             <div class="product-bottom">
-                                <span class="product-price">35 ₪</span>
+                                <span class="product-price">25 ₪</span>
                                 <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="product-card" data-category="training" data-sub="fitness">
-                        <div class="product-img-wrapper">
-                            <i class="fa-solid fa-dumbbell placeholder-icon"></i>
+                    <div class="product-card" id="prod-agility-ladder" data-category="training" data-sub="coordination">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/agiliti-ladder.jpg.png" alt="סולם זריזות" style="display: block; width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat">מוצרי אימונים - כושר</span>
-                            <div class="product-title">סט גומיות התנגדות מקצועי</div>
+                            <span class="product-cat" style="margin-bottom: 2px;">אימונים - קואורדינציה</span>
+                            <div class="product-title" style="margin-bottom: 6px;">סולם זריזות</div>
+                            <div class="product-bottom">
+                                <span class="product-price">49 ₪</span>
+                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" id="prod-training-belt" data-category="training" data-sub="coordination">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/soccer-bubble-belt.jpg.png" alt="חגורת אימון" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-cat" style="margin-bottom: 2px;">אימונים - קואורדינציה</span>
+                            <div class="product-title" style="margin-bottom: 6px;">חגורת אימון כדורגל אישי</div>
+                            <div class="product-bottom">
+                                <span class="product-price">39 ₪</span>
+                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" id="prod-cones" data-category="training" data-sub="coordination">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/sport-training-cones.jpg.png" alt="כיפות סימון" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-cat" style="margin-bottom: 2px;">אימונים - קואורדינציה</span>
+                            <div class="product-title" style="margin-bottom: 6px;">סט 10 כיפות סימון</div>
+                            <div class="product-bottom">
+                                <span class="product-price">29 ₪</span>
+                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" id="prod-grip-socks" data-category="training" data-sub="clothing">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/grip-sock.jpg.png" alt="גרבי גריפ" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-cat" style="margin-bottom: 2px;">מוצרי אימונים - לבוש</span>
+                            <div class="product-title" style="margin-bottom: 6px;">זוג גרבי גריפ</div>
+                            <div class="product-bottom">
+                                <span class="product-price">29 ₪</span>
+                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" id="prod-ucl-pack-2010" data-category="cards" data-sub="packs">
+                        <span class="product-badge" style="background: #d4af37; color: #000; border: none;">נדיר</span>
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/pack-ucl-2010.jpg" alt="מעטפת ליגת האלופות 2010/2011" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-cat" style="margin-bottom: 2px;">קלפים ומדבקות - מעטפות</span>
+                            <div class="product-title" style="margin-bottom: 6px;">מעטפת ליגת האלופות 10/11</div>
+                            <div class="product-bottom">
+                                <span class="product-price">25 ₪</span>
+                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" id="prod-funko-xavi" data-category="figures" data-sub="pop">
+                        <span class="product-badge" style="background: #ff4a4a; color: #fff; border: none;">חם</span>
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/funko-pop-xavi-coach.jpg.png" alt="פונקו פופ צ'אבי" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-cat" style="margin-bottom: 2px;">בובות אספנות - Pop Funko</span>
+                            <div class="product-title" style="margin-bottom: 6px;">פונקו פופ צ'אבי מאמן</div>
                             <div class="product-bottom">
                                 <span class="product-price">89 ₪</span>
                                 <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
@@ -434,29 +520,43 @@
                         </div>
                     </div>
 
-                    <div class="product-card" data-category="toys" data-sub="none">
-                        <div class="product-img-wrapper">
-                            <i class="fa-solid fa-gamepad placeholder-icon"></i>
+                    <div class="product-card" id="prod-national-coins" data-category="more" data-sub="none">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/coins-national.jpg" alt="מטבעות נבחרות" style="display: block; width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat">צעצועים</span>
-                            <div class="product-title">שולחן כדורגל מעץ בוטיק לסלון</div>
+                            <span class="product-cat" style="margin-bottom: 2px;">מוצרים נוספים</span>
+                            <div class="product-title" style="margin-bottom: 6px;">מטבעות אספנות נבחרות</div>
                             <div class="product-bottom">
-                                <span class="product-price">349 ₪</span>
+                                <span class="product-price">15 ₪</span>
                                 <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="product-card" data-category="figures" data-sub="minix">
-                        <div class="product-img-wrapper">
-                            <i class="fa-solid fa-user-astronaut placeholder-icon"></i>
+                    <div class="product-card" id="prod-national-bracelets" data-category="more" data-sub="none">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/bracelets-national.jpg" alt="צמידי נבחרות" style="display: block; width: 100%; height: 100%; object-fit: contain;">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat">בובות אספנות - Minix</span>
-                            <div class="product-title">בובת מיניקס מסי קולקשן</div>
+                            <span class="product-cat" style="margin-bottom: 2px;">מוצרים נוספים</span>
+                            <div class="product-title" style="margin-bottom: 6px;">צמידי סיליקון נבחרות</div>
                             <div class="product-bottom">
-                                <span class="product-price">99 ₪</span>
+                                <span class="product-price">20 ₪</span>
+                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" id="prod-metal-keychain" data-category="more" data-sub="none">
+                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
+                            <img src="images/keychain-shoe.jpg.png" alt="מחזיק מפתחות מתכתי" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-cat" style="margin-bottom: 2px;">מוצרים נוספים</span>
+                            <div class="product-title" style="margin-bottom: 6px;">מחזיק מפתחות נעל וכדור</div>
+                            <div class="product-bottom">
+                                <span class="product-price">29 ₪</span>
                                 <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
@@ -543,5 +643,28 @@
     </script>
     <script src="search.js"></script>
     <script type="module" src="auth.js"></script>
+    <script>
+        // ברגע שדף הקטלוג מסיים להיטען
+        document.addEventListener('DOMContentLoaded', () => {
+            // בודק אם יש מזהה של מוצר בכתובת האתר (למשל catalog.html#prod-soccerwe)
+            if (window.location.hash) {
+                const productId = window.location.hash.substring(1); // מנקה את הסימן #
+                
+                // מחכים שבריר שנייה שהדף יתרנדר לגמרי, ואז גוללים
+                setTimeout(() => {
+                    const productElement = document.getElementById(productId);
+                    if (productElement) {
+                        productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        productElement.classList.add('highlight-glow');
+                        
+                        // מנקה את האפקט אחרי שנייה וחצי
+                        setTimeout(() => {
+                            productElement.classList.remove('highlight-glow');
+                        }, 1500);
+                    }
+                }, 300);
+            }
+        });
+    </script>
 </body>
 </html>
