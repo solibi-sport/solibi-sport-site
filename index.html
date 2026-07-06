@@ -189,7 +189,7 @@
 
         /* 2. זה השלט שלך: מוריד או מעלה את הכל (מהטאבים ומטה) */
         .store-section {
-            margin-top: 67px !important; /* תגדיל את המספר כדי לדחוף את הכל למטה, תקטין כדי להעלות */
+            margin-top: 35px !important; /* תגדיל את המספר כדי לדחוף את הכל למטה, תקטין כדי להעלות */
         }
 
         /* 3. שולט במרחק הפנימי שבין המארזים הרגילים למיסטרי בוקס */
@@ -207,9 +207,12 @@
 
         .hero-banner {
             position: sticky !important;
-            top: 0 !important; /* נועל את הכותרת בדיוק בראש אזור התוכן */
-            z-index: 100 !important; /* מוודא שהכותרת תמיד תהיה שכבה אחת מעל המוצרים שנגללים */
-            background-color: #000000 !important; /* חובה: רקע שחור אטום כדי שהמוצרים שמתחתיה ייעלמו מאחוריה ולא יתערבבו עם הטקסט */
+            top: 0 !important; 
+            z-index: 100 !important; 
+            background-color: #000000 !important; 
+            
+            /* הכיס החכם שביקשת! */
+            padding-bottom: 35px !important; /* מאריך את המסך השחור למטה כדי שהמוצרים ייעלמו בתוכו לפני שהם נוגעים בכותרת */
         }
 
         /* =========================================
@@ -364,6 +367,108 @@
             position: relative;
         }
 
+        /* =========================================
+           ממשק הרכבת מארז (Box Builder)
+           ========================================= */
+        .custom-builder-container {
+            display: flex;
+            gap: 20px;
+            height: 280px; 
+            width: 100%;
+            background: rgba(10, 10, 10, 0.6);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-gold);
+            box-sizing: border-box;
+        }
+
+        .builder-right {
+            flex: 0 0 65%;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(214, 185, 83, 0.2);
+            padding-left: 20px;
+        }
+
+        .builder-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .builder-header h3 { font-size: 20px; color: var(--brand-gold); margin: 0; }
+        .builder-subtitle { font-size: 13px; color: #a0aec0; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px;}
+
+        .builder-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+        .b-tab {
+            background: transparent; border: 1px solid rgba(214, 185, 83, 0.3); color: #fff;
+            padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: 0.3s;
+        }
+        .b-tab.active, .b-tab:hover { background: var(--brand-gold); color: #000; font-weight: bold; }
+
+        .builder-products-scroll { flex: 1; overflow-y: auto; padding-left: 5px; direction: ltr; }
+        .builder-products-scroll::-webkit-scrollbar { width: 5px; }
+        .builder-products-scroll::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.5); border-radius: 10px; }
+        
+        .builder-grid { direction: rtl; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+        
+        .b-card {
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px;
+            padding: 10px; display: flex; flex-direction: column; position: relative; transition: 0.3s;
+        }
+        .b-card:hover { border-color: var(--brand-gold); transform: translateY(-3px); }
+        .b-card img { width: 100%; height: 70px; object-fit: contain; margin-bottom: 10px; }
+        .b-info { text-align: right; }
+        .b-title { font-size: 12px; font-weight: bold; color: #fff; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .b-price { color: var(--brand-gold); font-size: 14px; font-weight: bold; }
+        
+        .b-add-btn {
+            position: absolute; bottom: 10px; left: 10px; background: rgba(214, 185, 83, 0.1); 
+            border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 25px; height: 25px; 
+            border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .b-add-btn:hover { background: var(--brand-gold); color: #000; }
+
+        .builder-left {
+            flex: 0 0 calc(35% - 20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .box-visual {
+            flex: 1; position: relative; background: rgba(0,0,0,0.3); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden;
+        }
+        .bg-box-icon { position: absolute; font-size: 140px; color: rgba(214, 185, 83, 0.05); z-index: 1; }
+        
+        .box-slots { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; z-index: 2; }
+        .box-slot {
+            width: 60px; height: 60px; border: 2px dashed rgba(214, 185, 83, 0.3); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; position: relative;
+            background: rgba(0,0,0,0.5); transition: 0.3s;
+        }
+        .box-slot.filled { border: 1px solid var(--brand-gold); background: rgba(214, 185, 83, 0.1); }
+        .box-slot img { width: 80%; height: 80%; object-fit: contain; animation: dropIn 0.4s ease-out; }
+        .remove-item {
+            position: absolute; top: -8px; right: -8px; background: #ff4a4a; color: #fff;
+            border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 10px;
+            cursor: pointer; display: none; align-items: center; justify-content: center;
+        }
+        .box-slot.filled:hover .remove-item { display: flex; }
+
+        @keyframes dropIn { 0% { transform: scale(2) translateY(-20px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+
+        .box-summary { margin-top: 20px; background: #000; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .progress-texts { display: flex; justify-content: space-between; font-size: 12px; color: #a0aec0; margin-bottom: 5px; }
+        .progress-bar { width: 100%; height: 6px; background: #222; border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
+        .progress-fill { width: 0%; height: 100%; background: var(--brand-gold); transition: width 0.3s ease; }
+        
+        .box-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; font-size: 16px; }
+        .total-price { color: var(--brand-gold); font-size: 20px; }
+        
+        .finish-box-btn {
+            width: 100%; padding: 12px; background: var(--brand-gold); color: #000; border: none;
+            border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.3s;
+        }
+        .finish-box-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+        .finish-box-btn:not(:disabled):hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3); }
+
     </style>
 </head>
 <body>
@@ -411,7 +516,7 @@
                             <div class="mini-info">
                                 <h4>מארז הפתעה soccerwe</h4>
                                 <p class="mini-desc">בובות שחקני כדורגל לאיסוף במארז עיוור ומדליק באריזה מקורית.</p>
-                                <span class="mini-price">₪25</span>
+                                <span class="mini-price">₪24.90</span>
                             </div>
                         </div>
                         
@@ -420,7 +525,7 @@
                             <div class="mini-info">
                                 <h4>כדור לחיץ נבחרות</h4>
                                 <p class="mini-desc">מחזיק מפתחות כדורגל גמיש ולחיץ להפגת מתחים לכל גיל.</p>
-                                <span class="mini-price">₪25</span>
+                                <span class="mini-price">₪24.90</span>
                             </div>
                         </div>
 
@@ -429,7 +534,7 @@
                             <div class="mini-info">
                                 <h4>כדור לד מרחף</h4>
                                 <p class="mini-desc">כדורגל רחפת עם תאורת לד צבעונית למשחק בטוח בתוך הבית.</p>
-                                <span class="mini-price">₪25</span>
+                                <span class="mini-price">₪24.90</span>
                             </div>
                         </div>
         
@@ -438,7 +543,7 @@
                             <div class="mini-info">
                                 <h4>סולם זריזות</h4>
                                 <p class="mini-desc">מסלול רצועות ושלבים גמישים המונח על הרצפה, המיועד לתרגול צעדים מהירים.</p>
-                                <span class="mini-price">₪49</span>
+                                <span class="mini-price">₪39.90</span>
                             </div>
                         </div>
 
@@ -447,7 +552,7 @@
                             <div class="mini-info">
                                 <h4>חגורת אימון כדורגל</h4>
                                 <p class="mini-desc">רצועה אלסטית המחברת בין המותן לכדור ומאפשרת לתרגל בעיטות ושליטה ברצף.</p>
-                                <span class="mini-price">₪39</span>
+                                <span class="mini-price">₪39.90</span>
                             </div>
                         </div>
                     </div>
@@ -458,7 +563,7 @@
                             <div class="mini-info">
                                 <h4>סט 10 כיפות סימון</h4>
                                 <p class="mini-desc">מוצר בסיסי וחיוני לסימון גבולות מגרש, יצירת מסלולי סלאלום ותרגול זריזות.</p>
-                                <span class="mini-price">₪29</span>
+                                <span class="mini-price">₪29.90</span>
                             </div>
                         </div>
 
@@ -467,7 +572,7 @@
                             <div class="mini-info">
                                 <h4>זוג גרבי גריפ</h4>
                                 <p class="mini-desc">גרבי ספורט עם כריות סיליקון בתחתית המונעות החלקה בתוך הנעל.</p>
-                                <span class="mini-price">₪29</span>
+                                <span class="mini-price">₪29.90</span>
                             </div>
                         </div>
 
@@ -476,7 +581,7 @@
                             <div class="mini-info">
                                 <h4>מעטפת צ'מפיונס 10/11</h4>
                                 <p class="mini-desc">מעטפת פאניני מקורית ונדירה מעונת 2010/2011 נוסטלגיה אמיתית.</p>
-                                <span class="mini-price">₪7</span>
+                                <span class="mini-price">₪7.90</span>
                             </div>
                         </div>
 
@@ -485,7 +590,7 @@
                             <div class="mini-info">
                                 <h4>פונקו פופ צ'אבי</h4>
                                 <p class="mini-desc">בובת Pop Funko רשמית של צ'אבי כמאמן ברצלונה.</p>
-                                <span class="mini-price">₪79</span>
+                                <span class="mini-price">₪69.90</span>
                             </div>
                         </div>
 
@@ -494,7 +599,7 @@
                             <div class="mini-info">
                                 <h4>מטבעות נבחרות</h4>
                                 <p class="mini-desc">מטבעות אספנות מהודרים עם דגלי הנבחרות.</p>
-                                <span class="mini-price">₪20</span>
+                                <span class="mini-price">₪14.90</span>
                             </div>
                         </div>
                     </div> 
@@ -505,7 +610,7 @@
                             <div class="mini-info">
                                 <h4>צמידי נבחרות</h4>
                                 <p class="mini-desc">צמידי סיליקון ומתכת בעיצוב דגלי מדינות, מתכווננים ונוחים.</p>
-                                <span class="mini-price">₪15</span>
+                                <span class="mini-price">₪14.90</span>
                             </div>
                         </div>
 
@@ -514,7 +619,7 @@
                             <div class="mini-info">
                                 <h4>מחזיק מפתחות מתכתי</h4>
                                 <p class="mini-desc">מחזיק מפתחות יוקרתי וחזק בצורת נעל כדורגל וכדור.</p>
-                                <span class="mini-price">₪10</span>
+                                <span class="mini-price">₪14.90</span>
                             </div>
                         </div>
                     </div> 
@@ -596,12 +701,56 @@
                     </div>
 
                     <div id="view-custom" class="packages-view">
-                        <div class="build-custom-box">
-                            <i class="fa-solid fa-boxes-packing"></i>
-                            <h3>להרכבת מארז לחץ פה</h3>
-                            <p>בחר את הפריטים שאתה הכי אוהב ובנה מארז ספורט אישי משלך!</p>
-                            <button class="btn-build-now">התחל להרכיב</button>
-                        </div>
+                        <div class="custom-builder-container">
+                            
+                            <div class="builder-right">
+                                <div class="builder-header">
+                                    <h3>בחר פריטים למארז האישי</h3>
+                                    <span class="builder-subtitle">עד 5 פריטים בקופסה</span>
+                                </div>
+                                
+                                <div class="builder-tabs">
+                                    <button class="b-tab active" onclick="filterBuilder('all', this)">הכל</button>
+                                    <button class="b-tab" onclick="filterBuilder('figures', this)">בובות</button>
+                                    <button class="b-tab" onclick="filterBuilder('cards', this)">קלפים</button>
+                                    <button class="b-tab" onclick="filterBuilder('training', this)">אימון</button>
+                                    <button class="b-tab" onclick="filterBuilder('toys', this)">צעצועים</button>
+                                    <button class="b-tab" onclick="filterBuilder('more', this)">שונות</button>
+                                </div>
+
+                                <div class="builder-products-scroll">
+                                    <div class="builder-grid" id="builder-grid">
+                                        </div>
+                                </div>
+                            </div> <div class="builder-left">
+                                <div class="box-visual">
+                                    <i class="fa-solid fa-box-open bg-box-icon"></i>
+                                    <div class="box-slots" id="box-slots">
+                                        <div class="box-slot empty" data-index="0"></div>
+                                        <div class="box-slot empty" data-index="1"></div>
+                                        <div class="box-slot empty" data-index="2"></div>
+                                        <div class="box-slot empty" data-index="3"></div>
+                                        <div class="box-slot empty" data-index="4"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="box-summary">
+                                    <div class="box-progress-area">
+                                        <div class="progress-texts">
+                                            <span>תכולה</span>
+                                            <span><span id="box-count">0</span>/5</span>
+                                        </div>
+                                        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                                    </div>
+                                    <div class="box-total">
+                                        <span>סה"כ:</span>
+                                        <span class="total-price">₪<span id="box-total-price">0</span></span>
+                                    </div>
+                                    <button class="finish-box-btn" id="finish-box-btn" disabled onclick="checkoutBox()">
+                                        ארוז והוסף לעגלה <i class="fa-solid fa-gift"></i>
+                                    </button>
+                                </div>
+                            </div> </div>
                     </div>
 
                 </div>
@@ -717,17 +866,17 @@
                 text: `
                     <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> מובטח בכל חבילה:</p>
                     <ul style="margin-right: 25px; margin-bottom: 20px; color: #e2e8f0;">
-                        <li>מעטפת מדבקות מקורית</li>
-                        <li>5 קלפי אדרנלין/מאצ' אטאקס</li>
-                        <li>7-10 קלפי בייס+אינסרטים</li>
-                        <li>7-10 מדבקות ממגוון אוספים</li>
+                        <li>מעטפת מדבקות/קלפים</li>
+                        <li>7 קלפים אקראים ( 5 בייס+ 2 אינסרטים)</li>
+                        <li>7 מדבקות אקראיות ממגוון אוספים</li>
+                        <li>מחזיק מפתחות מתכתי כדורגל</li>
                         <li>כרטיס הגרלה שיכול לזכות בפרסים</li>
                     </ul>
                     <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> לא מובטח (צ'ייס):</p>
                     <ul style="margin-right: 25px; color: #e2e8f0;">
                         <li>קלף מדורג PSA</li>
                         <li>קלף ממוספר / חתימה</li>
-                        <li>מדבקות רטרו ישראלי (מפציצים / סופרגול)</li>
+                        <li>מדבקות רטרו ישראלי (מפציצים 97 / סופרגול)</li>
                     </ul>
                 `
             },
@@ -737,14 +886,16 @@
                 text: `
                     <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> מובטח בכל חבילה:</p>
                     <ul style="margin-right: 25px; margin-bottom: 20px; color: #e2e8f0;">
-                        <li>2 מעטפות מדבקות</li>
-                        <li>10 קלפי אדרנלין בסיסיים</li>
-                        <li>בובת מיניקס קטנה</li>
+                        <li>מעטפת קלפים/מדבקות אקראית</li>
+                        <li>10 קלפי אדרנלין/מאצ' אטאקס (7 קלפי בייס+3 אינסרטים)</li>
+                        <li>קלף לימיטד אדישן אדרנלין/מאצ'</li>
+                        <li>5 מדבקות ממגוון אוספים</li>
+                        <li>צמיד סיליקון נבחרות כדורגל</li>
                     </ul>
                     <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> הפתעות מיוחדות:</p>
                     <ul style="margin-right: 25px; color: #e2e8f0;">
-                        <li>מדבקה נוצצת נדירה</li>
-                        <li>קלף מיוחד (Limited Edition)</li>
+                        <li>מעטפת קלפים/מדבקות נוספת</li>
+                        <li>קלף לימיטד אדישן נוסף</li>
                     </ul>
                 `
             }
@@ -973,6 +1124,121 @@
             }
         }
 
+    </script>
+    <script>
+        // ==========================================
+        // מסד הנתונים ולוגיקה של הרכבת מארז
+        // ==========================================
+        let currentBox = [];
+        const MAX_ITEMS = 5;
+
+        const catalogProducts = [
+            { title: "מארז הפתעה soccerwe", price: 25, img: "images/soccerwe-mistery-pack.jpg.png", cat: "figures" },
+            { title: "פונקו פופ צ'אבי", price: 89, img: "images/funko-pop-xavi-coach.jpg.png", cat: "figures" },
+            { title: "מעטפת צ'מפיונס 10/11", price: 25, img: "images/pack-ucl-2010.jpg", cat: "cards" },
+            { title: "גרבי גריפ", price: 29, img: "images/grip-sock.jpg.png", cat: "training" },
+            { title: "סולם זריזות", price: 49, img: "images/agiliti-ladder.jpg.png", cat: "training" },
+            { title: "חגורת אימון", price: 39, img: "images/soccer-bubble-belt.jpg.png", cat: "training" },
+            { title: "סט 10 כיפות", price: 29, img: "images/sport-training-cones.jpg.png", cat: "training" },
+            { title: "כדור לד מרחף", price: 25, img: "images/hover-ball.jpg.png", cat: "toys" },
+            { title: "כדור לחיץ נבחרות", price: 25, img: "images/button-decompression-ball.jpg.png", cat: "more" },
+            { title: "מטבעות נבחרות", price: 20, img: "images/coins-national.jpg", cat: "more" },
+            { title: "צמידי נבחרות", price: 15, img: "images/bracelets-national.jpg", cat: "more" },
+            { title: "מחזיק מפתחות מתכתי", price: 15, img: "images/keychain-shoe.jpg.png", cat: "more" }
+        ];
+
+        function renderBuilderProducts() {
+            const grid = document.getElementById('builder-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            catalogProducts.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = 'b-card';
+                card.setAttribute('data-cat', prod.cat);
+                
+                card.innerHTML = `
+                    <img src="${prod.img}" alt="${prod.title}">
+                    <div class="b-info">
+                        <div class="b-title">${prod.title}</div>
+                        <div class="b-price">₪${prod.price}</div>
+                    </div>
+                    <button class="b-add-btn" onclick="addItemToBox(\`${prod.title}\`, ${prod.price}, \`${prod.img}\`)">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function filterBuilder(category, btnElement) {
+            document.querySelectorAll('.b-tab').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+            
+            document.querySelectorAll('.b-card').forEach(card => {
+                if (category === 'all' || card.getAttribute('data-cat') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function addItemToBox(name, price, imgSrc) {
+            if (currentBox.length >= MAX_ITEMS) {
+                alert('המארז מלא! מקסימום 5 פריטים במארז אישי.');
+                return;
+            }
+            currentBox.push({ name, price, imgSrc });
+            updateBoxUI();
+        }
+
+        function removeItemFromBox(index) {
+            currentBox.splice(index, 1);
+            updateBoxUI();
+        }
+
+        function updateBoxUI() {
+            let total = 0;
+            const slots = document.querySelectorAll('.box-slot');
+            
+            slots.forEach(slot => {
+                slot.className = 'box-slot empty';
+                slot.innerHTML = '';
+            });
+
+            currentBox.forEach((item, index) => {
+                total += item.price;
+                slots[index].className = 'box-slot filled';
+                slots[index].innerHTML = `
+                    <img src="${item.imgSrc}" alt="${item.name}">
+                    <button class="remove-item" onclick="removeItemFromBox(${index})"><i class="fa-solid fa-xmark"></i></button>
+                `;
+            });
+
+            document.getElementById('box-count').innerText = currentBox.length;
+            document.getElementById('box-total-price').innerText = total;
+            document.getElementById('progress-fill').style.width = (currentBox.length / MAX_ITEMS) * 100 + '%';
+
+            const finishBtn = document.getElementById('finish-box-btn');
+            if (currentBox.length > 0) {
+                finishBtn.disabled = false;
+            } else {
+                finishBtn.disabled = true;
+            }
+        }
+
+        function checkoutBox() {
+            alert('מארז פרימיום עם ' + currentBox.length + ' פריטים נוסף לעגלה בהצלחה!');
+            currentBox = [];
+            updateBoxUI();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBuilderProducts();
+        });
     </script>
 </body>
 </html>
