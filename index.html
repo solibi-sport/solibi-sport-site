@@ -90,10 +90,9 @@
         }
 
         /* =========================================
-           הפיתרון המוחלט: ביטול גלילה ויישור קו תחתון אגרסיבי
-           ========================================= */
+          /* הפיתרון המוחלט: ביטול גלילה ויישור קו תחתון אגרסיבי + מבנה SPA */
         @media (min-width: 1200px) {
-            /* השמדת הגלילה לחלוטין */
+            /* השמדת הגלילה לחלוטין למסגרת הכללית */
             html, body {
                 height: 100vh !important;
                 overflow: hidden !important; 
@@ -115,12 +114,13 @@
                 margin-bottom: 30px !important; 
                 min-height: 0 !important;
                 display: flex !important;
-                align-items: stretch !important; /* מותח את האמצע והסיידברים לאותו קו */
+                align-items: stretch !important;
             }
 
+            /* --- עדכוני הצרת הסיידברים להרווחת מקום במרכז --- */
             .sidebar {
-                width: 355px !important; /* הוגדל מ-340 ל-355 */
-                flex: 0 0 350px !important; /* הוגדל מ-340 ל-355 */
+                width: 290px !important; 
+                flex: 0 0 290px !important; 
                 height: 100% !important;
                 margin: 0 !important;
                 display: flex !important;
@@ -134,48 +134,143 @@
 
             .main-content {
                 flex: 1 !important;
-                padding-left: 40px !important;
-                padding-right: 40px !important;
-                max-width: calc(100% - 710px) !important; /* עודכן מ-680 ל-710 (355 פיקסלים כפול 2 סיידברים) */
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+                max-width: calc(100% - 580px) !important; /* 290px כפול 2 סיידברים */
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: flex-start !important; 
                 min-height: 0 !important;
                 height: 100% !important;
-                overflow-y: auto !important; 
+                overflow: hidden !important; /* מונע גלילה של כל הבלוק המרכזי */
             }
 
+            /* החזרת הכותרת למצב טבעי ויציב */
             .hero-banner {
-                margin: 0 !important;
-                padding-top: 10px !important;
-                padding-bottom: 10px !important;
+                position: relative !important;
+                margin: 0 0 15px 0 !important;
+                padding-top: 5px !important;
+                padding-bottom: 5px !important;
                 flex-shrink: 0;
+                background: transparent !important;
+                border: none !important;
             }
+        }
 
-            .store-section {
-                margin: 0 !important;
-                flex-shrink: 0;
-            }
+        /* =========================================
+           מערכת הניווט החדשה של ה-SPA המרכזי
+           ========================================= */
+        .spa-nav-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(214, 185, 83, 0.15);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+        }
 
-            /* הדבקת המיסטרי לתחתית ודריסת כל השוליים הנסתרים */
-            .mystery-section {
-                margin: 0 !important;
-                padding-top: 15px !important;
-                padding-bottom: 0 !important; /* אפס רווח תחתון לאזור */
-                flex-shrink: 0;
-            }
+        .spa-main-tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
 
-            .mystery-section .carousel-container,
-            .mystery-section .products-carousel,
-            #mystery-slider {
-                margin-bottom: 0 !important; /* דריסת שוליים מהעיצוב הכללי */
-                padding-bottom: 0 !important; /* דריסת שוליים מהעיצוב הכללי */
-            }
+        .spa-main-tab {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(214, 185, 83, 0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+            text-align: center;
+        }
 
-            #mystery-slider .product-card {
-                margin-bottom: 0 !important; /* הבעיה הייתה פה! דריסת השוליים התחתונים של הקוביות עצמן */
-                align-self: flex-end !important; /* מבטיח שהקובייה תרד הכי למטה שאפשר */
-            }
+        .spa-main-tab.active, .spa-main-tab:hover {
+            background: var(--brand-gold);
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(214, 185, 83, 0.2);
+        }
+
+        .spa-sub-tabs {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 8px;
+        }
+
+        .spa-sub-tab {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0aec0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .spa-sub-tab.active, .spa-sub-tab:hover {
+            border-color: var(--brand-gold);
+            color: var(--brand-gold);
+            background: rgba(214, 185, 83, 0.05);
+        }
+
+        /* אזור הצגת התוכן המשתנה */
+        .spa-content-area {
+            flex: 1; /* נמתח עד לתחתית המסך */
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spa-view {
+            display: none;
+            flex: 1; /* מותח את התצוגה הפנימית */
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .spa-view.active {
+            display: flex; /* שונה מ-block ל-flex כדי למתוח את התוכן */
+        }
+
+        /* גריד מוצרים חכם ל-SPA - מרווח וגדול */
+        .products-grid-spa {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* רוחב מינימלי גדול יותר כדי שלא יימעכו */
+            gap: 25px; /* רווח גדול יותר בין הקוביות */
+            overflow-y: auto;
+            flex: 1;
+            align-content: start; /* מונע מהקוביות להימתח יותר מדי לגובה אם יש קצת מוצרים */
+            padding: 5px 5px 20px 5px;
+            direction: ltr;
+        }
+        
+        .products-grid-spa > * { direction: rtl; }
+
+        /* דריסת הגדרות ישנות שמפריעות לקוביות */
+        .products-grid-spa .product-card {
+            width: 100% !important;
+            margin: 0 !important;
+            min-height: 320px; /* גובה בריא ויפה לקוביות */
+        }
+
+        .products-grid-spa::-webkit-scrollbar { width: 5px; }
+        .products-grid-spa::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.3); border-radius: 10px; }
+
+        /* התאמה מיוחדת לגריד של המיסטרי בוקס */
+        #spa-view-mystery .products-grid-spa {
+            grid-template-columns: repeat(2, minmax(220px, 300px));
+            justify-content: center;
         }
 
 /* =========================================
@@ -373,7 +468,8 @@
         .custom-builder-container {
             display: flex;
             gap: 20px;
-            height: 280px; 
+            flex: 1; /* זה הקסם שמותח אותו עד למטה! */
+            height: 100%;
             width: 100%;
             background: rgba(10, 10, 10, 0.6);
             border-radius: 16px;
@@ -468,6 +564,316 @@
         }
         .finish-box-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
         .finish-box-btn:not(:disabled):hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3); }
+
+/* =========================================
+           1. קוביות מרכזיות (SPA) - מוקטנות ומיושרות לימין
+           ========================================= */
+        .products-grid-spa {
+            direction: rtl !important; 
+            justify-content: start !important; /* התחלה מימין */
+            gap: 15px !important; /* רווח נעים */
+        }
+        
+        #spa-view-mystery .products-grid-spa {
+            justify-content: start !important; 
+        }
+
+        .products-grid-spa .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            min-height: 290px !important; /* הוקטן משמעותית */
+            padding: 15px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .products-grid-spa .product-card .product-desc {
+            flex-grow: 1 !important; /* דוחף את הפוטר למטה */
+            margin-bottom: 12px !important;
+        }
+
+        /* פוטר: מחיר משמאל, כפתור מימין */
+        .products-grid-spa .product-footer {
+            display: flex !important;
+            flex-direction: row-reverse !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+            margin-top: auto !important;
+        }
+
+        /* קוביות הרכבת מארז */
+        .b-card { padding-bottom: 35px !important; }
+        .b-add-btn { right: 10px !important; left: auto !important; }
+        .b-price { position: absolute !important; left: 10px !important; bottom: 10px !important; text-align: left !important; margin: 0 !important; }
+
+        /* =========================================
+           2. עיצוב פרימיום לכותרת קולקציית מארזי סוליבי
+           ========================================= */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(0, 0, 0, 0.6)) !important;
+            border: 1px solid rgba(214, 185, 83, 0.4) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            padding: 15px 20px !important;
+            margin-bottom: 20px !important;
+        }
+
+        /* =========================================
+           3. סיידבר ימני פרימיום - 5 קוביות בסימטריה מתמטית מוחלטת
+           ========================================= */
+        .sidebar-right .sidebar-header {
+            margin-bottom: 10px !important; 
+            flex-shrink: 0 !important;
+        }
+
+        .sidebar-right .sidebar-content {
+            overflow: hidden !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 0 !important;
+        }
+
+        .sidebar-slider {
+            flex: 1 !important; /* תופס את כל הגובה הפנוי */
+            position: relative !important;
+            height: 100% !important;
+        }
+
+        .sidebar-slide {
+            display: grid !important;
+            grid-template-rows: repeat(5, 1fr) !important; /* בדיוק 5 שורות שוות */
+            gap: 12px !important; /* רווח מדויק וסימטרי בין הקוביות */
+            position: absolute !important;
+            top: 0; left: 0; right: 0; bottom: 0;
+            height: 100% !important;
+        }
+
+        /* הקטנה ויישור של הקובייה עצמה */
+        .mini-product-card {
+            margin: 0 !important;
+            padding: 8px 12px !important; /* ריפוד קטן יותר */
+            display: flex !important;
+            align-items: center !important;
+            min-height: 0 !important; /* קריטי - מאפשר לקובייה להתכווץ ולא לחרוג */
+            height: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .mini-product-card img {
+            max-height: 48px !important; /* תמונה מוקטנת */
+            width: auto !important;
+            flex-shrink: 0 !important;
+        }
+
+        .mini-info {
+            min-height: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            flex-grow: 1 !important;
+        }
+
+        .mini-info h4 { margin: 0 0 3px 0 !important; font-size: 13.5px !important; }
+        .mini-desc { 
+            margin: 0 0 4px 0 !important; 
+            font-size: 11.5px !important; 
+            line-height: 1.2 !important; 
+            /* חותך טקסט ארוך מדי ב-3 נקודות כדי לא לעוות את הקובייה */
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+        }
+        .mini-price { font-size: 14.5px !important; margin: 0 !important; }
+
+        /* התאמה למסכים קטנים (לפטופ) */
+        @media (max-height: 860px) {
+            .sidebar-slide { grid-template-rows: repeat(4, 1fr) !important; }
+            .sidebar-slide .mini-product-card:nth-child(n+5) { display: none !important; }
+        }
+        @media (max-height: 740px) {
+            .sidebar-slide { grid-template-rows: repeat(3, 1fr) !important; }
+            .sidebar-slide .mini-product-card:nth-child(n+4) { display: none !important; }
+        }
+        /* =========================================
+           1. קוביות מרכזיות (SPA) - מוקטנות ומיושרות לימין
+           ========================================= */
+        .products-grid-spa {
+            direction: rtl !important; 
+            justify-content: start !important; /* התחלה מימין */
+            gap: 15px !important; /* רווח נעים */
+        }
+        
+        #spa-view-mystery .products-grid-spa {
+            justify-content: start !important; 
+        }
+
+        .products-grid-spa .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            min-height: 290px !important; /* הוקטן משמעותית */
+            padding: 15px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .products-grid-spa .product-card .product-desc {
+            flex-grow: 1 !important; /* דוחף את הפוטר למטה */
+            margin-bottom: 12px !important;
+        }
+
+        /* פוטר: מחיר משמאל, כפתור מימין */
+        .products-grid-spa .product-footer {
+            display: flex !important;
+            flex-direction: row-reverse !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+            margin-top: auto !important;
+        }
+
+        /* קוביות הרכבת מארז */
+        .b-card { padding-bottom: 35px !important; }
+        .b-add-btn { right: 10px !important; left: auto !important; }
+        .b-price { position: absolute !important; left: 10px !important; bottom: 10px !important; text-align: left !important; margin: 0 !important; }
+
+        /* =========================================
+           2. עיצוב פרימיום לכותרת קולקציית מארזי סוליבי
+           ========================================= */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(0, 0, 0, 0.6)) !important;
+            border: 1px solid rgba(214, 185, 83, 0.4) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            padding: 15px 20px !important;
+            margin-bottom: 20px !important;
+        }
+
+        /* =========================================
+           3. סיידבר ימני פרימיום - 5 קוביות בסימטריה מתמטית מוחלטת
+           ========================================= */
+        .sidebar-right .sidebar-header {
+            margin-bottom: 10px !important; 
+            flex-shrink: 0 !important;
+        }
+
+        .sidebar-right .sidebar-content {
+            overflow: hidden !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 0 !important;
+        }
+
+        .sidebar-slider {
+            flex: 1 !important; /* תופס את כל הגובה הפנוי */
+            position: relative !important;
+            height: 100% !important;
+        }
+
+        .sidebar-slide {
+            display: grid !important;
+            grid-template-rows: repeat(5, 1fr) !important; /* בדיוק 5 שורות שוות */
+            gap: 12px !important; /* רווח מדויק וסימטרי בין הקוביות */
+            position: absolute !important;
+            top: 0; left: 0; right: 0; bottom: 0;
+            height: 100% !important;
+        }
+
+        /* הקטנה ויישור של הקובייה עצמה */
+        .mini-product-card {
+            margin: 0 !important;
+            padding: 8px 12px !important; /* ריפוד קטן יותר */
+            display: flex !important;
+            align-items: center !important;
+            min-height: 0 !important; /* קריטי - מאפשר לקובייה להתכווץ ולא לחרוג */
+            height: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .mini-product-card img {
+            max-height: 48px !important; /* תמונה מוקטנת */
+            width: auto !important;
+            flex-shrink: 0 !important;
+        }
+
+        .mini-info {
+            min-height: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            flex-grow: 1 !important;
+        }
+
+        .mini-info h4 { margin: 0 0 3px 0 !important; font-size: 13.5px !important; }
+        .mini-desc { 
+            margin: 0 0 4px 0 !important; 
+            font-size: 11.5px !important; 
+            line-height: 1.2 !important; 
+            /* חותך טקסט ארוך מדי ב-3 נקודות כדי לא לעוות את הקובייה */
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+        }
+        .mini-price { font-size: 14.5px !important; margin: 0 !important; }
+
+        /* התאמה למסכים קטנים (לפטופ) */
+        @media (max-height: 860px) {
+            .sidebar-slide { grid-template-rows: repeat(4, 1fr) !important; }
+            .sidebar-slide .mini-product-card:nth-child(n+5) { display: none !important; }
+        }
+        @media (max-height: 740px) {
+            .sidebar-slide { grid-template-rows: repeat(3, 1fr) !important; }
+            .sidebar-slide .mini-product-card:nth-child(n+4) { display: none !important; }
+        }
+
+        /* =========================================
+           הגדלת תמונות ותיקון תווית "מוצר חם" בסיידבר
+           ========================================= */
+        .mini-product-card img {
+            max-height: 65px !important; /* הגדלת התמונה (היה 48px קודם) */
+            width: auto !important;
+            flex-shrink: 0 !important;
+            margin-left: 10px !important; /* רווח בין התמונה לטקסט */
+        }
+
+        /* תיקון מיקום התווית - עכשיו היא בפנים */
+        .mini-badge {
+            top: 5px !important;    /* מרחיק מהקצה העליון פנימה */
+            right: 5px !important;  /* מרחיק מהקצה הימני פנימה */
+            z-index: 10 !important;
+        }
+
+        /* =========================================
+           השוואת מידות - מארזים מוכנים ומיסטרי זהים לחלוטין!
+           ========================================= */
+        
+        /* 1. קובע רוחב מינימלי גדול וזהה לכלל הקוביות (מונע מעיכה) */
+        .products-grid-spa {
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important; 
+        }
+
+        /* 2. מנקה את הגבלת ה-2 עמודות הישנה שהייתה רק למיסטרי */
+        #spa-view-mystery .products-grid-spa {
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+            justify-content: start !important;
+        }
+
+        /* 3. נועל את גובה האייקונים/תמונות כדי שהטקסט יתחיל באותו קו בכל המארזים */
+        .products-grid-spa .product-image {
+            height: 110px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-bottom: 10px !important;
+        }
+
+        /* 4. מנקה רווחים סוררים מכפתורי ההוספה לעגלה והמחיר כדי שהפוטר יהיה ישר וזהה */
+        .products-grid-spa .product-footer .add-to-cart-btn,
+        .products-grid-spa .product-footer .price {
+            margin: 0 !important;
+        }
 
     </style>
 </head>
@@ -634,196 +1040,159 @@
                 <p>מארזי אספנות יוקרתיים</p>
             </section>
 
-            <section class="store-section">
-                <div class="packages-tabs">
-                    <h2 id="tab-ready" class="package-tab active" onclick="switchPackage('ready')">מארזים מוכנים</h2>
-                    <h2 id="tab-custom" class="package-tab" onclick="switchPackage('custom')">הרכבת מארז</h2>
-                </div>
-
-                <div class="packages-content">
-                    
-                    <div id="view-ready" class="packages-view active-view">
-                        <div class="carousel-container">
-                            <button class="carousel-arrow arrow-right" onclick="document.getElementById('product-slider').scrollLeft += 250">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-
-                            <div class="products-carousel" id="product-slider">
-                                <div class="product-card">
-                                    <div class="product-badge">גילאי <bdi>+7</bdi></div>
-                                    <div class="product-image"><i class="fa-solid fa-child box-icon"></i></div>
-                                    <h3>מארז ילדים</h3>
-                                    <p class="product-desc">בובת סוקרסטארז בקופסא מקורית, מעטפות אדרנלין, כדור לחיצה ועוד.</p>
-                                    <div class="product-footer">
-                                        <span class="price">₪129</span>
-                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
-                                    </div>
-                                </div>
-
-                                <div class="product-card premium-gold-card">
-                                    <div class="product-badge gold-badge">פרימיום</div>
-                                    <div class="product-image"><i class="fa-solid fa-crown box-icon dark-icon"></i></div>
-                                    <h3>מארז פרימיום</h3>
-                                    <p class="product-desc">בובת מיניקס מקורית, מעטפת קלפים פאניני, מחזיק מפתחות מתכת יוקרתי.</p>
-                                    <div class="product-footer">
-                                        <span class="price">₪179</span>
-                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
-                                    </div>
-                                </div>
-
-                                <div class="product-card">
-                                    <div class="product-badge">גילאי <bdi>+14</bdi></div>
-                                    <div class="product-image"><i class="fa-solid fa-history box-icon"></i></div>
-                                    <h3>מארז אימונים</h3>
-                                    <p class="product-desc">2 זוגות גרבי גריפ, סט 10 קונוסים עגולים, רצועת אימון כדורגל אלסטית, סולם קואורדינציה</p>
-                                    <div class="product-footer">
-                                        <span class="price">₪159</span>
-                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
-                                    </div>
-                                </div>
-
-                                <div class="product-card">
-                                    <div class="product-badge">גילאי <bdi>+14</bdi></div>
-                                    <div class="product-image"><i class="fa-solid fa-clone box-icon"></i></div>
-                                    <h3>מארז קלפים</h3>
-                                    <p class="product-desc">קלף מדורג, מעטפת קלפים פאניני, מארז 100 סליבים ומגן יחיד 35pt.</p>
-                                    <div class="product-footer">
-                                        <span class="price">₪159</span>
-                                        <button class="add-to-cart-btn">הוסף לעגלה</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="carousel-arrow arrow-left" onclick="document.getElementById('product-slider').scrollLeft -= 250">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="view-custom" class="packages-view">
-                        <div class="custom-builder-container">
-                            
-                            <div class="builder-right">
-                                <div class="builder-header">
-                                    <h3>בחר פריטים למארז האישי</h3>
-                                    <span class="builder-subtitle">עד 5 פריטים בקופסה</span>
-                                </div>
-                                
-                                <div class="builder-tabs">
-                                    <button class="b-tab active" onclick="filterBuilder('all', this)">הכל</button>
-                                    <button class="b-tab" onclick="filterBuilder('figures', this)">בובות</button>
-                                    <button class="b-tab" onclick="filterBuilder('cards', this)">קלפים</button>
-                                    <button class="b-tab" onclick="filterBuilder('training', this)">אימון</button>
-                                    <button class="b-tab" onclick="filterBuilder('toys', this)">צעצועים</button>
-                                    <button class="b-tab" onclick="filterBuilder('more', this)">שונות</button>
-                                </div>
-
-                                <div class="builder-products-scroll">
-                                    <div class="builder-grid" id="builder-grid">
-                                        </div>
-                                </div>
-                            </div> <div class="builder-left">
-                                <div class="box-visual">
-                                    <i class="fa-solid fa-box-open bg-box-icon"></i>
-                                    <div class="box-slots" id="box-slots">
-                                        <div class="box-slot empty" data-index="0"></div>
-                                        <div class="box-slot empty" data-index="1"></div>
-                                        <div class="box-slot empty" data-index="2"></div>
-                                        <div class="box-slot empty" data-index="3"></div>
-                                        <div class="box-slot empty" data-index="4"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="box-summary">
-                                    <div class="box-progress-area">
-                                        <div class="progress-texts">
-                                            <span>תכולה</span>
-                                            <span><span id="box-count">0</span>/5</span>
-                                        </div>
-                                        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-                                    </div>
-                                    <div class="box-total">
-                                        <span>סה"כ:</span>
-                                        <span class="total-price">₪<span id="box-total-price">0</span></span>
-                                    </div>
-                                    <button class="finish-box-btn" id="finish-box-btn" disabled onclick="checkoutBox()">
-                                        ארוז והוסף לעגלה <i class="fa-solid fa-gift"></i>
-                                    </button>
-                                </div>
-                            </div> </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <section class="mystery-section" style="border-top: 1px solid rgba(212, 175, 55, 0.2);">                
-                <div class="packages-tabs" style="margin-bottom: 15px; justify-content: center;">                    
-                    <h2 class="package-tab active" style="cursor: default; pointer-events: none;">סוליבי מיסטרי בוקס</h2>
+            <div class="spa-nav-container">
+                <div class="spa-main-tabs">
+                    <button class="spa-main-tab" onclick="switchSpaMain('mystery', this)">סוליבי מיסטרי</button>
+                    <button class="spa-main-tab active" onclick="switchSpaMain('ready', this)">מארזים מוכנים</button>
+                    <button class="spa-main-tab" onclick="switchSpaMain('custom', this)">הרכבת מארז</button>
                 </div>
                 
-                <div class="carousel-container">
-                    <button class="carousel-arrow arrow-right" onclick="document.getElementById('mystery-slider').scrollLeft += 250">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
+                <div class="spa-sub-tabs" id="sub-tabs-ready">
+                    <button class="spa-sub-tab active" onclick="filterReadyBoxes('all', this)">הכל</button>
+                    <button class="spa-sub-tab" onclick="filterReadyBoxes('premium', this)">פרימיום</button>
+                    <button class="spa-sub-tab" onclick="filterReadyBoxes('kids', this)">ילדים</button>
+                    <button class="spa-sub-tab" onclick="filterReadyBoxes('training', this)">אימונים</button>
+                    <button class="spa-sub-tab" onclick="filterReadyBoxes('cards', this)">קלפים</button>
+                </div>
+                <div class="spa-sub-tabs" id="sub-tabs-mystery" style="display: none;">
+                    <button class="spa-sub-tab active" onclick="filterMysteryBoxes('all', this)">הכל</button>
+                    <button class="spa-sub-tab" onclick="filterMysteryBoxes('adult', this)">בוגרים</button>
+                    <button class="spa-sub-tab" onclick="filterMysteryBoxes('kids', this)">ילדים</button>
+                </div>
+            </div>
 
-                    <div class="products-carousel" id="mystery-slider">
+            <div class="spa-content-area">
+                
+                <div id="spa-view-ready" class="spa-view active">
+                    <div class="products-grid-spa">
+                        <div class="product-card premium-gold-card" data-ready-cat="premium">
+                            <div class="product-badge gold-badge">פרימיום</div>
+                            <div class="product-image"><i class="fa-solid fa-crown box-icon dark-icon"></i></div>
+                            <h3>מארז פרימיום</h3>
+                            <p class="product-desc">בובת מיניקס מקורית, מעטפת קלפים פאניני, מחזיק מפתחות מתכת יוקרתי.</p>
+                            <div class="product-footer">
+                                <span class="price">₪179</span>
+                                <button class="add-to-cart-btn">הוסף לעגלה</button>
+                            </div>
+                        </div>
 
-                        <div class="product-card">
+                        <div class="product-card" data-ready-cat="kids">
+                            <div class="product-badge">אספנות</div>
+                            <div class="product-image"><i class="fa-solid fa-child box-icon"></i></div>
+                            <h3>מארז ילדים</h3>
+                            <p class="product-desc">בובת סוקרסטארז בקופסא מקורית, מעטפות אדרנלין, כדור לחיצה ועוד.</p>
+                            <div class="product-footer">
+                                <span class="price">₪129</span>
+                                <button class="add-to-cart-btn">הוסף לעגלה</button>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-ready-cat="training">
+                            <div class="product-badge">אימונים</div>
+                            <div class="product-image"><i class="fa-solid fa-history box-icon"></i></div>
+                            <h3>מארז אימונים</h3>
+                            <p class="product-desc">2 זוגות גרבי גריפ, סט 10 קונוסים, רצועת אימון אלסטית, סולם קואורדינציה</p>
+                            <div class="product-footer">
+                                <span class="price">₪159</span>
+                                <button class="add-to-cart-btn">הוסף לעגלה</button>
+                            </div>
+                        </div>
+
+                        <div class="product-card" data-ready-cat="cards">
+                            <div class="product-badge">קלפים</div>
+                            <div class="product-image"><i class="fa-solid fa-clone box-icon"></i></div>
+                            <h3>מארז קלפים</h3>
+                            <p class="product-desc">קלף מדורג, מעטפת קלפים פאניני, מארז 100 סליבים ומגן יחיד 35pt.</p>
+                            <div class="product-footer">
+                                <span class="price">₪159</span>
+                                <button class="add-to-cart-btn">הוסף לעגלה</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="spa-view-mystery" class="spa-view">
+                    <div class="products-grid-spa">
+                        <div class="product-card" data-mystery-cat="adult">
                             <div class="product-badge gold-badge">14+</div>
-                            
                             <div class="product-image" style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 110px; margin-top: 10px;">
                                 <div style="position: absolute; top: 0; left: 0; display: flex; gap: 8px; z-index: 10;">
                                     <i class="fa-solid fa-circle-question mystery-icon-btn" onmouseenter="showGlobalModal('adult', 'text')" onmouseleave="hideGlobalModal()"></i>
                                 </div>
-<img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי בוגרים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain;">                            </div>
-                            
+                                <img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי בוגרים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain;">
+                            </div>
                             <h3 style="margin-top: 15px;">מיסטרי בוגרים</h3>
                             <p class="product-desc">מארז הפתעה מטורף עם קלפים, מדבקות, ואפשרות לזכות בקלפים מדורגים וחתימות נדירות!</p>
-
-                            <div class="product-footer" style="display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; margin-top: auto !important; direction: rtl !important; flex-direction: row !important;">
-    <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
-    <span class="price" style="margin: 0 !important;">₪79</span>
-</div>
+                            <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto;">
+                                <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
+                                <span class="price" style="margin: 0 !important;">₪79</span>
+                            </div>
                         </div>
 
-                        <div class="product-card">
+                        <div class="product-card" data-mystery-cat="kids">
                             <div class="product-badge">7+</div>
-                            
                             <div class="product-image" style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 110px; margin-top: 10px;">
                                 <div style="position: absolute; top: 0; left: 0; display: flex; gap: 8px; z-index: 10;">
                                     <i class="fa-solid fa-circle-question mystery-icon-btn" onmouseenter="showGlobalModal('kids', 'text')" onmouseleave="hideGlobalModal()"></i>
                                 </div>
-<img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי ילדים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain;">                            </div>
-                            
+                                <img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי ילדים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain;">
+                            </div>
                             <h3 style="margin-top: 15px;">מיסטרי ילדים</h3>
                             <p class="product-desc">מארז מושלם ומרגש לילדים עם קלפים, מדבקות והפתעות מיוחדות לאספנים מתחילים!</p>
-
-                            <div class="product-footer" style="display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; margin-top: auto !important; direction: rtl !important; flex-direction: row !important;">
-    <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
-    <span class="price" style="margin: 0 !important;">₪49</span>
-</div>
-                        </div>
-
-                        <div class="product-card" style="opacity: 0.6;">
-                            <div class="product-image" style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 110px;">
-                                <i class="fa-solid fa-box box-icon" style="color: rgba(255,255,255,0.1); font-size: 60px;"></i>
+                            <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto;">
+                                <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
+                                <span class="price" style="margin: 0 !important;">₪49</span>
                             </div>
-                            <h3 style="margin-top: 15px; visibility: hidden;">ריק</h3>
-                            <p class="product-desc" style="visibility: hidden;">שורת תיאור מוצר לא קיימת עדיין</p>
-                            
-                            <div class="product-footer" style="display: flex !important; justify-content: space-between !important; align-items: center !important; width: 100% !important; margin-top: auto !important; direction: rtl !important; flex-direction: row !important; visibility: hidden;">
-    <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
-    <span class="price" style="margin: 0 !important;">₪0</span>
-</div>
                         </div>
-
                     </div>
-
-                    <button class="carousel-arrow arrow-left" onclick="document.getElementById('mystery-slider').scrollLeft -= 250">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
                 </div>
+
+                <div id="spa-view-custom" class="spa-view">
+                    <div class="custom-builder-container">
+                        <div class="builder-right">
+                            <div class="builder-header">
+                                <h3>בחר פריטים למארז האישי</h3>
+                                <span class="builder-subtitle">עד 5 פריטים בקופסה</span>
+                            </div>
+                            <div class="builder-tabs">
+                                <button class="b-tab active" onclick="filterBuilder('all', this)">הכל</button>
+                                <button class="b-tab" onclick="filterBuilder('figures', this)">בובות</button>
+                                <button class="b-tab" onclick="filterBuilder('cards', this)">קלפים</button>
+                                <button class="b-tab" onclick="filterBuilder('training', this)">אימון</button>
+                                <button class="b-tab" onclick="filterBuilder('toys', this)">צעצועים</button>
+                                <button class="b-tab" onclick="filterBuilder('more', this)">שונות</button>
+                            </div>
+                            <div class="builder-products-scroll">
+                                <div class="builder-grid" id="builder-grid"></div>
+                            </div>
+                        </div>
+                        <div class="builder-left">
+                            <div class="box-visual">
+                                <i class="fa-solid fa-box-open bg-box-icon"></i>
+                                <div class="box-slots" id="box-slots">
+                                    <div class="box-slot empty" data-index="0"></div>
+                                    <div class="box-slot empty" data-index="1"></div>
+                                    <div class="box-slot empty" data-index="2"></div>
+                                    <div class="box-slot empty" data-index="3"></div>
+                                    <div class="box-slot empty" data-index="4"></div>
+                                </div>
+                            </div>
+                            <div class="box-summary">
+                                <div class="box-progress-area">
+                                    <div class="progress-texts"><span>תכולה</span><span><span id="box-count">0</span>/5</span></div>
+                                    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                                </div>
+                                <div class="box-total"><span>סה"כ:</span><span class="total-price">₪<span id="box-total-price">0</span></span></div>
+                                <button class="finish-box-btn" id="finish-box-btn" disabled onclick="checkoutBox()">ארוז והוסף לעגלה <i class="fa-solid fa-gift"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
             </section>
+
+            
             
             <div id="global-mystery-box" class="global-mystery-modal">
                 <div class="modal-text-side" id="global-modal-text"></div>
@@ -1050,14 +1419,56 @@
         });
     </script>
     <script>
-    function switchPackage(type) {
-        document.getElementById('tab-ready').classList.remove('active');
-        document.getElementById('tab-custom').classList.remove('active');
-        document.getElementById('view-ready').classList.remove('active-view');
-        document.getElementById('view-custom').classList.remove('active-view');
-        document.getElementById('tab-' + type).classList.add('active');
-        document.getElementById('view-' + type).classList.add('active-view');
-    }
+        // ==========================================
+        // דף הבית - מנגנון ניווט חכם וסינון - SPA
+        // ==========================================
+        function switchSpaMain(viewType, btnElement) {
+            document.querySelectorAll('.spa-main-tab').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            document.querySelectorAll('.spa-view').forEach(view => view.classList.remove('active'));
+            document.getElementById('spa-view-' + viewType).classList.add('active');
+
+            document.getElementById('sub-tabs-ready').style.display = (viewType === 'ready') ? 'flex' : 'none';
+            document.getElementById('sub-tabs-mystery').style.display = (viewType === 'mystery') ? 'flex' : 'none';
+        }
+
+        function filterReadyBoxes(category, btnElement) {
+            document.querySelectorAll('#sub-tabs-ready .spa-sub-tab').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            document.querySelectorAll('#spa-view-ready .product-card').forEach(card => {
+                if (category === 'all' || card.getAttribute('data-ready-cat') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filterMysteryBoxes(category, btnElement) {
+            document.querySelectorAll('#sub-tabs-mystery .spa-sub-tab').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            document.querySelectorAll('#spa-view-mystery .product-card').forEach(card => {
+                if (category === 'all' || card.getAttribute('data-mystery-cat') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+    <script>
+        // תיקון גם לסקריפט של הטיקר שנפגע מאותה בעיה
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('ticker-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
     </script>
     <script>
     fetch('ticker.html')
