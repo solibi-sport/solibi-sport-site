@@ -723,14 +723,26 @@
             margin-bottom: 12px !important;
         }
 
-        /* פוטר: מחיר משמאל, כפתור מימין */
+        /* פוטר: מחיר תמיד משמאל, כפתור תמיד מימין (מתעלם מסדר ה-HTML) */
         .products-grid-spa .product-footer {
             display: flex !important;
-            flex-direction: row-reverse !important;
+            flex-direction: row !important;
             justify-content: space-between !important;
             align-items: center !important;
             width: 100% !important;
             margin-top: auto !important;
+        }
+
+        /* כופה על הכפתור להיות תמיד ראשון (בצד ימין בעברית) */
+        .products-grid-spa .product-footer .add-to-cart-btn {
+            order: 1 !important;
+            margin: 0 !important;
+        }
+
+        /* כופה על המחיר להיות תמיד שני (בצד שמאל בעברית) */
+        .products-grid-spa .product-footer .price {
+            order: 2 !important;
+            margin: 0 !important;
         }
 
         /* קוביות הרכבת מארז */
