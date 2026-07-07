@@ -887,6 +887,131 @@
             margin: 0 !important;
         }
 
+        /* =========================================
+           רספונסיביות - התאמת הקוביות המרכזיות ללפטופים
+           ========================================= */
+        @media (max-height: 860px) {
+            /* כיווץ הרווחים והרוחב המינימלי */
+            .products-grid-spa {
+                gap: 12px !important; 
+                grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)) !important; /* מאפשר ל-3 קוביות להיכנס בשורה בלי להילחץ */
+            }
+            
+            /* כיווץ הקובייה עצמה */
+            .products-grid-spa .product-card {
+                min-height: 230px !important; /* הרבה פחות מ-290px שהיה */
+                padding: 12px !important;
+            }
+
+            /* כיווץ אזור התמונה */
+            .products-grid-spa .product-image {
+                height: 80px !important;
+                min-height: 80px !important;
+                margin-bottom: 5px !important;
+            }
+
+            /* דריסת הגודל של האייקונים (הכתר וכו') והתמונות */
+            .products-grid-spa .product-image i {
+                font-size: 40px !important; 
+            }
+            .products-grid-spa .product-image img {
+                max-height: 70px !important;
+            }
+
+            /* כיווץ הטקסטים */
+            .products-grid-spa .product-card h3 {
+                margin-top: 10px !important;
+                font-size: 16px !important;
+                margin-bottom: 5px !important;
+            }
+            .products-grid-spa .product-desc {
+                font-size: 12.5px !important;
+                line-height: 1.2 !important;
+                margin-bottom: 8px !important;
+            }
+        }
+
+        /* למסכים ממש קטנים (כמו לפטופ 13 אינץ') */
+        @media (max-height: 740px) {
+            .products-grid-spa .product-card {
+                min-height: 200px !important;
+            }
+            .products-grid-spa .product-image {
+                height: 65px !important;
+                min-height: 65px !important;
+            }
+            .products-grid-spa .product-image i {
+                font-size: 32px !important; 
+            }
+            .products-grid-spa .product-image img {
+                max-height: 55px !important;
+            }
+            .products-grid-spa .product-card h3 {
+                font-size: 14px !important;
+            }
+            .products-grid-spa .product-desc {
+                font-size: 11.5px !important;
+            }
+        }
+
+        /* =========================================
+           תיקון אחידות רווחים - מארזים ומיסטרי בדיוק אותו דבר
+           ========================================= */
+        
+        /* חוק ברזל לכל הרשתות באתר (גריד) */
+        .products-grid-spa, 
+        #spa-view-mystery .products-grid-spa {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)) !important; 
+            gap: 25px !important; /* רווח יפה, אוורירי ואחיד בין הקוביות */
+            justify-content: start !important; /* תמיד מתחיל מימין בצורה מסודרת */
+        }
+
+        /* תיקון ללפטופ: שומרים על רווח גדול גם במסך קטן */
+        @media (max-height: 860px) {
+            .products-grid-spa, 
+            #spa-view-mystery .products-grid-spa {
+                gap: 20px !important; /* מחליף את ה-12px שעשה את המעיכה קודם */
+                grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)) !important; 
+            }
+        }
+
+        /* =========================================
+           תיקון אוויר לנשימה בפוטר של הקוביות
+           ========================================= */
+        
+        /* מוודא שתמיד יהיה מרווח יפה מלמטה */
+        .products-grid-spa .product-card {
+            padding: 15px 15px 22px 15px !important; /* 22 פיקסלים של אוויר נקי למטה! */
+        }
+
+        /* הגבלת שורות בתיאור כדי שלא ידחוף את הכפתורים למטה */
+        .products-grid-spa .product-desc {
+            display: -webkit-box !important; 
+            -webkit-line-clamp: 2 !important; /* נועל את הטקסט ל-2 שורות בלבד */
+            -webkit-box-orient: vertical !important; 
+            overflow: hidden !important;
+            margin-bottom: 15px !important;
+        }
+
+        /* התאמות נוספות למסך לפטופ כדי שהכל ייכנס מושלם */
+        @media (max-height: 860px) {
+            .products-grid-spa .product-card {
+                padding: 12px 12px 18px 12px !important; /* שומר על האוויר גם במסך קטן */
+                min-height: 235px !important; /* נותן טיפ-טיפה יותר גובה */
+            }
+            
+            .products-grid-spa .product-desc {
+                font-size: 11.5px !important; /* מקטין את הכתב קצת כדי שישב יפה ב-2 שורות */
+            }
+            
+            /* הקטנה עדינה של כפתור ההוספה לעגלה בלפטופ */
+            .products-grid-spa .product-footer .add-to-cart-btn {
+                padding: 6px 12px !important;
+                font-size: 12.5px !important;
+            }
+        }
+
     </style>
 </head>
 <body>
