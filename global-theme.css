@@ -1366,3 +1366,34 @@ body > .profile-wrapper {
 .match-teams {
     padding-right: 5px !important;
 }
+
+/* =========================================
+   תאורת סטודיו מוגברת לכל המוצרים באתר (קטלוג, עגלה, בית)
+   ========================================= */
+.mini-product-card img,
+.products-grid-spa .product-image img,
+.products-grid-spa .product-image i,
+.b-card img,
+.product-card img,
+.catalog-grid img,     /* מכסה את הקטלוג */
+.cart-item img,        /* מכסה את העגלה */
+.product-gallery img   /* מכסה דפי מוצר ספציפיים */ {
+    
+    /* הילה לבנה וחזקה יותר סביב קווי המתאר של המוצר */
+    filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.25)) drop-shadow(0 8px 15px rgba(0,0,0,0.8)) !important;
+    
+    /* זרקור אחורי (Spotlight) מורגש הרבה יותר */
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 70%) !important;
+    
+    border-radius: 50% !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+    transition: all 0.3s ease !important;
+}
+
+/* אפקט מיוחד כשמעבירים עכבר על תמונה - התאורה מתחזקת! */
+.product-card:hover img,
+.mini-product-card:hover img {
+    filter: drop-shadow(0 0 25px rgba(214, 185, 83, 0.4)) drop-shadow(0 8px 15px rgba(0,0,0,0.8)) !important; /* הופך לזהב בהובר */
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%) !important;
+}

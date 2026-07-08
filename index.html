@@ -1012,6 +1012,136 @@
             }
         }
 
+        /* =========================================
+           צמצום רווחים והזזת פס גלילה לימין
+           ========================================= */
+        
+        /* מקטין משמעותית את הרווח שמתחת לטאבים כדי למשוך את הקוביות למעלה */
+        .spa-nav-container {
+            margin-bottom: 8px !important; 
+        }
+
+        /* טריק להזזת פס הגלילה לימין באתר RTL */
+        .products-grid-spa {
+            direction: ltr !important; /* זורק את פס הגלילה ימינה */
+        }
+        
+        /* שומר על הקוביות והטקסט מימין לשמאל */
+        .products-grid-spa > * {
+            direction: rtl !important; 
+        }
+
+        /* =========================================
+           תיקון כיוון הקוביות לימין + פס גלילה בימין
+           ========================================= */
+        
+        /* צמצום הרווח למעלה */
+        .spa-nav-container {
+            margin-bottom: 8px !important; 
+        }
+
+        /* 1. המעטפת מקבלת את הגלילה ומוגדרת כ"אנגלית" רק כדי שהפס ייזרק לימין */
+        .spa-view {
+            overflow-y: auto !important;
+            direction: ltr !important;
+            padding-left: 5px; /* מרווח קטן כדי שפס הגלילה לא ייגע בקוביות */
+        }
+        
+        /* מעבירים את העיצוב הזהוב של פס הגלילה למעטפת החדשה */
+        .spa-view::-webkit-scrollbar { width: 5px; }
+        .spa-view::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.3); border-radius: 10px; }
+
+        /* 2. הגריד של המוצרים חוזר לעברית טהורה (מימין לשמאל) ובלי גלילה כפולה */
+        .products-grid-spa {
+            direction: rtl !important; 
+            overflow-y: visible !important; 
+            justify-content: start !important; /* מצמיד הכל לימין */
+        }
+        
+        /* מוודאים שגם המיסטרי נצמד לימין יפה */
+        #spa-view-mystery .products-grid-spa {
+            justify-content: start !important; 
+        }
+
+        /* =========================================
+           החזרת אזור הרכבת המארז לכיוון הנכון (ימין לשמאל)
+           ========================================= */
+        .custom-builder-container {
+            direction: rtl !important;
+        }
+
+        /* =========================================
+           הגדלת תמונות הסיידבר (פיצוי על אפקט התאורה)
+           ========================================= */
+        .mini-product-card img {
+            max-height: 90px !important; /* הוגדל משמעותית כדי לפצות על הריפוד */
+            width: 90px !important;      /* שומר על מסגרת ריבועית אחידה */
+            object-fit: contain !important; /* מוודא שהתמונה לא נמעכת או מתעוותת */
+            flex-shrink: 0 !important;   /* מונע מהטקסט לדחוף ולמעוך את התמונה */
+        }
+
+        /* =========================================
+           הגדלת תמונות המיסטרי והרכבת המארז
+           ========================================= */
+        
+        /* תמונות במארזי מיסטרי */
+        #spa-view-mystery .product-image img {
+            max-height: 100px !important;  /* מגדיל את התמונה */
+            max-width: 80% !important;   /* מרחיב את המסגרת ביחס לקובייה */
+            object-fit: contain !important; /* שומר על הפרופורציה המקורית */
+            flex-shrink: 0 !important;   /* מונע דחיסה מהטקסט */
+        }
+
+        /* תמונות בקטגוריית הרכבת המארז (המוצרים לבחירה) */
+        .b-card img {
+            max-height: 95px !important;   /* מגדיל את התמונה */
+            width: 100% !important;      /* שומר על מסגרת רוחב מלאה */
+            object-fit: contain !important; /* מונע מעיכה */
+            margin-bottom: 10px !important; /* שומר על רווח אחיד מהטקסט */
+            flex-shrink: 0 !important;   /* מונע דחיסה מהטקסט */
+        }
+
+        /* =========================================
+           חלון צף למוצרים (מיובא מהקטלוג)
+           ========================================= */
+        .custom-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            z-index: 99999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: all 0.3s ease;
+        }
+        .custom-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .custom-modal-content {
+            background: #0b1221; border: 2px solid var(--brand-gold); border-radius: 16px;
+            width: 90%; max-width: 800px; position: relative; transform: scale(0.9);
+            transition: all 0.3s ease; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            overflow: hidden; direction: rtl;
+        }
+        .custom-modal-overlay.show .custom-modal-content { transform: scale(1); }
+        .close-modal-btn {
+            position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.1);
+            border: none; color: #fff; font-size: 24px; width: 35px; height: 35px;
+            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; z-index: 10;
+        }
+        .close-modal-btn:hover { background: #ff4a4a; color: #fff; transform: rotate(90deg); }
+        .modal-body-split { display: flex; flex-wrap: wrap; }
+        .modal-right-info { flex: 1.2; min-width: 300px; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .modal-left-image { flex: 1; min-width: 250px; background: rgba(255, 255, 255, 0.02); padding: 40px; display: flex; align-items: center; justify-content: center; border-right: 1px solid rgba(214, 185, 83, 0.1); }
+        .modal-left-image img { max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+        .modal-cat { color: #a0aec0; font-size: 14px; margin-bottom: 5px; }
+        .modal-main-title { color: var(--brand-gold); font-size: 28px; margin-bottom: 15px; line-height: 1.2; }
+        .modal-desc { color: #e2e8f0; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+        .modal-price-tag { font-size: 32px; font-weight: 900; color: var(--brand-gold); display: block; margin-bottom: 25px; }
+        .modal-actions { display: flex; gap: 15px; align-items: center; }
+        .quantity-selector { display: flex; align-items: center; background: rgba(0,0,0,0.5); border: 1px solid rgba(214, 185, 83, 0.3); border-radius: 8px; overflow: hidden; height: 45px; }
+        .qty-btn { background: transparent; border: none; color: var(--brand-gold); width: 40px; height: 100%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:hover { background: rgba(214, 185, 83, 0.2); }
+        .quantity-selector input { width: 40px; height: 100%; background: transparent; border: none; color: #fff; text-align: center; font-size: 18px; font-weight: bold; pointer-events: none; }
+        .modal-add-to-cart-btn { flex: 1; height: 45px; background: var(--brand-gold); color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .modal-add-to-cart-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.4); }
+        @media (max-width: 768px) { .modal-body-split { flex-direction: column-reverse; } .modal-right-info { padding: 25px; } .modal-left-image { padding: 25px; border-right: none; border-bottom: 1px solid rgba(214, 185, 83, 0.1); } .modal-actions { flex-direction: column; align-items: stretch; } }
+
     </style>
 </head>
 <body>
@@ -1179,18 +1309,11 @@
 
             <div class="spa-nav-container">
                 <div class="spa-main-tabs">
-                    <button class="spa-main-tab" onclick="switchSpaMain('mystery', this)">סוליבי מיסטרי</button>
+                    <button class="spa-main-tab" onclick="switchSpaMain('mystery', this)"> מיסטרי בוקס</button>
                     <button class="spa-main-tab active" onclick="switchSpaMain('ready', this)">מארזים מוכנים</button>
                     <button class="spa-main-tab" onclick="switchSpaMain('custom', this)">הרכבת מארז</button>
                 </div>
                 
-                <div class="spa-sub-tabs" id="sub-tabs-ready">
-                    <button class="spa-sub-tab active" onclick="filterReadyBoxes('all', this)">הכל</button>
-                    <button class="spa-sub-tab" onclick="filterReadyBoxes('premium', this)">פרימיום</button>
-                    <button class="spa-sub-tab" onclick="filterReadyBoxes('kids', this)">ילדים</button>
-                    <button class="spa-sub-tab" onclick="filterReadyBoxes('training', this)">אימונים</button>
-                    <button class="spa-sub-tab" onclick="filterReadyBoxes('cards', this)">קלפים</button>
-                </div>
                 <div class="spa-sub-tabs" id="sub-tabs-mystery" style="display: none;">
                     <button class="spa-sub-tab active" onclick="filterMysteryBoxes('all', this)">הכל</button>
                     <button class="spa-sub-tab" onclick="filterMysteryBoxes('adult', this)">בוגרים</button>
@@ -1205,7 +1328,7 @@
                         <div class="product-card premium-gold-card" data-ready-cat="premium">
                             <div class="product-badge gold-badge">פרימיום</div>
                             <div class="product-image"><i class="fa-solid fa-crown box-icon dark-icon"></i></div>
-                            <h3>מארז פרימיום</h3>
+                            <h3>מארז אספנות פרימיום</h3>
                             <p class="product-desc">בובת מיניקס מקורית, מעטפת קלפים פאניני, מחזיק מפתחות מתכת יוקרתי.</p>
                             <div class="product-footer">
                                 <span class="price">₪179</span>
@@ -1216,8 +1339,8 @@
                         <div class="product-card" data-ready-cat="kids">
                             <div class="product-badge">אספנות</div>
                             <div class="product-image"><i class="fa-solid fa-child box-icon"></i></div>
-                            <h3>מארז ילדים</h3>
-                            <p class="product-desc">בובת סוקרסטארז בקופסא מקורית, מעטפות אדרנלין, כדור לחיצה ועוד.</p>
+                            <h3>מארז לאספן הצעיר</h3>
+                            <p class="product-desc">בובת סוקרסטארז בקופסא מקורית, 2 מעטפות אדרנלין/מאצ' אטאקס , כדור לחיץ נבחרות וצמיד נבחרות במארז מהודר ומרשים.</p>
                             <div class="product-footer">
                                 <span class="price">₪129</span>
                                 <button class="add-to-cart-btn">הוסף לעגלה</button>
@@ -1227,8 +1350,8 @@
                         <div class="product-card" data-ready-cat="training">
                             <div class="product-badge">אימונים</div>
                             <div class="product-image"><i class="fa-solid fa-history box-icon"></i></div>
-                            <h3>מארז אימונים</h3>
-                            <p class="product-desc">2 זוגות גרבי גריפ, סט 10 קונוסים, רצועת אימון אלסטית, סולם קואורדינציה</p>
+                            <h3>מארז אימון ילדים/נוער</h3>
+                            <p class="product-desc">2 זוגות גרבי גריפ, סט 10 קונוסים, רצועת אימון אלסטית וסולם קואורדינציה 3 מטר. מגיע עם תיק נשיאה.</p>
                             <div class="product-footer">
                                 <span class="price">₪159</span>
                                 <button class="add-to-cart-btn">הוסף לעגלה</button>
@@ -1236,10 +1359,10 @@
                         </div>
 
                         <div class="product-card" data-ready-cat="cards">
-                            <div class="product-badge">קלפים</div>
+                            <div class="product-badge">כושר</div>
                             <div class="product-image"><i class="fa-solid fa-clone box-icon"></i></div>
-                            <h3>מארז קלפים</h3>
-                            <p class="product-desc">קלף מדורג, מעטפת קלפים פאניני, מארז 100 סליבים ומגן יחיד 35pt.</p>
+                            <h3>מארז כושר גבר/אישה</h3>
+                            <p class="product-desc">חבל קפיצה מקצועי, גלגל בטן, רצועה אלסטית לאימון חופשי ומוטות פוש. מגיע עם תיק נשיאה.</p>
                             <div class="product-footer">
                                 <span class="price">₪159</span>
                                 <button class="add-to-cart-btn">הוסף לעגלה</button>
@@ -1256,8 +1379,7 @@
                                 <div style="position: absolute; top: 0; left: 0; display: flex; gap: 8px; z-index: 10;">
                                     <i class="fa-solid fa-circle-question mystery-icon-btn" onmouseenter="showGlobalModal('adult', 'text')" onmouseleave="hideGlobalModal()"></i>
                                 </div>
-                                <img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי בוגרים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain;">
-                            </div>
+<img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי בוגרים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain; cursor: pointer;" onclick="openHomeProductModal('מיסטרי בוגרים', '₪79', 'מארזי מיסטרי', 'images/solibi-mistery-pack.jpg.png', 'מארז הפתעה מטורף עם קלפים, מדבקות, ואפשרות לזכות בקלפים מדורגים וחתימות נדירות!')">                            </div>
                             <h3 style="margin-top: 15px;">מיסטרי בוגרים</h3>
                             <p class="product-desc">מארז הפתעה מטורף עם קלפים, מדבקות, ואפשרות לזכות בקלפים מדורגים וחתימות נדירות!</p>
                             <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto;">
@@ -1272,8 +1394,7 @@
                                 <div style="position: absolute; top: 0; left: 0; display: flex; gap: 8px; z-index: 10;">
                                     <i class="fa-solid fa-circle-question mystery-icon-btn" onmouseenter="showGlobalModal('kids', 'text')" onmouseleave="hideGlobalModal()"></i>
                                 </div>
-                                <img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי ילדים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain;">
-                            </div>
+<img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי ילדים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain; cursor: pointer;" onclick="openHomeProductModal('מיסטרי ילדים', '₪49', 'מארזי מיסטרי', 'images/solibi-mistery-pack.jpg.png', 'מארז מושלם ומרגש לילדים עם קלפים, מדבקות והפתעות מיוחדות לאספנים מתחילים!')">                            </div>
                             <h3 style="margin-top: 15px;">מיסטרי ילדים</h3>
                             <p class="product-desc">מארז מושלם ומרגש לילדים עם קלפים, מדבקות והפתעות מיוחדות לאספנים מתחילים!</p>
                             <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto;">
@@ -1337,6 +1458,34 @@
             </div>
 
         </main>
+        <div id="product-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content">
+            <button class="close-modal-btn" onclick="closeProductModal()">&times;</button>
+            <div class="modal-body-split">
+                <div class="modal-right-info">
+                    <span id="modal-category" class="modal-cat">קטגוריה</span>
+                    <h2 id="modal-title" class="modal-main-title">שם המוצר</h2>
+                    <p id="modal-description" class="modal-desc">תיאור המוצר יופיע כאן</p>
+                    <div class="modal-price-wrap">
+                        <span id="modal-price" class="modal-price-tag">0 ₪</span>
+                    </div>
+                    <div class="modal-actions">
+                        <div class="quantity-selector">
+                            <button class="qty-btn" onclick="updateQty(-1)"><i class="fa-solid fa-minus"></i></button>
+                            <input type="text" id="modal-qty" value="1" readonly>
+                            <button class="qty-btn" onclick="updateQty(1)"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <button class="modal-add-to-cart-btn" onclick="addToCartFromModal()">
+                            הוסף לעגלה <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-left-image">
+                    <img id="modal-img" src="" alt="תמונת מוצר">
+                </div>
+            </div>
+        </div>
+    </div>
         
         <aside class="sidebar sidebar-left">
             <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-gold); padding-bottom: 10px; margin-bottom: 15px;">
@@ -1707,7 +1856,7 @@
                 card.setAttribute('data-cat', prod.cat);
                 
                 card.innerHTML = `
-                    <img src="${prod.img}" alt="${prod.title}">
+                    <img src="${prod.img}" alt="${prod.title}" style="cursor: pointer;" onclick="openHomeProductModal('${prod.title}', ${prod.price}, 'פריט להרכבת מארז אישי', '${prod.img}', 'מוצר זה ניתן להוסיף למארז האישי שאתה מרכיב.')">
                     <div class="b-info">
                         <div class="b-title">${prod.title}</div>
                         <div class="b-price">₪${prod.price}</div>
@@ -1788,5 +1937,54 @@
             renderBuilderProducts();
         });
     </script>
+    <script>
+    let currentQty = 1;
+
+    // הפונקציה החכמה שלוקחת את הנתונים ופותחת את החלון
+    function openHomeProductModal(title, price, category, imgSrc, desc) {
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-price').innerText = typeof price === 'number' ? '₪' + price : price;
+        document.getElementById('modal-category').innerText = category;
+        document.getElementById('modal-description').innerText = desc || 'מוצר איכותי מבית Solibi Sport.';
+        
+        if (imgSrc) {
+            document.getElementById('modal-img').style.display = 'block';
+            document.getElementById('modal-img').src = imgSrc;
+        } else {
+            document.getElementById('modal-img').style.display = 'none';
+        }
+        
+        currentQty = 1;
+        document.getElementById('modal-qty').value = currentQty;
+        document.getElementById('product-modal').classList.add('show');
+    }
+
+    function closeProductModal() {
+        document.getElementById('product-modal').classList.remove('show');
+    }
+
+    function updateQty(change) {
+        currentQty += change;
+        if (currentQty < 1) currentQty = 1; 
+        if (currentQty > 20) currentQty = 20; 
+        document.getElementById('modal-qty').value = currentQty;
+    }
+
+    function addToCartFromModal() {
+        const title = document.getElementById('modal-title').innerText;
+        alert(currentQty + ' יחידות של ' + title + ' נוספו לעגלה בהצלחה!');
+        closeProductModal();
+    }
+
+    // סגירת החלון בלחיצה על הרקע השחור מסביב
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('product-modal');
+        if(modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) closeProductModal();
+            });
+        }
+    });
+</script>
 </body>
 </html>
