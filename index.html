@@ -1142,6 +1142,39 @@
         .modal-add-to-cart-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.4); }
         @media (max-width: 768px) { .modal-body-split { flex-direction: column-reverse; } .modal-right-info { padding: 25px; } .modal-left-image { padding: 25px; border-right: none; border-bottom: 1px solid rgba(214, 185, 83, 0.1); } .modal-actions { flex-direction: column; align-items: stretch; } }
 
+/* =========================================
+           תתי-טאבים למארזים ונעילת גלילה לימין
+           ========================================= */
+        .spa-sub-tabs {
+            display: flex; justify-content: center; gap: 15px;
+            margin-top: 15px; margin-bottom: 15px;
+        }
+
+        .spa-sub-tab {
+            background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(214, 185, 83, 0.2);
+            color: #a0a0a0; padding: 6px 18px; border-radius: 20px;
+            font-family: inherit; font-size: 13px; cursor: pointer; transition: all 0.3s ease;
+        }
+
+        .spa-sub-tab:hover { color: #D6B953; border-color: rgba(214, 185, 83, 0.5); }
+        .spa-sub-tab.active {
+            background: rgba(214, 185, 83, 0.1); color: #D6B953;
+            border-color: #D6B953; font-weight: bold;
+        }
+
+        /* נעילת פס הגלילה לימין בלבד לכל האזורים */
+        .spa-view {
+            direction: ltr !important; 
+            overflow-y: auto !important; 
+            overflow-x: hidden !important; 
+            padding-left: 5px;
+        }
+        
+        /* החזרת התוכן הפנימי לעברית מימין לשמאל */
+        .products-grid-spa, .custom-builder-container, #spa-view-vintage {
+            direction: rtl !important; 
+        }
+
     </style>
 </head>
 <body>
@@ -1307,17 +1340,18 @@
                 <p>מארזי אספנות יוקרתיים</p>
             </section>
 
+            <!-- תפריט הניווט הראשי - מארזים, מיסטרי, וינטג' -->
             <div class="spa-nav-container">
                 <div class="spa-main-tabs">
-                    <button class="spa-main-tab" onclick="switchSpaMain('mystery', this)"> מיסטרי בוקס</button>
-                    <button class="spa-main-tab active" onclick="switchSpaMain('ready', this)">מארזים מוכנים</button>
-                    <button class="spa-main-tab" onclick="switchSpaMain('custom', this)">הרכבת מארז</button>
+                    <button class="spa-main-tab active" onclick="switchSpaMain('packages', this)">מארזי סוליבי</button>
+                    <button class="spa-main-tab" onclick="switchSpaMain('mystery', this)">סוליבי מיסטרי</button>
+                    <button class="spa-main-tab" onclick="switchSpaMain('vintage', this)">סוליבי וינטג' <i class="fa-solid fa-gem" style="font-size: 13px; margin-right: 5px; color: #D6B953;"></i></button>
                 </div>
                 
-                <div class="spa-sub-tabs" id="sub-tabs-mystery" style="display: none;">
-                    <button class="spa-sub-tab active" onclick="filterMysteryBoxes('all', this)">הכל</button>
-                    <button class="spa-sub-tab" onclick="filterMysteryBoxes('adult', this)">בוגרים</button>
-                    <button class="spa-sub-tab" onclick="filterMysteryBoxes('kids', this)">ילדים</button>
+                <!-- תתי-טאבים אלגנטיים למארזי סוליבי -->
+                <div class="spa-sub-tabs" id="packages-sub-tabs" style="display: flex;">
+                    <button class="spa-sub-tab active" onclick="switchPackagesSub('ready', this)">מארזים מוכנים</button>
+                    <button class="spa-sub-tab" onclick="switchPackagesSub('custom', this)">הרכבת מארז</button>
                 </div>
             </div>
 
@@ -1387,6 +1421,13 @@
                                 <span class="price" style="margin: 0 !important;">₪79</span>
                             </div>
                         </div>
+
+                        <!-- תצוגת סוליבי וינטג' (בבנייה) -->
+            <div id="spa-view-vintage" class="spa-view" style="display: none; align-items: center; justify-content: center; min-height: 400px; text-align: center; flex-direction: column;">
+                <i class="fa-solid fa-gem" style="font-size: 48px; color: rgba(214, 185, 83, 0.3); margin-bottom: 20px;"></i>
+                <h2 style="color: #D6B953; margin-bottom: 10px;">מחלקת האספנות והוינטג'</h2>
+                <p style="color: #a0a0a0;">המוצרים הנדירים שלנו יועלו לכאן בקרוב...</p>
+            </div>
 
                         <div class="product-card" data-mystery-cat="kids">
                             <div class="product-badge">7+</div>
@@ -1704,50 +1745,64 @@
             });
         });
     </script>
-    <script>
-        // ==========================================
-        // דף הבית - מנגנון ניווט חכם וסינון - SPA
-        // ==========================================
-        function switchSpaMain(viewType, btnElement) {
-            document.querySelectorAll('.spa-main-tab').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
+    
+        <script>
+        // הפעלת טאבים ראשיים (מארזים / מיסטרי / וינטג')
+        function switchSpaMain(viewId, btn) {
+            // עדכון צבע הכפתור הראשי
+            document.querySelectorAll('.spa-main-tab').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
 
-            document.querySelectorAll('.spa-view').forEach(view => view.classList.remove('active'));
-            document.getElementById('spa-view-' + viewType).classList.add('active');
-
-            document.getElementById('sub-tabs-ready').style.display = (viewType === 'ready') ? 'flex' : 'none';
-            document.getElementById('sub-tabs-mystery').style.display = (viewType === 'mystery') ? 'flex' : 'none';
-        }
-
-        function filterReadyBoxes(category, btnElement) {
-            document.querySelectorAll('#sub-tabs-ready .spa-sub-tab').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-
-            document.querySelectorAll('#spa-view-ready .product-card').forEach(card => {
-                if (category === 'all' || card.getAttribute('data-ready-cat') === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+            // מסתיר את כל התצוגות בבטחה
+            const viewsToHide = ['spa-view-ready', 'spa-view-custom', 'spa-view-mystery', 'spa-view-vintage'];
+            viewsToHide.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
             });
-        }
 
-        function filterMysteryBoxes(category, btnElement) {
-            document.querySelectorAll('#sub-tabs-mystery .spa-sub-tab').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
+            const subTabs = document.getElementById('packages-sub-tabs');
 
-            document.querySelectorAll('#spa-view-mystery .product-card').forEach(card => {
-                if (category === 'all' || card.getAttribute('data-mystery-cat') === category) {
-                    card.style.display = 'flex';
+            // ניתוב חכם לפי הטאב שנבחר
+            if (viewId === 'packages') {
+                if (subTabs) subTabs.style.display = 'flex'; 
+                
+                // בודק איזה תת-טאב היה פעיל ופותח אותו
+                const customTab = document.querySelector('.spa-sub-tab:nth-child(2)');
+                const isCustomActive = customTab && customTab.classList.contains('active');
+                
+                if (isCustomActive) {
+                    const customView = document.getElementById('spa-view-custom');
+                    if (customView) customView.style.display = 'flex';
                 } else {
-                    card.style.display = 'none';
+                    const readyView = document.getElementById('spa-view-ready');
+                    if (readyView) readyView.style.display = 'flex';
                 }
-            });
+            } else {
+                if (subTabs) subTabs.style.display = 'none'; 
+                
+                const activeView = document.getElementById('spa-view-' + viewId);
+                if (activeView) {
+                    activeView.style.display = 'flex';
+                }
+            }
         }
-    </script>
 
-    <script>
-        // תיקון גם לסקריפט של הטיקר שנפגע מאותה בעיה
+        // הפעלת תתי-טאבים (מוכנים / הרכבה אישית)
+        function switchPackagesSub(subViewId, btn) {
+            document.querySelectorAll('.spa-sub-tab').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const readyView = document.getElementById('spa-view-ready');
+            const customView = document.getElementById('spa-view-custom');
+            
+            if (readyView) readyView.style.display = 'none';
+            if (customView) customView.style.display = 'none';
+            
+            const activeView = document.getElementById('spa-view-' + subViewId);
+            if (activeView) activeView.style.display = 'flex';
+        }
+
+        // טעינת הטיקר התחתון
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {
@@ -1755,15 +1810,6 @@
                 if(placeholder) placeholder.innerHTML = data;
             })
             .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
-    </script>
-    <script>
-    fetch('ticker.html')
-        .then(response => response.text())
-        .then(data => {
-            const placeholder = document.getElementById('ticker-placeholder');
-            if(placeholder) placeholder.innerHTML = data;
-        })
-        .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
     </script>
 
 <script type="module" src="auth.js"></script>
