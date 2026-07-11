@@ -1179,32 +1179,8 @@
 </head>
 <body>
 
-    <header class="site-header">
-        
-        <div class="header-right">
-            <a href="index.html">
-                <img src="logo.png.png" alt="Solibi Sport Logo" class="site-logo">
-            </a>
-        </div>
-
-        <div class="header-center">
-            <div id="dynamic-auth-btn">
-                <a href="login.html" class="login-btn-header">כניסה / חבר מועדון</a>
-            </div>
-            <nav class="main-nav">
-               <a href="index.html" class="home-btn-header">דף הבית</a>
-                <a href="about.html">אודות</a>
-                <a href="contact.html">צור קשר</a>
-                <a href="catalog.html">קטלוג מוצרים</a>
-                <a href="cart.html">עגלה <i class="fa-solid fa-cart-shopping"></i></a>
-            </nav>
-        </div>
-
-        <div class="header-left">
-            <a href="tables.html" class="tables-btn-header">טבלאות <i class="fa-solid fa-list-ul"></i></a>
-        </div>
-
-    </header>
+<!-- טעינת ההדר של האתר מקובץ חיצוני -->
+    <div id="header-placeholder"></div>
 
     <div class="site-layout">
         
@@ -1387,7 +1363,7 @@
                             <h3>מארז אימון ילדים/נוער</h3>
                             <p class="product-desc">2 זוגות גרבי גריפ, סט 10 קונוסים, רצועת אימון אלסטית וסולם קואורדינציה 3 מטר. מגיע עם תיק נשיאה.</p>
                             <div class="product-footer">
-                                <span class="price">₪159</span>
+                                <span class="price">₪99</span>
                                 <button class="add-to-cart-btn">הוסף לעגלה</button>
                             </div>
                         </div>
@@ -1398,7 +1374,7 @@
                             <h3>מארז כושר גבר/אישה</h3>
                             <p class="product-desc">חבל קפיצה מקצועי, גלגל בטן, רצועה אלסטית לאימון חופשי ומוטות פוש. מגיע עם תיק נשיאה.</p>
                             <div class="product-footer">
-                                <span class="price">₪159</span>
+                                <span class="price">₪119</span>
                                 <button class="add-to-cart-btn">הוסף לעגלה</button>
                             </div>
                         </div>
@@ -1544,6 +1520,14 @@
     </div>
 
     <footer class="footer">
+        <!-- תפריט ניווט תחתון -->
+        <div class="footer-links">
+            <a href="about.html">אודות</a>
+            <a href="contact.html">צור קשר</a>
+            <a href="terms.html">תקנון ומדיניות</a>
+        </div>
+        
+        <!-- הטיקר שרץ למטה -->
         <div id="ticker-placeholder"></div>
     </footer>
 
@@ -1802,6 +1786,14 @@
             if (activeView) activeView.style.display = 'flex';
         }
 
+        // טעינת ההדר העליון (Header)
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('header-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
         // טעינת הטיקר התחתון
         fetch('ticker.html')
             .then(response => response.text())

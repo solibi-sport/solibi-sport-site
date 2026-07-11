@@ -1,5 +1,4 @@
 <header class="site-header">
-        
     <div class="header-right">
         <a href="index.html">
             <img src="logo.png.png" alt="Solibi Sport Logo" class="site-logo">
@@ -12,16 +11,32 @@
         </div>
 
         <nav class="main-nav">
-           <a href="index.html" class="home-btn-header">דף הבית</a>
-            <a href="about.html">אודות</a>
-            <a href="contact.html">צור קשר</a>
-            <a href="catalog.html">קטלוג מוצרים</a>
-            <a href="cart.html">עגלה <i class="fa-solid fa-cart-shopping"></i></a>
-        </nav>
+    <a href="index.html" class="home-btn-header">דף הבית</a>
+    <a href="catalog.html">קטלוג מוצרים</a>
+    <!-- שמנו רק את הדברים הקריטיים לתהליך הקנייה והשיטוט -->
+    <a href="cart.html">עגלה <i class="fa-solid fa-cart-shopping"></i></a>
+    <a href="tables.html" class="tables-btn-header">טבלאות <i class="fa-solid fa-list-ul"></i></a>
+</nav>
     </div>
 
     <div class="header-left">
-        <a href="tables.html" class="tables-btn-header">טבלאות <i class="fa-solid fa-list-ul"></i></a>
+        <!-- מנגנון חיפוש פרימיום נפתח -->
+        <div class="premium-search-container">
+            <input type="text" id="premium-search-input" class="premium-search-input" placeholder="חפש מוצר, קבוצה, פריט נדיר...">
+            <button class="premium-search-btn" id="premium-search-btn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
     </div>
-
 </header>
+
+<!-- פס הכרזה למכירות פומביות (Drop Bar) הועבר לכאן - מתחת להדר -->
+<div id="auction-drop-bar" class="auction-drop-bar" style="display: flex;">
+    <div class="auction-drop-content">
+        <span class="live-pulse"></span>
+        <span class="auction-text">מכירה פומבית בשידור חי: אלבום סופרגול נדיר</span>
+        <div class="auction-timer" id="header-auction-timer">02:14:59</div>
+        <a href="auctions.html" class="enter-auction-btn">היכנס לזירה</a>
+    </div>
+    <button class="close-drop-bar" onclick="document.getElementById('auction-drop-bar').style.display='none'">&times;</button>
+</div>

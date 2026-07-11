@@ -1397,3 +1397,238 @@ body > .profile-wrapper {
     filter: drop-shadow(0 0 25px rgba(214, 185, 83, 0.4)) drop-shadow(0 8px 15px rgba(0,0,0,0.8)) !important; /* הופך לזהב בהובר */
     background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%) !important;
 }
+
+/* =========================================
+           שורת חיפוש פרימיום (קטנה שמתרחבת בלחיצה)
+           ========================================= */
+        .header-left {
+            width: 290px !important; 
+            flex: 0 0 290px !important; 
+            display: flex;
+            justify-content: flex-end; 
+            align-items: center;
+            padding-left: 0 !important;
+        }
+
+        .premium-search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5); /* רקע קפסולה כהה שיושב יפה על הזהב */
+            border-radius: 30px;
+            padding: 5px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 160px; /* הרוחב ההתחלתי הקטן שביקשת */
+            height: 40px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* הקסם: כשלוחצים בתוך השורה כדי להקליד, היא מתרחבת אוטומטית! */
+        .premium-search-container:focus-within {
+            background: #0a0a0a; 
+            border-color: #D6B953; /* מסגרת זהב כדי להראות שהיא פעילה */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            width: 100%; /* מתרחבת לכל ה-290 פיקסלים של הסיידבר */
+        }
+
+        .premium-search-input {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            padding: 0 12px 0 5px;
+            direction: rtl;
+            outline: none;
+        }
+
+        .premium-search-input::placeholder { 
+            color: rgba(255, 255, 255, 0.7); 
+            transition: 0.3s;
+        }
+
+        .premium-search-container:focus-within .premium-search-input::placeholder {
+            opacity: 0.4; /* מחליש את טקסט הרקע כשמתחילים לכתוב */
+        }
+
+        .premium-search-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        /* כשהשורה מורחבת, האייקון הופך לזהב */
+        .premium-search-container:focus-within .premium-search-btn {
+            color: #D6B953; 
+        }
+
+        .premium-search-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* =========================================
+   פס הכרזה פרימיום למכירות פומביות (Drop Bar)
+   ========================================= */
+.auction-drop-bar {
+    background: linear-gradient(90deg, #0b1221 0%, #1a2538 50%, #0b1221 100%);
+    border-bottom: 1px solid rgba(214, 185, 83, 0.5);
+    color: #fff;
+    padding: 8px 20px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    font-size: 14px;
+    direction: rtl;
+}
+
+.auction-drop-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* אפקט הלייב (נקודה אדומה פועמת) */
+.live-pulse {
+    width: 10px;
+    height: 10px;
+    background-color: #ff4a4a;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff4a4a;
+    animation: pulse-red 1.5s infinite;
+}
+
+@keyframes pulse-red {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 74, 74, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0); }
+}
+
+.auction-text {
+    color: #e2e8f0;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.auction-timer {
+    color: #D6B953;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: bold;
+    background: rgba(214, 185, 83, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(214, 185, 83, 0.3);
+}
+
+.enter-auction-btn {
+    background: #D6B953;
+    color: #000;
+    text-decoration: none;
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.enter-auction-btn:hover {
+    background: #fff;
+    box-shadow: 0 0 10px rgba(214, 185, 83, 0.6);
+    transform: scale(1.05);
+}
+
+.close-drop-bar {
+    position: absolute;
+    left: 15px; /* מותאם ל-RTL */
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-drop-bar:hover {
+    color: #ff4a4a;
+}
+
+/* =========================================
+   תפריט פוטר תחתון (קישורי מידע)
+   ========================================= */
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 15px 0;
+    background: #000; /* מתמזג עם התחתית */
+    border-top: 1px solid rgba(214, 185, 83, 0.15); /* פס זהב עדין מעל */
+    direction: rtl;
+}
+
+.footer-links a {
+    color: #a0aec0; /* צבע אפור-כסוף אלגנטי */
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #D6B953; /* הופך לזהב במעבר עכבר */
+    transform: translateY(-2px);
+}
+/* =========================================
+   תיקון סופי לפוטר - שבירת הגובה הקבוע ויישור לשורות
+   ========================================= */
+.footer {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important; /* זה הקסם שמבטל את המעיכה! */
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+.footer-links {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    gap: 30px !important;
+    padding: 15px 0 !important;
+    background: #050505 !important; /* שחור עמוק */
+    border-top: 1px solid rgba(214, 185, 83, 0.15) !important;
+    direction: rtl;
+}
+
+#ticker-placeholder {
+    width: 100% !important;
+    height: 45px !important; /* התיקון: נועל את הטיקר חזרה לגובה הבשרני והמקורי שלו */
+}
+/* =========================================
+   רספונסיביות לפוטר במסכים קטנים (מובייל)
+   ========================================= */
+@media (max-width: 600px) {
+    .footer-links {
+        gap: 15px !important; /* צמצום הרווחים כדי שהכל ייכנס בשורה אחת */
+        padding: 10px 5px !important;
+    }
+    
+    .footer-links a {
+        font-size: 12.5px !important; /* הקטנה עדינה של הטקסט */
+    }
+}
