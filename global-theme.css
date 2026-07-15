@@ -1632,3 +1632,1990 @@ body > .profile-wrapper {
         font-size: 12.5px !important; /* הקטנה עדינה של הטקסט */
     }
 }
+
+/* =========================================
+   חלון ראווה דינמי ויוקרתי (Premium Hub Tabs)
+   ========================================= */
+
+/* ניקוי וריווח המיכל המרכזי */
+.main-content {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 20px 30px !important;
+    height: 100% !important;
+    overflow-y: auto !important;
+}
+
+/* שורת הטאבים המרכזית */
+.premium-hub-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px; /* רווח עצום ויוקרתי בין האופציות */
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(214, 185, 83, 0.15);
+    padding-bottom: 15px;
+    direction: rtl;
+}
+
+.hub-tab {
+    background: transparent;
+    border: none;
+    color: #666; /* צבע כבוי לטאב לא פעיל */
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 5px 10px;
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* מרווח בין המילה לנקודה האדומה */
+}
+
+.hub-tab:hover {
+    color: #fff;
+}
+
+/* הטאב הפעיל מקבל קו לבן דק ויוקרתי מתחתיו */
+.hub-tab.active {
+    color: #fff !important;
+    border-bottom: 2px solid #fff;
+}
+
+/* הנקודה האדומה המהבהבת - ממוקמת משמאל למילה (בגלל ה-flex וה-direction) */
+.live-pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ff4a4a;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px #ff4a4a;
+    animation: pulse-red-dot 1.5s infinite;
+    /* עכשיו זה יישב בטבעיות משמאל לטקסט */
+}
+
+@keyframes pulse-red-dot {
+    0% { transform: scale(0.9); opacity: 0.4; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.4; }
+}
+
+/* כותרת הפאנל המינימליסטית (החליפה את הבאנר הענק והחונק) */
+.hub-panel-title {
+    color: var(--brand-gold);
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+}
+
+/* ניהול התצוגה של הפאנלים - חלק ונושם */
+.hub-content-viewport {
+    flex-grow: 1;
+    position: relative;
+}
+
+.hub-panel {
+    display: none; /* מוסתר כברירת מחדל */
+    animation: fadeHubPanel 0.4s ease-in-out forwards;
+}
+
+.hub-panel.active {
+    display: block; /* מוצג רק כשהוא פעיל */
+}
+
+@keyframes fadeHubPanel {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* עיצוב חדר ההמתנה הריק (לוינטג' ופומביות כשאין אירוע) */
+.empty-hub-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    border: 1px dashed rgba(214, 185, 83, 0.2);
+    border-radius: 12px;
+    color: #888;
+    gap: 15px;
+    padding: 20px;
+    text-align: center;
+}
+
+.empty-hub-state i {
+    font-size: 40px;
+    color: rgba(214, 185, 83, 0.4);
+}
+
+.empty-hub-state p {
+    font-size: 15px;
+    max-width: 400px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   זירת מכירות פומביות (Auctions Arena) - עיצוב פרימיום
+   ========================================= */
+
+.auction-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.auction-arena {
+    display: flex;
+    flex-direction: row; /* ימין ושמאל */
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    background: #0f0f0f;
+    border: 1px solid rgba(214, 185, 83, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(214, 185, 83, 0.05);
+    overflow: hidden;
+    height: 100%;
+    min-height: 550px;
+}
+
+/* --- צד ימין: הפריט והדרמה --- */
+.auction-product-side {
+    width: 50%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: linear-gradient(135deg, #050505 0%, #151515 100%);
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.auction-badge-live {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 0, 0, 0.15);
+    border: 1px solid #ff4a4a;
+    color: #ff4a4a;
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 1px;
+}
+
+.auction-image-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0 20px 0;
+}
+
+.auction-placeholder-img {
+    font-size: 150px;
+    color: rgba(214, 185, 83, 0.8);
+    filter: drop-shadow(0 0 25px rgba(214, 185, 83, 0.3));
+}
+
+.auction-title {
+    font-size: 26px;
+    color: #fff;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.auction-desc {
+    color: #a0a0a0;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.authenticity-stamp {
+    color: #D6B953;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(214, 185, 83, 0.2);
+}
+
+/* --- צד שמאל: קונסולת המסחר --- */
+.auction-console-side {
+    width: 50%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #0a0a0a;
+}
+
+.time-remaining-box, .current-bid-box {
+    background: #151515;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.time-remaining-box span, .current-bid-box span {
+    color: #888;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.huge-timer {
+    font-family: monospace;
+    font-size: 34px;
+    font-weight: 900;
+    color: #ff4a4a;
+    text-shadow: 0 0 15px rgba(255, 74, 74, 0.4);
+    letter-spacing: 2px;
+}
+
+.huge-price {
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--brand-gold);
+    text-shadow: 0 0 20px rgba(214, 185, 83, 0.4);
+}
+
+.leading-bidder {
+    color: #4caf50; /* ירוק חיוב */
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* אזור הגשת ההצעות */
+.place-bid-area h3 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.quick-bid-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.bid-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--brand-gold);
+    color: var(--brand-gold);
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bid-btn:hover {
+    background: var(--brand-gold);
+    color: #000;
+    box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3);
+}
+
+.custom-bid-input {
+    display: flex;
+    gap: 10px;
+}
+
+.custom-bid-input input {
+    flex-grow: 1;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #fff;
+    padding: 0 15px;
+    font-size: 15px;
+    direction: rtl;
+    outline: none;
+}
+
+.custom-bid-input input:focus {
+    border-color: var(--brand-gold);
+}
+
+.submit-bid-btn {
+    background: var(--brand-gold);
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* פיד היסטוריית הצעות */
+.bid-history {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.bid-history h4 {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.history-list {
+    list-style: none;
+    max-height: 110px;
+    overflow-y: auto;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    font-size: 13px;
+}
+
+.history-item:last-child { border-bottom: none; }
+
+.bid-user { color: #fff; font-weight: bold; width: 30%; }
+.bid-time { color: #666; width: 40%; text-align: center; }
+.bid-amount { color: var(--brand-gold); font-weight: bold; width: 30%; text-align: left; }
+
+.new-bid {
+    background: rgba(214, 185, 83, 0.05);
+    border-radius: 4px;
+}
+/* =========================================
+   טיזר מכירות פומביות בדף הבית (Auctions Teaser)
+   ========================================= */
+
+.auction-teaser-container {
+    background: linear-gradient(145deg, #111111, #050505);
+    border: 1px solid rgba(214, 185, 83, 0.4);
+    border-radius: 16px;
+    padding: 35px;
+    position: relative;
+    max-width: 750px;
+    margin: 40px auto 20px auto; /* ממורכז עם רווח מהטאבים */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(214, 185, 83, 0.05);
+}
+
+.teaser-live-badge {
+    position: absolute;
+    top: -16px;
+    right: 50%;
+    transform: translateX(50%);
+    background: #ff4a4a;
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 20px rgba(255, 74, 74, 0.6);
+    letter-spacing: 0.5px;
+}
+
+.teaser-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.teaser-image {
+    background: #000;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px dashed rgba(214, 185, 83, 0.2);
+    min-width: 150px;
+    text-align: center;
+}
+
+.teaser-details {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.teaser-details h3 {
+    color: #fff;
+    font-size: 24px;
+    margin: 0;
+}
+
+.teaser-details p {
+    color: #a0a0a0;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.teaser-timer {
+    font-family: monospace;
+    font-size: 28px;
+    color: #ff4a4a;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(255, 74, 74, 0.3);
+}
+
+.enter-arena-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--brand-gold);
+    color: #000;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    align-self: flex-start; /* שומר על הכפתור בגודל המתאים לטקסט */
+    margin-top: 5px;
+}
+
+.enter-arena-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(214, 185, 83, 0.4);
+    color: #000;
+}
+/* =========================================
+   ניהול פוטר - חסכון בנדל"ן בדפי מערכת
+   ========================================= */
+.footer-links { display: none !important; }
+.home-page .footer-links { display: flex !important; }
+body:not(.home-page) .footer { 
+    height: 0 !important; 
+    padding: 0 !important; 
+    border: none !important; 
+    overflow: hidden !important; 
+}
+
+/* =========================================
+   מבנה אפליקציה מתקדם: גמישות, גלילה וכיווץ פרופורציונלי
+   ========================================= */
+body {
+    height: 100vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+}
+
+.site-header, .footer {
+    flex-shrink: 0 !important;
+}
+
+.site-layout, .auction-main {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    margin-top: 25px !important;
+    margin-bottom: 25px !important;
+    padding-bottom: 20px !important;
+}
+
+/* אפקט ה"זום": התכווצות חכמה למסכים קטנים ולפטופים */
+@media (max-height: 850px), (max-width: 1400px) {
+    .site-layout, .auction-main {
+        zoom: 0.85; 
+    }
+}
+
+@media (max-height: 700px), (max-width: 1200px) {
+    .site-layout, .auction-main {
+        zoom: 0.75; 
+    }
+}
+/* =========================================
+   שדרוג נדל"ן: צמצום פוטר ויישור טאבים
+   ========================================= */
+
+/* מחיקת ריווחים מיותרים ממרכז הבמה כדי להעלות הכל למעלה */
+.main-content {
+    padding-top: 0 !important; 
+}
+
+/* יישור הטאבים לקו אחד עם כותרות הסיידברים */
+.premium-hub-tabs {
+    margin-top: 15px !important; /* מתיישר בדיוק עם גובה כותרות הצד */
+    margin-bottom: 20px !important; /* קצת אוויר מתחת לפני התוכן */
+    padding-bottom: 10px !important;
+}
+
+/* כיווץ אגרסיבי של הפוטר (שורת אודות/צור קשר) */
+.footer-links {
+    padding: 5px 0 !important; /* ריווח מינימלי למעלה ולמטה */
+    gap: 20px !important;
+    background: #000 !important;
+}
+
+.footer-links a {
+    font-size: 13px !important; /* טיפה יותר עדין */
+}
+
+/* =========================================
+   תצוגת בוטיק (חלון ראווה למארזים)
+   ========================================= */
+
+/* כפתורי הניווט העליונים */
+.boutique-selectors {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    direction: rtl;
+}
+
+.boutique-btn {
+    background: rgba(10, 10, 10, 0.6);
+    border: 1px solid rgba(214, 185, 83, 0.3);
+    color: #a0aec0;
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.boutique-btn:hover {
+    border-color: var(--brand-gold);
+    color: #fff;
+}
+
+.boutique-btn.active {
+    background: var(--brand-gold);
+    color: #000;
+    font-weight: 800;
+    box-shadow: 0 4px 15px rgba(214, 185, 83, 0.3);
+}
+
+/* המלבן הראשי */
+.boutique-showroom {
+    background: linear-gradient(135deg, #111111 0%, #050505 100%);
+    border: 1px solid var(--border-gold);
+    border-radius: 16px;
+    height: 300px; /* גובה נעול כדי למנוע קפיצות וגלילה */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    overflow: hidden;
+    position: relative;
+    direction: rtl;
+}
+
+.boutique-package-content {
+    width: 100%;
+    height: 100%;
+    animation: fadeInBoutique 0.4s ease-in-out;
+}
+
+@keyframes fadeInBoutique {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* צד הטקסט */
+.boutique-text-side {
+    width: 55%;
+    padding: 25px 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.boutique-badge {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+.boutique-badge.gold {
+    background: rgba(214, 185, 83, 0.2);
+    color: var(--brand-gold);
+    border: 1px solid var(--brand-gold);
+}
+
+.boutique-text-side h3 {
+    font-size: 24px;
+    color: #fff;
+    margin: 0 0 10px 0;
+}
+
+.boutique-desc {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 0 0 15px 0;
+}
+
+.boutique-contents {
+    margin: 0 0 20px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.boutique-contents li {
+    font-size: 13px;
+    color: #e2e8f0;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.boutique-contents li i {
+    color: #4caf50;
+    font-size: 12px;
+}
+
+/* שורת הרכישה התחתונה */
+.boutique-action {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: auto;
+}
+
+.boutique-price {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--brand-gold);
+}
+
+.boutique-cart-btn {
+    background: var(--brand-gold);
+    color: #000;
+    border: none;
+    padding: 10px 25px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+.boutique-cart-btn:hover {
+    background: #fff;
+    transform: translateY(-2px);
+}
+
+/* צד התמונה */
+.boutique-image-side {
+    width: 45%;
+    background: rgba(255, 255, 255, 0.02);
+    border-right: 1px solid rgba(214, 185, 83, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.placeholder-boutique {
+    font-size: 90px;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+}
+
+/* =========================================
+   ניצול נדל"ן מקסימלי - סימטריה של 7 פיקסלים
+   ========================================= */
+
+/* מותח את כל המעטפת (סיידברים + תוכן מרכזי) בדיוק 7 פיקסלים מההדר ומהפוטר */
+.site-layout, .auction-main {
+    margin-top: 7px !important;
+    margin-bottom: 7px !important;
+    padding-bottom: 0 !important; /* ביטול ריווח פנימי תחתון שגזל מקום */
+    padding-top: 0 !important;
+}
+
+/* מוודא שגם התוכן המרכזי לא מוסיף ריווח פנימי סמוי שדוחס את האלמנטים */
+.main-content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* =========================================
+   מנוע גלילה חכם: פס יחיד בימין וסיידברים נעולים (Sticky)
+   ========================================= */
+
+/* 1. ביטול כל הגלילות הכפולות מהגוף והמרכז */
+body, .hub-content-viewport, .spa-view {
+    overflow: hidden !important; 
+}
+
+/* 2. המעטפת (Grid) הופכת לאזור הגלילה היחיד, והפס נזרק לימין */
+.site-layout {
+    flex: 1 !important;
+    min-height: 0 !important;
+    margin: 7px 20px !important; /* שומר על 7 פיקסלים מההדר והפוטר */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    direction: ltr !important; /* דוחף את פס הגלילה לקצה הימני של המסך */
+    align-items: start !important; /* קריטי להדבקת הסיידברים */
+}
+
+/* 3. מחזיר את כל התוכן הפנימי לעברית תקינה */
+.site-layout > * {
+    direction: rtl !important; 
+}
+
+/* 4. מרכז התוכן משתחרר וגובהו נקבע רק לפי התוכן */
+.main-content {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 100% !important;
+    padding-top: 0 !important;
+}
+
+/* 5. הסיידברים נדבקים (Sticky) למקומם ולא נגללים עם האמצע! */
+.sidebar {
+    position: sticky !important;
+    top: 0 !important;
+    max-height: calc(100vh - 130px) !important; /* ננעל לגובה המסך כדי שלא יוסתר למטה */
+    overflow-y: auto !important; /* פס גלילה פנימי זעיר לסיידבר עצמו, רק אם יש המון מוצרים */
+}
+
+/* =========================================
+   פס גלילה: צמוד לקצה הימני ועבה יותר
+   ========================================= */
+
+/* מותח את המסגרת עד קצות המסך ומכניס את הרווחים פנימה */
+.site-layout {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+/* מעבה את פס הגלילה הראשי (10px במקום 5px) ונותן לו מראה יוקרתי */
+.site-layout::-webkit-scrollbar {
+    width: 10px !important; 
+}
+
+.site-layout::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+.site-layout::-webkit-scrollbar-thumb {
+    background: rgba(214, 185, 83, 0.7) !important;
+    border-radius: 10px !important;
+    /* טריק פרימיום: מוסיף גבול שקוף כדי שהפס ייראה עדין למרות שהוא עבה */
+    border: 2px solid #0a0a0a !important; 
+}
+
+.site-layout::-webkit-scrollbar-thumb:hover {
+    background: #D6B953 !important;
+}
+/* =========================================
+   נעילת סימטריה אבסולוטית - 7 פיקסלים בלבד
+   ========================================= */
+
+/* מוודא שגוף האתר עוטף הכל בצורה חלקה בלי רווחים נסתרים */
+body {
+    justify-content: space-between !important;
+}
+
+/* שולט במעטפת הכללית של הסיידברים ומרכז התוכן */
+.site-layout {
+    /* כופה בדיוק 7 פיקסלים למעלה ו-7 למטה */
+    margin-top: 7px !important;
+    margin-bottom: 7px !important;
+    
+    /* מותח את התוכן בדיוק על השטח שנשאר, ולא מילימטר פחות */
+    flex-grow: 1 !important;
+    flex-shrink: 1 !important;
+    flex-basis: auto !important;
+    
+    /* מאפס הגדרות גובה ישנות שעשו בלאגן */
+    height: auto !important; 
+    max-height: none !important;
+    
+    /* שומר שהזום ייצמד למעלה ולא ייצור שטח מת */
+    transform-origin: top center !important; 
+}
+
+/* ביטול שוליים פנימיים מיותרים בסיידברים שיוצרים אשליה של רווח גדול יותר */
+.sidebar {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* ביטול שוליים פנימיים מיותרים במרכז הבמה */
+.main-content {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* =========================================
+   מתיחת מלבן המארז לקו תחתון אחיד עם הסיידברים
+   ========================================= */
+
+/* מוודא שמיכל התצוגה המרכזי תמיד נמתח עד למטה */
+.hub-content-viewport {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+}
+
+/* מוודא שחלון הראווה הפעיל מתנהג כעמודה גמישה */
+#spa-view-ready {
+    flex-grow: 1 !important;
+    flex-direction: column !important;
+}
+
+/* מבטל את הגובה הקבוע של 300 פיקסלים ומורה למלבן לתפוס את כל השטח הנותר */
+.boutique-showroom {
+    height: auto !important;
+    flex-grow: 1 !important;
+    min-height: 300px !important; /* שומר על גובה מינימלי למסכים ממש קטנים */
+    margin-bottom: 0 !important;
+}
+
+/* מוודא שהתוכן הפנימי מתפרס על כל הגובה החדש */
+.boutique-package-content {
+    flex-grow: 1 !important;
+}
+/* =========================================
+   פריסה יוקרתית של התוכן בתוך מלבן הבוטיק
+   ========================================= */
+
+/* צד הטקסט: פיזור חכם של התוכן על פני כל הגובה */
+.boutique-text-side {
+    justify-content: space-between !important; /* מרווח את האלמנטים באופן שווה מהקצה העליון לתחתון */
+    padding: 40px 45px !important; /* המון אוויר לנשימה מסביב */
+}
+
+/* הגדלת הכותרת והטקסט שיתאימו למלבן הענק */
+.boutique-text-side h3 {
+    font-size: 32px !important;
+    margin-bottom: 15px !important;
+}
+
+.boutique-desc {
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    margin-bottom: 25px !important;
+}
+
+/* רשימת התכולה תופסת את השטח הפנוי באמצע ומרווחת את השורות */
+.boutique-contents {
+    flex-grow: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* ממרכז את השורות בתוך השטח הפנוי */
+    gap: 15px !important; /* רווח נעים לעין בין כל שורה לשורה */
+    margin-bottom: 30px !important;
+}
+
+.boutique-contents li {
+    font-size: 15px !important;
+}
+
+.boutique-contents li i {
+    font-size: 14px !important;
+}
+
+/* שורת הרכישה התחתונה - מבטיח שתישאר צמודה לתחתית */
+.boutique-action {
+    margin-top: 0 !important;
+}
+
+/* צד התמונה: מגדיל את האייקון המרכזי שיתאים לחלל החדש */
+.placeholder-boutique {
+    font-size: 150px !important;
+    transition: transform 0.4s ease !important;
+}
+
+/* אפקט ריחוף לאייקון כשעוברים עליו */
+.boutique-image-side:hover .placeholder-boutique {
+    transform: scale(1.1) !important;
+}
+/* =========================================
+   נעילת גובה מלבן הבוטיק - התאמה מושלמת לסיידברים ול-7 פיקסלים
+   ========================================= */
+
+/* מבטיח שכל עמודת התוכן המרכזית לא תחרוג מ-100% של הגובה הפנוי */
+.main-content {
+    height: 100% !important; 
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* מוודא שהמיכלים הפנימיים לא "דוחפים" את המלבן למטה */
+.hub-content-viewport, #spa-view-ready {
+    flex: 1 !important;
+    min-height: 0 !important; /* הפקודה הקריטית שעוצרת את החריגה! */
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* נועל את מלבן הבוטיק כך שיתפוס בדיוק את השטח הנותר ולא פיקסל יותר */
+.boutique-showroom {
+    flex: 1 !important;
+    min-height: 0 !important; 
+    height: 100% !important;
+}
+
+/* כיווץ עדין של הריווח הפנימי כדי שהתוכן הגדול ייכנס בנוחות ולא ינסה לפרוץ */
+.boutique-text-side {
+    padding: 25px 35px !important; 
+}
+/* =========================================
+   כיוונון מיקרוסקופי - הרמה של פיקסל אחד בדיוק
+   ========================================= */
+.boutique-showroom {
+    margin-bottom: 1px !important; /* מרים את המלבן מלמטה */
+    max-height: calc(100% - 1px) !important; /* מקזז את הגובה כדי שלא יידחף למעלה */
+}
+
+/* =========================================
+   כפתורי הרכבת מארז (תפריט + חזור)
+   ========================================= */
+
+/* כפתור הרכבת מארז בטאבים */
+.btn-custom-builder {
+    border-color: #D6B953 !important;
+    color: #D6B953 !important;
+    font-weight: 800 !important;
+}
+
+.btn-custom-builder.active, .btn-custom-builder:hover {
+    background: #D6B953 !important;
+    color: #000 !important; /* דואג שהטקסט יהיה שחור ולא ייעלם! */
+}
+
+/* כפתור החזור למארזים המוכנים */
+.back-to-boutique-btn {
+    background: transparent;
+    border: 1px solid var(--brand-gold);
+    color: var(--brand-gold);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    align-self: flex-start; /* שומר את הכפתור ימינה ולא מותח אותו */
+}
+
+.back-to-boutique-btn:hover {
+    background: var(--brand-gold);
+    color: #000;
+    transform: translateX(-5px); /* קפיצה קטנה אחורה (ימינה) בריחוף */
+    box-shadow: 0 4px 15px rgba(214, 185, 83, 0.3);
+}
+
+/* =========================================
+   תיקון התנגשות: מאפשר לסקריפט להעלים מסכים
+   ========================================= */
+#spa-view-ready[style*="display: none"],
+#spa-view-custom[style*="display: none"],
+.boutique-package-content[style*="display: none"] {
+    display: none !important;
+}
+
+/* =========================================
+   מערכת עמודים (Pagination) להרכבת מארז
+   ========================================= */
+
+/* נועל את אזור התוכן כדי שלא יהיה ניתן לגלול אותו יותר */
+.spa-content-area {
+    overflow: hidden !important; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* מסדר את המוצרים כרשת (6 בלפטופ) ומבטל גלילה פנימית */
+.products-grid-spa {
+    overflow: hidden !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* 3 מוצרים בשורה */
+    gap: 15px !important;
+    align-content: start !important;
+    flex-grow: 1 !important;
+    margin-bottom: 0 !important;
+}
+
+/* התאמה למסכים גדולים (27 אינץ' וכד') - 8 מוצרים בעמוד (2 שורות של 4) */
+@media (min-width: 1600px) {
+    .products-grid-spa {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
+/* שורת קוביות המספרים למטה */
+.pagination-container {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding-top: 15px !important;
+    margin-top: auto !important;
+    border-top: 1px solid rgba(214, 185, 83, 0.2) !important;
+}
+
+/* עיצוב קוביות העמודים */
+.page-btn {
+    background: #111 !important;
+    border: 1px solid rgba(214, 185, 83, 0.4) !important;
+    color: #fff !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    font-weight: 800 !important;
+    transition: all 0.3s ease !important;
+}
+
+.page-btn:hover {
+    border-color: var(--brand-gold) !important;
+    transform: translateY(-2px) !important;
+}
+
+.page-btn.active {
+    background: var(--brand-gold) !important;
+    color: #000 !important;
+    border-color: var(--brand-gold) !important;
+    box-shadow: 0 4px 10px rgba(214, 185, 83, 0.3) !important;
+}
+
+/* =========================================
+   חיסול פסי גלילה כפולים וסידור גריד להרכבת מארז
+   ========================================= */
+.builder-products-scroll {
+    overflow: hidden !important; 
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.builder-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+    align-content: start !important;
+    overflow: hidden !important;
+    margin-bottom: 10px !important;
+}
+
+@media (min-width: 1600px) {
+    .builder-grid { grid-template-columns: repeat(4, 1fr) !important; }
+}
+
+.pagination-container {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding-top: 15px !important;
+    margin-top: auto !important;
+    border-top: 1px solid rgba(214, 185, 83, 0.2) !important;
+}
+/* =========================================
+   מתיחת קוביית "הרכבת מארז" לקו אחיד למטה
+   ========================================= */
+
+/* 1. כופה על כל המיכלים העוטפים להימתח (ומתקן את פקודת ה-block של הסקריפט) */
+#spa-view-packages:not([style*="display: none"]),
+#spa-view-custom:not([style*="display: none"]) {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+}
+
+/* 2. מבטיח שהקובייה השחורה של ההרכבה תתפוס את כל השטח הפנוי עד המילימטר האחרון */
+.custom-builder-container {
+    flex-grow: 1 !important;
+    min-height: 0 !important;
+    height: auto !important; 
+    margin-bottom: 0 !important; /* מוודא שאין רווח סמוי למטה */
+}
+
+/* 3. מוודא גם שחלון הראווה של המארזים המוכנים נמתח באותה צורה */
+#spa-view-ready:not([style*="display: none"]) {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+}
+/* =========================================
+   כפתור חזור מינימליסטי (סגנון קישור נקי)
+   ========================================= */
+
+/* מבטל את המיקום הצף שעשה בלאגן */
+#spa-view-custom {
+    position: static !important;
+}
+
+/* מחזיר את הכפתור להיות טקסט, אבל בלי מסגרות וניפוחים */
+.back-to-boutique-btn {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    background: transparent !important;
+    border: none !important;
+    color: #a0aec0 !important; /* אפור אלגנטי ומשתלב */
+    padding: 0 0 10px 0 !important; /* מרווח קטן בלבד מלמטה */
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    font-size: 14px !important; /* מחזיר את הטקסט */
+    font-weight: 500 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    align-self: flex-start !important; /* מצמיד לימין בעדינות */
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+/* מסדר את החץ */
+.back-to-boutique-btn i {
+    font-size: 13px !important;
+    margin-left: 8px !important; /* מרווח בין החץ לטקסט */
+    transform: none !important;
+}
+
+/* אפקט ריחוף - הטקסט נהיה זהב וקופץ קלות לאחור */
+.back-to-boutique-btn:hover {
+    background: transparent !important;
+    color: var(--brand-gold) !important;
+    transform: translateX(-5px) !important;
+}
+
+/* מבטל את ההזזה של הכותרת שעשינו בקוד הקודם */
+.builder-header {
+    padding-right: 0 !important;
+}
+
+/* =========================================
+   שורת רכישה מארזי בוטיק - כפתור ימין ומחיר שמאל כגלולת זהב
+   ========================================= */
+
+/* סידור השורה: הופך את הסדר ודוחף את האלמנטים לקצוות המלבן */
+.boutique-action {
+    display: flex !important;
+    flex-direction: row-reverse !important; /* הפקודה שהופכת את הסדר (כפתור ימין, מחיר שמאל) */
+    justify-content: space-between !important; /* דוחף אותם לקצוות */
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: auto !important;
+}
+
+/* עיצוב המחיר מחדש - קטן יותר, רקע זהב וטקסט שחור */
+.boutique-price {
+    font-size: 20px !important; /* קטן יותר מה-28px המקורי */
+    font-weight: 900 !important;
+    background-color: var(--brand-gold) !important; /* רקע זהב פרימיום */
+    color: #000000 !important; /* טקסט שחור בולט */
+    padding: 6px 22px !important; /* ריווח פנימי שיוצר את צורת התגית */
+    border-radius: 30px !important; /* מעגל את הפינות לגלולה מושלמת */
+    box-shadow: 0 4px 10px rgba(214, 185, 83, 0.2) !important; /* צל זהוב עדין */
+    margin: 0 !important;
+}
+
+/* מוודא שהכפתור נשאר יציב במקומו ולא נדחף מוזר */
+.boutique-cart-btn {
+    margin: 0 !important;
+}
+/* =========================================
+   תיקון תצוגת 6 מוצרים בהרכבת מארז (2 שורות מלאות)
+   ========================================= */
+
+/* 1. המיכל העוטף חייב להימתח על כל השטח הפנוי ולא להסתיר תוכן */
+.builder-products-scroll {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: visible !important; /* מבטל את ההסתרה שחתכה את השורה השנייה! */
+}
+
+/* 2. הגריד עצמו נפרס ל-2 שורות שוות שממלאות את כל החלל השחור הריק */
+.builder-grid {
+    flex: 1 !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* 3 קוביות בשורה */
+    grid-template-rows: repeat(2, 1fr) !important;    /* בדיוק 2 שורות */
+    gap: 15px !important;
+    align-content: stretch !important; /* מותח אותן למעלה ולמטה */
+    overflow: visible !important;
+    margin-bottom: 15px !important;
+}
+
+/* 3. מוודא שכרטיסיית המוצר עצמה תתפוס את הגובה החדש ולא תימעך */
+.b-card {
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 10px 10px 45px 10px !important; /* משאיר מקום מדויק למחיר ולכפתור למטה */
+    justify-content: flex-start !important;
+}
+
+/* 4. שומר על התמונה בגודל אופטימלי שלא יידחף את הטקסט */
+.b-card img {
+    max-height: 85px !important; 
+    margin-bottom: 8px !important;
+}
+/* =========================================
+   טאבים מרכזיים - קונספט "קפסולת פרימיום"
+   ========================================= */
+
+/* המעטפת: גלולה כהה שצפה באמצע המסך */
+.premium-capsule-tabs {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: #111111 !important; /* פחם כהה ועמוק */
+    border: 1px solid rgba(214, 185, 83, 0.2) !important; /* מסגרת זהב עדינה בקושי מורגשת */
+    border-radius: 50px !important; /* הופך את המלבן לגלולה מושלמת */
+    padding: 6px !important; /* מרווח פנימי ששומר על הכפתור רחוק מהמסגרת */
+    width: fit-content !important; /* עוטף בדיוק את המילים ולא נמתח */
+    margin: 20px auto 30px auto !important; /* ממרכז באמצע עם רווח נשימה */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7) !important; /* צל שמנתק אותו מהרקע */
+    gap: 5px !important; /* רווח עדין בין הכפתורים */
+    direction: rtl !important;
+}
+
+/* הטאבים הרגילים: שקטים, אפורים ומשתלבים ברקע */
+.capsule-tab {
+    background: transparent !important;
+    color: #777 !important; /* אפור עמום יוקרתי */
+    border: none !important;
+    padding: 10px 28px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    border-radius: 40px !important; /* מעגל את הכפתור הפנימי */
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; /* מעבר חלקלק */
+    font-family: inherit !important;
+}
+
+/* אפקט ריחוף עדין */
+.capsule-tab:hover {
+    color: #fff !important;
+}
+
+/* הטאב הפעיל: קופץ החוצה ככפתור זהב בולט */
+.capsule-tab.active {
+    background: var(--brand-gold) !important; /* צבע הזהב של המותג */
+    color: #000 !important; /* טקסט שחור לקונטרסט חזק */
+    box-shadow: 0 4px 15px rgba(214, 185, 83, 0.3) !important; /* הילת זהב רכה */
+    transform: scale(1.02) !important; /* גדל ממש במילימטר כדי לבלוט */
+}
+/* 2. נעילת השלד - מונע מהדפדפן להוסיף שוליים סמויים */
+body {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+/* 3. שמירה על ההדר והפוטר בגודלם המקורי כדי שלא יימעכו */
+.site-header, .footer {
+    flex: 0 0 auto !important;
+}
+
+/* 4. נעילת האמצע - 7 פיקסלים בדיוק, בלי תירוצים */
+.site-layout {
+    flex: 1 !important; /* לוקח בדיוק את המקום שנשאר בין ההדר לפוטר */
+    min-height: 0 !important; /* חוסם את התוכן מלפרוץ החוצה ולשבור את המבנה */
+    
+    /* ה-7 פיקסלים הקדושים */
+    margin-top: 7px !important;
+    margin-bottom: 7px !important;
+    
+    /* מוחק מרווחים פנימיים שיכולים לגנוב מקום */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    
+    /* שמירה על הסיידברים */
+    display: grid !important;
+    grid-template-columns: clamp(220px, 18vw, 320px) 1fr clamp(220px, 18vw, 320px) !important;
+    gap: 20px !important;
+}
+
+/* 5. מתיחת הסיידברים כך שיתיישרו בול עם ה-7 פיקסלים */
+.sidebar, .sidebar-left, .sidebar-right, .main-content {
+    height: 100% !important;
+    margin: 0 !important;
+}
+
+/* =========================================
+   יישור קו מושלם של הטאבים עם כותרות הסיידברים
+   ========================================= */
+.center-tabs-wrapper {
+    margin-top: 0 !important; 
+    padding-top: 15px !important; /* תואם בדיוק לריפוד העליון של הסיידברים (15px) */
+    justify-content: flex-start !important; /* מוודא שהכלוב לא ממרכז את התוכן למטה */
+}
+
+.premium-capsule-tabs {
+    margin-top: 0 !important; /* מוחק את הרווח העליון שדחף את הקפסולה למטה */
+}
+/* =========================================
+   עטיפת מירכוז כוחנית - אמצע מוחלט וגובה מדויק
+   ========================================= */
+.center-tabs-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* קריטי: נועל אותם לאמצע האופקי */
+    justify-content: flex-start !important; /* קריטי: שומר אותם צמודים למעלה */
+    width: 100% !important;
+    margin-top: 15px !important; /* הקסם שמשווה אותם לגובה הסיידברים */
+}
+
+/* כפיית מירכוז גם על הקפסולה עצמה למקרה שהדפדפן מנסה לברוח */
+.premium-capsule-tabs {
+    margin: 0 auto 20px auto !important; 
+}
+
+/* כפיית מירכוז על שורת תתי-הטאבים */
+.premium-sub-tabs {
+    margin: 0 auto 25px auto !important; 
+}
+
+/* =========================================
+   איפוס מוחלט לתתי-הטאבים - העלמת הרקע הלבן
+   ========================================= */
+.premium-sub-tabs {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 30px !important; 
+    margin-bottom: 25px !important;
+    direction: rtl !important;
+}
+
+.sub-tab {
+    background-color: transparent !important; /* דורס את הרקע הלבן */
+    background: none !important;
+    border: none !important;
+    color: #777 !important; 
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    padding: 0 0 6px 0 !important; /* איפוס מרווחים פנימיים */
+    border-bottom: 2px solid transparent !important; 
+    transition: all 0.3s ease !important;
+    font-family: inherit !important;
+    outline: none !important; /* מוחק מסגרת כחולה/שחורה בלחיצה */
+    box-shadow: none !important; /* מוחק צלליות דיפולטיביות */
+    -webkit-appearance: none !important; /* אומר לדפדפן: "אל תתערב לי בעיצוב הכפתור" */
+}
+
+.sub-tab:hover {
+    color: #fff !important;
+}
+
+.sub-tab.active {
+    color: var(--brand-gold) !important;
+    border-bottom: 2px solid var(--brand-gold) !important;
+}
+
+/* =========================================
+   עיצוב תפריט נפתח (Dropdown) למארזים
+   ========================================= */
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #0b0b0b;
+    min-width: 170px;
+    box-shadow: 0px 15px 35px rgba(0,0,0,0.9);
+    z-index: 100;
+    border: 1px solid rgba(214, 185, 83, 0.3);
+    border-radius: 12px;
+    top: 100%;
+    right: 50%; /* מירכוז מושלם מתחת לכפתור */
+    transform: translateX(50%);
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+/* חץ קטן שמחבר את התפריט לכפתור (אפקט אלגנטי) */
+.dropdown-content::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: 50%;
+    transform: translateX(50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: #0b0b0b;
+    border-left: 1px solid rgba(214, 185, 83, 0.3);
+    border-top: 1px solid rgba(214, 185, 83, 0.3);
+}
+
+.dropdown-content a {
+    color: #a0aec0;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    z-index: 2; /* שומר את הטקסט מעל החץ המשולש */
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(214, 185, 83, 0.1);
+    color: var(--brand-gold);
+    font-weight: bold;
+    padding-right: 25px; /* אפקט הזזה עדין ימינה במעבר עכבר */
+}
+
+/* חושף את התפריט עם האנימציה בריחוף */
+.custom-dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeInDropdown 0.3s ease forwards;
+}
+
+@keyframes fadeInDropdown {
+    from { opacity: 0; transform: translate(50%, -10px); }
+    to { opacity: 1; transform: translate(50%, 0); }
+}
+/* =========================================
+   גשר בלתי נראה (מוצמד לעטיפה) - מונע סגירה של התפריט
+   ========================================= */
+.custom-dropdown::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: -20% !important;
+    width: 140% !important; /* רחב יותר מהכפתור כדי לתפוס גם אלכסונים */
+    height: 25px !important; /* מכסה לחלוטין את ה"שטח המת" */
+    background: transparent !important; /* נשאר שקוף לגמרי */
+    z-index: 10 !important;
+}
+/* =========================================
+   תיקונים: החלפת צדדים (כפתור/מחיר) וניקוי מסגרת כפולה
+   ========================================= */
+
+/* 1. החלפת המיקומים - כפתור בימין ומחיר בשמאל */
+.boutique-action {
+    display: flex !important;
+    flex-direction: row !important; 
+    justify-content: space-between !important;
+    align-items: center !important;
+    direction: rtl !important; /* מכריח את האלמנט הראשון (הכפתור) לשבת בימין */
+}
+
+/* 2. ניקוי המסגרת הכפולה - מעלים שאריות עיצוב ישנות מהקונטיינר העוטף */
+#spa-view-ready {
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding-bottom: 0 !important;
+}
+
+/* מוודא שהמלבן החדש שלנו לא פורץ את המסגרת למטה */
+.boutique-showroom {
+    margin-bottom: 0 !important;
+}
+/* =========================================
+   ממשק הרכבת מארז אישי (Custom Builder)
+   ========================================= */
+.custom-builder-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 25px !important;
+    direction: rtl !important;
+    animation: fadeInBoutique 0.4s ease-in-out !important;
+}
+
+.builder-section {
+    background: rgba(15, 15, 15, 0.8) !important;
+    border: 1px solid rgba(214, 185, 83, 0.2) !important;
+    border-radius: 12px !important;
+    padding: 25px !important;
+}
+
+.builder-step-title {
+    color: #fff !important;
+    margin-top: 0 !important;
+    margin-bottom: 20px !important;
+    font-size: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+/* העיגול עם המספר של השלב */
+.step-num {
+    background: var(--brand-gold) !important;
+    color: #000 !important;
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    font-weight: 900 !important;
+    font-size: 15px !important;
+}
+
+/* גריד קופסאות */
+.box-options-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 15px !important;
+}
+
+.box-card {
+    border: 2px solid rgba(255, 255, 255, 0.05) !important;
+    background: #0b0b0b !important;
+    border-radius: 10px !important;
+    padding: 20px !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.box-card:hover {
+    border-color: rgba(214, 185, 83, 0.4) !important;
+}
+
+.box-card.active {
+    border-color: var(--brand-gold) !important;
+    background: rgba(214, 185, 83, 0.05) !important;
+}
+
+.box-card i {
+    font-size: 45px !important;
+    color: #444 !important;
+    margin-bottom: 15px !important;
+    transition: color 0.3s ease !important;
+}
+
+.box-card.active i {
+    color: var(--brand-gold) !important;
+}
+
+.box-card h4 {
+    color: #fff !important;
+    margin: 0 0 5px 0 !important;
+    font-size: 18px !important;
+}
+
+.box-card p {
+    color: #888 !important;
+    font-size: 13px !important;
+    margin: 0 0 15px 0 !important;
+}
+
+.box-price {
+    color: var(--brand-gold) !important;
+    font-weight: bold !important;
+    background: rgba(214, 185, 83, 0.1) !important;
+    padding: 6px 15px !important;
+    border-radius: 20px !important;
+    font-size: 15px !important;
+}
+
+/* גריד מוצרים להרכבה */
+.products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    gap: 15px !important;
+}
+
+.product-card {
+    background: #0b0b0b !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    border-radius: 10px !important;
+    padding: 15px !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: transform 0.3s ease !important;
+}
+
+.product-card:hover {
+    transform: translateY(-5px) !important;
+    border-color: rgba(214, 185, 83, 0.3) !important;
+}
+
+.product-img {
+    height: 100px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 40px !important;
+    color: #333 !important;
+    background: rgba(255,255,255,0.02) !important;
+    border-radius: 8px !important;
+    margin-bottom: 15px !important;
+}
+
+.product-card h4 {
+    color: #eee !important;
+    font-size: 15px !important;
+    margin: 0 0 10px 0 !important;
+    flex-grow: 1 !important;
+}
+
+.product-price {
+    color: #fff !important;
+    font-weight: 900 !important;
+    font-size: 18px !important;
+    margin-bottom: 15px !important;
+}
+
+.add-to-box-btn {
+    background: transparent !important;
+    color: #a0aec0 !important;
+    border: 1px solid #444 !important;
+    padding: 8px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-family: inherit !important;
+    font-weight: bold !important;
+}
+
+.add-to-box-btn:hover {
+    background: var(--brand-gold) !important;
+    color: #000 !important;
+    border-color: var(--brand-gold) !important;
+}
+
+/* סרגל סיכום */
+.builder-summary {
+    background: linear-gradient(90deg, #111, #050505) !important;
+    border: 1px solid var(--brand-gold) !important;
+    border-radius: 12px !important;
+    padding: 20px 30px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+}
+
+.summary-details {
+    display: flex !important;
+    gap: 30px !important;
+    align-items: center !important;
+}
+
+.summary-items {
+    color: #a0aec0 !important;
+    font-size: 16px !important;
+}
+
+.summary-total {
+    color: #fff !important;
+    font-size: 26px !important;
+    font-weight: 900 !important;
+}
+/* =========================================
+   תיקון: החזרת הרכבת מארז לתצוגת צד-בצד (ימין ושמאל)
+   ========================================= */
+.custom-builder-container {
+    flex-direction: row !important; /* מסדר אותם צד-בצד */
+    height: 100% !important; /* תופס את מלוא הגובה בלי לגלול */
+    padding: 20px !important;
+}
+
+#spa-view-custom[style*="display: block"] {
+    display: flex !important; /* מוודא שהאזור עובד כ-flex ולא block */
+}
+/* =========================================
+   גישת מסך נעול (No Scroll Web-App) - התאמה מושלמת למסך
+   ========================================= */
+
+/* 1. נעילה מוחלטת של כל האתר מכל כיוון */
+html, body {
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden !important; /* אין גלילה החוצה - הכל ננעל */
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* 2. ביטול כל פסי הגלילה הפנימיים מכל המיכלים באתר */
+.site-layout, 
+.main-content, 
+.spa-view, 
+.sidebar, 
+.sidebar-content, 
+.builder-products-scroll,
+.custom-builder-container,
+.hub-content-viewport,
+.products-grid-spa,
+#matches-container {
+    overflow: hidden !important; 
+}
+
+/* 3. העלמת פסי הגלילה הקיימים ברמת הדפדפן ליתר ביטחון (כרום, אדג', ספארי, פיירפוקס) */
+::-webkit-scrollbar {
+    display: none !important;
+}
+* {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+/* 4. התאמת גובה דינמית - עוטף הכל בתוך המסגרת בלי לחרוג */
+.site-layout {
+    display: flex !important;
+    /* הגובה הוא 100% מהמסך פחות 115 פיקסלים ששמורים להדר ולטיקר למטה */
+    height: calc(100vh - 115px) !important; 
+    margin: 10px 20px !important; /* שומר על ריווח קל מהקצוות */
+}
+
+/* מוודא שהאמצע מתפקד כקופסה גמישה שממלאת את המקום שלה */
+.main-content {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    justify-content: flex-start !important;
+}
+
+/* 5. התאמות פרופורציה למסכי לפטופ (כמו ה-16 אינץ' שלך) כדי שהכל ייכנס נקי */
+@media (max-height: 900px) {
+    /* כיווץ קל של ממשק הרכבת המארז כדי ש-2 שורות ייכנסו בלי להיחתך */
+    .custom-builder-container {
+        padding: 10px 15px !important;
+        gap: 15px !important;
+    }
+    
+    .builder-header {
+        margin-bottom: 5px !important;
+    }
+    
+    .b-card {
+        padding: 8px 8px 35px 8px !important;
+    }
+    
+    .b-card img {
+        max-height: 65px !important; /* מקטין טיפה את התמונה כדי לחסוך גובה */
+    }
+    
+    .builder-grid {
+        gap: 10px !important;
+        margin-bottom: 5px !important;
+    }
+    
+    /* מרווחים קטנים יותר בסרגל השמאלי (הקופסה הפתוחה) */
+    .box-visual {
+        padding: 10px !important;
+    }
+    
+    .bg-box-icon {
+        font-size: 110px !important;
+    }
+    
+    .pagination-container {
+        padding-top: 5px !important;
+    }
+}
+/* =========================================
+   כיווץ פרופורציונלי לממשק הרכבת מארז (מניעת חיתוך מספרי עמודים)
+   ========================================= */
+.custom-builder-container {
+    padding: 15px !important;
+    gap: 15px !important; /* מקטין את הרווח בין צד ימין לשמאל */
+}
+
+.builder-header {
+    margin-bottom: 10px !important;
+}
+
+.builder-tabs {
+    margin-bottom: 10px !important;
+}
+
+/* כיווץ קוביות המוצרים */
+.builder-grid {
+    gap: 10px !important;
+    margin-bottom: 5px !important;
+}
+
+.b-card {
+    padding: 8px 8px 35px 8px !important; /* מקטין את הריווח הפנימי */
+}
+
+.b-card img {
+    max-height: 65px !important; /* מרוויח כמה פיקסלים מהתמונה */
+    margin-bottom: 5px !important;
+}
+
+/* הרמת מספרי העמודים */
+.pagination-container {
+    padding-top: 5px !important;
+    margin-top: 5px !important;
+}
+/* =========================================
+   הרמת מרכז הבמה ויישור קו עם הסיידברים (לחיסול הגלילה הסמויה)
+   ========================================= */
+
+/* 1. איפוס ויישור הכלוב המרכזי בדיוק לקו הסיידברים */
+.center-tabs-wrapper {
+    margin-top: 0 !important;
+    padding-top: 15px !important; /* מתיישר מתמטית עם הריפוד של 15px שיש בתוך הסיידברים */
+}
+
+/* 2. ביטול הרווחים העליונים של קפסולת הטאבים וצמצום הרווח התחתון */
+.premium-capsule-tabs {
+    margin-top: 0 !important; 
+    margin-bottom: 12px !important; /* במקום 30 פיקסלים שהיו קודם */
+}
+
+/* 3. צמצום הרווח מתחת לתתי-הטאבים (מארזים מוכנים / הרכבה אישית) */
+.premium-sub-tabs {
+    margin-top: 0 !important;
+    margin-bottom: 12px !important; /* במקום 25 פיקסלים שהיו קודם */
+}
+
+/* 4. ליתר ביטחון, מוודאים שאין למעטפת הראשית שום ריפוד שדוחף הכל למטה */
+.main-content {
+    padding-top: 0 !important; 
+}
+/* =========================================
+   סימטריה אבסולוטית: 10px מהקצוות ויישור קו עליון
+   ========================================= */
+
+/* 1. מרווח ברזל של 10 פיקסלים מההדר ומהפוטר */
+.site-layout {
+    flex: 1 !important; /* אומר לאמצע לקחת את כל השטח הפנוי */
+    min-height: 0 !important; 
+    height: auto !important; 
+    margin-top: 10px !important;    /* 10px בדיוק מתחת להדר */
+    margin-bottom: 10px !important; /* 10px בדיוק מעל הפוטר */
+    margin-left: 20px !important;   /* שומר על הריווח בצדדים */
+    margin-right: 20px !important;
+}
+
+/* 2. איפוס מוחלט של מרכז הבמה כדי שלא ייצור רווחים נסתרים */
+.main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100% !important;
+}
+
+/* 3. יישור הטאבים (הקפסולה) במדויק לקו העליון של הסיידברים */
+/* לסיידברים יש ריפוד פנימי (Padding) של 15px, לכן גם המרכז חייב להתחיל מ-15px כדי להיות באותו קו */
+.center-tabs-wrapper {
+    margin-top: 0 !important;
+    padding-top: 15px !important; 
+}
+
+/* 4. צמצום ואיפוס רווחים סביב הטאבים כדי לחסוך מקום למטה */
+.premium-capsule-tabs {
+    margin-top: 0 !important;
+    margin-bottom: 15px !important; /* רווח נקי ואחיד מתחת לטאב הראשי */
+}
+
+.premium-sub-tabs {
+    margin-top: 0 !important;
+    margin-bottom: 15px !important; /* רווח נקי ואחיד מתחת לתתי-הטאבים */
+}
+
+/* 5. נעילת הסיידברים לגובה המדויק של המסך ללא חריגות */
+.sidebar {
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+}
+/* =========================================
+   שלט רחוק מוחלט (עוקף את פקודות ההימתחות הישנות!)
+   ========================================= */
+
+/* מנטרלים את ההימתחות האוטומטית של המיכלים העוטפים */
+#spa-view-ready, 
+#spa-view-custom {
+    display: block !important; 
+    flex: none !important;
+    height: auto !important;
+}
+
+/* -----------------------------------------
+   1. מלבן מארזים מוכנים (עכשיו גם הוא בשליטה מלאה)
+----------------------------------------- */
+#spa-view-ready {
+    display: block !important; 
+    flex: none !important;
+    height: auto !important;
+}
+
+.boutique-showroom {
+    flex: none !important; 
+    
+    /* שים כאן בדיוק את המספר שעבד לך מושלם בהרכבת המארז! */
+    height: 477px !important; 
+    min-height: 477px !important; 
+    max-height: 477px !important; 
+    
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important; 
+}
+
+/* הפקודה החסרה: מכריחה את התוכן הפנימי למלא את הגובה החדש שבחרת */
+.boutique-package-content {
+    height: 100% !important;
+    flex: 1 !important;
+}
+
+/* -----------------------------------------
+   2. מלבן הרכבת מארז אישי
+----------------------------------------- */
+.custom-builder-container {
+    flex: none !important; /* פקודת הקסם שעוצרת את ה"גומי" */
+    
+    /* תשנה פה את שלושת המספרים ביחד כדי להגדיר גובה */
+    height: 477px !important; 
+    min-height: 477px !important; 
+    max-height: 477px !important; 
+    
+    display: flex !important;
+    flex-direction: row !important; 
+    overflow: visible !important; 
+}

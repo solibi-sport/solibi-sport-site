@@ -1177,8 +1177,7 @@
 
     </style>
 </head>
-<body>
-
+<body class="home-page">
 <!-- טעינת ההדר של האתר מקובץ חיצוני -->
     <div id="header-placeholder"></div>
 
@@ -1310,171 +1309,220 @@
             </div>
         </aside>
 
+
+<!-- ========================================== -->
+        <!-- מרכז הבמה מתחיל כאן (לא למחוק את התגית הזו!) -->
+        <!-- ========================================== -->
         <main class="main-content">
-            <section class="hero-banner">
-                <h1>קולקציית מארזי סוליבי</h1>
-                <p>מארזי אספנות יוקרתיים</p>
-            </section>
-
-            <!-- תפריט הניווט הראשי - מארזים, מיסטרי, וינטג' -->
-            <div class="spa-nav-container">
-                <div class="spa-main-tabs">
-                    <button class="spa-main-tab active" onclick="switchSpaMain('packages', this)">מארזי סוליבי</button>
-                    <button class="spa-main-tab" onclick="switchSpaMain('mystery', this)">סוליבי מיסטרי</button>
-                    <button class="spa-main-tab" onclick="switchSpaMain('vintage', this)">סוליבי וינטג' <i class="fa-solid fa-gem" style="font-size: 13px; margin-right: 5px; color: #D6B953;"></i></button>
-                </div>
+            
+            <!-- כלוב המירכוז שנועל אותם לאמצע -->
+            <div class="center-tabs-wrapper">
                 
-                <!-- תתי-טאבים אלגנטיים למארזי סוליבי -->
-                <div class="spa-sub-tabs" id="packages-sub-tabs" style="display: flex;">
-                    <button class="spa-sub-tab active" onclick="switchPackagesSub('ready', this)">מארזים מוכנים</button>
-                    <button class="spa-sub-tab" onclick="switchPackagesSub('custom', this)">הרכבת מארז</button>
-                </div>
+                <!-- קפסולת הטאבים פרימיום (תפריט ראשי) -->
+            <div class="premium-capsule-tabs">
+                <button class="capsule-tab active">מארזים</button>
+                <button class="capsule-tab">מיסטרי בוקס</button>
+                <button class="capsule-tab">סוליבי וינטג'</button>
+                <button class="capsule-tab auction-tab">
+                    מכירות פומביות <span class="live-pulse-dot"></span>
+                </button>
             </div>
 
-            <div class="spa-content-area">
+                <!-- תתי-טאבים פרימיום (יופיעו תחת הקטגוריה "מארזים") -->
+            <div class="premium-sub-tabs" id="packages-sub-tabs">
                 
-                <div id="spa-view-ready" class="spa-view active">
-                    <div class="products-grid-spa">
-                        <div class="product-card premium-gold-card" data-ready-cat="premium">
-                            <div class="product-badge gold-badge">פרימיום</div>
-                            <div class="product-image"><i class="fa-solid fa-crown box-icon dark-icon"></i></div>
-                            <h3>מארז אספנות פרימיום</h3>
-                            <p class="product-desc">בובת מיניקס מקורית, מעטפת קלפים פאניני, מחזיק מפתחות מתכת יוקרתי.</p>
-                            <div class="product-footer">
-                                <span class="price">₪179</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
-
-                        <div class="product-card" data-ready-cat="kids">
-                            <div class="product-badge">אספנות</div>
-                            <div class="product-image"><i class="fa-solid fa-child box-icon"></i></div>
-                            <h3>מארז לאספן הצעיר</h3>
-                            <p class="product-desc">בובת סוקרסטארז בקופסא מקורית, 2 מעטפות אדרנלין/מאצ' אטאקס , כדור לחיץ נבחרות וצמיד נבחרות במארז מהודר ומרשים.</p>
-                            <div class="product-footer">
-                                <span class="price">₪129</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
-
-                        <div class="product-card" data-ready-cat="training">
-                            <div class="product-badge">אימונים</div>
-                            <div class="product-image"><i class="fa-solid fa-history box-icon"></i></div>
-                            <h3>מארז אימון ילדים/נוער</h3>
-                            <p class="product-desc">2 זוגות גרבי גריפ, סט 10 קונוסים, רצועת אימון אלסטית וסולם קואורדינציה 3 מטר. מגיע עם תיק נשיאה.</p>
-                            <div class="product-footer">
-                                <span class="price">₪99</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
-
-                        <div class="product-card" data-ready-cat="cards">
-                            <div class="product-badge">כושר</div>
-                            <div class="product-image"><i class="fa-solid fa-clone box-icon"></i></div>
-                            <h3>מארז כושר גבר/אישה</h3>
-                            <p class="product-desc">חבל קפיצה מקצועי, גלגל בטן, רצועה אלסטית לאימון חופשי ומוטות פוש. מגיע עם תיק נשיאה.</p>
-                            <div class="product-footer">
-                                <span class="price">₪119</span>
-                                <button class="add-to-cart-btn">הוסף לעגלה</button>
-                            </div>
-                        </div>
+                <!-- דרופדאון (תפריט נפתח) למארזים המוכנים -->
+                <div class="custom-dropdown">
+                    <!-- זה הטאב הראשי שיישאר קבוע -->
+                    <button class="sub-tab active" id="ready-packages-title" onclick="togglePackageMode('ready')">
+                        מארזים מוכנים <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-right: 5px;"></i>
+                    </button>
+                    
+                    <!-- זאת הרשימה הנפתחת, כאן המארז הראשון הוא פרימיום -->
+                    <div class="dropdown-content">
+                        <a href="#" onclick="selectDropdownPackage('premium', this); return false;">מארז פרימיום</a>
+                        <a href="#" onclick="selectDropdownPackage('young', this); return false;">לאספן הצעיר</a>
+                        <a href="#" onclick="selectDropdownPackage('training', this); return false;">אימון ילדים/נוער</a>
+                        <a href="#" onclick="selectDropdownPackage('fitness', this); return false;">כושר אישי</a>
                     </div>
                 </div>
 
-                <div id="spa-view-mystery" class="spa-view">
-                    <div class="products-grid-spa">
-                        <div class="product-card" data-mystery-cat="adult">
-                            <div class="product-badge gold-badge">14+</div>
-                            <div class="product-image" style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 110px; margin-top: 10px;">
-                                <div style="position: absolute; top: 0; left: 0; display: flex; gap: 8px; z-index: 10;">
-                                    <i class="fa-solid fa-circle-question mystery-icon-btn" onmouseenter="showGlobalModal('adult', 'text')" onmouseleave="hideGlobalModal()"></i>
-                                </div>
-<img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי בוגרים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain; cursor: pointer;" onclick="openHomeProductModal('מיסטרי בוגרים', '₪79', 'מארזי מיסטרי', 'images/solibi-mistery-pack.jpg.png', 'מארז הפתעה מטורף עם קלפים, מדבקות, ואפשרות לזכות בקלפים מדורגים וחתימות נדירות!')">                            </div>
-                            <h3 style="margin-top: 15px;">מיסטרי בוגרים</h3>
-                            <p class="product-desc">מארז הפתעה מטורף עם קלפים, מדבקות, ואפשרות לזכות בקלפים מדורגים וחתימות נדירות!</p>
-                            <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto;">
-                                <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
-                                <span class="price" style="margin: 0 !important;">₪79</span>
-                            </div>
-                        </div>
-
-                        <!-- תצוגת סוליבי וינטג' (בבנייה) -->
-            <div id="spa-view-vintage" class="spa-view" style="display: none; align-items: center; justify-content: center; min-height: 400px; text-align: center; flex-direction: column;">
-                <i class="fa-solid fa-gem" style="font-size: 48px; color: rgba(214, 185, 83, 0.3); margin-bottom: 20px;"></i>
-                <h2 style="color: #D6B953; margin-bottom: 10px;">מחלקת האספנות והוינטג'</h2>
-                <p style="color: #a0a0a0;">המוצרים הנדירים שלנו יועלו לכאן בקרוב...</p>
+                <!-- כפתור הרכבת מארז אישי -->
+                <button class="sub-tab" id="custom-package-tab" onclick="togglePackageMode('custom')">הרכבת מארז אישי</button>
             </div>
+<!-- ========================================== -->
+<!-- אזור תצוגת מארזים מוכנים (החלון החצוי) -->
+<!-- ========================================== -->
+<div id="spa-view-ready" class="spa-view active" style="width: 100%; max-width: 900px; margin: 0 auto;">
+    
+    <!-- שיים לב: גלולות הניווט הישנות נמחקו מכאן לחלוטין! -->
 
-                        <div class="product-card" data-mystery-cat="kids">
-                            <div class="product-badge">7+</div>
-                            <div class="product-image" style="position: relative; display: flex; align-items: center; justify-content: center; min-height: 110px; margin-top: 10px;">
-                                <div style="position: absolute; top: 0; left: 0; display: flex; gap: 8px; z-index: 10;">
-                                    <i class="fa-solid fa-circle-question mystery-icon-btn" onmouseenter="showGlobalModal('kids', 'text')" onmouseleave="hideGlobalModal()"></i>
+    <!-- חדר התצוגה המרכזי (המלבן החצוי) -->
+    <div class="boutique-showroom">
+
+                    <!-- חדר התצוגה המרכזי (המלבן החצוי) -->
+                    <div class="boutique-showroom">
+                        
+                        <!-- מארז 1: פרימיום -->
+                        <div id="boutique-pkg-premium" class="boutique-package-content" style="display: flex;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge gold">מארז הדגל</div>
+                                <h3>מארז אספנות פרימיום</h3>
+                                <p class="boutique-desc">המארז היוקרתי ביותר שלנו, מורכב מפריטי האספנות הנדירים והמבוקשים ביותר שישדרגו כל אוסף.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> בובת מיניקס (Minix) מקורית</li>
+                                    <li><i class="fa-solid fa-check"></i> מעטפת קלפים פאניני רשמית</li>
+                                    <li><i class="fa-solid fa-check"></i> מחזיק מפתחות מתכת יוקרתי</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪179</span>
                                 </div>
-<img src="images/solibi-mistery-pack.jpg.png" alt="מארז מיסטרי ילדים" style="max-width: 60%; max-height: 100px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); object-fit: contain; cursor: pointer;" onclick="openHomeProductModal('מיסטרי ילדים', '₪49', 'מארזי מיסטרי', 'images/solibi-mistery-pack.jpg.png', 'מארז מושלם ומרגש לילדים עם קלפים, מדבקות והפתעות מיוחדות לאספנים מתחילים!')">                            </div>
-                            <h3 style="margin-top: 15px;">מיסטרי ילדים</h3>
-                            <p class="product-desc">מארז מושלם ומרגש לילדים עם קלפים, מדבקות והפתעות מיוחדות לאספנים מתחילים!</p>
-                            <div class="product-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: auto;">
-                                <button class="add-to-cart-btn" style="margin: 0 !important;">הוסף לעגלה</button>
-                                <span class="price" style="margin: 0 !important;">₪49</span>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-crown placeholder-boutique" style="color: #D6B953;"></i>
                             </div>
                         </div>
+
+                        <!-- מארז 2: אספן צעיר -->
+                        <div id="boutique-pkg-young" class="boutique-package-content" style="display: none;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge">מומלץ לילדים</div>
+                                <h3>מארז לאספן הצעיר</h3>
+                                <p class="boutique-desc">המתנה המושלמת לילדים שמתחילים את דרכם בעולם אספנות הכדורגל, שעות של הנאה והתרגשות מובטחות.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> בובת סוקרסטארז בקופסא מקורית</li>
+                                    <li><i class="fa-solid fa-check"></i> 2 מעטפות קלפים (אדרנלין/מאצ' אטאקס)</li>
+                                    <li><i class="fa-solid fa-check"></i> כדור לחיץ וצמיד במארז מהודר</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪129</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-child placeholder-boutique" style="color: #a0aec0;"></i>
+                            </div>
+                        </div>
+
+                        <!-- מארז 3: אימון -->
+                        <div id="boutique-pkg-training" class="boutique-package-content" style="display: none;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge">לשחקנים</div>
+                                <h3>מארז אימון ילדים/נוער</h3>
+                                <p class="boutique-desc">כל מה ששחקן כדורגל מתחיל צריך כדי לשפר זריזות, קואורדינציה ושליטה בכדור.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> 2 זוגות גרבי גריפ נגד החלקה</li>
+                                    <li><i class="fa-solid fa-check"></i> סט 10 קונוסים וסולם קואורדינציה</li>
+                                    <li><i class="fa-solid fa-check"></i> רצועת אימון אלסטית (כולל תיק נשיאה)</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪99</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-stopwatch placeholder-boutique" style="color: #a0aec0;"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- מארז 4: כושר -->
+                        <div id="boutique-pkg-fitness" class="boutique-package-content" style="display: none;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge">ספורט בבית</div>
+                                <h3>מארז כושר גבר/אישה</h3>
+                                <p class="boutique-desc">סט אימון פונקציונלי קומפקטי ומלא, מושלם לשמירה על כושר ובניית כוח בכל מקום.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> חבל קפיצה מקצועי מתכוונן</li>
+                                    <li><i class="fa-solid fa-check"></i> גלגל בטן לפיתוח שרירי הליבה</li>
+                                    <li><i class="fa-solid fa-check"></i> רצועה אלסטית ומוטות פוש-אפ מובנים</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪119</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-dumbbell placeholder-boutique" style="color: #a0aec0;"></i>
+                            </div>
+                        </div>
+                        </div>
+
                     </div>
                 </div>
-
-                <div id="spa-view-custom" class="spa-view">
+                <!-- ========================================== -->
+                <!-- אזור הרכבת מארז אישי (שמאל: קופסה, ימין: מוצרים) -->
+                <!-- ========================================== -->
+                <div id="spa-view-custom" class="spa-view" style="display: none; width: 100%; height: 100%; max-width: 1200px; margin: 0 auto;">
                     <div class="custom-builder-container">
+                        
+                        <!-- צד ימין - בחירת מוצרים (קונסולת הבחירה) -->
                         <div class="builder-right">
                             <div class="builder-header">
-                                <h3>בחר פריטים למארז האישי</h3>
-                                <span class="builder-subtitle">עד 5 פריטים בקופסה</span>
+                                <h3>הרכבת מארז אישי</h3>
+                                <span class="builder-subtitle">בחר עד 5 פריטים</span>
                             </div>
+                            
+                            <!-- טאבים לסינון מוצרים -->
                             <div class="builder-tabs">
                                 <button class="b-tab active" onclick="filterBuilder('all', this)">הכל</button>
-                                <button class="b-tab" onclick="filterBuilder('figures', this)">בובות</button>
+                                <button class="b-tab" onclick="filterBuilder('figures', this)">בובות ופונקו</button>
                                 <button class="b-tab" onclick="filterBuilder('cards', this)">קלפים</button>
                                 <button class="b-tab" onclick="filterBuilder('training', this)">אימון</button>
                                 <button class="b-tab" onclick="filterBuilder('toys', this)">צעצועים</button>
-                                <button class="b-tab" onclick="filterBuilder('more', this)">שונות</button>
+                                <button class="b-tab" onclick="filterBuilder('more', this)">אקססוריז</button>
                             </div>
+                            
+                            <!-- אזור הגריד אליו יישאבו המוצרים -->
                             <div class="builder-products-scroll">
-                                <div class="builder-grid" id="builder-grid"></div>
+                                <div id="builder-grid" class="builder-grid">
+                                    <!-- מוצרים ייטענו לכאן מהסקריפט -->
+                                </div>
+                            </div>
+                            
+                            <div id="custom-builder-pagination" class="pagination-container">
+                                <!-- מספרי עמודים -->
                             </div>
                         </div>
+
+                        <!-- צד שמאל - תצוגת הקופסה והסיכום -->
                         <div class="builder-left">
                             <div class="box-visual">
                                 <i class="fa-solid fa-box-open bg-box-icon"></i>
-                                <div class="box-slots" id="box-slots">
-                                    <div class="box-slot empty" data-index="0"></div>
-                                    <div class="box-slot empty" data-index="1"></div>
-                                    <div class="box-slot empty" data-index="2"></div>
-                                    <div class="box-slot empty" data-index="3"></div>
-                                    <div class="box-slot empty" data-index="4"></div>
+                                <div class="box-slots">
+                                    <div class="box-slot empty"></div>
+                                    <div class="box-slot empty"></div>
+                                    <div class="box-slot empty"></div>
+                                    <div class="box-slot empty"></div>
+                                    <div class="box-slot empty"></div>
                                 </div>
                             </div>
+                            
+                            <!-- סיכום הזמנה מתעדכן בלייב -->
                             <div class="box-summary">
-                                <div class="box-progress-area">
-                                    <div class="progress-texts"><span>תכולה</span><span><span id="box-count">0</span>/5</span></div>
-                                    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+                                <div class="progress-texts">
+                                    <span>תפוסת המארז</span>
+                                    <span><span id="box-count">0</span>/5 פריטים</span>
                                 </div>
-                                <div class="box-total"><span>סה"כ:</span><span class="total-price">₪<span id="box-total-price">0</span></span></div>
-                                <button class="finish-box-btn" id="finish-box-btn" disabled onclick="checkoutBox()">ארוז והוסף לעגלה <i class="fa-solid fa-gift"></i></button>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                                </div>
+                                <div class="box-total">
+                                    <span>סה"כ:</span>
+                                    <span class="total-price">₪<span id="box-total-price">0</span></span>
+                                </div>
+                                <button id="finish-box-btn" class="finish-box-btn" disabled onclick="checkoutBox()">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
                             </div>
                         </div>
+
                     </div>
                 </div>
-
-            </div>
-            </section>
-
-            
-            
-            <div id="global-mystery-box" class="global-mystery-modal">
-                <div class="modal-text-side" id="global-modal-text"></div>
-                <div class="modal-img-side" id="global-modal-img"></div>
-            </div>
-
         </main>
+        <!-- ========================================== -->
+        <!-- סוף מרכז הבמה -->
+        <!-- ========================================== -->
+
+
         <div id="product-modal" class="custom-modal-overlay">
         <div class="custom-modal-content">
             <button class="close-modal-btn" onclick="closeProductModal()">&times;</button>
@@ -1629,6 +1677,11 @@
             
             liveScrollInterval = setInterval(() => {
                 if (isLiveScrollingPaused) return;
+                
+                // התיקון: בודק אם התוכן חורג מהמסגרת ביותר מ-5 פיקסלים. 
+                // אם לא (למשל כשיש רק 4 משחקים) - הוא לא יגלול וימנע את ה"ריקוד".
+                if (container.scrollHeight <= container.clientHeight + 5) return;
+
                 container.scrollTop += 1;
                 if (Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight) {
                     container.scrollTop = 0;
@@ -1908,18 +1961,6 @@
             });
         }
 
-        function filterBuilder(category, btnElement) {
-            document.querySelectorAll('.b-tab').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
-            
-            document.querySelectorAll('.b-card').forEach(card => {
-                if (category === 'all' || card.getAttribute('data-cat') === category) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
 
         function addItemToBox(name, price, imgSrc) {
             if (currentBox.length >= MAX_ITEMS) {
@@ -2023,6 +2064,204 @@
             });
         }
     });
+</script>
+<script>
+function switchSpaMain(tabName, buttonElement) {
+    // 1. מורידים את הסטטוס הפעיל מכל הטאבים הראשיים החדשים
+    document.querySelectorAll('.hub-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // 2. מוסיפים סטטוס פעיל לכפתור הנוכחי שלחצו עליו
+    if (buttonElement) {
+        buttonElement.classList.add('active');
+    } else {
+        // גיבוי למקרה שהאלמנט לא עבר - מחפשים לפי הטקסט או סדר
+        const tabs = document.querySelectorAll('.hub-tab');
+        tabs.forEach(tab => {
+            if (tab.textContent.includes(tabName === 'packages' ? 'מארזים' : tabName === 'mystery' ? 'מיסטרי' : tabName === 'vintage' ? 'וינטג' : 'מכירות')) {
+                tab.classList.add('active');
+            }
+        });
+    }
+
+    // 3. מסתירים את כל הדיבים (הפאנלים) של התוכן ב-Viewport
+    document.querySelectorAll('.hub-content-viewport > .spa-view').forEach(view => {
+        view.style.display = 'none';
+        view.classList.remove('active');
+    });
+
+    // 4. מציגים את הדיב הספציפי שמתאים לטאב שנבחר
+    const targetView = document.getElementById('spa-view-' + tabName);
+    if (targetView) {
+        targetView.style.display = 'block';
+        targetView.classList.add('active');
+    }
+}
+</script>
+<script>
+// פונקציה להחלפת מארזי בוטיק
+function showBoutiquePackage(pkgId, btnElement) {
+    // מחיקת 'פעיל' מכל הכפתורים
+    document.querySelectorAll('.boutique-btn').forEach(btn => btn.classList.remove('active'));
+    // הוספת 'פעיל' לכפתור שנלחץ
+    btnElement.classList.add('active');
+
+    // הסתרת כל מלבני התצוגה
+    document.querySelectorAll('.boutique-package-content').forEach(pkg => {
+        pkg.style.display = 'none';
+    });
+    
+    // הצגת המלבן המבוקש
+    document.getElementById('boutique-pkg-' + pkgId).style.display = 'flex';
+}
+</script>
+<script>
+function selectPackageTab(type, btnElement) {
+    // מחיקת סימון מכל הכפתורים והדגשת הנוכחי
+    document.querySelectorAll('.boutique-btn').forEach(btn => btn.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
+    
+    const readyView = document.getElementById('spa-view-ready');
+    const customView = document.getElementById('spa-view-custom');
+
+    if (type === 'custom') {
+        // מסתיר את הטאבים וחלון הראווה, ומציג את הרכבת המארז
+        readyView.style.display = 'none';
+        customView.style.display = 'flex';
+        customView.style.flexDirection = 'column'; // שומר על המבנה
+        initCustomBuilderPagination(); // הפעלת מערכת העמודים!
+    } else {
+        // חוזר לטאבים
+        customView.style.display = 'none';
+        readyView.style.display = 'flex';
+        
+        // מציג את המארז הרלוונטי
+        document.querySelectorAll('.boutique-package-content').forEach(pkg => {
+            pkg.style.display = 'none';
+        });
+        const targetPkg = document.getElementById('boutique-pkg-' + type);
+        if(targetPkg) targetPkg.style.display = 'flex';
+    }
+}
+
+// פונקציית החזור החדשה
+function backToBoutique() {
+    // בוחר אוטומטית בכפתור הראשון (פרימיום) כדי לחזור אליו כברירת מחדל
+    const premiumBtn = document.querySelector('.boutique-btn:first-child');
+    if (premiumBtn) {
+        selectPackageTab('premium', premiumBtn);
+    }
+}
+
+// ==========================================
+// מנוע משולב נקי: סינון קטגוריות + מספרי עמודים
+// ==========================================
+let currentCustomPage = 1; // הוגדר פעם אחת בלבד!
+
+function filterBuilder(category, btnElement) {
+    // צובע את הכפתור הפעיל
+    document.querySelectorAll('.b-tab').forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+    
+    // מסמן אילו מוצרים שייכים לקטגוריה ואילו לא
+    document.querySelectorAll('.b-card').forEach(card => {
+        if (category === 'all' || card.getAttribute('data-cat') === category) {
+            card.classList.remove('hidden-by-filter');
+        } else {
+            card.classList.add('hidden-by-filter');
+        }
+    });
+    
+    // מחזיר לעמוד 1 ומרענן את התצוגה
+    currentCustomPage = 1;
+    initCustomBuilderPagination();
+}
+
+function initCustomBuilderPagination() {
+    const grid = document.getElementById('builder-grid');
+    const paginationContainer = document.getElementById('custom-builder-pagination');
+    
+    if (!grid || !paginationContainer) return;
+    
+    // בוחר רק את המוצרים שלא הוסתרו על ידי כפתור הסינון
+    const allItems = Array.from(grid.querySelectorAll('.b-card'));
+    const visibleItems = allItems.filter(item => !item.classList.contains('hidden-by-filter'));
+    
+    // מסתיר את כולם כברירת מחדל
+    allItems.forEach(item => item.style.display = 'none');
+
+    // אם אין מוצרים בקטגוריה, מנקה את המספרים
+    if (visibleItems.length === 0) {
+        paginationContainer.innerHTML = '';
+        return;
+    }
+
+    // חישוב עמודים: 6 ללפטופ, 8 למסך גדול
+    const isLargeScreen = window.innerWidth >= 1600;
+    const itemsPerPage = isLargeScreen ? 8 : 6; 
+    const totalPages = Math.ceil(visibleItems.length / itemsPerPage);
+    
+    if (currentCustomPage > totalPages) currentCustomPage = totalPages;
+    if (currentCustomPage < 1) currentCustomPage = 1;
+
+    // מציג רק את המוצרים ששייכים לעמוד הנוכחי
+    visibleItems.forEach((item, index) => {
+        const start = (currentCustomPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        if (index >= start && index < end) {
+            item.style.display = 'flex'; 
+        }
+    });
+
+    // בניית קוביות המספרים בתחתית המסך
+    paginationContainer.innerHTML = ''; 
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.className = `page-btn ${i === currentCustomPage ? 'active' : ''}`;
+        btn.innerText = i;
+        btn.onclick = () => {
+            currentCustomPage = i;
+            initCustomBuilderPagination(); 
+        };
+        paginationContainer.appendChild(btn);
+    }
+}
+
+// קריאה ראשונית ברגע שהמוצרים נטענים
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(initCustomBuilderPagination, 100); 
+});
+</script>
+<script>
+// מחליף בין אזור מארזים מוכנים לאזור הרכבה אישית
+function togglePackageMode(mode) {
+    // מנקה את פס הזהב משני הטאבים
+    document.getElementById('ready-packages-title').classList.remove('active');
+    document.getElementById('custom-package-tab').classList.remove('active');
+
+    if(mode === 'ready') {
+        document.getElementById('ready-packages-title').classList.add('active');
+        document.getElementById('spa-view-ready').style.display = 'block';
+        document.getElementById('spa-view-custom').style.display = 'none';
+    } else {
+        document.getElementById('custom-package-tab').classList.add('active');
+        document.getElementById('spa-view-ready').style.display = 'none';
+        document.getElementById('spa-view-custom').style.display = 'block';
+    }
+}
+
+// מחליף את התצוגה כשבוחרים מארז ספציפי מהרשימה הנפתחת
+function selectDropdownPackage(pkgId, element) {
+    
+    document.querySelectorAll('.boutique-package-content').forEach(pkg => {
+        pkg.style.display = 'none';
+    });
+    document.getElementById('boutique-pkg-' + pkgId).style.display = 'flex';
+    
+    // מוודא שאנחנו נמצאים במצב תצוגה של מארזים מוכנים
+    togglePackageMode('ready');
+}
 </script>
 </body>
 </html>

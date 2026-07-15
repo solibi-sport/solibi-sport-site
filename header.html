@@ -30,13 +30,11 @@
     </div>
 </header>
 
-<!-- פס הכרזה למכירות פומביות (Drop Bar) הועבר לכאן - מתחת להדר -->
-<div id="auction-drop-bar" class="auction-drop-bar" style="display: flex;">
-    <div class="auction-drop-content">
-        <span class="live-pulse"></span>
-        <span class="auction-text">מכירה פומבית בשידור חי: אלבום סופרגול נדיר</span>
-        <div class="auction-timer" id="header-auction-timer">02:14:59</div>
-        <a href="auctions.html" class="enter-auction-btn">היכנס לזירה</a>
+<!-- פס ההכרזה דולק כי אנחנו בלייב -->
+    <div id="auction-drop-bar" class="auction-drop-bar" style="display: none;">
+        <div class="auction-drop-content" style="display: flex; align-items: center; justify-content: center; gap: 15px; width: 100%;">
+            <div class="auction-timer" id="header-auction-timer">00:05:43</div>
+            <span class="auction-text">מכירה פומבית בשידור חי: חולצה חתומה של מסי</span>
+            <span class="live-pulse-dot"></span>
+        </div>
     </div>
-    <button class="close-drop-bar" onclick="document.getElementById('auction-drop-bar').style.display='none'">&times;</button>
-</div>
