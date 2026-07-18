@@ -3638,3 +3638,65 @@ html, body {
     overflow: hidden !important; 
     padding: 10px 15px !important; /* כיווץ קל של הריפוד הפנימי כדי שיכנס מושלם */
 }
+
+/* =========================================
+   נעילת טאבים (Sticky) ודיאטה להרכבת מארז אישי
+   ========================================= */
+
+/* 1. נועלים את כל האמצע כדי שהטאבים לא יזוזו בחיים! */
+.main-content {
+    overflow: hidden !important; 
+}
+
+.center-tabs-wrapper {
+    flex-shrink: 0 !important; /* מגן על הטאבים שלא יימעכו */
+}
+
+/* 2. מוודאים שחלון התוכן תופס רק את השטח שנשאר ולא פורץ אותו */
+.hub-content-viewport, 
+#spa-view-custom {
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* 3. מלבן הרכבת מארז נעול למקום */
+.custom-builder-container {
+    flex: 1 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important; /* חותך הכל החוצה ולא דוחף את הפוטר */
+}
+
+/* 4. האזור היחיד שיורשה להיגלל (בפנים, מתחת לטאבים) רק במקרה חרום! */
+.builder-products-scroll {
+    flex: 1 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto !important; /* גלילה פנימית בלבד נסתרת */
+    overflow-x: hidden !important;
+}
+
+/* 5. דיאטה לקוביות המוצרים - כדי לחסל את הגלילה הפנימית לגמרי */
+.builder-grid {
+    flex: 1 !important;
+    gap: 10px !important;
+    margin-bottom: 5px !important;
+}
+
+.b-card {
+    padding: 5px 5px 32px 5px !important; /* פחות ריווח פנימי למעלה ולמטה */
+}
+
+.b-card img {
+    max-height: 55px !important; /* התמונה טיפה קטנה יותר לחסכון בגובה */
+    margin-bottom: 5px !important;
+}
+
+/* שומר על מספרי העמודים למטה תמיד גלויים */
+.pagination-container {
+    flex-shrink: 0 !important; 
+    padding-top: 5px !important;
+    margin-top: 5px !important;
+}
