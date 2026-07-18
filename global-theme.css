@@ -3565,57 +3565,76 @@ html, body {
     margin: 0 !important;
 }
 /* =========================================
-   שלט רחוק מוחלט (עוקף את פקודות ההימתחות הישנות!)
+   ממשק Web-App דינמי - התאמה אוטומטית לכל דפדפן (ללא גלילה)
    ========================================= */
 
-/* מנטרלים את ההימתחות האוטומטית של המיכלים העוטפים */
+/* --- 1. דיאטת ריווחים וטאבים לחסכון במקום אנכי --- */
+.premium-capsule-tabs {
+    padding: 4px !important; /* קפסולה צרה יותר */
+    margin: 0 auto 12px auto !important; /* צמצום הרווח שמתחת לקפסולה */
+}
+
+.capsule-tab {
+    padding: 6px 20px !important; /* כפתורים פחות שמנים */
+    font-size: 14px !important; /* הקטנה עדינה של הטקסט */
+}
+
+.premium-sub-tabs {
+    margin: 0 auto 12px auto !important; /* צמצום משמעותי של הרווח לפני המלבן השחור */
+    gap: 20px !important; 
+}
+
+.sub-tab {
+    font-size: 14px !important;
+    padding: 0 0 4px 0 !important;
+}
+
+/* --- 2. האמצע מתגמש אוטומטית לפי גודל הדפדפן (ללא פיקסלים קבועים) --- */
+.main-content {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important; 
+}
+
 #spa-view-ready, 
 #spa-view-custom {
-    display: block !important; 
-    flex: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important; /* פקודת הקסם: "קח רק את מה שנשאר!" */
+    min-height: 0 !important; /* מונע מהמיכל לפרוץ את הגבולות כשיש הרבה תוכן */
     height: auto !important;
 }
 
 /* -----------------------------------------
-   1. מלבן מארזים מוכנים (עכשיו גם הוא בשליטה מלאה)
+   3. מלבן מארזים מוכנים מתיישר אוטומטית
 ----------------------------------------- */
-#spa-view-ready {
-    display: block !important; 
-    flex: none !important;
-    height: auto !important;
-}
-
 .boutique-showroom {
-    flex: none !important; 
-    
-    /* שים כאן בדיוק את המספר שעבד לך מושלם בהרכבת המארז! */
-    height: 440px !important; 
-    min-height: 440px !important; 
-    max-height: 4400px !important; 
-    
+    flex: 1 !important; 
+    min-height: 0 !important; 
+    max-height: none !important; 
+    height: 100% !important;
+    margin-bottom: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important; 
 }
 
-/* הפקודה החסרה: מכריחה את התוכן הפנימי למלא את הגובה החדש שבחרת */
 .boutique-package-content {
     height: 100% !important;
     flex: 1 !important;
 }
 
 /* -----------------------------------------
-   2. מלבן הרכבת מארז אישי
+   4. מלבן הרכבת מארז מתיישר אוטומטית
 ----------------------------------------- */
 .custom-builder-container {
-    flex: none !important; /* פקודת הקסם שעוצרת את ה"גומי" */
-    
-    /* תשנה פה את שלושת המספרים ביחד כדי להגדיר גובה */
-    height: 440px !important; 
-    min-height: 440px !important; 
-    max-height: 440px !important; 
-    
+    flex: 1 !important; 
+    min-height: 0 !important; 
+    max-height: none !important;
+    height: 100% !important;
+    margin-bottom: 0 !important;
     display: flex !important;
     flex-direction: row !important; 
-    overflow: visible !important; 
+    overflow: hidden !important; 
+    padding: 10px 15px !important; /* כיווץ קל של הריפוד הפנימי כדי שיכנס מושלם */
 }
