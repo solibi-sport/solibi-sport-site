@@ -3700,3 +3700,29 @@ html, body {
     padding-top: 5px !important;
     margin-top: 5px !important;
 }
+/* =========================================
+   חיסול סופי של גלילת המיקרו-פיקסלים בהרכבת מארז
+   ========================================= */
+
+/* 1. ביטול אפשרות הגלילה באזור המוצרים - נעילה מוחלטת */
+.builder-products-scroll {
+    overflow: hidden !important; /* במקום auto - פשוט לא מרשה לגלול */
+}
+
+/* 2. גילוח 5 פיקסלים מהרווחים כדי להבטיח שום חיתוך בתחתית */
+.builder-grid {
+    gap: 8px !important; /* צמצום קל של הרווח בין הקוביות */
+    margin-bottom: 0 !important; /* מחיקת רווח סמוי מתחת לגריד */
+}
+
+/* 3. כיווץ מינימלי למרווח התחתון של כל כרטיסייה */
+.b-card {
+    padding: 5px 5px 28px 5px !important; /* הורדנו מ-32 ל-28 */
+}
+
+/* 4. מוודא שקוביות העמודים נדבקות יפה לתחתית בלי לדחוף הכל */
+.pagination-container {
+    padding-top: 5px !important;
+    margin-top: auto !important; 
+    border-top: 1px solid rgba(214, 185, 83, 0.1) !important; /* פס זהב עדין טיפה יותר דק */
+}
