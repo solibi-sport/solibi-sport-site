@@ -10,6 +10,14 @@
     
     <style>
         /* =========================================
+           מגן CSS - רוצח התנגשויות וכפילויות בטאבים!
+           ========================================= */
+        .premium-sub-tabs[style*="display: none"],
+        .spa-view[style*="display: none"],
+        .boutique-package-content[style*="display: none"] {
+            display: none !important;
+        }
+        /* =========================================
            סמלי הריחוף של המיסטרי
            ========================================= */
         .mystery-icon-btn {
@@ -110,8 +118,8 @@
 
             .site-layout {
                 flex-grow: 1 !important;
-                margin-top: 30px !important; 
-                margin-bottom: 30px !important; 
+                margin-top: 10px !important; /* כאן קבענו 10 פיקסלים מתחת להדר */
+                margin-bottom: 10px !important; /* כאן קבענו 10 פיקסלים מעל הפוטר */
                 min-height: 0 !important;
                 display: flex !important;
                 align-items: stretch !important;
@@ -1175,6 +1183,13 @@
             direction: rtl !important; 
         }
 
+        /* =========================================
+           מירכוז אנכי מושלם למרכז הבמה בין הסיידברים
+           ========================================= */
+        .main-content {
+            justify-content: center !important;
+        }
+
     </style>
 </head>
 <body class="home-page">
@@ -1318,12 +1333,12 @@
             <!-- כלוב המירכוז שנועל אותם לאמצע -->
             <div class="center-tabs-wrapper">
                 
-                <!-- קפסולת הטאבים פרימיום (תפריט ראשי) -->
+            <!-- קפסולת הטאבים פרימיום (תפריט ראשי) -->
             <div class="premium-capsule-tabs">
-                <button class="capsule-tab active">מארזים</button>
-                <button class="capsule-tab">מיסטרי בוקס</button>
-                <button class="capsule-tab">סוליבי וינטג'</button>
-                <button class="capsule-tab auction-tab">
+                <button class="capsule-tab active" onclick="navTabSwitch('packages', this)">מארזים</button>
+                <button class="capsule-tab" onclick="navTabSwitch('mystery', this)">מיסטרי בוקס</button>
+                <button class="capsule-tab" onclick="navTabSwitch('vintage', this)">סוליבי וינטג'</button>
+                <button class="capsule-tab auction-tab" onclick="navTabSwitch('auction', this)">
                     מכירות פומביות <span class="live-pulse-dot"></span>
                 </button>
             </div>
@@ -1350,6 +1365,21 @@
                 <!-- כפתור הרכבת מארז אישי -->
                 <button class="sub-tab" id="custom-package-tab" onclick="togglePackageMode('custom')">הרכבת מארז אישי</button>
             </div>
+
+<!-- תתי-טאבים למיסטרי בוקס (מוסתר כברירת מחדל) -->
+            <div class="premium-sub-tabs" id="mystery-sub-tabs" style="display: none;">
+                <div class="custom-dropdown">
+                    <button class="sub-tab active" id="mystery-packages-title">
+                        סוגי מיסטרי <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-right: 5px;"></i>
+                    </button>
+                    <!-- הרשימה הנפתחת -->
+                    <div class="dropdown-content">
+                        <a href="#" onclick="selectDropdownMystery('adult', this); return false;">מיסטרי קלפים בוגרים</a>
+                        <a href="#" onclick="selectDropdownMystery('kids', this); return false;">מיסטרי קלפים ילדים</a>
+                    </div>
+                </div>
+            </div>
+
 <!-- ========================================== -->
 <!-- אזור תצוגת מארזים מוכנים (החלון החצוי) -->
 <!-- ========================================== -->
@@ -1517,6 +1547,105 @@
 
                     </div>
                 </div>
+
+<!-- ========================================== -->
+                <!-- אזור תצוגת מיסטרי בוקס -->
+                <!-- ========================================== -->
+                <div id="spa-view-mystery" class="spa-view" style="display: none; width: 100%; max-width: 900px; margin: 0 auto;">
+                    <div class="boutique-showroom">
+                        
+                        <!-- מיסטרי 1: בוגרים -->
+                        <div id="boutique-mystery-adult" class="boutique-package-content" style="display: flex;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge gold">מארז פרימיום</div>
+                                <h3>מיסטרי קלפים בוגרים</h3>
+                                <p class="boutique-desc">מארז הפתעה לאספנים מתקדמים. כל חבילה מכילה קלפים ומדבקות, עם סיכוי לצ'ייסים נדירים וקלפים מדורגים.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> מעטפת מדבקות/קלפים ו-7 קלפים אקראיים</li>
+                                    <li><i class="fa-solid fa-check"></i> 7 מדבקות אקראיות ומחזיק מפתחות מתכתי</li>
+                                    <li><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> סיכוי לקלף מדורג PSA או חתימה</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪199</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-box placeholder-boutique" style="color: #D6B953;"></i>
+                            </div>
+                        </div>
+
+                        <!-- מיסטרי 2: ילדים -->
+                        <div id="boutique-mystery-kids" class="boutique-package-content" style="display: none;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge">מומלץ לילדים</div>
+                                <h3>מיסטרי קלפים ילדים</h3>
+                                <p class="boutique-desc">הפתעה מושלמת לילדים שאוהבים לאסוף! הרבה קלפים ומדבקות מהאוספים האהובים ביותר במארז עיוור.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> 10 קלפי אדרנלין/מאצ' אטאקס + קלף לימיטד</li>
+                                    <li><i class="fa-solid fa-check"></i> 5 מדבקות אקראיות וצמיד סיליקון נבחרות</li>
+                                    <li><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> אופציה למעטפה נוספת כהפתעה!</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪149</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-box-open placeholder-boutique" style="color: #a0aec0;"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+             
+                <!-- ========================================== -->
+<!-- אזור תצוגת מכירות פומביות -->
+<!-- ========================================== -->
+<div id="spa-view-auction" class="spa-view" style="display: none; width: 100%; max-width: 900px; margin: 0 auto;">
+    
+    <!-- כותרת האזור (רווחים מצומצמים) -->
+    <div style="text-align: center; margin-bottom: 10px;">
+        <h2 style="color: #d4af37; margin-bottom: 2px; font-size: 20px;"><i class="fa-solid fa-gavel"></i> זירת המכרזים</h2>
+        <p style="color: #a0aec0; font-size: 13px; margin: 0;">הצע מחיר על הפריטים הנדירים ביותר שלנו. המרבה במחיר זוכה!</p>
+    </div>
+
+    <!-- פריט המכרז המרכזי (Live) -->
+    <div class="boutique-showroom">
+        <div class="boutique-package-content" style="display: flex;">
+            <div class="boutique-text-side">
+                <div class="boutique-badge hot-badge" style="position: relative; display: inline-block; top: 0; right: 0; margin-bottom: 8px;">לייב עכשיו <span class="live-pulse-dot" style="margin-right: 5px;"></span></div>
+                
+                <h3 style="margin-bottom: 5px;">קלף מסי מונדיאל 2022 חתום (PSA 10)</h3>
+                <!-- נעילת התיאור ל-2 שורות כדי שלא ימתח את המלבן -->
+                <p class="boutique-desc" style="margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">הזדמנות נדירה לאספנים! קלף מוזהב מהגמר הגדול בקטאר, חתימה מקורית מאומתת בדירוג מושלם של חברת PSA.</p>
+                
+                <!-- אזור הסטטוס של המכרז (מוקטן ומהודק) -->
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(214, 185, 83, 0.3); border-radius: 10px; padding: 10px 15px; margin: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <span style="color: #a0aec0; font-size: 13px;">הצעה נוכחית:</span>
+                        <span style="color: #d4af37; font-size: 20px; font-weight: bold;">₪1,450</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #a0aec0; font-size: 13px;">זמן לסיום:</span>
+                        <span style="color: #ff4a4a; font-size: 16px; font-weight: bold; font-family: monospace;"><i class="fa-regular fa-clock"></i> 02:14:35</span>
+                    </div>
+                </div>
+
+                <div class="boutique-action" style="justify-content: center; margin-top: auto;">
+                    <button class="boutique-cart-btn" style="width: 100%; font-size: 15px; padding: 10px;">הצע מחיר עכשיו <i class="fa-solid fa-gavel"></i></button>
+                </div>
+                <div style="text-align: center; margin-top: 8px; color: #718096; font-size: 11.5px;">סה"כ הצעות: 14 | מציע מוביל: יוסי.כ***</div>
+            </div>
+            
+            <div class="boutique-image-side" style="background: linear-gradient(135deg, rgba(214, 185, 83, 0.1), rgba(0, 0, 0, 0.8));">
+                <i class="fa-solid fa-trophy placeholder-boutique" style="color: #D6B953;"></i>
+                <!-- כאן תשב תמונת הקלף המדורג -->
+            </div>
+        </div>
+    </div>
+</div>
+
         </main>
         <!-- ========================================== -->
         <!-- סוף מרכז הבמה -->
@@ -1784,46 +1913,7 @@
     </script>
     
         <script>
-        // הפעלת טאבים ראשיים (מארזים / מיסטרי / וינטג')
-        function switchSpaMain(viewId, btn) {
-            // עדכון צבע הכפתור הראשי
-            document.querySelectorAll('.spa-main-tab').forEach(b => b.classList.remove('active'));
-            if (btn) btn.classList.add('active');
-
-            // מסתיר את כל התצוגות בבטחה
-            const viewsToHide = ['spa-view-ready', 'spa-view-custom', 'spa-view-mystery', 'spa-view-vintage'];
-            viewsToHide.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.style.display = 'none';
-            });
-
-            const subTabs = document.getElementById('packages-sub-tabs');
-
-            // ניתוב חכם לפי הטאב שנבחר
-            if (viewId === 'packages') {
-                if (subTabs) subTabs.style.display = 'flex'; 
-                
-                // בודק איזה תת-טאב היה פעיל ופותח אותו
-                const customTab = document.querySelector('.spa-sub-tab:nth-child(2)');
-                const isCustomActive = customTab && customTab.classList.contains('active');
-                
-                if (isCustomActive) {
-                    const customView = document.getElementById('spa-view-custom');
-                    if (customView) customView.style.display = 'flex';
-                } else {
-                    const readyView = document.getElementById('spa-view-ready');
-                    if (readyView) readyView.style.display = 'flex';
-                }
-            } else {
-                if (subTabs) subTabs.style.display = 'none'; 
-                
-                const activeView = document.getElementById('spa-view-' + viewId);
-                if (activeView) {
-                    activeView.style.display = 'flex';
-                }
-            }
-        }
-
+        
         // הפעלת תתי-טאבים (מוכנים / הרכבה אישית)
         function switchPackagesSub(subViewId, btn) {
             document.querySelectorAll('.spa-sub-tab').forEach(b => b.classList.remove('active'));
@@ -2066,37 +2156,93 @@
     });
 </script>
 <script>
+// מחליף את הטאבים הראשיים בכוח מוחלט ומונע כפילויות
 function switchSpaMain(tabName, buttonElement) {
-    // 1. מורידים את הסטטוס הפעיל מכל הטאבים הראשיים החדשים
-    document.querySelectorAll('.hub-tab').forEach(tab => {
-        tab.classList.remove('active');
-    });
-    
-    // 2. מוסיפים סטטוס פעיל לכפתור הנוכחי שלחצו עליו
-    if (buttonElement) {
-        buttonElement.classList.add('active');
-    } else {
-        // גיבוי למקרה שהאלמנט לא עבר - מחפשים לפי הטקסט או סדר
-        const tabs = document.querySelectorAll('.hub-tab');
-        tabs.forEach(tab => {
-            if (tab.textContent.includes(tabName === 'packages' ? 'מארזים' : tabName === 'mystery' ? 'מיסטרי' : tabName === 'vintage' ? 'וינטג' : 'מכירות')) {
-                tab.classList.add('active');
-            }
-        });
-    }
+    // 1. ניקוי וצביעת הכפתור הפעיל
+    document.querySelectorAll('.capsule-tab').forEach(tab => tab.classList.remove('active'));
+    if (buttonElement) buttonElement.classList.add('active');
 
-    // 3. מסתירים את כל הדיבים (הפאנלים) של התוכן ב-Viewport
-    document.querySelectorAll('.hub-content-viewport > .spa-view').forEach(view => {
-        view.style.display = 'none';
+    // 2. מסתירים את *כל* המסכים באגרסיביות
+    document.querySelectorAll('.spa-view').forEach(view => {
+        view.style.setProperty('display', 'none', 'important');
         view.classList.remove('active');
     });
 
-    // 4. מציגים את הדיב הספציפי שמתאים לטאב שנבחר
-    const targetView = document.getElementById('spa-view-' + tabName);
-    if (targetView) {
-        targetView.style.display = 'block';
-        targetView.classList.add('active');
+    const packagesSubTabs = document.getElementById('packages-sub-tabs');
+    const mysterySubTabs = document.getElementById('mystery-sub-tabs');
+    
+    // 3. מסתירים את תתי-הטאבים באגרסיביות
+    if (packagesSubTabs) packagesSubTabs.style.setProperty('display', 'none', 'important');
+    if (mysterySubTabs) mysterySubTabs.style.setProperty('display', 'none', 'important');
+
+    // 4. מציגים *רק* את מה שצריך - עם !important כדי לשבור כל חוק CSS אחר
+    if (tabName === 'packages') {
+        if (packagesSubTabs) packagesSubTabs.style.setProperty('display', 'flex', 'important');
+        
+        const customTab = document.getElementById('custom-package-tab');
+        if (customTab && customTab.classList.contains('active')) {
+            const customView = document.getElementById('spa-view-custom');
+            if (customView) { 
+                customView.style.setProperty('display', 'flex', 'important'); 
+                customView.classList.add('active'); 
+            }
+        } else {
+            const readyView = document.getElementById('spa-view-ready');
+            if (readyView) { 
+                readyView.style.setProperty('display', 'flex', 'important'); 
+                readyView.classList.add('active'); 
+            }
+        }
+    } else if (tabName === 'mystery') {
+        if (mysterySubTabs) mysterySubTabs.style.setProperty('display', 'flex', 'important');
+        
+        const mysteryView = document.getElementById('spa-view-mystery');
+        if (mysteryView) { 
+            mysteryView.style.setProperty('display', 'flex', 'important'); 
+            mysteryView.classList.add('active'); 
+        }
+    } else {
+        const targetView = document.getElementById('spa-view-' + tabName);
+        if (targetView) { 
+            targetView.style.setProperty('display', 'flex', 'important'); 
+            targetView.classList.add('active'); 
+        }
     }
+}
+
+// מחליף בין אזור מארזים מוכנים לאזור הרכבה אישית
+function togglePackageMode(mode) {
+    document.getElementById('ready-packages-title').classList.remove('active');
+    document.getElementById('custom-package-tab').classList.remove('active');
+
+    if (mode === 'ready') {
+        document.getElementById('ready-packages-title').classList.add('active');
+        document.getElementById('spa-view-ready').style.display = 'flex';
+        document.getElementById('spa-view-custom').style.display = 'none';
+    } else {
+        document.getElementById('custom-package-tab').classList.add('active');
+        document.getElementById('spa-view-ready').style.display = 'none';
+        document.getElementById('spa-view-custom').style.display = 'flex';
+    }
+}
+
+// שולט ברשימה הנפתחת של המיסטרי בוקס (ומעדכן את הטקסט בכפתור)
+function selectDropdownMystery(pkgId, element) {
+    document.querySelectorAll('#spa-view-mystery .boutique-package-content').forEach(pkg => {
+        pkg.style.display = 'none';
+    });
+    document.getElementById('boutique-mystery-' + pkgId).style.display = 'flex';
+    document.getElementById('mystery-packages-title').innerHTML = element.innerText + ' <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-right: 5px;"></i>';
+}
+
+// שולט ברשימה הנפתחת של המארזים המוכנים (ומעדכן את הטקסט בכפתור)
+function selectDropdownPackage(pkgId, element) {
+    document.querySelectorAll('#spa-view-ready .boutique-package-content').forEach(pkg => {
+        pkg.style.display = 'none';
+    });
+    document.getElementById('boutique-pkg-' + pkgId).style.display = 'flex';
+    document.getElementById('ready-packages-title').innerHTML = element.innerText + ' <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-right: 5px;"></i>';
+    togglePackageMode('ready');
 }
 </script>
 <script>
@@ -2234,22 +2380,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script>
-// מחליף בין אזור מארזים מוכנים לאזור הרכבה אישית
-function togglePackageMode(mode) {
-    // מנקה את פס הזהב משני הטאבים
-    document.getElementById('ready-packages-title').classList.remove('active');
-    document.getElementById('custom-package-tab').classList.remove('active');
-
-    if(mode === 'ready') {
-        document.getElementById('ready-packages-title').classList.add('active');
-        document.getElementById('spa-view-ready').style.display = 'block';
-        document.getElementById('spa-view-custom').style.display = 'none';
-    } else {
-        document.getElementById('custom-package-tab').classList.add('active');
-        document.getElementById('spa-view-ready').style.display = 'none';
-        document.getElementById('spa-view-custom').style.display = 'block';
-    }
-}
 
 // מחליף את התצוגה כשבוחרים מארז ספציפי מהרשימה הנפתחת
 function selectDropdownPackage(pkgId, element) {
@@ -2261,6 +2391,59 @@ function selectDropdownPackage(pkgId, element) {
     
     // מוודא שאנחנו נמצאים במצב תצוגה של מארזים מוכנים
     togglePackageMode('ready');
+}
+// מערכת הניווט החדשה והחסינה - מתעלמת מקוד ישן!
+function navTabSwitch(tabName, buttonElement) {
+    // 1. ניקוי וצביעת הכפתור הפעיל
+    document.querySelectorAll('.capsule-tab').forEach(tab => tab.classList.remove('active'));
+    if (buttonElement) buttonElement.classList.add('active');
+
+    // 2. מסתירים את *כל* המסכים באגרסיביות
+    document.querySelectorAll('.spa-view').forEach(view => {
+        view.style.setProperty('display', 'none', 'important');
+        view.classList.remove('active');
+    });
+
+    const packagesSubTabs = document.getElementById('packages-sub-tabs');
+    const mysterySubTabs = document.getElementById('mystery-sub-tabs');
+    
+    // 3. מסתירים את תתי-הטאבים באגרסיביות
+    if (packagesSubTabs) packagesSubTabs.style.setProperty('display', 'none', 'important');
+    if (mysterySubTabs) mysterySubTabs.style.setProperty('display', 'none', 'important');
+
+    // 4. מציגים *רק* את מה שצריך - עם !important כדי לשבור כל חוק CSS אחר
+    if (tabName === 'packages') {
+        if (packagesSubTabs) packagesSubTabs.style.setProperty('display', 'flex', 'important');
+        
+        const customTab = document.getElementById('custom-package-tab');
+        if (customTab && customTab.classList.contains('active')) {
+            const customView = document.getElementById('spa-view-custom');
+            if (customView) { 
+                customView.style.setProperty('display', 'flex', 'important'); 
+                customView.classList.add('active'); 
+            }
+        } else {
+            const readyView = document.getElementById('spa-view-ready');
+            if (readyView) { 
+                readyView.style.setProperty('display', 'flex', 'important'); 
+                readyView.classList.add('active'); 
+            }
+        }
+    } else if (tabName === 'mystery') {
+        if (mysterySubTabs) mysterySubTabs.style.setProperty('display', 'flex', 'important');
+        
+        const mysteryView = document.getElementById('spa-view-mystery');
+        if (mysteryView) { 
+            mysteryView.style.setProperty('display', 'flex', 'important'); 
+            mysteryView.classList.add('active'); 
+        }
+    } else {
+        const targetView = document.getElementById('spa-view-' + tabName);
+        if (targetView) { 
+            targetView.style.setProperty('display', 'flex', 'important'); 
+            targetView.classList.add('active'); 
+        }
+    }
 }
 </script>
 </body>
