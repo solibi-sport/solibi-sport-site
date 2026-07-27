@@ -1,0 +1,998 @@
+/* =========================================
+   משתנים גלובליים 
+   ========================================= */
+:root {
+    --brand-gold: #D6B953; 
+    --brand-gold-light: #FDF3C6;
+    --brand-silver: #E8E8E8;
+    --brand-silver-dark: #A0A0A0;
+    --bg-main: #0a0a0a;
+    --text-main: #f5f5f5;
+    
+    --panel-bg: linear-gradient(145deg, rgba(20, 20, 20, 0.8) 0%, rgba(5, 5, 5, 0.95) 100%);
+    --panel-border: rgba(224, 224, 224, 0.1); 
+    --panel-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Rubik', sans-serif;
+    background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, var(--bg-main) 70%);
+    color: var(--text-main);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   עיצוב ההדר החיצוני שלך (מוקטן וסימטרי)
+   ========================================= */
+#header-placeholder {
+    width: 100%;
+    flex-shrink: 0;
+    z-index: 1000;
+}
+
+.site-header {
+    height: 60px; 
+    background: var(--brand-gold);
+    border-bottom: 2px solid #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(15px, 2vw, 30px); 
+    box-shadow: 0 5px 25px rgba(0,0,0,0.6);
+}
+
+.header-right .site-logo {
+    max-height: 40px !important; 
+    width: auto;
+    object-fit: contain;
+    border-radius: 8px; 
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.main-nav {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.main-nav a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14.5px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.main-nav a:hover {
+    background: linear-gradient(145deg, var(--brand-silver) 0%, #cfcfcf 100%); /* אפקט של כסף מטאלי */
+    color: #000; /* מוודא שהטקסט נשאר שחור וקריא */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15); /* הצללה עדינה שנותנת תחושה של כפתור */
+    transform: translateY(-1px); /* מקפיץ את הכפתור ממש טיפה למעלה */
+}
+
+.login-btn-header {
+    background: #050505;
+    color: var(--brand-gold);
+    text-decoration: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13.5px;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+}
+
+.login-btn-header:hover {
+    background: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    margin-right: 35px; 
+}
+
+/* =========================================
+   עיצוב אזור החיפוש (רקע שחור פרימיום)
+   ========================================= */
+.premium-search-container {
+    display: flex;
+    align-items: center;
+    background: #050505; /* שחור עמוק */
+    border-radius: 20px;
+    padding: 5px 15px;
+    border: 1px solid rgba(214, 185, 83, 0.4); /* מסגרת זהובה עדינה שעוטפת את השחור */
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); /* הצללה פנימית שנותנת עומק */
+}
+
+.premium-search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--brand-silver); /* הטקסט שמוקלד יהיה בצבע כסוף */
+    font-family: inherit;
+    font-weight: 700;
+    width: 180px;
+}
+
+.premium-search-input::placeholder { 
+    color: rgba(224, 224, 224, 0.5); /* טקסט ה"חפש מוצר..." יהיה באפור בהיר */
+    font-weight: 500; 
+}
+
+.premium-search-btn { 
+    background: transparent; 
+    border: none; 
+    color: var(--brand-gold); /* זכוכית המגדלת תהיה בזהב */
+    cursor: pointer; 
+    font-size: 15px; 
+    transition: 0.3s; 
+}
+
+.premium-search-btn:hover { 
+    transform: scale(1.1); 
+    color: #fff; /* הזכוכית תזהר בלבן במעבר עכבר */
+}
+.auction-drop-bar { display: none !important; }
+
+/* =========================================
+   הגריד המרכזי וסביבת העבודה
+   ========================================= */
+.app-layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 8fr 2.2fr;
+    gap: clamp(15px, 2vw, 30px); 
+    margin-top: 25px; 
+    margin-bottom: 25px; 
+    padding: 0 clamp(15px, 2vw, 30px);
+    min-height: 0;
+}
+
+.main-workspace {
+    display: flex;
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--panel-shadow);
+    border-radius: 20px;
+    position: relative;
+}
+
+.main-workspace::before, .left-extra::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--brand-silver), var(--brand-gold), var(--brand-silver), transparent);
+    opacity: 0.6;
+    z-index: 10;
+}
+
+/* =========================================
+   התפריט הימני (זהב פרימיום - תפריט צף)
+   ========================================= */
+.right-nav {
+    width: clamp(240px, 25%, 320px); 
+    flex-shrink: 0;
+    background: linear-gradient(145deg, rgba(175, 135, 45, 0.4) 0%, rgba(35, 25, 8, 0.98) 100%);
+    border-left: 2px solid rgba(214, 185, 83, 0.5);
+    box-shadow: -15px 0 35px rgba(0,0,0,0.9), inset 0 0 30px rgba(214, 185, 83, 0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 20; 
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.sidebar-logo-area {
+    text-align: center;
+    padding: 20px 0 15px 0;
+    border-bottom: 1px solid rgba(214, 185, 83, 0.3); 
+}
+
+.silver-glow-text {
+    color: var(--text-main); 
+    font-size: 24px; letter-spacing: 2px; font-weight: 900;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); margin-bottom: 5px;
+}
+
+.gold-subtitle { color: var(--brand-gold); font-size: 10px; letter-spacing: 2px; font-weight: 500; }
+
+.main-nav-list { 
+    flex: 1; 
+    padding: 15px; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nav-item {
+    position: relative; 
+    border-radius: 10px; 
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(214, 185, 83, 0.1); 
+    transition: 0.3s;
+}
+
+.nav-header {
+    width: 100%; 
+    background: transparent; 
+    border: none; 
+    color: var(--brand-silver);
+    padding: 14px 15px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    font-family: inherit; 
+    font-size: 14.5px; 
+    font-weight: 500; 
+    cursor: pointer; 
+    transition: 0.3s ease;
+}
+
+.nav-header span i { width: 24px; text-align: center; margin-left: 10px; color: rgba(224, 224, 224, 0.6); transition: 0.3s; }
+.nav-header .arrow { font-size: 11px; transition: 0.3s; color: rgba(224, 224, 224, 0.5); }
+
+.nav-item:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom: 1px solid rgba(214, 185, 83, 0.4);
+    box-shadow: inset 0 5px 20px rgba(214, 185, 83, 0.15); 
+}
+
+.nav-item:hover .nav-header { color: var(--brand-gold); }
+.nav-item:hover .nav-header span i { color: var(--brand-gold); filter: drop-shadow(0 0 8px rgba(214, 185, 83, 0.6)); }
+.nav-item:hover .nav-header .arrow { color: var(--brand-gold); transform: translateX(-5px); }
+
+.flyout-menu {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: -1px;
+    right: 100%; 
+    margin-right: 15px; 
+    min-width: 200px;
+    background: rgba(10, 10, 10, 0.98);
+    border: 1px solid rgba(214, 185, 83, 0.4);
+    border-radius: 10px;
+    box-shadow: -10px 15px 30px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    z-index: 100;
+    transform: translateX(10px);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    pointer-events: none; 
+}
+
+.flyout-menu::before {
+    content: '';
+    position: absolute;
+    top: 0; right: -15px;
+    width: 15px; height: 100%;
+}
+
+.nav-item:hover .flyout-menu {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.flyout-menu a {
+    color: var(--brand-silver-dark); 
+    text-decoration: none; 
+    padding: 12px 20px;
+    font-size: 13.5px; 
+    border-right: 3px solid transparent; 
+    transition: 0.2s;
+}
+
+.flyout-menu a:hover { 
+    background: rgba(214, 185, 83, 0.05); 
+    border-right-color: var(--brand-gold);
+    color: var(--brand-gold);
+    font-weight: 700;
+}
+
+/* =========================================
+   מרכז הבמה - שחור עמוק
+   ========================================= */
+.app-center {
+    flex: 1;
+    background: rgba(5, 5, 5, 0.95);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.app-center .spa-content-area {
+    flex: 1; overflow-y: auto; padding: clamp(20px, 2.5vw, 40px);
+    scrollbar-width: thin; scrollbar-color: var(--brand-gold) transparent;
+}
+.app-center .spa-content-area::-webkit-scrollbar { width: 5px; }
+.app-center .spa-content-area::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
+
+.premium-placeholder {
+    height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.glow-icon-wrap {
+    width: 100px; height: 100px; background: radial-gradient(circle, rgba(214, 185, 83, 0.1) 0%, transparent 70%);
+    display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 15px;
+}
+.placeholder-icon {
+    font-size: 50px; background: linear-gradient(135deg, var(--brand-gold), var(--brand-silver));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 5px 15px rgba(214, 185, 83, 0.3));
+}
+.premium-placeholder h2 { color: var(--brand-silver); font-weight: 500; letter-spacing: 1px; font-size: 24px; margin-bottom: 10px;}
+.premium-placeholder p { color: var(--brand-silver-dark); font-size: 15px;}
+
+/* =========================================
+   הסיידבר השמאלי (חצוי: טקסט ימין, תמונה שמאל)
+   ========================================= */
+.left-extra {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--panel-shadow);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.sidebar-title { 
+    color: var(--brand-gold); 
+    text-align: center; 
+    margin: 15px 0 5px 0; 
+    font-size: 15px; 
+    font-weight: 700; 
+    letter-spacing: 0.5px; 
+}
+
+.sidebar-slider {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    padding: 5px 10px 10px 10px;
+}
+
+.slide-item {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    padding: 5px 15px 15px 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out, visibility 1s;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vh, 12px); 
+    justify-content: space-between; 
+}
+
+.slide-item.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* מבנה המלבן של כל מוצר (חצוי ל-2) */
+.hot-product {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(214, 185, 83, 0.15);
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: var(--brand-silver);
+    transition: 0.3s;
+    flex: 1; 
+    display: flex;
+    flex-direction: row; /* מסדר אותם בשורה (עברית = טקסט בימין, תמונה בשמאל) */
+    align-items: center;
+    justify-content: space-between;
+    min-height: 0;
+}
+
+.hot-product:hover {
+    border-color: rgba(214, 185, 83, 0.5);
+    transform: translateY(-2px);
+}
+
+/* צד ימין: טקסט ומחיר */
+.hot-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: right;
+}
+
+.hot-info p { 
+    font-size: clamp(12px, 1.2vw, 14px); 
+    font-weight: 700; 
+    color: var(--text-main); 
+    margin-bottom: 5px; 
+}
+
+.hot-info span { 
+    color: var(--brand-gold); 
+    font-weight: 700; 
+    font-size: clamp(13px, 1.4vw, 15px); 
+}
+
+/* צד שמאל: תמונה */
+.hot-img-wrapper {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    margin-right: 15px; /* מרווח בין הטקסט לתמונה */
+}
+
+.hot-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.hot-img-placeholder {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #666;
+    text-align: center;
+}
+
+/* =========================================
+   הפוטר המינימליסטי והטיקר
+   ========================================= */
+.app-footer { 
+    flex-shrink: 0; 
+    display: flex; 
+    flex-direction: column; 
+    height: 75px; 
+    z-index: 1000; 
+}
+
+.footer-links {
+    height: 30px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    gap: clamp(20px, 4vw, 50px); 
+    background: #030303; 
+    border-top: 1px solid rgba(224, 224, 224, 0.05);
+}
+
+.footer-links a { 
+    color: var(--brand-silver-dark); 
+    text-decoration: none; 
+    font-size: 13px; 
+    transition: 0.3s; 
+}
+
+.footer-links a:hover { 
+    color: var(--brand-silver); 
+}
+
+/* -----------------------------------------
+   טיקר החדשות 
+   ----------------------------------------- */
+#ticker-placeholder {
+    height: 45px; 
+    background: var(--brand-gold); 
+    border-top: 2px solid #000;
+    display: flex; 
+    align-items: center; 
+    overflow: hidden;
+    white-space: nowrap; 
+}
+
+#ticker-placeholder > * {
+    display: inline-block;
+    color: #000 !important; 
+    font-weight: 700;
+    font-size: 15px;
+    padding-left: 100vw; 
+    animation: ticker-scroll 25s linear infinite; 
+    /* פקודת word-spacing הוסרה לחלוטין כדי לא להפריד מילים */
+}
+
+#ticker-placeholder:hover > * {
+    animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+    0% { transform: translateX(-100vw); } 
+    100% { transform: translateX(100%); }
+}
+
+/* =========================================
+   שליטה ידנית במיקומי ההדר (דריסה מהסוף)
+   ========================================= */
+
+/* שליטה על הלוגו (בצד ימין) */
+.header-right {
+    /* הגדל את המספר כדי לדחוף את הלוגו שמאלה לכיוון האמצע. שים 0 כדי להצמיד לימין */
+    margin-right: 92px !important; 
+}
+
+/* שליטה על שורת החיפוש (בצד שמאל) */
+.header-left {
+    /* הגדל את המספר כדי לדחוף את שורת החיפוש ימינה לכיוון האמצע. שים 0 כדי להצמיד לשמאל */
+    margin-left: 43px !important; 
+}
+
+/* שליטה על הרווח בין הכותרות בטיקר */
+#ticker-placeholder span {
+    /* הגדל או הקטן את המספר (כרגע 50px) כדי לשנות את המרחק בין כותרת לכותרת */
+    margin: 0 10px !important; 
+}
+/* =========================================
+   עיצוב כותרות הטיקר (נקודה שחורה + רווחים)
+   ========================================= */
+
+/* מאפס את הרווח הישן כדי שהחדש יעבוד בצורה סימטרית */
+#ticker-placeholder span {
+    margin: 0 !important; 
+}
+
+/* מייצר נקודה שחורה אוטומטית אחרי כל כותרת */
+#ticker-placeholder span::after {
+    content: "\2022"; /* הקוד המיוחד לנקודה עגולה מלאה */
+    color: #000; /* צבע הנקודה (שחור) */
+    font-size: 20px; /* גודל הנקודה - אפשר להגדיל/להקטין */
+    
+    /* פה אתה שולט ברווח! 50px זה המרחק של הנקודה מכל כותרת. תשנה את המספר כדי לרווח או לצופף */
+    margin: 0 50px !important; 
+    
+    vertical-align: middle; /* דואג שהנקודה תשב בדיוק באמצע הגובה של הטקסט */
+}
+/* שליטה על מהירות הטיקר */
+#ticker-placeholder > * {
+    /* כרגע זה היה 25s. הגדלתי ל-33s כדי להאט משמעותית. 
+       רוצה עוד יותר לאט? שים 40s. רוצה קצת יותר מהר? שים 20s. */
+    animation-duration: 33s !important; 
+}
+/* =========================================
+   עיצוב החלוניות הצפות (אפקט זכוכית כסופה עדינה)
+   ========================================= */
+
+/* רקע החלונית - שקוף, עדין ויוקרתי */
+.flyout-menu {
+    /* רקע אפרפר-כסוף שקוף מאוד */
+    background: rgba(80, 80, 80, 0.25) !important; 
+    
+    /* אפקט הטשטוש (זכוכית) למה שמוסתר מאחור */
+    backdrop-filter: blur(12px) !important; 
+    -webkit-backdrop-filter: blur(12px) !important;
+    
+    /* מסגרת כסופה עדינה ודקה שנותנת את קונטור הכסף */
+    border: 1px solid rgba(224, 224, 224, 0.15) !important; 
+    box-shadow: -10px 15px 30px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* הטקסט - מוחזר לבהיר כדי שיהיה קריא ומרחף */
+.flyout-menu a {
+    color: var(--brand-silver) !important; 
+    font-weight: 400 !important;
+    transition: 0.2s;
+}
+
+/* אפקט במעבר עכבר - הארה עדינה של זכוכית */
+.flyout-menu a:hover {
+    background: rgba(255, 255, 255, 0.08) !important; 
+    border-right-color: var(--brand-gold) !important; 
+    color: var(--brand-gold) !important; 
+    font-weight: 700 !important;
+}
+
+/* =========================================
+   עיצוב קוביות המוצרים בסיידבר (זכוכית כסופה עדינה)
+   ========================================= */
+
+.hot-product {
+    /* רקע כסוף סופר-עדין (95% שקיפות) כדי להדגיש את המלבן בלי להשתלט */
+    background: rgba(220, 220, 220, 0.05) !important; 
+    
+    /* אפקט טשטוש הזכוכית שנותן את העומק היוקרתי */
+    backdrop-filter: blur(8px) !important; 
+    -webkit-backdrop-filter: blur(8px) !important;
+    
+    /* קונטור כסוף דקיק למסגרת */
+    border: 1px solid rgba(224, 224, 224, 0.15) !important; 
+    
+    /* הצללה קלה להפרדה מהרקע */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important; 
+}
+
+/* כשהעכבר עובר על המוצר - הדגשה קלה */
+.hot-product:hover {
+    background: rgba(220, 220, 220, 0.09) !important; /* הכסף טיפה מתבהר */
+    border-color: rgba(214, 185, 83, 0.6) !important; /* המסגרת מקבלת נגיעת זהב של המותג */
+    transform: translateY(-2px) !important; /* קפיצה קטנה למעלה */
+}
+
+/* הופך את קוביות המוצרים ללחיצות */
+.hot-product {
+    cursor: pointer !important;
+}
+/* =========================================
+   חלון צף למוצרים (Product Modal)
+   ========================================= */
+.custom-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+    z-index: 99999; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: all 0.3s ease;
+}
+.custom-modal-overlay.show { opacity: 1; pointer-events: auto; }
+.custom-modal-content {
+    background: #0b1221; border: 2px solid var(--brand-gold);
+    border-radius: 16px; width: 90%; max-width: 800px;
+    position: relative; transform: scale(0.9); transition: all 0.3s ease;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; direction: rtl;
+}
+.custom-modal-overlay.show .custom-modal-content { transform: scale(1); }
+.close-modal-btn {
+    position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.1);
+    border: none; color: #fff; font-size: 24px; width: 35px; height: 35px;
+    border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: 0.3s; z-index: 10;
+}
+.close-modal-btn:hover { background: #ff4a4a; color: #fff; transform: rotate(90deg); }
+.modal-body-split { display: flex; flex-wrap: wrap; }
+.modal-right-info { flex: 1.2; min-width: 300px; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+.modal-left-image {
+    flex: 1; min-width: 250px; background: rgba(255, 255, 255, 0.02);
+    padding: 40px; display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid rgba(214, 185, 83, 0.1);
+}
+.modal-left-image img { max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+.modal-cat { color: var(--text-gray); font-size: 14px; margin-bottom: 5px; }
+.modal-main-title { color: var(--brand-gold); font-size: 28px; margin-bottom: 15px; line-height: 1.2; }
+.modal-desc { color: #e2e8f0; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+.modal-price-tag { font-size: 32px; font-weight: 900; color: var(--brand-gold); display: block; margin-bottom: 25px; }
+.modal-actions { display: flex; gap: 15px; align-items: center; }
+.quantity-selector {
+    display: flex; align-items: center; background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(214, 185, 83, 0.3); border-radius: 8px; overflow: hidden; height: 45px;
+}
+.qty-btn {
+    background: transparent; border: none; color: var(--brand-gold);
+    width: 40px; height: 100%; cursor: pointer; transition: 0.3s;
+    display: flex; align-items: center; justify-content: center;
+}
+.qty-btn:hover { background: rgba(214, 185, 83, 0.2); }
+.quantity-selector input {
+    width: 40px; height: 100%; background: transparent; border: none;
+    color: #fff; text-align: center; font-size: 18px; font-weight: bold; pointer-events: none;
+}
+.modal-add-to-cart-btn {
+    flex: 1; height: 45px; background: var(--brand-gold); color: #000;
+    border: none; border-radius: 8px; font-size: 16px; font-weight: bold;
+    cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.modal-add-to-cart-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.4); }
+
+@media (max-width: 768px) {
+    .modal-body-split { flex-direction: column-reverse; }
+    .modal-right-info { padding: 25px; }
+    .modal-left-image { padding: 25px; border-right: none; border-bottom: 1px solid rgba(214, 185, 83, 0.1); }
+    .modal-actions { flex-direction: column; align-items: stretch; }
+}
+//* =========================================
+   תיקון מיקום הלוגו בהדר (דחיפה למטה)
+   ========================================= */
+.site-logo {
+    /* המספר החיובי דוחף למטה. תשנה את ה-4 ל-5 או 6 אם צריך יותר */
+    transform: translateY(6px) !important; 
+}
+/* =========================================
+   הגנת הגריד (מונע את דחיפת הסיידבר השמאלי)
+   ========================================= */
+.main-workspace {
+    min-width: 0 !important; 
+}
+
+.app-center {
+    min-width: 0 !important;
+    overflow-x: hidden !important; 
+}
+
+.left-extra {
+    flex-shrink: 0 !important;
+}
+/* =========================================
+   עיצוב אזור מארזים מוכנים (Tabs & Content)
+   ========================================= */
+
+/* תפריט הטאבים (Pills) */
+.premium-tabs-nav {
+    display: flex; gap: 15px; margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 15px;
+}
+.tab-pill {
+    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-gray); padding: 10px 25px; border-radius: 30px;
+    font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;
+    font-family: 'Rubik', sans-serif;
+}
+.tab-pill:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.tab-pill.active {
+    background: var(--brand-gold); color: #000; border-color: var(--brand-gold);
+    font-weight: 700; box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3);
+}
+
+/* אזור התוכן והאנימציה */
+.package-tab-pane {
+    display: none; gap: 30px; animation: fadeInUp 0.5s ease forwards;
+}
+.package-tab-pane.active { display: flex; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* צד ימין - פירוט המארז */
+.pack-right-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.pack-subtitle { color: var(--brand-gold); font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+.pack-main-title { color: #fff; font-size: 36px; font-weight: 900; margin-bottom: 15px; }
+.pack-desc { color: #a0a0a0; font-size: 16px; line-height: 1.6; margin-bottom: 25px; max-width: 90%; }
+.pack-includes { list-style: none; padding: 0; margin: 0 0 35px 0; display: flex; flex-direction: column; gap: 12px; }
+.pack-includes li { display: flex; align-items: center; gap: 12px; color: #e2e8f0; font-size: 15px; }
+.pack-includes li i { color: var(--brand-gold); font-size: 14px; }
+.pack-action-area { display: flex; align-items: center; gap: 25px; margin-top: auto; }
+.pack-price { color: var(--brand-gold); font-size: 32px; font-weight: 900; }
+.premium-add-btn {
+    background: rgba(214, 185, 83, 0.1); color: var(--brand-gold);
+    border: 1px solid var(--brand-gold); padding: 12px 30px; border-radius: 12px;
+    font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s;
+    display: flex; align-items: center; gap: 10px;
+}
+.premium-add-btn:hover {
+    background: var(--brand-gold); color: #000;
+    transform: translateY(-3px); box-shadow: 0 8px 20px rgba(214, 185, 83, 0.4);
+}
+
+/* צד שמאל - תמונת זכוכית */
+.pack-left-image { flex: 1; display: flex; align-items: center; justify-content: center; }
+.glass-stage {
+    width: 100%; max-width: 350px; aspect-ratio: 1;
+    background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); position: relative;
+}
+.glass-stage::after {
+    content: ''; position: absolute; bottom: -20px; left: 10%; right: 10%; height: 20px;
+    background: radial-gradient(ellipse at center, rgba(214, 185, 83, 0.15) 0%, rgba(0,0,0,0) 70%);
+}
+.glass-stage img {
+    max-width: 100%; max-height: 100%; object-fit: contain;
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7)); transition: transform 0.5s ease;
+}
+.glass-stage:hover img { transform: scale(1.05) translateY(-10px); }
+
+/* התאמה למובייל */
+@media (max-width: 900px) {
+    .package-tab-pane.active { flex-direction: column-reverse; }
+    .premium-tabs-nav { flex-wrap: wrap; justify-content: center; }
+    .pack-right-info { align-items: center; text-align: center; }
+    .pack-desc { max-width: 100%; }
+    .pack-includes { align-items: flex-start; }
+}
+/* =========================================
+   תיקון סופי: מרכוז מוחלט של מרכז הבמה (אופקי ואנכי)
+   ========================================= */
+
+/* הופך את כל אזור התוכן המרכזי למגנט שמושך לאמצע */
+.app-center .spa-content-area {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* ממרכז בדיוק באמצע הגובה */
+    align-items: center !important; /* ממרכז בדיוק באמצע הרוחב */
+}
+
+/* תוחם את הרוחב כדי שהטקסט והתמונה לא ייברחו לקצוות המסך */
+.spa-view {
+    width: 100% !important;
+    max-width: 950px !important;
+}
+
+/* ממרכז את הכפתורים של המארזים (טאבים) */
+.premium-tabs-nav {
+    justify-content: center !important;
+}
+
+/* מוודא שהטקסט והתמונה מיושרים וקרובים אחד לשני */
+.package-tab-pane {
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 60px !important; 
+}
+/* =========================================
+   מרכוז וסידור המארזים באמצע הבמה
+   ========================================= */
+
+/* 1. ממרכז את הטאבים העליונים ונותן להם ספייס מהתקרה */
+.premium-tabs-nav {
+    justify-content: center !important;
+    margin-top: 40px !important; 
+}
+
+/* 2. אורז את כל התוכן לרוחב מוגבל (כדי שלא יימתח לקצוות) וממרכז לאמצע */
+.packages-content-area {
+    width: 100% !important;
+    max-width: 850px !important; /* זה הסוד! מונע מריחה לצדדים */
+    margin: 0 auto !important; /* ממגנט את הבלוק הזה לאמצע החלל השחור */
+}
+
+/* 3. מוודא שהטקסט והתמונה עומדים בדיוק באותו קו גובה באמצע */
+.package-tab-pane {
+    align-items: center !important;
+}
+/* =========================================
+   עיצוב מסך: הרכבת מארז אישי
+   ========================================= */
+.steps-list { gap: 15px !important; }
+.steps-list li { background: rgba(255, 255, 255, 0.02); padding: 10px 15px; border-radius: 12px; border: 1px solid rgba(214, 185, 83, 0.1); transition: 0.3s; margin-bottom: 10px; }
+.steps-list li:hover { background: rgba(214, 185, 83, 0.05); transform: translateX(-5px); }
+.step-num { background: var(--brand-gold); color: #000; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 900; font-size: 14px; margin-left: 10px; }
+.build-btn { background: var(--brand-gold) !important; color: #000 !important; font-size: 18px !important; padding: 15px 35px !important; box-shadow: 0 10px 25px rgba(214, 185, 83, 0.3) !important; }
+.build-btn:hover { background: #fff !important; transform: translateY(-4px) !important; box-shadow: 0 15px 35px rgba(214, 185, 83, 0.5) !important; }
+
+/* אפקט נשימה לקופסה הריקה */
+.custom-box-stage { animation: stagePulse 3s infinite alternate; }
+@keyframes stagePulse {
+    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 10px rgba(214, 185, 83, 0.1); }
+    100% { box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 30px rgba(214, 185, 83, 0.4); }
+}
+/* =========================================
+   מערכת החלפת המסכים (SPA) - תיקון קריטי
+   ========================================= */
+
+/* קריטי: מסתיר כברירת מחדל את כל המסכים (מארזים, הרכבה אישית וכו') */
+.spa-view {
+    display: none; 
+    animation: fadeInSPA 0.4s ease forwards;
+    width: 100% !important;
+}
+
+/* קריטי: מציג רק את המסך שקיבל את הקלאס active */
+.spa-view.active {
+    display: block; 
+}
+
+@keyframes fadeInSPA { 
+    from { opacity: 0; transform: scale(0.98); } 
+    to { opacity: 1; transform: scale(1); } 
+}
+
+/* =========================================
+   מרכוז ויישור מוחלט של מרכז הבמה
+   ========================================= */
+
+/* דואג שמרכז הבמה יהיה מגנט למרכז */
+.app-center .spa-content-area {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* מגביל את רוחב המארזים כדי שלא יימרחו לצדדים */
+.packages-content-area {
+    width: 100% !important;
+    max-width: 850px !important;
+    margin: 0 auto !important;
+}
+
+/* ממרכז את הטאבים העליונים של המארזים */
+.premium-tabs-nav {
+    justify-content: center !important;
+    margin-top: 40px !important;
+    width: 100%;
+}
+
+/* מסדר את הטקסט והתמונה אחד מול השני במרכז */
+.package-tab-pane {
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 60px !important; 
+}
+
+/* =========================================
+   עיצוב מסך הרכבת המארז החדש
+   ========================================= */
+
+.steps-list { gap: 15px !important; }
+
+.steps-list li { 
+    background: rgba(255, 255, 255, 0.02); 
+    padding: 10px 15px; 
+    border-radius: 12px; 
+    border: 1px solid rgba(214, 185, 83, 0.1); 
+    transition: 0.3s; 
+    margin-bottom: 10px; 
+    color: #e2e8f0;
+}
+
+.steps-list li:hover { 
+    background: rgba(214, 185, 83, 0.05); 
+    transform: translateX(-5px); 
+}
+
+.step-num { 
+    background: var(--brand-gold); 
+    color: #000; 
+    width: 28px; 
+    height: 28px; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 50%; 
+    font-weight: 900; 
+    font-size: 14px; 
+    margin-left: 10px; 
+}
+
+.build-btn { 
+    background: var(--brand-gold) !important; 
+    color: #000 !important; 
+    font-size: 18px !important; 
+    padding: 15px 35px !important; 
+    box-shadow: 0 10px 25px rgba(214, 185, 83, 0.3) !important; 
+}
+
+.build-btn:hover { 
+    background: #fff !important; 
+    transform: translateY(-4px) !important; 
+    box-shadow: 0 15px 35px rgba(214, 185, 83, 0.5) !important; 
+}
+
+/* אפקט נשימה לקופסה הריקה בשלב ההרכבה */
+.custom-box-stage { 
+    animation: stagePulse 3s infinite alternate; 
+}
+
+@keyframes stagePulse {
+    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 10px rgba(214, 185, 83, 0.1); }
+    100% { box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 30px rgba(214, 185, 83, 0.4); }
+}
+/* =========================================
+   מרכוז אנכי ואופקי של כל מסכי הבמה (SPA)
+   ========================================= */
+.spa-view.active {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important; /* ממגנט לאמצע הגובה (למעלה-למטה) */
+    align-items: center !important; /* ממגנט לאמצע הרוחב (ימינה-שמאלה) */
+    min-height: 100% !important; /* נותן למסך לתפוס את כל הגובה כדי שיוכל למרכז */
+}

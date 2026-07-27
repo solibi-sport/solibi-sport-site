@@ -1,0 +1,2450 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי ספורט | Solibi Sport - חנות מארזי פרימיום</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="global-theme.css">
+    
+    <style>
+        /* =========================================
+           מגן CSS - רוצח התנגשויות וכפילויות בטאבים!
+           ========================================= */
+        .premium-sub-tabs[style*="display: none"],
+        .spa-view[style*="display: none"],
+        .boutique-package-content[style*="display: none"] {
+            display: none !important;
+        }
+        /* =========================================
+           סמלי הריחוף של המיסטרי
+           ========================================= */
+        .mystery-icon-btn {
+            font-size: 22px; 
+            color: #a0aec0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.5); 
+            padding: 5px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mystery-icon-btn:hover {
+            color: #d4af37;
+            background: rgba(0,0,0,0.8);
+            transform: scale(1.15);
+        }
+
+        /* מודל גלובלי שמופיע באמצע המסך */
+        .global-mystery-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: #0b1221;
+            border: 2px solid #d4af37;
+            padding: 30px;
+            border-radius: 16px;
+            z-index: 999999; 
+            opacity: 0;
+            pointer-events: none; 
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            color: #fff;
+            width: 90vw;
+            max-width: 900px; 
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .global-mystery-modal.show-modal {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-text-side { flex: 1.2; }
+        .modal-img-side { flex: 1; display: flex; justify-content: center; }
+        .modal-img-side img { 
+            max-width: 100%; 
+            max-height: 400px; 
+            object-fit: contain; 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); 
+        }
+
+        /* =========================================
+           שליטה ידנית בגובה של קוביות המיסטרי בלבד!
+           ========================================= */
+        #mystery-slider .product-card {
+            min-height: auto !important;
+        }
+
+        #mystery-slider .product-image {
+            height: 76px !important; 
+            min-height: 76px !important;
+            margin-top: 0 !important;
+        }
+
+        #mystery-slider .product-image img {
+            max-height: 70px !important; 
+        }
+
+        /* =========================================
+          /* הפיתרון המוחלט: ביטול גלילה ויישור קו תחתון אגרסיבי + מבנה SPA */
+        @media (min-width: 1200px) {
+            /* השמדת הגלילה לחלוטין למסגרת הכללית */
+            html, body {
+                height: 100vh !important;
+                overflow: hidden !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            body {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            .site-header { flex-shrink: 0 !important; }
+            .footer { flex-shrink: 0 !important; }
+
+            .site-layout {
+                flex-grow: 1 !important;
+                margin-top: 10px !important; /* כאן קבענו 10 פיקסלים מתחת להדר */
+                margin-bottom: 10px !important; /* כאן קבענו 10 פיקסלים מעל הפוטר */
+                min-height: 0 !important;
+                display: flex !important;
+                align-items: stretch !important;
+            }
+
+            /* --- עדכוני הצרת הסיידברים להרווחת מקום במרכז --- */
+            .sidebar {
+                width: 290px !important; 
+                flex: 0 0 290px !important; 
+                height: 100% !important;
+                margin: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            .sidebar-content {
+                flex-grow: 1 !important;
+                overflow-y: auto !important;
+            }
+
+            .main-content {
+                flex: 1 !important;
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+                max-width: calc(100% - 580px) !important; /* 290px כפול 2 סיידברים */
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: flex-start !important; 
+                min-height: 0 !important;
+                height: 100% !important;
+                overflow: hidden !important; /* מונע גלילה של כל הבלוק המרכזי */
+            }
+
+            /* החזרת הכותרת למצב טבעי ויציב */
+            .hero-banner {
+                position: relative !important;
+                margin: 0 0 15px 0 !important;
+                padding-top: 5px !important;
+                padding-bottom: 5px !important;
+                flex-shrink: 0;
+                background: transparent !important;
+                border: none !important;
+            }
+        }
+
+        /* =========================================
+           מערכת הניווט החדשה של ה-SPA המרכזי
+           ========================================= */
+        .spa-nav-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(214, 185, 83, 0.15);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .spa-main-tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .spa-main-tab {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(214, 185, 83, 0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .spa-main-tab.active, .spa-main-tab:hover {
+            background: var(--brand-gold);
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(214, 185, 83, 0.2);
+        }
+
+        .spa-sub-tabs {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 8px;
+        }
+
+        .spa-sub-tab {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0aec0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .spa-sub-tab.active, .spa-sub-tab:hover {
+            border-color: var(--brand-gold);
+            color: var(--brand-gold);
+            background: rgba(214, 185, 83, 0.05);
+        }
+
+        /* אזור הצגת התוכן המשתנה */
+        .spa-content-area {
+            flex: 1; /* נמתח עד לתחתית המסך */
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spa-view {
+            display: none;
+            flex: 1; /* מותח את התצוגה הפנימית */
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .spa-view.active {
+            display: flex; /* שונה מ-block ל-flex כדי למתוח את התוכן */
+        }
+
+        /* גריד מוצרים חכם ל-SPA - מרווח וגדול */
+        .products-grid-spa {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* רוחב מינימלי גדול יותר כדי שלא יימעכו */
+            gap: 25px; /* רווח גדול יותר בין הקוביות */
+            overflow-y: auto;
+            flex: 1;
+            align-content: start; /* מונע מהקוביות להימתח יותר מדי לגובה אם יש קצת מוצרים */
+            padding: 5px 5px 20px 5px;
+            direction: ltr;
+        }
+        
+        .products-grid-spa > * { direction: rtl; }
+
+        /* דריסת הגדרות ישנות שמפריעות לקוביות */
+        .products-grid-spa .product-card {
+            width: 100% !important;
+            margin: 0 !important;
+            min-height: 320px; /* גובה בריא ויפה לקוביות */
+        }
+
+        .products-grid-spa::-webkit-scrollbar { width: 5px; }
+        .products-grid-spa::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.3); border-radius: 10px; }
+
+        /* התאמה מיוחדת לגריד של המיסטרי בוקס */
+        #spa-view-mystery .products-grid-spa {
+            grid-template-columns: repeat(2, minmax(220px, 300px));
+            justify-content: center;
+        }
+
+/* =========================================
+           הג'ויסטיק שלך: שליטה ידנית על כל הגוש המרכזי
+           ========================================= */
+        
+        /* 1. מבטל את הפיזור האוטומטי כדי שהשליטה תהיה 100% שלך */
+        .main-content {
+            justify-content: flex-start !important; 
+        }
+
+        /* 2. זה השלט שלך: מוריד או מעלה את הכל (מהטאבים ומטה) */
+        .store-section {
+            margin-top: 35px !important; /* תגדיל את המספר כדי לדחוף את הכל למטה, תקטין כדי להעלות */
+        }
+
+        /* 3. שולט במרחק הפנימי שבין המארזים הרגילים למיסטרי בוקס */
+        .mystery-section {
+            margin-top: 30px !important; /* תגדיל או תקטין כדי לפתוח/לסגור את הרווח באמצע */
+            margin-bottom: 0 !important;
+        }
+
+        /* =========================================
+           נעילת כותרת קולקציית המארזים (Sticky)
+           ========================================= */
+        .main-content {
+            overflow-y: auto !important; /* מאפשר גלילה פנימית רק לתוכן שמתחת לכותרת */
+        }
+
+        .hero-banner {
+            position: sticky !important;
+            top: 0 !important; 
+            z-index: 100 !important; 
+            background-color: #000000 !important; 
+            
+            /* הכיס החכם שביקשת! */
+            padding-bottom: 35px !important; /* מאריך את המסך השחור למטה כדי שהמוצרים ייעלמו בתוכו לפני שהם נוגעים בכותרת */
+        }
+
+        /* =========================================
+           סליידר קבוצות מוצרים - גרסת ריבועים גדולים ותוויות פרימיום
+           ========================================= */
+       .sidebar-slider {
+            position: relative;
+            width: 100%;
+            height: 830px; /* התאמנו לגובה החדש כדי להכיל את התוספת בלי שייחתך למטה */
+            overflow: hidden;
+            padding-top: 10px;
+        }
+
+        .sidebar-slide {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 22px; /* חזרנו לרווח המקורי והטוב */
+            
+            /* האנימציה נשארת אותו דבר */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .sidebar-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .mini-product-card {
+            position: relative;
+            display: flex;
+            align-items: center; 
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 14px;
+            padding: 26px 18px; /* הוספנו עוד 2 פיקסלים עדינים למעלה ולמטה */
+            gap: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .mini-product-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px); /* אפקט ריחוף קטן בתוך הסיידבר */
+        }
+
+        /* הגדלת תמונת המוצר */
+        .mini-product-card img {
+            width: 85px; /* הגדלנו מ-75 ל-85 פיקסלים */
+            height: 85px;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
+            flex-shrink: 0;
+        }
+
+        .mini-info {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+            flex-grow: 1;
+        }
+
+        /* הגדלת כותרת המוצר */
+        .mini-info h4 {
+            color: #fff;
+            font-size: 16px; /* הגדלנו ל-16px */
+            margin: 0 0 5px 0;
+            font-weight: 600;
+        }
+
+        /* הגדלת התיאור */
+        .mini-desc {
+            color: #a0aec0;
+            font-size: 12.5px;
+            line-height: 1.4;
+            margin: 0 0 8px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* הגדלת המחיר */
+        .mini-price {
+            color: #d4af37;
+            font-weight: 700;
+            font-size: 17px; /* הגדלנו ל-17px */
+        }
+
+        /* עיצוב התווית המרחפת (הבאדג') */
+        .mini-badge {
+            position: absolute;
+            top: -10px; /* מוציא את התווית קצת מחוץ לריבוע למראה תלת מימדי */
+            right: 15px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(255, 74, 74, 0.4);
+            z-index: 10;
+            letter-spacing: 0.5px;
+        }
+
+        .hot-badge {
+            background: linear-gradient(135deg, #ff4a4a, #ff7676); /* גרדיאנט אש אדום-כתום */
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* =========================================
+           העלמת פסי הגלילה המכוערים מהסיידברים
+           ========================================= */
+        .sidebar-content {
+            scrollbar-width: none; /* לפיירפוקס */
+            -ms-overflow-style: none; /* לאדג' ישן */
+        }
+        
+        .sidebar-content::-webkit-scrollbar {
+            display: none; /* לכרום, ספארי ואדג' החדש */
+        }
+        
+        /* =========================================
+           אפקט הבהוב זהוב למוצרים (Highlight Glow)
+           ========================================= */
+        @keyframes goldGlow {
+            0% { 
+                box-shadow: 0 0 0 rgba(212, 175, 55, 0); 
+                border-color: rgba(212, 175, 55, 0.2); 
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(212, 175, 55, 0.9); 
+                border-color: #d4af37; 
+                transform: scale(1.03); 
+            }
+            100% { 
+                box-shadow: 0 0 0 rgba(212, 175, 55, 0); 
+                border-color: rgba(212, 175, 55, 0.2); 
+                transform: scale(1); 
+            }
+        }
+
+        .highlight-glow {
+            animation: goldGlow 1.5s ease-out;
+            z-index: 50; /* מקפיץ את המוצר מעל השאר בזמן ההבהוב */
+            position: relative;
+        }
+
+        /* =========================================
+           ממשק הרכבת מארז (Box Builder)
+           ========================================= */
+        .custom-builder-container {
+            display: flex;
+            gap: 20px;
+            flex: 1; /* זה הקסם שמותח אותו עד למטה! */
+            height: 100%;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.6);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-gold);
+            box-sizing: border-box;
+        }
+
+        .builder-right {
+            flex: 0 0 65%;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(214, 185, 83, 0.2);
+            padding-left: 20px;
+        }
+
+        .builder-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .builder-header h3 { font-size: 20px; color: var(--brand-gold); margin: 0; }
+        .builder-subtitle { font-size: 13px; color: #a0aec0; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px;}
+
+        .builder-tabs { display: flex; gap: 10px; margin-bottom: 15px; }
+        .b-tab {
+            background: transparent; border: 1px solid rgba(214, 185, 83, 0.3); color: #fff;
+            padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: 0.3s;
+        }
+        .b-tab.active, .b-tab:hover { background: var(--brand-gold); color: #000; font-weight: bold; }
+
+        .builder-products-scroll { flex: 1; overflow-y: auto; padding-left: 5px; direction: ltr; }
+        .builder-products-scroll::-webkit-scrollbar { width: 5px; }
+        .builder-products-scroll::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.5); border-radius: 10px; }
+        
+        .builder-grid { direction: rtl; display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+        
+        .b-card {
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px;
+            padding: 10px; display: flex; flex-direction: column; position: relative; transition: 0.3s;
+        }
+        .b-card:hover { border-color: var(--brand-gold); transform: translateY(-3px); }
+        .b-card img { width: 100%; height: 70px; object-fit: contain; margin-bottom: 10px; }
+        .b-info { text-align: right; }
+        .b-title { font-size: 12px; font-weight: bold; color: #fff; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .b-price { color: var(--brand-gold); font-size: 14px; font-weight: bold; }
+        
+        .b-add-btn {
+            position: absolute; bottom: 10px; left: 10px; background: rgba(214, 185, 83, 0.1); 
+            border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 25px; height: 25px; 
+            border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .b-add-btn:hover { background: var(--brand-gold); color: #000; }
+
+        .builder-left {
+            flex: 0 0 calc(35% - 20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .box-visual {
+            flex: 1; position: relative; background: rgba(0,0,0,0.3); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden;
+        }
+        .bg-box-icon { position: absolute; font-size: 140px; color: rgba(214, 185, 83, 0.05); z-index: 1; }
+        
+        .box-slots { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; z-index: 2; }
+        .box-slot {
+            width: 60px; height: 60px; border: 2px dashed rgba(214, 185, 83, 0.3); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; position: relative;
+            background: rgba(0,0,0,0.5); transition: 0.3s;
+        }
+        .box-slot.filled { border: 1px solid var(--brand-gold); background: rgba(214, 185, 83, 0.1); }
+        .box-slot img { width: 80%; height: 80%; object-fit: contain; animation: dropIn 0.4s ease-out; }
+        .remove-item {
+            position: absolute; top: -8px; right: -8px; background: #ff4a4a; color: #fff;
+            border: none; width: 20px; height: 20px; border-radius: 50%; font-size: 10px;
+            cursor: pointer; display: none; align-items: center; justify-content: center;
+        }
+        .box-slot.filled:hover .remove-item { display: flex; }
+
+        @keyframes dropIn { 0% { transform: scale(2) translateY(-20px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+
+        .box-summary { margin-top: 20px; background: #000; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .progress-texts { display: flex; justify-content: space-between; font-size: 12px; color: #a0aec0; margin-bottom: 5px; }
+        .progress-bar { width: 100%; height: 6px; background: #222; border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
+        .progress-fill { width: 0%; height: 100%; background: var(--brand-gold); transition: width 0.3s ease; }
+        
+        .box-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; font-size: 16px; }
+        .total-price { color: var(--brand-gold); font-size: 20px; }
+        
+        .finish-box-btn {
+            width: 100%; padding: 12px; background: var(--brand-gold); color: #000; border: none;
+            border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.3s;
+        }
+        .finish-box-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+        .finish-box-btn:not(:disabled):hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3); }
+
+/* =========================================
+           1. קוביות מרכזיות (SPA) - מוקטנות ומיושרות לימין
+           ========================================= */
+        .products-grid-spa {
+            direction: rtl !important; 
+            justify-content: start !important; /* התחלה מימין */
+            gap: 15px !important; /* רווח נעים */
+        }
+        
+        #spa-view-mystery .products-grid-spa {
+            justify-content: start !important; 
+        }
+
+        .products-grid-spa .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            min-height: 290px !important; /* הוקטן משמעותית */
+            padding: 15px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .products-grid-spa .product-card .product-desc {
+            flex-grow: 1 !important; /* דוחף את הפוטר למטה */
+            margin-bottom: 12px !important;
+        }
+
+        /* פוטר: מחיר משמאל, כפתור מימין */
+        .products-grid-spa .product-footer {
+            display: flex !important;
+            flex-direction: row-reverse !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+            margin-top: auto !important;
+        }
+
+        /* קוביות הרכבת מארז */
+        .b-card { padding-bottom: 35px !important; }
+        .b-add-btn { right: 10px !important; left: auto !important; }
+        .b-price { position: absolute !important; left: 10px !important; bottom: 10px !important; text-align: left !important; margin: 0 !important; }
+
+        /* =========================================
+           2. עיצוב פרימיום לכותרת קולקציית מארזי סוליבי
+           ========================================= */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(0, 0, 0, 0.6)) !important;
+            border: 1px solid rgba(214, 185, 83, 0.4) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            padding: 15px 20px !important;
+            margin-bottom: 20px !important;
+        }
+
+        /* =========================================
+           3. סיידבר ימני פרימיום - 5 קוביות בסימטריה מתמטית מוחלטת
+           ========================================= */
+        .sidebar-right .sidebar-header {
+            margin-bottom: 10px !important; 
+            flex-shrink: 0 !important;
+        }
+
+        .sidebar-right .sidebar-content {
+            overflow: hidden !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 0 !important;
+        }
+
+        .sidebar-slider {
+            flex: 1 !important; /* תופס את כל הגובה הפנוי */
+            position: relative !important;
+            height: 100% !important;
+        }
+
+        .sidebar-slide {
+            display: grid !important;
+            grid-template-rows: repeat(5, 1fr) !important; /* בדיוק 5 שורות שוות */
+            gap: 12px !important; /* רווח מדויק וסימטרי בין הקוביות */
+            position: absolute !important;
+            top: 0; left: 0; right: 0; bottom: 0;
+            height: 100% !important;
+        }
+
+        /* הקטנה ויישור של הקובייה עצמה */
+        .mini-product-card {
+            margin: 0 !important;
+            padding: 8px 12px !important; /* ריפוד קטן יותר */
+            display: flex !important;
+            align-items: center !important;
+            min-height: 0 !important; /* קריטי - מאפשר לקובייה להתכווץ ולא לחרוג */
+            height: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .mini-product-card img {
+            max-height: 48px !important; /* תמונה מוקטנת */
+            width: auto !important;
+            flex-shrink: 0 !important;
+        }
+
+        .mini-info {
+            min-height: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            flex-grow: 1 !important;
+        }
+
+        .mini-info h4 { margin: 0 0 3px 0 !important; font-size: 13.5px !important; }
+        .mini-desc { 
+            margin: 0 0 4px 0 !important; 
+            font-size: 11.5px !important; 
+            line-height: 1.2 !important; 
+            /* חותך טקסט ארוך מדי ב-3 נקודות כדי לא לעוות את הקובייה */
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+        }
+        .mini-price { font-size: 14.5px !important; margin: 0 !important; }
+
+        /* התאמה למסכים קטנים (לפטופ) */
+        @media (max-height: 860px) {
+            .sidebar-slide { grid-template-rows: repeat(4, 1fr) !important; }
+            .sidebar-slide .mini-product-card:nth-child(n+5) { display: none !important; }
+        }
+        @media (max-height: 740px) {
+            .sidebar-slide { grid-template-rows: repeat(3, 1fr) !important; }
+            .sidebar-slide .mini-product-card:nth-child(n+4) { display: none !important; }
+        }
+        /* =========================================
+           1. קוביות מרכזיות (SPA) - מוקטנות ומיושרות לימין
+           ========================================= */
+        .products-grid-spa {
+            direction: rtl !important; 
+            justify-content: start !important; /* התחלה מימין */
+            gap: 15px !important; /* רווח נעים */
+        }
+        
+        #spa-view-mystery .products-grid-spa {
+            justify-content: start !important; 
+        }
+
+        .products-grid-spa .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            min-height: 290px !important; /* הוקטן משמעותית */
+            padding: 15px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .products-grid-spa .product-card .product-desc {
+            flex-grow: 1 !important; /* דוחף את הפוטר למטה */
+            margin-bottom: 12px !important;
+        }
+
+        /* פוטר: מחיר תמיד משמאל, כפתור תמיד מימין (מתעלם מסדר ה-HTML) */
+        .products-grid-spa .product-footer {
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+            margin-top: auto !important;
+        }
+
+        /* כופה על הכפתור להיות תמיד ראשון (בצד ימין בעברית) */
+        .products-grid-spa .product-footer .add-to-cart-btn {
+            order: 1 !important;
+            margin: 0 !important;
+        }
+
+        /* כופה על המחיר להיות תמיד שני (בצד שמאל בעברית) */
+        .products-grid-spa .product-footer .price {
+            order: 2 !important;
+            margin: 0 !important;
+        }
+
+        /* קוביות הרכבת מארז */
+        .b-card { padding-bottom: 35px !important; }
+        .b-add-btn { right: 10px !important; left: auto !important; }
+        .b-price { position: absolute !important; left: 10px !important; bottom: 10px !important; text-align: left !important; margin: 0 !important; }
+
+        /* =========================================
+           2. עיצוב פרימיום לכותרת קולקציית מארזי סוליבי
+           ========================================= */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(0, 0, 0, 0.6)) !important;
+            border: 1px solid rgba(214, 185, 83, 0.4) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            padding: 15px 20px !important;
+            margin-bottom: 20px !important;
+        }
+
+        /* =========================================
+           3. סיידבר ימני פרימיום - 5 קוביות בסימטריה מתמטית מוחלטת
+           ========================================= */
+        .sidebar-right .sidebar-header {
+            margin-bottom: 10px !important; 
+            flex-shrink: 0 !important;
+        }
+
+        .sidebar-right .sidebar-content {
+            overflow: hidden !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            padding: 0 !important;
+        }
+
+        .sidebar-slider {
+            flex: 1 !important; /* תופס את כל הגובה הפנוי */
+            position: relative !important;
+            height: 100% !important;
+        }
+
+        .sidebar-slide {
+            display: grid !important;
+            grid-template-rows: repeat(5, 1fr) !important; /* בדיוק 5 שורות שוות */
+            gap: 12px !important; /* רווח מדויק וסימטרי בין הקוביות */
+            position: absolute !important;
+            top: 0; left: 0; right: 0; bottom: 0;
+            height: 100% !important;
+        }
+
+        /* הקטנה ויישור של הקובייה עצמה */
+        .mini-product-card {
+            margin: 0 !important;
+            padding: 8px 12px !important; /* ריפוד קטן יותר */
+            display: flex !important;
+            align-items: center !important;
+            min-height: 0 !important; /* קריטי - מאפשר לקובייה להתכווץ ולא לחרוג */
+            height: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .mini-product-card img {
+            max-height: 48px !important; /* תמונה מוקטנת */
+            width: auto !important;
+            flex-shrink: 0 !important;
+        }
+
+        .mini-info {
+            min-height: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            flex-grow: 1 !important;
+        }
+
+        .mini-info h4 { margin: 0 0 3px 0 !important; font-size: 13.5px !important; }
+        .mini-desc { 
+            margin: 0 0 4px 0 !important; 
+            font-size: 11.5px !important; 
+            line-height: 1.2 !important; 
+            /* חותך טקסט ארוך מדי ב-3 נקודות כדי לא לעוות את הקובייה */
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical; 
+            overflow: hidden; 
+        }
+        .mini-price { font-size: 14.5px !important; margin: 0 !important; }
+
+        /* התאמה למסכים קטנים (לפטופ) */
+        @media (max-height: 860px) {
+            .sidebar-slide { grid-template-rows: repeat(4, 1fr) !important; }
+            .sidebar-slide .mini-product-card:nth-child(n+5) { display: none !important; }
+        }
+        @media (max-height: 740px) {
+            .sidebar-slide { grid-template-rows: repeat(3, 1fr) !important; }
+            .sidebar-slide .mini-product-card:nth-child(n+4) { display: none !important; }
+        }
+
+        /* =========================================
+           הגדלת תמונות ותיקון תווית "מוצר חם" בסיידבר
+           ========================================= */
+        .mini-product-card img {
+            max-height: 65px !important; /* הגדלת התמונה (היה 48px קודם) */
+            width: auto !important;
+            flex-shrink: 0 !important;
+            margin-left: 10px !important; /* רווח בין התמונה לטקסט */
+        }
+
+        /* תיקון מיקום התווית - עכשיו היא בפנים */
+        .mini-badge {
+            top: 5px !important;    /* מרחיק מהקצה העליון פנימה */
+            right: 5px !important;  /* מרחיק מהקצה הימני פנימה */
+            z-index: 10 !important;
+        }
+
+        /* =========================================
+           השוואת מידות - מארזים מוכנים ומיסטרי זהים לחלוטין!
+           ========================================= */
+        
+        /* 1. קובע רוחב מינימלי גדול וזהה לכלל הקוביות (מונע מעיכה) */
+        .products-grid-spa {
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important; 
+        }
+
+        /* 2. מנקה את הגבלת ה-2 עמודות הישנה שהייתה רק למיסטרי */
+        #spa-view-mystery .products-grid-spa {
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+            justify-content: start !important;
+        }
+
+        /* 3. נועל את גובה האייקונים/תמונות כדי שהטקסט יתחיל באותו קו בכל המארזים */
+        .products-grid-spa .product-image {
+            height: 110px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin-bottom: 10px !important;
+        }
+
+        /* 4. מנקה רווחים סוררים מכפתורי ההוספה לעגלה והמחיר כדי שהפוטר יהיה ישר וזהה */
+        .products-grid-spa .product-footer .add-to-cart-btn,
+        .products-grid-spa .product-footer .price {
+            margin: 0 !important;
+        }
+
+        /* =========================================
+           רספונסיביות - התאמת הקוביות המרכזיות ללפטופים
+           ========================================= */
+        @media (max-height: 860px) {
+            /* כיווץ הרווחים והרוחב המינימלי */
+            .products-grid-spa {
+                gap: 12px !important; 
+                grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)) !important; /* מאפשר ל-3 קוביות להיכנס בשורה בלי להילחץ */
+            }
+            
+            /* כיווץ הקובייה עצמה */
+            .products-grid-spa .product-card {
+                min-height: 230px !important; /* הרבה פחות מ-290px שהיה */
+                padding: 12px !important;
+            }
+
+            /* כיווץ אזור התמונה */
+            .products-grid-spa .product-image {
+                height: 80px !important;
+                min-height: 80px !important;
+                margin-bottom: 5px !important;
+            }
+
+            /* דריסת הגודל של האייקונים (הכתר וכו') והתמונות */
+            .products-grid-spa .product-image i {
+                font-size: 40px !important; 
+            }
+            .products-grid-spa .product-image img {
+                max-height: 70px !important;
+            }
+
+            /* כיווץ הטקסטים */
+            .products-grid-spa .product-card h3 {
+                margin-top: 10px !important;
+                font-size: 16px !important;
+                margin-bottom: 5px !important;
+            }
+            .products-grid-spa .product-desc {
+                font-size: 12.5px !important;
+                line-height: 1.2 !important;
+                margin-bottom: 8px !important;
+            }
+        }
+
+        /* למסכים ממש קטנים (כמו לפטופ 13 אינץ') */
+        @media (max-height: 740px) {
+            .products-grid-spa .product-card {
+                min-height: 200px !important;
+            }
+            .products-grid-spa .product-image {
+                height: 65px !important;
+                min-height: 65px !important;
+            }
+            .products-grid-spa .product-image i {
+                font-size: 32px !important; 
+            }
+            .products-grid-spa .product-image img {
+                max-height: 55px !important;
+            }
+            .products-grid-spa .product-card h3 {
+                font-size: 14px !important;
+            }
+            .products-grid-spa .product-desc {
+                font-size: 11.5px !important;
+            }
+        }
+
+        /* =========================================
+           תיקון אחידות רווחים - מארזים ומיסטרי בדיוק אותו דבר
+           ========================================= */
+        
+        /* חוק ברזל לכל הרשתות באתר (גריד) */
+        .products-grid-spa, 
+        #spa-view-mystery .products-grid-spa {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)) !important; 
+            gap: 25px !important; /* רווח יפה, אוורירי ואחיד בין הקוביות */
+            justify-content: start !important; /* תמיד מתחיל מימין בצורה מסודרת */
+        }
+
+        /* תיקון ללפטופ: שומרים על רווח גדול גם במסך קטן */
+        @media (max-height: 860px) {
+            .products-grid-spa, 
+            #spa-view-mystery .products-grid-spa {
+                gap: 20px !important; /* מחליף את ה-12px שעשה את המעיכה קודם */
+                grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)) !important; 
+            }
+        }
+
+        /* =========================================
+           תיקון אוויר לנשימה בפוטר של הקוביות
+           ========================================= */
+        
+        /* מוודא שתמיד יהיה מרווח יפה מלמטה */
+        .products-grid-spa .product-card {
+            padding: 15px 15px 22px 15px !important; /* 22 פיקסלים של אוויר נקי למטה! */
+        }
+
+        /* הגבלת שורות בתיאור כדי שלא ידחוף את הכפתורים למטה */
+        .products-grid-spa .product-desc {
+            display: -webkit-box !important; 
+            -webkit-line-clamp: 2 !important; /* נועל את הטקסט ל-2 שורות בלבד */
+            -webkit-box-orient: vertical !important; 
+            overflow: hidden !important;
+            margin-bottom: 15px !important;
+        }
+
+        /* התאמות נוספות למסך לפטופ כדי שהכל ייכנס מושלם */
+        @media (max-height: 860px) {
+            .products-grid-spa .product-card {
+                padding: 12px 12px 18px 12px !important; /* שומר על האוויר גם במסך קטן */
+                min-height: 235px !important; /* נותן טיפ-טיפה יותר גובה */
+            }
+            
+            .products-grid-spa .product-desc {
+                font-size: 11.5px !important; /* מקטין את הכתב קצת כדי שישב יפה ב-2 שורות */
+            }
+            
+            /* הקטנה עדינה של כפתור ההוספה לעגלה בלפטופ */
+            .products-grid-spa .product-footer .add-to-cart-btn {
+                padding: 6px 12px !important;
+                font-size: 12.5px !important;
+            }
+        }
+
+        /* =========================================
+           צמצום רווחים והזזת פס גלילה לימין
+           ========================================= */
+        
+        /* מקטין משמעותית את הרווח שמתחת לטאבים כדי למשוך את הקוביות למעלה */
+        .spa-nav-container {
+            margin-bottom: 8px !important; 
+        }
+
+        /* טריק להזזת פס הגלילה לימין באתר RTL */
+        .products-grid-spa {
+            direction: ltr !important; /* זורק את פס הגלילה ימינה */
+        }
+        
+        /* שומר על הקוביות והטקסט מימין לשמאל */
+        .products-grid-spa > * {
+            direction: rtl !important; 
+        }
+
+        /* =========================================
+           תיקון כיוון הקוביות לימין + פס גלילה בימין
+           ========================================= */
+        
+        /* צמצום הרווח למעלה */
+        .spa-nav-container {
+            margin-bottom: 8px !important; 
+        }
+
+        /* 1. המעטפת מקבלת את הגלילה ומוגדרת כ"אנגלית" רק כדי שהפס ייזרק לימין */
+        .spa-view {
+            overflow-y: auto !important;
+            direction: ltr !important;
+            padding-left: 5px; /* מרווח קטן כדי שפס הגלילה לא ייגע בקוביות */
+        }
+        
+        /* מעבירים את העיצוב הזהוב של פס הגלילה למעטפת החדשה */
+        .spa-view::-webkit-scrollbar { width: 5px; }
+        .spa-view::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.3); border-radius: 10px; }
+
+        /* 2. הגריד של המוצרים חוזר לעברית טהורה (מימין לשמאל) ובלי גלילה כפולה */
+        .products-grid-spa {
+            direction: rtl !important; 
+            overflow-y: visible !important; 
+            justify-content: start !important; /* מצמיד הכל לימין */
+        }
+        
+        /* מוודאים שגם המיסטרי נצמד לימין יפה */
+        #spa-view-mystery .products-grid-spa {
+            justify-content: start !important; 
+        }
+
+        /* =========================================
+           החזרת אזור הרכבת המארז לכיוון הנכון (ימין לשמאל)
+           ========================================= */
+        .custom-builder-container {
+            direction: rtl !important;
+        }
+
+        /* =========================================
+           הגדלת תמונות הסיידבר (פיצוי על אפקט התאורה)
+           ========================================= */
+        .mini-product-card img {
+            max-height: 90px !important; /* הוגדל משמעותית כדי לפצות על הריפוד */
+            width: 90px !important;      /* שומר על מסגרת ריבועית אחידה */
+            object-fit: contain !important; /* מוודא שהתמונה לא נמעכת או מתעוותת */
+            flex-shrink: 0 !important;   /* מונע מהטקסט לדחוף ולמעוך את התמונה */
+        }
+
+        /* =========================================
+           הגדלת תמונות המיסטרי והרכבת המארז
+           ========================================= */
+        
+        /* תמונות במארזי מיסטרי */
+        #spa-view-mystery .product-image img {
+            max-height: 100px !important;  /* מגדיל את התמונה */
+            max-width: 80% !important;   /* מרחיב את המסגרת ביחס לקובייה */
+            object-fit: contain !important; /* שומר על הפרופורציה המקורית */
+            flex-shrink: 0 !important;   /* מונע דחיסה מהטקסט */
+        }
+
+        /* תמונות בקטגוריית הרכבת המארז (המוצרים לבחירה) */
+        .b-card img {
+            max-height: 95px !important;   /* מגדיל את התמונה */
+            width: 100% !important;      /* שומר על מסגרת רוחב מלאה */
+            object-fit: contain !important; /* מונע מעיכה */
+            margin-bottom: 10px !important; /* שומר על רווח אחיד מהטקסט */
+            flex-shrink: 0 !important;   /* מונע דחיסה מהטקסט */
+        }
+
+        /* =========================================
+           חלון צף למוצרים (מיובא מהקטלוג)
+           ========================================= */
+        .custom-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            z-index: 99999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: all 0.3s ease;
+        }
+        .custom-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .custom-modal-content {
+            background: #0b1221; border: 2px solid var(--brand-gold); border-radius: 16px;
+            width: 90%; max-width: 800px; position: relative; transform: scale(0.9);
+            transition: all 0.3s ease; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            overflow: hidden; direction: rtl;
+        }
+        .custom-modal-overlay.show .custom-modal-content { transform: scale(1); }
+        .close-modal-btn {
+            position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.1);
+            border: none; color: #fff; font-size: 24px; width: 35px; height: 35px;
+            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; z-index: 10;
+        }
+        .close-modal-btn:hover { background: #ff4a4a; color: #fff; transform: rotate(90deg); }
+        .modal-body-split { display: flex; flex-wrap: wrap; }
+        .modal-right-info { flex: 1.2; min-width: 300px; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .modal-left-image { flex: 1; min-width: 250px; background: rgba(255, 255, 255, 0.02); padding: 40px; display: flex; align-items: center; justify-content: center; border-right: 1px solid rgba(214, 185, 83, 0.1); }
+        .modal-left-image img { max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+        .modal-cat { color: #a0aec0; font-size: 14px; margin-bottom: 5px; }
+        .modal-main-title { color: var(--brand-gold); font-size: 28px; margin-bottom: 15px; line-height: 1.2; }
+        .modal-desc { color: #e2e8f0; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+        .modal-price-tag { font-size: 32px; font-weight: 900; color: var(--brand-gold); display: block; margin-bottom: 25px; }
+        .modal-actions { display: flex; gap: 15px; align-items: center; }
+        .quantity-selector { display: flex; align-items: center; background: rgba(0,0,0,0.5); border: 1px solid rgba(214, 185, 83, 0.3); border-radius: 8px; overflow: hidden; height: 45px; }
+        .qty-btn { background: transparent; border: none; color: var(--brand-gold); width: 40px; height: 100%; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:hover { background: rgba(214, 185, 83, 0.2); }
+        .quantity-selector input { width: 40px; height: 100%; background: transparent; border: none; color: #fff; text-align: center; font-size: 18px; font-weight: bold; pointer-events: none; }
+        .modal-add-to-cart-btn { flex: 1; height: 45px; background: var(--brand-gold); color: #000; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .modal-add-to-cart-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.4); }
+        @media (max-width: 768px) { .modal-body-split { flex-direction: column-reverse; } .modal-right-info { padding: 25px; } .modal-left-image { padding: 25px; border-right: none; border-bottom: 1px solid rgba(214, 185, 83, 0.1); } .modal-actions { flex-direction: column; align-items: stretch; } }
+
+/* =========================================
+           תתי-טאבים למארזים ונעילת גלילה לימין
+           ========================================= */
+        .spa-sub-tabs {
+            display: flex; justify-content: center; gap: 15px;
+            margin-top: 15px; margin-bottom: 15px;
+        }
+
+        .spa-sub-tab {
+            background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(214, 185, 83, 0.2);
+            color: #a0a0a0; padding: 6px 18px; border-radius: 20px;
+            font-family: inherit; font-size: 13px; cursor: pointer; transition: all 0.3s ease;
+        }
+
+        .spa-sub-tab:hover { color: #D6B953; border-color: rgba(214, 185, 83, 0.5); }
+        .spa-sub-tab.active {
+            background: rgba(214, 185, 83, 0.1); color: #D6B953;
+            border-color: #D6B953; font-weight: bold;
+        }
+
+        /* נעילת פס הגלילה לימין בלבד לכל האזורים */
+        .spa-view {
+            direction: ltr !important; 
+            overflow-y: auto !important; 
+            overflow-x: hidden !important; 
+            padding-left: 5px;
+        }
+        
+        /* החזרת התוכן הפנימי לעברית מימין לשמאל */
+        .products-grid-spa, .custom-builder-container, #spa-view-vintage {
+            direction: rtl !important; 
+        }
+
+        /* =========================================
+           מירכוז אנכי מושלם למרכז הבמה בין הסיידברים
+           ========================================= */
+        .main-content {
+            justify-content: center !important;
+        }
+
+    </style>
+</head>
+<body class="home-page">
+<!-- טעינת ההדר של האתר מקובץ חיצוני -->
+    <div id="header-placeholder"></div>
+
+    <div class="site-layout">
+        
+        <aside class="sidebar sidebar-right">
+            <div class="sidebar-header">
+                <h3>מוצרים נוספים <i class="fa-solid fa-fire"></i></h3>
+            </div>
+            <div class="sidebar-content">
+                <div class="sidebar-slider">
+                    
+                    <div class="sidebar-slide active">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-soccerwe')">
+                            <div class="mini-badge hot-badge">מוצר חם <i class="fa-solid fa-fire"></i></div>
+                            <img src="images/soccerwe-mistery-pack.jpg.png" alt="מארז הפתעה soccerwe">
+                            <div class="mini-info">
+                                <h4>מארז הפתעה soccerwe</h4>
+                                <p class="mini-desc">בובות שחקני כדורגל לאיסוף במארז עיוור ומדליק באריזה מקורית.</p>
+                                <span class="mini-price">₪24.90</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-squeeze-ball')">                            
+                            <img src="images/button-decompression-ball.jpg.png" alt="כדור לחיץ נבחרות">
+                            <div class="mini-info">
+                                <h4>כדור לחיץ נבחרות</h4>
+                                <p class="mini-desc">מחזיק מפתחות כדורגל גמיש ולחיץ להפגת מתחים לכל גיל.</p>
+                                <span class="mini-price">₪24.90</span>
+                            </div>
+                        </div>
+
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-hover-ball')">                            
+                            <img src="images/hover-ball.jpg.png" alt="כדור לד מרחף">
+                            <div class="mini-info">
+                                <h4>כדור לד מרחף</h4>
+                                <p class="mini-desc">כדורגל רחפת עם תאורת לד צבעונית למשחק בטוח בתוך הבית.</p>
+                                <span class="mini-price">₪24.90</span>
+                            </div>
+                        </div>
+        
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-agility-ladder')">                            
+                            <img src="images/agiliti-ladder.jpg.png" alt="סולם זריזות">
+                            <div class="mini-info">
+                                <h4>סולם זריזות</h4>
+                                <p class="mini-desc">מסלול רצועות ושלבים גמישים המונח על הרצפה, המיועד לתרגול צעדים מהירים.</p>
+                                <span class="mini-price">₪39.90</span>
+                            </div>
+                        </div>
+
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-training-belt')">                            
+                            <img src="images/soccer-bubble-belt.jpg.png" alt="חגורת אימון">
+                            <div class="mini-info">
+                                <h4>חגורת אימון כדורגל</h4>
+                                <p class="mini-desc">רצועה אלסטית המחברת בין המותן לכדור ומאפשרת לתרגל בעיטות ושליטה ברצף.</p>
+                                <span class="mini-price">₪39.90</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-slide">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-cones')">
+                            <img src="images/sport-training-cones.jpg.png" alt="כיפות סימון">
+                            <div class="mini-info">
+                                <h4>סט 10 כיפות סימון</h4>
+                                <p class="mini-desc">מוצר בסיסי וחיוני לסימון גבולות מגרש, יצירת מסלולי סלאלום ותרגול זריזות.</p>
+                                <span class="mini-price">₪29.90</span>
+                            </div>
+                        </div>
+
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-grip-socks')">
+                            <img src="images/grip-sock.jpg.png" alt="גרבי גריפ">
+                            <div class="mini-info">
+                                <h4>זוג גרבי גריפ</h4>
+                                <p class="mini-desc">גרבי ספורט עם כריות סיליקון בתחתית המונעות החלקה בתוך הנעל.</p>
+                                <span class="mini-price">₪29.90</span>
+                            </div>
+                        </div>
+
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-ucl-pack-2010')">
+                            <img src="images/pack-ucl-2010.jpg" alt="מעטפת ליגת האלופות 2010/2011">
+                            <div class="mini-info">
+                                <h4>מעטפת צ'מפיונס 10/11</h4>
+                                <p class="mini-desc">מעטפת פאניני מקורית ונדירה מעונת 2010/2011 נוסטלגיה אמיתית.</p>
+                                <span class="mini-price">₪7.90</span>
+                            </div>
+                        </div>
+
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-funko-xavi')">
+                            <img src="images/funko-pop-xavi-coach.jpg.png" alt="פונקו פופ צ'אבי">
+                            <div class="mini-info">
+                                <h4>פונקו פופ צ'אבי</h4>
+                                <p class="mini-desc">בובת Pop Funko רשמית של צ'אבי כמאמן ברצלונה.</p>
+                                <span class="mini-price">₪69.90</span>
+                            </div>
+                        </div>
+
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-national-coins')">
+                            <img src="images/coins-national.jpg" alt="מטבעות נבחרות">
+                            <div class="mini-info">
+                                <h4>מטבעות נבחרות</h4>
+                                <p class="mini-desc">מטבעות אספנות מהודרים עם דגלי הנבחרות.</p>
+                                <span class="mini-price">₪14.90</span>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <div class="sidebar-slide">
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-national-bracelets')">
+                            <img src="images/bracelets-national.jpg" alt="צמידי נבחרות">
+                            <div class="mini-info">
+                                <h4>צמידי נבחרות</h4>
+                                <p class="mini-desc">צמידי סיליקון ומתכת בעיצוב דגלי מדינות, מתכווננים ונוחים.</p>
+                                <span class="mini-price">₪14.90</span>
+                            </div>
+                        </div>
+
+                        <div class="mini-product-card" style="cursor: pointer;" onclick="scrollToProduct('prod-metal-keychain')">
+                            <img src="images/keychain-shoe.jpg.png" alt="מחזיק מפתחות מתכתי">
+                            <div class="mini-info">
+                                <h4>מחזיק מפתחות מתכתי</h4>
+                                <p class="mini-desc">מחזיק מפתחות יוקרתי וחזק בצורת נעל כדורגל וכדור.</p>
+                                <span class="mini-price">₪14.90</span>
+                            </div>
+                        </div>
+                    </div> 
+
+                </div>
+            </div>
+        </aside>
+
+
+<!-- ========================================== -->
+        <!-- מרכז הבמה מתחיל כאן (לא למחוק את התגית הזו!) -->
+        <!-- ========================================== -->
+        <main class="main-content">
+            
+            <!-- כלוב המירכוז שנועל אותם לאמצע -->
+            <div class="center-tabs-wrapper">
+                
+            <!-- קפסולת הטאבים פרימיום (תפריט ראשי) -->
+            <div class="premium-capsule-tabs">
+                <button class="capsule-tab active" onclick="navTabSwitch('packages', this)">מארזים</button>
+                <button class="capsule-tab" onclick="navTabSwitch('mystery', this)">מיסטרי בוקס</button>
+                <button class="capsule-tab" onclick="navTabSwitch('vintage', this)">סוליבי יד 2</button>
+                <button class="capsule-tab auction-tab" onclick="navTabSwitch('auction', this)">
+                    מכירות פומביות <span class="live-pulse-dot"></span>
+                </button>
+            </div>
+
+                <!-- תתי-טאבים פרימיום (יופיעו תחת הקטגוריה "מארזים") -->
+            <div class="premium-sub-tabs" id="packages-sub-tabs">
+                
+                <!-- דרופדאון (תפריט נפתח) למארזים המוכנים -->
+                <div class="custom-dropdown">
+                    <!-- זה הטאב הראשי שיישאר קבוע -->
+                    <button class="sub-tab active" id="ready-packages-title" onclick="togglePackageMode('ready')">
+                        מארזים מוכנים <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-right: 5px;"></i>
+                    </button>
+                    
+                    <!-- זאת הרשימה הנפתחת, כאן המארז הראשון הוא פרימיום -->
+                    <div class="dropdown-content">
+                        <a href="#" onclick="selectDropdownPackage('premium', this); return false;">מארז פרימיום</a>
+                        <a href="#" onclick="selectDropdownPackage('young', this); return false;">לאספן הצעיר</a>
+                        <a href="#" onclick="selectDropdownPackage('training', this); return false;">אימון ילדים/נוער</a>
+                        <a href="#" onclick="selectDropdownPackage('fitness', this); return false;">כושר אישי</a>
+                    </div>
+                </div>
+
+                <!-- כפתור הרכבת מארז אישי -->
+                <button class="sub-tab" id="custom-package-tab" onclick="togglePackageMode('custom')">הרכבת מארז אישי</button>
+            </div>
+
+<!-- תתי-טאבים למיסטרי בוקס (מוסתר כברירת מחדל) -->
+            <div class="premium-sub-tabs" id="mystery-sub-tabs" style="display: none;">
+                <div class="custom-dropdown">
+                    <button class="sub-tab active" id="mystery-packages-title">
+                        סוגי מיסטרי <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-right: 5px;"></i>
+                    </button>
+                    <!-- הרשימה הנפתחת -->
+                    <div class="dropdown-content">
+                        <a href="#" onclick="selectDropdownMystery('adult', this); return false;">מיסטרי קלפים בוגרים</a>
+                        <a href="#" onclick="selectDropdownMystery('kids', this); return false;">מיסטרי קלפים ילדים</a>
+                    </div>
+                </div>
+            </div>
+
+<!-- ========================================== -->
+<!-- אזור תצוגת מארזים מוכנים (החלון החצוי) -->
+<!-- ========================================== -->
+<div id="spa-view-ready" class="spa-view active" style="width: 100%; max-width: 900px; margin: 0 auto;">
+    
+    <!-- שיים לב: גלולות הניווט הישנות נמחקו מכאן לחלוטין! -->
+
+    <!-- חדר התצוגה המרכזי (המלבן החצוי) -->
+    <div class="boutique-showroom">
+
+                    <!-- חדר התצוגה המרכזי (המלבן החצוי) -->
+                    <div class="boutique-showroom">
+                        
+                        <!-- מארז 1: פרימיום -->
+                        <div id="boutique-pkg-premium" class="boutique-package-content" style="display: flex;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge gold">מארז הדגל</div>
+                                <h3>מארז אספנות פרימיום</h3>
+                                <p class="boutique-desc">המארז היוקרתי ביותר שלנו, מורכב מפריטי האספנות הנדירים והמבוקשים ביותר שישדרגו כל אוסף.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> בובת מיניקס (Minix) מקורית</li>
+                                    <li><i class="fa-solid fa-check"></i> מעטפת קלפים פאניני רשמית</li>
+                                    <li><i class="fa-solid fa-check"></i> מחזיק מפתחות מתכת יוקרתי</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪179</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-crown placeholder-boutique" style="color: #D6B953;"></i>
+                            </div>
+                        </div>
+
+                        <!-- מארז 2: אספן צעיר -->
+                        <div id="boutique-pkg-young" class="boutique-package-content" style="display: none;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge">מומלץ לילדים</div>
+                                <h3>מארז לאספן הצעיר</h3>
+                                <p class="boutique-desc">המתנה המושלמת לילדים שמתחילים את דרכם בעולם אספנות הכדורגל, שעות של הנאה והתרגשות מובטחות.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> בובת סוקרסטארז בקופסא מקורית</li>
+                                    <li><i class="fa-solid fa-check"></i> 2 מעטפות קלפים (אדרנלין/מאצ' אטאקס)</li>
+                                    <li><i class="fa-solid fa-check"></i> כדור לחיץ וצמיד במארז מהודר</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪129</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-child placeholder-boutique" style="color: #a0aec0;"></i>
+                            </div>
+                        </div>
+
+                        <!-- מארז 3: אימון -->
+                        <div id="boutique-pkg-training" class="boutique-package-content" style="display: none;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge">לשחקנים</div>
+                                <h3>מארז אימון ילדים/נוער</h3>
+                                <p class="boutique-desc">כל מה ששחקן כדורגל מתחיל צריך כדי לשפר זריזות, קואורדינציה ושליטה בכדור.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> 2 זוגות גרבי גריפ נגד החלקה</li>
+                                    <li><i class="fa-solid fa-check"></i> סט 10 קונוסים וסולם קואורדינציה</li>
+                                    <li><i class="fa-solid fa-check"></i> רצועת אימון אלסטית (כולל תיק נשיאה)</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪99</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-stopwatch placeholder-boutique" style="color: #a0aec0;"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- מארז 4: כושר -->
+                        <div id="boutique-pkg-fitness" class="boutique-package-content" style="display: none;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge">ספורט בבית</div>
+                                <h3>מארז כושר גבר/אישה</h3>
+                                <p class="boutique-desc">סט אימון פונקציונלי קומפקטי ומלא, מושלם לשמירה על כושר ובניית כוח בכל מקום.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> חבל קפיצה מקצועי מתכוונן</li>
+                                    <li><i class="fa-solid fa-check"></i> גלגל בטן לפיתוח שרירי הליבה</li>
+                                    <li><i class="fa-solid fa-check"></i> רצועה אלסטית ומוטות פוש-אפ מובנים</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪119</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-dumbbell placeholder-boutique" style="color: #a0aec0;"></i>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ========================================== -->
+                <!-- אזור הרכבת מארז אישי (שמאל: קופסה, ימין: מוצרים) -->
+                <!-- ========================================== -->
+                <div id="spa-view-custom" class="spa-view" style="display: none; width: 100%; height: 100%; max-width: 1200px; margin: 0 auto;">
+                    <div class="custom-builder-container">
+                        
+                        <!-- צד ימין - בחירת מוצרים (קונסולת הבחירה) -->
+                        <div class="builder-right">
+                            <div class="builder-header">
+                                <h3>הרכבת מארז אישי</h3>
+                                <span class="builder-subtitle">בחר עד 5 פריטים</span>
+                            </div>
+                            
+                            <!-- טאבים לסינון מוצרים -->
+                            <div class="builder-tabs">
+                                <button class="b-tab active" onclick="filterBuilder('all', this)">הכל</button>
+                                <button class="b-tab" onclick="filterBuilder('figures', this)">בובות ופונקו</button>
+                                <button class="b-tab" onclick="filterBuilder('cards', this)">קלפים</button>
+                                <button class="b-tab" onclick="filterBuilder('training', this)">אימון</button>
+                                <button class="b-tab" onclick="filterBuilder('toys', this)">צעצועים</button>
+                                <button class="b-tab" onclick="filterBuilder('more', this)">אקססוריז</button>
+                            </div>
+                            
+                            <!-- אזור הגריד אליו יישאבו המוצרים -->
+                            <div class="builder-products-scroll">
+                                <div id="builder-grid" class="builder-grid">
+                                    <!-- מוצרים ייטענו לכאן מהסקריפט -->
+                                </div>
+                            </div>
+                            
+                            <div id="custom-builder-pagination" class="pagination-container">
+                                <!-- מספרי עמודים -->
+                            </div>
+                        </div>
+
+                        <!-- צד שמאל - תצוגת הקופסה והסיכום -->
+                        <div class="builder-left">
+                            <div class="box-visual">
+                                <i class="fa-solid fa-box-open bg-box-icon"></i>
+                                <div class="box-slots">
+                                    <div class="box-slot empty"></div>
+                                    <div class="box-slot empty"></div>
+                                    <div class="box-slot empty"></div>
+                                    <div class="box-slot empty"></div>
+                                    <div class="box-slot empty"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- סיכום הזמנה מתעדכן בלייב -->
+                            <div class="box-summary">
+                                <div class="progress-texts">
+                                    <span>תפוסת המארז</span>
+                                    <span><span id="box-count">0</span>/5 פריטים</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                                </div>
+                                <div class="box-total">
+                                    <span>סה"כ:</span>
+                                    <span class="total-price">₪<span id="box-total-price">0</span></span>
+                                </div>
+                                <button id="finish-box-btn" class="finish-box-btn" disabled onclick="checkoutBox()">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+<!-- ========================================== -->
+                <!-- אזור תצוגת מיסטרי בוקס -->
+                <!-- ========================================== -->
+                <div id="spa-view-mystery" class="spa-view" style="display: none; width: 100%; max-width: 900px; margin: 0 auto;">
+                    <div class="boutique-showroom">
+                        
+                        <!-- מיסטרי 1: בוגרים -->
+                        <div id="boutique-mystery-adult" class="boutique-package-content" style="display: flex;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge gold">מארז פרימיום</div>
+                                <h3>מיסטרי קלפים בוגרים</h3>
+                                <p class="boutique-desc">מארז הפתעה לאספנים מתקדמים. כל חבילה מכילה קלפים ומדבקות, עם סיכוי לצ'ייסים נדירים וקלפים מדורגים.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> מעטפת מדבקות/קלפים ו-7 קלפים אקראיים</li>
+                                    <li><i class="fa-solid fa-check"></i> 7 מדבקות אקראיות ומחזיק מפתחות מתכתי</li>
+                                    <li><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> סיכוי לקלף מדורג PSA או חתימה</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪199</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-box placeholder-boutique" style="color: #D6B953;"></i>
+                            </div>
+                        </div>
+
+                        <!-- מיסטרי 2: ילדים -->
+                        <div id="boutique-mystery-kids" class="boutique-package-content" style="display: none;">
+                            <div class="boutique-text-side">
+                                <div class="boutique-badge">מומלץ לילדים</div>
+                                <h3>מיסטרי קלפים ילדים</h3>
+                                <p class="boutique-desc">הפתעה מושלמת לילדים שאוהבים לאסוף! הרבה קלפים ומדבקות מהאוספים האהובים ביותר במארז עיוור.</p>
+                                <ul class="boutique-contents">
+                                    <li><i class="fa-solid fa-check"></i> 10 קלפי אדרנלין/מאצ' אטאקס + קלף לימיטד</li>
+                                    <li><i class="fa-solid fa-check"></i> 5 מדבקות אקראיות וצמיד סיליקון נבחרות</li>
+                                    <li><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> אופציה למעטפה נוספת כהפתעה!</li>
+                                </ul>
+                                <div class="boutique-action">
+                                    <button class="boutique-cart-btn">הוסף לעגלה <i class="fa-solid fa-cart-arrow-down"></i></button>
+                                    <span class="boutique-price">₪149</span>
+                                </div>
+                            </div>
+                            <div class="boutique-image-side">
+                                <i class="fa-solid fa-box-open placeholder-boutique" style="color: #a0aec0;"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+             
+                <!-- ========================================== -->
+<!-- אזור תצוגת מכירות פומביות -->
+<!-- ========================================== -->
+<div id="spa-view-auction" class="spa-view" style="display: none; width: 100%; max-width: 900px; margin: 0 auto;">
+    
+    <!-- כותרת האזור (רווחים מצומצמים) -->
+    <div style="text-align: center; margin-bottom: 10px;">
+        <h2 style="color: #d4af37; margin-bottom: 2px; font-size: 20px;"><i class="fa-solid fa-gavel"></i> זירת המכרזים</h2>
+        <p style="color: #a0aec0; font-size: 13px; margin: 0;">הצע מחיר על הפריטים הנדירים ביותר שלנו. המרבה במחיר זוכה!</p>
+    </div>
+
+    <!-- פריט המכרז המרכזי (Live) -->
+    <div class="boutique-showroom">
+        <div class="boutique-package-content" style="display: flex;">
+            <div class="boutique-text-side">
+                <div class="boutique-badge hot-badge" style="position: relative; display: inline-block; top: 0; right: 0; margin-bottom: 8px;">לייב עכשיו <span class="live-pulse-dot" style="margin-right: 5px;"></span></div>
+                
+                <h3 style="margin-bottom: 5px;">קלף מסי מונדיאל 2022 חתום (PSA 10)</h3>
+                <!-- נעילת התיאור ל-2 שורות כדי שלא ימתח את המלבן -->
+                <p class="boutique-desc" style="margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">הזדמנות נדירה לאספנים! קלף מוזהב מהגמר הגדול בקטאר, חתימה מקורית מאומתת בדירוג מושלם של חברת PSA.</p>
+                
+                <!-- אזור הסטטוס של המכרז (מוקטן ומהודק) -->
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(214, 185, 83, 0.3); border-radius: 10px; padding: 10px 15px; margin: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <span style="color: #a0aec0; font-size: 13px;">הצעה נוכחית:</span>
+                        <span style="color: #d4af37; font-size: 20px; font-weight: bold;">₪1,450</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: #a0aec0; font-size: 13px;">זמן לסיום:</span>
+                        <span style="color: #ff4a4a; font-size: 16px; font-weight: bold; font-family: monospace;"><i class="fa-regular fa-clock"></i> 02:14:35</span>
+                    </div>
+                </div>
+
+                <div class="boutique-action" style="justify-content: center; margin-top: auto;">
+                    <button class="boutique-cart-btn" style="width: 100%; font-size: 15px; padding: 10px;">הצע מחיר עכשיו <i class="fa-solid fa-gavel"></i></button>
+                </div>
+                <div style="text-align: center; margin-top: 8px; color: #718096; font-size: 11.5px;">סה"כ הצעות: 14 | מציע מוביל: יוסי.כ***</div>
+            </div>
+            
+            <div class="boutique-image-side" style="background: linear-gradient(135deg, rgba(214, 185, 83, 0.1), rgba(0, 0, 0, 0.8));">
+                <i class="fa-solid fa-trophy placeholder-boutique" style="color: #D6B953;"></i>
+                <!-- כאן תשב תמונת הקלף המדורג -->
+            </div>
+        </div>
+    </div>
+</div>
+
+        </main>
+        <!-- ========================================== -->
+        <!-- סוף מרכז הבמה -->
+        <!-- ========================================== -->
+
+
+        <div id="product-modal" class="custom-modal-overlay">
+        <div class="custom-modal-content">
+            <button class="close-modal-btn" onclick="closeProductModal()">&times;</button>
+            <div class="modal-body-split">
+                <div class="modal-right-info">
+                    <span id="modal-category" class="modal-cat">קטגוריה</span>
+                    <h2 id="modal-title" class="modal-main-title">שם המוצר</h2>
+                    <p id="modal-description" class="modal-desc">תיאור המוצר יופיע כאן</p>
+                    <div class="modal-price-wrap">
+                        <span id="modal-price" class="modal-price-tag">0 ₪</span>
+                    </div>
+                    <div class="modal-actions">
+                        <div class="quantity-selector">
+                            <button class="qty-btn" onclick="updateQty(-1)"><i class="fa-solid fa-minus"></i></button>
+                            <input type="text" id="modal-qty" value="1" readonly>
+                            <button class="qty-btn" onclick="updateQty(1)"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                        <button class="modal-add-to-cart-btn" onclick="addToCartFromModal()">
+                            הוסף לעגלה <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-left-image">
+                    <img id="modal-img" src="" alt="תמונת מוצר">
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        <aside class="sidebar sidebar-left">
+            <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-gold); padding-bottom: 10px; margin-bottom: 15px;">
+                <div style="display: flex; gap: 10px;">
+                    <button id="playLiveBtn" style="display: none; background: none; border: none; color: var(--brand-gold); cursor: pointer; font-size: 16px;"><i class="fa-solid fa-play"></i></button>
+                    <button id="pauseLiveBtn" style="background: none; border: none; color: var(--brand-gold); cursor: pointer; font-size: 16px;"><i class="fa-solid fa-pause"></i></button>
+                </div>
+                <h3 style="margin: 0; border: none; padding: 0; display: flex; align-items: center; gap: 10px;">תוצאות לייב <span class="live-dot"></span></h3>
+            </div>
+            <div class="sidebar-content" id="matches-container">
+                <div class="placeholder-widget">טוען תוצאות לייב...</div>
+            </div>
+        </aside>
+
+    </div>
+
+    <footer class="footer">
+        <!-- תפריט ניווט תחתון -->
+        <div class="footer-links">
+            <a href="about.html">אודות</a>
+            <a href="contact.html">צור קשר</a>
+            <a href="terms.html">תקנון ומדיניות</a>
+        </div>
+        
+        <!-- הטיקר שרץ למטה -->
+        <div id="ticker-placeholder"></div>
+    </footer>
+
+    <div id="matchModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modalMatchDetails"></div>
+        </div>
+    </div>
+
+    <script>
+        const mysteryData = {
+            'adult': {
+                title: 'תוכן מיסטרי בוגרים',
+                img: 'mystery-cards-transparent.png',
+                text: `
+                    <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> מובטח בכל חבילה:</p>
+                    <ul style="margin-right: 25px; margin-bottom: 20px; color: #e2e8f0;">
+                        <li>מעטפת מדבקות/קלפים</li>
+                        <li>7 קלפים אקראים ( 5 בייס+ 2 אינסרטים)</li>
+                        <li>7 מדבקות אקראיות ממגוון אוספים</li>
+                        <li>מחזיק מפתחות מתכתי כדורגל</li>
+                        <li>כרטיס הגרלה שיכול לזכות בפרסים</li>
+                    </ul>
+                    <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> לא מובטח (צ'ייס):</p>
+                    <ul style="margin-right: 25px; color: #e2e8f0;">
+                        <li>קלף מדורג PSA</li>
+                        <li>קלף ממוספר / חתימה</li>
+                        <li>מדבקות רטרו ישראלי (מפציצים 97 / סופרגול)</li>
+                    </ul>
+                `
+            },
+            'kids': {
+                title: 'תוכן מיסטרי ילדים',
+                img: 'mystery-cards-transparent.png',
+                text: `
+                    <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-circle-check" style="color: #4ade80;"></i> מובטח בכל חבילה:</p>
+                    <ul style="margin-right: 25px; margin-bottom: 20px; color: #e2e8f0;">
+                        <li>מעטפת קלפים/מדבקות אקראית</li>
+                        <li>10 קלפי אדרנלין/מאצ' אטאקס (7 קלפי בייס+3 אינסרטים)</li>
+                        <li>קלף לימיטד אדישן אדרנלין/מאצ'</li>
+                        <li>5 מדבקות ממגוון אוספים</li>
+                        <li>צמיד סיליקון נבחרות כדורגל</li>
+                    </ul>
+                    <p style="font-weight: bold; margin-bottom: 5px;"><i class="fa-solid fa-fire" style="color: #ff4a4a;"></i> הפתעות מיוחדות:</p>
+                    <ul style="margin-right: 25px; color: #e2e8f0;">
+                        <li>מעטפת קלפים/מדבקות נוספת</li>
+                        <li>קלף לימיטד אדישן נוסף</li>
+                    </ul>
+                `
+            }
+        };
+
+        function showGlobalModal(type, hoverType) {
+            const data = mysteryData[type];
+            const modalBox = document.getElementById('global-mystery-box');
+            
+            if (hoverType === 'image') {
+                document.getElementById('global-modal-text').style.display = 'none';
+                document.getElementById('global-modal-img').innerHTML = `<img src="${data.img}" alt="${data.title}">`;
+                modalBox.style.maxWidth = 'max-content';
+                modalBox.style.background = 'transparent';
+                modalBox.style.border = 'none';
+            } else {
+                document.getElementById('global-modal-text').style.display = 'block';
+                document.getElementById('global-modal-text').innerHTML = `
+                    <h3 style="color: #d4af37; margin-bottom: 20px; font-size: 28px;">${data.title}</h3>
+                    <div style="font-size: 16px; line-height: 1.8;">${data.text}</div>
+                `;
+                document.getElementById('global-modal-img').innerHTML = `<img src="${data.img}" alt="${data.title}">`;
+                modalBox.style.maxWidth = '900px';
+                modalBox.style.background = '#0b1221';
+                modalBox.style.border = '2px solid #d4af37';
+            }
+            
+            modalBox.classList.add('show-modal');
+        }
+
+        function hideGlobalModal() {
+            document.getElementById('global-mystery-box').classList.remove('show-modal');
+        }
+    </script>
+
+    <script src="matchEvents.js"></script>
+    <script>
+        const API_KEY = 'd580159a7d19ead2bc2054c8b57e6ee3';
+        const API_URL = 'https://v3.football.api-sports.io/fixtures?live=all';
+
+        let liveScrollInterval;
+        let isLiveScrollingPaused = false;
+        
+        window.matchGoalTracker = window.matchGoalTracker || {}; 
+
+        function startLiveScroll() {
+            const container = document.getElementById('matches-container');
+            if (!container) return;
+            
+            if (liveScrollInterval) clearInterval(liveScrollInterval);
+            
+            liveScrollInterval = setInterval(() => {
+                if (isLiveScrollingPaused) return;
+                
+                // התיקון: בודק אם התוכן חורג מהמסגרת ביותר מ-5 פיקסלים. 
+                // אם לא (למשל כשיש רק 4 משחקים) - הוא לא יגלול וימנע את ה"ריקוד".
+                if (container.scrollHeight <= container.clientHeight + 5) return;
+
+                container.scrollTop += 1;
+                if (Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight) {
+                    container.scrollTop = 0;
+                }
+            }, 35); 
+        }
+
+        async function loadSidebarLiveMatches() {
+            const container = document.getElementById('matches-container');
+            if (!container) return;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'GET',
+                    headers: { 'x-apisports-key': API_KEY }
+                });
+                
+                const data = await response.json();
+                
+                if (data.response && data.response.length > 0) {
+                    const prevScroll = container.scrollTop; 
+                    container.innerHTML = ''; 
+                    const matches = data.response.slice(0, 15); 
+                    
+                    matches.forEach(match => {
+                        const fixtureId = match.fixture.id;
+                        const hGoals = match.goals.home !== null ? match.goals.home : 0;
+                        const aGoals = match.goals.away !== null ? match.goals.away : 0;
+                        const totalGoalsNow = hGoals + aGoals;
+
+                        if (window.matchGoalTracker[fixtureId] !== undefined) {
+                            if (totalGoalsNow > window.matchGoalTracker[fixtureId].totalGoals) {
+                                window.matchGoalTracker[fixtureId].goalTime = Date.now();
+                            }
+                        } else {
+                            window.matchGoalTracker[fixtureId] = { goalTime: 0 };
+                        }
+                        window.matchGoalTracker[fixtureId].totalGoals = totalGoalsNow;
+
+                        let isRecentGoal = (Date.now() - window.matchGoalTracker[fixtureId].goalTime) < 30000;
+                        let goalHtml = isRecentGoal ? '<div class="sidebar-goal-flash">שער!</div>' : '';
+
+                        const div = document.createElement('div');
+                        div.className = 'match-card';
+                        
+                        div.onclick = () => {
+                            if (typeof openMatchEvents === 'function') {
+                                openMatchEvents(match.fixture.id, match.teams.home.name, match.teams.away.name);
+                            }
+                        };
+                        
+                        div.innerHTML = `
+                            ${goalHtml}
+                            <div class="match-info">${match.league.name} - דקה ${match.fixture.status.elapsed}'</div>
+                            <div class="match-content">
+                                <div class="match-teams">
+                                    <span class="team-name">${match.teams.home.name}</span>
+                                    <span class="team-name">${match.teams.away.name}</span>
+                                </div>
+                                <div class="match-scores">
+                                    <span class="score-num">${match.goals.home}</span>
+                                    <span class="score-num">${match.goals.away}</span>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(div);
+                    });
+
+                    container.scrollTop = prevScroll; 
+                    if (!liveScrollInterval) startLiveScroll(); 
+
+                } else {
+                    container.innerHTML = '<div class="placeholder-widget">אין משחקים בשידור חי כרגע.</div>';
+                }
+            } catch (err) {
+                console.error("API Fetch Error:", err);
+                container.innerHTML = '<div class="placeholder-widget">שגיאה בטעינת הנתונים.</div>';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSidebarLiveMatches();
+            setInterval(loadSidebarLiveMatches, 60000);
+
+            const btnPlay = document.getElementById('playLiveBtn');
+            const btnPause = document.getElementById('pauseLiveBtn');
+
+            btnPause.addEventListener('click', () => {
+                isLiveScrollingPaused = true;
+                btnPause.style.display = 'none';
+                btnPlay.style.display = 'block';
+            });
+            
+            btnPlay.addEventListener('click', () => {
+                isLiveScrollingPaused = false;
+                btnPlay.style.display = 'none';
+                btnPause.style.display = 'block';
+            });
+        });
+    </script>
+    
+        <script>
+        
+        // הפעלת תתי-טאבים (מוכנים / הרכבה אישית)
+        function switchPackagesSub(subViewId, btn) {
+            document.querySelectorAll('.spa-sub-tab').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+
+            const readyView = document.getElementById('spa-view-ready');
+            const customView = document.getElementById('spa-view-custom');
+            
+            if (readyView) readyView.style.display = 'none';
+            if (customView) customView.style.display = 'none';
+            
+            const activeView = document.getElementById('spa-view-' + subViewId);
+            if (activeView) activeView.style.display = 'flex';
+        }
+
+        // טעינת ההדר העליון (Header)
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('header-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+        // טעינת הטיקר התחתון
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('ticker-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            })
+            .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
+    </script>
+
+<script type="module" src="auth.js"></script>
+<script>
+        let currentSlide = 0;
+        let sidebarInterval; // משתנה שישמור את הזמן
+
+        function rotateSidebar() {
+            const slides = document.querySelectorAll('.sidebar-slide');
+            if (slides.length <= 1) return;
+
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        // פונקציה שמתחילה את הטיימר (13 שניות)
+        function startSidebarTimer() {
+            sidebarInterval = setInterval(rotateSidebar, 10000);
+        }
+
+        // הפעלה ראשונית כשהאתר נטען
+        startSidebarTimer();
+
+        // =========================================
+        // מנגנון עצירה חכמה בזמן ריחוף עכבר (Hover)
+        // =========================================
+        const sidebarSliderArea = document.querySelector('.sidebar-right .sidebar-slider');
+
+        // כשהעכבר נכנס לקוביות - עוצרים את הזמן
+        sidebarSliderArea.addEventListener('mouseenter', () => {
+            clearInterval(sidebarInterval);
+        });
+
+        // כשהעכבר יוצא החוצה - מתחילים את הזמן מחדש
+        sidebarSliderArea.addEventListener('mouseleave', () => {
+            startSidebarTimer();
+        });
+
+        // =========================================
+        // מנגנון העברה חכמה מהסיידבר לדף הקטלוג
+        // =========================================
+        function scrollToProduct(productId) {
+            // אם אנחנו כבר נמצאים בתוך דף הקטלוג
+            if (window.location.pathname.includes('catalog.html')) {
+                const productElement = document.getElementById(productId);
+                if (productElement) {
+                    productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    productElement.classList.add('highlight-glow');
+                    setTimeout(() => productElement.classList.remove('highlight-glow'), 1500);
+                }
+            } else {
+                // אם אנחנו בדף הבית, נעביר את הגולש לדף הקטלוג יחד עם המזהה של המוצר בכתובת (Hash)
+                window.location.href = 'catalog.html#' + productId;
+            }
+        }
+
+    </script>
+    <script>
+        // ==========================================
+        // מסד הנתונים ולוגיקה של הרכבת מארז
+        // ==========================================
+        let currentBox = [];
+        const MAX_ITEMS = 5;
+
+        const catalogProducts = [
+            { title: "מארז הפתעה soccerwe", price: 25, img: "images/soccerwe-mistery-pack.jpg.png", cat: "figures" },
+            { title: "פונקו פופ צ'אבי", price: 89, img: "images/funko-pop-xavi-coach.jpg.png", cat: "figures" },
+            { title: "מעטפת צ'מפיונס 10/11", price: 25, img: "images/pack-ucl-2010.jpg", cat: "cards" },
+            { title: "גרבי גריפ", price: 29, img: "images/grip-sock.jpg.png", cat: "training" },
+            { title: "סולם זריזות", price: 49, img: "images/agiliti-ladder.jpg.png", cat: "training" },
+            { title: "חגורת אימון", price: 39, img: "images/soccer-bubble-belt.jpg.png", cat: "training" },
+            { title: "סט 10 כיפות", price: 29, img: "images/sport-training-cones.jpg.png", cat: "training" },
+            { title: "כדור לד מרחף", price: 25, img: "images/hover-ball.jpg.png", cat: "toys" },
+            { title: "כדור לחיץ נבחרות", price: 25, img: "images/button-decompression-ball.jpg.png", cat: "more" },
+            { title: "מטבעות נבחרות", price: 20, img: "images/coins-national.jpg", cat: "more" },
+            { title: "צמידי נבחרות", price: 15, img: "images/bracelets-national.jpg", cat: "more" },
+            { title: "מחזיק מפתחות מתכתי", price: 15, img: "images/keychain-shoe.jpg.png", cat: "more" }
+        ];
+
+        function renderBuilderProducts() {
+            const grid = document.getElementById('builder-grid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            catalogProducts.forEach(prod => {
+                const card = document.createElement('div');
+                card.className = 'b-card';
+                card.setAttribute('data-cat', prod.cat);
+                
+                card.innerHTML = `
+                    <img src="${prod.img}" alt="${prod.title}" style="cursor: pointer;" onclick="openHomeProductModal('${prod.title}', ${prod.price}, 'פריט להרכבת מארז אישי', '${prod.img}', 'מוצר זה ניתן להוסיף למארז האישי שאתה מרכיב.')">
+                    <div class="b-info">
+                        <div class="b-title">${prod.title}</div>
+                        <div class="b-price">₪${prod.price}</div>
+                    </div>
+                    <button class="b-add-btn" onclick="addItemToBox(\`${prod.title}\`, ${prod.price}, \`${prod.img}\`)">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+
+        function addItemToBox(name, price, imgSrc) {
+            if (currentBox.length >= MAX_ITEMS) {
+                alert('המארז מלא! מקסימום 5 פריטים במארז אישי.');
+                return;
+            }
+            currentBox.push({ name, price, imgSrc });
+            updateBoxUI();
+        }
+
+        function removeItemFromBox(index) {
+            currentBox.splice(index, 1);
+            updateBoxUI();
+        }
+
+        function updateBoxUI() {
+            let total = 0;
+            const slots = document.querySelectorAll('.box-slot');
+            
+            slots.forEach(slot => {
+                slot.className = 'box-slot empty';
+                slot.innerHTML = '';
+            });
+
+            currentBox.forEach((item, index) => {
+                total += item.price;
+                slots[index].className = 'box-slot filled';
+                slots[index].innerHTML = `
+                    <img src="${item.imgSrc}" alt="${item.name}">
+                    <button class="remove-item" onclick="removeItemFromBox(${index})"><i class="fa-solid fa-xmark"></i></button>
+                `;
+            });
+
+            document.getElementById('box-count').innerText = currentBox.length;
+            document.getElementById('box-total-price').innerText = total;
+            document.getElementById('progress-fill').style.width = (currentBox.length / MAX_ITEMS) * 100 + '%';
+
+            const finishBtn = document.getElementById('finish-box-btn');
+            if (currentBox.length > 0) {
+                finishBtn.disabled = false;
+            } else {
+                finishBtn.disabled = true;
+            }
+        }
+
+        function checkoutBox() {
+            alert('מארז פרימיום עם ' + currentBox.length + ' פריטים נוסף לעגלה בהצלחה!');
+            currentBox = [];
+            updateBoxUI();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderBuilderProducts();
+        });
+    </script>
+    <script>
+    let currentQty = 1;
+
+    // הפונקציה החכמה שלוקחת את הנתונים ופותחת את החלון
+    function openHomeProductModal(title, price, category, imgSrc, desc) {
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-price').innerText = typeof price === 'number' ? '₪' + price : price;
+        document.getElementById('modal-category').innerText = category;
+        document.getElementById('modal-description').innerText = desc || 'מוצר איכותי מבית Solibi Sport.';
+        
+        if (imgSrc) {
+            document.getElementById('modal-img').style.display = 'block';
+            document.getElementById('modal-img').src = imgSrc;
+        } else {
+            document.getElementById('modal-img').style.display = 'none';
+        }
+        
+        currentQty = 1;
+        document.getElementById('modal-qty').value = currentQty;
+        document.getElementById('product-modal').classList.add('show');
+    }
+
+    function closeProductModal() {
+        document.getElementById('product-modal').classList.remove('show');
+    }
+
+    function updateQty(change) {
+        currentQty += change;
+        if (currentQty < 1) currentQty = 1; 
+        if (currentQty > 20) currentQty = 20; 
+        document.getElementById('modal-qty').value = currentQty;
+    }
+
+    function addToCartFromModal() {
+        const title = document.getElementById('modal-title').innerText;
+        alert(currentQty + ' יחידות של ' + title + ' נוספו לעגלה בהצלחה!');
+        closeProductModal();
+    }
+
+    // סגירת החלון בלחיצה על הרקע השחור מסביב
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('product-modal');
+        if(modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) closeProductModal();
+            });
+        }
+    });
+</script>
+<script>
+// מחליף את הטאבים הראשיים בכוח מוחלט ומונע כפילויות
+function switchSpaMain(tabName, buttonElement) {
+    // 1. ניקוי וצביעת הכפתור הפעיל
+    document.querySelectorAll('.capsule-tab').forEach(tab => tab.classList.remove('active'));
+    if (buttonElement) buttonElement.classList.add('active');
+
+    // 2. מסתירים את *כל* המסכים באגרסיביות
+    document.querySelectorAll('.spa-view').forEach(view => {
+        view.style.setProperty('display', 'none', 'important');
+        view.classList.remove('active');
+    });
+
+    const packagesSubTabs = document.getElementById('packages-sub-tabs');
+    const mysterySubTabs = document.getElementById('mystery-sub-tabs');
+    
+    // 3. מסתירים את תתי-הטאבים באגרסיביות
+    if (packagesSubTabs) packagesSubTabs.style.setProperty('display', 'none', 'important');
+    if (mysterySubTabs) mysterySubTabs.style.setProperty('display', 'none', 'important');
+
+    // 4. מציגים *רק* את מה שצריך - עם !important כדי לשבור כל חוק CSS אחר
+    if (tabName === 'packages') {
+        if (packagesSubTabs) packagesSubTabs.style.setProperty('display', 'flex', 'important');
+        
+        const customTab = document.getElementById('custom-package-tab');
+        if (customTab && customTab.classList.contains('active')) {
+            const customView = document.getElementById('spa-view-custom');
+            if (customView) { 
+                customView.style.setProperty('display', 'flex', 'important'); 
+                customView.classList.add('active'); 
+            }
+        } else {
+            const readyView = document.getElementById('spa-view-ready');
+            if (readyView) { 
+                readyView.style.setProperty('display', 'flex', 'important'); 
+                readyView.classList.add('active'); 
+            }
+        }
+    } else if (tabName === 'mystery') {
+        if (mysterySubTabs) mysterySubTabs.style.setProperty('display', 'flex', 'important');
+        
+        const mysteryView = document.getElementById('spa-view-mystery');
+        if (mysteryView) { 
+            mysteryView.style.setProperty('display', 'flex', 'important'); 
+            mysteryView.classList.add('active'); 
+        }
+    } else {
+        const targetView = document.getElementById('spa-view-' + tabName);
+        if (targetView) { 
+            targetView.style.setProperty('display', 'flex', 'important'); 
+            targetView.classList.add('active'); 
+        }
+    }
+}
+
+// מחליף בין אזור מארזים מוכנים לאזור הרכבה אישית
+function togglePackageMode(mode) {
+    document.getElementById('ready-packages-title').classList.remove('active');
+    document.getElementById('custom-package-tab').classList.remove('active');
+
+    if (mode === 'ready') {
+        document.getElementById('ready-packages-title').classList.add('active');
+        document.getElementById('spa-view-ready').style.display = 'flex';
+        document.getElementById('spa-view-custom').style.display = 'none';
+    } else {
+        document.getElementById('custom-package-tab').classList.add('active');
+        document.getElementById('spa-view-ready').style.display = 'none';
+        document.getElementById('spa-view-custom').style.display = 'flex';
+    }
+}
+
+// שולט ברשימה הנפתחת של המיסטרי בוקס (ומעדכן את הטקסט בכפתור)
+function selectDropdownMystery(pkgId, element) {
+    document.querySelectorAll('#spa-view-mystery .boutique-package-content').forEach(pkg => {
+        pkg.style.display = 'none';
+    });
+    document.getElementById('boutique-mystery-' + pkgId).style.display = 'flex';
+    document.getElementById('mystery-packages-title').innerHTML = element.innerText + ' <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-right: 5px;"></i>';
+}
+
+// שולט ברשימה הנפתחת של המארזים המוכנים (ומעדכן את הטקסט בכפתור)
+function selectDropdownPackage(pkgId, element) {
+    document.querySelectorAll('#spa-view-ready .boutique-package-content').forEach(pkg => {
+        pkg.style.display = 'none';
+    });
+    document.getElementById('boutique-pkg-' + pkgId).style.display = 'flex';
+    document.getElementById('ready-packages-title').innerHTML = element.innerText + ' <i class="fa-solid fa-chevron-down" style="font-size: 11px; margin-right: 5px;"></i>';
+    togglePackageMode('ready');
+}
+</script>
+<script>
+// פונקציה להחלפת מארזי בוטיק
+function showBoutiquePackage(pkgId, btnElement) {
+    // מחיקת 'פעיל' מכל הכפתורים
+    document.querySelectorAll('.boutique-btn').forEach(btn => btn.classList.remove('active'));
+    // הוספת 'פעיל' לכפתור שנלחץ
+    btnElement.classList.add('active');
+
+    // הסתרת כל מלבני התצוגה
+    document.querySelectorAll('.boutique-package-content').forEach(pkg => {
+        pkg.style.display = 'none';
+    });
+    
+    // הצגת המלבן המבוקש
+    document.getElementById('boutique-pkg-' + pkgId).style.display = 'flex';
+}
+</script>
+<script>
+function selectPackageTab(type, btnElement) {
+    // מחיקת סימון מכל הכפתורים והדגשת הנוכחי
+    document.querySelectorAll('.boutique-btn').forEach(btn => btn.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
+    
+    const readyView = document.getElementById('spa-view-ready');
+    const customView = document.getElementById('spa-view-custom');
+
+    if (type === 'custom') {
+        // מסתיר את הטאבים וחלון הראווה, ומציג את הרכבת המארז
+        readyView.style.display = 'none';
+        customView.style.display = 'flex';
+        customView.style.flexDirection = 'column'; // שומר על המבנה
+        initCustomBuilderPagination(); // הפעלת מערכת העמודים!
+    } else {
+        // חוזר לטאבים
+        customView.style.display = 'none';
+        readyView.style.display = 'flex';
+        
+        // מציג את המארז הרלוונטי
+        document.querySelectorAll('.boutique-package-content').forEach(pkg => {
+            pkg.style.display = 'none';
+        });
+        const targetPkg = document.getElementById('boutique-pkg-' + type);
+        if(targetPkg) targetPkg.style.display = 'flex';
+    }
+}
+
+// פונקציית החזור החדשה
+function backToBoutique() {
+    // בוחר אוטומטית בכפתור הראשון (פרימיום) כדי לחזור אליו כברירת מחדל
+    const premiumBtn = document.querySelector('.boutique-btn:first-child');
+    if (premiumBtn) {
+        selectPackageTab('premium', premiumBtn);
+    }
+}
+
+// ==========================================
+// מנוע משולב נקי: סינון קטגוריות + מספרי עמודים
+// ==========================================
+let currentCustomPage = 1; // הוגדר פעם אחת בלבד!
+
+function filterBuilder(category, btnElement) {
+    // צובע את הכפתור הפעיל
+    document.querySelectorAll('.b-tab').forEach(b => b.classList.remove('active'));
+    btnElement.classList.add('active');
+    
+    // מסמן אילו מוצרים שייכים לקטגוריה ואילו לא
+    document.querySelectorAll('.b-card').forEach(card => {
+        if (category === 'all' || card.getAttribute('data-cat') === category) {
+            card.classList.remove('hidden-by-filter');
+        } else {
+            card.classList.add('hidden-by-filter');
+        }
+    });
+    
+    // מחזיר לעמוד 1 ומרענן את התצוגה
+    currentCustomPage = 1;
+    initCustomBuilderPagination();
+}
+
+function initCustomBuilderPagination() {
+    const grid = document.getElementById('builder-grid');
+    const paginationContainer = document.getElementById('custom-builder-pagination');
+    
+    if (!grid || !paginationContainer) return;
+    
+    // בוחר רק את המוצרים שלא הוסתרו על ידי כפתור הסינון
+    const allItems = Array.from(grid.querySelectorAll('.b-card'));
+    const visibleItems = allItems.filter(item => !item.classList.contains('hidden-by-filter'));
+    
+    // מסתיר את כולם כברירת מחדל
+    allItems.forEach(item => item.style.display = 'none');
+
+    // אם אין מוצרים בקטגוריה, מנקה את המספרים
+    if (visibleItems.length === 0) {
+        paginationContainer.innerHTML = '';
+        return;
+    }
+
+    // חישוב עמודים: 6 ללפטופ, 8 למסך גדול
+    const isLargeScreen = window.innerWidth >= 1600;
+    const itemsPerPage = isLargeScreen ? 8 : 6; 
+    const totalPages = Math.ceil(visibleItems.length / itemsPerPage);
+    
+    if (currentCustomPage > totalPages) currentCustomPage = totalPages;
+    if (currentCustomPage < 1) currentCustomPage = 1;
+
+    // מציג רק את המוצרים ששייכים לעמוד הנוכחי
+    visibleItems.forEach((item, index) => {
+        const start = (currentCustomPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        if (index >= start && index < end) {
+            item.style.display = 'flex'; 
+        }
+    });
+
+    // בניית קוביות המספרים בתחתית המסך
+    paginationContainer.innerHTML = ''; 
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.className = `page-btn ${i === currentCustomPage ? 'active' : ''}`;
+        btn.innerText = i;
+        btn.onclick = () => {
+            currentCustomPage = i;
+            initCustomBuilderPagination(); 
+        };
+        paginationContainer.appendChild(btn);
+    }
+}
+
+// קריאה ראשונית ברגע שהמוצרים נטענים
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(initCustomBuilderPagination, 100); 
+});
+</script>
+<script>
+
+// מחליף את התצוגה כשבוחרים מארז ספציפי מהרשימה הנפתחת
+function selectDropdownPackage(pkgId, element) {
+    
+    document.querySelectorAll('.boutique-package-content').forEach(pkg => {
+        pkg.style.display = 'none';
+    });
+    document.getElementById('boutique-pkg-' + pkgId).style.display = 'flex';
+    
+    // מוודא שאנחנו נמצאים במצב תצוגה של מארזים מוכנים
+    togglePackageMode('ready');
+}
+// מערכת הניווט החדשה והחסינה - מתעלמת מקוד ישן!
+function navTabSwitch(tabName, buttonElement) {
+    // 1. ניקוי וצביעת הכפתור הפעיל
+    document.querySelectorAll('.capsule-tab').forEach(tab => tab.classList.remove('active'));
+    if (buttonElement) buttonElement.classList.add('active');
+
+    // 2. מסתירים את *כל* המסכים באגרסיביות
+    document.querySelectorAll('.spa-view').forEach(view => {
+        view.style.setProperty('display', 'none', 'important');
+        view.classList.remove('active');
+    });
+
+    const packagesSubTabs = document.getElementById('packages-sub-tabs');
+    const mysterySubTabs = document.getElementById('mystery-sub-tabs');
+    
+    // 3. מסתירים את תתי-הטאבים באגרסיביות
+    if (packagesSubTabs) packagesSubTabs.style.setProperty('display', 'none', 'important');
+    if (mysterySubTabs) mysterySubTabs.style.setProperty('display', 'none', 'important');
+
+    // 4. מציגים *רק* את מה שצריך - עם !important כדי לשבור כל חוק CSS אחר
+    if (tabName === 'packages') {
+        if (packagesSubTabs) packagesSubTabs.style.setProperty('display', 'flex', 'important');
+        
+        const customTab = document.getElementById('custom-package-tab');
+        if (customTab && customTab.classList.contains('active')) {
+            const customView = document.getElementById('spa-view-custom');
+            if (customView) { 
+                customView.style.setProperty('display', 'flex', 'important'); 
+                customView.classList.add('active'); 
+            }
+        } else {
+            const readyView = document.getElementById('spa-view-ready');
+            if (readyView) { 
+                readyView.style.setProperty('display', 'flex', 'important'); 
+                readyView.classList.add('active'); 
+            }
+        }
+    } else if (tabName === 'mystery') {
+        if (mysterySubTabs) mysterySubTabs.style.setProperty('display', 'flex', 'important');
+        
+        const mysteryView = document.getElementById('spa-view-mystery');
+        if (mysteryView) { 
+            mysteryView.style.setProperty('display', 'flex', 'important'); 
+            mysteryView.classList.add('active'); 
+        }
+    } else {
+        const targetView = document.getElementById('spa-view-' + tabName);
+        if (targetView) { 
+            targetView.style.setProperty('display', 'flex', 'important'); 
+            targetView.classList.add('active'); 
+        }
+    }
+}
+</script>
+</body>
+</html>

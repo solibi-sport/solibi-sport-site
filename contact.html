@@ -28,8 +28,7 @@
             background: var(--bg-black);
             color: var(--text-white);
             width: 100%;
-            height: 100vh; 
-            overflow: hidden; 
+            min-height: 100vh; /* במקום height קשיח */
             display: flex;
             flex-direction: column;
         }
@@ -162,21 +161,45 @@
 
         /* === פוטר וטיקר === */
         .footer { 
-            background: var(--brand-gold); 
-            padding: 8px 0; 
-            border-top: 2px solid #000; 
-            overflow: hidden; 
-            white-space: nowrap; 
-            width: 100%; 
-            direction: ltr; 
-            flex-shrink: 0; 
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            height: 40px;
+            background: var(--brand-gold) !important; 
+            padding: 0 20px !important; 
+            border-top: 2px solid #000 !important; 
+            overflow: hidden !important; 
+            white-space: nowrap !important; 
+            width: 100% !important; 
+            direction: rtl !important; 
+            flex-shrink: 0 !important; 
+            z-index: 1000 !important;
+            display: flex !important;
+            align-items: center !important;
+            height: 40px !important;
+            margin-top: auto; /* זה הסוד! דוחף את הפוטר תמיד למטה */
         }
         
-        #ticker-placeholder { width: 100%; }
+        .footer-links {
+            display: flex !important;
+            gap: 20px !important;
+            align-items: center !important;
+            margin-left: 20px !important; /* מרחיק קצת את הטיקר מהקישורים */
+        }
+
+        .footer-links a {
+            color: #000 !important;
+            text-decoration: none !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            transition: 0.3s !important;
+        }
+
+        .footer-links a:hover {
+            color: #fff !important;
+        }
+
+        #ticker-placeholder { 
+            flex: 1 !important; 
+            overflow: hidden !important; 
+            direction: ltr !important; /* הטיקר תמיד רץ משמאל לימין */
+        }
         
         @media (max-width: 900px) {
             .contact-grid { grid-template-columns: repeat(2, 1fr); }
@@ -186,6 +209,46 @@
             .contact-grid { grid-template-columns: 1fr; }
             html, body { overflow-y: auto; height: auto; } 
         }
+
+/* תיקון לפוטר שיישאר תמיד בתחתית המסך */
+        html, body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1; /* מותח את התוכן ודוחף את הפוטר למטה */
+        }
+
+        /* עיצוב הפוטר והקישורים */
+        .footer {
+            margin-top: auto;
+            background: #D6B953; 
+            padding: 8px 0; 
+            border-top: 2px solid #000; 
+            width: 100%; 
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            height: 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            margin-right: 20px;
+            margin-left: 20px;
+            white-space: nowrap;
+        }
+
+        .footer-links a {
+            color: #000;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
     </style>
 </head>
 <body>
@@ -263,9 +326,27 @@
     </main>
 
     <footer class="footer">
+        <!-- תפריט ניווט תחתון -->
+        <div class="footer-links">
+            <a href="about.html">אודות</a>
+            <a href="contact.html">צור קשר</a>
+            <a href="terms.html">תקנון ומדיניות</a>
+        </div>
+        
+        <!-- הטיקר שרץ למטה -->
         <div id="ticker-placeholder"></div>
     </footer>
-
+<footer class="footer">
+        <!-- תפריט הניווט (הקישורים לדפים) -->
+        <div class="footer-links">
+            <a href="about.html">אודות</a>
+            <a href="contact.html">צור קשר</a>
+            <a href="terms.html">תקנון ומדיניות</a>
+        </div>
+        
+        <!-- לכאן יישאב הטיקר מהקובץ החיצוני -->
+        <div id="ticker-placeholder" style="flex: 1; overflow: hidden;"></div>
+    </footer>
     <script>
         fetch('header.html')
             .then(response => response.text())
