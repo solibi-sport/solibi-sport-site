@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי ספורט - תקנון ומדיניות</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- שואב את העיצוב הגלובלי (לפוטר ולהדר) -->
+    <link rel="stylesheet" href="solibi-app.css">
+    
+    <style>
+        /* === צבעים מקומיים - הוספת נגיעות הכסוף === */
+        :root {
+            --brand-silver: #D1D5DB;
+            --brand-silver-dark: #9CA3AF;
+            --border-silver: rgba(209, 213, 219, 0.2);
+        }
+
+        /* =========================================
+           דריסות מבנה - תואם ב-100% לדף האודות
+           ========================================= */
+        body {
+            background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, #0a0a0a 70%) !important;
+            color: #f5f5f5 !important;
+            width: 100vw !important;
+            height: 100vh !important; 
+            overflow: hidden !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            margin: 0 !important;
+        }
+
+        .terms-main-container {
+            flex: 1 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: clamp(15px, 3vh, 40px) 15px !important;
+            overflow: hidden !important; 
+        }
+
+        /* קוביית הזכוכית המרכזית */
+        .terms-glass-box {
+            width: 100% !important;
+            max-width: 950px !important;
+            height: 100% !important;
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.8) 0%, rgba(5, 5, 5, 0.95) 100%) !important;
+            backdrop-filter: blur(15px) !important;
+            border: 1px solid var(--border-silver) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important; 
+        }
+
+        /* אזור הגלילה - מוגדר לשמאל לימין כדי להעביר את הפס ימינה */
+        .terms-scroll-area {
+            flex: 1 !important;
+            overflow-y: auto !important; 
+            padding: 40px !important;
+            scrollbar-width: thin !important;
+            scrollbar-color: rgba(214, 185, 83, 0.4) transparent !important;
+            direction: ltr !important; 
+        }
+
+        .terms-scroll-area::-webkit-scrollbar { width: 6px; }
+        .terms-scroll-area::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
+
+        /* התוכן עצמו - מוחזר לימין לשמאל */
+        .terms-inner-content {
+            direction: rtl !important;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        /* =========================================
+           עיצוב תוכן התקנון
+           ========================================= */
+        .page-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #D6B953;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            font-size: 15px;
+            color: #a0a0a0;
+        }
+
+        .terms-section {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-silver);
+            border-radius: 15px;
+            padding: 25px;
+            transition: 0.3s;
+        }
+
+        .terms-section:hover {
+            border-color: #D6B953;
+            background: rgba(20, 20, 20, 0.6);
+        }
+
+        /* מיוחד לסעיף של הלקוח תמיד צודק */
+        .terms-section.highlight-section {
+            background: linear-gradient(135deg, rgba(214, 185, 83, 0.1) 0%, rgba(0,0,0,0.6) 100%);
+            border: 1px solid #D6B953;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--border-silver);
+            padding-bottom: 10px;
+        }
+
+        .section-title i {
+            color: #D6B953;
+            font-size: 22px;
+        }
+
+        .section-text {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #a0a0a0;
+            font-weight: 400;
+            text-align: justify;
+        }
+
+        .section-text strong { color: #f5f5f5; font-weight: 700; }
+        .section-text ul { margin-top: 10px; margin-right: 20px; }
+        .section-text li { margin-bottom: 8px; }
+
+        @media (max-width: 768px) {
+            .terms-scroll-area { padding: 20px !important; }
+            .terms-section { padding: 20px; }
+            .page-title { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. הדר אחיד -->
+    <div id="header-placeholder"></div>
+
+    <!-- 2. אזור הבמה המרכזי -->
+    <main class="terms-main-container">
+        
+        <!-- קוביית הזכוכית המרכזית -->
+        <div class="terms-glass-box">
+            
+            <!-- אזור הגלילה הפנימי בלבד (פס גלילה מימין) -->
+            <div class="terms-scroll-area">
+                <div class="terms-inner-content">
+                    
+                    <div class="page-header">
+                        <h1 class="page-title">תקנון ומדיניות האתר</h1>
+                        <p class="page-subtitle">ברוכים הבאים לסוליבי ספורט. אנא קראו את התקנון לפני ביצוע רכישה.</p>
+                    </div>
+
+                    <!-- סעיף 1: הלקוח תמיד צודק (מודגש) -->
+                    <div class="terms-section highlight-section">
+                        <h2 class="section-title"><i class="fa-solid fa-crown"></i> אצלנו, הלקוח תמיד צודק</h2>
+                        <div class="section-text">
+                            בסוליבי ספורט, אנחנו קודם כל אוהדי ספורט ואספנים בעצמנו. לכן, חרתנו על דגלנו סטנדרט שירות שאין שני לו בישראל – <strong>הלקוח תמיד צודק.</strong> אנו מתחייבים לשקיפות מלאה, לשירות פרימיום אישי, ולפתרון הוגן ומהיר לטובת הלקוח בכל מחלוקת, אי הבנה או בעיה. החיוך שלכם ברגע פתיחת המארז הוא הערך העליון ביותר עבורנו, ונעשה הכל כדי שכל רכישה שלכם תהיה חוויה בלתי נשכחת.
+                        </div>
+                    </div>
+
+                    <!-- סעיף 2: מארזי הפתעה ומוצרי אספנות -->
+                    <div class="terms-section">
+                        <h2 class="section-title"><i class="fa-solid fa-box-open"></i> מארזי הפתעה (Mystery Boxes) וקלפים</h2>
+                        <div class="section-text">
+                            עיקר ההתמחות שלנו היא באספקת מארזי הפתעה וקלפי אספנות נדירים. חשוב להדגיש:
+                            <ul>
+                                <li>תכולת מארזי ה-Mystery Box היא <strong>אקראית לחלוטין</strong>. לא ניתן להתחייב מראש לשחקן, קבוצה או שווי קלף ספציפי בתוך המארז.</li>
+                                <li>אנו מתחייבים כי כל המארזים נארזים בהקפדה וכוללים מוצרים מקוריים ואותנטיים בלבד.</li>
+                                <li><strong>לא יינתן החזר כספי או החלפה</strong> על מארז או מעטפת קלפים שנפתחו, שכן ערך המוצר טמון באלמנט ההפתעה והפתיחה.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- סעיף 3: משלוחים ואספקה -->
+                    <div class="terms-section">
+                        <h2 class="section-title"><i class="fa-solid fa-truck-fast"></i> משלוחים וזמני אספקה</h2>
+                        <div class="section-text">
+                            אנו עושים את מירב המאמצים לארוז ולשלוח את ההזמנות במהירות האפשרית.
+                            <ul>
+                                <li><strong>שליח עד הבית (Express):</strong> זמן האספקה הוא עד 3 ימי עסקים מרגע אישור ההזמנה (לא כולל יום ההזמנה, סופ"ש וחגים).</li>
+                                <li><strong>נקודת איסוף (Boxit):</strong> זמן האספקה הוא 3-5 ימי עסקים אל נקודת האיסוף הקרובה לביתכם.</li>
+                                <li>משלוח חינם יינתן אוטומטית בקופה ברכישה מעל הסכום המפורט באתר (בכפוף למבצעים המשתנים).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- סעיף 4: מדיניות החזרות וביטולים -->
+                    <div class="terms-section">
+                        <h2 class="section-title"><i class="fa-solid fa-rotate-left"></i> מדיניות החזרות וביטולים</h2>
+                        <div class="section-text">
+                            ביטול עסקה יתאפשר בהתאם לחוק הגנת הצרכן, התשמ"א-1981:
+                            <ul>
+                                <li>ניתן לבטל הזמנה כל עוד היא לא נשלחה ממרכז הלוגיסטיקה שלנו, ולקבל החזר כספי מלא.</li>
+                                <li>החזרת מוצר תתאפשר עד 14 ימים מיום קבלתו, בתנאי שלא נעשה בו שימוש והוא באריזתו המקורית והסגורה (כולל צלופן אם יש).</li>
+                                <li>כאמור, <strong>לא ניתן</strong> להחזיר מארזי הפתעה (Mystery Boxes) או חבילות קלפים שקופסתם או אריזתם נפתחה, בשל אופי המוצר.</li>
+                                <li>בכל בקשה להחזרה או ביטול, הצוות שלנו יעמוד לרשותכם וישאף למצוא את הפתרון הטוב וההוגן ביותר עבורכם (ראו סעיף 1).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- סעיף 5: מועדון חברים, אבטחה ופרטיות -->
+                    <div class="terms-section">
+                        <h2 class="section-title"><i class="fa-solid fa-shield-halved"></i> מועדון חברים, פרטיות ואבטחת מידע</h2>
+                        <div class="section-text">
+                            סוליבי ספורט חורטת על דגלה את אבטחת פרטיכם האישיים.
+                            <ul>
+                                <li>האתר מאובטח בתקן <strong>SSL מחמיר</strong>. פרטי האשראי שלכם אינם נשמרים בשרתי החברה בשום שלב, והסליקה מתבצעת דרך חברת סליקה חיצונית ומאושרת.</li>
+                                <li>הצטרפות למועדון ה-VIP מקנה הטבות, קופונים ומעקב אישי באזור המאובטח. אנו מתחייבים שלא להעביר את פרטיכם האישיים או כתובת המייל שלכם לצד ג' ללא אישורכם.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 3. פוטר וטיקר (זהה לחלוטין לשאר הדפים) -->
+    <footer class="app-footer">
+        <div class="footer-links">
+            <a href="about.html">אודות</a>
+            <a href="contact.html">צור קשר</a>
+            <a href="terms.html">תקנון ומדיניות</a>
+        </div>
+        <div id="ticker-placeholder"></div>
+    </footer>
+
+    <!-- סקריפטים לטעינת החלקים החיצוניים -->
+    <script>
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('header-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            });
+
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('ticker-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            });
+    </script>
+    <script src="search.js"></script>
+    <script type="module" src="auth.js"></script>
+</body>
+</html>

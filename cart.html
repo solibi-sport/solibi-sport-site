@@ -4,124 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - עגלת קניות</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="global-theme.css">
+    <!-- שואב את העיצוב הגלובלי (לפוטר ולהדר) -->
+    <link rel="stylesheet" href="solibi-app.css">
     
     <style>
-        /* === פלטת הצבעים החדשה: זהב ושחור === */
+        /* === צבעים מקומיים - הוספת נגיעות הכסוף === */
         :root {
-            --brand-gold: #D6B953; 
-            --brand-gold-light: #FDF3C6; 
-            --brand-gold-dark: #A88D31; 
-            --bg-black: #0a0a0a;
-            --bg-card: #141414;
-            --text-white: #f5f5f5;
-            --text-gray: #a0a0a0;
-            --border-gold: rgba(214, 185, 83, 0.3);
+            --brand-silver: #D1D5DB;
+            --brand-silver-dark: #9CA3AF;
+            --border-silver: rgba(209, 213, 219, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html, body { 
-            font-family: 'Rubik', sans-serif; 
-            background: var(--bg-black); 
-            color: var(--text-white);
-            width: 100%; 
-            height: 100vh; 
-            overflow: hidden; 
-            display: flex; 
-            flex-direction: column; 
+        /* =========================================
+           דריסות מבנה - תואם ב-100% לשאר הדפים
+           ========================================= */
+        body {
+            background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, #0a0a0a 70%) !important;
+            color: #f5f5f5 !important;
+            width: 100vw !important;
+            height: 100vh !important; 
+            overflow: hidden !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            margin: 0 !important;
         }
 
-        .main-content { 
-            flex: 1 !important; 
-            display: flex !important; 
-            flex-direction: column !important; 
-            align-items: center !important; 
-            padding: 10px 20px !important; /* דורס כל עיצוב אחר ומכריח 10 פיקסלים */
+        /* אזור התוכן המרכזי */
+        .cart-main-container {
+            flex: 1 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: clamp(15px, 3vh, 40px) 15px !important;
             overflow: hidden !important; 
         }
         
-        /* חלון העגלה */
-        .cart-window {
-            width: 95%; 
-            max-width: 1000px; 
-            background: rgba(20, 20, 20, 0.85); 
-            backdrop-filter: blur(15px);
-            border-radius: 24px; 
-            border: 1px solid var(--border-gold); 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            display: flex; 
+        /* חלון העגלה (קוביית הזכוכית) */
+        .cart-glass-box {
+            display: flex;
             flex-direction: row; 
-            overflow: hidden; 
-            flex: 1;
+            width: 100% !important; 
+            max-width: 1100px !important; 
+            height: 100% !important; 
+            max-height: 700px !important; 
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.85) 0%, rgba(5, 5, 5, 0.95) 100%) !important;
+            backdrop-filter: blur(15px) !important;
+            border: 1px solid var(--border-silver) !important; /* מסגרת כסופה */
+            border-radius: 20px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8) !important;
+            overflow: hidden !important; 
+            animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        /* רשימת המוצרים (צד ימין) */
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================
+           רשימת המוצרים (צד ימין)
+           ========================================= */
         .cart-items-side { 
-            flex: 2; 
+            flex: 1.8; 
             padding: 30px; 
             overflow-y: auto; 
-            direction: ltr; 
+            direction: ltr; /* מעביר את פס הגלילה לשמאל כדי שלא יפריע למסגרת */
             
-            /* עיצוב פס הגלילה */
             scrollbar-width: thin;
-            scrollbar-color: rgba(214, 185, 83, 0.4) rgba(0,0,0,0.2);
+            scrollbar-color: rgba(214, 185, 83, 0.4) transparent;
         }
         
         .cart-items-side::-webkit-scrollbar { width: 6px; }
-        .cart-items-side::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
         .cart-items-side::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
-        .cart-items-side::-webkit-scrollbar-thumb:hover { background: var(--brand-gold); }
 
-        .cart-items-inner { direction: rtl; }
+        .cart-items-inner { direction: rtl; } /* מחזיר ל-RTL את התוכן עצמו */
 
         .cart-item {
-            display: flex; align-items: center; 
-            background: var(--bg-card); 
+            display: flex; 
+            align-items: center; 
+            background: rgba(0, 0, 0, 0.5); 
             padding: 15px; 
             border-radius: 15px;
             margin-bottom: 15px; 
-            border: 1px solid var(--border-gold); 
+            border: 1px solid var(--border-silver); /* מסגרת כסופה למוצר */
             transition: 0.3s;
         }
+
         .cart-item:hover { 
             transform: translateX(-5px); 
-            border-color: var(--brand-gold); 
+            border-color: #D6B953; /* הופך לזהב במעבר עכבר */
             box-shadow: 0 5px 15px rgba(214, 185, 83, 0.15); 
+            background: #141414;
         }
         
         .item-img { 
             width: 70px; height: 70px; 
             background: #000; 
-            border: 1px solid var(--border-gold);
+            border: 1px solid var(--border-silver); /* מסגרת כסופה לתמונה */
             border-radius: 10px; 
             margin-left: 20px; 
             display: flex; align-items: center; justify-content: center; 
             overflow: hidden; flex-shrink: 0; 
         }
+
         .item-img img { width: 100%; height: 100%; object-fit: cover; }
-        .item-img svg { width: 40px; height: 40px; color: var(--brand-gold); opacity: 0.5; }
+        .item-img svg { width: 40px; height: 40px; color: #D6B953; opacity: 0.5; }
         
         .item-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .item-title { font-weight: 900; color: var(--text-white); font-size: 16px; margin-bottom: 5px; }
-        .item-price { color: var(--brand-gold); font-weight: 700; }
+        .item-title { font-weight: 900; color: #f5f5f5; font-size: 16px; margin-bottom: 5px; }
+        .item-price { color: #D6B953; font-weight: 700; }
         
-        /* כפתורי כמות מעוצבים */
+        /* כפתורי כמות */
         .quantity-controls { 
             display: flex; align-items: center; gap: 12px; margin: 0 20px; 
             background: #000; padding: 5px; border-radius: 30px; 
-            border: 1px solid var(--border-gold); 
+            border: 1px solid var(--border-silver); /* נגיעה כסופה */
         }
+
         .q-btn { 
             width: 28px; height: 28px; border-radius: 50%; border: none; 
-            background: var(--bg-card); cursor: pointer; font-weight: bold; font-size: 16px; 
+            background: #141414; cursor: pointer; font-weight: bold; font-size: 16px; 
             transition: 0.2s; display: flex; align-items: center; justify-content: center; 
-            color: var(--text-white); border: 1px solid rgba(255,255,255,0.1);
+            color: #f5f5f5; border: 1px solid rgba(255,255,255,0.1);
         }
-        .q-btn:hover { background: var(--brand-gold); color: #000; border-color: var(--brand-gold); }
-        .q-num { font-weight: 700; width: 20px; text-align: center; color: var(--text-white); }
+
+        .q-btn:hover { background: #D6B953; color: #000; border-color: #D6B953; }
+        .q-num { font-weight: 700; width: 20px; text-align: center; color: #f5f5f5; }
         
         /* כפתור מחיקה */
         .remove-item { 
@@ -130,79 +141,63 @@
         }
         .remove-item:hover { color: #ff3b30; transform: scale(1.2); }
 
-        /* סיכום הזמנה (צד שמאל) */
+        /* =========================================
+           סיכום הזמנה (צד שמאל)
+           ========================================= */
         .cart-summary-side { 
             flex: 1; 
-            background: #000; 
-            border-right: 1px solid var(--border-gold);
+            background: linear-gradient(135deg, #0f0f0f 0%, #000 100%);
+            border-right: 1px solid var(--border-silver); /* קו הפרדה כסוף */
             padding: 35px; color: #fff; display: flex; flex-direction: column; 
         }
-        .summary-title { font-size: 22px; font-weight: 900; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 15px; color: var(--brand-gold); }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; color: var(--text-gray); font-weight: 500; }
-        .free-shipping { color: var(--brand-gold); font-weight: 900; }
+
+        .summary-title { 
+            font-size: 22px; font-weight: 900; margin-bottom: 30px; 
+            border-bottom: 1px solid var(--border-silver); /* קו תחתון כסוף */
+            padding-bottom: 15px; color: #D6B953; 
+        }
+
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; color: #a0a0a0; font-weight: 500; }
+        .free-shipping { color: #D6B953; font-weight: 900; }
         
         .total-row { 
-            margin-top: auto; border-top: 1px solid #333; 
+            margin-top: auto; border-top: 1px dashed var(--border-silver); /* קו הפרדה כסוף */
             padding-top: 25px; font-size: 22px; font-weight: 900; 
             display: flex; justify-content: space-between; align-items: center; 
-            color: var(--text-white);
+            color: #f5f5f5;
         }
         
         .checkout-btn {
-            background: var(--brand-gold); color: #000; border: none; padding: 18px; border-radius: 12px;
+            background: #D6B953; color: #000; border: none; padding: 18px; border-radius: 12px;
             font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 25px; transition: 0.3s; width: 100%;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .checkout-btn:hover { background: var(--brand-gold-light); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(214, 185, 83, 0.3); }
+
+        .checkout-btn:hover { background: #FDF3C6; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(214, 185, 83, 0.3); }
         .checkout-btn:disabled { opacity: 0.5; pointer-events: none; background: #333; color: #666; }
 
         /* מצב עגלה ריקה */
         .empty-cart-msg { text-align: center; padding: 50px; display: none; }
         .empty-cart-msg a { 
-            display: inline-block; margin-top: 15px; background: var(--brand-gold); 
+            display: inline-block; margin-top: 15px; background: #D6B953; 
             color: #000; padding: 10px 20px; border-radius: 10px; 
             text-decoration: none; font-weight: bold; transition: 0.3s; 
         }
-        .empty-cart-msg a:hover { background: var(--brand-gold-light); transform: translateY(-2px); }
-
-        /* --- טיקר תחתון --- */
-        .footer { 
-            background: var(--brand-gold); 
-            padding: 8px 0; 
-            border-top: 2px solid #000; 
-            overflow: hidden; 
-            white-space: nowrap; 
-            width: 100%; 
-            direction: ltr; 
-            flex-shrink: 0; 
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            height: 40px;
-        }
-        
-        #ticker-placeholder { width: 100%; }
-        
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #000 !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: #000; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
+        .empty-cart-msg a:hover { background: #FDF3C6; transform: translateY(-2px); }
 
         /* ==============================================
            רספונסיביות
            ============================================== */
         @media (max-width: 1024px) {
-            .cart-window { width: 98%; }
+            .cart-glass-box { max-width: 95% !important; }
             .cart-items-side { padding: 20px; }
             .cart-summary-side { padding: 25px; }
             .item-img { width: 60px; height: 60px; margin-left: 15px; }
         }
 
         @media (max-width: 800px) {
-            .cart-window { flex-direction: column; overflow-y: auto; }
-            .cart-summary-side { flex: none; border-right: none; border-top: 1px solid var(--border-gold); }
-            html, body { overflow-y: auto; height: auto; }
-            .main-content { padding: 20px 10px; }
+            .cart-glass-box { flex-direction: column; overflow-y: auto; height: auto !important; max-height: 90vh !important; }
+            .cart-summary-side { flex: none; border-right: none; border-top: 1px solid var(--border-silver); }
             .cart-item { flex-wrap: wrap; }
             .quantity-controls { margin: 10px 0 0 0; width: fit-content; }
             .remove-item { margin-left: auto; margin-right: 0; }
@@ -211,38 +206,60 @@
 </head>
 <body>
 
+    <!-- 1. הדר אחיד -->
     <div id="header-placeholder"></div>
 
-    <main class="main-content">
-        <div class="cart-window">
+    <!-- 2. אזור הבמה המרכזי -->
+    <main class="cart-main-container">
+        
+        <!-- קוביית הזכוכית (העגלה עצמה) -->
+        <div class="cart-glass-box">
+            
+            <!-- אזור רשימת המוצרים (צד ימין) -->
             <div class="cart-items-side">
                 <div class="cart-items-inner" id="cart-items-list">
-                    </div>
+                    <!-- המוצרים יוזרקו לפה ע"י ה-JS -->
+                </div>
+                
                 <div id="empty-msg" class="empty-cart-msg">
-                    <h2 style="color: var(--text-gray);">העגלה שלך ריקה...</h2>
+                    <h2 style="color: #a0a0a0;">העגלה שלך ריקה...</h2>
                     <a href="index.html">חזור לחנות לרכישות</a>
                 </div>
             </div>
 
+            <!-- אזור סיכום ההזמנה (צד שמאל) -->
             <div class="cart-summary-side">
                 <h2 class="summary-title">סיכום הזמנה</h2>
                 <div class="summary-row"><span>פריטים:</span> <span id="items-count">0</span></div>
                 <div class="summary-row"><span>משלוח:</span> <span class="free-shipping">חינם!</span></div>
-                <div class="total-row"><span>סה"כ:</span> <span id="total-price">0 ₪</span></div>
+                
+                <div class="total-row">
+                    <span>סה"כ:</span> 
+                    <span id="total-price">0 ₪</span>
+                </div>
+                
                 <button class="checkout-btn" id="checkout-btn" onclick="goToCheckout()">המשך לתשלום</button>
             </div>
+
         </div>
     </main>
 
-    <footer class="footer">
+    <!-- 3. פוטר וטיקר (משתמש במחלקות המקוריות מדף הבית כדי להיראות זהה לחלוטין) -->
+    <footer class="app-footer">
+        <div class="footer-links">
+            <a href="about.html">אודות</a>
+            <a href="contact.html">צור קשר</a>
+            <a href="terms.html">תקנון ומדיניות</a>
+        </div>
         <div id="ticker-placeholder"></div>
     </footer>
 
+    <!-- סקריפטים (אותה לוגיקה מעולה שעבדה קודם) -->
     <script>
         fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
-       // הפונקציה המעודכנת שעובדת עם אובייקטים אמיתיים מהחנות של סוליבי
+        // הפונקציה המקורית מהקובץ הקודם[cite: 9]
         function renderCart() {
             let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
             const list = document.getElementById('cart-items-list');
@@ -265,7 +282,7 @@
                     totalItems += item.quantity;
                     totalPrice += (item.price * item.quantity);
 
-                    // תמיכה בתמונה רגילה או באייקון SVG 
+                    // תמיכה בתמונה רגילה או באייקון SVG[cite: 9]
                     let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img || 'mystery-box.jpg.png'}" alt="${item.name}">`;
 
                     list.innerHTML += `
@@ -293,13 +310,13 @@
             document.getElementById('items-count').innerText = count;
             document.getElementById('total-price').innerText = price + ' ₪';
             
-            // עדכון כמות העגלה למעלה בהדר
+            // עדכון כמות העגלה למעלה בהדר[cite: 9]
             try { 
                 if(typeof updateCartDisplay === 'function') updateCartDisplay(); 
             } catch(e) {}
         }
 
-        // שינוי כמות מתוך העגלה בזמן אמת
+        // שינוי כמות מתוך העגלה בזמן אמת[cite: 9]
         function updateItemQuantity(index, change) {
             let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
             if (cart[index]) {
@@ -312,7 +329,7 @@
             }
         }
 
-        // מחיקת מוצר לגמרי
+        // מחיקת מוצר לגמרי[cite: 9]
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
             cart.splice(index, 1);

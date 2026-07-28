@@ -996,3 +996,86 @@ body {
     align-items: center !important; /* ממגנט לאמצע הרוחב (ימינה-שמאלה) */
     min-height: 100% !important; /* נותן למסך לתפוס את כל הגובה כדי שיוכל למרכז */
 }
+/* =========================================
+   רספונסיביות - התאמה מושלמת למסכי לפטופ
+   ========================================= */
+
+/* מוודא שהאזור המרכזי אף פעם לא יחרוג מהגבולות שלו */
+.packages-content-area {
+    max-width: 100% !important;
+    padding: 0 15px !important;
+}
+
+@media (max-width: 1440px) {
+    /* 1. צמצום הרווח הענק בין הטקסט לתמונה */
+    .package-tab-pane {
+        gap: 25px !important; 
+    }
+
+    /* 2. הקטנת קוביית הזכוכית של התמונה שלא תשתלט על המסך */
+    .glass-stage {
+        max-width: 250px !important;
+        padding: 20px !important;
+    }
+
+    /* 3. כיווץ חכם של הכותרות והטקסטים */
+    .pack-main-title {
+        font-size: clamp(22px, 2.5vw, 28px) !important;
+        margin-bottom: 10px !important;
+    }
+
+    .pack-desc {
+        font-size: 14px !important;
+        margin-bottom: 15px !important;
+    }
+
+    .pack-includes li, .steps-list li {
+        font-size: 13px !important;
+        padding: 8px 12px !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* 4. הקטנת הכפתורים והמחירים לפרופורציה הנכונה */
+    .pack-price {
+        font-size: 26px !important;
+    }
+
+    .premium-add-btn, .build-btn {
+        font-size: 14px !important;
+        padding: 10px 20px !important;
+    }
+    
+    /* 5. צמצום שוליים (Padding) כלליים של הבמה המרכזית */
+    .app-center .spa-content-area {
+        padding: 20px !important;
+    }
+}
+
+/* =========================================
+   תיקון מוחלט לקישור "אזור אישי" בהדר
+   מכריח אותו להיראות בדיוק כמו הכפתור המקורי
+   ========================================= */
+#dynamic-auth-btn a,
+#dynamic-auth-btn a:link,
+#dynamic-auth-btn a:visited,
+#dynamic-auth-btn a:active {
+    background: #0a0a0a !important; /* רקע שחור יוקרתי */
+    color: #D6B953 !important; /* טקסט זהב */
+    text-decoration: none !important; /* מעיף את הקו התחתון הסגול! */
+    padding: 10px 20px !important; /* גודל של כפתור */
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid rgba(214, 185, 83, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+#dynamic-auth-btn a:hover {
+    background: #141414 !important;
+    color: #fff !important;
+    border-color: #D6B953 !important;
+    box-shadow: 0 4px 15px rgba(214, 185, 83, 0.2) !important;
+}

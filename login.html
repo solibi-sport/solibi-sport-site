@@ -4,39 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - התחברות לחשבון</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="global-theme.css">
+    <!-- שואב את קובץ העיצוב הגלובלי (לפוטר, להדר ולקישורים המיוחדים) -->
+    <link rel="stylesheet" href="solibi-app.css">
 
     <style>
-        /* === הגדרות מיוחדות רק לדף ההתחברות === */
-        html, body {
-            overflow: hidden; 
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
+        /* === צבעים מקומיים - הוספת נגיעות הכסוף === */
+        :root {
+            --brand-silver: #D1D5DB;
+            --brand-silver-dark: #9CA3AF;
+            --border-silver: rgba(209, 213, 219, 0.2);
         }
 
-        .auth-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-            padding: 20px;
-            position: relative;
+        /* =========================================
+           דריסות מבנה - זהה לחלוטין לדף האודות והפרופיל!
+           ========================================= */
+        body {
+            background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, #0a0a0a 70%) !important;
+            color: #f5f5f5 !important;
+            width: 100vw !important;
+            height: 100vh !important; 
+            overflow: hidden !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            margin: 0 !important;
         }
 
-        .auth-glass-container {
+        /* אזור התוכן המרכזי */
+        .login-main-container {
+            flex: 1 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: clamp(15px, 3vh, 40px) 15px !important;
+            overflow: hidden !important; 
+        }
+
+        /* קוביית הזכוכית המרכזית - משולב עם מסגרת כסופה */
+        .login-glass-box {
             display: flex;
-            width: 100%;
-            max-width: 950px;
-            height: 550px;
+            width: 100% !important;
+            max-width: 950px !important;
+            height: 100% !important;
+            max-height: 550px !important; 
             background: rgba(20, 20, 20, 0.85);
             backdrop-filter: blur(15px);
-            border-radius: 24px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
-            border: 1px solid var(--border-gold);
-            overflow: hidden;
+            border: 1px solid var(--border-silver); /* נגיעה כסופה עדינה */
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+            overflow: hidden; 
             animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -45,13 +63,17 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* =========================================
+           עיצוב התוכן הפנימי של ההתחברות
+           ========================================= */
+        
         /* === צד ימין: טפסים === */
         .auth-form-section {
             flex: 1;
             padding: 50px;
             display: flex;
             flex-direction: column;
-            background: var(--bg-card); 
+            background: #141414; 
             position: relative;
         }
 
@@ -59,13 +81,13 @@
             display: flex;
             gap: 30px;
             margin-bottom: 40px;
-            border-bottom: 2px solid #333; 
+            border-bottom: 2px solid var(--border-silver); /* קו הפרדה כסוף */
         }
 
         .auth-tab {
             font-size: 20px;
             font-weight: 700;
-            color: var(--text-gray); 
+            color: #a0a0a0; 
             padding-bottom: 10px;
             cursor: pointer;
             position: relative;
@@ -73,7 +95,7 @@
         }
 
         .auth-tab.active {
-            color: var(--brand-gold); 
+            color: #D6B953; 
         }
 
         .auth-tab::after {
@@ -83,7 +105,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: var(--brand-gold); 
+            background: #D6B953; 
             border-radius: 3px 3px 0 0;
             transform: scaleX(0);
             transition: transform 0.3s ease;
@@ -118,40 +140,40 @@
         .input-group label {
             font-size: 13px;
             font-weight: 700;
-            color: var(--text-white); 
+            color: #f5f5f5; 
         }
 
         .input-group input {
             height: 48px;
             padding: 0 15px;
             border-radius: 12px;
-            border: 2px solid #333; 
+            border: 1px solid var(--border-silver); /* גבול כסוף כהה לשדה טקסט */
             background: #000; 
             font-family: 'Rubik', sans-serif;
             font-size: 15px;
-            color: var(--text-white);
+            color: #f5f5f5;
             transition: all 0.3s ease;
             outline: none;
         }
 
         .input-group input:focus {
-            border-color: var(--brand-gold);
+            border-color: #D6B953;
             box-shadow: 0 0 0 2px rgba(214, 185, 83, 0.3); 
         }
 
         .forgot-password {
             font-size: 12px;
-            color: var(--brand-gold);
+            color: #D6B953;
             font-weight: 600;
             text-decoration: none;
             align-self: flex-end;
             margin-top: -10px;
         }
 
-        .forgot-password:hover { text-decoration: underline; color: var(--brand-gold-light); }
+        .forgot-password:hover { text-decoration: underline; color: #FDF3C6; }
 
         .submit-btn {
-            background: var(--brand-gold); 
+            background: #D6B953; 
             color: #000;
             border: none;
             height: 52px;
@@ -166,7 +188,7 @@
 
         .submit-btn:hover {
             transform: translateY(-2px);
-            background: var(--brand-gold-light);
+            background: #FDF3C6;
             box-shadow: 0 6px 15px rgba(214, 185, 83, 0.4);
         }
 
@@ -174,9 +196,9 @@
         .auth-info-section {
             flex: 0.8;
             background: linear-gradient(135deg, #111 0%, #000 100%); 
-            border-right: 1px solid var(--border-gold);
+            border-right: 1px solid var(--border-silver); /* קו מפריד כסוף */
             padding: 50px 40px;
-            color: var(--text-white);
+            color: #f5f5f5;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -199,12 +221,12 @@
             font-weight: 900;
             margin-bottom: 10px;
             line-height: 1.2;
-            color: var(--brand-gold); 
+            color: #D6B953; 
         }
         
         .info-subtitle {
             font-size: 14px;
-            color: var(--text-gray);
+            color: #a0a0a0;
             margin-bottom: 40px;
             line-height: 1.5;
         }
@@ -226,12 +248,12 @@
             width: 40px;
             height: 40px;
             background: #000;
-            border: 1px solid var(--border-gold);
+            border: 1px solid var(--brand-silver-dark); /* מסגרת כסופה לאייקונים */
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--brand-gold); 
+            color: #D6B953; 
             flex-shrink: 0;
             box-shadow: inset 0 0 10px rgba(214, 185, 83, 0.1);
         }
@@ -239,43 +261,20 @@
         .benefit-text {
             font-size: 15px;
             font-weight: 700;
-            color: var(--text-white);
+            color: #f5f5f5;
         }
 
         .guest-notice {
             margin-top: auto;
             padding-top: 30px;
             font-size: 12px;
-            color: var(--text-gray);
-            border-top: 1px dashed #333;
+            color: #a0a0a0;
+            border-top: 1px dashed var(--border-silver); /* קו הפרדה כסוף */
         }
-
-        /* === פוטר וטיקר === */
-        .footer { 
-            background: var(--brand-gold); 
-            padding: 8px 0; 
-            border-top: 2px solid #000; 
-            overflow: hidden; 
-            white-space: nowrap; 
-            width: 100%; 
-            direction: ltr; 
-            flex-shrink: 0; 
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            height: 40px;
-        }
-        
-        #ticker-placeholder { width: 100%; }
-        
-        .ticker-wrap { display: inline-block; white-space: nowrap; animation: ticker 30s linear infinite; }
-        .ticker-item { color: #000 !important; font-weight: 700; font-size: clamp(12px, 1vw, 14px); display: inline-block; direction: rtl; vertical-align: middle; }
-        .ticker-separator { color: #000; font-weight: 900; margin: 0 25px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
 
         @media (max-width: 900px) {
-            .auth-glass-container { flex-direction: column; height: auto; max-height: 90vh; overflow-y: auto;}
-            .auth-info-section { padding: 40px 20px; flex: none; border-right: none; border-top: 1px solid var(--border-gold);}
+            .login-glass-box { flex-direction: column; height: auto; max-height: 90vh; overflow-y: auto;}
+            .auth-info-section { padding: 40px 20px; flex: none; border-right: none; border-top: 1px solid var(--border-silver);}
             .auth-form-section { padding: 30px 20px; }
             .info-title { font-size: 24px; }
             .benefits-list { gap: 15px; }
@@ -284,11 +283,16 @@
 </head>
 <body>
 
+    <!-- 1. הדר - זהה לחלוטין -->
     <div id="header-placeholder"></div>
 
-    <div class="auth-wrapper">
-        <div class="auth-glass-container">
+    <!-- 2. אזור הבמה המרכזי -->
+    <main class="login-main-container">
+        
+        <!-- קוביית הזכוכית המרכזית (מכילה בתוכה את שתי העמודות) -->
+        <div class="login-glass-box">
             
+            <!-- עמודה ימנית: טפסים -->
             <div class="auth-form-section">
                 <div class="auth-tabs">
                     <div class="auth-tab active" onclick="switchTab('login')">התחברות</div>
@@ -325,6 +329,7 @@
                 </form>
             </div>
 
+            <!-- עמודה שמאלית: פאנל שיווקי -->
             <div class="auth-info-section">
                 <h2 class="info-title">הצטרפו למועדון סוליבי</h2>
                 <p class="info-subtitle">פתיחת חשבון באתר לוקחת פחות מדקה ומשתלמת במיוחד. חברי המועדון שלנו נהנים הרבה יותר!</p>
@@ -370,31 +375,35 @@
                     * שימו לב: על מנת לבצע רכישות באתר, לעקוב אחר משלוחים ולצבור הטבות, חובה להיות משתמש רשום. ההרשמה בחינם ותמיד תישאר כזו!
                 </div>
             </div>
+            
         </div>
-    </div>
+    </main>
 
-    <footer class="footer">
+    <!-- 3. פוטר וטיקר -->
+    <footer class="app-footer">
+        <div class="footer-links">
+            <a href="about.html">אודות</a>
+            <a href="contact.html">צור קשר</a>
+            <a href="terms.html">תקנון ומדיניות</a>
+        </div>
         <div id="ticker-placeholder"></div>
     </footer>
 
+    <!-- סקריפטים לטעינת החלקים החיצוניים -->
     <script>
-        // טעינת ההדר
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
                 const placeholder = document.getElementById('header-placeholder');
                 if(placeholder) placeholder.innerHTML = data;
-            })
-            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+            });
 
-        // טעינת הטיקר שהוספנו עכשיו
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {
                 const placeholder = document.getElementById('ticker-placeholder');
                 if(placeholder) placeholder.innerHTML = data;
-            })
-            .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
+            });
 
         // פונקציה להחלפה בין טופס הרשמה לטופס התחברות
         function switchTab(tabName) {
@@ -413,58 +422,60 @@
             }
         }
     </script>
+    
+    <!-- לוגיקת ההתחברות והרשמה נשארת כפי שהייתה -->
     <script type="module">
-    import { supabase } from './supabaseClient.js';
+        import { supabase } from './supabaseClient.js';
 
-    const registerForm = document.getElementById('form-register');
+        const registerForm = document.getElementById('form-register');
 
-    registerForm.addEventListener('submit', async (e) => {
-        const nameValue = document.getElementById('reg-name').value;
-        const emailValue = document.getElementById('reg-email').value;
-        const passwordValue = document.getElementById('reg-password').value;
+        registerForm.addEventListener('submit', async (e) => {
+            const nameValue = document.getElementById('reg-name').value;
+            const emailValue = document.getElementById('reg-email').value;
+            const passwordValue = document.getElementById('reg-password').value;
 
-        const { data, error } = await supabase.auth.signUp({
-            email: emailValue,
-            password: passwordValue,
-            options: {
-                data: {
-                    display_name: nameValue 
+            const { data, error } = await supabase.auth.signUp({
+                email: emailValue,
+                password: passwordValue,
+                options: {
+                    data: {
+                        display_name: nameValue 
+                    }
                 }
+            });
+
+            if (error) {
+                console.error("שגיאה בהרשמה:", error.message);
+                alert("אופס, השגיאה מהשרת: " + error.message);
+            } else {
+                console.log("הרשמה הצליחה!", data);
+                alert("מזל טוב! החשבון נוצר בהצלחה. המשתמש הראשון שלך באוויר!");
+                registerForm.reset(); 
             }
         });
 
-        if (error) {
-            console.error("שגיאה בהרשמה:", error.message);
-            alert("אופס, השגיאה מהשרת: " + error.message);
-        } else {
-            console.log("הרשמה הצליחה!", data);
-            alert("מזל טוב! החשבון נוצר בהצלחה. המשתמש הראשון שלך באוויר!");
-            registerForm.reset(); 
-        }
-    });
+        const loginForm = document.getElementById('form-login');
 
-    const loginForm = document.getElementById('form-login');
+        loginForm.addEventListener('submit', async (e) => {
+            const emailValue = document.getElementById('login-email').value;
+            const passwordValue = document.getElementById('login-password').value;
 
-    loginForm.addEventListener('submit', async (e) => {
-        const emailValue = document.getElementById('login-email').value;
-        const passwordValue = document.getElementById('login-password').value;
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: emailValue,
+                password: passwordValue
+            });
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: emailValue,
-            password: passwordValue
+            if (error) {
+                console.error("שגיאה בהתחברות:", error.message);
+                alert("אופס! פרטי ההתחברות שגויים, או שעדיין לא אישרת את המייל שלך.");
+            } else {
+                console.log("התחברות הצליחה!", data);
+                alert("ברוך הבא חזרה! התחברת בהצלחה למערכת של סוליבי.");
+                loginForm.reset(); 
+                
+                window.location.href = 'index.html'; 
+            }
         });
-
-        if (error) {
-            console.error("שגיאה בהתחברות:", error.message);
-            alert("אופס! פרטי ההתחברות שגויים, או שעדיין לא אישרת את המייל שלך.");
-        } else {
-            console.log("התחברות הצליחה!", data);
-            alert("ברוך הבא חזרה! התחברת בהצלחה למערכת של סוליבי.");
-            loginForm.reset(); 
-            
-            window.location.href = 'index.html'; 
-        }
-    });
-</script>
+    </script>
 </body>
 </html>

@@ -4,129 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - קופה ותשלום מאובטח</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="global-theme.css">
+    <!-- שואב את קובץ העיצוב הגלובלי (לפוטר, להדר ולקישורים המיוחדים) -->
+    <link rel="stylesheet" href="solibi-app.css">
     
     <style>
-        /* === פלטת הצבעים החדשה: זהב ושחור === */
+        /* === צבעים מקומיים - הוספת נגיעות הכסוף === */
         :root {
-            --brand-gold: #D6B953; 
-            --brand-gold-light: #FDF3C6; 
-            --brand-gold-dark: #A88D31; 
-            --bg-black: #0a0a0a;
-            --bg-card: #141414;
-            --text-white: #f5f5f5;
-            --text-gray: #a0a0a0;
-            --border-gold: rgba(214, 185, 83, 0.3);
+            --brand-silver: #D1D5DB;
+            --brand-silver-dark: #9CA3AF;
+            --border-silver: rgba(209, 213, 219, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { font-family: 'Rubik', sans-serif; background: var(--bg-black); color: var(--text-white); width: 100%; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-
-        .main-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; overflow: hidden; }
-
-        /* חלון התשלום */
-        .checkout-window {
-            width: 100%; max-width: 1100px; height: 98%; max-height: 750px;
-            background: rgba(20, 20, 20, 0.85); backdrop-filter: blur(15px);
-            border-radius: 20px; border: 1px solid var(--border-gold); box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            display: flex; flex-direction: row; overflow: hidden; 
+        /* =========================================
+           דריסות מבנה - תואם ב-100% לשאר הדפים
+           ========================================= */
+        body {
+            background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, #0a0a0a 70%) !important;
+            color: #f5f5f5 !important;
+            width: 100vw !important;
+            height: 100vh !important; 
+            overflow: hidden !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            margin: 0 !important;
         }
 
+        /* אזור התוכן המרכזי */
+        .checkout-main-container {
+            flex: 1 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: clamp(15px, 3vh, 40px) 15px !important;
+            overflow: hidden !important; 
+        }
+
+        /* חלון התשלום (קוביית הזכוכית) - עם מסגרת כסופה */
+        .checkout-glass-box {
+            display: flex;
+            flex-direction: row;
+            width: 100% !important; 
+            max-width: 1100px !important; 
+            height: 100% !important; 
+            max-height: 750px !important;
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.85) 0%, rgba(5, 5, 5, 0.95) 100%) !important;
+            backdrop-filter: blur(15px) !important;
+            border: 1px solid var(--border-silver) !important; /* מסגרת כסופה */
+            border-radius: 20px !important;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8) !important;
+            overflow: hidden !important; 
+            animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================
+           אזור הטפסים (צד ימין)
+           ========================================= */
         .checkout-form-wrapper {
-            flex: 1.8; direction: ltr; overflow-y: auto;
+            flex: 1.8; 
+            direction: ltr; /* מעביר פס גלילה לשמאל */
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(214, 185, 83, 0.4) transparent;
         }
         
         .checkout-form-wrapper::-webkit-scrollbar { width: 6px; }
-        .checkout-form-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
         .checkout-form-wrapper::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
-        .checkout-form-wrapper::-webkit-scrollbar-thumb:hover { background: var(--brand-gold); }
 
         .checkout-form-side { 
-            direction: rtl; padding: 15px 25px; 
-            display: flex; flex-direction: column; gap: 12px;
+            direction: rtl; /* מחזיר תוכן לימין לשמאל */
+            padding: 25px; 
+            display: flex; flex-direction: column; gap: 15px;
         }
         
-        .form-section { background: var(--bg-card); padding: 12px 18px; border-radius: 12px; border: 1px solid var(--border-gold); box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: 0.3s; }
-        .form-section:hover { border-color: var(--brand-gold); box-shadow: 0 6px 15px rgba(214, 185, 83, 0.15); }
+        /* סקשן טופס עם מסגרת כסופה */
+        .form-section { 
+            background: #141414; 
+            padding: 18px 25px; 
+            border-radius: 12px; 
+            border: 1px solid var(--border-silver); /* מסגרת כסופה */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+            transition: 0.3s; 
+        }
+        .form-section:hover { 
+            border-color: #D6B953; /* הופך לזהב במעבר */
+            box-shadow: 0 6px 15px rgba(214, 185, 83, 0.15); 
+        }
 
         .form-section-title { 
-            font-size: 15px; font-weight: 900; color: var(--brand-gold); 
-            border-bottom: 2px solid rgba(214,185,83,0.2); padding-bottom: 5px; margin-bottom: 10px; 
+            font-size: 16px; font-weight: 900; color: #D6B953; 
+            border-bottom: 2px solid var(--border-silver); /* קו הפרדה כסוף */
+            padding-bottom: 8px; margin-bottom: 15px; 
             display: flex; align-items: center; gap: 8px;
         }
+        
         .form-icon { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; opacity: 0.9; }
         
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .input-group { display: flex; flex-direction: column; gap: 3px; }
-        .input-group label { font-size: 11px; font-weight: 700; color: var(--text-white); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 12px; font-weight: 700; color: #f5f5f5; }
         
         .input-group input { 
-            font-family: inherit; padding: 7px 10px; border: 1px solid #333; 
-            border-radius: 6px; font-size: 12px; outline: none; transition: 0.3s; background: #000; color: var(--text-white);
+            font-family: inherit; padding: 10px; border: 1px solid var(--border-silver); /* שדות מוקפים בכסוף */
+            border-radius: 8px; font-size: 13px; outline: none; transition: 0.3s; background: #000; color: #f5f5f5;
         }
-        .input-group input:focus { border-color: var(--brand-gold); box-shadow: 0 0 0 2px rgba(214, 185, 83, 0.2); }
+        .input-group input:focus { border-color: #D6B953; box-shadow: 0 0 0 2px rgba(214, 185, 83, 0.2); }
         .input-group input::placeholder { color: #555; }
 
         /* אפשרויות משלוח */
         .shipping-options { display: flex; gap: 10px; }
-        .shipping-option { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border: 1px solid #333; border-radius: 8px; cursor: pointer; transition: 0.2s; background: #000; }
-        .shipping-option:hover { border-color: var(--brand-gold); background: var(--bg-card);}
-        .shipping-option input[type="radio"] { accent-color: var(--brand-gold); width: 14px; height: 14px; cursor: pointer; }
-        .shipping-info { display: flex; align-items: center; gap: 8px; }
-        .shipping-text strong { display: block; color: var(--text-white); font-size: 12px; }
-        .shipping-text span { font-size: 10px; color: var(--text-gray); }
-        .shipping-price { font-weight: 900; color: var(--brand-gold); font-size: 13px;}
+        .shipping-option { 
+            flex: 1; display: flex; align-items: center; justify-content: space-between; 
+            padding: 10px 15px; border: 1px solid var(--border-silver); /* מסגרת כסופה */
+            border-radius: 8px; cursor: pointer; transition: 0.2s; background: #000; 
+        }
+        .shipping-option:hover { border-color: #D6B953; background: #141414;}
+        .shipping-option input[type="radio"] { accent-color: #D6B953; width: 16px; height: 16px; cursor: pointer; }
+        .shipping-info { display: flex; align-items: center; gap: 10px; }
+        .shipping-text strong { display: block; color: #f5f5f5; font-size: 13px; }
+        .shipping-text span { font-size: 11px; color: #a0a0a0; }
+        .shipping-price { font-weight: 900; color: #D6B953; font-size: 14px;}
         
-        /* טופס אשראי - פרימיום סימטרי */
+        /* טופס אשראי - נגיעות כסוף */
         .credit-card-box { 
             background: linear-gradient(135deg, #111, #000); 
             padding: 20px 20px 25px 20px;
             border-radius: 12px; 
-            border: 1px solid var(--border-gold);
+            border: 1px solid var(--brand-silver-dark); /* מסגרת כסופה בולטת יותר */
             color: #fff; 
             position: relative; 
             overflow: hidden; 
         }
-        .cc-input { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(214,185,83,0.3) !important; color: #fff !important; }
-        .cc-input:focus { border-color: var(--brand-gold) !important; background: rgba(255,255,255,0.1) !important; box-shadow: 0 0 8px rgba(214, 185, 83, 0.3) !important;}
+        
+        .cc-input { background: rgba(255,255,255,0.05) !important; border: 1px solid var(--border-silver) !important; color: #fff !important; }
+        .cc-input:focus { border-color: #D6B953 !important; background: rgba(255,255,255,0.1) !important; box-shadow: 0 0 8px rgba(214, 185, 83, 0.3) !important;}
         .cc-input::placeholder { color: rgba(255,255,255,0.3) !important; }
         .cc-logos { display: flex; gap: 8px; margin-bottom: 12px; } 
-        .cc-badge { background:rgba(214,185,83,0.1); color:var(--brand-gold); font-weight:900; font-size:9px; padding:3px 6px; border-radius:4px; border: 1px solid var(--brand-gold); letter-spacing: 1px;}
+        .cc-badge { background:rgba(214,185,83,0.1); color:#D6B953; font-weight:900; font-size:9px; padding:3px 6px; border-radius:4px; border: 1px solid #D6B953; letter-spacing: 1px;}
 
-        /* סיכום הזמנה */
-        .checkout-summary-side { flex: 1; background: #000; border-right: 1px solid var(--border-gold); padding: 25px; color: #fff; display: flex; flex-direction: column; }
-        .summary-title { font-size: 18px; font-weight: 900; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 8px; display: flex; align-items: center; justify-content: space-between; color: var(--brand-gold);}
+        /* =========================================
+           סיכום הזמנה (צד שמאל)
+           ========================================= */
+        .checkout-summary-side { 
+            flex: 1; 
+            background: linear-gradient(135deg, #0f0f0f 0%, #000 100%); 
+            border-right: 1px solid var(--border-silver); /* קו הפרדה כסוף */
+            padding: 25px; color: #fff; display: flex; flex-direction: column; 
+        }
+
+        .summary-title { 
+            font-size: 18px; font-weight: 900; margin-bottom: 15px; 
+            border-bottom: 1px solid var(--border-silver); /* קו הפרדה כסוף */
+            padding-bottom: 8px; display: flex; align-items: center; justify-content: space-between; color: #D6B953;
+        }
         
         .scroll-container-ltr { flex: 1; direction: ltr; overflow-y: auto; padding-right: 5px; margin-bottom: 15px; }
         .scroll-container-ltr::-webkit-scrollbar { width: 4px; }
-        .scroll-container-ltr::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
         .scroll-container-ltr::-webkit-scrollbar-thumb { background: rgba(214,185,83,0.4); border-radius: 10px; }
+        
         .order-items-mini { direction: rtl; display: flex; flex-direction: column; gap: 10px; }
-
-        .mini-item { display: flex; align-items: center; gap: 10px; background: var(--bg-card); padding: 10px; border-radius: 8px; border: 1px solid #333; }
-        .mini-img { width: 40px; height: 40px; background: #000; border: 1px solid var(--border-gold); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden;}
+        .mini-item { display: flex; align-items: center; gap: 10px; background: #141414; padding: 10px; border-radius: 8px; border: 1px solid var(--border-silver); /* מסגרת כסופה למוצר בקופה */ }
+        
+        .mini-img { width: 40px; height: 40px; background: #000; border: 1px solid var(--border-silver); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden;}
         .mini-img img { width: 100%; height: 100%; object-fit: cover;}
         
         .mini-info { flex: 1; display: flex; flex-direction: column; }
         .mini-name { font-size: 12px; font-weight: 700; color: #fff; line-height: 1.2;}
-        .mini-qty { font-size: 10px; color: var(--text-gray); margin-top: 2px;}
-        .mini-price { font-weight: 900; color: var(--brand-gold); font-size: 14px;}
+        .mini-qty { font-size: 10px; color: #a0a0a0; margin-top: 2px;}
+        .mini-price { font-weight: 900; color: #D6B953; font-size: 14px;}
 
         /* אזור סכומים וסיום תשלום */
-        .totals-section { border-top: 1px solid #333; padding-top: 12px; margin-top: auto;}
-        .calc-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: var(--text-gray); }
-        .total-row { margin-top: 8px; border-top: 1px dashed #333; padding-top: 12px; font-size: 20px; font-weight: 900; color: #fff; display: flex; justify-content: space-between; align-items: center;}
+        .totals-section { border-top: 1px solid var(--border-silver); padding-top: 12px; margin-top: auto;}
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: #a0a0a0; }
+        .total-row { margin-top: 8px; border-top: 1px dashed var(--border-silver); padding-top: 12px; font-size: 20px; font-weight: 900; color: #fff; display: flex; justify-content: space-between; align-items: center;}
         
         .pay-btn {
-            background: var(--brand-gold); color: #000; border: none; padding: 14px; border-radius: 10px;
+            background: #D6B953; color: #000; border: none; padding: 14px; border-radius: 10px;
             font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 15px; transition: 0.3s; width: 100%;
             display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .pay-btn:hover { transform: translateY(-2px); background: var(--brand-gold-light); box-shadow: 0 6px 15px rgba(214, 185, 83, 0.3);}
+        .pay-btn:hover { transform: translateY(-2px); background: #FDF3C6; box-shadow: 0 6px 15px rgba(214, 185, 83, 0.3);}
 
-        .secure-badge { text-align: center; margin-top: 10px; font-size: 10px; color: var(--text-gray); display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .secure-badge { text-align: center; margin-top: 10px; font-size: 10px; color: #a0a0a0; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
         /* מודאל הצלחה */
         .success-overlay {
@@ -134,45 +200,40 @@
             z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s;
         }
         .success-overlay.active { opacity: 1; pointer-events: all; }
-        .success-modal { background: var(--bg-card); border: 1px solid var(--border-gold); padding: 30px; border-radius: 15px; text-align: center; max-width: 350px; transform: scale(0.8); transition: 0.4s; }
+        .success-modal { background: #141414; border: 1px solid var(--brand-silver-dark); padding: 30px; border-radius: 15px; text-align: center; max-width: 350px; transform: scale(0.8); transition: 0.4s; }
         .success-overlay.active .success-modal { transform: scale(1); }
-        .success-icon { width: 60px; height: 60px; background: var(--brand-gold); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; }
-        .success-title { font-size: 20px; font-weight: 900; color: var(--brand-gold); margin-bottom: 8px; }
-        .success-desc { font-size: 13px; color: var(--text-white); margin-bottom: 15px; }
+        .success-icon { width: 60px; height: 60px; background: #D6B953; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; }
+        .success-title { font-size: 20px; font-weight: 900; color: #D6B953; margin-bottom: 8px; }
+        .success-desc { font-size: 13px; color: #f5f5f5; margin-bottom: 15px; }
         .loader-bar { width: 100%; height: 4px; background: #333; border-radius: 2px; position: relative; }
-        .loader-progress { position: absolute; top: 0; right: 0; height: 100%; background: var(--brand-gold); width: 0%; transition: width 3s linear; }
-
-        /* טיקר תחתון מעודכן */
-        .footer { background: var(--brand-gold); border-top: 2px solid #000; width: 100%; height: 45px; flex-shrink: 0; display: flex; align-items: center; overflow: hidden; position: relative; z-index: 10; }
-        #ticker-placeholder { width: 100%; display: flex; align-items: center; }
-        .ticker-wrap { display: inline-flex; white-space: nowrap; animation: ticker 30s linear infinite; direction: ltr !important; }
-        .ticker-item { color: #000 !important; font-weight: 700; font-size: 14px; display: inline-block; margin: 0 15px; vertical-align: middle; direction: rtl !important; }
-        .ticker-separator { color: #000; font-weight: 900; margin: 0 15px; font-size: 15px; display: inline-block; vertical-align: middle; transform: translateY(-1px); }
-        @keyframes ticker { 0% { transform: translateX(-100%); } 100% { transform: translateX(100vw); } }
+        .loader-progress { position: absolute; top: 0; right: 0; height: 100%; background: #D6B953; width: 0%; transition: width 3s linear; }
 
         /* רספונסיביות */
         @media (max-width: 1024px) {
-            .checkout-window { width: 98%; height: 98%; max-height: none;}
-            .checkout-form-side { padding: 10px; gap: 10px;}
-            .form-section { padding: 12px; }
-            .checkout-summary-side { padding: 15px; }
+            .checkout-glass-box { max-width: 95% !important; height: 95% !important; max-height: none;}
+            .checkout-form-side { padding: 15px; gap: 10px;}
+            .form-section { padding: 15px; }
+            .checkout-summary-side { padding: 20px; }
         }
 
         @media (max-width: 800px) {
-            .checkout-window { flex-direction: column-reverse; overflow-y: auto; border-radius: 0; height: auto;}
-            .checkout-summary-side { flex: none; border-left: none; border-bottom: 1px solid var(--border-gold); }
-            html, body { overflow-y: auto; height: auto; }
-            .main-content { padding: 0; }
+            .checkout-glass-box { flex-direction: column-reverse; overflow-y: auto; height: auto !important; max-height: 90vh !important; }
+            .checkout-summary-side { flex: none; border-right: none; border-bottom: 1px solid var(--border-silver); }
         }
     </style>
 </head>
 <body>
 
+    <!-- 1. הדר אחיד -->
     <div id="header-placeholder"></div>
 
-    <main class="main-content">
-        <div class="checkout-window">
+    <!-- 2. אזור הבמה המרכזי -->
+    <main class="checkout-main-container">
+        
+        <!-- חלון התשלום המרכזי -->
+        <div class="checkout-glass-box">
             
+            <!-- טפסים ומילוי פרטים (צד ימין) -->
             <div class="checkout-form-wrapper">
                 <form class="checkout-form-side" autocomplete="off" onsubmit="event.preventDefault(); processPayment();">
                     
@@ -252,7 +313,7 @@
                         </div>
                     </div>
 
-                    <div class="form-section" style="padding: 0; border: none; box-shadow: none;">
+                    <div class="form-section" style="padding: 0; border: none; box-shadow: none; background: transparent;">
                         <div class="credit-card-box">
                             <div class="cc-logos">
                                 <div class="cc-badge">VISA</div>
@@ -260,26 +321,26 @@
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 10px;">
                                 <div class="input-group">
-                                    <label style="color: var(--text-gray);">מספר כרטיס אשראי</label>
+                                    <label style="color: #a0a0a0;">מספר כרטיס אשראי</label>
                                     <input type="text" class="cc-input" placeholder="XXXX XXXX XXXX XXXX" dir="ltr" style="text-align: left; font-size: 14px; letter-spacing: 2px;" autocomplete="off">
                                 </div>
                                 <div class="form-grid">
                                     <div class="input-group">
-                                        <label style="color: var(--text-gray);">תוקף (MM/YY)</label>
+                                        <label style="color: #a0a0a0;">תוקף (MM/YY)</label>
                                         <input type="text" class="cc-input" placeholder="12/26" dir="ltr" style="text-align: center;" autocomplete="off">
                                     </div>
                                     <div class="input-group">
-                                        <label style="color: var(--text-gray);">CVV</label>
+                                        <label style="color: #a0a0a0;">CVV</label>
                                         <input type="text" class="cc-input" placeholder="123" dir="ltr" style="text-align: center;" maxlength="3" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="form-grid">
                                     <div class="input-group">
-                                        <label style="color: var(--text-gray);">שם בעל הכרטיס</label>
+                                        <label style="color: #a0a0a0;">שם בעל הכרטיס</label>
                                         <input type="text" class="cc-input" placeholder="כפי שמופיע על הכרטיס" autocomplete="off">
                                     </div>
                                     <div class="input-group">
-                                        <label style="color: var(--text-gray);">ת.ז בעל הכרטיס</label>
+                                        <label style="color: #a0a0a0;">ת.ז בעל הכרטיס</label>
                                         <input type="text" class="cc-input" placeholder="9 ספרות" dir="ltr" style="text-align: center;" maxlength="9" autocomplete="off">
                                     </div>
                                 </div>
@@ -290,6 +351,7 @@
                 </form>
             </div>
 
+            <!-- אזור סיכום קופה (צד שמאל) -->
             <div class="checkout-summary-side">
                 <h2 class="summary-title">
                     <span>סיכום הזמנה</span>
@@ -298,6 +360,7 @@
                 
                 <div class="scroll-container-ltr">
                     <div class="order-items-mini" id="checkout-items-list">
+                        <!-- הפריטים יוזרקו לכאן -->
                     </div>
                 </div>
 
@@ -305,7 +368,7 @@
                     <div class="calc-row"><span>סכום ביניים:</span> <span id="calc-subtotal">0 ₪</span></div>
                     <div class="calc-row"><span>דמי משלוח:</span> <span id="calc-shipping">חינם</span></div>
                     
-                    <div class="total-row"><span>סה"כ לתשלום:</span> <span id="calc-total" style="color: var(--brand-gold);">0 ₪</span></div>
+                    <div class="total-row"><span>סה"כ לתשלום:</span> <span id="calc-total" style="color: #D6B953;">0 ₪</span></div>
                     
                     <button class="pay-btn" onclick="processPayment()">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -321,22 +384,17 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div id="ticker-placeholder" style="width: 100%;">
-            <div class="ticker-wrap">
-                <div class="ticker-item">ברק יצחקי: אליפות זאת לא מילה גסה</div>
-                <div class="ticker-separator">•</div>
-                <div class="ticker-item">שמועות: צ'אבי הרננדז המועמד המוביל לאימון אינטר מיאמי</div>
-                <div class="ticker-separator">•</div>
-                <div class="ticker-item">פרמיירליג: קובנטרי חוזרת לליגה הבכירה</div>
-                <div class="ticker-separator">•</div>
-                <div class="ticker-item">העברות: באסטוני שחקנה של אינטר סיכם את תנאיו בברצלונה</div>
-                <div class="ticker-separator">•</div>
-                <div class="ticker-item">ספורט ישראל: אין יותר הגבלת קהל במגרשים</div>
-            </div>
+    <!-- 3. פוטר וטיקר האחיד (מחליף את הישן הקשיח) -->
+    <footer class="app-footer">
+        <div class="footer-links">
+            <a href="about.html">אודות</a>
+            <a href="contact.html">צור קשר</a>
+            <a href="terms.html">תקנון ומדיניות</a>
         </div>
+        <div id="ticker-placeholder"></div>
     </footer>
 
+    <!-- מודאל הצלחה -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-modal">
             <div class="success-icon">
@@ -347,17 +405,14 @@
             <div class="loader-bar">
                 <div class="loader-progress" id="loaderProgress"></div>
             </div>
-            <p style="font-size: 11px; color: var(--text-gray); margin-top: 10px;">מעביר אותך חזרה לחנות...</p>
+            <p style="font-size: 11px; color: #a0a0a0; margin-top: 10px;">מעביר אותך חזרה לחנות...</p>
         </div>
     </div>
 
     <script>
+        // טעינת ההדר והטיקר בצורה אחידה[cite: 10]
         fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
-        
-        fetch('ticker.html')
-            .then(res => { if(res.ok) return res.text(); throw new Error('No ticker file'); })
-            .then(data => { if(data.trim() !== '') document.getElementById('ticker-placeholder').innerHTML = data; })
-            .catch(e => console.log('Using default ticker fallback'));
+        fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
         let subtotal = 0;
         let shippingCost = 0;
@@ -367,7 +422,7 @@
             
             if (cart.length === 0) {
                 alert("העגלה שלך ריקה. מחזיר אותך לחנות.");
-                window.location.href = 'index.html'; /* עודכן להחזיר לדף הבית כי אין store.html */
+                window.location.href = 'index.html'; 
                 return;
             }
 

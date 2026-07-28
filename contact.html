@@ -4,120 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>סוליבי ספורט - צור קשר</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="global-theme.css">
+    <!-- שואב את קובץ העיצוב הגלובלי (לפוטר ולהדר) -->
+    <link rel="stylesheet" href="solibi-app.css">
     
     <style>
-        /* === פלטת הצבעים החדשה: זהב ושחור === */
-        :root {
-            --brand-gold: #D6B953; 
-            --brand-gold-light: #FDF3C6; 
-            --brand-gold-dark: #A88D31; 
-            --bg-black: #0a0a0a;
-            --bg-card: #141414;
-            --text-white: #f5f5f5;
-            --text-gray: #a0a0a0;
-            --border-gold: rgba(214, 185, 83, 0.3);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html, body {
-            font-family: 'Rubik', sans-serif;
-            background: var(--bg-black);
-            color: var(--text-white);
-            width: 100%;
-            min-height: 100vh; /* במקום height קשיח */
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content {
-            flex: 1 !important;
+        /* =========================================
+           דריסות מבנה - זהה לחלוטין לדף האודות!
+           ========================================= */
+        body {
+            background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, #0a0a0a 70%) !important;
+            color: #f5f5f5 !important;
+            width: 100vw !important;
+            height: 100vh !important; 
+            overflow: hidden !important; /* נועל את העמוד הראשי לגמרי */
             display: flex !important;
             flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important; /* הפקודה שדורסת את הכל וממרכזת אנכית */
-            padding: 20px !important;
-            overflow-y: auto !important;
+            margin: 0 !important;
         }
 
-        /* --- ענן התוכן המרכזי (מוגדל וממורכז) --- */
-        .contact-cloud {
-            width: 100%;
-            max-width: 1050px; /* הוגדל מ-900 */
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            border: 1px solid var(--border-gold);
-            padding: 60px 50px; /* הוגדל הריווח הפנימי */
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+        /* אזור התוכן שבין ההדר לפוטר - תופס את שאר המקום */
+        .contact-main-container {
+            flex: 1 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: clamp(15px, 3vh, 40px) 15px !important;
+            overflow: hidden !important; 
+        }
+
+        /* קוביית הזכוכית המרכזית (בתוכה תהיה הגלילה) */
+        .contact-glass-box {
+            width: 100% !important;
+            max-width: 950px !important;
+            height: 100% !important;
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.8) 0%, rgba(5, 5, 5, 0.95) 100%) !important;
+            backdrop-filter: blur(15px) !important;
+            border: 1px solid rgba(224, 224, 224, 0.1) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important; 
+        }
+
+        /* אזור הגלילה עצמו - הגלילה קורית רק כאן! */
+        .contact-scroll-area {
+            flex: 1 !important;
+            overflow-y: auto !important; 
+            padding: 40px !important;
+            scrollbar-width: thin !important;
+            scrollbar-color: rgba(214, 185, 83, 0.4) transparent !important;
+            /* טריק להעברת פס הגלילה ימינה */
+            direction: ltr !important; 
+        }
+
+        /* עיצוב הפס גלילה הפנימי */
+        .contact-scroll-area::-webkit-scrollbar { width: 6px; }
+        .contact-scroll-area::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
+
+        /* התוכן הפנימי - מוחזר לימין לשמאל */
+        .contact-inner-content {
+            direction: rtl !important;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
+        /* =========================================
+           עיצוב קוביות התוכן של צור קשר
+           ========================================= */
         .contact-subtitle {
-            font-size: 18px; /* הוגדל מעט */
-            color: var(--text-gray);
+            font-size: 18px;
+            color: #a0a0a0;
             font-weight: 500;
             margin-bottom: 45px;
             text-align: center;
             line-height: 1.5;
+            max-width: 700px;
         }
 
-        /* --- גריד קוביות הקשר --- */
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px; /* רווח טיפה יותר גדול בין הקוביות */
+            gap: 25px;
             width: 100%;
             margin-bottom: 50px;
         }
 
         .contact-card {
-            background: var(--bg-card);
+            background: #141414;
             border-radius: 16px;
-            padding: 30px 15px; /* יותר גובה לקוביות */
+            padding: 30px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             text-decoration: none;
-            color: var(--text-white);
+            color: #f5f5f5;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid var(--border-gold);
-            position: relative;
-            overflow: hidden;
+            border: 1px solid rgba(214, 185, 83, 0.3);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
         }
 
         .contact-card:hover {
             transform: translateY(-8px);
-            border-color: var(--brand-gold);
+            border-color: #D6B953;
             box-shadow: 0 15px 30px rgba(214, 185, 83, 0.15);
         }
 
         .contact-icon {
             width: 50px; height: 50px;
-            color: var(--brand-gold);
+            color: #D6B953;
             margin-bottom: 15px;
             transition: 0.3s;
         }
-        .contact-card:hover .contact-icon { transform: scale(1.15); color: var(--brand-gold-light); }
-
+        
+        .contact-card:hover .contact-icon { transform: scale(1.15); color: #FDF3C6; }
         .contact-method { font-size: 20px; font-weight: 900; margin-bottom: 5px; }
-        .contact-detail { font-size: 15px; font-weight: 500; color: var(--text-gray); direction: ltr; }
+        .contact-detail { font-size: 15px; font-weight: 500; color: #a0a0a0; direction: ltr; }
 
-        /* קו הפרדה אלגנטי */
         .divider {
             width: 100%; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+            background: linear-gradient(90deg, transparent, rgba(214, 185, 83, 0.3), transparent);
             margin: 0 0 40px 0;
+            flex-shrink: 0;
         }
 
-        /* --- רשתות חברתיות ואתר נוסף --- */
         .social-section {
             display: flex;
             align-items: center;
@@ -127,242 +142,151 @@
             gap: 20px;
         }
 
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
+        .social-links { display: flex; gap: 15px; }
         .social-btn {
             width: 50px; height: 50px;
             border-radius: 50%;
             background: #000;
-            border: 1px solid var(--border-gold);
+            border: 1px solid rgba(214, 185, 83, 0.3);
             display: flex; align-items: center; justify-content: center;
-            color: var(--brand-gold);
+            color: #D6B953;
             transition: 0.3s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .social-btn:hover { background: var(--brand-gold); color: #000; transform: translateY(-3px); border-color: var(--brand-gold); }
+        
+        .social-btn:hover { background: #D6B953; color: #000; transform: translateY(-3px); border-color: #D6B953; }
         .social-btn svg { width: 22px; height: 22px; }
 
         .business-link-card {
             background: rgba(214, 185, 83, 0.1);
-            border: 1px solid var(--brand-gold);
+            border: 1px solid #D6B953;
             padding: 15px 30px;
             border-radius: 30px;
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: var(--text-white);
+            color: #f5f5f5;
             transition: 0.3s;
             min-width: 220px;
         }
-        .business-link-card:hover { background: var(--brand-gold); color: #000; transform: scale(1.02); }
-
-        /* === פוטר וטיקר === */
-        .footer { 
-            background: var(--brand-gold) !important; 
-            padding: 0 20px !important; 
-            border-top: 2px solid #000 !important; 
-            overflow: hidden !important; 
-            white-space: nowrap !important; 
-            width: 100% !important; 
-            direction: rtl !important; 
-            flex-shrink: 0 !important; 
-            z-index: 1000 !important;
-            display: flex !important;
-            align-items: center !important;
-            height: 40px !important;
-            margin-top: auto; /* זה הסוד! דוחף את הפוטר תמיד למטה */
-        }
         
-        .footer-links {
-            display: flex !important;
-            gap: 20px !important;
-            align-items: center !important;
-            margin-left: 20px !important; /* מרחיק קצת את הטיקר מהקישורים */
-        }
+        .business-link-card:hover { background: #D6B953; color: #000; transform: scale(1.02); }
 
-        .footer-links a {
-            color: #000 !important;
-            text-decoration: none !important;
-            font-weight: 700 !important;
-            font-size: 14px !important;
-            transition: 0.3s !important;
-        }
-
-        .footer-links a:hover {
-            color: #fff !important;
-        }
-
-        #ticker-placeholder { 
-            flex: 1 !important; 
-            overflow: hidden !important; 
-            direction: ltr !important; /* הטיקר תמיד רץ משמאל לימין */
-        }
-        
         @media (max-width: 900px) {
             .contact-grid { grid-template-columns: repeat(2, 1fr); }
             .social-section { flex-direction: column; justify-content: center; }
+            .contact-scroll-area { padding: 20px !important; }
         }
         @media (max-width: 600px) {
             .contact-grid { grid-template-columns: 1fr; }
-            html, body { overflow-y: auto; height: auto; } 
         }
-
-/* תיקון לפוטר שיישאר תמיד בתחתית המסך */
-        html, body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-content {
-            flex: 1; /* מותח את התוכן ודוחף את הפוטר למטה */
-        }
-
-        /* עיצוב הפוטר והקישורים */
-        .footer {
-            margin-top: auto;
-            background: #D6B953; 
-            padding: 8px 0; 
-            border-top: 2px solid #000; 
-            width: 100%; 
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            height: 40px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            margin-right: 20px;
-            margin-left: 20px;
-            white-space: nowrap;
-        }
-
-        .footer-links a {
-            color: #000;
-            font-weight: 700;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
     </style>
 </head>
 <body>
 
+    <!-- 1. הדר - נעול למעלה -->
     <div id="header-placeholder"></div>
 
-    <main class="main-content">
+    <!-- 2. אזור הבמה המרכזי -->
+    <main class="contact-main-container">
         
-        <div class="contact-cloud">
-            <div class="contact-subtitle">
-                יש לך שאלה? הצעה לשיתוף פעולה? או סתם בא לך לדבר על כדורגל?<br>
-                הצוות שלנו זמין עבורך במגוון ערוצים. בחר את הדרך הנוחה לך.
-            </div>
-
-            <div class="contact-grid">
-                
-                <a href="tel:0527287898" class="contact-card">
-                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    <div class="contact-method">טלפון</div>
-                    <div class="contact-detail">052-7287898</div>
-                </a>
-
-                <a href="https://wa.me/972527287898" target="_blank" class="contact-card">
-                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                    </svg>
-                    <div class="contact-method">WhatsApp</div>
-                    <div class="contact-detail">לחץ לשליחת הודעה</div>
-                </a>
-
-                <a href="mailto:info@solibi-seder.co.il" class="contact-card">
-                    <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
-                    <div class="contact-method">דואר אלקטרוני</div>
-                    <div class="contact-detail">info@solibi-seder.co.il</div>
-                </a>
-
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="social-section">
-                
-                <div class="social-links">
-                    <a href=https://www.youtube.com/@SolibiSport" target="_blank" class="social-btn" title="יוטיוב">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.54 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.54-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>
-                    </a>
-                    <a href=https://www.facebook.com/profile.php?id=61590342757556" target="_blank" class="social-btn" title="פייסבוק">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                    </a>
-                    <a href=https://www.instagram.com/solibi_sport/" target="_blank" class="social-btn" title="אינסטגרם">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    </a>
-                    <a href=https://www.tiktok.com/@solibi_sport" target="_blank" class="social-btn" title="טיקטוק">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
-                    </a>
-                </div>
-
-                <a href="https://business.solibi-seder.co.il/" target="_blank" class="business-link-card">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
-                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                    </svg>
-                    <div style="flex: 1; text-align: center;">
-                        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 2px;">בעל עסק? גלה את</div>
-                        <div style="font-size: 15px; font-weight: 900;">סוליבי עסקים</div>
+        <!-- קוביית הזכוכית המרכזית -->
+        <div class="contact-glass-box">
+            
+            <!-- 3. אזור הגלילה הפנימי -->
+            <div class="contact-scroll-area">
+                <div class="contact-inner-content">
+                    
+                    <div class="contact-subtitle">
+                        יש לך שאלה? הצעה לשיתוף פעולה? או סתם בא לך לדבר על כדורגל?<br>
+                        הצוות שלנו זמין עבורך במגוון ערוצים. בחר את הדרך הנוחה לך.
                     </div>
-                </a>
 
+                    <div class="contact-grid">
+                        <a href="tel:0527287898" class="contact-card">
+                            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <div class="contact-method">טלפון</div>
+                            <div class="contact-detail">052-7287898</div>
+                        </a>
+
+                        <a href="https://wa.me/972527287898" target="_blank" class="contact-card">
+                            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                            </svg>
+                            <div class="contact-method">WhatsApp</div>
+                            <div class="contact-detail">לחץ לשליחת הודעה</div>
+                        </a>
+
+                        <a href="mailto:info@solibi-seder.co.il" class="contact-card">
+                            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <div class="contact-method">דואר אלקטרוני</div>
+                            <div class="contact-detail">info@solibi-seder.co.il</div>
+                        </a>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="social-section">
+                        <div class="social-links">
+                            <a href="https://www.youtube.com/@SolibiSport" target="_blank" class="social-btn" title="יוטיוב">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.54 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.54-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>
+                            </a>
+                            <a href="https://www.facebook.com/profile.php?id=61590342757556" target="_blank" class="social-btn" title="פייסבוק">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                            </a>
+                            <a href="https://www.instagram.com/solibi_sport/" target="_blank" class="social-btn" title="אינסטגרם">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            </a>
+                            <a href="https://www.tiktok.com/@solibi_sport" target="_blank" class="social-btn" title="טיקטוק">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                            </a>
+                        </div>
+
+                        <a href="https://business.solibi-seder.co.il/" target="_blank" class="business-link-card">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                            <div style="flex: 1; text-align: center;">
+                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 2px;">בעל עסק? גלה את</div>
+                                <div style="font-size: 15px; font-weight: 900;">סוליבי עסקים</div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div>
             </div>
-
         </div>
     </main>
 
-    <footer class="footer">
-        <!-- תפריט ניווט תחתון -->
+    <!-- 4. פוטר וטיקר (זהה לחלוטין) -->
+    <footer class="app-footer">
         <div class="footer-links">
             <a href="about.html">אודות</a>
             <a href="contact.html">צור קשר</a>
             <a href="terms.html">תקנון ומדיניות</a>
         </div>
-        
-        <!-- הטיקר שרץ למטה -->
         <div id="ticker-placeholder"></div>
     </footer>
-<footer class="footer">
-        <!-- תפריט הניווט (הקישורים לדפים) -->
-        <div class="footer-links">
-            <a href="about.html">אודות</a>
-            <a href="contact.html">צור קשר</a>
-            <a href="terms.html">תקנון ומדיניות</a>
-        </div>
-        
-        <!-- לכאן יישאב הטיקר מהקובץ החיצוני -->
-        <div id="ticker-placeholder" style="flex: 1; overflow: hidden;"></div>
-    </footer>
+
+    <!-- סקריפטים -->
     <script>
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
                 const placeholder = document.getElementById('header-placeholder');
                 if(placeholder) placeholder.innerHTML = data;
-            })
-            .catch(error => console.error('שגיאה בטעינת ה-Header:', error));
+            });
 
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {
                 const placeholder = document.getElementById('ticker-placeholder');
                 if(placeholder) placeholder.innerHTML = data;
-            })
-            .catch(error => console.error('שגיאה בטעינת ה-Ticker:', error));
+            });
     </script>
     <script src="search.js"></script>
     <script type="module" src="auth.js"></script>
