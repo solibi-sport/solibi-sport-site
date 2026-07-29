@@ -32,7 +32,7 @@
         }
 
         /* =========================================
-           מבנה הגריד הראשי - העתק מדויק של דף הבית!
+           מבנה הגריד הראשי
            ========================================= */
         .app-layout-custom {
             flex: 1;
@@ -45,7 +45,7 @@
             margin: 0 auto;
         }
 
-        /* הגוש המאוחד: סיידבר ימני (זהב) + תוכן (שחור) שמחוברים בלי רווח */
+        /* הגוש המאוחד: סיידבר ימני + תוכן */
         .main-workspace {
             display: flex;
             flex: 1;
@@ -57,11 +57,10 @@
         }
 
         /* =========================================
-           סיידבר ימני מזהב (מחובר לתוכן)
+           סיידבר ימני (מחובר לתוכן)
            ========================================= */
         .right-nav {
             flex: 0 0 280px;
-            background: linear-gradient(180deg, #d3b44b 0%, #a88a2e 100%); 
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -75,14 +74,10 @@
         }
 
         .sidebar-logo-area h2 {
-            font-size: 24px;
-            color: #000;
-            font-weight: 900;
-            margin: 0;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.2);
+            font-size: 20px; 
+            margin-bottom: 5px;
         }
 
-        /* תיבת חיפוש ליגות */
         .search-box-wrapper {
             padding: 15px;
             border-bottom: 1px dashed rgba(0,0,0,0.2);
@@ -95,24 +90,24 @@
 
         .search-box input {
             width: 100%;
-            background: rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.4); 
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
             padding: 10px 35px 10px 15px;
-            color: #D6B953;
+            color: #fff;
             font-family: inherit;
             font-size: 13px;
             transition: 0.3s;
         }
 
         .search-box input:focus {
-            border-color: #000;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-color: #D6B953;
+            box-shadow: 0 0 10px rgba(214, 185, 83, 0.2);
             outline: none;
-            background: #000;
+            background: rgba(0,0,0,0.6);
         }
 
-        .search-box input::placeholder { color: rgba(214, 185, 83, 0.6); }
+        .search-box input::placeholder { color: rgba(255, 255, 255, 0.5); }
 
         .search-box i {
             position: absolute;
@@ -129,40 +124,50 @@
             padding: 15px 10px;
             direction: ltr; 
             scrollbar-width: thin;
-            scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+            scrollbar-color: rgba(214, 185, 83, 0.4) transparent;
         }
 
         .leagues-nav-list::-webkit-scrollbar { width: 4px; }
-        .leagues-nav-list::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
+        .leagues-nav-list::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
 
         .leagues-list-inner { direction: rtl; display: flex; flex-direction: column; gap: 6px; }
 
-        /* כפתורי הליגות מותאמים לרקע הזהב */
         .league-nav-item {
+            position: relative; /* הוסף עבור הקו המפריד */
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 10px 15px;
             background: transparent;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid transparent; 
             border-radius: 12px;
             cursor: pointer;
             transition: 0.3s;
             text-align: right;
             width: 100%;
             font-family: inherit;
+            color: #f5f5f5; 
+        }
+
+        /* קו הפרדה עדין בין הליגות */
+        .league-nav-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 5%;
+            width: 90%;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1); 
         }
 
         .league-nav-item:hover {
-            background: rgba(0,0,0,0.08);
-            border-color: rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.05); 
             transform: translateX(-3px);
         }
 
         .league-nav-item.active {
-            background: #000;
-            border-color: #000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background: rgba(214, 185, 83, 0.1); 
+            border-color: #D6B953;
         }
 
         .league-nav-img {
@@ -178,14 +183,14 @@
         .league-nav-img img { width: 100%; height: 100%; object-fit: contain; }
         
         .league-nav-text { display: flex; flex-direction: column; }
-        .league-nav-title { font-size: 14px; font-weight: 700; color: #111; transition: 0.2s; }
-        .league-nav-sub { font-size: 10px; color: rgba(0,0,0,0.6); }
+        .league-nav-title { font-size: 14px; font-weight: 700; transition: 0.2s; }
+        .league-nav-sub { font-size: 10px; opacity: 0.7; }
         
         .league-nav-item.active .league-nav-title { color: #D6B953; }
-        .league-nav-item.active .league-nav-sub { color: #a0a0a0; }
+        .league-nav-item.active .league-nav-sub { opacity: 1; color: #a0a0a0; }
 
         /* =========================================
-           מרכז התוכן (כהה) - מחובר לסיידבר
+           מרכז התוכן (כהה)
            ========================================= */
         .center-content-area {
             flex: 1;
@@ -198,20 +203,10 @@
         .center-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center; /* ממורכז מאחר ואין יותר כותרת */
             margin-bottom: 25px;
         }
 
-        .page-title {
-            color: #f5f5f5;
-            font-size: 24px; 
-            font-weight: 900;
-            text-transform: uppercase;
-            margin: 0;
-        }
-        .page-title span { color: #D6B953; }
-
-        /* טאבים מרכזיים בסגנון Pill */
         .premium-tabs-nav {
             display: flex;
             gap: 15px;
@@ -248,7 +243,6 @@
         .league-data-scroll::-webkit-scrollbar-thumb { background: rgba(214,185,83,0.4); border-radius: 10px; }
         .league-data-inner { direction: rtl; }
 
-        /* עיצוב הטבלאות הפנימיות */
         .api-table { width: 100%; border-collapse: collapse; color: #f5f5f5; font-size: 14px; }
         .api-table th { background: rgba(214, 185, 83, 0.1); color: var(--brand-silver); padding: 12px; text-align: center; border-bottom: 2px solid #D6B953; font-weight: 900; }
         .api-table td { padding: 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -258,7 +252,6 @@
         .team-logo, .player-img { width: 26px; height: 26px; object-fit: contain; }
         .player-img { border-radius: 50%; background: #222; }
 
-        /* שורות משחקים (לחיצות) */
         .match-row {
             display: flex; align-items: center; justify-content: space-between;
             background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border-silver);
@@ -328,6 +321,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            z-index: 2;
         }
 
         .live-pulse {
@@ -345,19 +339,20 @@
 
         .live-scroll-wrapper {
             flex: 1;
-            position: relative;
             overflow: hidden;
             background: rgba(0,0,0,0.3);
+            display: flex;
+            position: relative;
         }
 
         .live-scroll-content {
-            position: absolute;
             width: 100%;
             padding: 15px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            animation: scrollUpLive 25s linear infinite;
+            position: absolute;
+            animation: scrollUpLive 55s linear infinite; 
         }
 
         .live-scroll-wrapper:hover .live-scroll-content {
@@ -365,16 +360,18 @@
         }
 
         @keyframes scrollUpLive {
-            0% { top: 100%; }
-            100% { top: -150%; }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
         }
 
+        /* עיצוב הקובייה החדשה והסימטרית */
         .live-match-card {
-            background: #1a1a1a;
-            border: 1px solid var(--border-silver);
+            background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: 1px solid rgba(214, 185, 83, 0.4); 
+            border-right: 3px solid #D6B953; 
             border-radius: 10px;
-            padding: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            padding: 10px 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
             cursor: pointer;
             transition: 0.3s;
         }
@@ -382,28 +379,104 @@
         .live-match-card:hover {
             border-color: #D6B953;
             transform: translateY(-2px);
-            background: #000;
+            background: linear-gradient(145deg, #222 0%, #111 100%);
+            box-shadow: 0 6px 20px rgba(214, 185, 83, 0.2);
+        }
+
+        .live-card-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed rgba(255,255,255,0.08);
+            padding-bottom: 6px;
+        }
+
+        .live-time-badge {
+            font-size: 10px;
+            color: #D6B953;
+            font-weight: 900;
+            background: rgba(214, 185, 83, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(214, 185, 83, 0.3);
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+            line-height: 1;
         }
 
         .live-league-name {
             font-size: 10px;
-            color: var(--brand-silver);
+            color: var(--brand-silver-dark);
             text-align: center;
-            margin-bottom: 8px;
-            border-bottom: 1px dashed #333;
-            padding-bottom: 5px;
+            font-weight: 500;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 90%;
         }
 
-        .live-teams {
+        .live-match-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 5px;
         }
 
-        .live-team { font-size: 12px; font-weight: 700; color: #fff; flex: 1; text-align: center;}
-        .live-score { font-size: 16px; font-weight: 900; color: #ff3b30; padding: 0 10px;}
-        .live-time { font-size: 11px; color: #D6B953; text-align: center; font-weight: 700;}
+        .live-teams-col {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            text-align: right;
+        }
+
+        .live-team-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 20px;
+        }
+
+        /* --- תיקון גודל הסמלים בלייב כדי שלא יתפוצצו --- */
+        .live-team-row img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .live-team-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
+        }
+
+        .live-scores-col {
+            display: flex;
+            flex-direction: column;
+            gap: 6px; 
+            align-items: center;
+            justify-content: center;
+            padding-right: 15px;
+            border-right: 1px solid rgba(255,255,255,0.05); 
+            min-width: 35px;
+        }
+
+        .live-score-num {
+            font-size: 14px; 
+            font-weight: 900;
+            color: var(--brand-silver); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 20px; 
+            line-height: 1;
+        }
 
         /* רספונסיביות */
         @media (max-width: 1200px) {
@@ -424,16 +497,15 @@
     <!-- 1. הדר אחיד -->
     <div id="header-placeholder"></div>
 
-    <!-- 2. אזור הבמה המרכזי במבנה דף הבית -->
+    <!-- 2. אזור הבמה המרכזי -->
     <main class="app-layout-custom">
         
-        <!-- בלוק מחובר: סיידבר ליגות (זהב) + מרכז תוכן (שחור) -->
+        <!-- בלוק מחובר: סיידבר ליגות + מרכז תוכן -->
         <div class="main-workspace">
             
-            <!-- סיידבר ימני: ליגות מזהב -->
-            <aside class="right-nav">
+            <aside class="app-sidebar right-nav">
                 <div class="sidebar-logo-area">
-                    <h2>סוליבי ליגות</h2>
+                    <h2 class="silver-glow-text">סוליבי ליגות</h2>
                 </div>
                 <div class="search-box-wrapper">
                     <div class="search-box">
@@ -448,11 +520,9 @@
                 </nav>
             </aside>
 
-            <!-- מרכז התוכן: הטבלאות והנתונים -->
+            <!-- מרכז התוכן -->
             <section class="center-content-area">
-                <div class="center-header">
-                    <h1 class="page-title" id="dynamic-league-title">בחר <span>ליגה</span></h1>
-                    
+                <div class="center-header" style="justify-content: center;">
                     <div class="premium-tabs-nav">
                         <button class="tab-pill active" onclick="switchDataTab(0)">טבלה</button>
                         <button class="tab-pill" onclick="switchDataTab(1)">משחקים</button>
@@ -468,14 +538,13 @@
             </section>
         </div>
 
-        <!-- סיידבר שמאלי מופרד: תוצאות לייב -->
+        <!-- סיידבר שמאלי: תוצאות לייב -->
         <aside class="left-extra">
-            <!-- סדר האלמנטים שונה פה כדי שהנקודה תהיה משמאל לטקסט -->
-            <h2 class="sidebar-title"><span>תוצאות לייב</span> <div class="live-pulse"></div></h2>
-            
+            <h2 class="sidebar-title">
+    <span>תוצאות לייב</span> <div class="live-pulse"></div>
+</h2>
             <div class="live-scroll-wrapper">
                 <div class="live-scroll-content" id="live-scores-container">
-                    <!-- נתוני לייב יוזרקו לפה -->
                     <div style="text-align: center; color: var(--brand-silver); font-size: 12px; margin-top: 20px;">מחפש משחקים חיים...</div>
                 </div>
             </div>
@@ -493,9 +562,8 @@
         <div id="ticker-placeholder"></div>
     </footer>
 
-    <!-- סקריפטים: API, לייב סקורס, והחלפת ליגות (ללא המודאל שיושב בקובץ חיצוני) -->
+    <!-- סקריפטים: API, לייב סקורס, והחלפת ליגות -->
     <script>
-        // טעינת ההדר והטיקר
         fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
@@ -623,15 +691,6 @@
             currentLeagueId = id;
             currentLeagueName = name;
             
-            const titleEl = document.getElementById('dynamic-league-title');
-            const words = name.split(' ');
-            if(words.length > 1) {
-                const lastWord = words.pop();
-                titleEl.innerHTML = `${words.join(' ')} <span>${lastWord}</span>`;
-            } else {
-                titleEl.innerHTML = `<span>${name}</span>`;
-            }
-
             renderLeaguesSidebar(leaguesData);
             loadTabData();
         }
@@ -735,7 +794,6 @@
                         if(['1H','2H','HT'].includes(status)) scoreDisplay += `<br><span style="color:#ff4a4a; font-size:10px; font-weight:bold;">חי: דקה ${match.fixture.status.elapsed}'</span>`;
                     }
 
-                    // לחיצה קוראת לפונקציה החיצונית מקובץ matchEvents.js
                     html += `<div class="match-row" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${match.fixture.id}, '${match.teams.home.name.replace(/'/g, "\\'")}', '${match.teams.away.name.replace(/'/g, "\\'")}')">
                             <div class="match-team home"><span>${match.teams.home.name}</span><img src="${match.teams.home.logo}" class="team-logo"></div>
                             <div class="match-score"><div>${scoreDisplay}</div><span class="match-date">${dateStr}</span></div>
@@ -793,18 +851,41 @@
 
                 let html = '';
                 data.response.slice(0, 15).forEach(match => {
+                    let homeName = match.teams.home.name;
+                    let awayName = match.teams.away.name;
+                    let escHome = homeName.replace(/'/g, "\\'");
+                    let escAway = awayName.replace(/'/g, "\\'");
+                    
                     html += `
-                        <div class="live-match-card" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${match.fixture.id}, '${match.teams.home.name.replace(/'/g, "\\'")}', '${match.teams.away.name.replace(/'/g, "\\'")}')">
-                            <div class="live-league-name">${match.league.name}</div>
-                            <div class="live-teams">
-                                <span class="live-team">${match.teams.home.name}</span>
-                                <span class="live-score">${match.goals.home} - ${match.goals.away}</span>
-                                <span class="live-team">${match.teams.away.name}</span>
+                        <div class="live-match-card" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${match.fixture.id}, '${escHome}', '${escAway}')">
+                            
+                            <div class="live-card-header">
+                                <span class="live-time-badge">${match.fixture.status.elapsed}'</span>
+                                <span class="live-league-name">${match.league.name}</span>
                             </div>
-                            <div class="live-time">${match.fixture.status.elapsed}' דק'</div>
+                            
+                            <div class="live-match-content">
+                                <div class="live-teams-col">
+                                    <div class="live-team-row">
+                                        <img src="${match.teams.home.logo}" alt="logo">
+                                        <span class="live-team-name">${homeName}</span>
+                                    </div>
+                                    <div class="live-team-row">
+                                        <img src="${match.teams.away.logo}" alt="logo">
+                                        <span class="live-team-name">${awayName}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="live-scores-col">
+                                    <span class="live-score-num">${match.goals.home}</span>
+                                    <span class="live-score-num">${match.goals.away}</span>
+                                </div>
+                            </div>
+
                         </div>
                     `;
                 });
+                
                 container.innerHTML = html + html; 
             } catch(e) {
                 container.innerHTML = '<div style="text-align: center; color: #ff3b30; font-size: 12px; margin-top: 20px;">שגיאה בטעינת הלייב</div>';
@@ -812,9 +893,7 @@
         }
     </script>
     
-    <!-- קישור חיצוני לקובץ של החלון הקופץ -->
     <script src="matchEvents.js"></script>
-    
     <script src="search.js"></script>
     <script type="module" src="auth.js"></script>
 </body>
