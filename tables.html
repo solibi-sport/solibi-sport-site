@@ -197,14 +197,16 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            padding: 25px 35px;
+            /* 0 פיקסלים מלמעלה! שואב הכל לקצה העליון */
+            padding: 0px 35px 15px; 
         }
 
         .center-header {
             display: flex;
             align-items: center;
-            justify-content: center; /* ממורכז מאחר ואין יותר כותרת */
-            margin-bottom: 25px;
+            justify-content: center;
+            margin-top: 15px; /* מרווח עדין מאוד מהמסגרת העליונה */
+            margin-bottom: 10px; /* צמצום משמעותי של הרווח מתחת לטאבים */
         }
 
         .premium-tabs-nav {
@@ -505,7 +507,7 @@
             
             <aside class="app-sidebar right-nav">
                 <div class="sidebar-logo-area">
-                    <h2 class="silver-glow-text">סוליבי ליגות</h2>
+                    <h2 class="silver-glow-text">ליגות</h2>
                 </div>
                 <div class="search-box-wrapper">
                     <div class="search-box">
@@ -541,8 +543,8 @@
         <!-- סיידבר שמאלי: תוצאות לייב -->
         <aside class="left-extra">
             <h2 class="sidebar-title">
-    <span>תוצאות לייב</span> <div class="live-pulse"></div>
-</h2>
+                <span>תוצאות לייב</span> <div class="live-pulse"></div>
+            </h2>
             <div class="live-scroll-wrapper">
                 <div class="live-scroll-content" id="live-scores-container">
                     <div style="text-align: center; color: var(--brand-silver); font-size: 12px; margin-top: 20px;">מחפש משחקים חיים...</div>
@@ -563,6 +565,7 @@
     </footer>
 
     <!-- סקריפטים: API, לייב סקורס, והחלפת ליגות -->
+    <script src="translations.js"></script>
     <script>
         fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
@@ -581,6 +584,14 @@
         let currentRoundIndex = -1;
         let selectedRoundName = "";
         let currentStatsType = 'topscorers';
+
+        function t(text) {
+            if (!text) return text;
+            if (typeof myDictionary !== 'undefined' && myDictionary[text]) {
+                return myDictionary[text];
+            }
+            return text;
+        }
 
         const leaguesData = [
             { id: 383, name: "ליגת העל", sub: "ישראל", img: "il.png" },
@@ -721,7 +732,8 @@
                 const standings = data.response[0].league.standings[0];
                 let html = `<table class="api-table"><thead><tr><th>#</th><th style="text-align:right;">קבוצה</th><th>מש'</th><th>נצ'</th><th>תיקו</th><th>הפס'</th><th>שערים</th><th>נק'</th></tr></thead><tbody>`;
                 standings.forEach(team => {
-                    html += `<tr><td>${team.rank}</td><td><div class="team-cell"><img src="${team.team.logo}" class="team-logo"><span>${team.team.name}</span></div></td>
+                    let teamName = t(team.team.name);
+                    html += `<tr><td>${team.rank}</td><td><div class="team-cell"><img src="${team.team.logo}" class="team-logo"><span>${teamName}</span></div></td>
                             <td>${team.all.played}</td><td>${team.all.win}</td><td>${team.all.draw}</td><td>${team.all.lose}</td><td dir="ltr">${team.all.goals.for}:${team.all.goals.against}</td><td style="color:#D6B953; font-weight:900;">${team.points}</td></tr>`;
                 });
                 html += `</tbody></table>`;
@@ -763,7 +775,7 @@
             container.innerHTML = `
                 <div class="round-switcher-bar">
                     <button class="round-nav-btn" onclick="changeRound(1)" ${currentRoundIndex >= allRounds.length - 1 ? 'disabled' : ''}>מחזור הבא <i class="fa-solid fa-chevron-left"></i></button>
-                    <span class="current-round-text">${cleanRoundName}</span>
+                    <span class="current-round-text">${t(cleanRoundName)}</span>
                     <button class="round-nav-btn" onclick="changeRound(-1)" ${currentRoundIndex <= 0 ? 'disabled' : ''}><i class="fa-solid fa-chevron-right"></i> מחזור קודם</button>
                 </div>
                 <div id="fixtures-list-container"><div class="loader"><i class="fa-solid fa-spinner fa-spin"></i> טוען משחקים...</div></div>
@@ -794,10 +806,13 @@
                         if(['1H','2H','HT'].includes(status)) scoreDisplay += `<br><span style="color:#ff4a4a; font-size:10px; font-weight:bold;">חי: דקה ${match.fixture.status.elapsed}'</span>`;
                     }
 
+                    let homeName = t(match.teams.home.name);
+                    let awayName = t(match.teams.away.name);
+
                     html += `<div class="match-row" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${match.fixture.id}, '${match.teams.home.name.replace(/'/g, "\\'")}', '${match.teams.away.name.replace(/'/g, "\\'")}')">
-                            <div class="match-team home"><span>${match.teams.home.name}</span><img src="${match.teams.home.logo}" class="team-logo"></div>
+                            <div class="match-team home"><span>${homeName}</span><img src="${match.teams.home.logo}" class="team-logo"></div>
                             <div class="match-score"><div>${scoreDisplay}</div><span class="match-date">${dateStr}</span></div>
-                            <div class="match-team away"><img src="${match.teams.away.logo}" class="team-logo"><span>${match.teams.away.name}</span></div></div>`;
+                            <div class="match-team away"><img src="${match.teams.away.logo}" class="team-logo"><span>${awayName}</span></div></div>`;
                 });
                 listContainer.innerHTML = html;
             } catch (err) { listContainer.innerHTML = '<div class="loader">שגיאה בקריאת המשחקים.</div>'; }
@@ -829,8 +844,11 @@
                     const player = item.player; const stats = item.statistics[0];
                     let statValue = type === 'topassists' ? stats.goals.assists : type === 'topyellowcards' ? stats.cards.yellow : type === 'topredcards' ? stats.cards.red : stats.goals.total;
                     
-                    tableHtml += `<tr><td><b>${index + 1}</b></td><td><div class="player-cell"><img src="${player.photo}" class="player-img"><span>${player.name}</span></div></td>
-                            <td><div class="team-cell"><img src="${stats.team.logo}" class="team-logo"><span style="font-weight:400; color:#a0a0a0;">${stats.team.name}</span></div></td>
+                    let playerName = t(player.name);
+                    let teamName = t(stats.team.name);
+
+                    tableHtml += `<tr><td><b>${index + 1}</b></td><td><div class="player-cell"><img src="${player.photo}" class="player-img"><span>${playerName}</span></div></td>
+                            <td><div class="team-cell"><img src="${stats.team.logo}" class="team-logo"><span style="font-weight:400; color:#a0a0a0;">${teamName}</span></div></td>
                             <td style="color:#D6B953; font-weight:900; font-size:16px;">${statValue || 0}</td></tr>`;
                 });
                 tableHtml += `</tbody></table>`;
@@ -851,19 +869,18 @@
 
                 let html = '';
                 data.response.slice(0, 15).forEach(match => {
-                    let homeName = match.teams.home.name;
-                    let awayName = match.teams.away.name;
-                    let escHome = homeName.replace(/'/g, "\\'");
-                    let escAway = awayName.replace(/'/g, "\\'");
+                    let homeName = t(match.teams.home.name);
+                    let awayName = t(match.teams.away.name);
+                    let leagueName = t(match.league.name);
+                    let escHome = match.teams.home.name.replace(/'/g, "\\'");
+                    let escAway = match.teams.away.name.replace(/'/g, "\\'");
                     
                     html += `
                         <div class="live-match-card" onclick="if(typeof openMatchEvents === 'function') openMatchEvents(${match.fixture.id}, '${escHome}', '${escAway}')">
-                            
                             <div class="live-card-header">
                                 <span class="live-time-badge">${match.fixture.status.elapsed}'</span>
-                                <span class="live-league-name">${match.league.name}</span>
+                                <span class="live-league-name">${leagueName}</span>
                             </div>
-                            
                             <div class="live-match-content">
                                 <div class="live-teams-col">
                                     <div class="live-team-row">
@@ -875,13 +892,11 @@
                                         <span class="live-team-name">${awayName}</span>
                                     </div>
                                 </div>
-                                
                                 <div class="live-scores-col">
                                     <span class="live-score-num">${match.goals.home}</span>
                                     <span class="live-score-num">${match.goals.away}</span>
                                 </div>
                             </div>
-
                         </div>
                     `;
                 });
