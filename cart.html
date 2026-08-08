@@ -244,7 +244,7 @@
         </div>
     </main>
 
-    <!-- 3. פוטר וטיקר (משתמש במחלקות המקוריות מדף הבית כדי להיראות זהה לחלוטין) -->
+    <!-- 3. פוטר וטיקר -->
     <footer class="app-footer">
         <div class="footer-links">
             <a href="about.html">אודות</a>
@@ -254,12 +254,15 @@
         <div id="ticker-placeholder"></div>
     </footer>
 
-    <!-- סקריפטים (אותה לוגיקה מעולה שעבדה קודם) -->
+    <!-- סקריפטים (מסתנכרים למנוע העגלה של דף הבית) -->
     <script>
-        fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
+        fetch('header.html').then(res => res.text()).then(data => {
+            document.getElementById('header-placeholder').innerHTML = data;
+            // מפעיל את מנוע העיגול האדום בהדר אם קיים
+            if(typeof updateCartBadge === 'function') updateCartBadge();
+        });
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
-        // הפונקציה המקורית מהקובץ הקודם[cite: 9]
         function renderCart() {
             let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
             const list = document.getElementById('cart-items-list');
@@ -279,22 +282,22 @@
                 checkoutBtn.disabled = false;
 
                 cart.forEach((item, index) => {
-                    totalItems += item.quantity;
-                    totalPrice += (item.price * item.quantity);
+                    // חשוב: משתמשים ב-qty כפי שנשמר במנוע שבדף הבית
+                    totalItems += item.qty;
+                    totalPrice += (item.price * item.qty);
 
-                    // תמיכה בתמונה רגילה או באייקון SVG[cite: 9]
-                    let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img || 'mystery-box.jpg.png'}" alt="${item.name}">`;
+                    let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img || 'images/soccerwe-mistery-pack.jpg.png'}" alt="${item.name}">`;
 
                     list.innerHTML += `
                         <div class="cart-item">
                             <div class="item-img">${imageHTML}</div>
                             <div class="item-info">
                                 <div class="item-title">${item.name}</div>
-                                <div class="item-price">${item.price} ₪</div>
+                                <div class="item-price">${item.price.toFixed(2)} ₪</div>
                             </div>
                             <div class="quantity-controls">
                                 <button class="q-btn" onclick="updateItemQuantity(${index}, 1)">+</button>
-                                <span class="q-num">${item.quantity}</span>
+                                <span class="q-num">${item.qty}</span>
                                 <button class="q-btn" onclick="updateItemQuantity(${index}, -1)">-</button>
                             </div>
                             <button class="remove-item" onclick="removeFromCart(${index})" title="הסר פריט">✕</button>
@@ -304,24 +307,22 @@
             }
             
             updateSummary(totalItems, totalPrice);
+            
+            // מעדכן את מספר העיגול האדום בהדר בדף העגלה עצמו
+            updateCartBadge();
         }
 
         function updateSummary(count, price) {
             document.getElementById('items-count').innerText = count;
-            document.getElementById('total-price').innerText = price + ' ₪';
-            
-            // עדכון כמות העגלה למעלה בהדר[cite: 9]
-            try { 
-                if(typeof updateCartDisplay === 'function') updateCartDisplay(); 
-            } catch(e) {}
+            document.getElementById('total-price').innerText = price.toFixed(2) + ' ₪';
         }
 
-        // שינוי כמות מתוך העגלה בזמן אמת[cite: 9]
+        // שינוי כמות מתוך העגלה בזמן אמת
         function updateItemQuantity(index, change) {
             let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
             if (cart[index]) {
-                cart[index].quantity += change;
-                if (cart[index].quantity <= 0) {
+                cart[index].qty += change;
+                if (cart[index].qty <= 0) {
                     cart.splice(index, 1);
                 }
                 localStorage.setItem('solibiCart', JSON.stringify(cart));
@@ -329,7 +330,7 @@
             }
         }
 
-        // מחיקת מוצר לגמרי[cite: 9]
+        // מחיקת מוצר לגמרי
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
             cart.splice(index, 1);
@@ -340,10 +341,37 @@
         function goToCheckout() {
             let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
             if (cart.length > 0) {
+                // מעביר לדף התשלום מבלי למחוק את העגלה
                 window.location.href = 'checkout.html';
             } else {
                 alert("העגלה שלך ריקה. אנא הוסף מוצרים לפני המעבר לתשלום.");
             }
+        }
+        
+        // פונקציה לעדכון העיגול האדום בהדר בתוך דף העגלה
+        function updateCartBadge() {
+            let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
+            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+
+            const headerLinks = document.querySelectorAll('.main-nav a, .header-center a');
+            headerLinks.forEach(link => {
+                if (link.innerText.includes('עגלה') || link.querySelector('.fa-cart-shopping')) {
+                    link.style.position = 'relative';
+                    let badge = link.querySelector('.cart-badge');
+                    
+                    if (totalQty > 0) {
+                        if (!badge) {
+                            badge = document.createElement('span');
+                            badge.className = 'cart-badge';
+                            link.appendChild(badge);
+                        }
+                        badge.innerText = totalQty;
+                        badge.style.display = 'flex';
+                    } else if (badge) {
+                        badge.style.display = 'none';
+                    }
+                }
+            });
         }
 
         window.onload = renderCart;

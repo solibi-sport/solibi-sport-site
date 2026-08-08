@@ -1275,10 +1275,17 @@ body {
 }
 
 /* =========================================
-   רשת מוצרים ננעלת לקטלוג - 2 שורות של 3 (מכווץ למסכים קטנים)
+   רשת מוצרים ננעלת לקטלוג - מכווצת במיוחד (למניעת חיתוך במסכים נמוכים)
    ========================================= */
 .inner-catalog-content { 
-    flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 20px; background: transparent; border: none; 
+    flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; 
+    padding: 15px !important; /* הקטנו מ-20px */
+    background: transparent; border: none; 
+}
+
+.catalog-top-bar {
+    padding-bottom: 10px !important; /* צמצום המרווח העליון */
+    margin-bottom: 10px !important;
 }
 
 .products-scroll-area { 
@@ -1289,20 +1296,20 @@ body {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     grid-template-rows: repeat(2, 1fr) !important;
-    gap: 12px !important; /* רווח מוקטן בין קוביות */
+    gap: 10px !important; /* הקטנו את המרווח בין הקוביות */
     width: 100% !important;
-    max-width: 850px !important; 
+    max-width: 820px !important; 
     margin: 0 auto;
 }
 
 .product-card {
     flex: none !important;
     width: 100% !important;
-    height: 190px !important; /* גובה מכווץ משמעותית */
+    height: 175px !important; /* כיווץ נוסף לגובה הקובייה */
     background: rgba(10, 10, 10, 0.7);
     border: 1px solid rgba(214, 185, 83, 0.3); 
     border-radius: 12px;
-    padding: 10px !important; 
+    padding: 8px !important; /* פחות שוליים פנימיים */
     display: flex; 
     flex-direction: column; 
     position: relative; 
@@ -1317,19 +1324,19 @@ body {
 
 .product-img-wrapper {
     width: 100%; 
-    height: 75px !important; /* תמונה מוקטנת */
-    min-height: 75px !important;
-    max-height: 75px !important;
+    height: 65px !important; /* תמונה יותר קומפקטית */
+    min-height: 65px !important;
+    max-height: 65px !important;
     background: #050505; 
     border-radius: 8px; 
     display: flex; 
     align-items: center;
     justify-content: center; 
-    margin-bottom: 8px !important; 
+    margin-bottom: 6px !important; 
     border: 1px solid rgba(255,255,255,0.03); 
     overflow: hidden; 
     flex-shrink: 0;
-    padding: 5px;
+    padding: 4px;
 }
 
 .product-img-wrapper img { 
@@ -1338,7 +1345,7 @@ body {
     margin: 0 auto;
 }
 
-.product-badge { position: absolute; top: 8px; right: 8px; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; z-index: 2; background: #ff4a4a; color: #fff;}
+.product-badge { position: absolute; top: 6px; right: 6px; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; z-index: 2; background: #ff4a4a; color: #fff;}
 
 .product-info { 
     display: flex; 
@@ -1350,11 +1357,11 @@ body {
 .product-cat { font-size: 10px; color: #a0a0a0; margin-bottom: 2px; }
 
 .product-title { 
-    font-size: 11px; /* פונט טיפה יותר קטן */
+    font-size: 11px; 
     font-weight: 700; 
     color: #f5f5f5; 
     line-height: 1.3; 
-    height: 30px !important; /* פחות גובה לשורות הטקסט */
+    height: 30px !important; 
     margin-bottom: 0 !important; 
     display: -webkit-box; 
     -webkit-line-clamp: 2; 
@@ -1363,19 +1370,19 @@ body {
 }
 
 .product-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: auto; flex-direction: row-reverse; }
-.product-price { font-size: 15px; font-weight: 900; color: var(--brand-gold); }
-.buy-btn { background: none; border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 28px; height: 28px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.3s; }
+.product-price { font-size: 14px; font-weight: 900; color: var(--brand-gold); }
+.buy-btn { background: none; border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.3s; }
 .buy-btn:hover { background: var(--brand-gold); color: #000; }
 .empty-msg { display: none; text-align: center; color: #a0a0a0; padding: 50px 20px; width: 100%; grid-column: span 3; }
 
-/* מערכת דפדוף פרימיום - מכווצת */
+/* מערכת דפדוף פרימיום - מכווצת במיוחד */
 .catalog-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 25px;
-    margin-top: 10px !important;
-    padding-top: 10px !important;
+    gap: 15px; /* מרווח קטן יותר בין הכפתורים */
+    margin-top: 8px !important;
+    padding-top: 8px !important;
     border-top: 1px dashed rgba(214, 185, 83, 0.2);
     width: 100%;
 }
@@ -1384,15 +1391,16 @@ body {
     background: rgba(214, 185, 83, 0.05);
     border: 1px solid var(--brand-gold);
     color: var(--brand-gold);
-    padding: 6px 20px; /* כפתור דפדוף קצת יותר צר */
+    padding: 6px 16px; 
     border-radius: 30px;
     font-family: inherit;
     font-weight: 700;
+    font-size: 13px;
     cursor: pointer;
     transition: 0.3s;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .page-btn:hover:not(:disabled) {
@@ -1588,4 +1596,129 @@ img {
 .mystery-purchase-area {
     flex-direction: row-reverse !important;
     justify-content: flex-end !important;
+}
+/* =========================================
+   מערכת הרכבת מארז אישי (Box Builder)
+   ========================================= */
+.builder-layout {
+    display: flex; gap: 20px; width: 100%; max-width: 1000px; margin: 0 auto; height: 100%; padding: 10px;
+}
+
+/* צד ימין - אשף הבחירה */
+.builder-wizard-pane {
+    flex: 6.5; display: flex; flex-direction: column;
+}
+
+.builder-steps-bar {
+    display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.6);
+    border: 1px solid rgba(214, 185, 83, 0.2); padding: 15px 25px; border-radius: 12px; margin-bottom: 20px;
+}
+.builder-steps-bar .step { color: #888; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+.builder-steps-bar .step.active { color: #f5f5f5; }
+.builder-steps-bar .step span {
+    background: #333; color: #888; width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+}
+.builder-steps-bar .step.active span { background: var(--brand-gold); color: #000; box-shadow: 0 0 10px rgba(214,185,83,0.5); }
+.step-divider { flex: 1; height: 1px; background: rgba(255,255,255,0.1); margin: 0 15px; }
+
+.builder-step-content { display: none; animation: fadeInUp 0.3s ease forwards; }
+.builder-step-content.active { display: block; }
+
+.builder-step-title { color: var(--brand-gold); font-size: 20px; font-weight: 900; margin-bottom: 20px; margin-top: 0; }
+
+/* בחירת קופסה */
+.box-options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.box-option {
+    background: rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px;
+    text-align: center; cursor: pointer; transition: 0.3s;
+}
+.box-option:hover { border-color: rgba(214, 185, 83, 0.5); transform: translateY(-5px); }
+.box-option img { height: 120px; margin-bottom: 15px; object-fit: contain; }
+.box-option h4 { color: #fff; margin: 0 0 5px 0; font-size: 16px; }
+.box-option span { color: var(--brand-gold); font-weight: 900; font-size: 18px; }
+
+/* מוצרים לבחירה */
+.builder-items-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.builder-item {
+    display: flex; align-items: center; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 10px; transition: 0.3s;
+}
+.builder-item:hover { border-color: rgba(214, 185, 83, 0.3); background: rgba(214,185,83,0.05); }
+.builder-item img { width: 50px; height: 50px; object-fit: contain; background: #111; border-radius: 6px; padding: 2px; margin-left: 15px; }
+.builder-item-info { flex: 1; }
+.builder-item-info h5 { margin: 0 0 5px 0; color: #fff; font-size: 13px; }
+.builder-item-info .price { color: var(--brand-gold); font-weight: 700; font-size: 13px; }
+.add-to-box-btn {
+    background: transparent; border: 1px solid var(--brand-gold); color: var(--brand-gold);
+    width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: 0.3s;
+}
+.add-to-box-btn:hover { background: var(--brand-gold); color: #000; }
+
+.greeting-textarea {
+    width: 100%; height: 150px; background: rgba(0,0,0,0.5); border: 1px solid rgba(214, 185, 83, 0.3);
+    border-radius: 12px; padding: 15px; color: #fff; font-family: inherit; font-size: 15px; resize: none; outline: none;
+}
+
+.next-step-btn { background: var(--brand-gold); color: #000; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+.next-step-btn:hover { background: #fff; }
+.back-btn { background: none; border: none; color: #888; cursor: pointer; transition: 0.3s; font-size: 13px; }
+.back-btn:hover { color: #fff; }
+
+/* צד שמאל - סיכום קבלה */
+.builder-summary-pane {
+    flex: 3.5; background: rgba(10,10,10,0.8); border: 1px solid rgba(214, 185, 83, 0.2);
+    border-radius: 16px; padding: 20px; display: flex; flex-direction: column; position: relative;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+.summary-title { margin: 0 0 20px 0; color: #fff; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 15px; font-size: 18px; }
+.summary-box-info { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; }
+.summary-box-info img { width: 40px; height: 40px; object-fit: contain; }
+.summary-box-info span { color: #fff; font-weight: 700; font-size: 14px; }
+
+.summary-items-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.empty-box-msg { color: #666; font-size: 13px; text-align: center; margin-top: 20px; }
+.summary-item-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; }
+.summary-item-row span { color: #ccc; font-size: 12px; }
+.summary-item-row strong { color: var(--brand-gold); font-size: 13px; margin-right: 10px; }
+.remove-item-btn { background: none; border: none; color: #ff4a4a; cursor: pointer; font-size: 12px; opacity: 0.7; }
+.remove-item-btn:hover { opacity: 1; }
+
+.summary-footer { border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px; margin-top: auto; }
+.summary-total { font-size: 16px; color: #fff; display: flex; justify-content: space-between; margin-bottom: 15px; }
+.summary-total strong { font-size: 24px; color: var(--brand-gold); }
+
+.btn-checkout-box { width: 100%; background: var(--brand-gold); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; gap: 8px; align-items: center; }
+.btn-checkout-box:hover:not(.disabled) { background: #fff; box-shadow: 0 0 20px rgba(214,185,83,0.4); transform: translateY(-2px); }
+.btn-checkout-box.disabled { background: #333; color: #666; cursor: not-allowed; }
+
+/* =========================================
+   עיגול כמות מוצרים בעגלה (Cart Badge)
+   ========================================= */
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4a4a;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 900;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid #0a0a0a; /* מסגרת כהה להפרדה מהרקע */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    animation: popBadge 0.3s ease-out;
+    pointer-events: none; /* כדי שלא יפריע ללחיצה על העגלה עצמה */
+    z-index: 10;
+}
+
+/* אנימציית קפיצה כשמוצר נוסף */
+@keyframes popBadge {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
 }

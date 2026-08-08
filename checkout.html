@@ -410,7 +410,7 @@
     </div>
 
     <script>
-        // טעינת ההדר והטיקר בצורה אחידה[cite: 10]
+        // טעינת ההדר והטיקר בצורה אחידה
         fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
@@ -431,17 +431,18 @@
             subtotal = 0;
             
             cart.forEach(item => {
-                subtotal += (item.price * item.quantity);
-                let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img || 'mystery-box.jpg.png'}" alt="${item.name}">`;
+                // תיקון: שימוש ב-item.qty במקום item.quantity
+                subtotal += (item.price * item.qty);
+                let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img || 'images/soccerwe-mistery-pack.jpg.png'}" alt="${item.name}">`;
 
                 list.innerHTML += `
                     <div class="mini-item">
                         <div class="mini-img">${imageHTML}</div>
                         <div class="mini-info">
                             <span class="mini-name">${item.name}</span>
-                            <span class="mini-qty">כמות: ${item.quantity}</span>
+                            <span class="mini-qty">כמות: ${item.qty}</span>
                         </div>
-                        <span class="mini-price">${item.price * item.quantity} ₪</span>
+                        <span class="mini-price">${(item.price * item.qty).toFixed(2)} ₪</span>
                     </div>
                 `;
             });
@@ -455,9 +456,9 @@
         }
 
         function updateTotals() {
-            document.getElementById('calc-subtotal').innerText = subtotal + ' ₪';
-            document.getElementById('calc-shipping').innerText = shippingCost === 0 ? 'חינם' : shippingCost + ' ₪';
-            document.getElementById('calc-total').innerText = (subtotal + shippingCost) + ' ₪';
+            document.getElementById('calc-subtotal').innerText = subtotal.toFixed(2) + ' ₪';
+            document.getElementById('calc-shipping').innerText = shippingCost === 0 ? 'חינם' : shippingCost.toFixed(2) + ' ₪';
+            document.getElementById('calc-total').innerText = (subtotal + shippingCost).toFixed(2) + ' ₪';
         }
 
         function processPayment() {

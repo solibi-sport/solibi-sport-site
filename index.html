@@ -193,33 +193,124 @@
 
                         </div>
                     </div>
-                    <!-- תצוגת הרכבת מארז אישי (מסך נפרד לחלוטין) -->
+                    <!-- מסך 2: הרכבת מארז אישי (Box Builder) -->
 <div id="view-custom-pack" class="spa-view">
-    <div class="packages-content-area" style="max-width: 950px; margin: 0 auto; width: 100%;">
-        <div class="package-tab-pane active" style="justify-content: center; align-items: center; gap: 50px;">
-            <div class="pack-right-info" style="flex: 1.2;">
-                <span class="pack-subtitle" style="color: #000; background: var(--brand-gold); padding: 4px 12px; border-radius: 12px; display: inline-block; width: fit-content; font-weight: 900;">חוויית פרימיום</span>
-                <h3 class="pack-main-title">הרכב את מארז החלומות</h3>
-                <p class="pack-desc">בניית מארז אישי לאדם אהוב ב-3 שלבים פשוטים. בחר בדיוק את מה שהוא אוהב.</p>
-                
-                <ul class="pack-includes steps-list">
-                    <li><span class="step-num">1</span> <b>בחירת קופסה:</b> יוקרתית, ספורטיבית או מסתורית.</li>
-                    <li><span class="step-num">2</span> <b>העמסת פריטים:</b> קלפים, בובות, ביגוד וכושר.</li>
-                    <li><span class="step-num">3</span> <b>טאצ' אישי:</b> הוספת כרטיס ברכה והקדשה.</li>
-                </ul>
+    <div class="builder-layout">
+        
+        <!-- צד ימין (65%): אשף ההרכבה -->
+        <div class="builder-wizard-pane">
+            
+            <!-- סרגל התקדמות -->
+            <div class="builder-steps-bar">
+                <div class="step active" id="step-tab-1"><span>1</span> בחירת קופסה</div>
+                <div class="step-divider"></div>
+                <div class="step" id="step-tab-2"><span>2</span> העמסת פריטים</div>
+                <div class="step-divider"></div>
+                <div class="step" id="step-tab-3"><span>3</span> ברכה אישית</div>
+            </div>
 
-                <div class="pack-action-area">
-                    <button class="premium-add-btn build-btn" onclick="alert('מערכת הרכבת המארזים תיפתח בקרוב!')">
-                        התחל בהרכבה עכשיו <i class="fa-solid fa-arrow-left"></i>
-                    </button>
+            <!-- שלב 1: בחירת קופסה -->
+            <div class="builder-step-content active" id="builder-step-1">
+                <h3 class="builder-step-title">בחר את סגנון המארז שלך</h3>
+                <div class="box-options-grid">
+                    <div class="box-option" onclick="selectBoxType('קופסת פרימיום שחורה', 25, 'images/soccerwe-mistery-pack.jpg.png')">
+                        <img src="images/soccerwe-mistery-pack.jpg.png" alt="קופסה שחורה">
+                        <h4>קופסת פרימיום שחורה</h4>
+                        <span>25 ₪</span>
+                    </div>
+                    <div class="box-option" onclick="selectBoxType('מארז זהב יוקרתי', 35, 'image_d972dc.jpg')">
+                        <img src="image_d972dc.jpg" alt="קופסת זהב">
+                        <h4>מארז זהב יוקרתי</h4>
+                        <span>35 ₪</span>
+                    </div>
                 </div>
             </div>
-            <div class="pack-left-image" style="flex: 1;">
-                <div class="glass-stage custom-box-stage">
-                    <img src="images/soccerwe-mistery-pack.jpg.png" alt="קופסה בהרכבה" style="filter: drop-shadow(0 15px 25px rgba(214, 185, 83, 0.4));"> 
+
+            <!-- שלב 2: בחירת פריטים -->
+            <div class="builder-step-content" id="builder-step-2">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 class="builder-step-title">הוסף פריטים למארז</h3>
+                    <button class="back-btn" onclick="goToStep(1)"><i class="fa-solid fa-arrow-right"></i> חזור לקופסאות</button>
                 </div>
+                
+                <!-- מוצרים לבחירה בהרכבה -->
+                <div class="builder-items-grid">
+                    <!-- פריט 1 -->
+                    <div class="builder-item">
+                        <img src="images/funko-pop-xavi-coach.jpg.png" alt="פופ">
+                        <div class="builder-item-info">
+                            <h5>פונקו פופ צ'אבי</h5>
+                            <span class="price">69.90 ₪</span>
+                        </div>
+                        <button class="add-to-box-btn" onclick="addItemToBox('פונקו פופ צאבי', 69.90, 'images/funko-pop-xavi-coach.jpg.png')"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <!-- פריט 2 -->
+                    <div class="builder-item">
+                        <img src="images/pack-ucl-2010.jpg" alt="מעטפה">
+                        <div class="builder-item-info">
+                            <h5>מעטפת ליגת האלופות</h5>
+                            <span class="price">7.90 ₪</span>
+                        </div>
+                        <button class="add-to-box-btn" onclick="addItemToBox('מעטפת צמפיונס 10/11', 7.90, 'images/pack-ucl-2010.jpg')"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <!-- פריט 3 -->
+                    <div class="builder-item">
+                        <img src="images/button-decompression-ball.jpg.png" alt="כדור לחיץ">
+                        <div class="builder-item-info">
+                            <h5>כדור לחיץ נבחרות</h5>
+                            <span class="price">24.90 ₪</span>
+                        </div>
+                        <button class="add-to-box-btn" onclick="addItemToBox('כדור לחיץ נבחרות', 24.90, 'images/button-decompression-ball.jpg.png')"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <!-- פריט 4 -->
+                    <div class="builder-item">
+                        <img src="images/coins-national.jpg" alt="מטבע">
+                        <div class="builder-item-info">
+                            <h5>מטבע אספנות</h5>
+                            <span class="price">14.90 ₪</span>
+                        </div>
+                        <button class="add-to-box-btn" onclick="addItemToBox('מטבע אספנות נבחרות', 14.90, 'images/coins-national.jpg')"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+                
+                <div style="text-align: left; margin-top: 15px;">
+                    <button class="next-step-btn" onclick="goToStep(3)">המשך לברכה <i class="fa-solid fa-arrow-left"></i></button>
+                </div>
+            </div>
+
+            <!-- שלב 3: ברכה -->
+            <div class="builder-step-content" id="builder-step-3">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 class="builder-step-title">הוסף ברכה (חינם)</h3>
+                    <button class="back-btn" onclick="goToStep(2)"><i class="fa-solid fa-arrow-right"></i> חזור לפריטים</button>
+                </div>
+                <textarea class="greeting-textarea" placeholder="כתוב כאן את הברכה שלך שנוסיף למארז..."></textarea>
+            </div>
+
+        </div>
+
+        <!-- צד שמאל (35%): הקופסה הווירטואלית / קבלה -->
+        <div class="builder-summary-pane">
+            <h3 class="summary-title"><i class="fa-solid fa-gift"></i> המארז שלך</h3>
+            
+            <div class="summary-box-info" id="summary-box-info">
+                <i class="fa-solid fa-box-open" style="font-size: 30px; color: #555;"></i>
+                <span>טרם נבחרה קופסה</span>
+            </div>
+
+            <div class="summary-items-list" id="summary-items-list">
+                <!-- הפריטים יתווספו לכאן אוטומטית -->
+                <div class="empty-box-msg" id="empty-box-msg">המארז ריק. בחר פריטים מימין.</div>
+            </div>
+
+            <div class="summary-footer">
+                <div class="summary-total">סה"כ: <strong id="builder-total-price">0 ₪</strong></div>
+                <button class="btn-checkout-box disabled" id="btn-checkout-box" onclick="alert('המארז נוסף לעגלה!')">
+                    הוסף מארז לעגלה <i class="fa-solid fa-cart-shopping"></i>
+                </button>
             </div>
         </div>
+
     </div>
 </div>
 <!-- תצוגת מיסטרי בוקס (מסך נפרד לחלוטין) -->
@@ -1231,6 +1322,215 @@ function openYad2Tab(tabName) {
     const activeBtn = document.querySelector(`.yad2-tab-btn[onclick="openYad2Tab('${tabName}')"]`);
     if(activeBtn) activeBtn.classList.add('active');
 }
+// ==========================================
+// לוגיקת הרכבת מארז (Box Builder)
+// ==========================================
+let boxState = {
+    boxPrice: 0,
+    items: [],
+    totalPrice: 0
+};
+
+// מעבר בין שלבי ההרכבה
+function goToStep(stepNum) {
+    if (stepNum === 2 && boxState.boxPrice === 0) {
+        alert('אנא בחר קופסה קודם!');
+        return;
+    }
+    
+    // החלפת התוכן מימין
+    document.querySelectorAll('.builder-step-content').forEach(el => el.classList.remove('active'));
+    document.getElementById('builder-step-' + stepNum).classList.add('active');
+
+    // עדכון סרגל ההתקדמות העליון
+    document.querySelectorAll('.builder-steps-bar .step').forEach(el => el.classList.remove('active'));
+    for (let i = 1; i <= stepNum; i++) {
+        document.getElementById('step-tab-' + i).classList.add('active');
+    }
+}
+
+// בחירת קופסה (שלב 1)
+function selectBoxType(name, price, imgSrc) {
+    boxState.boxPrice = price;
+    
+    // עדכון הקבלה משמאל
+    const boxInfoDiv = document.getElementById('summary-box-info');
+    boxInfoDiv.innerHTML = `
+        <img src="${imgSrc}" alt="קופסה">
+        <div style="display:flex; flex-direction:column;">
+            <span>${name}</span>
+            <span style="color:var(--brand-gold); font-size:12px;">${price} ₪</span>
+        </div>
+    `;
+    
+    updateBuilderTotal();
+    goToStep(2); // מעבר אוטומטי לשלב 2
+}
+
+// הוספת פריט למארז (שלב 2)
+function addItemToBox(name, price) {
+    boxState.items.push({ name, price });
+    renderBoxItems();
+    updateBuilderTotal();
+}
+
+// הסרת פריט
+function removeBoxItem(index) {
+    boxState.items.splice(index, 1);
+    renderBoxItems();
+    updateBuilderTotal();
+}
+
+// ציור רשימת הפריטים בצד שמאל
+function renderBoxItems() {
+    const list = document.getElementById('summary-items-list');
+    list.innerHTML = ''; // מנקה את הרשימה
+    
+    if (boxState.items.length === 0) {
+        list.innerHTML = '<div class="empty-box-msg">המארז ריק. בחר פריטים מימין.</div>';
+        return;
+    }
+
+    boxState.items.forEach((item, index) => {
+        list.innerHTML += `
+            <div class="summary-item-row">
+                <button class="remove-item-btn" onclick="removeBoxItem(${index})"><i class="fa-solid fa-xmark"></i></button>
+                <span style="flex:1; text-align:right; margin-right:10px;">${item.name}</span>
+                <strong>${item.price.toFixed(2)} ₪</strong>
+            </div>
+        `;
+    });
+}
+
+// חישוב והדלקת כפתור התשלום
+function updateBuilderTotal() {
+    let itemsTotal = boxState.items.reduce((sum, item) => sum + item.price, 0);
+    boxState.totalPrice = boxState.boxPrice + itemsTotal;
+    
+    document.getElementById('builder-total-price').innerText = boxState.totalPrice.toFixed(2) + ' ₪';
+
+    const checkoutBtn = document.getElementById('btn-checkout-box');
+    // מדליק את הכפתור רק אם נבחרה קופסה ולפחות פריט אחד
+    if (boxState.boxPrice > 0 && boxState.items.length > 0) {
+        checkoutBtn.classList.remove('disabled');
+    } else {
+        checkoutBtn.classList.add('disabled');
+    }
+}
+// ==========================================
+// מנוע עגלת קניות חכם (עם זיכרון קבוע - LocalStorage)
+// ==========================================
+
+// פונקציה שמציירת את העיגול האדום לפי הזיכרון
+function updateCartBadge() {
+    let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
+    let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+
+    const headerLinks = document.querySelectorAll('.main-nav a, .header-center a');
+    headerLinks.forEach(link => {
+        if (link.innerText.includes('עגלה') || link.querySelector('.fa-cart-shopping')) {
+            link.style.position = 'relative';
+            let badge = link.querySelector('.cart-badge');
+            
+            if (totalQty > 0) {
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'cart-badge';
+                    link.appendChild(badge);
+                }
+                badge.innerText = totalQty;
+                badge.style.display = 'flex';
+                badge.style.animation = 'none';
+                setTimeout(() => badge.style.animation = 'popBadge 0.3s ease-out', 10);
+            } else if (badge) {
+                badge.style.display = 'none';
+            }
+        }
+    });
+}
+
+// מפעיל את העיגול מיד בטעינת הדף (כדי שיזכור גם אחרי רענון)
+document.addEventListener('DOMContentLoaded', updateCartBadge);
+
+// הפונקציה ששומרת את המוצר המלא לזיכרון
+function addToCart(qty, name, priceStr, img) {
+    let cart = JSON.parse(localStorage.getItem('solibiCart')) || [];
+    
+    // הופך מחיר כמו "24.90 ₪" למספר נקי 24.90
+    let price = parseFloat(priceStr.toString().replace(/[^\d.-]/g, '')) || 0;
+
+    // בודק אם המוצר כבר קיים בעגלה כדי להוסיף רק כמות
+    let existingItem = cart.find(item => item.name === name);
+    if (existingItem) {
+        existingItem.qty += qty;
+    } else {
+        cart.push({ name: name, price: price, qty: qty, img: img });
+    }
+
+    // שומר חזרה לזיכרון הדפדפן
+    localStorage.setItem('solibiCart', JSON.stringify(cart));
+    
+    updateCartBadge();
+    alert(qty + ' יחידות של "' + name + '" נוספו לעגלה בהצלחה!');
+}
+
+// חוטף את כל הלחיצות על "הוסף לעגלה" ולוקח את הפרטים
+document.addEventListener('click', function(e) {
+    
+    // 1. קנייה מהקטלוג או הסיידבר
+    const buyBtn = e.target.closest('.buy-btn:not(.btn-contact)');
+    if (buyBtn && !buyBtn.closest('#product-modal')) {
+        const card = buyBtn.closest('.product-card, .hot-product');
+        if (card) {
+            const title = (card.querySelector('.product-title') || card.querySelector('.hot-info p')).innerText;
+            const price = (card.querySelector('.product-price') || card.querySelector('.hot-info span')).innerText;
+            const img = card.querySelector('img').src;
+            addToCart(1, title, price, img);
+        }
+    }
+
+    // 2. קנייה ממארזים מוכנים
+    const premiumBtn = e.target.closest('.premium-add-btn:not(.build-btn)');
+    if (premiumBtn) {
+        const infoDiv = premiumBtn.closest('.pack-right-info');
+        const title = infoDiv.querySelector('.pack-main-title').innerText;
+        const price = infoDiv.querySelector('.pack-price').innerText;
+        const img = premiumBtn.closest('.package-tab-pane').querySelector('.glass-stage img').src;
+        addToCart(1, title, price, img);
+    }
+
+    // 3. קנייה ממיסטרי בוקס
+    const mysteryBtn = e.target.closest('.btn-add-to-cart');
+    if (mysteryBtn && mysteryBtn.closest('#view-mystery-boxes')) {
+        const title = document.getElementById('mystery-title').innerText;
+        const price = document.getElementById('mystery-price-val').innerText;
+        const img = document.getElementById('mystery-image').src;
+        addToCart(1, title, price, img);
+    }
+});
+
+// 4. חלון צף (Modal)
+window.addToCartFromModal = function() {
+    const title = document.getElementById('modal-title').innerText;
+    const price = document.getElementById('modal-price').innerText;
+    const img = document.getElementById('modal-img').src;
+    addToCart(currentQty, title, price, img);
+    closeProductModal();
+};
+
+// 5. עגלה מהרכבת מארז (Box Builder)
+document.addEventListener('DOMContentLoaded', () => {
+    const checkoutBoxBtn = document.getElementById('btn-checkout-box');
+    if(checkoutBoxBtn) {
+        checkoutBoxBtn.addEventListener('click', function() {
+            if(!this.classList.contains('disabled')) {
+                const img = document.querySelector('#summary-box-info img').src;
+                const price = boxState.totalPrice;
+                addToCart(1, 'מארז בהרכבה אישית (סוליבי)', price, img);
+            }
+        });
+    }
+});
     </script>
     
 </body>
