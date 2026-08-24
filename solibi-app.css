@@ -1,1724 +1,377 @@
 /* =========================================
-   משתנים גלובליים 
+   סוליבי ספורט | Black & True Gold Edition
    ========================================= */
 :root {
-    --brand-gold: #D6B953; 
-    --brand-gold-light: #FDF3C6;
-    --brand-silver: #E8E8E8;
-    --brand-silver-dark: #A0A0A0;
-    --bg-main: #0a0a0a;
-    --text-main: #f5f5f5;
+    --header-bg: #070709;
+    --body-bg: #0b0c10;
     
-    --panel-bg: linear-gradient(145deg, rgba(20, 20, 20, 0.8) 0%, rgba(5, 5, 5, 0.95) 100%);
-    --panel-border: rgba(224, 224, 224, 0.1); 
-    --panel-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    --accent-gold: #D4AF37;
+    --gold-dark: #aa8423;
+    --gold-glow: rgba(212, 175, 55, 0.4);
+    
+    --text-white: #ffffff;
+    --text-black: #111111;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; text-decoration: none; }
 
-body {
-    font-family: 'Rubik', sans-serif;
-    background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, var(--bg-main) 70%);
-    color: var(--text-main);
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+body { 
+    font-family: 'Rubik', sans-serif; 
+    background-color: var(--body-bg); 
+    color: var(--text-white); 
+    height: 100vh; display: flex; flex-direction: column; overflow: hidden; 
 }
 
 /* =========================================
-   עיצוב ההדר החיצוני שלך (מוקטן וסימטרי)
+   1. הדר עליון
    ========================================= */
-#header-placeholder {
+.top-header { 
+    height: 85px; 
+    background: var(--header-bg); 
+    display: flex; align-items: center; justify-content: space-between; 
+    padding: 0 40px; flex-shrink: 0; z-index: 40;
+}
+
+.header-logo { font-size: 32px; font-weight: 900; letter-spacing: 1px; color: #fff; width: 220px; }
+.header-logo .dot { color: var(--accent-gold); }
+
+.main-nav { display: flex; gap: 15px; align-items: center; }
+
+.gold-btn {
+    background: transparent;
+    color: #e2e8f0;
+    border: 1px solid transparent;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.gold-btn:hover, .gold-btn.active {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--accent-gold);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.live-btn {
+    margin-right: 15px;
+    background: rgba(255, 74, 74, 0.05);
+    color: #ff4a4a;
+    border: 1px solid #ff4a4a;
+    padding: 8px 22px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 800;
+    display: flex; align-items: center; gap: 8px;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(255, 74, 74, 0.2);
+}
+.live-btn:hover { 
+    background: rgba(255, 74, 74, 0.15); 
+    box-shadow: 0 0 15px rgba(255, 74, 74, 0.4); 
+}
+.live-dot { font-size: 8px; animation: pulse 1s infinite; }
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+
+.header-actions { display: flex; gap: 12px; width: 220px; justify-content: flex-end; }
+.circle-btn { 
+    width: 45px; height: 45px; border-radius: 50%; 
+    background: #000; border: 1px solid var(--accent-gold); 
+    color: var(--accent-gold); font-size: 16px; 
+    cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;
+}
+.circle-btn:hover { background: var(--accent-gold); color: #000; box-shadow: 0 0 15px var(--gold-glow); }
+.cart-btn { position: relative; }
+.cart-badge { 
+    position: absolute; top: -4px; right: -4px; background: #ff4a4a; color: #fff; 
+    font-size: 11px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900;
+}
+
+/* =========================================
+   2. סרגל משנה 
+   ========================================= */
+.secondary-bar {
+    background: var(--accent-gold); 
+    border-bottom: 1px solid rgba(0,0,0,0.2); 
+    padding: 0 40px;
+    z-index: 30;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.sec-nav { 
+    display: flex; gap: 35px; 
+    height: 38px; 
+    align-items: center; justify-content: center; 
+}
+.sec-item { position: relative; height: 100%; display: flex; align-items: center;}
+.sec-item > a {
+    color: #000; 
+    font-size: 14px; 
+    font-weight: 600; 
+    transition: 0.3s; 
+    padding: 3px 0; position: relative;
+}
+
+.sec-item > a::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #000;
+    transition: width 0.3s ease;
+}
+/* הפס יופיע מעכשיו *אך ורק* במעבר עכבר - לא קבוע! */
+.sec-item:hover > a::after { width: 100%; }
+.sec-item > a:hover, .sec-item > a.active { color: #000; font-weight: 800; }
+
+.sec-dropdown {
+    position: absolute; top: 100%; right: 50%; transform: translateX(50%) translateY(10px);
+    background: var(--header-bg); 
+    border: 1px solid var(--accent-gold); border-top: none;
+    min-width: 180px; display: flex; flex-direction: column; 
+    opacity: 0; visibility: hidden; transition: 0.3s; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 50; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;
+}
+.sec-item.has-dropdown:hover .sec-dropdown { opacity: 1; visibility: visible; transform: translateX(50%) translateY(0); }
+.sec-dropdown a { padding: 12px 20px; color: #cbd5e1; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; transition: 0.2s; text-align: center;}
+.sec-dropdown a:hover { background: rgba(214, 185, 83, 0.1); color: var(--accent-gold); }
+
+/* =========================================
+   3. מרכז התוכן - פס גלילה מיושר לימין
+   ========================================= */
+.scrollable-content { 
+    flex: 1; overflow-y: auto; position: relative; 
+    background-color: var(--body-bg);
+    background-image: 
+        radial-gradient(circle at 50% 10%, rgba(200, 210, 230, 0.12) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M10 16.95l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zm32 0l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zM26 26l-5-2.88v-5.77l5-2.88 5 2.88v5.77L26 26zM26 7.7l-5-2.88V-.94l5-2.88 5 2.88v5.77L26 7.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    direction: ltr; 
+}
+
+.content-inner { 
+    direction: rtl;
+    padding: 0; max-width: 100%; margin: 0; width: 100%; min-height: 80vh; z-index: 2;
+}
+
+.spa-view { display: none; animation: fadeIn 0.4s ease forwards; }
+.spa-view.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* =========================================
+   4. ההירו - גובה הוקטן ל-465px
+   ========================================= */
+.full-hero-slider {
     width: 100%;
-    flex-shrink: 0;
-    z-index: 1000;
-}
-
-.site-header {
-    height: 60px; 
-    background: var(--brand-gold);
-    border-bottom: 2px solid #000;
+    height: 465px; 
+    position: relative;
+    background: radial-gradient(circle at 50% 50%, #1a1e28 0%, #08090d 100%);
+    overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 clamp(15px, 2vw, 30px); 
-    box-shadow: 0 5px 25px rgba(0,0,0,0.6);
+    justify-content: center;
+    border-bottom: 2px solid var(--accent-gold); 
 }
 
-.header-right .site-logo {
-    max-height: 40px !important; 
-    width: auto;
-    object-fit: contain;
-    border-radius: 8px; 
-    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+.hero-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 20;
+    transition: 0.3s;
+    display: flex; align-items: center; justify-content: center;
+}
+.hero-nav-btn:hover { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); }
+.prev-btn { right: 20px; }
+.next-btn { left: 20px; }
+
+.hero-slides-wrapper { width: 100%; height: 100%; position: relative; }
+
+.hero-slide {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.8s ease-in-out;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+.hero-slide.active { opacity: 1; visibility: visible; }
+
+.slide-center-img {
+    position: relative; z-index: 2;
+    max-width: 60%; height: 75%;
+    display: flex; justify-content: center; align-items: center;
+}
+.slide-center-img img {
+    max-height: 100%; object-fit: contain;
+    filter: drop-shadow(0 30px 40px rgba(0,0,0,0.8));
+    animation: float 6s infinite ease-in-out;
 }
 
-.header-center {
-    display: flex;
-    align-items: center;
+.bg-text {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 10vw; font-weight: 900;
+    color: rgba(255, 255, 255, 0.2); 
+    white-space: nowrap; z-index: 10; user-select: none; pointer-events: none;
+}
+
+.slide-bottom-info {
+    position: absolute; bottom: 30px; width: 100%; padding: 0 80px;
+    display: flex; justify-content: space-between; align-items: flex-end; z-index: 15;
+    flex-direction: row-reverse; 
+}
+
+.price-side { font-size: 42px; font-weight: 900; color: var(--accent-gold); text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
+
+.action-side { display: flex; flex-direction: column; align-items: flex-start; }
+
+.btn-solid-gold {
+    background: var(--accent-gold); color: #000; border: none; 
+    padding: 12px 25px; border-radius: 8px; font-size: 15px; font-weight: 800; 
+    cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    display: flex; align-items: center; gap: 10px;
+}
+.btn-solid-gold:hover { background: #fff; color: #000; transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0,0,0,0.6); }
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+/* =========================================
+   6. אזור גריד קטגוריות
+   ========================================= */
+.featured-categories-section {
+    margin: 60px auto;
+    padding: 0 50px;
+    max-width: 1150px; 
+}
+
+.section-title-wrapper {
+    margin-bottom: 30px;
+    position: relative;
+    display: inline-block;
+}
+
+.section-title-wrapper .section-title {
+    font-size: 24px;
+    color: #fff;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.section-title-wrapper .title-underline {
+    width: 50px;
+    height: 3px;
+    background: var(--accent-gold);
+    border-radius: 2px;
+}
+
+.six-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
 }
 
-.main-nav {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.main-nav a {
-    color: #000;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 14.5px;
-    padding: 6px 14px;
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-.main-nav a:hover {
-    background: linear-gradient(145deg, var(--brand-silver) 0%, #cfcfcf 100%); /* אפקט של כסף מטאלי */
-    color: #000; /* מוודא שהטקסט נשאר שחור וקריא */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15); /* הצללה עדינה שנותנת תחושה של כפתור */
-    transform: translateY(-1px); /* מקפיץ את הכפתור ממש טיפה למעלה */
-}
-
-.login-btn-header {
-    background: #050505;
-    color: var(--brand-gold);
-    text-decoration: none;
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 13.5px;
-    transition: 0.3s;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    display: inline-block;
-}
-
-.login-btn-header:hover {
-    background: #222;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    margin-right: 35px; 
-}
-
-/* =========================================
-   עיצוב אזור החיפוש (רקע שחור פרימיום)
-   ========================================= */
-.premium-search-container {
-    display: flex;
-    align-items: center;
-    background: #050505; /* שחור עמוק */
-    border-radius: 20px;
-    padding: 5px 15px;
-    border: 1px solid rgba(214, 185, 83, 0.4); /* מסגרת זהובה עדינה שעוטפת את השחור */
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); /* הצללה פנימית שנותנת עומק */
-}
-
-.premium-search-input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--brand-silver); /* הטקסט שמוקלד יהיה בצבע כסוף */
-    font-family: inherit;
-    font-weight: 700;
-    width: 180px;
-}
-
-.premium-search-input::placeholder { 
-    color: rgba(224, 224, 224, 0.5); /* טקסט ה"חפש מוצר..." יהיה באפור בהיר */
-    font-weight: 500; 
-}
-
-.premium-search-btn { 
-    background: transparent; 
-    border: none; 
-    color: var(--brand-gold); /* זכוכית המגדלת תהיה בזהב */
-    cursor: pointer; 
-    font-size: 15px; 
-    transition: 0.3s; 
-}
-
-.premium-search-btn:hover { 
-    transform: scale(1.1); 
-    color: #fff; /* הזכוכית תזהר בלבן במעבר עכבר */
-}
-.auction-drop-bar { display: none !important; }
-
-/* =========================================
-   הגריד המרכזי וסביבת העבודה
-   ========================================= */
-.app-layout {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 8fr 2.2fr;
-    gap: clamp(15px, 2vw, 30px); 
-    margin-top: 25px; 
-    margin-bottom: 25px; 
-    padding: 0 clamp(15px, 2vw, 30px);
-    min-height: 0;
-}
-
-.main-workspace {
-    display: flex;
-    background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
-    box-shadow: var(--panel-shadow);
-    border-radius: 20px;
+.six-grid-item {
     position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3; 
+    display: block;
+    background: linear-gradient(145deg, #1c1f26 0%, #111318 100%); 
+    border: 1px solid rgba(212, 175, 55, 0.35); 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    transition: all 0.4s ease;
 }
 
-.main-workspace::before, .left-extra::before {
-    content: '';
+.six-grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    padding: 20px 20px 55px 20px; 
+    transition: transform 0.6s ease;
+}
+
+.item-overlay {
     position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--brand-silver), var(--brand-gold), var(--brand-silver), transparent);
-    opacity: 0.6;
-    z-index: 10;
-}
-
-/* =========================================
-   התפריט הימני (זהב פרימיום - תפריט צף)
-   ========================================= */
-.right-nav {
-    width: clamp(240px, 25%, 320px); 
-    flex-shrink: 0;
-    background: linear-gradient(145deg, rgba(175, 135, 45, 0.4) 0%, rgba(35, 25, 8, 0.98) 100%);
-    border-left: 2px solid rgba(214, 185, 83, 0.5);
-    box-shadow: -15px 0 35px rgba(0,0,0,0.9), inset 0 0 30px rgba(214, 185, 83, 0.1);
-    display: flex;
-    flex-direction: column;
-    z-index: 20; 
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-
-.sidebar-logo-area {
-    text-align: center;
-    padding: 20px 0 15px 0;
-    border-bottom: 1px solid rgba(214, 185, 83, 0.3); 
-}
-
-.silver-glow-text {
-    color: var(--text-main); 
-    font-size: 24px; letter-spacing: 2px; font-weight: 900;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); margin-bottom: 5px;
-}
-
-.gold-subtitle { color: var(--brand-gold); font-size: 10px; letter-spacing: 2px; font-weight: 500; }
-
-.main-nav-list { 
-    flex: 1; 
-    padding: 15px; 
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.nav-item {
-    position: relative; 
-    border-radius: 10px; 
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(214, 185, 83, 0.1); 
-    transition: 0.3s;
-}
-
-.nav-header {
-    width: 100%; 
-    background: transparent; 
-    border: none; 
-    color: var(--brand-silver);
-    padding: 14px 15px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-    font-family: inherit; 
-    font-size: 14.5px; 
-    font-weight: 500; 
-    cursor: pointer; 
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 12, 0.85); 
+    padding: 12px 15px; 
+    backdrop-filter: blur(5px);
     transition: 0.3s ease;
-}
-
-.nav-header span i { width: 24px; text-align: center; margin-left: 10px; color: rgba(224, 224, 224, 0.6); transition: 0.3s; }
-.nav-header .arrow { font-size: 11px; transition: 0.3s; color: rgba(224, 224, 224, 0.5); }
-
-.nav-item:hover {
-    background: rgba(0, 0, 0, 0.8);
-    border-bottom: 1px solid rgba(214, 185, 83, 0.4);
-    box-shadow: inset 0 5px 20px rgba(214, 185, 83, 0.15); 
-}
-
-.nav-item:hover .nav-header { color: var(--brand-gold); }
-.nav-item:hover .nav-header span i { color: var(--brand-gold); filter: drop-shadow(0 0 8px rgba(214, 185, 83, 0.6)); }
-.nav-item:hover .nav-header .arrow { color: var(--brand-gold); transform: translateX(-5px); }
-
-.flyout-menu {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    top: -1px;
-    right: 100%; 
-    margin-right: 15px; 
-    min-width: 200px;
-    background: rgba(10, 10, 10, 0.98);
-    border: 1px solid rgba(214, 185, 83, 0.4);
-    border-radius: 10px;
-    box-shadow: -10px 15px 30px rgba(0,0,0,0.8);
-    display: flex;
-    flex-direction: column;
-    padding: 10px 0;
-    z-index: 100;
-    transform: translateX(10px);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    pointer-events: none; 
-}
-
-.flyout-menu::before {
-    content: '';
-    position: absolute;
-    top: 0; right: -15px;
-    width: 15px; height: 100%;
-}
-
-.nav-item:hover .flyout-menu {
-    visibility: visible;
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
-}
-
-.flyout-menu a {
-    color: var(--brand-silver-dark); 
-    text-decoration: none; 
-    padding: 12px 20px;
-    font-size: 13.5px; 
-    border-right: 3px solid transparent; 
-    transition: 0.2s;
-}
-
-.flyout-menu a:hover { 
-    background: rgba(214, 185, 83, 0.05); 
-    border-right-color: var(--brand-gold);
-    color: var(--brand-gold);
-    font-weight: 700;
-}
-
-/* =========================================
-   מרכז הבמה - שחור עמוק
-   ========================================= */
-.app-center {
-    flex: 1;
-    background: rgba(5, 5, 5, 0.95);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 1;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-}
-
-.app-center .spa-content-area {
-    flex: 1; overflow-y: auto; padding: clamp(20px, 2.5vw, 40px);
-    scrollbar-width: thin; scrollbar-color: var(--brand-gold) transparent;
-}
-.app-center .spa-content-area::-webkit-scrollbar { width: 5px; }
-.app-center .spa-content-area::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
-
-.premium-placeholder {
-    height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
-.glow-icon-wrap {
-    width: 100px; height: 100px; background: radial-gradient(circle, rgba(214, 185, 83, 0.1) 0%, transparent 70%);
-    display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-bottom: 15px;
-}
-.placeholder-icon {
-    font-size: 50px; background: linear-gradient(135deg, var(--brand-gold), var(--brand-silver));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 5px 15px rgba(214, 185, 83, 0.3));
-}
-.premium-placeholder h2 { color: var(--brand-silver); font-weight: 500; letter-spacing: 1px; font-size: 24px; margin-bottom: 10px;}
-.premium-placeholder p { color: var(--brand-silver-dark); font-size: 15px;}
-
-/* =========================================
-   הסיידבר השמאלי (חצוי: טקסט ימין, תמונה שמאל)
-   ========================================= */
-.left-extra {
-    background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
-    box-shadow: var(--panel-shadow);
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-}
-
-.sidebar-title { 
-    color: var(--brand-gold); 
-    text-align: center; 
-    margin: 15px 0 5px 0; 
-    font-size: 15px; 
-    font-weight: 700; 
-    letter-spacing: 0.5px; 
-}
-
-.sidebar-slider {
-    flex: 1;
-    position: relative;
-    width: 100%;
-    padding: 5px 10px 10px 10px;
-}
-
-.slide-item {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    width: 100%;
-    padding: 5px 15px 15px 15px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 1s ease-in-out, visibility 1s;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(8px, 1.2vh, 12px); 
-    justify-content: space-between; 
-}
-
-.slide-item.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* מבנה המלבן של כל מוצר (חצוי ל-2) */
-.hot-product {
-    background: rgba(0,0,0,0.5);
-    border: 1px solid rgba(214, 185, 83, 0.15);
-    border-radius: 10px;
-    padding: 8px 12px;
-    color: var(--brand-silver);
-    transition: 0.3s;
-    flex: 1; 
-    display: flex;
-    flex-direction: row; /* מסדר אותם בשורה (עברית = טקסט בימין, תמונה בשמאל) */
-    align-items: center;
-    justify-content: space-between;
-    min-height: 0;
-}
-
-.hot-product:hover {
-    border-color: rgba(214, 185, 83, 0.5);
-    transform: translateY(-2px);
-}
-
-/* צד ימין: טקסט ומחיר */
-.hot-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
     text-align: right;
 }
 
-.hot-info p { 
-    font-size: clamp(12px, 1.2vw, 14px); 
-    font-weight: 700; 
-    color: var(--text-main); 
-    margin-bottom: 5px; 
-}
-
-.hot-info span { 
-    color: var(--brand-gold); 
-    font-weight: 700; 
-    font-size: clamp(13px, 1.4vw, 15px); 
-}
-
-/* צד שמאל: תמונה */
-.hot-img-wrapper {
-    width: 60px;
-    height: 60px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.02);
-    border-radius: 8px;
-    margin-right: 15px; /* מרווח בין הטקסט לתמונה */
-}
-
-.hot-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 6px;
-}
-
-.hot-img-placeholder {
-    display: none;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    color: #666;
-    text-align: center;
-}
-
-/* =========================================
-   הפוטר המינימליסטי והטיקר
-   ========================================= */
-.app-footer { 
-    flex-shrink: 0; 
-    display: flex; 
-    flex-direction: column; 
-    height: 75px; 
-    z-index: 1000; 
-}
-
-.footer-links {
-    height: 30px; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-    gap: clamp(20px, 4vw, 50px); 
-    background: #030303; 
-    border-top: 1px solid rgba(224, 224, 224, 0.05);
-}
-
-.footer-links a { 
-    color: var(--brand-silver-dark); 
-    text-decoration: none; 
-    font-size: 13px; 
-    transition: 0.3s; 
-}
-
-.footer-links a:hover { 
-    color: var(--brand-silver); 
-}
-
-/* -----------------------------------------
-   טיקר החדשות 
-   ----------------------------------------- */
-#ticker-placeholder {
-    height: 45px; 
-    background: var(--brand-gold); 
-    border-top: 2px solid #000;
-    display: flex; 
-    align-items: center; 
-    overflow: hidden;
-    white-space: nowrap; 
-}
-
-#ticker-placeholder > * {
-    display: inline-block;
-    color: #000 !important; 
-    font-weight: 700;
-    font-size: 15px;
-    padding-left: 100vw; 
-    animation: ticker-scroll 25s linear infinite; 
-    /* פקודת word-spacing הוסרה לחלוטין כדי לא להפריד מילים */
-}
-
-#ticker-placeholder:hover > * {
-    animation-play-state: paused;
-}
-
-@keyframes ticker-scroll {
-    0% { transform: translateX(-100vw); } 
-    100% { transform: translateX(100%); }
-}
-
-/* =========================================
-   שליטה ידנית במיקומי ההדר (דריסה מהסוף)
-   ========================================= */
-
-/* שליטה על הלוגו (בצד ימין) */
-.header-right {
-    /* הגדל את המספר כדי לדחוף את הלוגו שמאלה לכיוון האמצע. שים 0 כדי להצמיד לימין */
-    margin-right: 92px !important; 
-}
-
-/* שליטה על שורת החיפוש (בצד שמאל) */
-.header-left {
-    /* הגדל את המספר כדי לדחוף את שורת החיפוש ימינה לכיוון האמצע. שים 0 כדי להצמיד לשמאל */
-    margin-left: 43px !important; 
-}
-
-/* שליטה על הרווח בין הכותרות בטיקר */
-#ticker-placeholder span {
-    /* הגדל או הקטן את המספר (כרגע 50px) כדי לשנות את המרחק בין כותרת לכותרת */
-    margin: 0 10px !important; 
-}
-/* =========================================
-   עיצוב כותרות הטיקר (נקודה שחורה + רווחים)
-   ========================================= */
-
-/* מאפס את הרווח הישן כדי שהחדש יעבוד בצורה סימטרית */
-#ticker-placeholder span {
-    margin: 0 !important; 
-}
-
-/* מייצר נקודה שחורה אוטומטית אחרי כל כותרת */
-#ticker-placeholder span::after {
-    content: "\2022"; /* הקוד המיוחד לנקודה עגולה מלאה */
-    color: #000; /* צבע הנקודה (שחור) */
-    font-size: 20px; /* גודל הנקודה - אפשר להגדיל/להקטין */
-    
-    /* פה אתה שולט ברווח! 50px זה המרחק של הנקודה מכל כותרת. תשנה את המספר כדי לרווח או לצופף */
-    margin: 0 50px !important; 
-    
-    vertical-align: middle; /* דואג שהנקודה תשב בדיוק באמצע הגובה של הטקסט */
-}
-/* שליטה על מהירות הטיקר */
-#ticker-placeholder > * {
-    /* כרגע זה היה 25s. הגדלתי ל-33s כדי להאט משמעותית. 
-       רוצה עוד יותר לאט? שים 40s. רוצה קצת יותר מהר? שים 20s. */
-    animation-duration: 33s !important; 
-}
-/* =========================================
-   עיצוב החלוניות הצפות (אפקט זכוכית כסופה עדינה)
-   ========================================= */
-
-/* רקע החלונית - שקוף, עדין ויוקרתי */
-.flyout-menu {
-    /* רקע אפרפר-כסוף שקוף מאוד */
-    background: rgba(80, 80, 80, 0.25) !important; 
-    
-    /* אפקט הטשטוש (זכוכית) למה שמוסתר מאחור */
-    backdrop-filter: blur(12px) !important; 
-    -webkit-backdrop-filter: blur(12px) !important;
-    
-    /* מסגרת כסופה עדינה ודקה שנותנת את קונטור הכסף */
-    border: 1px solid rgba(224, 224, 224, 0.15) !important; 
-    box-shadow: -10px 15px 30px rgba(0, 0, 0, 0.7) !important;
-}
-
-/* הטקסט - מוחזר לבהיר כדי שיהיה קריא ומרחף */
-.flyout-menu a {
-    color: var(--brand-silver) !important; 
-    font-weight: 400 !important;
-    transition: 0.2s;
-}
-
-/* אפקט במעבר עכבר - הארה עדינה של זכוכית */
-.flyout-menu a:hover {
-    background: rgba(255, 255, 255, 0.08) !important; 
-    border-right-color: var(--brand-gold) !important; 
-    color: var(--brand-gold) !important; 
-    font-weight: 700 !important;
-}
-
-/* =========================================
-   עיצוב קוביות המוצרים בסיידבר (זכוכית כסופה עדינה)
-   ========================================= */
-
-.hot-product {
-    /* רקע כסוף סופר-עדין (95% שקיפות) כדי להדגיש את המלבן בלי להשתלט */
-    background: rgba(220, 220, 220, 0.05) !important; 
-    
-    /* אפקט טשטוש הזכוכית שנותן את העומק היוקרתי */
-    backdrop-filter: blur(8px) !important; 
-    -webkit-backdrop-filter: blur(8px) !important;
-    
-    /* קונטור כסוף דקיק למסגרת */
-    border: 1px solid rgba(224, 224, 224, 0.15) !important; 
-    
-    /* הצללה קלה להפרדה מהרקע */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important; 
-}
-
-/* כשהעכבר עובר על המוצר - הדגשה קלה */
-.hot-product:hover {
-    background: rgba(220, 220, 220, 0.09) !important; /* הכסף טיפה מתבהר */
-    border-color: rgba(214, 185, 83, 0.6) !important; /* המסגרת מקבלת נגיעת זהב של המותג */
-    transform: translateY(-2px) !important; /* קפיצה קטנה למעלה */
-}
-
-/* הופך את קוביות המוצרים ללחיצות */
-.hot-product {
-    cursor: pointer !important;
-}
-/* =========================================
-   חלון צף למוצרים (Product Modal)
-   ========================================= */
-.custom-modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
-    z-index: 99999; display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: all 0.3s ease;
-}
-.custom-modal-overlay.show { opacity: 1; pointer-events: auto; }
-.custom-modal-content {
-    background: #0b1221; border: 2px solid var(--brand-gold);
-    border-radius: 16px; width: 90%; max-width: 800px;
-    position: relative; transform: scale(0.9); transition: all 0.3s ease;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; direction: rtl;
-}
-.custom-modal-overlay.show .custom-modal-content { transform: scale(1); }
-.close-modal-btn {
-    position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.1);
-    border: none; color: #fff; font-size: 24px; width: 35px; height: 35px;
-    border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: 0.3s; z-index: 10;
-}
-.close-modal-btn:hover { background: #ff4a4a; color: #fff; transform: rotate(90deg); }
-.modal-body-split { display: flex; flex-wrap: wrap; }
-.modal-right-info { flex: 1.2; min-width: 300px; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-.modal-left-image {
-    flex: 1; min-width: 250px; background: rgba(255, 255, 255, 0.02);
-    padding: 40px; display: flex; align-items: center; justify-content: center;
-    border-right: 1px solid rgba(214, 185, 83, 0.1);
-}
-.modal-left-image img { max-width: 100%; max-height: 250px; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
-.modal-cat { color: var(--text-gray); font-size: 14px; margin-bottom: 5px; }
-.modal-main-title { color: var(--brand-gold); font-size: 28px; margin-bottom: 15px; line-height: 1.2; }
-.modal-desc { color: #e2e8f0; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
-.modal-price-tag { font-size: 32px; font-weight: 900; color: var(--brand-gold); display: block; margin-bottom: 25px; }
-.modal-actions { display: flex; gap: 15px; align-items: center; }
-.quantity-selector {
-    display: flex; align-items: center; background: rgba(0,0,0,0.5);
-    border: 1px solid rgba(214, 185, 83, 0.3); border-radius: 8px; overflow: hidden; height: 45px;
-}
-.qty-btn {
-    background: transparent; border: none; color: var(--brand-gold);
-    width: 40px; height: 100%; cursor: pointer; transition: 0.3s;
-    display: flex; align-items: center; justify-content: center;
-}
-.qty-btn:hover { background: rgba(214, 185, 83, 0.2); }
-.quantity-selector input {
-    width: 40px; height: 100%; background: transparent; border: none;
-    color: #fff; text-align: center; font-size: 18px; font-weight: bold; pointer-events: none;
-}
-.modal-add-to-cart-btn {
-    flex: 1; height: 45px; background: var(--brand-gold); color: #000;
-    border: none; border-radius: 8px; font-size: 16px; font-weight: bold;
-    cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
-}
-.modal-add-to-cart-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.4); }
-
-@media (max-width: 768px) {
-    .modal-body-split { flex-direction: column-reverse; }
-    .modal-right-info { padding: 25px; }
-    .modal-left-image { padding: 25px; border-right: none; border-bottom: 1px solid rgba(214, 185, 83, 0.1); }
-    .modal-actions { flex-direction: column; align-items: stretch; }
-}
-//* =========================================
-   תיקון מיקום הלוגו בהדר (דחיפה למטה)
-   ========================================= */
-.site-logo {
-    /* המספר החיובי דוחף למטה. תשנה את ה-4 ל-5 או 6 אם צריך יותר */
-    transform: translateY(6px) !important; 
-}
-/* =========================================
-   הגנת הגריד (מונע את דחיפת הסיידבר השמאלי)
-   ========================================= */
-.main-workspace {
-    min-width: 0 !important; 
-}
-
-.app-center {
-    min-width: 0 !important;
-    overflow-x: hidden !important; 
-}
-
-.left-extra {
-    flex-shrink: 0 !important;
-}
-/* =========================================
-   עיצוב אזור מארזים מוכנים (Tabs & Content)
-   ========================================= */
-
-/* תפריט הטאבים (Pills) */
-.premium-tabs-nav {
-    display: flex; gap: 15px; margin-bottom: 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 15px;
-}
-.tab-pill {
-    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-gray); padding: 10px 25px; border-radius: 30px;
-    font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;
-    font-family: 'Rubik', sans-serif;
-}
-.tab-pill:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
-.tab-pill.active {
-    background: var(--brand-gold); color: #000; border-color: var(--brand-gold);
-    font-weight: 700; box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3);
-}
-
-/* אזור התוכן והאנימציה */
-.package-tab-pane {
-    display: none; gap: 30px; animation: fadeInUp 0.5s ease forwards;
-}
-.package-tab-pane.active { display: flex; }
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* צד ימין - פירוט המארז */
-.pack-right-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-.pack-subtitle { color: var(--brand-gold); font-size: 13px; font-weight: 700; margin-bottom: 5px; }
-.pack-main-title { color: #fff; font-size: 36px; font-weight: 900; margin-bottom: 15px; }
-.pack-desc { color: #a0a0a0; font-size: 16px; line-height: 1.6; margin-bottom: 25px; max-width: 90%; }
-.pack-includes { list-style: none; padding: 0; margin: 0 0 35px 0; display: flex; flex-direction: column; gap: 12px; }
-.pack-includes li { display: flex; align-items: center; gap: 12px; color: #e2e8f0; font-size: 15px; }
-.pack-includes li i { color: var(--brand-gold); font-size: 14px; }
-.pack-action-area { display: flex; align-items: center; gap: 25px; margin-top: auto; }
-.pack-price { color: var(--brand-gold); font-size: 32px; font-weight: 900; }
-.premium-add-btn {
-    background: rgba(214, 185, 83, 0.1); color: var(--brand-gold);
-    border: 1px solid var(--brand-gold); padding: 12px 30px; border-radius: 12px;
-    font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s;
-    display: flex; align-items: center; gap: 10px;
-}
-.premium-add-btn:hover {
-    background: var(--brand-gold); color: #000;
-    transform: translateY(-3px); box-shadow: 0 8px 20px rgba(214, 185, 83, 0.4);
-}
-
-/* צד שמאל - תמונת זכוכית */
-.pack-left-image { flex: 1; display: flex; align-items: center; justify-content: center; }
-.glass-stage {
-    width: 100%; max-width: 350px; aspect-ratio: 1;
-    background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px;
-    display: flex; align-items: center; justify-content: center;
-    padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); position: relative;
-}
-.glass-stage::after {
-    content: ''; position: absolute; bottom: -20px; left: 10%; right: 10%; height: 20px;
-    background: radial-gradient(ellipse at center, rgba(214, 185, 83, 0.15) 0%, rgba(0,0,0,0) 70%);
-}
-.glass-stage img {
-    max-width: 100%; max-height: 100%; object-fit: contain;
-    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7)); transition: transform 0.5s ease;
-}
-.glass-stage:hover img { transform: scale(1.05) translateY(-10px); }
-
-/* התאמה למובייל */
-@media (max-width: 900px) {
-    .package-tab-pane.active { flex-direction: column-reverse; }
-    .premium-tabs-nav { flex-wrap: wrap; justify-content: center; }
-    .pack-right-info { align-items: center; text-align: center; }
-    .pack-desc { max-width: 100%; }
-    .pack-includes { align-items: flex-start; }
-}
-/* =========================================
-   תיקון סופי: מרכוז מוחלט של מרכז הבמה (אופקי ואנכי)
-   ========================================= */
-
-/* הופך את כל אזור התוכן המרכזי למגנט שמושך לאמצע */
-.app-center .spa-content-area {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important; /* ממרכז בדיוק באמצע הגובה */
-    align-items: center !important; /* ממרכז בדיוק באמצע הרוחב */
-}
-
-/* תוחם את הרוחב כדי שהטקסט והתמונה לא ייברחו לקצוות המסך */
-.spa-view {
-    width: 100% !important;
-    max-width: 950px !important;
-}
-
-/* ממרכז את הכפתורים של המארזים (טאבים) */
-.premium-tabs-nav {
-    justify-content: center !important;
-}
-
-/* מוודא שהטקסט והתמונה מיושרים וקרובים אחד לשני */
-.package-tab-pane {
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 60px !important; 
-}
-/* =========================================
-   מרכוז וסידור המארזים באמצע הבמה
-   ========================================= */
-
-/* 1. ממרכז את הטאבים העליונים ונותן להם ספייס מהתקרה */
-.premium-tabs-nav {
-    justify-content: center !important;
-    margin-top: 40px !important; 
-}
-
-/* 2. אורז את כל התוכן לרוחב מוגבל (כדי שלא יימתח לקצוות) וממרכז לאמצע */
-.packages-content-area {
-    width: 100% !important;
-    max-width: 850px !important; /* זה הסוד! מונע מריחה לצדדים */
-    margin: 0 auto !important; /* ממגנט את הבלוק הזה לאמצע החלל השחור */
-}
-
-/* 3. מוודא שהטקסט והתמונה עומדים בדיוק באותו קו גובה באמצע */
-.package-tab-pane {
-    align-items: center !important;
-}
-/* =========================================
-   עיצוב מסך: הרכבת מארז אישי
-   ========================================= */
-.steps-list { gap: 15px !important; }
-.steps-list li { background: rgba(255, 255, 255, 0.02); padding: 10px 15px; border-radius: 12px; border: 1px solid rgba(214, 185, 83, 0.1); transition: 0.3s; margin-bottom: 10px; }
-.steps-list li:hover { background: rgba(214, 185, 83, 0.05); transform: translateX(-5px); }
-.step-num { background: var(--brand-gold); color: #000; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 900; font-size: 14px; margin-left: 10px; }
-.build-btn { background: var(--brand-gold) !important; color: #000 !important; font-size: 18px !important; padding: 15px 35px !important; box-shadow: 0 10px 25px rgba(214, 185, 83, 0.3) !important; }
-.build-btn:hover { background: #fff !important; transform: translateY(-4px) !important; box-shadow: 0 15px 35px rgba(214, 185, 83, 0.5) !important; }
-
-/* אפקט נשימה לקופסה הריקה */
-.custom-box-stage { animation: stagePulse 3s infinite alternate; }
-@keyframes stagePulse {
-    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 10px rgba(214, 185, 83, 0.1); }
-    100% { box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 30px rgba(214, 185, 83, 0.4); }
-}
-/* =========================================
-   מערכת החלפת המסכים (SPA) - תיקון קריטי
-   ========================================= */
-
-/* קריטי: מסתיר כברירת מחדל את כל המסכים (מארזים, הרכבה אישית וכו') */
-.spa-view {
-    display: none; 
-    animation: fadeInSPA 0.4s ease forwards;
-    width: 100% !important;
-}
-
-/* קריטי: מציג רק את המסך שקיבל את הקלאס active */
-.spa-view.active {
-    display: block; 
-}
-
-@keyframes fadeInSPA { 
-    from { opacity: 0; transform: scale(0.98); } 
-    to { opacity: 1; transform: scale(1); } 
-}
-
-/* =========================================
-   מרכוז ויישור מוחלט של מרכז הבמה
-   ========================================= */
-
-/* דואג שמרכז הבמה יהיה מגנט למרכז */
-.app-center .spa-content-area {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-
-/* מגביל את רוחב המארזים כדי שלא יימרחו לצדדים */
-.packages-content-area {
-    width: 100% !important;
-    max-width: 850px !important;
-    margin: 0 auto !important;
-}
-
-/* ממרכז את הטאבים העליונים של המארזים */
-.premium-tabs-nav {
-    justify-content: center !important;
-    margin-top: 40px !important;
-    width: 100%;
-}
-
-/* מסדר את הטקסט והתמונה אחד מול השני במרכז */
-.package-tab-pane {
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 60px !important; 
-}
-
-/* =========================================
-   עיצוב מסך הרכבת המארז החדש
-   ========================================= */
-
-.steps-list { gap: 15px !important; }
-
-.steps-list li { 
-    background: rgba(255, 255, 255, 0.02); 
-    padding: 10px 15px; 
-    border-radius: 12px; 
-    border: 1px solid rgba(214, 185, 83, 0.1); 
-    transition: 0.3s; 
-    margin-bottom: 10px; 
-    color: #e2e8f0;
-}
-
-.steps-list li:hover { 
-    background: rgba(214, 185, 83, 0.05); 
-    transform: translateX(-5px); 
-}
-
-.step-num { 
-    background: var(--brand-gold); 
-    color: #000; 
-    width: 28px; 
-    height: 28px; 
-    display: inline-flex; 
-    align-items: center; 
-    justify-content: center; 
-    border-radius: 50%; 
-    font-weight: 900; 
-    font-size: 14px; 
-    margin-left: 10px; 
-}
-
-.build-btn { 
-    background: var(--brand-gold) !important; 
-    color: #000 !important; 
-    font-size: 18px !important; 
-    padding: 15px 35px !important; 
-    box-shadow: 0 10px 25px rgba(214, 185, 83, 0.3) !important; 
-}
-
-.build-btn:hover { 
-    background: #fff !important; 
-    transform: translateY(-4px) !important; 
-    box-shadow: 0 15px 35px rgba(214, 185, 83, 0.5) !important; 
-}
-
-/* אפקט נשימה לקופסה הריקה בשלב ההרכבה */
-.custom-box-stage { 
-    animation: stagePulse 3s infinite alternate; 
-}
-
-@keyframes stagePulse {
-    0% { box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 10px rgba(214, 185, 83, 0.1); }
-    100% { box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 0 30px rgba(214, 185, 83, 0.4); }
-}
-/* =========================================
-   מרכוז אנכי ואופקי של כל מסכי הבמה (SPA)
-   ========================================= */
-.spa-view.active {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important; /* ממגנט לאמצע הגובה (למעלה-למטה) */
-    align-items: center !important; /* ממגנט לאמצע הרוחב (ימינה-שמאלה) */
-    min-height: 100% !important; /* נותן למסך לתפוס את כל הגובה כדי שיוכל למרכז */
-}
-/* =========================================
-   רספונסיביות - התאמה מושלמת למסכי לפטופ
-   ========================================= */
-
-/* מוודא שהאזור המרכזי אף פעם לא יחרוג מהגבולות שלו */
-.packages-content-area {
-    max-width: 100% !important;
-    padding: 0 15px !important;
-}
-
-@media (max-width: 1440px) {
-    /* 1. צמצום הרווח הענק בין הטקסט לתמונה */
-    .package-tab-pane {
-        gap: 25px !important; 
-    }
-
-    /* 2. הקטנת קוביית הזכוכית של התמונה שלא תשתלט על המסך */
-    .glass-stage {
-        max-width: 250px !important;
-        padding: 20px !important;
-    }
-
-    /* 3. כיווץ חכם של הכותרות והטקסטים */
-    .pack-main-title {
-        font-size: clamp(22px, 2.5vw, 28px) !important;
-        margin-bottom: 10px !important;
-    }
-
-    .pack-desc {
-        font-size: 14px !important;
-        margin-bottom: 15px !important;
-    }
-
-    .pack-includes li, .steps-list li {
-        font-size: 13px !important;
-        padding: 8px 12px !important;
-        margin-bottom: 8px !important;
-    }
-
-    /* 4. הקטנת הכפתורים והמחירים לפרופורציה הנכונה */
-    .pack-price {
-        font-size: 26px !important;
-    }
-
-    .premium-add-btn, .build-btn {
-        font-size: 14px !important;
-        padding: 10px 20px !important;
-    }
-    
-    /* 5. צמצום שוליים (Padding) כלליים של הבמה המרכזית */
-    .app-center .spa-content-area {
-        padding: 20px !important;
-    }
-}
-
-/* =========================================
-   תיקון מוחלט לקישור "אזור אישי" בהדר
-   מכריח אותו להיראות בדיוק כמו הכפתור המקורי
-   ========================================= */
-#dynamic-auth-btn a,
-#dynamic-auth-btn a:link,
-#dynamic-auth-btn a:visited,
-#dynamic-auth-btn a:active {
-    background: #0a0a0a !important; /* רקע שחור יוקרתי */
-    color: #D6B953 !important; /* טקסט זהב */
-    text-decoration: none !important; /* מעיף את הקו התחתון הסגול! */
-    padding: 10px 20px !important; /* גודל של כפתור */
-    border-radius: 8px !important;
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border: 1px solid rgba(214, 185, 83, 0.3) !important;
-    transition: all 0.3s ease !important;
-}
-
-#dynamic-auth-btn a:hover {
-    background: #141414 !important;
-    color: #fff !important;
-    border-color: #D6B953 !important;
-    box-shadow: 0 4px 15px rgba(214, 185, 83, 0.2) !important;
-}
-/* =========================================
-   עיצוב מסך מיסטרי בוקס (Premium Showcase)
-   ========================================= */
-.mystery-showcase-wrapper {
-    display: flex;
-    gap: 40px;
-    align-items: center;
-    background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
-    border-radius: 20px;
-    padding: 40px;
-    border: 1px solid rgba(214, 185, 83, 0.15);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    direction: rtl;
-    width: 100%;
-    max-width: 950px;
-}
-
-/* --- צד ימין: טקסט --- */
-.mystery-info-panel {
-    flex: 1.2;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.mystery-title {
-    font-size: 32px;
-    font-weight: 900;
-    color: #f5f5f5;
-    margin: 0;
-}
-
-.mystery-desc {
-    font-size: 15px;
-    color: #a0a0a0;
-    line-height: 1.5;
-    margin: 0;
-}
-
-.mystery-contents-grid {
-    display: flex;
-    gap: 20px;
-    margin-top: 10px;
-}
-
-.content-box {
-    flex: 1;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 12px;
-    padding: 15px;
-}
-
-.content-box h3 {
-    font-size: 14px;
-    color: #D6B953;
-    margin-top: 0;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.premium-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.premium-list li {
-    font-size: 13px;
-    color: #e0e0e0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.check-list li::before {
-    content: '\f00c'; /* FontAwesome Check */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: #D6B953;
-}
-
-.flame-list li::before {
-    content: '\f06d'; /* FontAwesome Flame */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    color: #ff4a4a;
-}
-
-.mystery-purchase-area {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px dashed rgba(255,255,255,0.1);
-}
-
-.mystery-price {
-    font-size: 32px;
-    font-weight: 900;
-    color: #D6B953;
-}
-
-.mystery-price .currency {
-    font-size: 20px;
-    margin-right: 5px; /* שים לב שכאן זה בצד שמאל של המספר כי העברית מימין לשמאל */
-}
-
-.btn-add-to-cart {
-    background: transparent;
-    border: 2px solid #D6B953;
-    color: #D6B953;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn-add-to-cart:hover {
-    background: #D6B953;
-    color: #000;
-    box-shadow: 0 0 15px rgba(214, 185, 83, 0.4);
-}
-
-/* --- צד שמאל: תמונה --- */
-.mystery-visual-panel {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.visual-pedestal {
-    background: #111;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.4);
-    position: relative;
-    width: 100%;
-    max-width: 350px;
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.visual-pedestal::after {
-    content: '';
-    position: absolute;
-    top: -1px; left: -1px; right: -1px; bottom: -1px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(214,185,83,0.3) 0%, transparent 100%);
-    pointer-events: none;
-}
-
-.visual-pedestal img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
-    transition: opacity 0.3s ease, transform 0.4s ease;
-}
-
-.visual-pedestal:hover img {
-    transform: scale(1.05) translateY(-5px);
-}
-
-/* התאמה למסכים קטנים (רספונסיביות) */
-@media (max-width: 1440px) {
-    .mystery-showcase-wrapper {
-        padding: 25px;
-        gap: 25px;
-    }
-    
-    .mystery-title { font-size: 26px; }
-    .mystery-desc { font-size: 14px; }
-    .mystery-price { font-size: 26px; }
-    
-    .visual-pedestal {
-        padding: 20px;
-        max-width: 250px;
-    }
-}
-
-/* =========================================
-   רשת מוצרים ננעלת לקטלוג - מכווצת במיוחד (למניעת חיתוך במסכים נמוכים)
-   ========================================= */
-.inner-catalog-content { 
-    flex: 1; display: flex; flex-direction: column; justify-content: space-between; height: 100%; 
-    padding: 15px !important; /* הקטנו מ-20px */
-    background: transparent; border: none; 
-}
-
-.catalog-top-bar {
-    padding-bottom: 10px !important; /* צמצום המרווח העליון */
-    margin-bottom: 10px !important;
-}
-
-.products-scroll-area { 
-    overflow: hidden; flex: 1; display: flex; align-items: center; justify-content: center; width: 100%;
-}
-
-.compact-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 10px !important; /* הקטנו את המרווח בין הקוביות */
-    width: 100% !important;
-    max-width: 820px !important; 
-    margin: 0 auto;
-}
-
-.product-card {
-    flex: none !important;
-    width: 100% !important;
-    height: 175px !important; /* כיווץ נוסף לגובה הקובייה */
-    background: rgba(10, 10, 10, 0.7);
-    border: 1px solid rgba(214, 185, 83, 0.3); 
-    border-radius: 12px;
-    padding: 8px !important; /* פחות שוליים פנימיים */
-    display: flex; 
-    flex-direction: column; 
-    position: relative; 
-    transition: all 0.3s ease;
-    z-index: 2;
-}
-
-.product-card:hover {
-    transform: translateY(-4px); border-color: var(--brand-gold); background: #111;
-    box-shadow: 0 8px 15px rgba(214, 185, 83, 0.15); cursor: pointer;
-}
-
-.product-img-wrapper {
-    width: 100%; 
-    height: 65px !important; /* תמונה יותר קומפקטית */
-    min-height: 65px !important;
-    max-height: 65px !important;
-    background: #050505; 
-    border-radius: 8px; 
-    display: flex; 
-    align-items: center;
-    justify-content: center; 
-    margin-bottom: 6px !important; 
-    border: 1px solid rgba(255,255,255,0.03); 
-    overflow: hidden; 
-    flex-shrink: 0;
-    padding: 4px;
-}
-
-.product-img-wrapper img { 
-    max-height: 100% !important; 
-    width: auto !important; 
-    margin: 0 auto;
-}
-
-.product-badge { position: absolute; top: 6px; right: 6px; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; z-index: 2; background: #ff4a4a; color: #fff;}
-
-.product-info { 
-    display: flex; 
-    flex-direction: column; 
-    flex: 1; 
-    justify-content: space-between; 
-}
-
-.product-cat { font-size: 10px; color: #a0a0a0; margin-bottom: 2px; }
-
-.product-title { 
-    font-size: 11px; 
-    font-weight: 700; 
-    color: #f5f5f5; 
-    line-height: 1.3; 
-    height: 30px !important; 
-    margin-bottom: 0 !important; 
-    display: -webkit-box; 
-    -webkit-line-clamp: 2; 
-    -webkit-box-orient: vertical; 
-    overflow: hidden; 
-}
-
-.product-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: auto; flex-direction: row-reverse; }
-.product-price { font-size: 14px; font-weight: 900; color: var(--brand-gold); }
-.buy-btn { background: none; border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.3s; }
-.buy-btn:hover { background: var(--brand-gold); color: #000; }
-.empty-msg { display: none; text-align: center; color: #a0a0a0; padding: 50px 20px; width: 100%; grid-column: span 3; }
-
-/* מערכת דפדוף פרימיום - מכווצת במיוחד */
-.catalog-pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px; /* מרווח קטן יותר בין הכפתורים */
-    margin-top: 8px !important;
-    padding-top: 8px !important;
-    border-top: 1px dashed rgba(214, 185, 83, 0.2);
-    width: 100%;
-}
-
-.page-btn {
-    background: rgba(214, 185, 83, 0.05);
-    border: 1px solid var(--brand-gold);
-    color: var(--brand-gold);
-    padding: 6px 16px; 
-    border-radius: 30px;
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.page-btn:hover:not(:disabled) {
-    background: var(--brand-gold);
-    color: #000;
-    box-shadow: 0 4px 15px rgba(214, 185, 83, 0.3);
-}
-
-.page-btn:disabled {
-    opacity: 0.2;
-    cursor: not-allowed;
-    border-color: #555;
-    color: #555;
-}
-
-.page-indicator {
-    color: #f5f5f5;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-/* =========================================
-   זירת מכרזים - עיצוב פרימיום
-   ========================================= */
-.auction-pane { display: none; width: 100%; animation: fadeInUp 0.4s ease forwards; }
-.auction-pane.active { display: block; }
-
-.auction-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
-    width: 100%; max-width: 900px; margin: 0 auto;
-}
-
-.auction-card, .empty-auction-slot {
-    height: 320px; background: rgba(10, 10, 10, 0.7); border: 1px solid rgba(214, 185, 83, 0.2);
-    border-radius: 12px; padding: 15px; display: flex; flex-direction: column; position: relative;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s;
-}
-
-.empty-auction-slot {
-    opacity: 0.3; border: 1px dashed rgba(214,185,83,0.3); align-items: center; justify-content: center;
-}
-.empty-auction-slot i { font-size: 30px; color: #D6B953; margin-bottom: 10px; }
-.empty-auction-slot span { color: #a0a0a0; font-size: 14px; font-weight: 700; }
-
-.auction-card.live-auction { border-color: rgba(214, 185, 83, 0.5); }
-.auction-card.live-auction:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(255, 74, 74, 0.15), inset 0 0 20px rgba(214, 185, 83, 0.1); }
-
-.auction-status {
-    position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.8);
-    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
-    display: flex; align-items: center; gap: 6px; z-index: 5;
-}
-.live-auction .auction-status { color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.3); }
-.upcoming-auction .auction-status { color: var(--brand-gold); border: 1px solid rgba(214, 185, 83, 0.3); }
-.archive-auction .auction-status { color: #888; border: 1px solid #444; }
-
-.auction-img {
-    height: 110px; width: 100%; background: #050505; border-radius: 8px;
-    display: flex; justify-content: center; align-items: center; margin-bottom: 12px;
-    border: 1px solid rgba(255,255,255,0.03); padding: 5px;
-}
-.archive-auction .auction-img { opacity: 0.6; filter: grayscale(0.5); }
-.auction-img img { max-height: 100%; max-width: 100%; object-fit: contain; }
-
-.auction-title {
-    font-size: 14px; font-weight: 700; color: #f5f5f5; line-height: 1.3;
-    margin: 0 0 10px 0; text-align: center; height: 36px; overflow: hidden;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-}
-
-.auction-timer {
-    background: rgba(255, 74, 74, 0.05); border: 1px solid rgba(255, 74, 74, 0.2);
-    color: #ff4a4a; font-size: 20px; font-weight: 900; font-family: monospace;
-    text-align: center; padding: 5px 0; border-radius: 8px; margin-bottom: auto; letter-spacing: 2px;
-}
-
-.auction-bid-info {
-    display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; margin-bottom: 12px; position: relative;
-}
-.archive-auction .auction-bid-info { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; flex-direction: column; align-items: center; text-align: center; gap: 5px; }
-.auction-bid-info span { font-size: 12px; color: #a0a0a0; }
-.auction-bid-info strong { font-size: 18px; color: var(--brand-gold); font-weight: 900; }
-.winner-text { font-size: 12px; color: #888; font-weight: 700; }
-
-.btn-bid, .btn-remind {
-    width: 100%; background: var(--brand-gold); color: #000; border: none;
-    padding: 10px; border-radius: 8px; font-weight: 700; font-size: 14px;
-    cursor: pointer; transition: 0.3s; display: flex; justify-content: center; gap: 8px; align-items: center;
-}
-.btn-bid:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(214, 185, 83, 0.3); }
-.btn-remind { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-.btn-remind:hover { background: rgba(255,255,255,0.1); }
-/* עיצוב משתמש מוביל במכרז */
-.bid-user-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.bid-username {
-    font-size: 11px !important;
-    color: var(--brand-gold) !important;
-    font-weight: 700;
-    background: rgba(214, 185, 83, 0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    width: fit-content;
-}
-
-.bid-username i {
-    font-size: 10px;
-    opacity: 0.8;
-}
-
-/* =========================================
-   שוק יד 2 - עיצוב פרימיום קהילתי
-   ========================================= */
-/* גבול מקווקו לכרטיסי יד 2 */
-.yad2-card { 
-    border-style: dashed !important; 
-    border-color: rgba(214, 185, 83, 0.4) !important; 
-}
-.yad2-card:hover { 
-    border-style: solid !important; 
-    border-color: var(--brand-gold) !important; 
-}
-
-/* כפתור "צור קשר" בצבע כסף במקום זהב */
-.yad2-card .buy-btn.btn-contact {
-    border-color: #a0a0a0 !important;
-    color: #a0a0a0 !important;
-}
-.yad2-card .buy-btn.btn-contact:hover {
-    background: #a0a0a0 !important;
-    color: #000 !important;
-    border-color: #a0a0a0 !important;
-}
-
-/* תגיות מצב מוצר (Mint, משומש וכו') */
-.condition-badge {
-    position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 900;
-    padding: 3px 8px; border-radius: 4px; z-index: 2; color: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
-.condition-badge.perfect { background: #2e7d32; } /* ירוק יוקרתי למושלם */
-.condition-badge.good { background: #d68f00; } /* כתום / דבש למצב טוב */
-.condition-badge.used { background: #b71c1c; } /* אדום יין למשומש */
-
-/* =========================================
-   נעילת ממשק (App-Feel) - מניעת סמן טקסט וסימון
-   ========================================= */
-.product-card, 
-.catalog-top-bar, 
-.premium-tabs-nav, 
-.app-sidebar,
-.hot-product,
-.buy-btn,
-.page-btn,
-.auction-card,
-.yad2-card {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-    outline: none !important; /* מעיף מסגרות פוקוס של הדפדפן */
-}
-
-/* מוודא שגם לחיצה על תמונות לא תייצר מסגרת מוזרה */
-img {
-    -webkit-user-drag: none;
-    user-select: none;
-}
-
-/* =========================================
-   תיקון מיקומים גלובלי: כפתור בימין, מחיר בשמאל
-   ========================================= */
-
-/* 1. קוביות הקטלוג ושוק יד-2 */
-.product-bottom {
-    flex-direction: row !important; 
-}
-
-/* 2. אזור המארזים המוכנים */
-.pack-action-area {
-    flex-direction: row-reverse !important;
-    justify-content: flex-end !important;
-}
-
-/* 3. אזור המיסטרי בוקס */
-.mystery-purchase-area {
-    flex-direction: row-reverse !important;
-    justify-content: flex-end !important;
-}
-/* =========================================
-   מערכת הרכבת מארז אישי (Box Builder)
-   ========================================= */
-.builder-layout {
-    display: flex; gap: 20px; width: 100%; max-width: 1000px; margin: 0 auto; height: 100%; padding: 10px;
-}
-
-/* צד ימין - אשף הבחירה */
-.builder-wizard-pane {
-    flex: 6.5; display: flex; flex-direction: column;
-}
-
-.builder-steps-bar {
-    display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.6);
-    border: 1px solid rgba(214, 185, 83, 0.2); padding: 15px 25px; border-radius: 12px; margin-bottom: 20px;
-}
-.builder-steps-bar .step { color: #888; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-.builder-steps-bar .step.active { color: #f5f5f5; }
-.builder-steps-bar .step span {
-    background: #333; color: #888; width: 24px; height: 24px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; font-size: 12px;
-}
-.builder-steps-bar .step.active span { background: var(--brand-gold); color: #000; box-shadow: 0 0 10px rgba(214,185,83,0.5); }
-.step-divider { flex: 1; height: 1px; background: rgba(255,255,255,0.1); margin: 0 15px; }
-
-.builder-step-content { display: none; animation: fadeInUp 0.3s ease forwards; }
-.builder-step-content.active { display: block; }
-
-.builder-step-title { color: var(--brand-gold); font-size: 20px; font-weight: 900; margin-bottom: 20px; margin-top: 0; }
-
-/* בחירת קופסה */
-.box-options-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-.box-option {
-    background: rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 20px;
-    text-align: center; cursor: pointer; transition: 0.3s;
-}
-.box-option:hover { border-color: rgba(214, 185, 83, 0.5); transform: translateY(-5px); }
-.box-option img { height: 120px; margin-bottom: 15px; object-fit: contain; }
-.box-option h4 { color: #fff; margin: 0 0 5px 0; font-size: 16px; }
-.box-option span { color: var(--brand-gold); font-weight: 900; font-size: 18px; }
-
-/* מוצרים לבחירה */
-.builder-items-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-.builder-item {
-    display: flex; align-items: center; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 10px; padding: 10px; transition: 0.3s;
-}
-.builder-item:hover { border-color: rgba(214, 185, 83, 0.3); background: rgba(214,185,83,0.05); }
-.builder-item img { width: 50px; height: 50px; object-fit: contain; background: #111; border-radius: 6px; padding: 2px; margin-left: 15px; }
-.builder-item-info { flex: 1; }
-.builder-item-info h5 { margin: 0 0 5px 0; color: #fff; font-size: 13px; }
-.builder-item-info .price { color: var(--brand-gold); font-weight: 700; font-size: 13px; }
-.add-to-box-btn {
-    background: transparent; border: 1px solid var(--brand-gold); color: var(--brand-gold);
-    width: 32px; height: 32px; border-radius: 50%; cursor: pointer; transition: 0.3s;
-}
-.add-to-box-btn:hover { background: var(--brand-gold); color: #000; }
-
-.greeting-textarea {
-    width: 100%; height: 150px; background: rgba(0,0,0,0.5); border: 1px solid rgba(214, 185, 83, 0.3);
-    border-radius: 12px; padding: 15px; color: #fff; font-family: inherit; font-size: 15px; resize: none; outline: none;
-}
-
-.next-step-btn { background: var(--brand-gold); color: #000; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-.next-step-btn:hover { background: #fff; }
-.back-btn { background: none; border: none; color: #888; cursor: pointer; transition: 0.3s; font-size: 13px; }
-.back-btn:hover { color: #fff; }
-
-/* צד שמאל - סיכום קבלה */
-.builder-summary-pane {
-    flex: 3.5; background: rgba(10,10,10,0.8); border: 1px solid rgba(214, 185, 83, 0.2);
-    border-radius: 16px; padding: 20px; display: flex; flex-direction: column; position: relative;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-}
-.summary-title { margin: 0 0 20px 0; color: #fff; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 15px; font-size: 18px; }
-.summary-box-info { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; }
-.summary-box-info img { width: 40px; height: 40px; object-fit: contain; }
-.summary-box-info span { color: #fff; font-weight: 700; font-size: 14px; }
-
-.summary-items-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.empty-box-msg { color: #666; font-size: 13px; text-align: center; margin-top: 20px; }
-.summary-item-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 6px; }
-.summary-item-row span { color: #ccc; font-size: 12px; }
-.summary-item-row strong { color: var(--brand-gold); font-size: 13px; margin-right: 10px; }
-.remove-item-btn { background: none; border: none; color: #ff4a4a; cursor: pointer; font-size: 12px; opacity: 0.7; }
-.remove-item-btn:hover { opacity: 1; }
-
-.summary-footer { border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px; margin-top: auto; }
-.summary-total { font-size: 16px; color: #fff; display: flex; justify-content: space-between; margin-bottom: 15px; }
-.summary-total strong { font-size: 24px; color: var(--brand-gold); }
-
-.btn-checkout-box { width: 100%; background: var(--brand-gold); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; gap: 8px; align-items: center; }
-.btn-checkout-box:hover:not(.disabled) { background: #fff; box-shadow: 0 0 20px rgba(214,185,83,0.4); transform: translateY(-2px); }
-.btn-checkout-box.disabled { background: #333; color: #666; cursor: not-allowed; }
-
-/* =========================================
-   עיגול כמות מוצרים בעגלה (Cart Badge)
-   ========================================= */
-.cart-badge {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #ff4a4a;
+.item-overlay h3 {
     color: #fff;
-    font-size: 11px;
-    font-weight: 900;
-    width: 18px;
-    height: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 2px solid #0a0a0a; /* מסגרת כהה להפרדה מהרקע */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    animation: popBadge 0.3s ease-out;
-    pointer-events: none; /* כדי שלא יפריע ללחיצה על העגלה עצמה */
-    z-index: 10;
+    font-size: 15px; 
+    font-weight: 700;
+    margin: 0;
+    transition: 0.3s;
 }
 
-/* אנימציית קפיצה כשמוצר נוסף */
-@keyframes popBadge {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.4); }
-    100% { transform: scale(1); }
+.six-grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.8), 0 0 15px var(--gold-glow);
+    border-color: var(--accent-gold);
 }
+
+.six-grid-item:hover img {
+    transform: scale(1.1); 
+}
+
+.six-grid-item:hover .item-overlay {
+    background: rgba(10, 10, 12, 0.95);
+    border-top-color: var(--accent-gold);
+}
+
+.six-grid-item:hover .item-overlay h3 {
+    color: var(--accent-gold); 
+}
+
+/* =========================================
+   7. פוטר (הפס מפריד את הכל ב-100% רוחב)
+   ========================================= */
+.site-footer { 
+    direction: rtl; 
+    background: var(--header-bg); border-top: 2px solid var(--accent-gold); 
+    /* הורדתי את הפדינג מהצדדים כדי שהפס התחתון יגיע עד הסוף בלי רווחים! */
+    padding: 50px 0 0 0; 
+    margin-top: auto; position: relative; z-index: 10;
+}
+
+.footer-grid { 
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; 
+    max-width: 1200px; margin: 0 auto; 
+    /* החזרתי את הפדינג לכאן כדי לשמור על האמצע מסודר */
+    padding: 0 50px 40px 50px; 
+}
+
+.brand-col h3 { font-size: 26px; color: #fff; margin-bottom: 15px; font-weight: 900;}
+.brand-col h3 .dot { color: var(--accent-gold); }
+.brand-col p { color: #a0aec0; font-size: 14px; margin-bottom: 25px; max-width: 80%; line-height: 1.6;}
+
+.footer-col h4 { color: #fff; margin-bottom: 20px; font-size: 16px; font-weight: 800; }
+.footer-col a { display: block; color: #a0aec0; font-size: 14px; margin-bottom: 12px; transition: 0.2s; font-weight: 500;}
+.footer-col a:hover { color: var(--accent-gold); transform: translateX(-3px);}
+
+.footer-bottom { 
+    text-align: center; color: rgba(255,255,255,0.3); font-size: 13px; font-weight: 500;
+    /* הפס זהב המלא שמגיע ממש מקצה לקצה */
+    border-top: 1px solid var(--accent-gold); 
+    padding: 20px 0;
+}
+
+.scrollable-content::-webkit-scrollbar { width: 8px; }
+.scrollable-content::-webkit-scrollbar-track { background: var(--body-bg); }
+.scrollable-content::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 4px; }
