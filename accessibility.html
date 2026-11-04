@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סוליבי ספורט - הצהרת נגישות</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- שואב את קובץ העיצוב הגלובלי (כמו בשאר הדפים) -->
+    <link rel="stylesheet" href="solibi-app.css">
+    
+    <style>
+        /* =========================================
+           שחרור הנעילה ועיצוב אחיד
+           ========================================= */
+        body.accessibility-page-body {
+            background-color: #0b0c10 !important;
+            background-image: radial-gradient(circle at 50% 10%, rgba(200, 210, 230, 0.12) 0%, transparent 60%), url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M10 16.95l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zm32 0l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zM26 26l-5-2.88v-5.77l5-2.88 5 2.88v5.77L26 26zM26 7.7l-5-2.88V-.94l5-2.88 5 2.88v5.77L26 7.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+            color: #ffffff !important;
+            width: 100vw !important;
+            height: auto !important; 
+            min-height: 100vh !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            margin: 0 !important;
+        }
+
+        .main-container {
+            flex: 1 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: flex-start !important; 
+            padding: 50px 20px !important;
+            overflow: visible !important; 
+        }
+
+        /* קוביית הזכוכית - מותאמת לטקסט קריא */
+        .glass-box {
+            display: flex;
+            flex-direction: column;
+            width: 100% !important; 
+            max-width: 900px !important; 
+            height: auto !important; 
+            background: linear-gradient(145deg, rgba(28, 31, 38, 0.95) 0%, rgba(17, 19, 24, 0.95) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6) !important;
+            padding: 50px;
+            animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================
+           עיצוב התוכן הטקסטואלי
+           ========================================= */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
+        }
+
+        .page-header i {
+            font-size: 40px;
+            color: #D4AF37;
+            margin-bottom: 15px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            color: #D4AF37;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #a0a0a0;
+            font-size: 15px;
+        }
+
+        .content-section {
+            margin-bottom: 35px;
+            line-height: 1.8;
+            color: #e2e8f0;
+            font-size: 16px;
+        }
+
+        .content-section h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f5f5f5;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .content-section h2 i {
+            color: #D4AF37;
+            font-size: 18px;
+        }
+
+        .content-section ul {
+            list-style-type: none;
+            padding-right: 15px;
+            margin-top: 15px;
+        }
+
+        .content-section ul li {
+            position: relative;
+            margin-bottom: 10px;
+            padding-right: 20px;
+        }
+
+        .content-section ul li::before {
+            content: '•';
+            color: #D4AF37;
+            font-size: 20px;
+            font-weight: bold;
+            position: absolute;
+            right: 0;
+            top: -2px;
+        }
+
+        /* תיבת יצירת קשר עם רכז נגישות */
+        .contact-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .contact-box strong {
+            color: #D4AF37;
+        }
+
+        .contact-box p {
+            margin-bottom: 8px;
+        }
+
+        /* רספונסיביות */
+        @media (max-width: 768px) {
+            .glass-box {
+                padding: 30px 20px;
+            }
+            .page-header h1 {
+                font-size: 26px;
+            }
+            .content-section {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body class="accessibility-page-body">
+
+    <!-- חור עבור ההדר -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-container">
+        
+        <div class="glass-box">
+            
+            <div class="page-header">
+                <i class="fa-solid fa-wheelchair"></i>
+                <h1>הצהרת נגישות</h1>
+                <p>עודכן לאחרונה: אוגוסט 2026</p>
+            </div>
+
+            <div class="content-section">
+                <p>
+                    חברת <strong>סוליבי ספורט (Solibi Sport)</strong> רואה חשיבות עליונה במתן שירות שוויוני, מכבד ונגיש לכלל לקוחותיה, לרבות אנשים עם מוגבלויות. אנו פועלים רבות כדי להנגיש את האתר שלנו ואת השירותים שאנו מציעים, במטרה לאפשר חווית גלישה ורכישה נוחה, קלה ועצמאית לכולם.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h2><i class="fa-solid fa-laptop-code"></i> נגישות האתר האינטרנט</h2>
+                <p>
+                    אתר אינטרנט זה עומד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג 2013. התאמות הנגישות בוצעו ע"פ המלצות התקן הישראלי (ת"י 5568) לנגישות תכנים באינטרנט ברמת AA ומסמך WCAG2.0 הבינלאומי.
+                </p>
+                <ul>
+                    <li><strong>ניווט מקלדת:</strong> האתר תומך בניווט מלא באמצעות מקשי המקלדת (Tab, Enter, וחיצים) עבור משתמשים המתקשים בשימוש בעכבר.</li>
+                    <li><strong>התאמה לקוראי מסך:</strong> האתר מותאם לתמיכה בתוכנות קוראות מסך (Screen Readers) המשמשות עיוורים ולקויי ראייה, כולל תיאור חלופי (Alt Text) מדויק לתמונות המוצרים.</li>
+                    <li><strong>תצוגה חזותית:</strong> האתר מעוצב תוך הקפדה על ניגודיות (Contrast) גבוהה בין הטקסט לרקע, על מנת להקל על קריאת התכנים.</li>
+                    <li><strong>התאמה למכשירים:</strong> האתר רספונסיבי ומותאם לגלישה במגוון מסכים ומכשירים סלולריים.</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2><i class="fa-solid fa-store"></i> הסדרי נגישות פיזיים</h2>
+                <p>
+                    פעילותנו מתבצעת בעיקר כחנות אונליין (E-commerce). עם זאת, ככל שיש נקודות איסוף עצמי או קבלת קהל, אנו מוודאים כי:
+                </p>
+                <ul>
+                    <li>קיימות חניות נכים מסודרות בקרבת הכניסה.</li>
+                    <li>הכניסה למבנה נגישה לכיסאות גלגלים, ללא מדרגות או באמצעות רמפה תקנית.</li>
+                    <li>דלפקי השירות והקופות מותאמים בגובהם לקבלת שירות בישיבה.</li>
+                </ul>
+            </div>
+
+            <div class="content-section">
+                <h2><i class="fa-solid fa-headset"></i> יצירת קשר ומשוב נגישות</h2>
+                <p>
+                    אנו ממשיכים במאמצים לשפר את נגישות האתר כחלק ממחויבותנו לאפשר שימוש בו עבור כלל האוכלוסייה. אם במהלך הגלישה נתקלתם בבעיה או בתקלה הקשורה לנגישות, נשמח מאוד אם תעדכנו אותנו כדי שנוכל לטפל בכך בהקדם האפשרי.
+                </p>
+                
+                <div class="contact-box">
+                    <p><strong>פרטי רכז/ת הנגישות בחברתנו:</strong></p>
+                    <p>שם: [יש להשלים שם, למשל: ישראל ישראלי]</p>
+                    <p>טלפון / וואטסאפ: [יש להשלים טלפון, למשל: 050-1234567]</p>
+                    <p>דואר אלקטרוני: <a href="mailto:accessibility@solibi.co.il" style="color: #D4AF37;">accessibility@solibi.co.il</a></p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- חור עבור הפוטר -->
+    <div id="ticker-placeholder"></div>
+
+    <script>
+        // שואב את ההדר
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('header-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+                if(typeof updateCartBadge === 'function') updateCartBadge();
+            });
+
+        // שואב את הטיקר (פוטר)
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('ticker-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            });
+    </script>
+    <script src="cart.js"></script>
+    <script src="search.js"></script>
+    <script type="module" src="auth.js"></script>
+</body>
+</html>

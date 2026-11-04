@@ -7,26 +7,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- שואב את קובץ העיצוב הגלובלי (לפוטר, להדר ולקישורים המיוחדים) -->
+    <!-- שואב את קובץ העיצוב הגלובלי -->
     <link rel="stylesheet" href="solibi-app.css">
     
     <style>
-        /* === צבעים מקומיים - הוספת נגיעות הכסוף === */
-        :root {
-            --brand-silver: #D1D5DB;
-            --brand-silver-dark: #9CA3AF;
-            --border-silver: rgba(209, 213, 219, 0.2);
-        }
-
         /* =========================================
-           דריסות מבנה - תואם ב-100% לשאר הדפים
+           שחרור הנעילה ועיצוב אחיד
            ========================================= */
-        body {
-            background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, #0a0a0a 70%) !important;
-            color: #f5f5f5 !important;
+        body.checkout-page-body {
+            background-color: #0b0c10 !important;
+            background-image: radial-gradient(circle at 50% 10%, rgba(200, 210, 230, 0.12) 0%, transparent 60%), url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M10 16.95l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zm32 0l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zM26 26l-5-2.88v-5.77l5-2.88 5 2.88v5.77L26 26zM26 7.7l-5-2.88V-.94l5-2.88 5 2.88v5.77L26 7.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+            color: #ffffff !important;
             width: 100vw !important;
-            height: 100vh !important; 
-            overflow: hidden !important; 
+            height: auto !important; 
+            min-height: 100vh !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important; 
             display: flex !important;
             flex-direction: column !important;
             margin: 0 !important;
@@ -37,25 +33,23 @@
             flex: 1 !important;
             display: flex !important;
             justify-content: center !important;
-            align-items: center !important;
-            padding: clamp(15px, 3vh, 40px) 15px !important;
-            overflow: hidden !important; 
+            align-items: flex-start !important; 
+            padding: 50px 20px !important;
+            overflow: visible !important; 
         }
 
-        /* חלון התשלום (קוביית הזכוכית) - עם מסגרת כסופה */
+        /* חלון התשלום (קוביית הזכוכית) */
         .checkout-glass-box {
             display: flex;
             flex-direction: row;
             width: 100% !important; 
             max-width: 1100px !important; 
-            height: 100% !important; 
-            max-height: 750px !important;
-            background: linear-gradient(145deg, rgba(20, 20, 20, 0.85) 0%, rgba(5, 5, 5, 0.95) 100%) !important;
-            backdrop-filter: blur(15px) !important;
-            border: 1px solid var(--border-silver) !important; /* מסגרת כסופה */
+            height: auto !important; 
+            background: linear-gradient(145deg, #1c1f26 0%, #111318 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
             border-radius: 20px !important;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8) !important;
-            overflow: hidden !important; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6) !important;
+            overflow: visible !important; 
             animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -69,38 +63,31 @@
            ========================================= */
         .checkout-form-wrapper {
             flex: 1.8; 
-            direction: ltr; /* מעביר פס גלילה לשמאל */
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(214, 185, 83, 0.4) transparent;
+            overflow: visible !important;
         }
-        
-        .checkout-form-wrapper::-webkit-scrollbar { width: 6px; }
-        .checkout-form-wrapper::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
 
         .checkout-form-side { 
-            direction: rtl; /* מחזיר תוכן לימין לשמאל */
-            padding: 25px; 
+            padding: 40px; 
             display: flex; flex-direction: column; gap: 15px;
         }
         
-        /* סקשן טופס עם מסגרת כסופה */
+        /* סקשן טופס */
         .form-section { 
-            background: #141414; 
-            padding: 18px 25px; 
+            background: #070709; 
+            padding: 20px 25px; 
             border-radius: 12px; 
-            border: 1px solid var(--border-silver); /* מסגרת כסופה */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+            border: 1px solid rgba(212, 175, 55, 0.2); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
             transition: 0.3s; 
         }
         .form-section:hover { 
-            border-color: #D6B953; /* הופך לזהב במעבר */
-            box-shadow: 0 6px 15px rgba(214, 185, 83, 0.15); 
+            border-color: #D4AF37; 
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); 
         }
 
         .form-section-title { 
-            font-size: 16px; font-weight: 900; color: #D6B953; 
-            border-bottom: 2px solid var(--border-silver); /* קו הפרדה כסוף */
+            font-size: 16px; font-weight: 900; color: #D4AF37; 
+            border-bottom: 2px solid rgba(212, 175, 55, 0.2); 
             padding-bottom: 8px; margin-bottom: 15px; 
             display: flex; align-items: center; gap: 8px;
         }
@@ -112,85 +99,81 @@
         .input-group label { font-size: 12px; font-weight: 700; color: #f5f5f5; }
         
         .input-group input { 
-            font-family: inherit; padding: 10px; border: 1px solid var(--border-silver); /* שדות מוקפים בכסוף */
-            border-radius: 8px; font-size: 13px; outline: none; transition: 0.3s; background: #000; color: #f5f5f5;
+            font-family: inherit; padding: 12px; border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 8px; font-size: 13px; outline: none; transition: 0.3s; background: rgba(0,0,0,0.5); color: #f5f5f5;
         }
-        .input-group input:focus { border-color: #D6B953; box-shadow: 0 0 0 2px rgba(214, 185, 83, 0.2); }
+        .input-group input:focus { border-color: #D4AF37; box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2); background: rgba(0,0,0,0.8); }
         .input-group input::placeholder { color: #555; }
 
         /* אפשרויות משלוח */
         .shipping-options { display: flex; gap: 10px; }
         .shipping-option { 
             flex: 1; display: flex; align-items: center; justify-content: space-between; 
-            padding: 10px 15px; border: 1px solid var(--border-silver); /* מסגרת כסופה */
+            padding: 10px 15px; border: 1px solid rgba(212, 175, 55, 0.3);
             border-radius: 8px; cursor: pointer; transition: 0.2s; background: #000; 
         }
-        .shipping-option:hover { border-color: #D6B953; background: #141414;}
-        .shipping-option input[type="radio"] { accent-color: #D6B953; width: 16px; height: 16px; cursor: pointer; }
+        .shipping-option:hover { border-color: #D4AF37; background: #0a0a0a;}
+        .shipping-option input[type="radio"] { accent-color: #D4AF37; width: 16px; height: 16px; cursor: pointer; }
         .shipping-info { display: flex; align-items: center; gap: 10px; }
         .shipping-text strong { display: block; color: #f5f5f5; font-size: 13px; }
         .shipping-text span { font-size: 11px; color: #a0a0a0; }
-        .shipping-price { font-weight: 900; color: #D6B953; font-size: 14px;}
+        .shipping-price { font-weight: 900; color: #D4AF37; font-size: 14px;}
         
-        /* טופס אשראי - נגיעות כסוף */
+        /* טופס אשראי */
         .credit-card-box { 
-            background: linear-gradient(135deg, #111, #000); 
+            background: #000; 
             padding: 20px 20px 25px 20px;
             border-radius: 12px; 
-            border: 1px solid var(--brand-silver-dark); /* מסגרת כסופה בולטת יותר */
+            border: 1px solid rgba(212, 175, 55, 0.4);
             color: #fff; 
             position: relative; 
             overflow: hidden; 
         }
         
-        .cc-input { background: rgba(255,255,255,0.05) !important; border: 1px solid var(--border-silver) !important; color: #fff !important; }
-        .cc-input:focus { border-color: #D6B953 !important; background: rgba(255,255,255,0.1) !important; box-shadow: 0 0 8px rgba(214, 185, 83, 0.3) !important;}
+        .cc-input { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(212, 175, 55, 0.2) !important; color: #fff !important; }
+        .cc-input:focus { border-color: #D4AF37 !important; background: rgba(0,0,0,0.8) !important; box-shadow: 0 0 8px rgba(212, 175, 55, 0.2) !important;}
         .cc-input::placeholder { color: rgba(255,255,255,0.3) !important; }
         .cc-logos { display: flex; gap: 8px; margin-bottom: 12px; } 
-        .cc-badge { background:rgba(214,185,83,0.1); color:#D6B953; font-weight:900; font-size:9px; padding:3px 6px; border-radius:4px; border: 1px solid #D6B953; letter-spacing: 1px;}
+        .cc-badge { background:rgba(212, 175, 55,0.1); color:#D4AF37; font-weight:900; font-size:9px; padding:3px 6px; border-radius:4px; border: 1px solid #D4AF37; letter-spacing: 1px;}
 
         /* =========================================
            סיכום הזמנה (צד שמאל)
            ========================================= */
         .checkout-summary-side { 
             flex: 1; 
-            background: linear-gradient(135deg, #0f0f0f 0%, #000 100%); 
-            border-right: 1px solid var(--border-silver); /* קו הפרדה כסוף */
-            padding: 25px; color: #fff; display: flex; flex-direction: column; 
+            background: transparent; 
+            border-right: 1px solid rgba(212, 175, 55, 0.35); 
+            padding: 40px; color: #fff; display: flex; flex-direction: column; 
         }
 
         .summary-title { 
             font-size: 18px; font-weight: 900; margin-bottom: 15px; 
-            border-bottom: 1px solid var(--border-silver); /* קו הפרדה כסוף */
-            padding-bottom: 8px; display: flex; align-items: center; justify-content: space-between; color: #D6B953;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2); 
+            padding-bottom: 8px; display: flex; align-items: center; justify-content: space-between; color: #D4AF37;
         }
         
-        .scroll-container-ltr { flex: 1; direction: ltr; overflow-y: auto; padding-right: 5px; margin-bottom: 15px; }
-        .scroll-container-ltr::-webkit-scrollbar { width: 4px; }
-        .scroll-container-ltr::-webkit-scrollbar-thumb { background: rgba(214,185,83,0.4); border-radius: 10px; }
+        .order-items-mini { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;}
+        .mini-item { display: flex; align-items: center; gap: 10px; background: #070709; padding: 10px; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.2); }
         
-        .order-items-mini { direction: rtl; display: flex; flex-direction: column; gap: 10px; }
-        .mini-item { display: flex; align-items: center; gap: 10px; background: #141414; padding: 10px; border-radius: 8px; border: 1px solid var(--border-silver); /* מסגרת כסופה למוצר בקופה */ }
-        
-        .mini-img { width: 40px; height: 40px; background: #000; border: 1px solid var(--border-silver); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden;}
+        .mini-img { width: 40px; height: 40px; background: #000; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden;}
         .mini-img img { width: 100%; height: 100%; object-fit: cover;}
         
         .mini-info { flex: 1; display: flex; flex-direction: column; }
         .mini-name { font-size: 12px; font-weight: 700; color: #fff; line-height: 1.2;}
         .mini-qty { font-size: 10px; color: #a0a0a0; margin-top: 2px;}
-        .mini-price { font-weight: 900; color: #D6B953; font-size: 14px;}
+        .mini-price { font-weight: 900; color: #D4AF37; font-size: 14px;}
 
         /* אזור סכומים וסיום תשלום */
-        .totals-section { border-top: 1px solid var(--border-silver); padding-top: 12px; margin-top: auto;}
+        .totals-section { border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 12px; margin-top: auto;}
         .calc-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; color: #a0a0a0; }
-        .total-row { margin-top: 8px; border-top: 1px dashed var(--border-silver); padding-top: 12px; font-size: 20px; font-weight: 900; color: #fff; display: flex; justify-content: space-between; align-items: center;}
+        .total-row { margin-top: 8px; border-top: 1px dashed rgba(212, 175, 55, 0.3); padding-top: 12px; font-size: 20px; font-weight: 900; color: #fff; display: flex; justify-content: space-between; align-items: center;}
         
         .pay-btn {
-            background: #D6B953; color: #000; border: none; padding: 14px; border-radius: 10px;
+            background: #D4AF37; color: #000; border: none; padding: 14px; border-radius: 10px;
             font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 15px; transition: 0.3s; width: 100%;
             display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .pay-btn:hover { transform: translateY(-2px); background: #FDF3C6; box-shadow: 0 6px 15px rgba(214, 185, 83, 0.3);}
+        .pay-btn:hover { transform: translateY(-2px); background: #FDF3C6; box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);}
 
         .secure-badge { text-align: center; margin-top: 10px; font-size: 10px; color: #a0a0a0; display: flex; align-items: center; justify-content: center; gap: 5px; }
 
@@ -200,31 +183,31 @@
             z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s;
         }
         .success-overlay.active { opacity: 1; pointer-events: all; }
-        .success-modal { background: #141414; border: 1px solid var(--brand-silver-dark); padding: 30px; border-radius: 15px; text-align: center; max-width: 350px; transform: scale(0.8); transition: 0.4s; }
+        .success-modal { background: #070709; border: 1px solid rgba(212, 175, 55, 0.4); padding: 30px; border-radius: 15px; text-align: center; max-width: 350px; transform: scale(0.8); transition: 0.4s; }
         .success-overlay.active .success-modal { transform: scale(1); }
-        .success-icon { width: 60px; height: 60px; background: #D6B953; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; }
-        .success-title { font-size: 20px; font-weight: 900; color: #D6B953; margin-bottom: 8px; }
+        .success-icon { width: 60px; height: 60px; background: #D4AF37; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; }
+        .success-title { font-size: 20px; font-weight: 900; color: #D4AF37; margin-bottom: 8px; }
         .success-desc { font-size: 13px; color: #f5f5f5; margin-bottom: 15px; }
         .loader-bar { width: 100%; height: 4px; background: #333; border-radius: 2px; position: relative; }
-        .loader-progress { position: absolute; top: 0; right: 0; height: 100%; background: #D6B953; width: 0%; transition: width 3s linear; }
+        .loader-progress { position: absolute; top: 0; right: 0; height: 100%; background: #D4AF37; width: 0%; transition: width 3s linear; }
 
         /* רספונסיביות */
         @media (max-width: 1024px) {
-            .checkout-glass-box { max-width: 95% !important; height: 95% !important; max-height: none;}
+            .checkout-glass-box { max-width: 95% !important; }
             .checkout-form-side { padding: 15px; gap: 10px;}
             .form-section { padding: 15px; }
             .checkout-summary-side { padding: 20px; }
         }
 
         @media (max-width: 800px) {
-            .checkout-glass-box { flex-direction: column-reverse; overflow-y: auto; height: auto !important; max-height: 90vh !important; }
-            .checkout-summary-side { flex: none; border-right: none; border-bottom: 1px solid var(--border-silver); }
+            .checkout-glass-box { flex-direction: column-reverse; overflow: visible;}
+            .checkout-summary-side { flex: none; border-right: none; border-bottom: 1px solid rgba(212, 175, 55, 0.35); }
         }
     </style>
 </head>
-<body>
+<body class="checkout-page-body">
 
-    <!-- 1. הדר אחיד -->
+    <!-- 1. חור עבור ההדר -->
     <div id="header-placeholder"></div>
 
     <!-- 2. אזור הבמה המרכזי -->
@@ -358,17 +341,15 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                 </h2>
                 
-                <div class="scroll-container-ltr">
-                    <div class="order-items-mini" id="checkout-items-list">
-                        <!-- הפריטים יוזרקו לכאן -->
-                    </div>
+                <div class="order-items-mini" id="checkout-items-list">
+                    <!-- הפריטים יוזרקו לכאן -->
                 </div>
 
                 <div class="totals-section">
                     <div class="calc-row"><span>סכום ביניים:</span> <span id="calc-subtotal">0 ₪</span></div>
                     <div class="calc-row"><span>דמי משלוח:</span> <span id="calc-shipping">חינם</span></div>
                     
-                    <div class="total-row"><span>סה"כ לתשלום:</span> <span id="calc-total" style="color: #D6B953;">0 ₪</span></div>
+                    <div class="total-row"><span>סה"כ לתשלום:</span> <span id="calc-total" style="color: #D4AF37;">0 ₪</span></div>
                     
                     <button class="pay-btn" onclick="processPayment()">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -384,15 +365,8 @@
         </div>
     </main>
 
-    <!-- 3. פוטר וטיקר האחיד (מחליף את הישן הקשיח) -->
-    <footer class="app-footer">
-        <div class="footer-links">
-            <a href="about.html">אודות</a>
-            <a href="contact.html">צור קשר</a>
-            <a href="terms.html">תקנון ומדיניות</a>
-        </div>
-        <div id="ticker-placeholder"></div>
-    </footer>
+    <!-- 3. חור עבור הפוטר -->
+    <div id="ticker-placeholder"></div>
 
     <!-- מודאל הצלחה -->
     <div class="success-overlay" id="successOverlay">
@@ -410,7 +384,7 @@
     </div>
 
     <script>
-        // טעינת ההדר והטיקר בצורה אחידה
+        // טעינת ההדר והטיקר
         fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
@@ -431,7 +405,7 @@
             subtotal = 0;
             
             cart.forEach(item => {
-                // תיקון: שימוש ב-item.qty במקום item.quantity
+                // תיקון: שימוש ב-qty בדיוק כמו במנוע העגלה שלנו
                 subtotal += (item.price * item.qty);
                 let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img || 'images/soccerwe-mistery-pack.jpg.png'}" alt="${item.name}">`;
 

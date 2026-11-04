@@ -7,74 +7,475 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="solibi-app.css">
+    <style>
+        .home-tabs-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            margin: 40px 0 30px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+        }
+        .home-tab-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #8fa0b3;
+            cursor: pointer;
+            position: relative;
+            padding-bottom: 12px;
+            margin-bottom: -13px;
+            transition: all 0.3s ease;
+        }
+        .home-tab-title:hover {
+            color: #ffffff;
+        }
+        .home-tab-title.active {
+            color: #ffffff;
+        }
+        .home-tab-title.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #D4AF37;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.8);
+            border-radius: 3px;
+        }
+        .featured-categories-section {
+            max-width: 1280px !important;
+            width: 92% !important;
+            margin: 0 auto 70px auto !important;
+        }
+
+        /* רשת 3 קוביות מופרדות לחלוטין */
+        .solibi-cards-grid {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 32px !important;
+            width: 100% !important;
+        }
+
+        /* כרטיס קובייה עצמאי ומופרד */
+        .solibi-card {
+            position: relative !important;
+            background: radial-gradient(circle at 50% 35%, rgba(212, 175, 55, 0.16) 0%, #12141c 70%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            border-radius: 18px !important;
+            height: 390px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+            padding: 22px !important;
+            box-sizing: border-box !important;
+            text-decoration: none !important;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75) !important;
+            transition: all 0.35s ease !important;
+            overflow: hidden !important;
+        }
+
+        .solibi-card:hover {
+            transform: translateY(-8px) !important;
+            border-color: #D4AF37 !important;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(212, 175, 55, 0.25) !important;
+        }
+
+        /* תגית עליונה */
+        .cube-badge {
+            align-self: flex-start !important;
+            background: rgba(212, 175, 55, 0.15) !important;
+            color: #D4AF37 !important;
+            border: 1px solid rgba(212, 175, 55, 0.45) !important;
+            font-size: 12px !important;
+            font-weight: 800 !important;
+            padding: 5px 14px !important;
+            border-radius: 30px !important;
+        }
+
+        /* אזור התמונה במרכז - גדול וברור */
+        .solibi-card-img-wrap {
+            flex: 1 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            padding: 10px 0 !important;
+        }
+
+        .solibi-card-img-wrap img {
+            max-height: 170px !important;
+            max-width: 85% !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
+            filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.85)) !important;
+            transition: transform 0.35s ease !important;
+        }
+
+        .solibi-card:hover .solibi-card-img-wrap img {
+            transform: scale(1.08) !important;
+        }
+
+        /* תיבת המידע התחתונה בתוך הכרטיס */
+        .solibi-card-info {
+            width: 100% !important;
+            background: rgba(11, 12, 16, 0.92) !important;
+            border: 1px solid rgba(212, 175, 55, 0.22) !important;
+            border-radius: 12px !important;
+            padding: 14px 16px !important;
+            box-sizing: border-box !important;
+            text-align: right !important;
+        }
+
+        .solibi-card-info h3 {
+            color: #ffffff !important;
+            font-size: 18px !important;
+            font-weight: 800 !important;
+            margin: 0 0 4px 0 !important;
+        }
+
+        .cube-subtext {
+            color: #94a3b8 !important;
+            font-size: 12px !important;
+            margin: 0 0 12px 0 !important;
+        }
+
+        .cube-bottom-row {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            padding-top: 10px !important;
+        }
+
+        .cube-price {
+            color: #D4AF37 !important;
+            font-size: 15px !important;
+            font-weight: 900 !important;
+        }
+
+        .cube-cta {
+            background: rgba(212, 175, 55, 0.15) !important;
+            color: #D4AF37 !important;
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+            padding: 5px 12px !important;
+            border-radius: 20px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            white-space: nowrap !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .solibi-card:hover .cube-cta {
+            background: #D4AF37 !important;
+            color: #0b0c10 !important;
+        }
+        /* הגדלת המרווח מתחת לכל אזור הקטגוריות לפני הפוטר */
+        .featured-categories-section {
+            max-width: 1420px !important;
+            width: 94% !important;
+            margin: 0 auto 140px auto !important; /* היה 80px - הוגדל כדי להרחיק מהפוטר */
+        }
+
+        /* הגדלת המרחק בין קוביות המוצרים לקו ההפרדה ולקוביות התחתונות */
+        .solibi-bottom-split {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 120px; /* היה 38px - מרווח גדול יותר בין ימין לשמאל */
+            margin-top: 180px; /* היה 75px - מרחיק את קו ההפרדה מקוביות המוצרים */
+            padding-top: 150px; /* היה 65px - מרחיק את 2 הקוביות התחתונות מקו ההפרדה */
+            width: 100%;
+        }
+
+        /* הקו המפריד - עבה וזוהר יותר */
+        .solibi-bottom-split::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2%;
+            width: 96%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.9) 50%, transparent 100%);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        /* יהלום זהב מרכזי מודגש במסגרת */
+        .solibi-bottom-split::after {
+            content: '❖';
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.7);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 3px 20px;
+            font-size: 18px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.45);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.9);
+        }
+
+        /* הקוביות התחתונות - בולטות ומוארות יותר מהרקע */
+        .solibi-feature-box {
+            position: relative;
+            background: radial-gradient(circle at 85% 20%, rgba(212, 175, 55, 0.18) 0%, #161a26 55%, #0e1017 100%);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            border-right: 5px solid #D4AF37;
+            border-radius: 16px;
+            padding: 38px 42px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 25px rgba(212, 175, 55, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+        }
+
+        .solibi-feature-box:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.85);
+            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.28);
+        }
+
+        /* אייקוני רקע (Watermark) ברורים יותר */
+        .solibi-feature-box:first-child::after {
+            content: '\f521';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: -15px;
+            top: -10px;
+            font-size: 175px;
+            color: rgba(212, 175, 55, 0.08);
+            pointer-events: none;
+            transform: rotate(-15deg);
+        }
+
+        .solibi-feature-box:last-child::after {
+            content: '\f3ed';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: -10px;
+            bottom: -15px;
+            font-size: 175px;
+            color: rgba(212, 175, 55, 0.08);
+            pointer-events: none;
+            transform: rotate(10deg);
+        }
+
+        /* צד ימין: מועדון האספנים */
+        .vip-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            align-self: flex-start;
+            background: rgba(212, 175, 55, 0.12);
+            color: #D4AF37;
+            border-bottom: 1px solid #D4AF37;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 10px;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+
+        .vip-title {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 900;
+            margin: 0 0 10px 0;
+        }
+
+        .vip-desc {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 20px 0;
+        }
+
+        .vip-perks {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .vip-perk-item {
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .vip-perk-item i {
+            color: #D4AF37;
+        }
+
+        .vip-form {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .vip-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            color: #ffffff;
+            padding: 13px 18px;
+            border-radius: 10px;
+            font-family: 'Rubik', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .vip-input:focus {
+            border-color: #D4AF37;
+            background: rgba(212, 175, 55, 0.05);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .vip-submit-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #b5952f 100%);
+            color: #0b0c10;
+            border: none;
+            padding: 0 26px;
+            border-radius: 10px;
+            font-family: 'Rubik', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+        }
+
+        .vip-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+        }
+
+        /* צד שמאל: הסטנדרט של סוליבי - פתוח ונקי ללא "קוביות בתוך קובייה" */
+        .standards-header {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 900;
+            margin: 0 0 22px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .standards-header i {
+            color: #D4AF37;
+        }
+
+        .standards-grid-2x2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 28px;
+            flex: 1;
+            z-index: 2;
+        }
+
+        .standard-mini-card {
+            background: transparent;
+            border: none;
+            border-right: 2px solid rgba(212, 175, 55, 0.35);
+            border-radius: 0;
+            padding: 4px 14px 4px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .standard-mini-card:hover {
+            border-right-color: #D4AF37;
+            transform: translateX(-4px);
+        }
+
+        .standard-icon {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: #D4AF37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .standard-text h4 {
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 800;
+            margin: 0 0 4px 0;
+        }
+
+        .standard-text p {
+            color: #94a3b8;
+            font-size: 12.5px;
+            line-height: 1.45;
+            margin: 0;
+        }
+/* במת אור מוזהבת מתחת למוצר */
+        .slide-center-img {
+            position: relative;
+        }
+        .slide-center-img::after {
+            content: '';
+            position: absolute;
+            bottom: -32px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 28px;
+            background: radial-gradient(ellipse at center, rgba(255, 240, 170, 0.75) 0%, rgba(212, 175, 55, 0.45) 35%, transparent 72%);
+            border-radius: 50%;
+            filter: blur(5px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .slide-center-img img {
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes floatSparks {
+            0% { transform: translateY(6px) scale(0.9); opacity: 0.5; }
+            100% { transform: translateY(-8px) scale(1.15); opacity: 1; }
+        }
+
+       /* רקע כהה, חלק ונקי לחלוטין ללא עכירות בפינות */
+        .full-hero-slider {
+            background: radial-gradient(circle at 50% 55%, #161922 0%, #0b0d13 75%, #07080c 100%) !important;
+        }
+
+        /* הגדלה קלה של המוצר במרכז כדי שיהיה דומיננטי יותר */
+        .slide-center-img img {
+            transform: scale(1.15);
+        }
+        
+    </style>
 </head>
 <body>
-
-    <!-- =========================================
-         הדר עליון (שחור פרימיום)
-         ========================================= -->
-    <header class="top-header">
-        <div class="header-logo">SOLIBI<span class="dot">.</span></div>
-        
-        <nav class="main-nav">
-            <a href="#" class="gold-btn">ראשי</a>
-            <a href="#" class="gold-btn">קטלוג</a>
-            <a href="#" class="gold-btn">מבצעים והנחות</a>
-            
-            <!-- הנקודה עברה לצד שמאל -->
-            <a href="#" class="live-btn">
-                תוצאות לייב <i class="fa-solid fa-circle live-dot"></i> 
-            </a>
-        </nav>
-
-        <!-- סידור חדש: אישי מימין, עגלה באמצע, חיפוש בשמאל -->
-        <div class="header-actions">
-            <button class="circle-btn" title="אזור אישי"><i class="fa-regular fa-user"></i></button>
-            <button class="circle-btn cart-btn" title="עגלה">
-                <i class="fa-solid fa-cart-shopping"></i><span class="cart-badge">2</span>
-            </button>
-            <button class="circle-btn" title="חיפוש"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
-    </header>
-
-    <!-- =========================================
-         סרגל משנה (ללא הפס הקבוע!)
-         ========================================= -->
-    <div class="secondary-bar">
-        <nav class="sec-nav">
-            
-            <div class="sec-item has-dropdown">
-                <a href="#" onclick="switchView('view-packages', this)">מארזים</a>
-                <div class="sec-dropdown"><a href="#">אפשרות אחת</a><a href="#">רשימה 2</a></div>
-            </div>
-
-            <div class="sec-item has-dropdown">
-                <a href="#">מיסטרי</a>
-                <div class="sec-dropdown"><a href="#">אפשרות אחת</a><a href="#">רשימה 2</a></div>
-            </div>
-
-            <div class="sec-item has-dropdown">
-                <a href="#">חולצות כדורגל</a>
-                <div class="sec-dropdown"><a href="#">אפשרות אחת</a><a href="#">רשימה 2</a></div>
-            </div>
-
-            <div class="sec-item has-dropdown">
-                <a href="#">מוצרים נוספים</a>
-                <div class="sec-dropdown"><a href="#">אפשרות אחת</a><a href="#">רשימה 2</a></div>
-            </div>
-
-            <div class="sec-item has-dropdown">
-                <a href="#">יד 2</a>
-                <div class="sec-dropdown"><a href="#">אפשרות אחת</a><a href="#">רשימה 2</a></div>
-            </div>
-
-            <div class="sec-item has-dropdown">
-                <a href="#">מכרזים</a>
-                <div class="sec-dropdown"><a href="#">אפשרות אחת</a><a href="#">רשימה 2</a></div>
-            </div>
-
-        </nav>
-    </div>
+<div id="header-placeholder"></div>
+    
 
     <!-- =========================================
          מרכז התוכן
@@ -106,89 +507,176 @@
                             </div>
                         </div>
 
-                        <!-- שקופית 2 -->
-                        <div class="hero-slide">
-                            <div class="bg-text">פופ צ'אבי</div>
-                            <div class="slide-center-img">
-                                <img src="images/funko-pop-xavi-coach.jpg.png" alt="פופ צאבי">
-                            </div>
-                            <div class="slide-bottom-info">
-                                <div class="price-side">69.90 ₪</div>
-                                <div class="action-side">
-                                    <button class="btn-solid-gold">הוסף לעגלה <i class="fa-solid fa-cart-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- שקופית 3 -->
-                        <div class="hero-slide">
-                            <div class="bg-text">מעטפת צ'מפיונס</div>
-                            <div class="slide-center-img">
-                                <img src="images/pack-ucl-2010.jpg" alt="מעטפה">
-                            </div>
-                            <div class="slide-bottom-info">
-                                <div class="price-side">7.90 ₪</div>
-                                <div class="action-side">
-                                    <button class="btn-solid-gold">הוסף לעגלה <i class="fa-solid fa-cart-plus"></i></button>
-                                </div>
-                            </div>
+                        
+                        
                         </div>
                     </div>
                 </div>
 
-                <!-- =========================================
-                     גריד 6 קוביות (פרופורציה מושלמת)
-                     ========================================= -->
                 <div class="featured-categories-section">
                     
-                    <div class="section-title-wrapper">
-                        <h2 class="section-title">קולקציות נבחרות</h2>
-                        <div class="title-underline"></div>
+                    <!-- 2 הכותרות בסימטריה באמצע עם קו זהב -->
+                    <div class="home-tabs-header">
+                        <div class="home-tab-title active" onclick="switchHomeCategory('mystery', this)">מוצרי מיסטרי</div>
+                        <div class="home-tab-title" onclick="switchHomeCategory('packages', this)">מארזים מוכנים</div>
                     </div>
 
-                    <div class="six-grid">
-                        
-                        <a href="#" class="six-grid-item">
-                            <img src="images/pack-ucl-2010.jpg" alt="מעטפות">
-                            <div class="item-overlay">
-                                <h3>מעטפות ליגת האלופות</h3>
+                    <!-- 3 קוביות: מוצרי מיסטרי -->
+                    <div id="cat-mystery" class="solibi-cards-grid">
+                        <a href="#" class="solibi-card">
+                            <span class="cube-badge"><i class="fa-solid fa-fire"></i> הכי מבוקש</span>
+                            <div class="solibi-card-img-wrap">
+                                <img src="images/pack-ucl-2010.jpg" alt="מיסטרי קלפים" onerror="this.src='images/soccerwe-mistery-pack.jpg.png'">
+                            </div>
+                            <div class="solibi-card-info">
+                                <h3>מיסטרי קלפים ומדבקות</h3>
+                                <p class="cube-subtext">מעטפות וקלפים נדירים מכל השנים</p>
+                                <div class="cube-bottom-row">
+                                    <span class="cube-price">החל מ-49.90 ₪</span>
+                                    <span class="cube-cta">לבחירת מארז <i class="fa-solid fa-arrow-left"></i></span>
+                                </div>
                             </div>
                         </a>
                         
-                        <a href="#" class="six-grid-item">
-                            <img src="images/funko-pop-xavi-coach.jpg.png" alt="פופ">
-                            <div class="item-overlay">
-                                <h3>בובות פופ אקסקלוסיביות</h3>
+                        <a href="#" class="solibi-card">
+                            <span class="cube-badge"><i class="fa-solid fa-crown"></i> מהדורת VIP</span>
+                            <div class="solibi-card-img-wrap">
+                                <img src="images/soccerwe-mistery-pack.jpg.png" alt="מיסטרי חולצות">
+                            </div>
+                            <div class="solibi-card-info">
+                                <h3>מיסטרי חולצות כדורגל</h3>
+                                <p class="cube-subtext">חולצת מועדון או נבחרת בהפתעה</p>
+                                <div class="cube-bottom-row">
+                                    <span class="cube-price">החל מ-89.90 ₪</span>
+                                    <span class="cube-cta">לבחירת מארז <i class="fa-solid fa-arrow-left"></i></span>
+                                </div>
                             </div>
                         </a>
 
-                        <a href="#" class="six-grid-item">
-                            <img src="images/soccerwe-mistery-pack.jpg.png" alt="מיסטרי">
-                            <div class="item-overlay">
-                                <h3>מארזי מיסטרי פרימיום</h3>
+                        <a href="#" class="solibi-card">
+                            <span class="cube-badge"><i class="fa-solid fa-star"></i> הפתעה מובטחת</span>
+                            <div class="solibi-card-img-wrap">
+                                <img src="images/funko-pop-xavi-coach.jpg.png" alt="מיסטרי בובות" onerror="this.src='images/soccerwe-mistery-pack.jpg.png'">
+                            </div>
+                            <div class="solibi-card-info">
+                                <h3>מיסטרי בובות כדורגל</h3>
+                                <p class="cube-subtext">בובות פופ ומיניאטורות של כוכבי העל</p>
+                                <div class="cube-bottom-row">
+                                    <span class="cube-price">החל מ-19.90 ₪</span>
+                                    <span class="cube-cta">לבחירת מארז <i class="fa-solid fa-arrow-left"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 3 קוביות: מארזים מוכנים -->
+                    <div id="cat-packages" class="solibi-cards-grid" style="display: none !important;">
+                        <a href="#" class="solibi-card">
+                            <span class="cube-badge"><i class="fa-solid fa-trophy"></i> מהדורת אלופות</span>
+                            <div class="solibi-card-img-wrap">
+                                <img src="images/pack-ucl-2010.jpg" alt="מארז ליגת האלופות" onerror="this.src='images/soccerwe-mistery-pack.jpg.png'">
+                            </div>
+                            <div class="solibi-card-info">
+                                <h3>מארז ליגת האלופות המלא</h3>
+                                <p class="cube-subtext">אלבום + מארז מעטפות רשמי</p>
+                                <div class="cube-bottom-row">
+                                    <span class="cube-price">119.00 ₪</span>
+                                    <span class="cube-cta">לצפייה במארז <i class="fa-solid fa-arrow-left"></i></span>
+                                </div>
                             </div>
                         </a>
 
-                        <a href="#" class="six-grid-item">
-                            <img src="images/agiliti-ladder.jpg.png" alt="אימון">
-                            <div class="item-overlay">
-                                <h3>ציוד אימון מקצועי</h3>
+                        <a href="#" class="solibi-card">
+                            <span class="cube-badge"><i class="fa-solid fa-bolt"></i> לשחקנים</span>
+                            <div class="solibi-card-img-wrap">
+                                <img src="images/agiliti-ladder.jpg.png" alt="מארז אימון" onerror="this.src='images/soccerwe-mistery-pack.jpg.png'">
+                            </div>
+                            <div class="solibi-card-info">
+                                <h3>מארז אימון פרו</h3>
+                                <p class="cube-subtext">סולם זריזות ואביזרי קואורדינציה</p>
+                                <div class="cube-bottom-row">
+                                    <span class="cube-price">189.00 ₪</span>
+                                    <span class="cube-cta">לצפייה במארז <i class="fa-solid fa-arrow-left"></i></span>
+                                </div>
                             </div>
                         </a>
 
-                        <a href="#" class="six-grid-item">
-                            <img src="images/hover-ball.jpg.png" alt="כדור">
-                            <div class="item-overlay">
-                                <h3>אביזרי טכניקה וקואורדינציה</h3>
+                        <a href="#" class="solibi-card">
+                            <span class="cube-badge"><i class="fa-solid fa-gift"></i> מתנה מושלמת</span>
+                            <div class="solibi-card-img-wrap">
+                                <img src="images/hover-ball.jpg.png" alt="מארז אספנים" onerror="this.src='images/soccerwe-mistery-pack.jpg.png'">
+                            </div>
+                            <div class="solibi-card-info">
+                                <h3>מארז מתנה לאספנים</h3>
+                                <p class="cube-subtext">שילוב אביזרים, בובה ומעטפות</p>
+                                <div class="cube-bottom-row">
+                                    <span class="cube-price">249.00 ₪</span>
+                                    <span class="cube-cta">לצפייה במארז <i class="fa-solid fa-arrow-left"></i></span>
+                                </div>
                             </div>
                         </a>
+                    </div>
+<!-- אזור תחתון סימטרי: ימין מועדון האספנים | שמאל הסטנדרט של סוליבי -->
+                    <div class="solibi-bottom-split">
+                        
+                        <!-- קובייה ימנית: מועדון האספנים VIP -->
+                        <div class="solibi-feature-box">
+                            <div>
+                                <span class="vip-tag"><i class="fa-solid fa-crown"></i> SOLIBI VIP CLUB</span>
+                                <h3 class="vip-title">מועדון האספנים של סוליבי</h3>
+                                <p class="vip-desc">הצטרפו למועדון הלקוחות הסגור וקבלו גישה ראשונים למארזים במהדורה מוגבלת, הגרלות חודשיות והטבות בלעדיות.</p>
+                                
+                                <div class="vip-perks">
+                                    <span class="vip-perk-item"><i class="fa-solid fa-check-circle"></i> 10% הנחה לקנייה ראשונה</span>
+                                    <span class="vip-perk-item"><i class="fa-solid fa-check-circle"></i> התראה על נחיתת מארזים</span>
+                                    <span class="vip-perk-item"><i class="fa-solid fa-check-circle"></i> הגרלות VIP</span>
+                                </div>
+                            </div>
 
-                        <a href="#" class="six-grid-item">
-                            <img src="images/pack-ucl-2010.jpg" alt="אלבומים">
-                            <div class="item-overlay">
-                                <h3>אלבומים ומדבקות</h3>
+                            <form class="vip-form" onsubmit="event.preventDefault(); alert('ברוכים הבאים למועדון האספנים של סוליבי!');">
+                                <input type="text" class="vip-input" placeholder="הזינו אימייל או מספר וואטסאפ..." required>
+                                <button type="submit" class="vip-submit-btn">הצטרפות למועדון <i class="fa-solid fa-arrow-left"></i></button>
+                            </form>
+                        </div>
+
+                        <!-- קובייה שמאלית: הסטנדרט של סוליבי (4 קוביות אמון בסידור 2x2) -->
+                        <div class="solibi-feature-box">
+                            <h3 class="standards-header"><i class="fa-solid fa-shield-halved"></i> הסטנדרט של סוליבי</h3>
+                            
+                            <div class="standards-grid-2x2">
+                                <div class="standard-mini-card">
+                                    <div class="standard-icon"><i class="fa-solid fa-medal"></i></div>
+                                    <div class="standard-text">
+                                        <h4>100% פריטים מקוריים</h4>
+                                        <p>קלפים, חולצות ופריטי אספנות רשמיים ומאומתים בלבד.</p>
+                                    </div>
+                                </div>
+
+                                <div class="standard-mini-card">
+                                    <div class="standard-icon"><i class="fa-solid fa-gem"></i></div>
+                                    <div class="standard-text">
+                                        <h4>שווי תכולה מובטח</h4>
+                                        <p>שווי הפריטים בכל קופסת מיסטרי גבוה ממחיר הקופסה.</p>
+                                    </div>
+                                </div>
+
+                                <div class="standard-mini-card">
+                                    <div class="standard-icon"><i class="fa-solid fa-box-open"></i></div>
+                                    <div class="standard-text">
+                                        <h4>אריזת אספנים מוגנת</h4>
+                                        <p>אריזה קשיחה ששומרת על שלמות הקלפים והמוצרים.</p>
+                                    </div>
+                                </div>
+
+                                <div class="standard-mini-card">
+                                    <div class="standard-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                                    <div class="standard-text">
+                                        <h4>משלוח מהיר עד הבית</h4>
+                                        <p>שילוח מהיר לכל חלקי הארץ עם מעקב משלוחים מלא.</p>
+                                    </div>
+                                </div>
                             </div>
-                        </a>
+                        </div>
 
                     </div>
                 </div>
@@ -206,29 +694,7 @@
         <!-- =========================================
              פוטר יוקרתי (עם פס הפרדה באורך מלא!)
              ========================================= -->
-        <footer class="site-footer">
-            <div class="footer-grid">
-                <div class="footer-col brand-col">
-                    <h3>SOLIBI<span class="dot">.</span></h3>
-                    <p>מוצרי הספורט והאספנות הנדירים ביותר, במקום אחד.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>שירות לקוחות</h4>
-                    <a href="#">אודותינו</a>
-                    <a href="#">צור קשר</a>
-                    <a href="#">מדיניות והחזרות</a>
-                </div>
-                <div class="footer-col">
-                    <h4>מידע משפטי</h4>
-                    <a href="#">תקנון האתר</a>
-                    <a href="#">הצהרת נגישות</a>
-                </div>
-            </div>
-            <!-- השורה התחתונה מופרדת בפס זהב מלא -->
-            <div class="footer-bottom">
-                <p>2026 © כל הזכויות שמורות לסוליבי ספורט.</p>
-            </div>
-        </footer>
+        <div id="ticker-placeholder"></div>
     </main>
 
     <script>
@@ -283,7 +749,41 @@
             }
         }
 
-        startAutoSlide();
+        function switchHomeCategory(catName, clickedTab) {
+            // מעביר את קו הזהב לכותרת שנלחצה
+            document.querySelectorAll('.home-tab-title').forEach(tab => tab.classList.remove('active'));
+            clickedTab.classList.add('active');
+
+            // מציג רק את 3 הקוביות של הקטגוריה שנבחרה ומסתיר את השנייה
+            document.getElementById('cat-mystery').style.setProperty('display', (catName === 'mystery') ? 'grid' : 'none', 'important');
+            document.getElementById('cat-packages').style.setProperty('display', (catName === 'packages') ? 'grid' : 'none', 'important');
+        }
     </script>
+    <script>
+    // 1. שואב את ההדר
+    fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            const placeholder = document.getElementById('header-placeholder');
+            if(placeholder) placeholder.innerHTML = data;
+        });
+
+    // 2. שואב את הפוטר (הטיקר)
+    fetch('ticker.html')
+        .then(response => response.text())
+        .then(data => {
+            const placeholder = document.getElementById('ticker-placeholder');
+            if(placeholder) placeholder.innerHTML = data;
+        });
+</script>
+    <script>
+    // שואב את הפוטר מתוך קובץ ticker.html
+    fetch('ticker.html')
+        .then(response => response.text())
+        .then(data => {
+            const placeholder = document.getElementById('ticker-placeholder');
+            if(placeholder) placeholder.innerHTML = data;
+        });
+</script>
 </body>
 </html>

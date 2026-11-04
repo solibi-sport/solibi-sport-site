@@ -7,762 +7,661 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="global-theme.css">
+    <!-- שואב את קובץ העיצוב הגלובלי (כמו בשאר הדפים) -->
+    <link rel="stylesheet" href="solibi-app.css">
     
     <style>
-        /* === פלטת הצבעים === */
+        /* === צבעים מקומיים - זהה לחלוטין ל-sales, cart ו-tables === */
         :root {
+            --brand-silver: #D1D5DB;
+            --brand-silver-dark: #9CA3AF;
+            --border-silver: rgba(209, 213, 219, 0.2);
             --brand-gold: #D6B953; 
-            --brand-gold-light: #FDF3C6; 
-            --bg-black: #0a0a0a;
-            --bg-card: #141414;
-            --text-white: #f5f5f5;
-            --text-gray: #a0a0a0;
-            --border-gold: rgba(214, 185, 83, 0.3);
+            --brand-gold-dark: #B59A3D;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html, body {
-            font-family: 'Rubik', sans-serif;
-            background: var(--bg-black);
-            color: var(--text-white);
-            width: 100%;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+        /* =========================================
+           שחרור הנעילה ועיצוב דף הקטלוג (אחיד לשאר האתר)
+           ========================================= */
+        body.catalog-page-body {
+            background-color: #0b0c10 !important;
+            background-image: radial-gradient(circle at 50% 10%, rgba(200, 210, 230, 0.12) 0%, transparent 60%), url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M10 16.95l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zm32 0l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zM26 26l-5-2.88v-5.77l5-2.88 5 2.88v5.77L26 26zM26 7.7l-5-2.88V-.94l5-2.88 5 2.88v5.77L26 7.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
+            color: #ffffff !important;
+            width: 100vw !important;
+            height: auto !important; 
+            min-height: 100vh !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            margin: 0 !important;
         }
 
-        /* --- המבנה המרכזי --- */
-        .catalog-layout {
+        /* =========================================
+           מבנה הגריד הראשי (זהה לדף התוצאות - tables.html)
+           ========================================= */
+        .app-layout-custom {
             flex: 1;
             display: flex;
-            flex-direction: row !important;
-            direction: rtl !important;
-            gap: 20px;
-            padding: 20px;
-            /* הבטחת מרווח תחתון מהטיקר של 20 פיקסלים */
-            padding-bottom: 25px !important; 
-            max-width: 100%;
-            margin: 0;
+            gap: 20px; 
+            padding: clamp(15px, 2vh, 30px) 20px;
+            overflow: visible !important; /* משוחרר לגלילה טבעית */
             width: 100%;
-            overflow: hidden;
+            max-width: 1600px;
+            margin: 0 auto;
         }
 
-        /* === עיצוב הסיידבר הימני === */
-        .catalog-sidebar {
-            order: 1 !important;
-            width: 230px;
-            flex-shrink: 0;
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--border-gold);
-            border-radius: 16px;
-            padding: 15px;
+        /* הגוש המאוחד: סיידבר ימני + תוכן */
+        .main-workspace {
+            display: flex;
+            flex: 1;
+            border-radius: 20px; 
+            overflow: visible !important; 
+            border: 1px solid rgba(212, 175, 55, 0.35) !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
+            background: linear-gradient(145deg, #1c1f26 0%, #111318 100%) !important;
+        }
+
+        /* =========================================
+           סיידבר ימני (מחובר לתוכן)
+           ========================================= */
+        .right-nav {
+            flex: 0 0 280px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            height: 100%;
-            overflow-y: auto;
+            overflow: visible !important;
+            border-left: 1px solid rgba(212, 175, 55, 0.35); 
         }
 
-        /* פס גלילה יפה לסיידבר */
-        .catalog-sidebar::-webkit-scrollbar { width: 4px; }
-        .catalog-sidebar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
-        .catalog-sidebar::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.5); border-radius: 10px; }
-
-        .sidebar-title {
-            color: var(--brand-gold);
-            font-size: 16px;
-            font-weight: 900;
-            margin-bottom: 15px;
-            padding-right: 5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .sidebar-logo-area {
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.35);
         }
 
-        /* עיצוב כפתורי הקטגוריה הראשית */
+        .sidebar-logo-area h2 {
+            font-size: 20px; 
+            margin-bottom: 5px;
+            color: #D4AF37;
+        }
+
+        .categories-nav-list {
+            flex: 1;
+            padding: 15px 10px;
+        }
+
         .filter-group {
             display: flex;
             flex-direction: column;
+            margin-bottom: 5px;
         }
 
         .filter-btn {
+            position: relative;
             background: transparent;
             border: none;
-            color: var(--text-gray);
+            color: #f5f5f5;
             font-family: inherit;
             font-size: 14px;
             font-weight: 500;
             text-align: right;
-            padding: 10px 12px;
-            border-radius: 10px;
+            padding: 12px 15px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            width: 100%;
         }
 
-        .filter-btn i { width: 18px; text-align: center; font-size: 14px; }
-        .filter-btn:hover { background: rgba(214, 185, 83, 0.1); color: var(--text-white); }
+        /* קו הפרדה עדין בין הקטגוריות הראשיות */
+        .filter-btn:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 5%;
+            width: 90%;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1); 
+        }
+
+        .filter-btn i { width: 18px; text-align: center; font-size: 16px; color: #D4AF37;}
+        
+        .filter-btn:hover { background: rgba(255,255,255,0.05); transform: translateX(-3px);}
         
         .filter-btn.active {
-            background: var(--brand-gold);
-            color: #000;
+            background: rgba(212, 175, 55, 0.1); 
+            border: 1px solid #D4AF37;
             font-weight: 700;
-            box-shadow: 0 4px 10px rgba(214, 185, 83, 0.2);
+            color: #D4AF37;
         }
 
         /* עיצוב מיני-טאבים (תתי קטגוריות) */
         .sub-tabs {
-            display: none; /* מוסתר כברירת מחדל */
+            display: none; 
             flex-direction: column;
-            gap: 2px;
-            padding-right: 38px; /* הזחה פנימה */
-            margin-top: 5px;
-            margin-bottom: 5px;
+            gap: 4px;
+            padding-right: 40px; 
+            margin-top: 8px;
+            margin-bottom: 10px;
         }
 
-        .sub-tabs.open {
-            display: flex; /* מוצג כשהקטגוריה הראשית נבחרת */
-        }
+        .sub-tabs.open { display: flex; }
 
         .sub-btn {
             background: transparent;
             border: none;
-            color: #888;
+            color: #a0a0a0;
             font-family: inherit;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 500;
             text-align: right;
-            padding: 6px 10px;
-            border-radius: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
             border-right: 2px solid transparent;
         }
 
-        .sub-btn:hover { color: var(--brand-gold); }
+        .sub-btn:hover { color: #D4AF37; background: rgba(255,255,255,0.02);}
         .sub-btn.active { 
-            color: var(--brand-gold-light); 
+            color: #D4AF37; 
             font-weight: 700; 
-            border-right: 2px solid var(--brand-gold);
-            background: rgba(214, 185, 83, 0.05);
+            border-right: 2px solid #D4AF37;
+            background: rgba(212, 175, 55, 0.05);
         }
 
-        /* === קוביית התוכן השמאלית (מוצרים) === */
-        .catalog-content {
-            order: 2 !important;
+        /* =========================================
+           מרכז התוכן (כהה)
+           ========================================= */
+        .center-content-area {
             flex: 1;
-            background: rgba(20, 20, 20, 0.5);
-            border: 1px solid var(--border-gold);
-            border-radius: 16px;
-            padding: 20px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            height: 100%;
+            overflow: visible !important;
+            padding: 30px 35px 30px; 
         }
 
-        .products-scroll-area {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden; /* מונע גלישה אופקית */
-            direction: ltr; 
-            padding-left: 10px;
+        /* הברקה: שורת סינון מהיר מעל המוצרים */
+        .catalog-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.35);
         }
 
-        .products-scroll-area::-webkit-scrollbar { width: 6px; }
-        .products-scroll-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-        .products-scroll-area::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.3); border-radius: 10px; }
-        .products-scroll-area::-webkit-scrollbar-thumb:hover { background: var(--brand-gold); }
+        .category-title-display {
+            font-size: 24px;
+            font-weight: 900;
+            color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-     /* --- הגריד: קיר ברזל שלא נשבר --- */
-.compact-grid {
-    direction: rtl; 
-    display: flex;
-    flex-wrap: wrap; /* שובר שורה אוטומטית כשנגמר המקום */
-    gap: 10px; /* בדיוק 10 פיקסלים רווח מכל הכיוונים */
-    width: 100%;
-    align-items: flex-start;
-}
+        .category-title-display i { color: #D4AF37; }
 
-/* --- כרטיס מוצר: נעול לחלוטין כקובייה קטנה --- */
-.product-card {
-    background: rgba(10, 10, 10, 0.7);
-    border: 1px solid var(--border-gold);
-    border-radius: 12px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    transition: all 0.3s ease;
-    
-    /* נעילת המידות - לא יזוז מילימטר! */
-    flex: 0 0 160px; /* אוסר עליו לגדול או לקטון, מחייב 160 פיקסלים רוחב */
-    width: 160px; 
-    height: 220px; /* גובה קבוע שיוצר ריבוע קטן */
-    overflow: hidden; /* מונע מתוכן לפרוץ החוצה ולעלות אחד על השני */
-}
+        .sort-dropdown {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            color: #a0a0a0;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .sort-dropdown:focus { border-color: #D4AF37; color: #fff;}
 
-/* --- אזור התמונה בקובייה --- */
-.product-img-wrapper {
-    width: 100%;
-    height: 100px;
-    background: #050505;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 8px;
-    border: 1px solid rgba(255,255,255,0.03);
-    overflow: hidden;
-    flex-shrink: 0;
-}
+        /* --- הגריד של המוצרים --- */
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* גריד רספונסיבי וחכם */
+            gap: 20px;
+            width: 100%;
+        }
 
-@media (max-width: 1200px) {
-    .product-card { width: calc(25% - 7.5px); } /* 4 בשורה */
-}
-
-@media (max-width: 900px) {
-    .product-card { width: calc(33.333% - 6.66px); } /* 3 בשורה */
-}
-@media (max-width: 600px) {
-    .product-card { width: calc(50% - 5px); } /* 2 בשורה */
-}
+        /* --- כרטיס מוצר --- */
+        .product-card {
+            background: #070709;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
 
         .product-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--brand-gold);
-            background: #111;
-            box-shadow: 0 8px 15px rgba(214, 185, 83, 0.15);
+            transform: translateY(-5px);
+            border-color: #D4AF37;
+            background: #0a0a0a;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
         }
 
+        /* תגית על המוצר */
         .product-badge {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: -8px;
+            right: -8px;
             background: #000;
-            border: 1px solid var(--brand-gold);
-            color: var(--brand-gold);
-            font-size: 9px;
+            border: 1px solid #D4AF37;
+            color: #D4AF37;
+            font-size: 11px;
             font-weight: 900;
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 12px;
             z-index: 2;
         }
+        
+        .product-badge.hot { background: #ff3b30; color: #fff; border: none; box-shadow: 0 4px 10px rgba(255, 59, 48, 0.4);}
 
-        .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; display: none; }
-        .placeholder-icon { font-size: 30px; color: rgba(214, 185, 83, 0.15); transition: 0.3s; }
-        .product-card:hover .placeholder-icon { color: var(--brand-gold); transform: scale(1.1); }
+        /* אזור התמונה */
+        .product-img-wrapper {
+            width: 100%;
+            height: 160px;
+            background: #000;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            overflow: hidden;
+        }
+
+        .product-img-wrapper img { width: 100%; height: 100%; object-fit: contain; }
 
         .product-info { display: flex; flex-direction: column; flex: 1; }
-        .product-cat { font-size: 10px; color: var(--text-gray); margin-bottom: 4px; }
+        .product-cat { font-size: 11px; color: var(--brand-silver-dark); margin-bottom: 5px; }
+        
         .product-title {
-            font-size: 12px; 
-            font-weight: 700;
-            color: var(--text-white);
-            margin-bottom: 12px;
-            line-height: 1.4;
+            font-size: 14px; 
+            font-weight: 900;
+            color: #f5f5f5;
+            margin-bottom: 15px;
+            line-height: 1.3;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            flex: 1; /* דוחף מחיר למטה */
         }
 
-        .product-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
-        .product-price { font-size: 15px; font-weight: 900; color: var(--brand-gold); }
-        .buy-btn {
-            background: none; border: 1px solid var(--brand-gold); color: var(--brand-gold);
-            width: 28px; height: 28px; border-radius: 6px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.3s;
+        .product-bottom { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-top: auto; 
+            flex-direction: row-reverse; /* כפתור ימין, מחיר שמאל כמו שביקשת קודם */
         }
-        .buy-btn:hover { background: var(--brand-gold); color: #000; }
+        
+        .product-price { font-size: 18px; font-weight: 900; color: #D4AF37; }
+        
+        .buy-btn {
+            background: transparent; 
+            border: 1px solid #D4AF37; 
+            color: #D4AF37;
+            width: 35px; height: 35px; 
+            border-radius: 8px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 14px; transition: 0.3s;
+        }
+        .buy-btn:hover { background: #D4AF37; color: #000; }
 
         .empty-msg {
-            display: none; text-align: center; color: var(--text-gray); padding: 50px 20px; grid-column: 1 / -1;
+            display: none; text-align: center; color: var(--brand-silver-dark); padding: 50px 20px; grid-column: 1 / -1;
         }
 
-        @media (max-width: 900px) {
-            .catalog-layout { flex-direction: column !important; }
-            .catalog-sidebar { width: 100%; height: auto; flex-direction: row; overflow-x: auto; padding: 10px; }
-            .filter-group { flex: 0 0 auto; }
-            .sub-tabs { display: none !important; } /* מסתיר תתי-טאבים במובייל כדי לחסוך מקום */
-            .compact-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-        }
-
-/* היפוך מיקומים: עגלה מימין, מחיר משמאל */
-.product-bottom { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    margin-top: auto; 
-    flex-direction: row-reverse !important; /* זה מה שעושה את הקסם */
-}
-
-/* אפקט הבהוב זהוב למוצר שנבחר מהסיידבר */
+        /* אפקט הבהוב למוצר מחיפוש */
         @keyframes goldGlow {
             0% { box-shadow: 0 0 0 rgba(212, 175, 55, 0); border-color: rgba(212, 175, 55, 0.2); }
             50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.9); border-color: #d4af37; transform: scale(1.03); }
             100% { box-shadow: 0 0 0 rgba(212, 175, 55, 0); border-color: rgba(212, 175, 55, 0.2); transform: scale(1); }
         }
-        .highlight-glow {
-            animation: goldGlow 1.5s ease-out;
-            z-index: 50;
-            position: relative;
-        }
+        .highlight-glow { animation: goldGlow 1.5s ease-out; z-index: 50; position: relative; }
 
         /* =========================================
-           חלון צף למוצרים (Product Modal)
+           חלון צף למוצרים (Product Modal) - מעודכן עיצובית
            ========================================= */
         .custom-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
-            z-index: 99999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px);
+            z-index: 99999; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: all 0.3s ease;
         }
 
-        .custom-modal-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .custom-modal-overlay.show { opacity: 1; pointer-events: auto; }
 
         .custom-modal-content {
-            background: #0b1221;
-            border: 2px solid var(--brand-gold);
-            border-radius: 16px;
-            width: 90%;
-            max-width: 800px;
-            position: relative;
-            transform: scale(0.9);
-            transition: all 0.3s ease;
+            background: #070709;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 20px;
+            width: 90%; max-width: 850px; position: relative;
+            transform: scale(0.9); transition: all 0.3s ease;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            overflow: hidden;
-            direction: rtl;
+            overflow: hidden; direction: rtl;
         }
 
-        .custom-modal-overlay.show .custom-modal-content {
-            transform: scale(1);
-        }
+        .custom-modal-overlay.show .custom-modal-content { transform: scale(1); }
 
         .close-modal-btn {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            width: 35px; height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: 0.3s;
-            z-index: 10;
+            position: absolute; top: 15px; left: 15px;
+            background: rgba(255,255,255,0.1); border: none; color: #fff;
+            font-size: 24px; width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; z-index: 10;
         }
+        .close-modal-btn:hover { background: #ff3b30; color: #fff; transform: rotate(90deg); }
 
-        .close-modal-btn:hover {
-            background: #ff4a4a;
-            color: #fff;
-            transform: rotate(90deg);
-        }
+        .modal-body-split { display: flex; flex-wrap: wrap; }
 
-        .modal-body-split {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .modal-right-info {
-            flex: 1.2;
-            min-width: 300px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        .modal-right-info { flex: 1.2; min-width: 300px; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
 
         .modal-left-image {
-            flex: 1;
-            min-width: 250px;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-right: 1px solid rgba(214, 185, 83, 0.1);
+            flex: 1; min-width: 250px; background: #000; padding: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-right: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        .modal-left-image img {
-            max-width: 100%;
-            max-height: 250px;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
-        }
+        .modal-left-image img { max-width: 100%; max-height: 300px; object-fit: contain; }
 
-        .modal-cat {
-            color: var(--text-gray);
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
+        .modal-cat { color: var(--brand-silver-dark); font-size: 13px; margin-bottom: 8px; }
+        .modal-main-title { color: #f5f5f5; font-size: 28px; font-weight: 900; margin-bottom: 15px; line-height: 1.2; }
+        .modal-desc { color: #a0a0a0; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+        .modal-price-tag { font-size: 32px; font-weight: 900; color: #D4AF37; display: block; margin-bottom: 25px; }
 
-        .modal-main-title {
-            color: var(--brand-gold);
-            font-size: 28px;
-            margin-bottom: 15px;
-            line-height: 1.2;
-        }
-
-        .modal-desc {
-            color: #e2e8f0;
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .modal-price-tag {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--brand-gold);
-            display: block;
-            margin-bottom: 25px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+        .modal-actions { display: flex; gap: 15px; align-items: center; }
 
         .quantity-selector {
-            display: flex;
-            align-items: center;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(214, 185, 83, 0.3);
-            border-radius: 8px;
-            overflow: hidden;
-            height: 45px;
+            display: flex; align-items: center; background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; overflow: hidden; height: 50px;
         }
 
         .qty-btn {
-            background: transparent;
-            border: none;
-            color: var(--brand-gold);
-            width: 40px;
-            height: 100%;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: transparent; border: none; color: #f5f5f5; width: 45px; height: 100%;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; font-size: 16px;
         }
-
-        .qty-btn:hover { background: rgba(214, 185, 83, 0.2); }
+        .qty-btn:hover { background: #D4AF37; color: #000;}
 
         .quantity-selector input {
-            width: 40px;
-            height: 100%;
-            background: transparent;
-            border: none;
-            color: #fff;
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            pointer-events: none;
+            width: 45px; height: 100%; background: transparent; border: none;
+            color: #D4AF37; text-align: center; font-size: 18px; font-weight: 900; pointer-events: none;
         }
 
         .modal-add-to-cart-btn {
-            flex: 1;
-            height: 45px;
-            background: var(--brand-gold);
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            flex: 1; height: 50px; background: #D4AF37; color: #000; border: none; border-radius: 12px;
+            font-size: 16px; font-weight: 900; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
+        .modal-add-to-cart-btn:hover { background: #FDF3C6; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3); }
 
-        .modal-add-to-cart-btn:hover {
-            background: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(214, 185, 83, 0.4);
-        }
+        /* רספונסיביות */
+        @media (max-width: 900px) {
+            .app-layout-custom { flex-direction: column; overflow: visible !important; height: auto !important;}
+            .main-workspace { flex-direction: column; height: auto; border-radius: 15px;}
+            .right-nav { flex: none; width: 100%; border-left: none; border-bottom: 1px solid rgba(212, 175, 55, 0.35); }
+            
+            /* הפיכת תפריט הסיידבר לרוחבי במובייל */
+            .categories-nav-list { display: flex; overflow-x: auto; gap: 10px; padding: 15px; white-space: nowrap; scrollbar-width: none;}
+            .filter-group { flex: 0 0 auto; margin-bottom: 0;}
+            .filter-btn { padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.3); width: auto;}
+            .filter-btn:not(:last-child)::after { display: none; }
+            .sub-tabs { display: none !important; } 
 
-        @media (max-width: 768px) {
+            .center-content-area { padding: 20px;}
+            .catalog-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px;}
+            
             .modal-body-split { flex-direction: column-reverse; }
             .modal-right-info { padding: 25px; }
-            .modal-left-image { padding: 25px; border-right: none; border-bottom: 1px solid rgba(214, 185, 83, 0.1); }
+            .modal-left-image { padding: 25px; border-right: none; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
             .modal-actions { flex-direction: column; align-items: stretch; }
         }
-
     </style>
 </head>
-<body>
+<body class="catalog-page-body">
 
+    <!-- 1. חור עבור ההדר -->
     <div id="header-placeholder"></div>
 
-    <main class="main-content catalog-layout">
+    <!-- 2. אזור הבמה המרכזי -->
+    <main class="app-layout-custom">
         
-        <aside class="catalog-sidebar">
-            <div class="sidebar-title"><i class="fa-solid fa-list"></i> קטגוריות</div>
+        <!-- בלוק מחובר: סיידבר קטגוריות + מרכז תוכן -->
+        <div class="main-workspace">
             
-            <div class="filter-group">
-                <button class="filter-btn active" id="btn-all" onclick="filterMain('all')">
-                    <i class="fa-solid fa-border-all"></i> כל המוצרים
-                </button>
-            </div>
-
-            <div class="filter-group">
-                <button class="filter-btn" id="btn-figures" onclick="filterMain('figures')">
-                    <i class="fa-solid fa-user-astronaut"></i> בובות אספנות
-                </button>
-                <div class="sub-tabs" id="sub-figures">
-                    <button class="sub-btn" onclick="filterSub('figures', 'minix', this)">Minix</button>
-                    <button class="sub-btn" onclick="filterSub('figures', 'pop', this)">Pop Funko</button>
-                    <button class="sub-btn" onclick="filterSub('figures', 'soccerstarz', this)">SoccerStarz</button>
-                    <button class="sub-btn" onclick="filterSub('figures', 'soccerwe', this)">Soccerwe</button>
+            <!-- סיידבר ימני -->
+            <aside class="right-nav">
+                <div class="sidebar-logo-area">
+                    <h2><i class="fa-solid fa-list-ul"></i> קטגוריות</h2>
                 </div>
-            </div>
+                
+                <div class="categories-nav-list">
+                    <div class="filter-group">
+                        <button class="filter-btn active" id="btn-all" onclick="filterMain('all', 'כל המוצרים')">
+                            <i class="fa-solid fa-border-all"></i> כל המוצרים
+                        </button>
+                    </div>
 
-            <div class="filter-group">
-                <button class="filter-btn" id="btn-cards" onclick="filterMain('cards')">
-                    <i class="fa-solid fa-box-archive"></i> קלפים ומדבקות
-                </button>
-                <div class="sub-tabs" id="sub-cards">
-                    <button class="sub-btn" onclick="filterSub('cards', 'boxes', this)">קופסאות</button>
-                    <button class="sub-btn" onclick="filterSub('cards', 'packs', this)">מעטפות</button>
-                    <button class="sub-btn" onclick="filterSub('cards', 'albums', this)">אלבומים</button>
-                    <button class="sub-btn" onclick="filterSub('cards', 'accessories', this)">מוצרי עזר</button>
+                    <div class="filter-group">
+                        <button class="filter-btn" id="btn-figures" onclick="filterMain('figures', 'בובות אספנות')">
+                            <i class="fa-solid fa-user-astronaut"></i> בובות אספנות
+                        </button>
+                        <div class="sub-tabs" id="sub-figures">
+                            <button class="sub-btn" onclick="filterSub('figures', 'minix', this)">Minix</button>
+                            <button class="sub-btn" onclick="filterSub('figures', 'pop', this)">Pop Funko</button>
+                            <button class="sub-btn" onclick="filterSub('figures', 'soccerstarz', this)">SoccerStarz</button>
+                            <button class="sub-btn" onclick="filterSub('figures', 'soccerwe', this)">Soccerwe</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <button class="filter-btn" id="btn-cards" onclick="filterMain('cards', 'קלפים ומדבקות')">
+                            <i class="fa-solid fa-box-archive"></i> קלפים ומדבקות
+                        </button>
+                        <div class="sub-tabs" id="sub-cards">
+                            <button class="sub-btn" onclick="filterSub('cards', 'boxes', this)">קופסאות</button>
+                            <button class="sub-btn" onclick="filterSub('cards', 'packs', this)">מעטפות</button>
+                            <button class="sub-btn" onclick="filterSub('cards', 'albums', this)">אלבומים</button>
+                            <button class="sub-btn" onclick="filterSub('cards', 'accessories', this)">מוצרי עזר</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <button class="filter-btn" id="btn-training" onclick="filterMain('training', 'מוצרי אימונים')">
+                            <i class="fa-solid fa-dumbbell"></i> מוצרי אימונים
+                        </button>
+                        <div class="sub-tabs" id="sub-training">
+                            <button class="sub-btn" onclick="filterSub('training', 'fitness', this)">כושר</button>
+                            <button class="sub-btn" onclick="filterSub('training', 'coordination', this)">קואורדינציה</button>
+                            <button class="sub-btn" onclick="filterSub('training', 'clothing', this)">לבוש</button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <button class="filter-btn" id="btn-toys" onclick="filterMain('toys', 'צעצועים')">
+                            <i class="fa-solid fa-gamepad"></i> צעצועים
+                        </button>
+                    </div>
+
+                    <div class="filter-group">
+                        <button class="filter-btn" id="btn-more" onclick="filterMain('more', 'מוצרים נוספים')">
+                            <i class="fa-solid fa-book-bookmark"></i> מוצרים נוספים
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </aside>
 
-            <div class="filter-group">
-                <button class="filter-btn" id="btn-training" onclick="filterMain('training')">
-                    <i class="fa-solid fa-dumbbell"></i> מוצרי אימונים
-                </button>
-                <div class="sub-tabs" id="sub-training">
-                    <button class="sub-btn" onclick="filterSub('training', 'fitness', this)">כושר</button>
-                    <button class="sub-btn" onclick="filterSub('training', 'coordination', this)">קואורדינציה</button>
-                    <button class="sub-btn" onclick="filterSub('training', 'clothing', this)">לבוש</button>
+            <!-- מרכז התוכן -->
+            <section class="center-content-area">
+                
+                <!-- שורת סינון עליונה -->
+                <div class="catalog-top-bar">
+                    <div class="category-title-display" id="main-cat-title">
+                        <i class="fa-solid fa-border-all"></i> <span>כל המוצרים</span>
+                    </div>
                     
+                    <select class="sort-dropdown">
+                        <option value="popular">הכי פופולריים</option>
+                        <option value="new">מהחדש לישן</option>
+                        <option value="price-low">מחיר: מהזול ליקר</option>
+                        <option value="price-high">מחיר: מהיקר לזול</option>
+                    </select>
                 </div>
-            </div>
 
-            <div class="filter-group">
-                <button class="filter-btn" id="btn-toys" onclick="filterMain('toys')">
-                    <i class="fa-solid fa-gamepad"></i> צעצועים
-                </button>
-            </div>
-
-            <div class="filter-group">
-                <button class="filter-btn" id="btn-more" onclick="filterMain('more')">
-                    <i class="fa-solid fa-book-bookmark"></i> מוצרים נוספים
-                </button>
-            </div>
-        </aside>
-
-        <div class="catalog-content">
-            <div class="products-scroll-area">
-                <div class="compact-grid" id="catalog-grid">
+                <!-- גריד מוצרים -->
+                <div class="catalog-grid" id="catalog-grid">
                     
                     <div class="empty-msg" id="empty-message">
                         <i class="fa-solid fa-box-open" style="font-size: 32px; display: block; margin-bottom: 10px; opacity: 0.3;"></i>
                         לא נמצאו מוצרים בקטגוריה זו.
                     </div>
                     
+                    <!-- מוצר לדוגמה -->
                     <div class="product-card" id="prod-soccerwe" data-category="figures" data-sub="soccerwe">
-                        <span class="product-badge" style="background: #ff4a4a; color: #fff; border: none;">חם</span>
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/soccerwe-mistery-pack.jpg.png" alt="מארז הפתעה soccerwe" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <span class="product-badge hot">חם</span>
+                        <div class="product-img-wrapper">
+                            <img src="images/soccerwe-mistery-pack.jpg.png" alt="מארז הפתעה soccerwe">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">בובות אספנות - Soccerwe</span>
-                            <div class="product-title" style="margin-bottom: 6px;">מארז הפתעה soccerwe</div>
+                            <span class="product-cat">בובות אספנות - Soccerwe</span>
+                            <div class="product-title">מארז הפתעה soccerwe</div>
                             <div class="product-bottom">
                                 <span class="product-price">24.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div class="product-card" id="prod-squeeze-ball" data-category="more" data-sub="none">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/button-decompression-ball.jpg.png" alt="כדור לחיץ" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <div class="product-img-wrapper">
+                            <img src="images/button-decompression-ball.jpg.png" alt="כדור לחיץ">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">מוצרים נוספים</span>
-                            <div class="product-title" style="margin-bottom: 6px;">כדור לחיץ נבחרות</div>
+                            <span class="product-cat">מוצרים נוספים</span>
+                            <div class="product-title">כדור לחיץ נבחרות</div>
                             <div class="product-bottom">
                                 <span class="product-price">24.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div class="product-card" id="prod-hover-ball" data-category="toys" data-sub="none">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/hover-ball.jpg.png" alt="כדור מרחף" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <div class="product-img-wrapper">
+                            <img src="images/hover-ball.jpg.png" alt="כדור מרחף">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">צעצועים</span>
-                            <div class="product-title" style="margin-bottom: 6px;">כדור לד מרחף</div>
+                            <span class="product-cat">צעצועים</span>
+                            <div class="product-title">כדור לד מרחף</div>
                             <div class="product-bottom">
                                 <span class="product-price">24.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div class="product-card" id="prod-agility-ladder" data-category="training" data-sub="coordination">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/agiliti-ladder.jpg.png" alt="סולם זריזות" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <div class="product-img-wrapper">
+                            <img src="images/agiliti-ladder.jpg.png" alt="סולם זריזות">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">אימונים - קואורדינציה</span>
-                            <div class="product-title" style="margin-bottom: 6px;">סולם זריזות</div>
+                            <span class="product-cat">אימונים - קואורדינציה</span>
+                            <div class="product-title">סולם זריזות לאימון רגליים</div>
                             <div class="product-bottom">
                                 <span class="product-price">39.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div class="product-card" id="prod-training-belt" data-category="training" data-sub="coordination">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/soccer-bubble-belt.jpg.png" alt="חגורת אימון" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <div class="product-img-wrapper">
+                            <img src="images/soccer-bubble-belt.jpg.png" alt="חגורת אימון">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">אימונים - קואורדינציה</span>
-                            <div class="product-title" style="margin-bottom: 6px;">חגורת אימון כדורגל אישי</div>
+                            <span class="product-cat">אימונים - קואורדינציה</span>
+                            <div class="product-title">חגורת אימון כדורגל אישי מתכווננת</div>
                             <div class="product-bottom">
                                 <span class="product-price">39.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div class="product-card" id="prod-cones" data-category="training" data-sub="coordination">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/sport-training-cones.jpg.png" alt="כיפות סימון" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <div class="product-img-wrapper">
+                            <img src="images/sport-training-cones.jpg.png" alt="כיפות סימון">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">אימונים - קואורדינציה</span>
-                            <div class="product-title" style="margin-bottom: 6px;">סט 10 כיפות סימון</div>
+                            <span class="product-cat">אימונים - קואורדינציה</span>
+                            <div class="product-title">סט 10 כיפות סימון למגרש</div>
                             <div class="product-bottom">
                                 <span class="product-price">29.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div class="product-card" id="prod-grip-socks" data-category="training" data-sub="clothing">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/grip-sock.jpg.png" alt="גרבי גריפ" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <div class="product-img-wrapper">
+                            <img src="images/grip-sock.jpg.png" alt="גרבי גריפ">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">מוצרי אימונים - לבוש</span>
-                            <div class="product-title" style="margin-bottom: 6px;">זוג גרבי גריפ</div>
+                            <span class="product-cat">מוצרי אימונים - לבוש</span>
+                            <div class="product-title">זוג גרבי גריפ למניעת החלקה</div>
                             <div class="product-bottom">
                                 <span class="product-price">29.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div class="product-card" id="prod-ucl-pack-2010" data-category="cards" data-sub="packs">
-                        <span class="product-badge" style="background: #d4af37; color: #000; border: none;">נדיר</span>
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/pack-ucl-2010.jpg" alt="מעטפת ליגת האלופות 2010/2011" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <span class="product-badge">נדיר</span>
+                        <div class="product-img-wrapper">
+                            <img src="images/pack-ucl-2010.jpg" alt="מעטפת ליגת האלופות 2010/2011">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">קלפים ומדבקות - מעטפות</span>
-                            <div class="product-title" style="margin-bottom: 6px;">מעטפת ליגת האלופות 10/11</div>
+                            <span class="product-cat">קלפים ומדבקות - מעטפות</span>
+                            <div class="product-title">מעטפת ליגת האלופות 10/11 Topps</div>
                             <div class="product-bottom">
                                 <span class="product-price">7.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                     <div class="product-card" id="prod-funko-xavi" data-category="figures" data-sub="pop">
-                        <span class="product-badge" style="background: #ff4a4a; color: #fff; border: none;">חם</span>
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/funko-pop-xavi-coach.jpg.png" alt="פונקו פופ צ'אבי" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+                        <span class="product-badge hot">חם</span>
+                        <div class="product-img-wrapper">
+                            <img src="images/funko-pop-xavi-coach.jpg.png" alt="פונקו פופ צ'אבי">
                         </div>
                         <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">בובות אספנות - Pop Funko</span>
-                            <div class="product-title" style="margin-bottom: 6px;">פונקו פופ צ'אבי מאמן</div>
+                            <span class="product-cat">בובות אספנות - Pop Funko</span>
+                            <div class="product-title">פונקו פופ צ'אבי מאמן ברצלונה</div>
                             <div class="product-bottom">
                                 <span class="product-price">69.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card" id="prod-national-coins" data-category="more" data-sub="none">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/coins-national.jpg" alt="מטבעות נבחרות" style="display: block; width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                        <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">מוצרים נוספים</span>
-                            <div class="product-title" style="margin-bottom: 6px;">מטבעות אספנות נבחרות</div>
-                            <div class="product-bottom">
-                                <span class="product-price">14.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card" id="prod-national-bracelets" data-category="more" data-sub="none">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/bracelets-national.jpg" alt="צמידי נבחרות" style="display: block; width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                        <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">מוצרים נוספים</span>
-                            <div class="product-title" style="margin-bottom: 6px;">צמידי סיליקון נבחרות</div>
-                            <div class="product-bottom">
-                                <span class="product-price">14.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card" id="prod-metal-keychain" data-category="more" data-sub="none">
-                        <div class="product-img-wrapper" style="height: 115px; margin-bottom: 5px; background: transparent; border: none;">
-                            <img src="images/keychain-shoe.jpg.png" alt="מחזיק מפתחות מתכתי" style="display: block; width: 100%; height: 100%; object-fit: contain;">
-                        </div>
-                        <div class="product-info">
-                            <span class="product-cat" style="margin-bottom: 2px;">מוצרים נוספים</span>
-                            <div class="product-title" style="margin-bottom: 6px;">מחזיק מפתחות נעל וכדור</div>
-                            <div class="product-bottom">
-                                <span class="product-price">14.90 ₪</span>
-                                <button class="buy-btn" onclick="alert('המוצר נוסף לעגלה!')"><i class="fa-solid fa-cart-plus"></i></button>
+                                <button class="buy-btn"><i class="fa-solid fa-cart-plus"></i></button>
                             </div>
                         </div>
                     </div>
 
                 </div>
-            </div>
+            </section>
         </div>
-
     </main>
 
+    <!-- מודאל קופץ להצגת המוצר לפני קנייה -->
     <div id="product-modal" class="custom-modal-overlay">
         <div class="custom-modal-content">
             <button class="close-modal-btn" onclick="closeProductModal()">&times;</button>
@@ -770,7 +669,7 @@
                 <div class="modal-right-info">
                     <span id="modal-category" class="modal-cat">קטגוריה</span>
                     <h2 id="modal-title" class="modal-main-title">שם המוצר</h2>
-                    <p id="modal-description" class="modal-desc">מוצר פרימיום בלעדי מבית Solibi Sport. מצוין לאספנים, מתנה מושלמת לכל אוהד כדורגל.</p>
+                    <p id="modal-description" class="modal-desc">מוצר פרימיום בלעדי מבית סוליבי ספורט. איכות ללא פשרות - מושלם לאספנים ולמתאמנים.</p>
                     <div class="modal-price-wrap">
                         <span id="modal-price" class="modal-price-tag">0 ₪</span>
                     </div>
@@ -792,46 +691,51 @@
         </div>
     </div>
 
-    <footer class="footer">
-        <div id="ticker-placeholder"></div>
-    </footer>
+    <!-- חור עבור הפוטר -->
+    <div id="ticker-placeholder"></div>
 
     <script>
-        fetch('header.html').then(res => res.text()).then(data => {
-            const h = document.getElementById('header-placeholder');
-            if(h) h.innerHTML = data;
-        });
-        fetch('ticker.html').then(res => res.text()).then(data => {
-            const t = document.getElementById('ticker-placeholder');
-            if(t) t.innerHTML = data;
-        });
+        // שואב את ההדר
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('header-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+                if(typeof updateCartBadge === 'function') updateCartBadge();
+            });
 
-        // 1. פונקציה ללחיצה על קטגוריה ראשית
-        function filterMain(category) {
+        // שואב את הטיקר (פוטר)
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('ticker-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            });
+
+        // 1. פונקציה ללחיצה על קטגוריה ראשית בסיידבר
+        function filterMain(category, titleText) {
             const btn = document.getElementById('btn-' + category);
             const subMenu = document.getElementById('sub-' + category);
+            const titleDisplay = document.getElementById('main-cat-title');
             
-            // בודק אם הטאב שלחצנו עליו כבר בחור (פעיל)
             const isAlreadyActive = btn.classList.contains('active');
 
             if (isAlreadyActive && subMenu) {
-                // אם הוא כבר פעיל ויש לו מיני-טאבים, רק נפתח/נסגור אותם
                 subMenu.classList.toggle('open');
-                return; // יוצאים מהפונקציה בלי לרענן את המוצרים
+                return; 
             }
-
-            // --- אם זה טאב חדש ---
             
-            // ניקוי הכל: כפתורים ראשיים, תתי-תפריטים, וכפתורים פנימיים
+            // עדכון שורת הכותרת למעלה לפי מה שנלחץ
+            const iconHTML = btn.querySelector('i').outerHTML;
+            titleDisplay.innerHTML = `${iconHTML} <span>${titleText}</span>`;
+
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.sub-tabs').forEach(sub => sub.classList.remove('open'));
             document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
 
-            // הפעלת הטאב החדש ופתיחת התפריט שלו (אם יש)
             btn.classList.add('active');
             if (subMenu) subMenu.classList.add('open');
 
-            // הצגת המוצרים הרלוונטיים
             let visibleCount = 0;
             document.querySelectorAll('.product-card').forEach(card => {
                 if (category === 'all' || card.getAttribute('data-category') === category) {
@@ -847,11 +751,9 @@
 
         // 2. פונקציה ללחיצה על מיני-טאב פנימי
         function filterSub(category, subCategory, btnElement) {
-            // צביעת המיני-טאב שנבחר בזהב
             document.querySelectorAll('.sub-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
 
-            // סינון המוצרים לפי התת-קטגוריה המדויקת
             let visibleCount = 0;
             document.querySelectorAll('.product-card').forEach(card => {
                 if (card.getAttribute('data-category') === category && card.getAttribute('data-sub') === subCategory) {
@@ -864,24 +766,16 @@
 
             document.getElementById('empty-message').style.display = visibleCount === 0 ? 'block' : 'none';
         }
-    </script>
-    <script src="search.js"></script>
-    <script type="module" src="auth.js"></script>
-    <script>
-        // ברגע שדף הקטלוג מסיים להיטען
+
+        // אפקט בחירת מוצר ישירות משורת הכתובת (חיפוש)
         document.addEventListener('DOMContentLoaded', () => {
-            // בודק אם יש מזהה של מוצר בכתובת האתר (למשל catalog.html#prod-soccerwe)
             if (window.location.hash) {
-                const productId = window.location.hash.substring(1); // מנקה את הסימן #
-                
-                // מחכים שבריר שנייה שהדף יתרנדר לגמרי, ואז גוללים
+                const productId = window.location.hash.substring(1); 
                 setTimeout(() => {
                     const productElement = document.getElementById(productId);
                     if (productElement) {
                         productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         productElement.classList.add('highlight-glow');
-                        
-                        // מנקה את האפקט אחרי שנייה וחצי
                         setTimeout(() => {
                             productElement.classList.remove('highlight-glow');
                         }, 1500);
@@ -889,20 +783,19 @@
                 }, 300);
             }
         });
-    </script>
-    <script>
+
         // ==========================================
         // לוגיקה של החלון הצף (Modal)
         // ==========================================
         let currentQty = 1;
+        let currentProductId = '';
 
         function openProductModal(cardElement) {
-            // שואב נתונים מהכרטיסייה שלחצו עליה
+            currentProductId = cardElement.id; // שמירת ה-ID כדי שנדע מה להוסיף לעגלה
             const title = cardElement.querySelector('.product-title').innerText;
             const price = cardElement.querySelector('.product-price').innerText;
             const category = cardElement.querySelector('.product-cat').innerText;
             
-            // בודק אם יש תמונה רגילה או אייקון ברירת מחדל
             const imgElement = cardElement.querySelector('img');
             let imgSrc = '';
             if (imgElement) {
@@ -910,19 +803,16 @@
                 document.getElementById('modal-img').style.display = 'block';
                 document.getElementById('modal-img').src = imgSrc;
             } else {
-                document.getElementById('modal-img').style.display = 'none'; // מסתיר אם אין תמונה
+                document.getElementById('modal-img').style.display = 'none'; 
             }
             
-            // מעדכן את הנתונים בחלון
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-price').innerText = price;
             document.getElementById('modal-category').innerText = category;
             
-            // מאפס כמות
             currentQty = 1;
             document.getElementById('modal-qty').value = currentQty;
 
-            // פותח את החלון
             document.getElementById('product-modal').classList.add('show');
         }
 
@@ -939,7 +829,23 @@
 
         function addToCartFromModal() {
             const title = document.getElementById('modal-title').innerText;
-            alert(currentQty + ' יחידות של ' + title + ' נוספו לעגלה בהצלחה!');
+            const priceText = document.getElementById('modal-price').innerText;
+            // ניקוי המילה ש"ח מהמחיר והפיכה למספר
+            const priceNum = parseFloat(priceText.replace('₪', '').trim());
+            const imgSrc = document.getElementById('modal-img').src;
+
+            // שימוש בפונקציה מ-cart.js במידה והיא קיימת, אחרת זיוף להמחשה
+            if(typeof window.addToCart === 'function') {
+                // קורא לפונקציית העגלה פעמים כמספר הכמות שנבחרה
+                for(let i=0; i<currentQty; i++){
+                    window.addToCart(currentProductId, title, priceNum, imgSrc, true); // true בשביל לא להקפיץ אלרט כל פעם
+                }
+                alert(currentQty + ' יחידות של ' + title + ' נוספו לעגלה בהצלחה!');
+                if(typeof updateCartBadge === 'function') updateCartBadge();
+            } else {
+                alert('מערכת העגלה כרגע בבנייה. (הקובץ cart.js לא מחובר לדף)');
+            }
+            
             closeProductModal();
         }
 
@@ -950,26 +856,26 @@
             }
         });
 
-        // חיבור אירוע פתיחת החלון לכל הקוביות בקטלוג (גם למוצרים שיוספו בעתיד)
+        // חיבור אירוע פתיחת החלון לכל הקוביות בקטלוג
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('catalog-grid');
             
             grid.addEventListener('click', function(e) {
-                // מוודא שלחצו על מוצר
                 const card = e.target.closest('.product-card');
                 if (!card) return;
 
-                // מוודא שלא לחצו על הכפתור "הוסף לעגלה" הקטן שבחוץ
-                if (e.target.closest('.buy-btn')) return;
+                // מוודא שלא לחצו על הכפתור "הוסף לעגלה" הקטן שבחוץ כדי לא לפתוח מודאל סתם
+                if (e.target.closest('.buy-btn')) {
+                    // אם לחצו על הכפתור הקטן, נפתח את המודאל בכל זאת (חווית משתמש טובה יותר מלקנות ישר)
+                    // או שאפשר לכתוב פה פקודת קנייה מהירה במקום.
+                }
 
                 openProductModal(card);
             });
-            
-            // משנה את סמן העכבר שייראה לחיץ
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.style.cursor = 'pointer';
-            });
         });
     </script>
+    <script src="cart.js"></script>
+    <script src="search.js"></script>
+    <script type="module" src="auth.js"></script>
 </body>
 </html>

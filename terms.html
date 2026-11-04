@@ -7,26 +7,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- שואב את העיצוב הגלובלי (לפוטר ולהדר) -->
+    <!-- שואב את העיצוב הגלובלי -->
     <link rel="stylesheet" href="solibi-app.css">
     
     <style>
-        /* === צבעים מקומיים - הוספת נגיעות הכסוף === */
-        :root {
-            --brand-silver: #D1D5DB;
-            --brand-silver-dark: #9CA3AF;
-            --border-silver: rgba(209, 213, 219, 0.2);
-        }
-
         /* =========================================
-           דריסות מבנה - תואם ב-100% לדף האודות
+           שחרור הנעילה ועיצוב דף התקנון
            ========================================= */
-        body {
-            background: radial-gradient(circle at 50% 0%, rgba(214, 185, 83, 0.12) 0%, rgba(224, 224, 224, 0.05) 30%, #0a0a0a 70%) !important;
-            color: #f5f5f5 !important;
+        body.terms-page-body {
+            color: #ffffff !important;
             width: 100vw !important;
-            height: 100vh !important; 
-            overflow: hidden !important; 
+            height: auto !important; 
+            min-height: 100vh !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important; 
             display: flex !important;
             flex-direction: column !important;
             margin: 0 !important;
@@ -36,50 +30,32 @@
             flex: 1 !important;
             display: flex !important;
             justify-content: center !important;
-            align-items: center !important;
-            padding: clamp(15px, 3vh, 40px) 15px !important;
-            overflow: hidden !important; 
+            align-items: flex-start !important;
+            padding: 50px 20px !important;
+            overflow: visible !important; 
         }
 
-        /* קוביית הזכוכית המרכזית */
         .terms-glass-box {
             width: 100% !important;
             max-width: 950px !important;
-            height: 100% !important;
-            background: linear-gradient(145deg, rgba(20, 20, 20, 0.8) 0%, rgba(5, 5, 5, 0.95) 100%) !important;
-            backdrop-filter: blur(15px) !important;
-            border: 1px solid var(--border-silver) !important;
-            border-radius: 20px !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8) !important;
+            height: auto !important;
             display: flex !important;
             flex-direction: column !important;
-            overflow: hidden !important; 
+            border-radius: 20px !important;
         }
 
-        /* אזור הגלילה - מוגדר לשמאל לימין כדי להעביר את הפס ימינה */
         .terms-scroll-area {
-            flex: 1 !important;
-            overflow-y: auto !important; 
             padding: 40px !important;
-            scrollbar-width: thin !important;
-            scrollbar-color: rgba(214, 185, 83, 0.4) transparent !important;
-            direction: ltr !important; 
+            overflow: visible !important; 
+            direction: rtl !important; 
         }
 
-        .terms-scroll-area::-webkit-scrollbar { width: 6px; }
-        .terms-scroll-area::-webkit-scrollbar-thumb { background: rgba(214, 185, 83, 0.4); border-radius: 10px; }
-
-        /* התוכן עצמו - מוחזר לימין לשמאל */
         .terms-inner-content {
-            direction: rtl !important;
             display: flex;
             flex-direction: column;
             gap: 35px;
         }
 
-        /* =========================================
-           עיצוב תוכן התקנון
-           ========================================= */
         .page-header {
             text-align: center;
             margin-bottom: 20px;
@@ -88,7 +64,7 @@
         .page-title {
             font-size: 32px;
             font-weight: 900;
-            color: #D6B953;
+            color: #D4AF37;
             margin-bottom: 10px;
         }
 
@@ -97,23 +73,25 @@
             color: #a0a0a0;
         }
 
+        /* עיצוב הקוביות - תוקן כך שהטקסט לא יברח */
         .terms-section {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border-silver);
+            background: #070709;
+            border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 15px;
-            padding: 25px;
+            padding: 25px 35px; /* ריווח מהצדדים */
             transition: 0.3s;
+            box-sizing: border-box; /* שומר על התוכן בפנים */
+            width: 100%;
         }
 
         .terms-section:hover {
-            border-color: #D6B953;
-            background: rgba(20, 20, 20, 0.6);
+            border-color: #D4AF37;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
         }
 
-        /* מיוחד לסעיף של הלקוח תמיד צודק */
         .terms-section.highlight-section {
-            background: linear-gradient(135deg, rgba(214, 185, 83, 0.1) 0%, rgba(0,0,0,0.6) 100%);
-            border: 1px solid #D6B953;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(0,0,0,0.6) 100%);
+            border: 1px solid #D4AF37;
         }
 
         .section-title {
@@ -124,25 +102,30 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 15px;
-            border-bottom: 1px dashed var(--border-silver);
+            border-bottom: 1px dashed rgba(209, 213, 219, 0.2);
             padding-bottom: 10px;
         }
 
-        .section-title i {
-            color: #D6B953;
-            font-size: 22px;
+        .section-title i { color: #D4AF37; font-size: 22px; }
+        
+        .section-text { 
+            font-size: 15px; 
+            line-height: 1.8; 
+            color: #a0a0a0; 
+            font-weight: 400; 
+            text-align: right; /* יישור טבעי לימין */
+            box-sizing: border-box;
         }
-
-        .section-text {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #a0a0a0;
-            font-weight: 400;
-            text-align: justify;
-        }
-
+        
         .section-text strong { color: #f5f5f5; font-weight: 700; }
-        .section-text ul { margin-top: 10px; margin-right: 20px; }
+        
+        .section-text ul { 
+            margin-top: 10px; 
+            padding-right: 25px; /* ריווח נכון לרשימה */
+            margin-right: 0;
+            margin-left: 0;
+        }
+        
         .section-text li { margin-bottom: 8px; }
 
         @media (max-width: 768px) {
@@ -152,18 +135,17 @@
         }
     </style>
 </head>
-<body>
+<body class="terms-page-body">
 
-    <!-- 1. הדר אחיד -->
+    <!-- חור עבור ההדר -->
     <div id="header-placeholder"></div>
 
-    <!-- 2. אזור הבמה המרכזי -->
+    <!-- אזור הבמה המרכזי -->
     <main class="terms-main-container">
         
-        <!-- קוביית הזכוכית המרכזית -->
+        <!-- הורדה מכאן מחלקת ה-contact השגויה -->
         <div class="terms-glass-box">
             
-            <!-- אזור הגלילה הפנימי בלבד (פס גלילה מימין) -->
             <div class="terms-scroll-area">
                 <div class="terms-inner-content">
                     
@@ -172,7 +154,6 @@
                         <p class="page-subtitle">ברוכים הבאים לסוליבי ספורט. אנא קראו את התקנון לפני ביצוע רכישה.</p>
                     </div>
 
-                    <!-- סעיף 1: הלקוח תמיד צודק (מודגש) -->
                     <div class="terms-section highlight-section">
                         <h2 class="section-title"><i class="fa-solid fa-crown"></i> אצלנו, הלקוח תמיד צודק</h2>
                         <div class="section-text">
@@ -180,7 +161,6 @@
                         </div>
                     </div>
 
-                    <!-- סעיף 2: מארזי הפתעה ומוצרי אספנות -->
                     <div class="terms-section">
                         <h2 class="section-title"><i class="fa-solid fa-box-open"></i> מארזי הפתעה (Mystery Boxes) וקלפים</h2>
                         <div class="section-text">
@@ -193,7 +173,6 @@
                         </div>
                     </div>
 
-                    <!-- סעיף 3: משלוחים ואספקה -->
                     <div class="terms-section">
                         <h2 class="section-title"><i class="fa-solid fa-truck-fast"></i> משלוחים וזמני אספקה</h2>
                         <div class="section-text">
@@ -206,7 +185,6 @@
                         </div>
                     </div>
 
-                    <!-- סעיף 4: מדיניות החזרות וביטולים -->
                     <div class="terms-section">
                         <h2 class="section-title"><i class="fa-solid fa-rotate-left"></i> מדיניות החזרות וביטולים</h2>
                         <div class="section-text">
@@ -220,14 +198,13 @@
                         </div>
                     </div>
 
-                    <!-- סעיף 5: מועדון חברים, אבטחה ופרטיות -->
                     <div class="terms-section">
-                        <h2 class="section-title"><i class="fa-solid fa-shield-halved"></i> מועדון חברים, פרטיות ואבטחת מידע</h2>
+                        <h2 class="section-title"><i class="fa-solid fa-shield-halved"></i> פרטיות ואבטחת מידע</h2>
                         <div class="section-text">
                             סוליבי ספורט חורטת על דגלה את אבטחת פרטיכם האישיים.
                             <ul>
                                 <li>האתר מאובטח בתקן <strong>SSL מחמיר</strong>. פרטי האשראי שלכם אינם נשמרים בשרתי החברה בשום שלב, והסליקה מתבצעת דרך חברת סליקה חיצונית ומאושרת.</li>
-                                <li>הצטרפות למועדון ה-VIP מקנה הטבות, קופונים ומעקב אישי באזור המאובטח. אנו מתחייבים שלא להעביר את פרטיכם האישיים או כתובת המייל שלכם לצד ג' ללא אישורכם.</li>
+                                <li>אנו מתחייבים שלא להעביר את פרטיכם האישיים או כתובת המייל שלכם לצד ג' ללא אישורכם.</li>
                             </ul>
                         </div>
                     </div>
@@ -237,18 +214,12 @@
         </div>
     </main>
 
-    <!-- 3. פוטר וטיקר (זהה לחלוטין לשאר הדפים) -->
-    <footer class="app-footer">
-        <div class="footer-links">
-            <a href="about.html">אודות</a>
-            <a href="contact.html">צור קשר</a>
-            <a href="terms.html">תקנון ומדיניות</a>
-        </div>
-        <div id="ticker-placeholder"></div>
-    </footer>
+    <!-- חור עבור הפוטר -->
+    <div id="ticker-placeholder"></div>
 
-    <!-- סקריפטים לטעינת החלקים החיצוניים -->
+    <!-- סקריפט השאיבה המאוחד -->
     <script>
+        // שואב את ההדר
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -256,6 +227,7 @@
                 if(placeholder) placeholder.innerHTML = data;
             });
 
+        // שואב את הטיקר (פוטר)
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {
@@ -263,7 +235,5 @@
                 if(placeholder) placeholder.innerHTML = data;
             });
     </script>
-    <script src="search.js"></script>
-    <script type="module" src="auth.js"></script>
 </body>
 </html>
