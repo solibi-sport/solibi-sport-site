@@ -3,51 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - צור קשר</title>
+    <title>סוליבי ספורט - צור קשר VIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     
     <!-- שואב את קובץ העיצוב הגלובלי (לפוטר ולהדר) -->
     <link rel="stylesheet" href="solibi-app.css">
     
     <style>
         /* =========================================
-           שחרור הנעילה ועיצוב דף צור קשר
+           נעילת מסך מלאה (100vh) ומרכוז סימטרי מושלם (SPA)
            ========================================= */
-        body.contact-page-body {
-            color: #ffffff !important;
+        html, body.contact-page-body {
+            height: 100vh !important;
+            max-height: 100vh !important;
             width: 100vw !important;
-            height: auto !important; 
-            min-height: 100vh !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important; 
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
             display: flex !important;
             flex-direction: column !important;
-            margin: 0 !important;
+            background-color: #0b0c10 !important;
+            color: #ffffff !important;
         }
 
+        #header-placeholder,
+        #ticker-placeholder {
+            flex-shrink: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* אזור הבמה המרכזי - ממורכז בדיוק באמצע בין ההדר לפוטר! */
         .contact-main-container {
-            flex: 1 !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
             display: flex !important;
             justify-content: center !important;
-            align-items: flex-start !important;
-            padding: 50px 20px !important;
-            overflow: visible !important; 
+            align-items: center !important; /* ממרכז אנכית במקום להצמיד למעלה */
+            padding: 20px 30px !important;
+            box-sizing: border-box !important;
         }
 
+        /* =========================================
+           קוביית ה-VIP המרכזית של צור קשר
+           ========================================= */
         .contact-glass-box {
+            position: relative;
             width: 100% !important;
-            max-width: 950px !important;
+            max-width: 980px !important;
             height: auto !important;
+            background: linear-gradient(160deg, rgba(20, 24, 34, 0.96) 0%, rgba(10, 12, 17, 0.98) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.45) !important;
+            border-right: 5px solid #D4AF37 !important;
+            border-radius: 22px !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.12) !important;
             display: flex !important;
             flex-direction: column !important;
-            border-radius: 20px !important;
+            overflow: hidden !important;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        /* פס תאורה מוזהב בראש הקובייה */
+        .contact-glass-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff3b0, #D4AF37, #fff3b0, transparent);
+            box-shadow: 0 2px 20px 2px rgba(212, 175, 55, 0.5);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .contact-scroll-area {
-            padding: 40px !important;
-            overflow: visible !important; 
-            direction: rtl !important; 
+            padding: 34px 42px !important;
+            overflow: hidden !important;
+            direction: rtl !important;
         }
 
         .contact-inner-content {
@@ -56,63 +96,156 @@
             align-items: center;
         }
 
-        .contact-subtitle {
-            font-size: 18px;
-            color: #a0a0a0;
-            font-weight: 500;
-            margin-bottom: 45px;
-            text-align: center;
-            line-height: 1.5;
-            max-width: 700px;
+        .vip-contact-badge {
+            background: rgba(212, 175, 55, 0.14);
+            color: #D4AF37;
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 4px 14px;
+            border-radius: 30px;
+            margin-bottom: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.8px;
         }
 
+        .contact-main-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            text-align: center;
+            text-shadow: 0 6px 18px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.25);
+        }
+
+        .contact-main-title span {
+            color: #D4AF37;
+        }
+
+        .contact-subtitle {
+            font-size: 15px;
+            color: #cbd5e1;
+            font-weight: 400;
+            margin-bottom: 28px;
+            text-align: center;
+            line-height: 1.55;
+            max-width: 680px;
+        }
+
+        /* =========================================
+           3 כרטיסיות יצירת הקשר
+           ========================================= */
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            gap: 22px;
             width: 100%;
-            margin-bottom: 50px;
+            margin-bottom: 28px;
         }
 
         .contact-card {
-            background: #070709;
+            background: radial-gradient(circle at 50% 25%, rgba(212, 175, 55, 0.15) 0%, rgba(9, 11, 16, 0.95) 75%);
             border-radius: 16px;
-            padding: 30px 15px;
+            padding: 24px 18px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             text-decoration: none;
-            color: #f5f5f5;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.8);
         }
 
         .contact-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             border-color: #D4AF37;
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.95), 0 0 22px rgba(212, 175, 55, 0.25);
+        }
+
+        .contact-icon-box {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.24) 0%, #07080c 100%);
+            border: 1px solid rgba(212, 175, 55, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
         }
 
         .contact-icon {
-            width: 50px; height: 50px;
+            width: 26px;
+            height: 26px;
             color: #D4AF37;
-            margin-bottom: 15px;
             transition: 0.3s;
         }
         
-        .contact-card:hover .contact-icon { transform: scale(1.15); color: #fff; }
-        .contact-method { font-size: 20px; font-weight: 900; margin-bottom: 5px; }
-        .contact-detail { font-size: 15px; font-weight: 500; color: #a0a0a0; direction: ltr; }
+        .contact-card:hover .contact-icon-box {
+            background: linear-gradient(135deg, #fff3b0 0%, #D4AF37 100%);
+            transform: scale(1.08);
+        }
 
-        .divider {
-            width: 100%; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
-            margin: 0 0 40px 0;
+        .contact-card:hover .contact-icon {
+            color: #0b0c10;
+        }
+
+        .contact-method {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .contact-detail {
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            direction: ltr;
+        }
+
+        .contact-card:hover .contact-detail {
+            color: #D4AF37;
+        }
+
+        /* =========================================
+           קו הפרדה אופקי מוזהב עם יהלום
+           ========================================= */
+        .gold-diamond-divider {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.85) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+            margin: 0 0 26px 0;
             flex-shrink: 0;
         }
 
+        .gold-diamond-divider::after {
+            content: '❖';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 2px 15px;
+            font-size: 13px;
+            line-height: 1;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+        }
+
+        /* =========================================
+           שורה תחתונה: רשתות חברתיות + סוליבי עסקים
+           ========================================= */
         .social-section {
             display: flex;
             align-items: center;
@@ -122,61 +255,113 @@
             gap: 20px;
         }
 
-        .social-links { display: flex; gap: 15px; }
-        .social-btn {
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            background: #000;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            display: flex; align-items: center; justify-content: center;
-            color: #D4AF37;
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        .social-links {
+            display: flex;
+            gap: 14px;
         }
-        
-        .social-btn:hover { background: #D4AF37; color: #000; transform: translateY(-3px); border-color: #D4AF37; }
-        .social-btn svg { width: 22px; height: 22px; }
 
-        .business-link-card {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid #D4AF37;
-            padding: 15px 30px;
-            border-radius: 30px;
+        .social-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.16) 0%, #07080c 100%);
+            border: 1px solid rgba(212, 175, 55, 0.45);
             display: flex;
             align-items: center;
-            text-decoration: none;
-            color: #f5f5f5;
-            transition: 0.3s;
-            min-width: 220px;
+            justify-content: center;
+            color: #D4AF37;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
         }
         
-        .business-link-card:hover { background: #D4AF37; color: #000; transform: scale(1.02); }
+        .social-btn:hover {
+            background: linear-gradient(135deg, #fff3b0 0%, #D4AF37 100%);
+            color: #0b0c10;
+            transform: translateY(-3px);
+            border-color: #fff3b0;
+            box-shadow: 0 10px 22px rgba(212, 175, 55, 0.35);
+        }
+
+        .social-btn svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .business-link-card {
+            background: radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.22) 0%, rgba(11, 13, 19, 0.95) 100%);
+            border: 1.5px solid rgba(212, 175, 55, 0.65);
+            padding: 11px 28px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            min-width: 225px;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.75), 0 0 16px rgba(212, 175, 55, 0.15);
+        }
+
+        .business-link-card svg {
+            color: #D4AF37;
+            transition: 0.3s;
+        }
+        
+        .business-link-card:hover {
+            background: linear-gradient(135deg, #e5c158 0%, #D4AF37 50%, #b59024 100%);
+            color: #0b0c10;
+            border-color: #fff3b0;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(212, 175, 55, 0.4);
+        }
+
+        .business-link-card:hover svg {
+            color: #0b0c10;
+        }
+
+        /* =========================================
+           זום פרופורציונלי מלא (זהה לשאר דפי האתר)
+           ========================================= */
+        @media (min-width: 1100px) {
+            .contact-glass-box {
+                zoom: 1.15; /* מגדיל את כל הקובייה והתוכן שבה ב-15% באותה פרופורציה בדיוק */
+                max-width: 980px !important;
+            }
+        }
 
         @media (max-width: 900px) {
-            .contact-grid { grid-template-columns: repeat(2, 1fr); }
-            .social-section { flex-direction: column; justify-content: center; }
-            .contact-scroll-area { padding: 20px !important; }
-        }
-        @media (max-width: 600px) {
-            .contact-grid { grid-template-columns: 1fr; }
+            html, body.contact-page-body {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: auto !important;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .social-section {
+                flex-direction: column;
+                justify-content: center;
+            }
+            .contact-scroll-area {
+                padding: 24px !important;
+            }
         }
     </style>
 </head>
 <body class="contact-page-body">
 
-    <!-- 1. הדר - נעול למעלה -->
+    <!-- 1. הדר עליון קבוע -->
     <div id="header-placeholder"></div>
 
-    <!-- 2. אזור הבמה המרכזי -->
+    <!-- 2. אזור הבמה המרכזי (ממורכז בדיוק באמצע המסך) -->
     <main class="contact-main-container">
         
-        <!-- קוביית הזכוכית המרכזית -->
         <div class="contact-glass-box">
-            
-            <!-- 3. אזור הגלילה הפנימי בוטל, עכשיו האתר גולל באופן טבעי -->
             <div class="contact-scroll-area">
                 <div class="contact-inner-content">
                     
+                    <span class="vip-contact-badge"><i class="fa-solid fa-headset"></i> SOLIBI VIP SUPPORT</span>
+                    <h1 class="contact-main-title">נשמח לעמוד <span>לשירותך</span></h1>
                     <div class="contact-subtitle">
                         יש לך שאלה? הצעה לשיתוף פעולה? או סתם בא לך לדבר על כדורגל?<br>
                         הצוות שלנו זמין עבורך במגוון ערוצים. בחר את הדרך הנוחה לך.
@@ -184,31 +369,38 @@
 
                     <div class="contact-grid">
                         <a href="tel:0527287898" class="contact-card">
-                            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                            </svg>
+                            <div class="contact-icon-box">
+                                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </div>
                             <div class="contact-method">טלפון</div>
                             <div class="contact-detail">052-7287898</div>
                         </a>
 
                         <a href="https://wa.me/972527287898" target="_blank" class="contact-card">
-                            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                            </svg>
+                            <div class="contact-icon-box">
+                                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                                </svg>
+                            </div>
                             <div class="contact-method">WhatsApp</div>
                             <div class="contact-detail">לחץ לשליחת הודעה</div>
                         </a>
 
                         <a href="mailto:info@solibi-seder.co.il" class="contact-card">
-                            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
+                            <div class="contact-icon-box">
+                                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
                             <div class="contact-method">דואר אלקטרוני</div>
                             <div class="contact-detail">info@solibi-seder.co.il</div>
                         </a>
                     </div>
 
-                    <div class="divider"></div>
+                    <!-- קו הפרדה מוזהב עם יהלום -->
+                    <div class="gold-diamond-divider"></div>
 
                     <div class="social-section">
                         <div class="social-links">
@@ -227,12 +419,12 @@
                         </div>
 
                         <a href="https://business.solibi-seder.co.il/" target="_blank" class="business-link-card">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                             </svg>
                             <div style="flex: 1; text-align: center;">
-                                <div style="font-size: 11px; opacity: 0.8; margin-bottom: 2px;">בעל עסק? גלה את</div>
-                                <div style="font-size: 15px; font-weight: 900;">סוליבי עסקים</div>
+                                <div style="font-size: 11px; opacity: 0.85; margin-bottom: 1px;">בעל עסק? גלה את</div>
+                                <div style="font-size: 15.5px; font-weight: 900;">סוליבי עסקים</div>
                             </div>
                         </a>
                     </div>
@@ -242,6 +434,7 @@
         </div>
     </main>
 
+    <!-- 3. פוטר תחתון קבוע -->
     <div id="ticker-placeholder"></div>
 
     <!-- סקריפטים -->
@@ -252,16 +445,14 @@
                 const placeholder = document.getElementById('header-placeholder');
                 if(placeholder) placeholder.innerHTML = data;
             });
+
+        fetch('ticker.html')
+            .then(response => response.text())
+            .then(data => {
+                const placeholder = document.getElementById('ticker-placeholder');
+                if(placeholder) placeholder.innerHTML = data;
+            });
     </script>
-    <script>
-    // שואב את הפוטר מתוך קובץ ticker.html
-    fetch('ticker.html')
-        .then(response => response.text())
-        .then(data => {
-            const placeholder = document.getElementById('ticker-placeholder');
-            if(placeholder) placeholder.innerHTML = data;
-        });
-</script>
     <script src="search.js"></script>
     <script type="module" src="auth.js"></script>
 </body>

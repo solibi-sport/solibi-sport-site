@@ -3,85 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - אודות</title>
+    <title>סוליבי ספורט - אודות VIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     
     <!-- שואב את קובץ העיצוב הגלובלי -->
     <link rel="stylesheet" href="solibi-app.css">
     
     <style>
         /* =========================================
-           שחרור הנעילה ועיצוב דף האודות
+           נעילת מסך מלאה (100vh) ומרכוז סימטרי (SPA)
            ========================================= */
-        body.about-page-body {
-            background-color: #0b0c10 !important;
-            background-image: radial-gradient(circle at 50% 10%, rgba(200, 210, 230, 0.12) 0%, transparent 60%), url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M10 16.95l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zm32 0l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zM26 26l-5-2.88v-5.77l5-2.88 5 2.88v5.77L26 26zM26 7.7l-5-2.88V-.94l5-2.88 5 2.88v5.77L26 7.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
-            color: #ffffff !important;
+        html, body.about-page-body {
+            height: 100vh !important;
+            max-height: 100vh !important;
             width: 100vw !important;
-            height: auto !important; 
-            min-height: 100vh !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important; 
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
             display: flex !important;
             flex-direction: column !important;
-            margin: 0 !important;
+            background-color: #0b0c10 !important;
+            color: #ffffff !important;
         }
 
+        #header-placeholder,
+        #ticker-placeholder {
+            flex-shrink: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* אזור הבמה המרכזי בין ההדר לפוטר */
         .about-main-container {
-            flex: 1 !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
             display: flex !important;
             justify-content: center !important;
-            align-items: flex-start !important; 
-            padding: 50px 20px !important;
-            overflow: visible !important; 
+            align-items: center !important;
+            padding: 20px 30px !important;
+            box-sizing: border-box !important;
         }
 
+        /* =========================================
+           קוביית ה-VIP של אודות (בדיוק באותו מבנה עם שפה עיצובית אחידה)
+           ========================================= */
         .about-glass-box {
+            position: relative;
             width: 100% !important;
-            max-width: 900px !important;
-            height: auto !important; 
-            background: linear-gradient(145deg, #1c1f26 0%, #111318 100%) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important;
-            border-radius: 20px !important;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
+            max-width: 1060px !important;
+            height: auto !important;
+            max-height: 575px;
+            background: linear-gradient(160deg, rgba(20, 24, 34, 0.96) 0%, rgba(10, 12, 17, 0.98) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.45) !important;
+            border-right: 5px solid #D4AF37 !important;
+            border-radius: 22px !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.12) !important;
             display: flex !important;
             flex-direction: column !important;
+            overflow: hidden !important;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        /* פס תאורה מוזהב בראש הקובייה */
+        .about-glass-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff3b0, #D4AF37, #fff3b0, transparent);
+            box-shadow: 0 2px 20px 2px rgba(212, 175, 55, 0.5);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .about-scroll-area {
-            padding: 40px !important;
-            overflow: visible !important; 
-            direction: rtl !important; 
+            padding: 26px 36px 24px 36px !important;
+            overflow: hidden !important;
+            direction: rtl !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            box-sizing: border-box;
         }
 
-        .about-sections-wrapper { display: flex; flex-direction: column; gap: 40px; text-align: right; }
-        .about-section { display: flex; flex-direction: column; gap: 15px; }
+        .about-sections-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            text-align: right;
+        }
 
-        .section-title { font-size: 24px; font-weight: 900; color: #D4AF37; display: flex; align-items: center; gap: 12px; }
-        .section-title::before { content: ''; display: block; width: 6px; height: 24px; background: #D4AF37; border-radius: 4px; }
-        .section-text { font-size: 16px; line-height: 1.8; color: #cbd5e1; font-weight: 400; text-align: justify; }
-        .section-text strong { color: #ffffff; font-weight: 700; }
+        .about-section {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-        .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: #14161d; border-top: 2px solid #D4AF37; margin: 20px -40px -40px -40px; padding: 40px; }
-        .value-card { background: #070709; border-radius: 16px; padding: 25px 20px; text-align: center; border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: 0.3s ease; }
-        .value-card:hover { transform: translateY(-5px); border-color: #D4AF37; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
-        .value-icon { width: 40px; height: 40px; color: #D4AF37; margin-bottom: 15px; }
-        .value-title { font-size: 16px; font-weight: 900; color: #ffffff; margin-bottom: 8px; }
-        .value-desc { font-size: 13px; color: #a0aec0; line-height: 1.5; }
+        .section-title {
+            font-size: 19px;
+            font-weight: 900;
+            color: #D4AF37;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+        }
 
-        @media (max-width: 768px) {
-            .values-grid { grid-template-columns: 1fr; margin: 20px -20px -20px -20px; padding: 30px 20px; }
-            .about-scroll-area { padding: 20px !important; }
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 5px;
+            height: 20px;
+            background: linear-gradient(180deg, #fff3b0, #D4AF37);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .section-text {
+            font-size: 14px;
+            line-height: 1.65;
+            color: #cbd5e1;
+            font-weight: 400;
+            text-align: justify;
+        }
+
+        .section-text strong {
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        /* =========================================
+           קו הפרדה אופקי מוזהב עם יהלום מעל 3 קוביות הערכים
+           ========================================= */
+        .gold-diamond-divider {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.85) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+            margin: 4px 0;
+        }
+
+        .gold-diamond-divider::after {
+            content: '❖';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 2px 14px;
+            font-size: 12px;
+            line-height: 1;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+        }
+
+        /* =========================================
+           3 כרטיסיות הערכים בתחתית הקובייה
+           ========================================= */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 2px;
+        }
+
+        .value-card {
+            background: radial-gradient(circle at 50% 25%, rgba(212, 175, 55, 0.14) 0%, rgba(9, 11, 16, 0.94) 75%);
+            border-radius: 15px;
+            padding: 16px 18px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.32);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.75);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .value-card:hover {
+            transform: translateY(-4px);
+            border-color: #D4AF37;
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.22);
+        }
+
+        .value-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, #07080c 100%);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.18);
+        }
+
+        .value-icon {
+            width: 22px;
+            height: 22px;
+            color: #D4AF37;
+        }
+
+        .value-title {
+            font-size: 15px;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .value-desc {
+            font-size: 12.5px;
+            color: #94a3b8;
+            line-height: 1.45;
+        }
+
+        /* =========================================
+           זום פרופורציונלי מלא (זהה לשאר דפי האתר)
+           ========================================= */
+        @media (min-width: 1100px) {
+            .about-glass-box {
+                zoom: 1.15; /* מגדיל את כל הקובייה והתוכן שבה ב-15% באותה פרופורציה בדיוק */
+                max-width: 1060px !important;
+                max-height: 565px !important;
+            }
+        }
+
+        @media (max-width: 900px) {
+            html, body.about-page-body {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: auto !important;
+            }
+            .about-glass-box {
+                max-height: none;
+            }
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-scroll-area {
+                padding: 22px !important;
+            }
         }
     </style>
 </head>
 <body class="about-page-body"> 
 
-    <!-- 1. חור עבור ההדר (יישאב מכאן את הקובץ החיצוני) -->
+    <!-- 1. הדר עליון קבוע -->
     <div id="header-placeholder"></div>
 
-    <!-- 2. אזור הבמה המרכזי -->
+    <!-- 2. אזור הבמה המרכזי (SPA) -->
     <main class="about-main-container"> 
         
         <div class="about-glass-box">
@@ -109,25 +294,36 @@
                         </div>
                     </div>
 
+                    <!-- קו הפרדה מוזהב עם יהלום -->
+                    <div class="gold-diamond-divider"></div>
+
                     <div class="values-grid">
                         <div class="value-card">
-                            <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                            </svg>
+                            <div class="value-icon-box">
+                                <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
                             <div class="value-title">פריטים נדירים</div>
                             <div class="value-desc">אוסף קפדני של קלפים ומוצרי אספנות מבוקשים מכל העולם.</div>
                         </div>
+
                         <div class="value-card">
-                            <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
-                            </svg>
+                            <div class="value-icon-box">
+                                <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path>
+                                </svg>
+                            </div>
                             <div class="value-title">חוויית בוטיק</div>
                             <div class="value-desc">שירות יוקרתי, חבילות מיסטרי איכותיות ואריזה ברמה הגבוהה ביותר.</div>
                         </div>
+
                         <div class="value-card">
-                            <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            </svg>
+                            <div class="value-icon-box">
+                                <svg class="value-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
                             <div class="value-title">קהילה אקסקלוסיבית</div>
                             <div class="value-desc">מועדון חברים לאספנים שמעריכים יוקרה וחיים את עולם הספורט.</div>
                         </div>
@@ -139,12 +335,11 @@
 
     </main>
 
-    <!-- 3. חור עבור הפוטר (יישאב מכאן את הקובץ החיצוני) -->
+    <!-- 3. פוטר תחתון קבוע -->
     <div id="ticker-placeholder"></div>
 
-    <!-- סקריפט מאוחד ששואב את שניהם פעם אחת בלבד -->
+    <!-- סקריפט מאוחד ששואב את ההדר והפוטר -->
     <script>
-        // שואב את ההדר
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -152,7 +347,6 @@
                 if(placeholder) placeholder.innerHTML = data;
             });
 
-        // שואב את הטיקר/פוטר
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {
@@ -160,5 +354,7 @@
                 if(placeholder) placeholder.innerHTML = data;
             });
     </script>
+    <script src="search.js"></script>
+    <script type="module" src="auth.js"></script>
 </body>
 </html>

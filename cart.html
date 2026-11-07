@@ -3,151 +3,622 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - עגלת קניות</title>
+    <title>סוליבי ספורט - עגלת קניות VIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="solibi-app.css">
     
     <style>
-        body.cart-page-body {
-            background-color: #0b0c10 !important;
-            background-image: radial-gradient(circle at 50% 10%, rgba(200, 210, 230, 0.12) 0%, transparent 60%), url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M10 16.95l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zm32 0l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zM26 26l-5-2.88v-5.77l5-2.88 5 2.88v5.77L26 26zM26 7.7l-5-2.88V-.94l5-2.88 5 2.88v5.77L26 7.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
-            color: #ffffff !important;
+        /* =========================================
+           נעילת מסך מלאה (100vh) ומרכוז סימטרי (SPA)
+           ========================================= */
+        html, body.cart-page-body {
+            height: 100vh !important;
+            max-height: 100vh !important;
             width: 100vw !important;
-            height: auto !important; 
-            min-height: 100vh !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important; 
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
             display: flex !important;
             flex-direction: column !important;
-            margin: 0 !important;
+            background-color: #0b0c10 !important;
+            color: #ffffff !important;
         }
 
+        #header-placeholder,
+        #ticker-placeholder {
+            flex-shrink: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* אזור הבמה המרכזי - ממורכז בדיוק באמצע בין ההדר לפוטר */
         .cart-main-container {
-            flex: 1 !important; display: flex !important; justify-content: center !important;
-            align-items: flex-start !important; padding: 50px 20px !important; overflow: visible !important; 
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: 22px 30px !important;
+            box-sizing: border-box !important;
         }
         
+        /* =========================================
+           קוביית ה-VIP של העגלה (כולל הזום הפרופורציונלי)
+           ========================================= */
         .cart-glass-box {
-            display: flex; flex-direction: row; width: 100% !important; max-width: 1100px !important; 
-            height: auto !important; min-height: 550px !important; 
-            background: linear-gradient(145deg, #1c1f26 0%, #111318 100%) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important; border-radius: 20px !important;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6) !important; overflow: visible !important; 
-            animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            column-gap: 56px;
+            width: 100% !important;
+            max-width: 1180px !important;
+            height: 100% !important;
+            max-height: 560px;
+            background: linear-gradient(160deg, rgba(20, 24, 34, 0.96) 0%, rgba(10, 12, 17, 0.98) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.45) !important;
+            border-right: 5px solid #D4AF37 !important;
+            border-radius: 22px !important;
+            padding: 28px 34px;
+            box-sizing: border-box;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.12) !important;
+            overflow: hidden !important;
+            animation: fadeUp 0.5s ease forwards;
         }
 
-        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        /* פס תאורה מוזהב בראש הקובייה */
+        .cart-glass-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff3b0, #D4AF37, #fff3b0, transparent);
+            box-shadow: 0 2px 20px 2px rgba(212, 175, 55, 0.5);
+            z-index: 5;
+            pointer-events: none;
+        }
 
-        .cart-items-side { flex: 1.8; padding: 40px; overflow: visible !important; direction: rtl; }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
+        /* =========================================
+           צד ימין: רשימת הפריטים בעגלה + קו הפרדה אנכי עם יהלום
+           ========================================= */
+        .cart-items-side {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+            direction: rtl;
+        }
+
+        /* קו זהב אנכי עם יהלום בין אזור הפריטים לסיכום ההזמנה */
+        .cart-items-side::before {
+            content: '';
+            position: absolute;
+            top: 6%;
+            bottom: 6%;
+            left: -29px;
+            width: 2px;
+            background: linear-gradient(180deg, transparent 0%, rgba(212, 175, 55, 0.75) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+            pointer-events: none;
+        }
+
+        .cart-items-side::after {
+            content: '❖';
+            position: absolute;
+            top: 50%;
+            left: -28px;
+            transform: translate(-50%, -50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 9px 4px;
+            font-size: 12px;
+            line-height: 1;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.45);
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+            pointer-events: none;
+        }
+
+        /* כותרת ראשית של צד המוצרים */
+        .section-header-block {
+            flex-shrink: 0;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .section-title i {
+            color: #D4AF37;
+            font-size: 19px;
+        }
+
+        .gold-diamond-divider {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.85) 0%, rgba(212, 175, 55, 0.3) 70%, transparent 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* אזור גלילה פנימי של המוצרים (למקרה שיש הרבה פריטים) */
+        .cart-items-inner {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-left: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cart-items-inner::-webkit-scrollbar {
+            width: 5px;
+        }
+        .cart-items-inner::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.6);
+            border-radius: 10px;
+        }
+
+        /* שורת מוצר בעגלה */
         .cart-item {
-            display: flex; align-items: center; background: #070709; padding: 15px; 
-            border-radius: 15px; margin-bottom: 15px; border: 1px solid rgba(212, 175, 55, 0.2); transition: 0.3s;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(circle at 90% 50%, rgba(212, 175, 55, 0.1) 0%, rgba(11, 13, 19, 0.92) 70%);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            transition: all 0.25s ease;
+            flex-shrink: 0;
         }
 
-        .cart-item:hover { transform: translateX(-5px); border-color: #D4AF37; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); background: #0a0a0a; }
+        .cart-item:hover {
+            transform: translateX(-4px);
+            border-color: #D4AF37;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.15);
+        }
         
-        .item-img { 
-            width: 70px; height: 70px; background: #000; border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; 
+        .item-img {
+            width: 62px;
+            height: 62px;
+            background: #07080c;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 11px;
+            margin-left: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            padding: 4px;
+            box-sizing: border-box;
         }
 
-        .item-img img { width: 100%; height: 100%; object-fit: cover; }
-        .item-img svg { width: 40px; height: 40px; color: #D4AF37; opacity: 0.5; }
-        
-        .item-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .item-title { font-weight: 900; color: #f5f5f5; font-size: 16px; margin-bottom: 5px; }
-        .item-price { color: #D4AF37; font-weight: 700; }
-        
-        .quantity-controls { 
-            display: flex; align-items: center; gap: 12px; margin: 0 20px; 
-            background: #000; padding: 5px; border-radius: 30px; border: 1px solid rgba(212, 175, 55, 0.3);
+        .item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
         }
 
-        .q-btn { 
-            width: 28px; height: 28px; border-radius: 50%; border: none; background: rgba(255,255,255,0.05); cursor: pointer; font-weight: bold; font-size: 16px; 
-            transition: 0.2s; display: flex; align-items: center; justify-content: center; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.1);
+        .item-img svg {
+            width: 34px;
+            height: 34px;
+            color: #D4AF37;
+        }
+        
+        .item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
         }
 
-        .q-btn:hover { background: #D4AF37; color: #000; border-color: #D4AF37; }
-        .q-num { font-weight: 700; width: 20px; text-align: center; color: #f5f5f5; }
-        
-        .remove-item { color: #ff6b6b; cursor: pointer; font-size: 18px; margin-right: 15px; transition: 0.3s; font-weight: bold; background: none; border: none; padding: 10px; }
-        .remove-item:hover { color: #ff3b30; transform: scale(1.2); }
-
-        .cart-summary-side { 
-            flex: 1; background: transparent; border-right: 1px solid rgba(212, 175, 55, 0.35); 
-            padding: 40px; color: #fff; display: flex; flex-direction: column; 
+        .item-title {
+            font-weight: 800;
+            color: #ffffff;
+            font-size: 15px;
         }
 
-        .summary-title { font-size: 22px; font-weight: 900; margin-bottom: 30px; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 15px; color: #D4AF37; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 15px; color: #a0a0a0; font-weight: 500; }
-        .free-shipping { color: #D4AF37; font-weight: 900; }
+        .item-price {
+            color: #D4AF37;
+            font-weight: 900;
+            font-size: 14px;
+        }
         
-        .total-row { 
-            margin-top: auto; border-top: 1px dashed rgba(212, 175, 55, 0.3); padding-top: 25px; font-size: 22px; font-weight: 900; 
-            display: flex; justify-content: space-between; align-items: center; color: #f5f5f5;
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 16px;
+            background: #07080c;
+            padding: 4px 6px;
+            border-radius: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+        }
+
+        .q-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 15px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .q-btn:hover {
+            background: #D4AF37;
+            color: #0b0c10;
+            border-color: #D4AF37;
+        }
+
+        .q-num {
+            font-weight: 800;
+            width: 20px;
+            text-align: center;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        .remove-item {
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.25s;
+            font-weight: bold;
+            background: rgba(255, 107, 107, 0.08);
+            border: 1px solid rgba(255, 107, 107, 0.25);
+            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-item:hover {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ffffff;
+            border-color: #ff5252;
+            transform: scale(1.08);
+        }
+
+        /* =========================================
+           מצב עגלה ריקה - מעוצב וממורכז בסימטריה מלאה
+           ========================================= */
+        .empty-cart-msg {
+            flex: 1 1 auto;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at 50% 40%, rgba(212, 175, 55, 0.12) 0%, rgba(11, 13, 19, 0.75) 70%);
+            border: 1px dashed rgba(212, 175, 55, 0.35);
+            border-radius: 18px;
+            padding: 32px 24px;
+            box-sizing: border-box;
+        }
+
+        .empty-cart-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, #090b10 100%);
+            border: 1.5px solid rgba(212, 175, 55, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #D4AF37;
+            font-size: 26px;
+            margin-bottom: 16px;
+            box-shadow: 0 0 22px rgba(212, 175, 55, 0.2);
+        }
+
+        .empty-cart-msg h2 {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 900;
+            margin: 0 0 8px 0;
+        }
+
+        .empty-cart-msg p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin: 0 0 22px 0;
+            max-width: 360px;
+            line-height: 1.5;
+        }
+
+        .empty-cart-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+        }
+
+        .empty-cart-actions a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #e5c158 0%, #D4AF37 50%, #b59024 100%);
+            color: #0b0c10;
+            border: 1px solid #fff3b0;
+            padding: 11px 24px;
+            border-radius: 11px;
+            text-decoration: none;
+            font-weight: 900;
+            transition: all 0.25s ease;
+            font-size: 14.5px;
+            box-shadow: 0 6px 18px rgba(212, 175, 55, 0.28);
+        }
+
+        .empty-cart-actions a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(212, 175, 55, 0.45);
+            filter: brightness(1.06);
+        }
+
+        /* =========================================
+           צד שמאל: כרטיס סיכום הזמנה ותשלום
+           ========================================= */
+        .cart-summary-side {
+            background: radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.14) 0%, rgba(11, 13, 19, 0.92) 75%);
+            border: 1px solid rgba(212, 175, 55, 0.32);
+            border-radius: 18px;
+            padding: 24px 26px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .summary-details-box {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 6px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14.5px;
+            color: #cbd5e1;
+            font-weight: 700;
+            background: rgba(7, 9, 13, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 14px;
+            border-radius: 10px;
+        }
+
+        .free-shipping {
+            color: #4ade80;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* תגית הטבת מועדון בתוך סיכום ההזמנה */
+        .vip-cart-perk {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 11px;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .vip-cart-perk i {
+            color: #D4AF37;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .total-row {
+            border-top: 1px dashed rgba(212, 175, 55, 0.4);
+            padding-top: 16px;
+            margin-top: 8px;
+            font-size: 22px;
+            font-weight: 900;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .total-row #total-price {
+            color: #D4AF37;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
         
         .checkout-btn {
-            background: #D4AF37; color: #000; border: none; padding: 18px; border-radius: 12px;
-            font-size: 16px; font-weight: 900; cursor: pointer; margin-top: 25px; transition: 0.3s; width: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, #e5c158 0%, #D4AF37 50%, #b59024 100%);
+            color: #0b0c10;
+            border: 1px solid #fff3b0;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+            margin-top: 14px;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 22px rgba(212, 175, 55, 0.3);
         }
 
-        .checkout-btn:hover { background: #FDF3C6; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3); }
-        .checkout-btn:disabled { opacity: 0.5; pointer-events: none; background: #333; color: #666; }
-
-        .empty-cart-msg { text-align: center; padding: 50px; display: none; margin-top: 50px;}
-        .empty-cart-actions { display: flex; gap: 15px; justify-content: center; margin-top: 25px; }
-        .empty-cart-actions a { 
-            display: inline-block; background: #D4AF37; color: #000; padding: 12px 30px; border-radius: 10px; 
-            text-decoration: none; font-weight: bold; transition: 0.3s; font-family: inherit; font-size: 15px;
-        }
-        .empty-cart-actions a:hover { background: #FDF3C6; transform: translateY(-2px); }
-
-        @media (max-width: 1024px) {
-            .cart-glass-box { max-width: 95% !important; }
-            .cart-items-side { padding: 20px; }
-            .cart-summary-side { padding: 25px; }
-            .item-img { width: 60px; height: 60px; margin-left: 15px; }
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(212, 175, 55, 0.45);
+            filter: brightness(1.06);
         }
 
-        @media (max-width: 800px) {
-            .cart-glass-box { flex-direction: column; overflow-y: auto; height: auto !important; }
-            .cart-summary-side { flex: none; border-right: none; border-top: 1px solid rgba(212, 175, 55, 0.35); }
-            .cart-item { flex-wrap: wrap; }
-            .quantity-controls { margin: 10px 0 0 0; width: fit-content; }
-            .remove-item { margin-left: auto; margin-right: 0; }
+        .checkout-btn:disabled {
+            opacity: 0.45;
+            pointer-events: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #94a3b8;
+            box-shadow: none;
+        }
+
+        .secure-checkout-seal {
+            margin-top: 12px;
+            font-size: 11.5px;
+            color: #94a3b8;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .secure-checkout-seal i {
+            color: #D4AF37;
+        }
+
+        /* =========================================
+           זום פרופורציונלי מלא (זהה לדף הפרופיל וההתחברות)
+           ========================================= */
+        @media (min-width: 1100px) {
+            .cart-glass-box {
+                zoom: 1.15; /* מגדיל את כל הקובייה והתוכן שבה ב-15% באותה פרופורציה בדיוק */
+                max-width: 1180px !important;
+                max-height: 555px !important;
+            }
+        }
+
+        @media (max-width: 960px) {
+            html, body.cart-page-body {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: auto !important;
+            }
+            .cart-glass-box {
+                grid-template-columns: 1fr;
+                max-height: none;
+                gap: 24px;
+            }
+            .cart-items-side::before,
+            .cart-items-side::after {
+                display: none;
+            }
         }
     </style>
 </head>
 <body class="cart-page-body">
 
+    <!-- 1. הדר עליון קבוע -->
     <div id="header-placeholder"></div>
 
+    <!-- 2. אזור הבמה המרכזי (SPA) -->
     <main class="cart-main-container">
         <div class="cart-glass-box">
+            
+            <!-- צד ימין: פריטים בעגלה -->
             <div class="cart-items-side">
+                <div class="section-header-block">
+                    <h2 class="section-title"><i class="fa-solid fa-bag-shopping"></i> הפריטים בעגלה שלך</h2>
+                    <div class="gold-diamond-divider"></div>
+                </div>
+
+                <!-- רשימת המוצרים כשיש פריטים בעגלה -->
                 <div class="cart-items-inner" id="cart-items-list"></div>
+
+                <!-- תצוגה ממורכזת ויוקרתית כשהעגלה ריקה -->
                 <div id="empty-msg" class="empty-cart-msg">
-                    <h2 style="color: #a0a0a0;">העגלה שלך ריקה...</h2>
+                    <div class="empty-cart-icon">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+                    <h2>העגלה שלך ריקה כרגע...</h2>
+                    <p>עדיין לא בחרת מארזי מיסטרי, קלפים או מוצרי אספנות. הקטלוג שלנו מחכה לך!</p>
                     <div class="empty-cart-actions">
-                        <a href="index.html">חזור לחנות לרכישות <i class="fa-solid fa-store"></i></a>
+                        <a href="catalog.html"><i class="fa-solid fa-layer-group"></i> מעבר לקטלוג המוצרים</a>
                     </div>
                 </div>
             </div>
 
+            <!-- צד שמאל: סיכום הזמנה ותשלום -->
             <div class="cart-summary-side">
-                <h2 class="summary-title">סיכום הזמנה</h2>
-                <div class="summary-row"><span>פריטים:</span> <span id="items-count">0</span></div>
-                <div class="summary-row"><span>משלוח:</span> <span class="free-shipping">חינם!</span></div>
-                <div class="total-row"><span>סה"כ:</span> <span id="total-price">0 ₪</span></div>
-                <button class="checkout-btn" id="checkout-btn" onclick="goToCheckout()">המשך לתשלום</button>
+                <div>
+                    <div class="section-header-block">
+                        <h2 class="section-title"><i class="fa-solid fa-receipt"></i> סיכום הזמנה</h2>
+                        <div class="gold-diamond-divider"></div>
+                    </div>
+
+                    <div class="summary-details-box">
+                        <div class="summary-row">
+                            <span>כמות פריטים:</span>
+                            <strong id="items-count" style="color: #fff;">0</strong>
+                        </div>
+                        <div class="summary-row">
+                            <span>משלוח מהיר:</span>
+                            <span class="free-shipping"><i class="fa-solid fa-truck-fast"></i> חינם!</span>
+                        </div>
+                        <div class="vip-cart-perk">
+                            <i class="fa-solid fa-crown"></i>
+                            <span>חברי <strong>מועדון סוליבי VIP</strong> נהנים מ-10% הנחה קבועה ומצבירת נקודות בכל הזמנה!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="total-row">
+                        <span>סה"כ לתשלום:</span>
+                        <span id="total-price">0.00 ₪</span>
+                    </div>
+                    <button class="checkout-btn" id="checkout-btn" onclick="goToCheckout()">
+                        המשך לתשלום מאובטח <i class="fa-solid fa-lock"></i>
+                    </button>
+                    <div class="secure-checkout-seal">
+                        <i class="fa-solid fa-shield-halved"></i> רכישה מוצפנת ומאובטחת | סוליבי ספורט VIP
+                    </div>
+                </div>
             </div>
+
         </div>
     </main>
 
+    <!-- 3. פוטר תחתון קבוע -->
     <div id="ticker-placeholder"></div>
 
     <script>
@@ -169,16 +640,18 @@
             list.innerHTML = '';
 
             if (cart.length === 0) {
-                emptyMsg.style.display = 'block';
+                list.style.display = 'none';
+                emptyMsg.style.display = 'flex';
                 checkoutBtn.disabled = true;
             } else {
+                list.style.display = 'flex';
                 emptyMsg.style.display = 'none';
                 checkoutBtn.disabled = false;
 
                 cart.forEach((item, index) => {
                     totalItems += item.qty;
                     totalPrice += (item.price * item.qty);
-                    let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img}" alt="${item.name}">`;
+                    let imageHTML = item.img && item.img.includes('<svg') ? item.img : `<img src="${item.img}" alt="${item.name}" onerror="this.src='images/soccerwe-mistery-pack.jpg.png'">`;
 
                     list.innerHTML += `
                         <div class="cart-item">

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - אזור אישי</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <title>סוליבי ספורט - אזור אישי VIP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- שואב את העיצוב הגלובלי -->
@@ -12,419 +12,1000 @@
 
     <style>
         /* =========================================
-           שחרור הנעילה ועיצוב אחיד לשאר האתר
+           נעילת מסך מלאה (100vh) ומרכוז סימטרי (SPA)
            ========================================= */
-        body.profile-page-body {
-            background-color: #0b0c10 !important;
-            background-image: radial-gradient(circle at 50% 10%, rgba(200, 210, 230, 0.12) 0%, transparent 60%), url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M10 16.95l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zm32 0l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zM26 26l-5-2.88v-5.77l5-2.88 5 2.88v5.77L26 26zM26 7.7l-5-2.88V-.94l5-2.88 5 2.88v5.77L26 7.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
-            color: #ffffff !important;
+        html, body.profile-page-body {
+            height: 100vh !important;
+            max-height: 100vh !important;
             width: 100vw !important;
-            height: auto !important; 
-            min-height: 100vh !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important; 
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
             display: flex !important;
             flex-direction: column !important;
-            margin: 0 !important;
+            background-color: #0b0c10 !important;
+            color: #ffffff !important;
         }
 
-        /* אזור התוכן המרכזי */
+        #header-placeholder,
+        #ticker-placeholder {
+            flex-shrink: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* אזור הבמה המרכזי בין ההדר לפוטר */
         .profile-main-container {
-            flex: 1 !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
             display: flex !important;
             justify-content: center !important;
-            align-items: flex-start !important;
-            padding: 50px 20px !important;
-            overflow: visible !important; 
+            align-items: center !important;
+            padding: 22px 30px !important;
+            box-sizing: border-box !important;
         }
 
-        /* קוביית הזכוכית המרכזית (כספת) */
+        /* =========================================
+           קוביית ה-VIP המרכזית (כספת אישית)
+           ========================================= */
         .profile-glass-box {
-            display: flex;
+            position: relative;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            column-gap: 56px;
             width: 100% !important;
-            max-width: 1150px !important;
-            height: auto !important; 
-            background: linear-gradient(145deg, #1c1f26 0%, #111318 100%) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important; 
-            border-radius: 20px !important;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6) !important;
+            max-width: 1320px !important;
+            height: 100% !important;
+            max-height: 650px;
+            background: linear-gradient(160deg, rgba(20, 24, 34, 0.96) 0%, rgba(10, 12, 17, 0.98) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.45) !important;
+            border-right: 5px solid #D4AF37 !important;
+            border-radius: 22px !important;
+            padding: 26px 28px;
+            box-sizing: border-box;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.12) !important;
             overflow: hidden;
-            animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        /* פס תאורה מוזהב בראש הקובייה */
+        .profile-glass-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff3b0, #D4AF37, #fff3b0, transparent);
+            box-shadow: 0 2px 20px 2px rgba(212, 175, 55, 0.5);
+            z-index: 5;
+            pointer-events: none;
         }
 
         @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
+            0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- סיידבר הניווט (צד ימין) --- */
+        /* =========================================
+           סיידבר הניווט (צד ימין) + קו הפרדה אנכי עם יהלום
+           ========================================= */
         .dashboard-sidebar {
-            flex: 0 0 280px; 
-            background: transparent;
-            border-left: 1px solid rgba(212, 175, 55, 0.35); 
-            padding: 30px 20px;
+            position: relative;
+            background: radial-gradient(circle at 100% 15%, rgba(212, 175, 55, 0.12) 0%, rgba(9, 11, 16, 0.9) 70%);
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            border-radius: 16px;
+            padding: 20px 16px;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            height: 100%;
+            box-sizing: border-box;
         }
 
+        /* קו זהב אנכי עם יהלום בין הסיידבר לתוכן */
+        .dashboard-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 6%;
+            bottom: 6%;
+            left: -29px;
+            width: 2px;
+            background: linear-gradient(180deg, transparent 0%, rgba(212, 175, 55, 0.75) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+            pointer-events: none;
+        }
+
+        .dashboard-sidebar::after {
+            content: '❖';
+            position: absolute;
+            top: 50%;
+            left: -28px;
+            transform: translate(-50%, -50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 9px 4px;
+            font-size: 12px;
+            line-height: 1;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.45);
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+            pointer-events: none;
+        }
+
+        /* כרטיס משתמש עליון בסיידבר */
         .user-mini-card {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding-bottom: 25px;
-            margin-bottom: 15px;
-            border-bottom: 1px dashed rgba(212, 175, 55, 0.35);
+            gap: 14px;
+            padding-bottom: 16px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
         }
 
         .user-avatar-placeholder {
-            width: 50px; height: 50px;
-            background: #000;
-            border: 1px solid #D4AF37; 
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, #090b10 100%);
+            border: 1.5px solid #D4AF37;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #D4AF37;
             font-size: 20px;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+            flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
         }
 
-        .user-mini-info h3 { font-size: 16px; font-weight: 900; color: #fff; }
-        .user-mini-info p { font-size: 11px; color: #D4AF37; font-weight: 700; margin-top: 2px;}
+        .user-mini-info h3 {
+            font-size: 16px;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0;
+        }
 
+        .user-mini-info p {
+            font-size: 11.5px;
+            color: #D4AF37;
+            font-weight: 800;
+            margin: 3px 0 0 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* כפתורי תפריט בסיידבר */
         .sidebar-menu-btn {
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: none;
-            border: 1px solid transparent;
-            padding: 14px 18px;
-            border-radius: 12px;
-            color: #a0a0a0;
-            font-family: inherit;
-            font-size: 14px;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 11px 15px;
+            border-radius: 11px;
+            color: #94a3b8;
+            font-family: 'Rubik', sans-serif;
+            font-size: 14.5px;
             font-weight: 700;
             cursor: pointer;
             text-align: right;
-            transition: 0.3s ease;
+            transition: all 0.25s ease;
         }
 
-        .sidebar-menu-btn i {
-            width: 20px;
-            font-size: 16px;
-            transition: 0.3s;
+        .sidebar-menu-btn span {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .sidebar-menu-btn i.menu-icon {
+            width: 18px;
+            font-size: 15px;
+            color: rgba(212, 175, 55, 0.65);
+            text-align: center;
+            transition: 0.25s;
         }
 
         .sidebar-menu-btn:hover {
-            color: #fff;
-            background: rgba(255,255,255,0.02);
+            color: #ffffff;
+            border-color: rgba(212, 175, 55, 0.5);
+            background: rgba(212, 175, 55, 0.08);
+            transform: translateX(-3px);
         }
 
         .sidebar-menu-btn.active {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: rgba(212, 175, 55, 0.3);
+            background: radial-gradient(circle at 85% 50%, rgba(212, 175, 55, 0.28) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border-color: #D4AF37;
+            color: #ffffff;
+            font-weight: 900;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .sidebar-menu-btn.active i.menu-icon {
             color: #D4AF37;
         }
 
         .sidebar-menu-btn.logout-btn {
             margin-top: auto;
+            background: rgba(255, 107, 107, 0.05);
+            border-color: rgba(255, 107, 107, 0.25);
             color: #ff6b6b;
         }
-        .sidebar-menu-btn.logout-btn:hover { background: rgba(255,107,107,0.05); color: #ff3b30; }
 
-        /* --- אזור התוכן הדינמי --- */
-        .dashboard-content-pane {
-            flex: 1;
-            padding: 40px;
-            overflow: visible !important;
-            direction: ltr; 
+        .sidebar-menu-btn.logout-btn i.menu-icon {
+            color: #ff6b6b;
         }
-        
+
+        .sidebar-menu-btn.logout-btn:hover {
+            background: rgba(255, 107, 107, 0.14);
+            border-color: #ff5252;
+            color: #ffffff;
+        }
+
+        /* =========================================
+           אזור התוכן הדינמי (שמאל)
+           ========================================= */
+        .dashboard-content-pane {
+            height: 100%;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            direction: ltr; /* שומר את פס הגלילה הפנימי (אם נדרש) בצד ימין */
+            padding-right: 6px;
+        }
+
+        .dashboard-content-pane::-webkit-scrollbar {
+            width: 5px;
+        }
+        .dashboard-content-pane::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 10px;
+        }
+
         .pane-inner {
-            direction: rtl; 
+            direction: rtl;
             display: none;
             flex-direction: column;
-            gap: 25px;
-            animation: paneFadeIn 0.4s ease forwards;
+            gap: 18px;
+            height: 100%;
+            animation: paneFadeIn 0.35s ease forwards;
         }
 
-        .pane-inner.active { display: flex; }
+        .pane-inner.active {
+            display: flex;
+        }
 
         @keyframes paneFadeIn {
-            0% { opacity: 0; transform: translateY(10px); }
+            0% { opacity: 0; transform: translateY(8px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
+        /* כותרת לשונית + קו יהלום אופקי */
+        .pane-header-block {
+            margin-bottom: 2px;
+        }
+
         .pane-title {
-            font-size: 22px;
+            font-size: 23px;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .pane-title i {
+            color: #D4AF37;
+            font-size: 20px;
+        }
+
+        .gold-diamond-divider {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.85) 0%, rgba(212, 175, 55, 0.3) 70%, transparent 100%);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* =========================================
+           כרטיס מועדון דיגיטלי + 5 ההטבות הפעילות
+           ========================================= */
+        .vip-top-row {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .membership-card-mockup {
+            background: radial-gradient(circle at 85% 20%, rgba(212, 175, 55, 0.22) 0%, #090b10 70%);
+            border: 1px solid rgba(212, 175, 55, 0.55);
+            border-radius: 16px;
+            padding: 20px 24px;
+            position: relative;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(212, 175, 55, 0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .membership-card-mockup::after {
+            content: '❖';
+            position: absolute;
+            font-size: 130px;
+            color: #D4AF37;
+            opacity: 0.05;
+            left: -10px;
+            bottom: -35px;
+            pointer-events: none;
+        }
+
+        .card-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-type {
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            color: #0b0c10;
+            background: linear-gradient(135deg, #fff3b0 0%, #D4AF37 100%);
+            padding: 4px 12px;
+            border-radius: 30px;
+            text-transform: uppercase;
+        }
+
+        .card-number {
+            font-size: 19px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 3px;
+            margin: 18px 0;
+            font-family: monospace;
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+        }
+
+        .card-bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            color: #cbd5e1;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            padding-top: 10px;
+        }
+
+        /* קוביית סטטוס הטבות המועדון לצד הכרטיס */
+        .vip-perks-summary {
+            background: rgba(11, 13, 19, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .vip-perks-summary h4 {
+            margin: 0 0 10px 0;
+            font-size: 15px;
             font-weight: 900;
             color: #D4AF37;
-            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
-            padding-bottom: 10px;
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* === עיצובי פרימיום בתוך הטאבים === */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        
-        .input-group { display: flex; flex-direction: column; gap: 8px; }
-        .input-group label { font-size: 13px; color: #a0a0a0; font-weight: 500; }
-        .input-group input {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            color: #fff;
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
-            transition: 0.3s;
+        .perks-mini-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+            color: #e2e8f0;
         }
-        .input-group input:focus { border-color: #D4AF37; outline: none; box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); background: rgba(0,0,0,0.8); }
-        
-        /* כרטיס חבר דיגיטלי */
-        .membership-card-mockup {
-            background: #070709;
-            border: 1px solid rgba(212, 175, 55, 0.4);
+
+        .perks-mini-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .perks-mini-list li i {
+            color: #4ade80;
+            font-size: 13px;
+        }
+
+        /* =========================================
+           טפסים ושדות קלט (כולל תיקון Autofill כהה)
+           ========================================= */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px 18px;
+            background: rgba(11, 13, 19, 0.75);
+            border: 1px solid rgba(212, 175, 55, 0.25);
             border-radius: 16px;
-            padding: 25px;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            overflow: hidden;
-            margin-bottom: 10px;
+            padding: 18px 20px;
         }
-        .membership-card-mockup::after { content: '⚽'; position: absolute; font-size: 150px; opacity: 0.03; left: -20px; bottom: -40px; }
-        .card-type { font-size: 10px; font-weight: 900; letter-spacing: 2px; color: #D4AF37; text-transform: uppercase; background: rgba(212,175,55,0.1); padding: 4px 10px; border-radius: 4px; width: fit-content;}
-        .card-number { font-size: 18px; font-weight: 500; color: #fff; letter-spacing: 3px; margin: 25px 0 15px 0; font-family: monospace; }
 
-        /* כרטיס אשראי בארנק */
-        .wallet-flex { display: flex; gap: 25px; align-items: center; }
-        .balance-box { background: #070709; border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 16px; padding: 30px; text-align: center; flex: 1; }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 12.5px;
+            color: #cbd5e1;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-group label i {
+            color: #D4AF37;
+            font-size: 12px;
+        }
+
+        .input-group input {
+            background: rgba(7, 9, 13, 0.95) !important;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            color: #ffffff !important;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-family: 'Rubik', sans-serif;
+            font-size: 14px;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+        }
+
+        .input-group input:-webkit-autofill,
+        .input-group input:-webkit-autofill:hover,
+        .input-group input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 40px #090b10 inset !important;
+            -webkit-text-fill-color: #ffffff !important;
+            border: 1px solid rgba(212, 175, 55, 0.55) !important;
+        }
+
+        .input-group input:focus {
+            border-color: #D4AF37 !important;
+            outline: none;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #e5c158 0%, #D4AF37 50%, #b59024 100%);
+            color: #0b0c10;
+            border: 1px solid #fff3b0;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-family: 'Rubik', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 41px;
+            box-shadow: 0 6px 18px rgba(212, 175, 55, 0.28);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(212, 175, 55, 0.45);
+            filter: brightness(1.06);
+        }
+
+        /* =========================================
+           הארנק שלי + קופה מהירה
+           ========================================= */
+        .wallet-flex {
+            display: grid;
+            grid-template-columns: 310px 1fr;
+            gap: 22px;
+            align-items: stretch;
+        }
+
         .credit-card-graphic {
-            width: 280px; height: 160px;
-            background: #000;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            border-radius: 12px; padding: 20px;
-            display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            background: radial-gradient(circle at 20% 20%, rgba(212, 175, 55, 0.22) 0%, #07080c 80%);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 16px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.8);
+            min-height: 175px;
         }
 
-        /* ציר זמן מעקב הזמנות */
-        .order-card { background: #070709; border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 14px; padding: 20px; }
-        .order-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px;}
-        .track-bar { display: flex; justify-content: space-between; position: relative; margin: 20px 0 10px 0; }
-        .track-bar::before { content: ''; position: absolute; top: 10px; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.1); z-index: 1; }
-        .track-progress-fill { position: absolute; top: 10px; right: 0; width: 66%; height: 3px; background: #D4AF37; z-index: 2; }
-        .track-step { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; z-index: 3; }
-        .track-dot { width: 22px; height: 22px; background: #111; border: 2px solid #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #555;}
-        .track-step.done .track-dot { background: #D4AF37; border-color: #D4AF37; color: #000; }
-        .track-step.active .track-dot { background: #000; border-color: #D4AF37; color: #D4AF37; box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
-        .track-text { font-size: 11px; font-weight: 700; color: #a0a0a0; }
-        .track-step.done .track-text, .track-step.active .track-text { color: #fff; }
-
-        /* קופונים */
-        .coupons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .coupon-card { background: #070709; border: 1px dashed #D4AF37; border-radius: 12px; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .coupon-code-badge { background: #000; border: 1px solid rgba(212, 175, 55, 0.4); padding: 6px 15px; border-radius: 6px; font-family: monospace; font-weight: 900; color: #D4AF37; font-size: 15px; cursor: pointer; transition: 0.2s;}
-        .coupon-code-badge:hover { background: #0a0a0a; border-color: #D4AF37; }
-
-        /* כפתור שמירה */
-        .save-btn { background: #D4AF37; color: #000; border: none; padding: 12px 30px; border-radius: 8px; font-weight: 900; cursor: pointer; transition: 0.3s; width: fit-content; align-self: flex-start; margin-top: 10px;}
-        .save-btn:hover { background: #FDF3C6; transform: translateY(-2px); }
-
-        /* רספונסיביות */
-        @media (max-width: 1400px) {
-            .dashboard-sidebar { flex: 0 0 220px; padding: 20px 15px; }
-            .dashboard-content-pane { padding: 25px; }
-            .form-grid { grid-template-columns: 1fr; gap: 15px; }
-            .input-group input { max-width: 400px; }
+        .balance-box {
+            background: rgba(11, 13, 19, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        @media (max-width: 900px) {
-            .profile-glass-box { flex-direction: column; height: auto; overflow: visible;}
-            .dashboard-sidebar { flex: none; width: 100%; border-left: none; border-bottom: 1px solid rgba(212, 175, 55, 0.35); }
-            .form-grid, .wallet-flex, .coupons-grid { grid-template-columns: 1fr; flex-direction: column; }
-            .credit-card-graphic { width: 100%; }
+        /* =========================================
+           מעקב הזמנות + היסטוריית רכישות
+           ========================================= */
+        .order-card {
+            background: rgba(11, 13, 19, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            border-radius: 16px;
+            padding: 20px 24px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 800;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+        }
+
+        .track-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 18px 0 8px 0;
+        }
+
+        .track-bar::before {
+            content: '';
+            position: absolute;
+            top: 13px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+
+        .track-progress-fill {
+            position: absolute;
+            top: 13px;
+            right: 0;
+            width: 66%;
+            height: 3px;
+            background: linear-gradient(90deg, #fff3b0, #D4AF37);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+            z-index: 2;
+        }
+
+        .track-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .track-dot {
+            width: 28px;
+            height: 28px;
+            background: #12151e;
+            border: 2px solid #334155;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .track-step.done .track-dot {
+            background: #D4AF37;
+            border-color: #fff3b0;
+            color: #0b0c10;
+        }
+
+        .track-step.active .track-dot {
+            background: #0b0c10;
+            border-color: #D4AF37;
+            color: #D4AF37;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.6);
+        }
+
+        .track-text {
+            font-size: 12px;
+            font-weight: 800;
+            color: #94a3b8;
+        }
+
+        .track-step.done .track-text,
+        .track-step.active .track-text {
+            color: #ffffff;
+        }
+
+        /* =========================================
+           הטבות, קופונים וגישה מוקדמת להשקות (VIP Early Access)
+           ========================================= */
+        .coupons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .coupon-card {
+            background: radial-gradient(circle at 90% 50%, rgba(212, 175, 55, 0.16) 0%, rgba(11, 13, 19, 0.95) 75%);
+            border: 1px dashed rgba(212, 175, 55, 0.65);
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .coupon-code-badge {
+            background: #090b10;
+            border: 1px solid #D4AF37;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-weight: 900;
+            color: #D4AF37;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+        }
+
+        .coupon-code-badge:hover {
+            background: #D4AF37;
+            color: #0b0c10;
+        }
+
+        /* באנר גישה מוקדמת להשקות - מימוש ההבטחה ה-4 */
+        .early-access-box {
+            background: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.22) 0%, rgba(12, 15, 22, 0.96) 70%);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .early-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(212, 175, 55, 0.18);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            color: #D4AF37;
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 3px 11px;
+            border-radius: 30px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 1050px) {
+            html, body.profile-page-body {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: auto !important;
+            }
+            .profile-glass-box {
+                grid-template-columns: 1fr;
+                max-height: none;
+                gap: 24px;
+            }
+            .dashboard-sidebar::before,
+            .dashboard-sidebar::after {
+                display: none;
+            }
+            .vip-top-row,
+            .form-grid,
+            .wallet-flex,
+            .coupons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* =========================================
+           זום פרופורציונלי מלא על קוביית ה-VIP (שומר ב-100% על הסימטריה והיחסים)
+           ========================================= */
+        @media (min-width: 1100px) {
+            .profile-glass-box {
+                zoom: 1.15; /* מגדיל את כל הקובייה והתוכן שבה ב-15% באותה פרופורציה בדיוק */
+                max-width: 1280px !important;
+                max-height: 575px !important;
+            }
+        }
+
+        /* ביטול מוחלט של פס הגלילה במעבר בין לשוניות */
+        .dashboard-content-pane {
+            overflow: hidden !important;
+        }
+        .dashboard-content-pane::-webkit-scrollbar {
+            display: none !important;
         }
     </style>
 </head>
 <body class="profile-page-body">
 
-    <!-- 1. חור עבור ההדר -->
+    <!-- 1. הדר עליון קבוע -->
     <div id="header-placeholder"></div>
 
-    <!-- 2. אזור הבמה המרכזי -->
+    <!-- 2. אזור הבמה המרכזי (SPA) -->
     <main class="profile-main-container">
         
-        <!-- קוביית הזכוכית (כספת) -->
         <div class="profile-glass-box">
             
-            <!-- סיידבר -->
+            <!-- סיידבר ימני -->
             <aside class="dashboard-sidebar">
                 <div class="user-mini-card">
-                    <div class="user-avatar-placeholder"><i class="fa-solid fa-user-astronaut"></i></div>
+                    <div class="user-avatar-placeholder"><i class="fa-solid fa-crown"></i></div>
                     <div class="user-mini-info">
                         <h3 id="sidebar-user-name">טוען משתמש...</h3>
-                        <p id="sidebar-user-rank">חבר מועדון GOLD</p>
+                        <p id="sidebar-user-rank"><i class="fa-solid fa-star"></i> חבר מועדון VIP GOLD</p>
                     </div>
                 </div>
 
-                <button class="sidebar-menu-btn active" onclick="switchProfileTab('profile')">
-                    <i class="fa-solid fa-id-card"></i> פרופיל ודרגה
+                <button class="sidebar-menu-btn active" onclick="switchProfileTab('profile', this)">
+                    <span><i class="fa-solid fa-id-card menu-icon"></i> פרופיל וכרטיס VIP</span>
+                    <i class="fa-solid fa-chevron-left" style="font-size: 11px;"></i>
                 </button>
-                <button class="sidebar-menu-btn" onclick="switchProfileTab('wallet')">
-                    <i class="fa-solid fa-wallet"></i> הארנק שלי
+                <button class="sidebar-menu-btn" onclick="switchProfileTab('rewards', this)">
+                    <span><i class="fa-solid fa-gift menu-icon"></i> הטבות והשקות מוקדמות</span>
+                    <i class="fa-solid fa-chevron-left" style="font-size: 11px;"></i>
                 </button>
-                <button class="sidebar-menu-btn" onclick="switchProfileTab('orders')">
-                    <i class="fa-solid fa-box-open"></i> מעקב הזמנות
+                <button class="sidebar-menu-btn" onclick="switchProfileTab('orders', this)">
+                    <span><i class="fa-solid fa-box-open menu-icon"></i> מעקב והיסטוריית הזמנות</span>
+                    <i class="fa-solid fa-chevron-left" style="font-size: 11px;"></i>
                 </button>
-                <button class="sidebar-menu-btn" onclick="switchProfileTab('rewards')">
-                    <i class="fa-solid fa-ticket-alt"></i> הטבות וקופונים
+                <button class="sidebar-menu-btn" onclick="switchProfileTab('wallet', this)">
+                    <span><i class="fa-solid fa-wallet menu-icon"></i> ארנק וקופה מהירה</span>
+                    <i class="fa-solid fa-chevron-left" style="font-size: 11px;"></i>
                 </button>
-                <button class="sidebar-menu-btn" onclick="switchProfileTab('wishlist')">
-                    <i class="fa-solid fa-heart"></i> מועדפים
+                <button class="sidebar-menu-btn" onclick="switchProfileTab('wishlist', this)">
+                    <span><i class="fa-solid fa-heart menu-icon"></i> המועדפים שלי</span>
+                    <i class="fa-solid fa-chevron-left" style="font-size: 11px;"></i>
                 </button>
-                <button class="sidebar-menu-btn" onclick="switchProfileTab('security')">
-                    <i class="fa-solid fa-shield-halved"></i> אבטחת חשבון
+                <button class="sidebar-menu-btn" onclick="switchProfileTab('security', this)">
+                    <span><i class="fa-solid fa-shield-halved menu-icon"></i> אבטחת חשבון</span>
+                    <i class="fa-solid fa-chevron-left" style="font-size: 11px;"></i>
                 </button>
                 
                 <button class="sidebar-menu-btn logout-btn" onclick="handleLogout()">
-                    <i class="fa-solid fa-right-from-bracket"></i> התנתקות מהאתר
+                    <span><i class="fa-solid fa-right-from-bracket menu-icon"></i> התנתקות מהאתר</span>
                 </button>
             </aside>
 
-            <!-- תוכן דינמי -->
+            <!-- אזור התוכן הדינמי -->
             <section class="dashboard-content-pane">
                 
+                <!-- לשונית 1: פרופיל, כרטיס מועדון ושמירת פרטים לקופה מהירה -->
                 <div id="pane-profile" class="pane-inner active">
-                    <h2 class="pane-title">כרטיס מועדון דיגיטלי</h2>
-                    <div class="membership-card-mockup">
-                        <div class="card-type">Gold Member</div>
-                        <div class="card-number">SOLIBI - 8742 - 9910</div>
-                        <div style="display: flex; justify-content: space-between; font-size: 12px; opacity: 0.8; margin-top: 20px;">
-                            <div>מחזיק הכרטיס: <span id="card-holder-name" style="font-weight: 700;">טוען...</span></div>
-                            <div>בתוקף עד: <span style="font-weight: 700; color: #D4AF37;">קבוע</span></div>
+                    <div class="pane-header-block">
+                        <h2 class="pane-title"><i class="fa-solid fa-crown"></i> כרטיס מועדון דיגיטלי ופרטים לקופה מהירה</h2>
+                        <div class="gold-diamond-divider"></div>
+                    </div>
+
+                    <div class="vip-top-row">
+                        <div class="membership-card-mockup">
+                            <div class="card-top-bar">
+                                <span class="card-type">SOLIBI VIP GOLD</span>
+                                <span style="font-size: 12px; color: #D4AF37; font-weight: 800;"><i class="fa-solid fa-percent"></i> 10% הנחה קבועה פעילה</span>
+                            </div>
+                            <div class="card-number">SOLIBI - 8742 - 9910</div>
+                            <div class="card-bottom-bar">
+                                <div>בעל הכרטיס: <strong id="card-holder-name" style="color: #fff;">טוען...</strong></div>
+                                <div>תוקף חברות: <strong style="color: #D4AF37;">קבוע (לכל החיים)</strong></div>
+                            </div>
+                        </div>
+
+                        <div class="vip-perks-summary">
+                            <h4><i class="fa-solid fa-circle-check"></i> הטבות המועדון הפעילות בחשבונך:</h4>
+                            <ul class="perks-mini-list">
+                                <li><i class="fa-solid fa-check"></i> 10% הנחה אוטומטית על כל רכישה באתר</li>
+                                <li><i class="fa-solid fa-check"></i> 5% מתנת הצטרפות נוספת לקנייה הראשונה</li>
+                                <li><i class="fa-solid fa-check"></i> קופה מהירה עם שמירת פרטי משלוח</li>
+                                <li><i class="fa-solid fa-check"></i> גישה מוקדמת להשקות ומארזי VIP מוגבלים</li>
+                            </ul>
                         </div>
                     </div>
 
-                    <h2 class="pane-title" style="margin-top: 15px;">עדכון פרטים אישיים</h2>
-                    <form class="form-grid" autocomplete="off" onsubmit="event.preventDefault();">
+                    <form class="form-grid" autocomplete="off" onsubmit="event.preventDefault(); saveUserDetails();">
                         <div class="input-group">
-                            <label>שם מלא / כינוי</label>
+                            <label><i class="fa-solid fa-user"></i> שם מלא / כינוי</label>
                             <input type="text" id="profile-name" value="">
                         </div>
                         <div class="input-group">
-                            <label>כתובת אימייל (לא ניתן לשינוי)</label>
-                            <input type="email" id="profile-email" value="" disabled style="opacity: 0.5; cursor: not-allowed;">
+                            <label><i class="fa-solid fa-envelope"></i> אימייל החשבון (קבוע)</label>
+                            <input type="email" id="profile-email" value="" disabled style="opacity: 0.55; cursor: not-allowed;">
                         </div>
                         <div class="input-group">
-                            <label>מספר טלפון</label>
-                            <input type="tel" id="profile-phone" placeholder="הכנס מספר טלפון">
+                            <label><i class="fa-solid fa-phone"></i> טלפון לתיאום משלוח</label>
+                            <input type="tel" id="profile-phone" placeholder="050-0000000">
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fa-solid fa-city"></i> עיר מגורים (לקופה מהירה)</label>
+                            <input type="text" id="profile-city" placeholder="לדוגמה: תל אביב">
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fa-solid fa-location-dot"></i> רחוב, מספר בית ודירה</label>
+                            <input type="text" id="profile-address" placeholder="לדוגמה: הרצל 15, דירה 4">
                         </div>
                         <div class="input-group" style="justify-content: flex-end;">
-                            <button class="save-btn" type="button" onclick="alert('הפרטים נשמרו בהצלחה!')">שמור שינויים</button>
+                            <button class="save-btn" type="submit">
+                                <i class="fa-solid fa-floppy-disk"></i> שמור פרטים לקופה מהירה
+                            </button>
                         </div>
                     </form>
                 </div>
 
-                <div id="pane-wallet" class="pane-inner">
-                    <h2 class="pane-title">הארנק והאשראי שלי</h2>
-                    <div class="wallet-flex">
-                        <div class="credit-card-graphic">
-                            <div style="display: flex; justify-content: space-between; align-items: start;">
-                                <span style="font-size: 10px; font-weight: 900; color: #a0a0a0; letter-spacing: 1px;">PREMIUM CARD</span>
-                                <i class="fa-brands fa-cc-visa" style="font-size: 26px; opacity: 0.8; color: #a0a0a0;"></i>
+                <!-- לשונית 2: הטבות, קופונים וגישה מוקדמת להשקות -->
+                <div id="pane-rewards" class="pane-inner">
+                    <div class="pane-header-block">
+                        <h2 class="pane-title"><i class="fa-solid fa-gift"></i> הטבות מועדון וגישה מוקדמת להשקות</h2>
+                        <div class="gold-diamond-divider"></div>
+                    </div>
+
+                    <div class="coupons-grid">
+                        <div class="coupon-card">
+                            <div>
+                                <h4 style="font-size: 16px; font-weight: 900; color: #fff; margin: 0;">10% הנחת חבר מועדון קבועה</h4>
+                                <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0 0;">תקף על כל מוצרי האתר ללא הגבלת שימושים</p>
                             </div>
-                            <div style="font-family: monospace; font-size: 16px; letter-spacing: 3px; color: #fff; margin: 15px 0;">
-                                **** **** **** 4590
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 11px; opacity: 0.7;">
-                                <div>בעל הכרטיס<br><span id="cc-name" style="color: #fff; font-weight: 700;">ישראל ישראלי</span></div>
-                                <div style="text-align: left;">תוקף<br><span style="color: #fff; font-weight: 700;">12/28</span></div>
-                            </div>
+                            <div class="coupon-code-badge" onclick="navigator.clipboard.writeText('GOLD10'); alert('הקוד GOLD10 הועתק ללוח!')">GOLD10</div>
                         </div>
-                        <div class="balance-box">
-                            <div style="font-size: 13px; color: #a0a0a0; margin-bottom: 5px;">יתרת ארנק סוליבי</div>
-                            <div style="font-size: 32px; font-weight: 900; color: #D4AF37;">0.00 ₪</div>
-                            <div style="font-size: 10px; color: #a0a0a0; margin-top: 10px;">היתרה מתעדכנת אוטומטית מהחזרים או זיכויים</div>
+                        <div class="coupon-card">
+                            <div>
+                                <h4 style="font-size: 16px; font-weight: 900; color: #fff; margin: 0;">5% מתנת הצטרפות נוספת!</h4>
+                                <p style="font-size: 12px; color: #94a3b8; margin: 4px 0 0 0;">מתנה מיוחדת למימוש בקנייה הראשונה שלך</p>
+                            </div>
+                            <div class="coupon-code-badge" onclick="navigator.clipboard.writeText('WELCOME5'); alert('הקוד WELCOME5 הועתק ללוח!')">WELCOME5</div>
                         </div>
+                    </div>
+
+                    <!-- מימוש ההבטחה של גישה מוקדמת להשקות לפני כולם -->
+                    <div class="early-access-box">
+                        <div>
+                            <span class="early-badge"><i class="fa-solid fa-bolt"></i> גישה מוקדמת לחברי מועדון בלבד</span>
+                            <h3 style="margin: 0 0 6px 0; font-size: 19px; font-weight: 900; color: #ffffff;">מיסטרי בוקס מהדורת ליגת האלופות 2026 (מוגבל ל-50 יח׳)</h3>
+                            <p style="margin: 0; font-size: 13px; color: #94a3b8;">ההשקה לקהל הרחב תיפתח בעוד 48 שעות. כחבר מועדון סוליבי יש לך אפשרות לשריין מארז כבר עכשיו!</p>
+                        </div>
+                        <button class="save-btn" onclick="window.location.href='catalog.html'">
+                            לרכישה מוקדמת <i class="fa-solid fa-arrow-left"></i>
+                        </button>
                     </div>
                 </div>
 
+                <!-- לשונית 3: מעקב והיסטוריית הזמנות -->
                 <div id="pane-orders" class="pane-inner">
-                    <h2 class="pane-title">ההזמנות שלי</h2>
+                    <div class="pane-header-block">
+                        <h2 class="pane-title"><i class="fa-solid fa-truck-fast"></i> מעקב משלוחים והיסטוריית הזמנות</h2>
+                        <div class="gold-diamond-divider"></div>
+                    </div>
+
                     <div class="order-card">
                         <div class="order-header">
-                            <span>מספר הזמנה: SLB-94821</span>
-                            <span style="color: #D4AF37;">משלוח אקספרס עד הבית</span>
-                            <span>סה"כ: 178 ₪</span>
+                            <span><i class="fa-solid fa-hashtag" style="color:#D4AF37;"></i> הזמנה פעילה: SLB-94821</span>
+                            <span style="color: #D4AF37;"><i class="fa-solid fa-bolt"></i> משלוח אקספרס עד הבית</span>
+                            <span>סה"כ שולם: <strong style="color:#D4AF37;">178.00 ₪</strong> (כולל 10% הנחת מועדון)</span>
                         </div>
                         <div class="track-bar">
                             <div class="track-progress-fill"></div>
                             <div class="track-step done">
                                 <div class="track-dot"><i class="fa-solid fa-check"></i></div>
-                                <span class="track-text">התקבלה</span>
+                                <span class="track-text">התקבלה במערכת</span>
                             </div>
                             <div class="track-step done">
                                 <div class="track-dot"><i class="fa-solid fa-check"></i></div>
-                                <span class="track-text">נארזה</span>
+                                <span class="track-text">נארזה בבקרת איכות</span>
                             </div>
                             <div class="track-step active">
                                 <div class="track-dot"><i class="fa-solid fa-truck-fast"></i></div>
-                                <span class="track-text">בדרך אליך</span>
+                                <span class="track-text">עם השליח בדרך אליך</span>
                             </div>
                             <div class="track-step">
                                 <div class="track-dot"><i class="fa-solid fa-house-chimney"></i></div>
-                                <span class="track-text">הגיעה!</span>
+                                <span class="track-text">נמסרה ללקוח!</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="order-card" style="padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; opacity: 0.85;">
+                        <div style="font-size: 13.5px; font-weight: 700;">
+                            <i class="fa-solid fa-circle-check" style="color: #4ade80; margin-left: 6px;"></i>
+                            הזמנה קודמת: <strong>SLB-88310</strong> | מיסטרי בוקס VIP מוזהב
+                        </div>
+                        <div style="font-size: 13px; color: #94a3b8;">סטטוס: <strong style="color: #4ade80;">נמסרה בהצלחה</strong> | 179.10 ₪</div>
+                    </div>
+                </div>
+
+                <!-- לשונית 4: הארנק שלי ואמצעי תשלום לקופה מהירה -->
+                <div id="pane-wallet" class="pane-inner">
+                    <div class="pane-header-block">
+                        <h2 class="pane-title"><i class="fa-solid fa-wallet"></i> הארנק שלי ואמצעי תשלום שמורים</h2>
+                        <div class="gold-diamond-divider"></div>
+                    </div>
+
+                    <div class="wallet-flex">
+                        <div class="credit-card-graphic">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <span style="font-size: 10.5px; font-weight: 900; color: #D4AF37; letter-spacing: 1px;">SOLIBI FAST CHECKOUT</span>
+                                <i class="fa-brands fa-cc-visa" style="font-size: 28px; color: #D4AF37;"></i>
+                            </div>
+                            <div style="font-family: monospace; font-size: 18px; letter-spacing: 3px; color: #fff; margin: 16px 0;">
+                                **** **** **** 4590
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #cbd5e1;">
+                                <div>בעל הכרטיס<br><span id="cc-name" style="color: #fff; font-weight: 800;">ישראל ישראלי</span></div>
+                                <div style="text-align: left;">תוקף<br><span style="color: #D4AF37; font-weight: 800;">12/28</span></div>
+                            </div>
+                        </div>
+
+                        <div class="balance-box">
+                            <div style="font-size: 14px; color: #cbd5e1; font-weight: 700; margin-bottom: 6px;">יתרת קרדיט בארנק סוליבי</div>
+                            <div style="font-size: 38px; font-weight: 900; color: #D4AF37; text-shadow: 0 0 18px rgba(212,175,55,0.3);">0.00 ₪</div>
+                            <div style="font-size: 12px; color: #94a3b8; margin-top: 8px;">היתרה מתעדכנת אוטומטית מזיכויים, החזרים והטבות מועדון</div>
                         </div>
                     </div>
                 </div>
 
-                <div id="pane-rewards" class="pane-inner">
-                    <h2 class="pane-title">ההטבות הבלעדיות שלך</h2>
-                    <div class="coupons-grid">
-                        <div class="coupon-card">
-                            <div>
-                                <h4 style="font-size: 16px; font-weight: 900; color: #fff;">10% הנחת חבר מועדון</h4>
-                                <p style="font-size: 11px; color: #a0a0a0; margin-top: 2px;">הנחה אוטומטית קבועה בקופה</p>
-                            </div>
-                            <div class="coupon-code-badge" onclick="navigator.clipboard.writeText('GOLD10'); alert('הקוד הועתק!')">GOLD10</div>
-                        </div>
-                        <div class="coupon-card">
-                            <div>
-                                <h4 style="font-size: 16px; font-weight: 900; color: #fff;">5% מתנת הצטרפות</h4>
-                                <p style="font-size: 11px; color: #a0a0a0; margin-top: 2px;">תקף לקנייה הראשונה שלך בחנות</p>
-                            </div>
-                            <div class="coupon-code-badge" onclick="navigator.clipboard.writeText('WELCOME5'); alert('הקוד הועתק!')">WELCOME5</div>
-                        </div>
-                    </div>
-                </div>
-
+                <!-- לשונית 5: מועדפים -->
                 <div id="pane-wishlist" class="pane-inner">
-                    <h2 class="pane-title">המוצרים ששמרת</h2>
-                    <p style="text-align: center; color: #a0a0a0; padding: 40px; font-size: 14px;">
-                        <i class="fa-regular fa-heart" style="font-size: 32px; display: block; margin-bottom: 10px; color: #333;"></i>
-                        רשימת המועדפים שלך ריקה כרגע. לחץ על הלב בחנות כדי לשמור מוצרים!
-                    </p>
+                    <div class="pane-header-block">
+                        <h2 class="pane-title"><i class="fa-solid fa-heart"></i> המוצרים המועדפים ששמרת</h2>
+                        <div class="gold-diamond-divider"></div>
+                    </div>
+
+                    <div class="order-card" style="text-align: center; padding: 45px 20px;">
+                        <i class="fa-regular fa-heart" style="font-size: 40px; display: block; margin-bottom: 14px; color: #D4AF37;"></i>
+                        <h3 style="margin: 0 0 8px 0; font-size: 18px;">רשימת המועדפים שלך מחכה למוצרים!</h3>
+                        <p style="color: #94a3b8; font-size: 14px; margin: 0 0 20px 0;">שמור כאן מארזי מיסטרי וקלפים נדירים כדי לעקוב אחריהם ולרכוש בקליק.</p>
+                        <button class="save-btn" onclick="window.location.href='catalog.html'">
+                            מעבר לקטלוג המוצרים <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                    </div>
                 </div>
 
+                <!-- לשונית 6: אבטחת חשבון -->
                 <div id="pane-security" class="pane-inner">
-                    <h2 class="pane-title">שינוי סיסמה מאובטח</h2>
-                    <form class="form-grid" autocomplete="off" onsubmit="event.preventDefault();">
+                    <div class="pane-header-block">
+                        <h2 class="pane-title"><i class="fa-solid fa-shield-halved"></i> אבטחת חשבון ושינוי סיסמה</h2>
+                        <div class="gold-diamond-divider"></div>
+                    </div>
+
+                    <form class="form-grid" autocomplete="off" onsubmit="event.preventDefault(); updateAccountPassword();">
                         <div class="input-group">
-                            <label>סיסמה נוכחית</label>
-                            <input type="password" placeholder="••••••••">
+                            <label><i class="fa-solid fa-key"></i> סיסמה חדשה</label>
+                            <input type="password" id="new-password" placeholder="לפחות 6 תווים" required>
                         </div>
-                        <div class="input-group"></div>
                         <div class="input-group">
-                            <label>סיסמה חדשה</label>
-                            <input type="password" placeholder="לפחות 6 תווים">
-                        </div>
-                        <div class="input-group">
-                            <label>אימות סיסמה חדשה</label>
-                            <input type="password" placeholder="הכנס שוב את הסיסמה">
+                            <label><i class="fa-solid fa-check-double"></i> אימות סיסמה חדשה</label>
+                            <input type="password" id="confirm-password" placeholder="הזן שוב את הסיסמה החדשה" required>
                         </div>
                         <div class="input-group" style="justify-content: flex-end;">
-                            <button class="save-btn" type="button" onclick="alert('הסיסמה עודכנה בהצלחה!')">עדכן סיסמה</button>
+                            <button class="save-btn" type="submit">
+                                <i class="fa-solid fa-lock"></i> עדכן סיסמה עכשיו
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -433,23 +1014,20 @@
         </div>
     </main>
 
-    <!-- 3. חור עבור הפוטר -->
+    <!-- 3. פוטר תחתון קבוע -->
     <div id="ticker-placeholder"></div>
 
     <script>
-        // שואב את ההדר והפוטר
+        // שאיבת ההדר והפוטר
         fetch('header.html').then(res => res.text()).then(data => document.getElementById('header-placeholder').innerHTML = data);
         fetch('ticker.html').then(res => res.text()).then(data => document.getElementById('ticker-placeholder').innerHTML = data);
 
-        // פונקציית ה-SPA למעבר חלק בין טאבים
-        function switchProfileTab(tabId) {
-            const buttons = document.querySelectorAll('.sidebar-menu-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
+        // מעבר חלק בין לשוניות ה-SPA
+        function switchProfileTab(tabId, clickedBtn) {
+            document.querySelectorAll('.sidebar-menu-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.pane-inner').forEach(pane => pane.classList.remove('active'));
 
-            const panes = document.querySelectorAll('.pane-inner');
-            panes.forEach(pane => pane.classList.remove('active'));
-
-            event.currentTarget.classList.add('active');
+            if (clickedBtn) clickedBtn.classList.add('active');
             document.getElementById('pane-' + tabId).classList.add('active');
         }
     </script>
@@ -458,7 +1036,7 @@
     <script type="module">
         import { supabase } from './supabaseClient.js';
 
-        // לוגיקת טעינת משתמש מקורית מ-Supabase
+        // טעינת פרטי המשתמש מ-Supabase
         async function loadUserProfile() {
             const { data: { user }, error } = await supabase.auth.getUser();
             if (user) {
@@ -470,23 +1048,73 @@
                 
                 document.getElementById('profile-name').value = displayName;
                 document.getElementById('profile-email').value = user.email;
-                if(user.user_metadata?.phone) {
-                    document.getElementById('profile-phone').value = user.user_metadata.phone;
-                }
+                if (user.user_metadata?.phone) document.getElementById('profile-phone').value = user.user_metadata.phone;
+                if (user.user_metadata?.city) document.getElementById('profile-city').value = user.user_metadata.city;
+                if (user.user_metadata?.address) document.getElementById('profile-address').value = user.user_metadata.address;
             } else {
                 window.location.href = 'login.html';
             }
         }
 
+        // שמירת פרטים אישיים וכתובת לקופה מהירה ב-Supabase
+        window.saveUserDetails = async function() {
+            const newName = document.getElementById('profile-name').value.trim();
+            const newPhone = document.getElementById('profile-phone').value.trim();
+            const newCity = document.getElementById('profile-city').value.trim();
+            const newAddress = document.getElementById('profile-address').value.trim();
+
+            const { error } = await supabase.auth.updateUser({
+                data: {
+                    display_name: newName,
+                    phone: newPhone,
+                    city: newCity,
+                    address: newAddress
+                }
+            });
+
+            if (error) {
+                alert("שגיאה בשמירת הפרטים: " + error.message);
+            } else {
+                document.getElementById('sidebar-user-name').innerText = newName;
+                document.getElementById('card-holder-name').innerText = newName;
+                document.getElementById('cc-name').innerText = newName;
+                alert("הפרטים והכתובת לקופה מהירה נשמרו בהצלחה!");
+            }
+        };
+
+        // עדכון סיסמה מאובטח ב-Supabase
+        window.updateAccountPassword = async function() {
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
+
+            if (newPass.length < 6) {
+                alert("הסיסמה חייבת להכיל לפחות 6 תווים.");
+                return;
+            }
+            if (newPass !== confirmPass) {
+                alert("הסיסמאות אינן תואמות, בדוק שוב.");
+                return;
+            }
+
+            const { error } = await supabase.auth.updateUser({ password: newPass });
+            if (error) {
+                alert("שגיאה בעדכון הסיסמה: " + error.message);
+            } else {
+                alert("הסיסמה שלך עודכנה בהצלחה!");
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-password').value = '';
+            }
+        };
+
         window.handleLogout = async function() {
-            if(confirm("האם אתה בטוח שברצונך להתנתק מהחשבון?")) {
+            if (confirm("האם אתה בטוח שברצונך להתנתק מהחשבון?")) {
                 const { error } = await supabase.auth.signOut();
-                if(!error) {
+                if (!error) {
                     alert("להתראות! התנתקת בהצלחה מהמערכת.");
                     window.location.href = 'index.html';
                 }
             }
-        }
+        };
 
         window.onload = loadUserProfile;
     </script>

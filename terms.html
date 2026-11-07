@@ -3,157 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - תקנון ומדיניות</title>
+    <title>סוליבי ספורט - תקנון ומדיניות VIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     
     <!-- שואב את העיצוב הגלובלי -->
     <link rel="stylesheet" href="solibi-app.css">
     
     <style>
         /* =========================================
-           שחרור הנעילה ועיצוב דף התקנון
+           נעילת מסך מלאה (100vh) ומרכוז סימטרי מושלם (SPA)
            ========================================= */
-        body.terms-page-body {
-            color: #ffffff !important;
+        html, body.terms-page-body {
+            height: 100vh !important;
+            max-height: 100vh !important;
             width: 100vw !important;
-            height: auto !important; 
-            min-height: 100vh !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important; 
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
             display: flex !important;
             flex-direction: column !important;
-            margin: 0 !important;
+            background-color: #0b0c10 !important;
+            color: #ffffff !important;
         }
 
+        #header-placeholder,
+        #ticker-placeholder {
+            flex-shrink: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* אזור הבמה המרכזי - ממורכז בדיוק באמצע בין ההדר לפוטר */
         .terms-main-container {
-            flex: 1 !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
             display: flex !important;
             justify-content: center !important;
-            align-items: flex-start !important;
-            padding: 50px 20px !important;
-            overflow: visible !important; 
+            align-items: center !important;
+            padding: 18px 30px !important;
+            box-sizing: border-box !important;
         }
 
+        /* =========================================
+           קוביית ה-VIP של התקנון והמדיניות
+           ========================================= */
         .terms-glass-box {
+            position: relative;
             width: 100% !important;
-            max-width: 950px !important;
+            max-width: 1180px !important;
             height: auto !important;
+            max-height: 575px;
+            background: linear-gradient(160deg, rgba(20, 24, 34, 0.96) 0%, rgba(10, 12, 17, 0.98) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.45) !important;
+            border-right: 5px solid #D4AF37 !important;
+            border-radius: 22px !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.12) !important;
             display: flex !important;
             flex-direction: column !important;
-            border-radius: 20px !important;
+            overflow: hidden !important;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        /* פס תאורה מוזהב בראש הקובייה */
+        .terms-glass-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff3b0, #D4AF37, #fff3b0, transparent);
+            box-shadow: 0 2px 20px 2px rgba(212, 175, 55, 0.5);
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .terms-scroll-area {
-            padding: 40px !important;
-            overflow: visible !important; 
-            direction: rtl !important; 
+            padding: 22px 34px !important;
+            overflow: hidden !important;
+            direction: rtl !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            box-sizing: border-box;
         }
 
         .terms-inner-content {
             display: flex;
             flex-direction: column;
-            gap: 35px;
+            gap: 14px;
         }
 
+        /* כותרת הדף + קו יהלום אופקי */
         .page-header {
             text-align: center;
-            margin-bottom: 20px;
+        }
+
+        .page-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 4px;
         }
 
         .page-title {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 900;
+            color: #ffffff;
+            margin: 0;
+            text-shadow: 0 6px 18px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.25);
+        }
+
+        .page-title span {
             color: #D4AF37;
-            margin-bottom: 10px;
         }
 
         .page-subtitle {
-            font-size: 15px;
-            color: #a0a0a0;
+            font-size: 13px;
+            color: #94a3b8;
+            margin: 0 0 10px 0;
         }
 
-        /* עיצוב הקוביות - תוקן כך שהטקסט לא יברח */
-        .terms-section {
-            background: #070709;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+        .gold-diamond-divider {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.85) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+            margin: 0;
+        }
+
+        .gold-diamond-divider::after {
+            content: '❖';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 2px 14px;
+            font-size: 12px;
+            line-height: 1;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+        }
+
+        /* =========================================
+           באנר עליון מודגש: "אצלנו הלקוח תמיד צודק"
+           ========================================= */
+        .terms-section.highlight-section {
+            background: radial-gradient(circle at 85% 50%, rgba(212, 175, 55, 0.2) 0%, rgba(11, 13, 19, 0.96) 75%);
+            border: 1px solid rgba(212, 175, 55, 0.6);
             border-radius: 15px;
-            padding: 25px 35px; /* ריווח מהצדדים */
-            transition: 0.3s;
-            box-sizing: border-box; /* שומר על התוכן בפנים */
+            padding: 13px 22px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), inset 0 0 18px rgba(212, 175, 55, 0.08);
+        }
+
+        /* =========================================
+           רשת סימטרית 2x2 עבור 4 סעיפי המדיניות + קו יהלום אנכי באמצע
+           ========================================= */
+        .terms-grid-2x2 {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px 42px;
+        }
+
+        /* קו זהב אנכי עם יהלום בין שתי העמודות */
+        .terms-grid-2x2::before {
+            content: '';
+            position: absolute;
+            top: 4%;
+            bottom: 4%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            background: linear-gradient(180deg, transparent 0%, rgba(212, 175, 55, 0.75) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+            pointer-events: none;
+        }
+
+        .terms-grid-2x2::after {
+            content: '❖';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 8px 4px;
+            font-size: 11.5px;
+            line-height: 1;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.45);
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+            pointer-events: none;
+        }
+
+        .terms-section {
+            background: rgba(11, 13, 19, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            border-radius: 14px;
+            padding: 13px 18px;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
             width: 100%;
         }
 
         .terms-section:hover {
             border-color: #D4AF37;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
-        }
-
-        .terms-section.highlight-section {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(0,0,0,0.6) 100%);
-            border: 1px solid #D4AF37;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.8), 0 0 16px rgba(212, 175, 55, 0.15);
+            transform: translateY(-2px);
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 15.5px;
             font-weight: 900;
-            color: #f5f5f5;
+            color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            border-bottom: 1px dashed rgba(209, 213, 219, 0.2);
-            padding-bottom: 10px;
+            gap: 9px;
+            margin: 0 0 8px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.22);
+            padding-bottom: 6px;
         }
 
-        .section-title i { color: #D4AF37; font-size: 22px; }
+        .section-title i {
+            color: #D4AF37;
+            font-size: 16px;
+        }
         
         .section-text { 
-            font-size: 15px; 
-            line-height: 1.8; 
-            color: #a0a0a0; 
+            font-size: 12.5px; 
+            line-height: 1.55; 
+            color: #cbd5e1; 
             font-weight: 400; 
-            text-align: right; /* יישור טבעי לימין */
+            text-align: right;
             box-sizing: border-box;
         }
         
-        .section-text strong { color: #f5f5f5; font-weight: 700; }
-        
-        .section-text ul { 
-            margin-top: 10px; 
-            padding-right: 25px; /* ריווח נכון לרשימה */
-            margin-right: 0;
-            margin-left: 0;
+        .section-text strong {
+            color: #ffffff;
+            font-weight: 800;
         }
         
-        .section-text li { margin-bottom: 8px; }
+        .section-text ul { 
+            margin: 5px 0 0 0; 
+            padding-right: 18px;
+        }
+        
+        .section-text li {
+            margin-bottom: 4px;
+        }
 
-        @media (max-width: 768px) {
-            .terms-scroll-area { padding: 20px !important; }
-            .terms-section { padding: 20px; }
-            .page-title { font-size: 26px; }
+        .section-text li::marker {
+            color: #D4AF37;
+        }
+
+        /* =========================================
+           זום פרופורציונלי מלא (זהה לשאר דפי האתר)
+           ========================================= */
+        @media (min-width: 1100px) {
+            .terms-glass-box {
+                zoom: 1.15; /* מגדיל את כל הקובייה והתוכן שבה ב-15% באותה פרופורציה בדיוק */
+                max-width: 1180px !important;
+                max-height: 565px !important;
+            }
+        }
+
+        @media (max-width: 960px) {
+            html, body.terms-page-body {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: auto !important;
+            }
+            .terms-glass-box {
+                max-height: none;
+            }
+            .terms-grid-2x2 {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .terms-grid-2x2::before,
+            .terms-grid-2x2::after {
+                display: none;
+            }
+            .terms-scroll-area {
+                padding: 20px !important;
+            }
+        }
+
+        /* =========================================
+           ביטול נעילת הגובה והגדלת קוביית התקנון כך שהכל ייכנס בשלמותו ללא חיתוך וללא גלילה
+           ========================================= */
+        .terms-glass-box {
+            max-height: none !important; /* מבטל את הגבלת ה-565px שחתכה את הקוביות התחתונות */
+            max-width: 1260px !important; /* הרחבה קלה שמקצרת שורות טקסט וחוסכת גובה */
+        }
+
+        @media (min-width: 1100px) {
+            .terms-glass-box {
+                zoom: 1.12 !important; /* זום מאוזן שמגדיל את הקובייה ובוודאות משאיר מרווח מההדר והפוטר */
+                max-height: none !important;
+                max-width: 1260px !important;
+            }
         }
     </style>
 </head>
 <body class="terms-page-body">
 
-    <!-- חור עבור ההדר -->
+    <!-- 1. הדר עליון קבוע -->
     <div id="header-placeholder"></div>
 
-    <!-- אזור הבמה המרכזי -->
+    <!-- 2. אזור הבמה המרכזי (ממורכז בדיוק באמצע המסך) -->
     <main class="terms-main-container">
         
-        <!-- הורדה מכאן מחלקת ה-contact השגויה -->
         <div class="terms-glass-box">
-            
             <div class="terms-scroll-area">
                 <div class="terms-inner-content">
                     
                     <div class="page-header">
-                        <h1 class="page-title">תקנון ומדיניות האתר</h1>
-                        <p class="page-subtitle">ברוכים הבאים לסוליבי ספורט. אנא קראו את התקנון לפני ביצוע רכישה.</p>
+                        <div class="page-title-row">
+                            <h1 class="page-title">תקנון ומדיניות <span>האתר</span></h1>
+                        </div>
+                        <p class="page-subtitle">ברוכים הבאים לסוליבי ספורט VIP. אנא קראו את התקנון לפני ביצוע רכישה.</p>
+                        <div class="gold-diamond-divider"></div>
                     </div>
 
+                    <!-- סעיף דגל עליון ברוחב מלא -->
                     <div class="terms-section highlight-section">
                         <h2 class="section-title"><i class="fa-solid fa-crown"></i> אצלנו, הלקוח תמיד צודק</h2>
                         <div class="section-text">
@@ -161,51 +349,53 @@
                         </div>
                     </div>
 
-                    <div class="terms-section">
-                        <h2 class="section-title"><i class="fa-solid fa-box-open"></i> מארזי הפתעה (Mystery Boxes) וקלפים</h2>
-                        <div class="section-text">
-                            עיקר ההתמחות שלנו היא באספקת מארזי הפתעה וקלפי אספנות נדירים. חשוב להדגיש:
-                            <ul>
-                                <li>תכולת מארזי ה-Mystery Box היא <strong>אקראית לחלוטין</strong>. לא ניתן להתחייב מראש לשחקן, קבוצה או שווי קלף ספציפי בתוך המארז.</li>
-                                <li>אנו מתחייבים כי כל המארזים נארזים בהקפדה וכוללים מוצרים מקוריים ואותנטיים בלבד.</li>
-                                <li><strong>לא יינתן החזר כספי או החלפה</strong> על מארז או מעטפת קלפים שנפתחו, שכן ערך המוצר טמון באלמנט ההפתעה והפתיחה.</li>
-                            </ul>
+                    <!-- 4 סעיפי המדיניות בסימטריה מושלמת של 2x2 -->
+                    <div class="terms-grid-2x2">
+                        <div class="terms-section">
+                            <h2 class="section-title"><i class="fa-solid fa-box-open"></i> מארזי הפתעה (Mystery Boxes) וקלפים</h2>
+                            <div class="section-text">
+                                עיקר ההתמחות שלנו היא באספקת מארזי הפתעה וקלפי אספנות נדירים:
+                                <ul>
+                                    <li>תכולת מארזי ה-Mystery Box היא <strong>אקראית לחלוטין</strong>. לא ניתן להתחייב מראש לשחקן, קבוצה או שווי קלף ספציפי בתוך המארז.</li>
+                                    <li>אנו מתחייבים כי כל המארזים נארזים בהקפדה וכוללים מוצרים מקוריים ואותנטיים בלבד.</li>
+                                    <li><strong>לא יינתן החזר כספי או החלפה</strong> על מארז או מעטפת קלפים שנפתחו, שכן ערך המוצר טמון באלמנט ההפתעה והפתיחה.</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="terms-section">
-                        <h2 class="section-title"><i class="fa-solid fa-truck-fast"></i> משלוחים וזמני אספקה</h2>
-                        <div class="section-text">
-                            אנו עושים את מירב המאמצים לארוז ולשלוח את ההזמנות במהירות האפשרית.
-                            <ul>
-                                <li><strong>שליח עד הבית (Express):</strong> זמן האספקה הוא עד 3 ימי עסקים מרגע אישור ההזמנה (לא כולל יום ההזמנה, סופ"ש וחגים).</li>
-                                <li><strong>נקודת איסוף (Boxit):</strong> זמן האספקה הוא 3-5 ימי עסקים אל נקודת האיסוף הקרובה לביתכם.</li>
-                                <li>משלוח חינם יינתן אוטומטית בקופה ברכישה מעל הסכום המפורט באתר (בכפוף למבצעים המשתנים).</li>
-                            </ul>
+                        <div class="terms-section">
+                            <h2 class="section-title"><i class="fa-solid fa-truck-fast"></i> משלוחים וזמני אספקה</h2>
+                            <div class="section-text">
+                                אנו עושים את מירב המאמצים לארוז ולשלוח את ההזמנות במהירות האפשרית:
+                                <ul>
+                                    <li><strong>שליח עד הבית (Express):</strong> זמן האספקה הוא עד 3 ימי עסקים מרגע אישור ההזמנה (לא כולל יום ההזמנה, סופ"ש וחגים).</li>
+                                    <li><strong>נקודת איסוף (Boxit):</strong> זמן האספקה הוא 3-5 ימי עסקים אל נקודת האיסוף הקרובה לביתכם.</li>
+                                    <li>משלוח חינם יינתן אוטומטית בקופה ברכישה מעל הסכום המפורט באתר (בכפוף למבצעים המשתנים).</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="terms-section">
-                        <h2 class="section-title"><i class="fa-solid fa-rotate-left"></i> מדיניות החזרות וביטולים</h2>
-                        <div class="section-text">
-                            ביטול עסקה יתאפשר בהתאם לחוק הגנת הצרכן, התשמ"א-1981:
-                            <ul>
-                                <li>ניתן לבטל הזמנה כל עוד היא לא נשלחה ממרכז הלוגיסטיקה שלנו, ולקבל החזר כספי מלא.</li>
-                                <li>החזרת מוצר תתאפשר עד 14 ימים מיום קבלתו, בתנאי שלא נעשה בו שימוש והוא באריזתו המקורית והסגורה (כולל צלופן אם יש).</li>
-                                <li>כאמור, <strong>לא ניתן</strong> להחזיר מארזי הפתעה (Mystery Boxes) או חבילות קלפים שקופסתם או אריזתם נפתחה, בשל אופי המוצר.</li>
-                                <li>בכל בקשה להחזרה או ביטול, הצוות שלנו יעמוד לרשותכם וישאף למצוא את הפתרון הטוב וההוגן ביותר עבורכם (ראו סעיף 1).</li>
-                            </ul>
+                        <div class="terms-section">
+                            <h2 class="section-title"><i class="fa-solid fa-rotate-left"></i> מדיניות החזרות וביטולים</h2>
+                            <div class="section-text">
+                                ביטול עסקה יתאפשר בהתאם לחוק הגנת הצרכן, התשמ"א-1981:
+                                <ul>
+                                    <li>ניתן לבטל הזמנה כל עוד היא לא נשלחה ממרכז הלוגיסטיקה שלנו, ולקבל החזר כספי מלא.</li>
+                                    <li>החזרת מוצר תתאפשר עד 14 ימים מיום קבלתו, בתנאי שלא נעשה בו שימוש והוא באריזתו המקורית והסגורה.</li>
+                                    <li>כאמור, <strong>לא ניתן</strong> להחזיר מארזי הפתעה או חבילות קלפים שקופסתם או אריזתם נפתחה, בשל אופי המוצר.</li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="terms-section">
-                        <h2 class="section-title"><i class="fa-solid fa-shield-halved"></i> פרטיות ואבטחת מידע</h2>
-                        <div class="section-text">
-                            סוליבי ספורט חורטת על דגלה את אבטחת פרטיכם האישיים.
-                            <ul>
-                                <li>האתר מאובטח בתקן <strong>SSL מחמיר</strong>. פרטי האשראי שלכם אינם נשמרים בשרתי החברה בשום שלב, והסליקה מתבצעת דרך חברת סליקה חיצונית ומאושרת.</li>
-                                <li>אנו מתחייבים שלא להעביר את פרטיכם האישיים או כתובת המייל שלכם לצד ג' ללא אישורכם.</li>
-                            </ul>
+                        <div class="terms-section">
+                            <h2 class="section-title"><i class="fa-solid fa-shield-halved"></i> פרטיות ואבטחת מידע</h2>
+                            <div class="section-text">
+                                סוליבי ספורט חורטת על דגלה את אבטחת פרטיכם האישיים:
+                                <ul>
+                                    <li>האתר מאובטח בתקן <strong>SSL מחמיר</strong>. פרטי האשראי שלכם אינם נשמרים בשרתי החברה בשום שלב, והסליקה מתבצעת דרך חברת סליקה חיצונית ומאושרת.</li>
+                                    <li>אנו מתחייבים שלא להעביר את פרטיכם האישיים או כתובת המייל שלכם לצד ג' ללא אישורכם המפורש.</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     
@@ -214,12 +404,11 @@
         </div>
     </main>
 
-    <!-- חור עבור הפוטר -->
+    <!-- 3. פוטר תחתון קבוע -->
     <div id="ticker-placeholder"></div>
 
     <!-- סקריפט השאיבה המאוחד -->
     <script>
-        // שואב את ההדר
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -227,7 +416,6 @@
                 if(placeholder) placeholder.innerHTML = data;
             });
 
-        // שואב את הטיקר (פוטר)
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {
@@ -235,5 +423,7 @@
                 if(placeholder) placeholder.innerHTML = data;
             });
     </script>
+    <script src="search.js"></script>
+    <script type="module" src="auth.js"></script>
 </body>
 </html>

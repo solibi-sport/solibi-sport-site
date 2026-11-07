@@ -3,232 +3,457 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוליבי ספורט - הצהרת נגישות</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>סוליבי ספורט - הצהרת נגישות VIP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- שואב את קובץ העיצוב הגלובלי (כמו בשאר הדפים) -->
+    <!-- שואב את קובץ העיצוב הגלובלי -->
     <link rel="stylesheet" href="solibi-app.css">
     
     <style>
         /* =========================================
-           שחרור הנעילה ועיצוב אחיד
+           נעילת מסך מלאה (100vh) ומרכוז סימטרי מושלם (SPA)
            ========================================= */
-        body.accessibility-page-body {
-            background-color: #0b0c10 !important;
-            background-image: radial-gradient(circle at 50% 10%, rgba(200, 210, 230, 0.12) 0%, transparent 60%), url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M10 16.95l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zm32 0l-5-2.88V8.3l5-2.88 5 2.88v5.77l-5 2.88zM26 26l-5-2.88v-5.77l5-2.88 5 2.88v5.77L26 26zM26 7.7l-5-2.88V-.94l5-2.88 5 2.88v5.77L26 7.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") !important;
-            color: #ffffff !important;
+        html, body.accessibility-page-body {
+            height: 100vh !important;
+            max-height: 100vh !important;
             width: 100vw !important;
-            height: auto !important; 
-            min-height: 100vh !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important; 
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
             display: flex !important;
             flex-direction: column !important;
-            margin: 0 !important;
+            background-color: #0b0c10 !important;
+            color: #ffffff !important;
         }
 
+        #header-placeholder,
+        #ticker-placeholder {
+            flex-shrink: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        /* אזור הבמה המרכזי - ממורכז בדיוק באמצע בין ההדר לפוטר */
         .main-container {
-            flex: 1 !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
             display: flex !important;
             justify-content: center !important;
-            align-items: flex-start !important; 
-            padding: 50px 20px !important;
-            overflow: visible !important; 
+            align-items: center !important;
+            padding: 18px 30px !important;
+            box-sizing: border-box !important;
         }
 
-        /* קוביית הזכוכית - מותאמת לטקסט קריא */
+        /* =========================================
+           קוביית ה-VIP של הצהרת הנגישות
+           ========================================= */
         .glass-box {
+            position: relative;
             display: flex;
             flex-direction: column;
             width: 100% !important; 
-            max-width: 900px !important; 
-            height: auto !important; 
-            background: linear-gradient(145deg, rgba(28, 31, 38, 0.95) 0%, rgba(17, 19, 24, 0.95) 100%) !important;
-            border: 1px solid rgba(212, 175, 55, 0.35) !important;
-            border-radius: 20px !important;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6) !important;
-            padding: 50px;
-            animation: fadeUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            max-width: 1240px !important; 
+            height: auto !important;
+            max-height: none !important;
+            background: linear-gradient(160deg, rgba(20, 24, 34, 0.96) 0%, rgba(10, 12, 17, 0.98) 100%) !important;
+            border: 1px solid rgba(212, 175, 55, 0.45) !important;
+            border-right: 5px solid #D4AF37 !important;
+            border-radius: 22px !important;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(212, 175, 55, 0.12) !important;
+            padding: 22px 34px;
+            box-sizing: border-box;
+            overflow: hidden !important;
+            animation: fadeUp 0.5s ease forwards;
+            gap: 14px;
+        }
+
+        /* פס תאורה מוזהב בראש הקובייה */
+        .glass-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff3b0, #D4AF37, #fff3b0, transparent);
+            box-shadow: 0 2px 20px 2px rgba(212, 175, 55, 0.5);
+            z-index: 5;
+            pointer-events: none;
         }
 
         @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
+            0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
         /* =========================================
-           עיצוב התוכן הטקסטואלי
+           כותרת הדף + קו הפרדה אופקי עם יהלום
            ========================================= */
         .page-header {
             text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
         }
 
-        .page-header i {
-            font-size: 40px;
+        .header-title-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .header-icon-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, #07080c 100%);
+            border: 1px solid #D4AF37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #D4AF37;
-            margin-bottom: 15px;
+            font-size: 16px;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
         }
 
         .page-header h1 {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 900;
+            color: #ffffff;
+            margin: 0;
+            text-shadow: 0 6px 18px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.25);
+        }
+
+        .page-header h1 span {
             color: #D4AF37;
-            margin-bottom: 10px;
         }
 
         .page-header p {
-            color: #a0a0a0;
-            font-size: 15px;
+            color: #94a3b8;
+            font-size: 12.5px;
+            margin: 0 0 10px 0;
+        }
+
+        .gold-diamond-divider {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.85) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+            margin: 0;
+        }
+
+        .gold-diamond-divider::after {
+            content: '❖';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 2px 14px;
+            font-size: 12px;
+            line-height: 1;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+        }
+
+        /* =========================================
+           באנר פתיחה עליון ברוחב מלא
+           ========================================= */
+        .intro-banner {
+            background: radial-gradient(circle at 85% 50%, rgba(212, 175, 55, 0.2) 0%, rgba(11, 13, 19, 0.96) 75%);
+            border: 1px solid rgba(212, 175, 55, 0.55);
+            border-radius: 14px;
+            padding: 12px 20px;
+            font-size: 13.5px;
+            line-height: 1.55;
+            color: #e2e8f0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.65);
+        }
+
+        .intro-banner strong {
+            color: #D4AF37;
+            font-weight: 800;
+        }
+
+        /* =========================================
+           רשת סימטרית 2 עמודות + קו הפרדה אנכי עם יהלום
+           ========================================= */
+        .accessibility-grid-2col {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 44px;
+            align-items: stretch;
+        }
+
+        /* קו זהב אנכי עם יהלום בין שתי העמודות */
+        .accessibility-grid-2col::before {
+            content: '';
+            position: absolute;
+            top: 4%;
+            bottom: 4%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            background: linear-gradient(180deg, transparent 0%, rgba(212, 175, 55, 0.75) 50%, transparent 100%);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+            pointer-events: none;
+        }
+
+        .accessibility-grid-2col::after {
+            content: '❖';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #12151e;
+            border: 1px solid rgba(212, 175, 55, 0.75);
+            border-radius: 50px;
+            color: #D4AF37;
+            padding: 8px 4px;
+            font-size: 11.5px;
+            line-height: 1;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.45);
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+            pointer-events: none;
+        }
+
+        .col-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: space-between;
         }
 
         .content-section {
-            margin-bottom: 35px;
-            line-height: 1.8;
-            color: #e2e8f0;
-            font-size: 16px;
+            background: rgba(11, 13, 19, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.28);
+            border-radius: 14px;
+            padding: 14px 18px;
+            line-height: 1.55;
+            color: #cbd5e1;
+            font-size: 12.5px;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .content-section:hover {
+            border-color: #D4AF37;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.8), 0 0 16px rgba(212, 175, 55, 0.15);
         }
 
         .content-section h2 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #f5f5f5;
-            margin-bottom: 15px;
+            font-size: 15.5px;
+            font-weight: 900;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.22);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .content-section h2 i {
             color: #D4AF37;
-            font-size: 18px;
+            font-size: 15px;
+        }
+
+        .content-section p {
+            margin: 0 0 8px 0;
         }
 
         .content-section ul {
             list-style-type: none;
-            padding-right: 15px;
-            margin-top: 15px;
+            padding-right: 4px;
+            margin: 4px 0 0 0;
         }
 
         .content-section ul li {
             position: relative;
-            margin-bottom: 10px;
-            padding-right: 20px;
+            margin-bottom: 6px;
+            padding-right: 16px;
+        }
+
+        .content-section ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-section ul li strong {
+            color: #ffffff;
+            font-weight: 800;
         }
 
         .content-section ul li::before {
             content: '•';
             color: #D4AF37;
-            font-size: 20px;
+            font-size: 17px;
             font-weight: bold;
             position: absolute;
             right: 0;
-            top: -2px;
+            top: -1px;
         }
 
         /* תיבת יצירת קשר עם רכז נגישות */
         .contact-box {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 20px;
+            background: radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.16) 0%, rgba(7, 9, 13, 0.95) 75%);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            border-radius: 11px;
+            padding: 10px 14px;
+            margin-top: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 12px;
+            font-size: 12px;
         }
 
-        .contact-box strong {
+        .contact-box-title {
+            grid-column: 1 / -1;
             color: #D4AF37;
+            font-weight: 900;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .contact-box p {
-            margin-bottom: 8px;
+        .contact-box div {
+            color: #e2e8f0;
         }
 
-        /* רספונסיביות */
-        @media (max-width: 768px) {
+        .contact-box a {
+            color: #D4AF37;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .contact-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================================
+           זום פרופורציונלי מלא ללא שום חיתוך או גלילה
+           ========================================= */
+        @media (min-width: 1100px) {
             .glass-box {
-                padding: 30px 20px;
+                zoom: 1.12; /* מגדיל את כל הקובייה והתוכן שבה באותה פרופורציה בדיוק */
+                max-width: 1240px !important;
+                max-height: none !important;
             }
-            .page-header h1 {
-                font-size: 26px;
+        }
+
+        @media (max-width: 960px) {
+            html, body.accessibility-page-body {
+                height: auto !important;
+                max-height: none !important;
+                overflow-y: auto !important;
             }
-            .content-section {
-                font-size: 15px;
+            .accessibility-grid-2col {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+            .accessibility-grid-2col::before,
+            .accessibility-grid-2col::after {
+                display: none;
+            }
+            .contact-box {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body class="accessibility-page-body">
 
-    <!-- חור עבור ההדר -->
+    <!-- 1. הדר עליון קבוע -->
     <div id="header-placeholder"></div>
 
+    <!-- 2. אזור הבמה המרכזי (ממורכז בדיוק באמצע המסך) -->
     <main class="main-container">
         
         <div class="glass-box">
             
             <div class="page-header">
-                <i class="fa-solid fa-wheelchair"></i>
-                <h1>הצהרת נגישות</h1>
-                <p>עודכן לאחרונה: אוגוסט 2026</p>
-            </div>
-
-            <div class="content-section">
-                <p>
-                    חברת <strong>סוליבי ספורט (Solibi Sport)</strong> רואה חשיבות עליונה במתן שירות שוויוני, מכבד ונגיש לכלל לקוחותיה, לרבות אנשים עם מוגבלויות. אנו פועלים רבות כדי להנגיש את האתר שלנו ואת השירותים שאנו מציעים, במטרה לאפשר חווית גלישה ורכישה נוחה, קלה ועצמאית לכולם.
-                </p>
-            </div>
-
-            <div class="content-section">
-                <h2><i class="fa-solid fa-laptop-code"></i> נגישות האתר האינטרנט</h2>
-                <p>
-                    אתר אינטרנט זה עומד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג 2013. התאמות הנגישות בוצעו ע"פ המלצות התקן הישראלי (ת"י 5568) לנגישות תכנים באינטרנט ברמת AA ומסמך WCAG2.0 הבינלאומי.
-                </p>
-                <ul>
-                    <li><strong>ניווט מקלדת:</strong> האתר תומך בניווט מלא באמצעות מקשי המקלדת (Tab, Enter, וחיצים) עבור משתמשים המתקשים בשימוש בעכבר.</li>
-                    <li><strong>התאמה לקוראי מסך:</strong> האתר מותאם לתמיכה בתוכנות קוראות מסך (Screen Readers) המשמשות עיוורים ולקויי ראייה, כולל תיאור חלופי (Alt Text) מדויק לתמונות המוצרים.</li>
-                    <li><strong>תצוגה חזותית:</strong> האתר מעוצב תוך הקפדה על ניגודיות (Contrast) גבוהה בין הטקסט לרקע, על מנת להקל על קריאת התכנים.</li>
-                    <li><strong>התאמה למכשירים:</strong> האתר רספונסיבי ומותאם לגלישה במגוון מסכים ומכשירים סלולריים.</li>
-                </ul>
-            </div>
-
-            <div class="content-section">
-                <h2><i class="fa-solid fa-store"></i> הסדרי נגישות פיזיים</h2>
-                <p>
-                    פעילותנו מתבצעת בעיקר כחנות אונליין (E-commerce). עם זאת, ככל שיש נקודות איסוף עצמי או קבלת קהל, אנו מוודאים כי:
-                </p>
-                <ul>
-                    <li>קיימות חניות נכים מסודרות בקרבת הכניסה.</li>
-                    <li>הכניסה למבנה נגישה לכיסאות גלגלים, ללא מדרגות או באמצעות רמפה תקנית.</li>
-                    <li>דלפקי השירות והקופות מותאמים בגובהם לקבלת שירות בישיבה.</li>
-                </ul>
-            </div>
-
-            <div class="content-section">
-                <h2><i class="fa-solid fa-headset"></i> יצירת קשר ומשוב נגישות</h2>
-                <p>
-                    אנו ממשיכים במאמצים לשפר את נגישות האתר כחלק ממחויבותנו לאפשר שימוש בו עבור כלל האוכלוסייה. אם במהלך הגלישה נתקלתם בבעיה או בתקלה הקשורה לנגישות, נשמח מאוד אם תעדכנו אותנו כדי שנוכל לטפל בכך בהקדם האפשרי.
-                </p>
-                
-                <div class="contact-box">
-                    <p><strong>פרטי רכז/ת הנגישות בחברתנו:</strong></p>
-                    <p>שם: [יש להשלים שם, למשל: ישראל ישראלי]</p>
-                    <p>טלפון / וואטסאפ: [יש להשלים טלפון, למשל: 050-1234567]</p>
-                    <p>דואר אלקטרוני: <a href="mailto:accessibility@solibi.co.il" style="color: #D4AF37;">accessibility@solibi.co.il</a></p>
+                <div class="header-title-wrap">
+                    <div class="header-icon-badge"><i class="fa-solid fa-wheelchair"></i></div>
+                    <h1>הצהרת <span>נגישות</span></h1>
                 </div>
+                <p>עודכן לאחרונה: אוגוסט 2026 | תקן נגישות ישראלי ת"י 5568 ברמת AA</p>
+                <div class="gold-diamond-divider"></div>
+            </div>
+
+            <!-- באנר פתיחה ברוחב מלא -->
+            <div class="intro-banner">
+                חברת <strong>סוליבי ספורט (Solibi Sport)</strong> רואה חשיבות עליונה במתן שירות שוויוני, מכבד ונגיש לכלל לקוחותיה, לרבות אנשים עם מוגבלויות. אנו פועלים רבות כדי להנגיש את האתר שלנו ואת השירותים שאנו מציעים, במטרה לאפשר חוויית גלישה ורכישה נוחה, קלה ועצמאית לכולם.
+            </div>
+
+            <!-- רשת סימטרית 2 עמודות עם קו יהלום אנכי באמצע -->
+            <div class="accessibility-grid-2col">
+                
+                <!-- עמודה ימנית: נגישות האתר -->
+                <div class="content-section">
+                    <div>
+                        <h2><i class="fa-solid fa-laptop-code"></i> נגישות האתר האינטרנט</h2>
+                        <p>
+                            אתר אינטרנט זה עומד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע"ג 2013. התאמות הנגישות בוצעו ע"פ המלצות התקן הישראלי (ת"י 5568) לנגישות תכנים באינטרנט ברמת AA ומסמך WCAG2.0 הבינלאומי:
+                        </p>
+                        <ul>
+                            <li><strong>ניווט מקלדת:</strong> האתר תומך בניווט מלא באמצעות מקשי המקלדת (Tab, Enter, וחיצים) עבור משתמשים המתקשים בשימוש בעכבר.</li>
+                            <li><strong>התאמה לקוראי מסך:</strong> האתר מותאם לתמיכה בתוכנות קוראות מסך (Screen Readers) המשמשות עיוורים ולקויי ראייה, כולל תיאור חלופי (Alt Text) מדויק לתמונות המוצרים.</li>
+                            <li><strong>תצוגה חזותית:</strong> האתר מעוצב תוך הקפדה על ניגודיות (Contrast) גבוהה וברורה בין הטקסט לרקע הכהה, על מנת להקל על קריאת התכנים.</li>
+                            <li><strong>התאמה למכשירים:</strong> האתר רספונסיבי ומותאם לגלישה נוחה במגוון מסכים ומכשירים סלולריים.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- עמודה שמאלית: הסדרים פיזיים + רכז נגישות -->
+                <div class="col-stack">
+                    <div class="content-section">
+                        <div>
+                            <h2><i class="fa-solid fa-store"></i> הסדרי נגישות פיזיים</h2>
+                            <p>
+                                פעילותנו מתבצעת בעיקר כחנות אונליין (E-commerce). עם זאת, ככל שיש נקודות איסוף עצמי או קבלת קהל, אנו מוודאים כי:
+                            </p>
+                            <ul>
+                                <li>קיימות חניות נכים מסודרות ונגישות בקרבת הכניסה.</li>
+                                <li>הכניסה למבנה נגישה לכיסאות גלגלים, ללא מדרגות או באמצעות רמפה תקנית.</li>
+                                <li>דלפקי השירות והקופות מותאמים בגובהם לקבלת שירות נוח בישיבה.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <div>
+                            <h2><i class="fa-solid fa-headset"></i> יצירת קשר ומשוב נגישות</h2>
+                            <p style="margin-bottom: 4px;">
+                                אם במהלך הגלישה נתקלתם בבעיה או בתקלה הקשורה לנגישות, נשמח מאוד אם תעדכנו אותנו כדי שנוכל לטפל בכך בהקדם האפשרי:
+                            </p>
+                        </div>
+                        <div class="contact-box">
+                            <div class="contact-box-title"><i class="fa-solid fa-user-check"></i> פרטי רכז/ת הנגישות בחברתנו:</div>
+                            <div><strong>טלפון / WhatsApp:</strong> <span dir="ltr">052-7287898</span></div>
+                            <div><strong>אימייל:</strong> <a href="mailto:info@solibi-seder.co.il">info@solibi-seder.co.il</a></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
 
     </main>
 
-    <!-- חור עבור הפוטר -->
+    <!-- 3. פוטר תחתון קבוע -->
     <div id="ticker-placeholder"></div>
 
     <script>
-        // שואב את ההדר
         fetch('header.html')
             .then(response => response.text())
             .then(data => {
@@ -237,7 +462,6 @@
                 if(typeof updateCartBadge === 'function') updateCartBadge();
             });
 
-        // שואב את הטיקר (פוטר)
         fetch('ticker.html')
             .then(response => response.text())
             .then(data => {
