@@ -1,3 +1,113 @@
+<!-- =========================================
+     פוטר תחתון יוקרתי במבנה עמודות קלאסי ומאוזן בגובה
+     ========================================= -->
+<style>
+    .site-footer {
+        background: linear-gradient(180deg, #0b0c10 0%, #060709 100%) !important;
+        border-top: 1.5px solid #D4AF37 !important;
+        box-shadow: 0 -6px 25px rgba(0, 0, 0, 0.85) !important;
+        padding: 14px 40px 0 40px !important; /* ריווח עליון מאוזן וללא שוליים מיותרים למטה */
+        width: 100% !important;
+        box-sizing: border-box !important;
+        direction: rtl !important;
+        font-family: 'Rubik', sans-serif !important;
+        flex-shrink: 0 !important;
+        z-index: 100 !important;
+    }
+
+    .site-footer .footer-grid {
+        display: grid !important;
+        grid-template-columns: 1.4fr 1fr 1fr !important;
+        align-items: start !important;
+        max-width: 920px !important;
+        margin: 0 auto !important;
+        padding-bottom: 12px !important;
+        gap: 40px !important;
+        text-align: right !important;
+    }
+
+    /* עמודות אנכיות קלאסיות: כותרת ומעליה/מתחתיה הקישורים */
+    .site-footer .footer-col {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 5px !important;
+    }
+
+    /* עמודת המותג מימין */
+    .site-footer .brand-col h3 {
+        font-size: 22px !important;
+        font-weight: 900 !important;
+        margin: 0 0 3px 0 !important;
+        color: #ffffff !important;
+        letter-spacing: 1.5px !important;
+        line-height: 1.1 !important;
+    }
+
+    .site-footer .brand-col h3 .dot {
+        color: #D4AF37 !important;
+    }
+
+    .site-footer .brand-col p {
+        font-size: 12.5px !important;
+        color: #94a3b8 !important;
+        margin: 0 !important;
+        line-height: 1.4 !important;
+    }
+
+    /* כותרות העמודות */
+    .site-footer .footer-col h4 {
+        font-size: 13.5px !important;
+        font-weight: 900 !important;
+        color: #ffffff !important;
+        margin: 0 0 3px 0 !important;
+        line-height: 1.2 !important;
+    }
+
+    /* קישורים מתחת לכל כותרת */
+    .site-footer .footer-col a {
+        font-size: 12.5px !important;
+        color: #94a3b8 !important;
+        text-decoration: none !important;
+        font-weight: 400 !important;
+        line-height: 1.35 !important;
+        transition: color 0.2s ease, transform 0.2s ease !important;
+        margin: 0 !important;
+    }
+
+    .site-footer .footer-col a:hover {
+        color: #D4AF37 !important;
+        transform: translateX(-3px) !important;
+    }
+
+    /* פס זכויות יוצרים תחתון דק במיוחד */
+    .site-footer .footer-bottom {
+        border-top: 1px solid rgba(212, 175, 55, 0.25) !important;
+        padding: 4px 0 !important;
+        margin: 0 -40px !important;
+        background: rgba(0, 0, 0, 0.45) !important;
+        text-align: center !important;
+    }
+
+    .site-footer .footer-bottom p {
+        font-size: 10.5px !important;
+        color: #64748b !important;
+        margin: 0 !important;
+        line-height: 1.2 !important;
+    }
+
+    @media (max-width: 768px) {
+        .site-footer .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 14px !important;
+            text-align: center !important;
+        }
+        .site-footer .footer-col {
+            align-items: center !important;
+        }
+    }
+</style>
+
 <footer class="site-footer">
     <div class="footer-grid">
         <div class="footer-col brand-col">

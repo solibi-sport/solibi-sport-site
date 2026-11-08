@@ -1,0 +1,503 @@
+/* ==========================================================================
+   SOLIBI SPORT VIP - MOBILE WEB APP STYLESHEET (768px ומטה בלבד)
+   קובץ זה פעיל אך ורק במכשירים ניידים ואינו משפיע כלל על תצוגת המחשב!
+   ========================================================================== */
+
+@media screen and (max-width: 768px) {
+
+    /* =========================================
+       1. שחרור נעילת 100vh ואיפוס זום למובייל בכל הדפים
+       ========================================= */
+    html,
+    body,
+    body.about-page-body,
+    body.accessibility-page-body,
+    body.cart-page-body,
+    body.checkout-page-body,
+    body.contact-page-body,
+    body.login-page-body,
+    body.raffle-page-body,
+    body.terms-page-body,
+    body.profile-page-body {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 100dvh !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    main,
+    .scrollable-content,
+    main.catalog-spa-viewport,
+    .about-main-container,
+    .main-container,
+    .cart-main-container,
+    .checkout-main-container,
+    .contact-main-container,
+    .login-main-container,
+    .raffle-main-container {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 16px 12px 28px 12px !important;
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ביטול הזום של המחשב על כל קוביות הזכוכית בנייד */
+    .about-glass-box,
+    .glass-box,
+    .cart-glass-box,
+    .checkout-glass-box,
+    .contact-glass-box,
+    .login-glass-box,
+    .raffle-glass-box {
+        zoom: 1 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        padding: 20px 16px !important;
+        border-radius: 18px !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
+
+    /* הסתרת קווי ההפרדה האנכיים של המחשב במעבר לעמודה אנכית */
+    .center-gold-divider,
+    .catalog-sidebar::before,
+    .catalog-sidebar::after,
+    .cart-items-side::before,
+    .cart-items-side::after,
+    .checkout-form-wrapper::before,
+    .checkout-form-wrapper::after,
+    .accessibility-grid-2col::before,
+    .accessibility-grid-2col::after {
+        display: none !important;
+    }
+
+    /* =========================================
+       2. הדר אפליקציה (App Header) דביק ונוח לאגודל
+       ========================================= */
+    .top-header {
+        flex-wrap: wrap !important;
+        padding: 10px 12px !important;
+        gap: 10px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
+    }
+
+    /* שורה 1 בימין: לוגו */
+    .header-logo {
+        font-size: 22px !important;
+        order: 1 !important;
+    }
+
+    /* שורה 1 בשמאל: חיפוש מהיר */
+    .header-search-wrapper {
+        width: calc(100% - 115px) !important;
+        order: 2 !important;
+    }
+
+    .header-search-input {
+        padding: 8px 14px 8px 34px !important;
+        font-size: 12.5px !important;
+    }
+
+    /* שורה 2: סרגל קפסולה מוזהב בגלילה אופקית חלקה או התאמה לרוחב מלא */
+    .main-nav {
+        order: 3 !important;
+        width: 100% !important;
+        justify-content: space-between !important;
+        padding: 5px 6px !important;
+        gap: 4px !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+        scrollbar-width: none !important;
+    }
+
+    .main-nav::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .gold-nav-item {
+        padding: 7px 10px !important;
+        font-size: 12px !important;
+        gap: 5px !important;
+        flex: 1 0 auto !important;
+        justify-content: center !important;
+    }
+
+    .gold-nav-item i {
+        font-size: 13px !important;
+    }
+
+    /* =========================================
+       3. דף הבית (index.html) - Web App View
+       ========================================= */
+    .full-hero-slider {
+        min-height: 330px !important;
+        height: auto !important;
+        padding: 20px 12px !important;
+    }
+
+    .hero-slide .bg-text {
+        font-size: 46px !important;
+        top: 28% !important;
+        white-space: nowrap !important;
+    }
+
+    .slide-center-img img {
+        max-height: 175px !important;
+        transform: scale(1.02) !important;
+    }
+
+    .slide-bottom-info {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 10px 14px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .price-side {
+        font-size: 22px !important;
+    }
+
+    .home-tabs-header {
+        gap: 24px !important;
+        margin: 24px 0 20px 0 !important;
+    }
+
+    .home-tab-title {
+        font-size: 18px !important;
+    }
+
+    .featured-categories-section {
+        width: 100% !important;
+        margin: 0 auto 40px auto !important;
+    }
+
+    .solibi-cards-grid {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+    }
+
+    .solibi-card {
+        height: auto !important;
+        min-height: 320px !important;
+        padding: 18px !important;
+    }
+
+    .solibi-bottom-split {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        margin-top: 50px !important;
+        padding-top: 40px !important;
+    }
+
+    .solibi-feature-box {
+        padding: 22px 18px !important;
+    }
+
+    .vip-title {
+        font-size: 21px !important;
+    }
+
+    .vip-form {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .vip-submit-btn {
+        padding: 13px !important;
+        width: 100% !important;
+    }
+
+    .standards-grid-2x2 {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    /* =========================================
+       4. קטלוג מוצרים (catalog.html) - כרטיסיות ב-2 עמודות כמו אפליקציה
+       ========================================= */
+    .catalog-page-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        padding: 8px 4px !important;
+        gap: 16px !important;
+        height: auto !important;
+    }
+
+    /* הקטגוריות הופכות לסרגל כפתורים אופקי בראש הדף */
+    .catalog-sidebar {
+        order: 1 !important;
+        width: 100% !important;
+        padding: 14px 12px !important;
+        border-right: 3px solid #D4AF37 !important;
+    }
+
+    .sidebar-main-title {
+        font-size: 17px !important;
+        padding-bottom: 10px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .sidebar-cat-list {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+    }
+
+    .sidebar-cat-btn {
+        padding: 10px 12px !important;
+        font-size: 13.5px !important;
+    }
+
+    .sidebar-brand-oval {
+        display: none !important;
+    }
+
+    .catalog-top-header {
+        order: 2 !important;
+        padding-bottom: 6px !important;
+    }
+
+    .catalog-category-title {
+        font-size: 24px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* רשת מוצרים של 2 בשורה למראה אפליקציית שופינג (או 1 רחבה במסכים צרים מאוד) */
+    .catalog-grid-6 {
+        order: 3 !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-template-rows: auto !important;
+        gap: 12px !important;
+        height: auto !important;
+    }
+
+    .catalog-product-card {
+        min-height: 250px !important;
+        padding: 10px !important;
+    }
+
+    .catalog-card-badge {
+        font-size: 10px !important;
+        padding: 2px 8px !important;
+    }
+
+    .catalog-card-img img {
+        max-height: 105px !important;
+    }
+
+    .catalog-card-footer {
+        padding: 8px !important;
+    }
+
+    .catalog-product-title {
+        font-size: 12.5px !important;
+    }
+
+    .catalog-card-actions {
+        grid-template-columns: 1fr !important;
+        gap: 6px !important;
+        text-align: center !important;
+    }
+
+    .catalog-price-box {
+        border-right: none !important;
+        padding-right: 0 !important;
+        text-align: center !important;
+        font-size: 13.5px !important;
+        order: -1 !important;
+    }
+
+    .catalog-add-btn {
+        width: 100% !important;
+        padding: 7px 6px !important;
+        font-size: 11.5px !important;
+    }
+
+    .catalog-bottom-nav {
+        order: 4 !important;
+        padding-top: 10px !important;
+    }
+
+    .catalog-pagination {
+        gap: 20px !important;
+    }
+
+    /* =========================================
+       5. עגלת קניות (cart.html)
+       ========================================= */
+    .cart-glass-box {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    .cart-items-inner {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    .cart-item {
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        padding: 12px !important;
+    }
+
+    .item-img {
+        width: 52px !important;
+        height: 52px !important;
+        margin-left: 8px !important;
+    }
+
+    .quantity-controls {
+        margin: 0 auto 0 0 !important;
+    }
+
+    .cart-summary-side {
+        padding: 18px !important;
+    }
+
+    /* =========================================
+       6. דף קופה ותשלום (checkout.html)
+       ========================================= */
+    .checkout-glass-box {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 22px !important;
+    }
+
+    .section-title {
+        font-size: 17px !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    .top-forms-row,
+    .form-grid,
+    .shipping-options {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    /* סידור נוח של 5 שדות כרטיס האשראי במובייל */
+    .cc-grid-row {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+
+    .cc-grid-row .input-group:first-child {
+        grid-column: 1 / -1 !important; /* מספר כרטיס אשראי ברוחב מלא */
+    }
+
+    .input-group input {
+        height: 42px !important;
+        font-size: 14px !important;
+    }
+
+    .checkout-summary-side {
+        padding: 18px 16px !important;
+    }
+
+    /* =========================================
+       7. דף התחברות (login.html) ודף הגרלה (raffle.html)
+       ========================================= */
+    .login-glass-box,
+    .raffle-glass-box {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 22px !important;
+    }
+
+    .auth-form-section,
+    .auth-info-section {
+        padding: 22px 16px !important;
+    }
+
+    .form-bottom-seal {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .prize-card {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+
+    .steps-row,
+    .roller-actions {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    .winners-hall {
+        flex-direction: column !important;
+        gap: 6px !important;
+        text-align: center !important;
+    }
+
+    /* =========================================
+       8. דפי תוכן: אודות, צור קשר, נגישות ותקנון
+       ========================================= */
+    .about-scroll-area,
+    .contact-scroll-area {
+        padding: 18px 14px !important;
+    }
+
+    .values-grid,
+    .contact-grid,
+    .accessibility-grid-2col {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+    }
+
+    .social-section {
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .business-link-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        justify-content: center !important;
+    }
+
+    /* =========================================
+       9. פוטר מובייל קומפקטי ונקי (ticker.html)
+       ========================================= */
+    .site-footer {
+        padding: 16px 16px 0 16px !important;
+    }
+
+    .site-footer .footer-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 16px !important;
+        text-align: right !important;
+    }
+
+    .site-footer .brand-col {
+        grid-column: 1 / -1 !important;
+        align-items: center !important;
+        text-align: center !important;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2) !important;
+        padding-bottom: 10px !important;
+    }
+
+    .site-footer .footer-col {
+        align-items: center !important;
+        text-align: center !important;
+    }
+}

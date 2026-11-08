@@ -9,6 +9,7 @@
     
     <!-- שואב את קובץ העיצוב הגלובלי -->
     <link rel="stylesheet" href="solibi-app.css">
+    <link rel="stylesheet" href="mobile-webapp.css" media="(max-width: 768px)">
     
     <style>
         /* =========================================
@@ -653,6 +654,76 @@
             margin: 0 0 10px 0 !important;
             font-size: 12.5px !important;
             line-height: 1.4 !important;
+        }
+
+        /* =========================================
+           תיקון סופי ומדויק לקופה - מיקום קו היהלום ומניעת חריגת טפסים
+           ========================================= */
+        .checkout-glass-box {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1.55fr) minmax(290px, 1fr) !important;
+            column-gap: 54px !important; /* שומר על מרווח של 54px בדיוק בשביל קו היהלום באמצע */
+            padding: 22px 30px !important;
+            box-sizing: border-box !important;
+        }
+
+        /* נועל את העמודה הימנית כדי שהקוביות של כתובת למשלוח לא יגלשו שמאלה על הקו */
+        .checkout-form-wrapper {
+            min-width: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* ממרכז את קו היהלום בדיוק באמצע הרווח של ה-54px (27px מהצד) */
+        .checkout-form-wrapper::before {
+            left: -28px !important;
+        }
+        .checkout-form-wrapper::after {
+            left: -27px !important;
+        }
+
+        /* מונע מ-grid פנימי לדחוף את הקוביות של פרטים אישיים וכתובת למשלוח החוצה */
+        .top-forms-row,
+        .form-section,
+        .form-grid,
+        .input-group,
+        .input-group input {
+            min-width: 0 !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .checkout-summary-side {
+            min-width: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        /* שורת 5 שדות כרטיס אשראי פרופורציונלית */
+        .cc-grid-row {
+            grid-template-columns: 1.5fr 0.85fr 0.65fr 1.2fr 1fr !important;
+            gap: 8px !important;
+            min-width: 0 !important;
+        }
+
+        @media (min-width: 1100px) {
+            .checkout-glass-box {
+                zoom: 1.15 !important;
+                max-width: 1200px !important;
+                max-height: 560px !important;
+            }
+        }
+
+        /* ביטול פס הגלילה בסיכום ההזמנה */
+        .order-items-mini {
+            overflow: hidden !important;
+            padding-left: 0 !important;
+        }
+        .order-items-mini::-webkit-scrollbar {
+            display: none !important;
         }
     </style>
 </head>

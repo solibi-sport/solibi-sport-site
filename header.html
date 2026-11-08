@@ -43,7 +43,7 @@
     .main-nav {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         background: rgba(18, 20, 28, 0.9);
         padding: 7px 14px;
         border-radius: 50px;
@@ -58,7 +58,7 @@
         text-decoration: none;
         font-size: 14px;
         font-weight: 700;
-        padding: 9px 22px;
+        padding: 9px 20px;
         border-radius: 40px;
         border: 1px solid transparent;
         display: flex;
@@ -72,6 +72,14 @@
         color: #D4AF37;
         font-size: 15px;
         transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    /* הדגשה מיוחדת לכפתור הגרלת ה-VIP בקפסולה */
+    .gold-nav-item.raffle-nav-highlight {
+        background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.22) 0%, rgba(212, 175, 55, 0.06) 100%);
+        border-color: rgba(212, 175, 55, 0.45);
+        color: #fff3b0;
+        font-weight: 800;
     }
 
     /* אפקט הברקת זהב חולפת במעבר עכבר */
@@ -103,8 +111,8 @@
 
     .gold-nav-item:hover {
         color: #D4AF37;
-        background: rgba(212, 175, 55, 0.1);
-        border-color: rgba(212, 175, 55, 0.45);
+        background: rgba(212, 175, 55, 0.14);
+        border-color: rgba(212, 175, 55, 0.55);
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
     }
@@ -180,7 +188,7 @@
     
     <!-- מרכז: הכותרות בתוך מסגרת זהב אינטראקטיבית -->
     <nav class="main-nav">
-<a href="login.html" class="gold-nav-item">
+        <a href="login.html" class="gold-nav-item">
             <i class="fa-regular fa-user"></i> כניסה / התחברות
         </a>
         <a href="index.html" class="gold-nav-item">
@@ -188,6 +196,9 @@
         </a>
         <a href="catalog.html" class="gold-nav-item">
             <i class="fa-solid fa-layer-group"></i> קטלוג
+        </a>
+        <a href="raffle.html" class="gold-nav-item raffle-nav-highlight">
+            <i class="fa-solid fa-trophy"></i> הגרלת VIP
         </a>
         <a href="cart.html" class="gold-nav-item">
             <i class="fa-solid fa-cart-shopping"></i> עגלה
